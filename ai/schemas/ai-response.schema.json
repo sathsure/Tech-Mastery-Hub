@@ -1,0 +1,146 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Tech-Mastery-Hub AI Tutor Response",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "response_type",
+    "answer",
+    "sources"
+  ],
+  "properties": {
+    "response_type": {
+      "type": "string",
+      "enum": [
+        "explanation",
+        "teaching",
+        "comparison",
+        "practice",
+        "interview",
+        "mock_interview",
+        "knowledge_gap",
+        "repository_navigation"
+      ]
+    },
+    "answer": {
+      "type": "string"
+    },
+    "teaching_strategy": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "definition",
+        "conceptual",
+        "step_by_step",
+        "architecture",
+        "lifecycle",
+        "data_flow",
+        "execution_flow",
+        "comparison",
+        "cause_effect",
+        "troubleshooting",
+        "code_execution",
+        "real_world",
+        "interview",
+        "practice",
+        null
+      ]
+    },
+    "visual": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "$ref": "visual-response.schema.json"
+    },
+    "examples": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "title",
+          "content"
+        ],
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "related_concepts": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "practice": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "question",
+          "difficulty"
+        ],
+        "properties": {
+          "question": {
+            "type": "string"
+          },
+          "difficulty": {
+            "type": "string",
+            "enum": [
+              "beginner",
+              "intermediate",
+              "advanced"
+            ]
+          }
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "path",
+          "source_type",
+          "section"
+        ],
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "source_type": {
+            "type": "string",
+            "enum": [
+              "canonical",
+              "interview",
+              "practice",
+              "project",
+              "visual",
+              "masterclass",
+              "roadmap",
+              "resource",
+              "external",
+              "user_material"
+            ]
+          },
+          "section": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

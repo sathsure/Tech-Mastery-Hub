@@ -1,0 +1,16 @@
+{
+  "sessionId": "model-stage-model-assessment-1790533640207",
+  "topic": "typescript",
+  "canonicalConcept": "typescript",
+  "learningMode": "learn",
+  "depth": "basic",
+  "completedSections": [],
+  "practiceAttempts": [],
+  "assessmentAttempts": [],
+  "mastery": "practicing",
+  "repositoryGap": false,
+  "provenance": [
+    "repository:knowledge/concepts/typescript/README.md",
+    "repository:interview/frontend/04-TypeScript.md"
+  ]
+}

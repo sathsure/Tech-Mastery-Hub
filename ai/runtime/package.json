@@ -1,0 +1,34 @@
+{
+    "name":  "tech-mastery-hub-ai-tutor",
+    "private":  true,
+    "version":  "0.1.0",
+    "type":  "module",
+    "scripts":  {
+                    "build":  "tsc",
+                    "check":  "tsc --noEmit",
+                    "start":  "node dist/index.js",
+                    "tutor":  "node dist/interactive-tutor.js",
+                    "api":  "node dist/api-server.js --serve",
+                    "api-check":  "node dist/api-integration-test.js",
+                    "response-check":  "node dist/response-validator-test.js",
+                    "contribution-check":  "node dist/contribution-gateway-test.js",
+                    "contribution-pipeline-check":  "node dist/contribution-pipeline-test.js",
+                    "git-boundary-check":  "node dist/git-boundary-test.js",
+                    "contribution-execution-check":  "node dist/contribution-execution-test.js",
+                    "remote-contribution-check":  "node dist/remote-contribution-test.js",
+                    "github-provider-check":  "node dist/github-provider-test.js",
+                    "reindex-check":  "node dist/authoritative-reindex-test.js",
+                    "post-merge-reindex-check":  "node dist/post-merge-reindex-test.js",
+                    "github-post-merge-reindex-check":  "node dist/github-post-merge-reindex-test.js",
+                    "manual-completion-check":  "node dist/manual-completion-guard-test.js",
+                    "model-provider-check":  "node dist/model-provider-test.js",
+                    "full-regression":  "node dist/full-regression-test.js",
+                    "model-orchestration-check":  "node dist/model-orchestration-test.js",
+                    "product-completion-check":  "node dist/product-completion-test.js",
+                    "full-acceptance":  "node dist/full-acceptance-test.js"
+                },
+    "devDependencies":  {
+                            "@types/node":  "^22.0.0",
+                            "typescript":  "^5.0.0"
+                        }
+}

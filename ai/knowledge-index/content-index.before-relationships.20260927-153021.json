@@ -1,0 +1,1384 @@
+﻿{
+    "schema_version":  "1.1",
+    "repository":  "Tech-Mastery-Hub",
+    "generated_at":  "2026-09-27T09:36:18.8623298Z",
+    "source_schema":  "ai/schemas/repository.yml",
+    "indexing_rules":  {
+                           "exclude_migration":  true,
+                           "exclude_templates":  true,
+                           "exclude_canonical_candidate_lists":  true,
+                           "include_binary_visual_notes":  true
+                       },
+    "documents":  [
+                      {
+                          "id":  "interview.architecture.01-web-vitals.md",
+                          "path":  "interview/architecture/01-web-vitals.md",
+                          "content_type":  "interview",
+                          "domain":  "architecture",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  4279,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "interview.architecture.02-aws-cloud.md",
+                          "path":  "interview/architecture/02-aws-cloud.md",
+                          "content_type":  "interview",
+                          "domain":  "architecture",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  53791,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "interview.architecture.03-devops-build-tools.md",
+                          "path":  "interview/architecture/03-devops-build-tools.md",
+                          "content_type":  "interview",
+                          "domain":  "architecture",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  4552,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "interview.architecture.microservice-architecture.md",
+                          "path":  "interview/architecture/microservice-architecture.md",
+                          "content_type":  "interview",
+                          "domain":  "architecture",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  5627,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "interview.backend.java.01-java-1.md",
+                          "path":  "interview/backend/java/01-Java-1.md",
+                          "content_type":  "interview",
+                          "domain":  "backend",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  95931,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "interview.backend.java.01-java-2.md",
+                          "path":  "interview/backend/java/01-Java-2.md",
+                          "content_type":  "interview",
+                          "domain":  "backend",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  29892,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "interview.backend.java.02-rest-api.md",
+                          "path":  "interview/backend/java/02-REST-Api.md",
+                          "content_type":  "interview",
+                          "domain":  "backend",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  5262,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "interview.backend.java.03-spring-1.md",
+                          "path":  "interview/backend/java/03-Spring-1.md",
+                          "content_type":  "interview",
+                          "domain":  "backend",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  30384,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "interview.backend.java.03-spring-2.md",
+                          "path":  "interview/backend/java/03-Spring-2.md",
+                          "content_type":  "interview",
+                          "domain":  "backend",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  29987,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "interview.backend.java.04-spring-annotation.md",
+                          "path":  "interview/backend/java/04-Spring-annotation.md",
+                          "content_type":  "interview",
+                          "domain":  "backend",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  11813,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "interview.backend.java.05-spring-security.md",
+                          "path":  "interview/backend/java/05-Spring-Security.md",
+                          "content_type":  "interview",
+                          "domain":  "backend",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  19232,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "interview.backend.java.06-spring-cloud.md",
+                          "path":  "interview/backend/java/06-Spring-Cloud.md",
+                          "content_type":  "interview",
+                          "domain":  "backend",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  35455,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "interview.backend.java.08-architecture.md",
+                          "path":  "interview/backend/java/08-Architecture.md",
+                          "content_type":  "interview",
+                          "domain":  "backend",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  22276,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "interview.backend.java.08-mysql.md",
+                          "path":  "interview/backend/java/08-MySQL.md",
+                          "content_type":  "interview",
+                          "domain":  "backend",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  32195,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "interview.backend.node.01-node.js.md",
+                          "path":  "interview/backend/node/01-Node.js.md",
+                          "content_type":  "interview",
+                          "domain":  "backend",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  15751,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "interview.backend.node.06-node-security.md",
+                          "path":  "interview/backend/node/06-Node-security.md",
+                          "content_type":  "interview",
+                          "domain":  "backend",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  8476,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "interview.frontend.01-html.md",
+                          "path":  "interview/frontend/01-HTML.md",
+                          "content_type":  "interview",
+                          "domain":  "frontend",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  19350,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "interview.frontend.02-css.md",
+                          "path":  "interview/frontend/02-CSS.md",
+                          "content_type":  "interview",
+                          "domain":  "frontend",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  27895,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "interview.frontend.03-javascript.md",
+                          "path":  "interview/frontend/03-JavaScript.md",
+                          "content_type":  "interview",
+                          "domain":  "frontend",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  23570,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "interview.frontend.04-typescript.md",
+                          "path":  "interview/frontend/04-TypeScript.md",
+                          "content_type":  "interview",
+                          "domain":  "frontend",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  17715,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "interview.frontend.05-angular-1.md",
+                          "path":  "interview/frontend/05-Angular-1.md",
+                          "content_type":  "interview",
+                          "domain":  "frontend",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  35644,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "interview.frontend.05-angular-2.md",
+                          "path":  "interview/frontend/05-Angular-2.md",
+                          "content_type":  "interview",
+                          "domain":  "frontend",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  14860,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "interview.frontend.06-react.md",
+                          "path":  "interview/frontend/06-React.md",
+                          "content_type":  "interview",
+                          "domain":  "frontend",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  20344,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "interview.frontend.06-rxjs.md",
+                          "path":  "interview/frontend/06-RxJS.md",
+                          "content_type":  "interview",
+                          "domain":  "frontend",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  31882,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "interview.frontend.09-web_architecture.md",
+                          "path":  "interview/frontend/09-Web_Architecture.md",
+                          "content_type":  "interview",
+                          "domain":  "frontend",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  37014,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.concepts.angular.readme.md",
+                          "path":  "knowledge/concepts/angular/README.md",
+                          "content_type":  "concept",
+                          "domain":  "angular",
+                          "canonical_concept":  "angular",
+                          "extension":  ".md",
+                          "size_bytes":  2425,
+                          "source_of_truth":  true
+                      },
+                      {
+                          "id":  "knowledge.concepts.aws.readme.md",
+                          "path":  "knowledge/concepts/aws/README.md",
+                          "content_type":  "concept",
+                          "domain":  "aws",
+                          "canonical_concept":  "aws",
+                          "extension":  ".md",
+                          "size_bytes":  2030,
+                          "source_of_truth":  true
+                      },
+                      {
+                          "id":  "knowledge.concepts.css.readme.md",
+                          "path":  "knowledge/concepts/css/README.md",
+                          "content_type":  "concept",
+                          "domain":  "css",
+                          "canonical_concept":  "css",
+                          "extension":  ".md",
+                          "size_bytes":  2259,
+                          "source_of_truth":  true
+                      },
+                      {
+                          "id":  "knowledge.concepts.database.sql.readme.md",
+                          "path":  "knowledge/concepts/database/sql/README.md",
+                          "content_type":  "concept",
+                          "domain":  "database",
+                          "canonical_concept":  "database/sql",
+                          "extension":  ".md",
+                          "size_bytes":  15190,
+                          "source_of_truth":  true
+                      },
+                      {
+                          "id":  "knowledge.concepts.devops.readme.md",
+                          "path":  "knowledge/concepts/devops/README.md",
+                          "content_type":  "concept",
+                          "domain":  "devops",
+                          "canonical_concept":  "devops",
+                          "extension":  ".md",
+                          "size_bytes":  1654,
+                          "source_of_truth":  true
+                      },
+                      {
+                          "id":  "knowledge.concepts.html.readme.md",
+                          "path":  "knowledge/concepts/html/README.md",
+                          "content_type":  "concept",
+                          "domain":  "html",
+                          "canonical_concept":  "html",
+                          "extension":  ".md",
+                          "size_bytes":  3413,
+                          "source_of_truth":  true
+                      },
+                      {
+                          "id":  "knowledge.concepts.java.readme.md",
+                          "path":  "knowledge/concepts/java/README.md",
+                          "content_type":  "concept",
+                          "domain":  "java",
+                          "canonical_concept":  "java",
+                          "extension":  ".md",
+                          "size_bytes":  1955,
+                          "source_of_truth":  true
+                      },
+                      {
+                          "id":  "knowledge.concepts.javascript.readme.md",
+                          "path":  "knowledge/concepts/javascript/README.md",
+                          "content_type":  "concept",
+                          "domain":  "javascript",
+                          "canonical_concept":  "javascript",
+                          "extension":  ".md",
+                          "size_bytes":  7909,
+                          "source_of_truth":  true
+                      },
+                      {
+                          "id":  "knowledge.concepts.microservices.readme.md",
+                          "path":  "knowledge/concepts/microservices/README.md",
+                          "content_type":  "concept",
+                          "domain":  "microservices",
+                          "canonical_concept":  "microservices",
+                          "extension":  ".md",
+                          "size_bytes":  2112,
+                          "source_of_truth":  true
+                      },
+                      {
+                          "id":  "knowledge.concepts.nodejs.readme.md",
+                          "path":  "knowledge/concepts/nodejs/README.md",
+                          "content_type":  "concept",
+                          "domain":  "nodejs",
+                          "canonical_concept":  "nodejs",
+                          "extension":  ".md",
+                          "size_bytes":  2521,
+                          "source_of_truth":  true
+                      },
+                      {
+                          "id":  "knowledge.concepts.react.readme.md",
+                          "path":  "knowledge/concepts/react/README.md",
+                          "content_type":  "concept",
+                          "domain":  "react",
+                          "canonical_concept":  "react",
+                          "extension":  ".md",
+                          "size_bytes":  2887,
+                          "source_of_truth":  true
+                      },
+                      {
+                          "id":  "knowledge.concepts.rest-api.readme.md",
+                          "path":  "knowledge/concepts/rest-api/README.md",
+                          "content_type":  "concept",
+                          "domain":  "rest-api",
+                          "canonical_concept":  "rest-api",
+                          "extension":  ".md",
+                          "size_bytes":  2903,
+                          "source_of_truth":  true
+                      },
+                      {
+                          "id":  "knowledge.concepts.rxjs.readme.md",
+                          "path":  "knowledge/concepts/rxjs/README.md",
+                          "content_type":  "concept",
+                          "domain":  "rxjs",
+                          "canonical_concept":  "rxjs",
+                          "extension":  ".md",
+                          "size_bytes":  2838,
+                          "source_of_truth":  true
+                      },
+                      {
+                          "id":  "knowledge.concepts.spring.readme.md",
+                          "path":  "knowledge/concepts/spring/README.md",
+                          "content_type":  "concept",
+                          "domain":  "spring",
+                          "canonical_concept":  "spring",
+                          "extension":  ".md",
+                          "size_bytes":  1995,
+                          "source_of_truth":  true
+                      },
+                      {
+                          "id":  "knowledge.concepts.spring-cloud.readme.md",
+                          "path":  "knowledge/concepts/spring-cloud/README.md",
+                          "content_type":  "concept",
+                          "domain":  "spring-cloud",
+                          "canonical_concept":  "spring-cloud",
+                          "extension":  ".md",
+                          "size_bytes":  1962,
+                          "source_of_truth":  true
+                      },
+                      {
+                          "id":  "knowledge.concepts.spring-security.readme.md",
+                          "path":  "knowledge/concepts/spring-security/README.md",
+                          "content_type":  "concept",
+                          "domain":  "spring-security",
+                          "canonical_concept":  "spring-security",
+                          "extension":  ".md",
+                          "size_bytes":  1116,
+                          "source_of_truth":  true
+                      },
+                      {
+                          "id":  "knowledge.concepts.typescript.readme.md",
+                          "path":  "knowledge/concepts/typescript/README.md",
+                          "content_type":  "concept",
+                          "domain":  "typescript",
+                          "canonical_concept":  "typescript",
+                          "extension":  ".md",
+                          "size_bytes":  2524,
+                          "source_of_truth":  true
+                      },
+                      {
+                          "id":  "knowledge.concepts.web-architecture.readme.md",
+                          "path":  "knowledge/concepts/web-architecture/README.md",
+                          "content_type":  "concept",
+                          "domain":  "web-architecture",
+                          "canonical_concept":  "web-architecture",
+                          "extension":  ".md",
+                          "size_bytes":  10247,
+                          "source_of_truth":  true
+                      },
+                      {
+                          "id":  "knowledge.concepts.web-vitals.readme.md",
+                          "path":  "knowledge/concepts/web-vitals/README.md",
+                          "content_type":  "concept",
+                          "domain":  "web-vitals",
+                          "canonical_concept":  "web-vitals",
+                          "extension":  ".md",
+                          "size_bytes":  5879,
+                          "source_of_truth":  true
+                      },
+                      {
+                          "id":  "knowledge.masterclasses.sql_masterclass.html",
+                          "path":  "knowledge/masterclasses/SQL_MasterClass.html",
+                          "content_type":  "masterclass",
+                          "domain":  "masterclass",
+                          "canonical_concept":  null,
+                          "extension":  ".html",
+                          "size_bytes":  37360,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.angular-lifecycle.png",
+                          "path":  "knowledge/visual-notes/angular-lifecycle.png",
+                          "content_type":  "visual-note",
+                          "domain":  "angular-lifecycle.png",
+                          "canonical_concept":  null,
+                          "extension":  ".png",
+                          "size_bytes":  1099824,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.async-defer.png",
+                          "path":  "knowledge/visual-notes/async-defer.png",
+                          "content_type":  "visual-note",
+                          "domain":  "async-defer.png",
+                          "canonical_concept":  null,
+                          "extension":  ".png",
+                          "size_bytes":  50713,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.aws-ai-ml.png",
+                          "path":  "knowledge/visual-notes/aws-ai-ml.png",
+                          "content_type":  "visual-note",
+                          "domain":  "aws-ai-ml.png",
+                          "canonical_concept":  null,
+                          "extension":  ".png",
+                          "size_bytes":  318980,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.aws-analytics.png",
+                          "path":  "knowledge/visual-notes/aws-analytics.png",
+                          "content_type":  "visual-note",
+                          "domain":  "aws-analytics.png",
+                          "canonical_concept":  null,
+                          "extension":  ".png",
+                          "size_bytes":  880265,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.aws-architecture.png",
+                          "path":  "knowledge/visual-notes/aws-architecture.png",
+                          "content_type":  "visual-note",
+                          "domain":  "aws-architecture.png",
+                          "canonical_concept":  null,
+                          "extension":  ".png",
+                          "size_bytes":  313803,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.aws-cls-diagram.png",
+                          "path":  "knowledge/visual-notes/aws-cls-diagram.png",
+                          "content_type":  "visual-note",
+                          "domain":  "aws-cls-diagram.png",
+                          "canonical_concept":  null,
+                          "extension":  ".png",
+                          "size_bytes":  2165862,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.aws-compliance.png",
+                          "path":  "knowledge/visual-notes/aws-compliance.png",
+                          "content_type":  "visual-note",
+                          "domain":  "aws-compliance.png",
+                          "canonical_concept":  null,
+                          "extension":  ".png",
+                          "size_bytes":  383231,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.aws-compute.png",
+                          "path":  "knowledge/visual-notes/aws-compute.png",
+                          "content_type":  "visual-note",
+                          "domain":  "aws-compute.png",
+                          "canonical_concept":  null,
+                          "extension":  ".png",
+                          "size_bytes":  238588,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.aws-database.png",
+                          "path":  "knowledge/visual-notes/aws-database.png",
+                          "content_type":  "visual-note",
+                          "domain":  "aws-database.png",
+                          "canonical_concept":  null,
+                          "extension":  ".png",
+                          "size_bytes":  299554,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.aws-dns.png",
+                          "path":  "knowledge/visual-notes/aws-dns.png",
+                          "content_type":  "visual-note",
+                          "domain":  "aws-dns.png",
+                          "canonical_concept":  null,
+                          "extension":  ".png",
+                          "size_bytes":  45885,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.aws-integration.png",
+                          "path":  "knowledge/visual-notes/aws-integration.png",
+                          "content_type":  "visual-note",
+                          "domain":  "aws-integration.png",
+                          "canonical_concept":  null,
+                          "extension":  ".png",
+                          "size_bytes":  541897,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.aws-migration.png",
+                          "path":  "knowledge/visual-notes/aws-migration.png",
+                          "content_type":  "visual-note",
+                          "domain":  "aws-migration.png",
+                          "canonical_concept":  null,
+                          "extension":  ".png",
+                          "size_bytes":  1242757,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.aws-network.png",
+                          "path":  "knowledge/visual-notes/aws-network.png",
+                          "content_type":  "visual-note",
+                          "domain":  "aws-network.png",
+                          "canonical_concept":  null,
+                          "extension":  ".png",
+                          "size_bytes":  876831,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.aws-pricing.png",
+                          "path":  "knowledge/visual-notes/aws-pricing.png",
+                          "content_type":  "visual-note",
+                          "domain":  "aws-pricing.png",
+                          "canonical_concept":  null,
+                          "extension":  ".png",
+                          "size_bytes":  1279999,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.aws-storage.png",
+                          "path":  "knowledge/visual-notes/aws-storage.png",
+                          "content_type":  "visual-note",
+                          "domain":  "aws-storage.png",
+                          "canonical_concept":  null,
+                          "extension":  ".png",
+                          "size_bytes":  468692,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.backend.composition-vs-inheritance.png",
+                          "path":  "knowledge/visual-notes/backend/composition-vs-inheritance.png",
+                          "content_type":  "visual-note",
+                          "domain":  "backend",
+                          "canonical_concept":  null,
+                          "extension":  ".png",
+                          "size_bytes":  112365,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.backend.java-collections.png",
+                          "path":  "knowledge/visual-notes/backend/java-collections.png",
+                          "content_type":  "visual-note",
+                          "domain":  "backend",
+                          "canonical_concept":  null,
+                          "extension":  ".png",
+                          "size_bytes":  303672,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.backend.spring-actuator.png",
+                          "path":  "knowledge/visual-notes/backend/spring-actuator.png",
+                          "content_type":  "visual-note",
+                          "domain":  "backend",
+                          "canonical_concept":  null,
+                          "extension":  ".png",
+                          "size_bytes":  458022,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.backend.spring-annotations.png",
+                          "path":  "knowledge/visual-notes/backend/spring-annotations.png",
+                          "content_type":  "visual-note",
+                          "domain":  "backend",
+                          "canonical_concept":  null,
+                          "extension":  ".png",
+                          "size_bytes":  605549,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.backend.spring-bean-life-cycle.png",
+                          "path":  "knowledge/visual-notes/backend/spring-bean-life-cycle.png",
+                          "content_type":  "visual-note",
+                          "domain":  "backend",
+                          "canonical_concept":  null,
+                          "extension":  ".png",
+                          "size_bytes":  113867,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.backend.spring-cloud.png",
+                          "path":  "knowledge/visual-notes/backend/spring-cloud.png",
+                          "content_type":  "visual-note",
+                          "domain":  "backend",
+                          "canonical_concept":  null,
+                          "extension":  ".png",
+                          "size_bytes":  1571135,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.backend.spring-modular-design.png",
+                          "path":  "knowledge/visual-notes/backend/spring-modular-design.png",
+                          "content_type":  "visual-note",
+                          "domain":  "backend",
+                          "canonical_concept":  null,
+                          "extension":  ".png",
+                          "size_bytes":  46958,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.backend.sql-joins.png",
+                          "path":  "knowledge/visual-notes/backend/sql-joins.png",
+                          "content_type":  "visual-note",
+                          "domain":  "backend",
+                          "canonical_concept":  null,
+                          "extension":  ".png",
+                          "size_bytes":  386909,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.border-content.png",
+                          "path":  "knowledge/visual-notes/border-content.png",
+                          "content_type":  "visual-note",
+                          "domain":  "border-content.png",
+                          "canonical_concept":  null,
+                          "extension":  ".png",
+                          "size_bytes":  25598,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.box-model.png",
+                          "path":  "knowledge/visual-notes/box-model.png",
+                          "content_type":  "visual-note",
+                          "domain":  "box-model.png",
+                          "canonical_concept":  null,
+                          "extension":  ".png",
+                          "size_bytes":  10611,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.browser-render.png",
+                          "path":  "knowledge/visual-notes/browser-render.png",
+                          "content_type":  "visual-note",
+                          "domain":  "browser-render.png",
+                          "canonical_concept":  null,
+                          "extension":  ".png",
+                          "size_bytes":  14716,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.css-descendants.png",
+                          "path":  "knowledge/visual-notes/css-descendants.png",
+                          "content_type":  "visual-note",
+                          "domain":  "css-descendants.png",
+                          "canonical_concept":  null,
+                          "extension":  ".png",
+                          "size_bytes":  150822,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.display-type.png",
+                          "path":  "knowledge/visual-notes/display-type.png",
+                          "content_type":  "visual-note",
+                          "domain":  "display-type.png",
+                          "canonical_concept":  null,
+                          "extension":  ".png",
+                          "size_bytes":  28804,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.event-loop.png",
+                          "path":  "knowledge/visual-notes/event-loop.png",
+                          "content_type":  "visual-note",
+                          "domain":  "event-loop.png",
+                          "canonical_concept":  null,
+                          "extension":  ".png",
+                          "size_bytes":  102654,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.event-loop-gif.gif",
+                          "path":  "knowledge/visual-notes/event-loop-gif.gif",
+                          "content_type":  "visual-note",
+                          "domain":  "event-loop-gif.gif",
+                          "canonical_concept":  null,
+                          "extension":  ".gif",
+                          "size_bytes":  1022322,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.express-flow.png",
+                          "path":  "knowledge/visual-notes/express-flow.png",
+                          "content_type":  "visual-note",
+                          "domain":  "express-flow.png",
+                          "canonical_concept":  null,
+                          "extension":  ".png",
+                          "size_bytes":  22190,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.flexbox.png",
+                          "path":  "knowledge/visual-notes/flexbox.png",
+                          "content_type":  "visual-note",
+                          "domain":  "flexbox.png",
+                          "canonical_concept":  null,
+                          "extension":  ".png",
+                          "size_bytes":  413820,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.flex-direction.png",
+                          "path":  "knowledge/visual-notes/flex-direction.png",
+                          "content_type":  "visual-note",
+                          "domain":  "flex-direction.png",
+                          "canonical_concept":  null,
+                          "extension":  ".png",
+                          "size_bytes":  44692,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.grid.png",
+                          "path":  "knowledge/visual-notes/grid.png",
+                          "content_type":  "visual-note",
+                          "domain":  "grid.png",
+                          "canonical_concept":  null,
+                          "extension":  ".png",
+                          "size_bytes":  410121,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.leetcode.leetcode-1.jpeg",
+                          "path":  "knowledge/visual-notes/leetcode/LeetCode-1.jpeg",
+                          "content_type":  "visual-note",
+                          "domain":  "leetcode",
+                          "canonical_concept":  null,
+                          "extension":  ".jpeg",
+                          "size_bytes":  102825,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.leetcode.leetcode-2.jpeg",
+                          "path":  "knowledge/visual-notes/leetcode/LeetCode-2.jpeg",
+                          "content_type":  "visual-note",
+                          "domain":  "leetcode",
+                          "canonical_concept":  null,
+                          "extension":  ".jpeg",
+                          "size_bytes":  108047,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.leetcode.leetcode-3.jpeg",
+                          "path":  "knowledge/visual-notes/leetcode/LeetCode-3.jpeg",
+                          "content_type":  "visual-note",
+                          "domain":  "leetcode",
+                          "canonical_concept":  null,
+                          "extension":  ".jpeg",
+                          "size_bytes":  76177,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.leetcode.leetcode-4.jpeg",
+                          "path":  "knowledge/visual-notes/leetcode/LeetCode-4.jpeg",
+                          "content_type":  "visual-note",
+                          "domain":  "leetcode",
+                          "canonical_concept":  null,
+                          "extension":  ".jpeg",
+                          "size_bytes":  105616,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.leetcode.leetcode-5.jpeg",
+                          "path":  "knowledge/visual-notes/leetcode/LeetCode-5.jpeg",
+                          "content_type":  "visual-note",
+                          "domain":  "leetcode",
+                          "canonical_concept":  null,
+                          "extension":  ".jpeg",
+                          "size_bytes":  115848,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.leetcode.leetcode-6.jpeg",
+                          "path":  "knowledge/visual-notes/leetcode/LeetCode-6.jpeg",
+                          "content_type":  "visual-note",
+                          "domain":  "leetcode",
+                          "canonical_concept":  null,
+                          "extension":  ".jpeg",
+                          "size_bytes":  90010,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.logical-property.png",
+                          "path":  "knowledge/visual-notes/logical-property.png",
+                          "content_type":  "visual-note",
+                          "domain":  "logical-property.png",
+                          "canonical_concept":  null,
+                          "extension":  ".png",
+                          "size_bytes":  70809,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.media.png",
+                          "path":  "knowledge/visual-notes/media.png",
+                          "content_type":  "visual-note",
+                          "domain":  "media.png",
+                          "canonical_concept":  null,
+                          "extension":  ".png",
+                          "size_bytes":  39650,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.networking.networking-1.jpeg",
+                          "path":  "knowledge/visual-notes/networking/Networking-1.jpeg",
+                          "content_type":  "visual-note",
+                          "domain":  "networking",
+                          "canonical_concept":  null,
+                          "extension":  ".jpeg",
+                          "size_bytes":  171662,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.networking.networking-2.jpeg",
+                          "path":  "knowledge/visual-notes/networking/Networking-2.jpeg",
+                          "content_type":  "visual-note",
+                          "domain":  "networking",
+                          "canonical_concept":  null,
+                          "extension":  ".jpeg",
+                          "size_bytes":  153971,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.nodejs.png",
+                          "path":  "knowledge/visual-notes/nodejs.png",
+                          "content_type":  "visual-note",
+                          "domain":  "nodejs.png",
+                          "canonical_concept":  null,
+                          "extension":  ".png",
+                          "size_bytes":  399856,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.nodejs-at-and-rt.png",
+                          "path":  "knowledge/visual-notes/nodejs-at-and-rt.png",
+                          "content_type":  "visual-note",
+                          "domain":  "nodejs-at-and-rt.png",
+                          "canonical_concept":  null,
+                          "extension":  ".png",
+                          "size_bytes":  105426,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.nodejs-authorization-flow.png",
+                          "path":  "knowledge/visual-notes/nodejs-authorization-flow.png",
+                          "content_type":  "visual-note",
+                          "domain":  "nodejs-authorization-flow.png",
+                          "canonical_concept":  null,
+                          "extension":  ".png",
+                          "size_bytes":  585175,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.nodejs-csrftoken.png",
+                          "path":  "knowledge/visual-notes/nodejs-csrftoken.png",
+                          "content_type":  "visual-note",
+                          "domain":  "nodejs-csrftoken.png",
+                          "canonical_concept":  null,
+                          "extension":  ".png",
+                          "size_bytes":  124681,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.nodejs-eventloop.png",
+                          "path":  "knowledge/visual-notes/nodejs-eventloop.png",
+                          "content_type":  "visual-note",
+                          "domain":  "nodejs-eventloop.png",
+                          "canonical_concept":  null,
+                          "extension":  ".png",
+                          "size_bytes":  151182,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.nodejs-event-loop-phase.png",
+                          "path":  "knowledge/visual-notes/nodejs-event-loop-phase.png",
+                          "content_type":  "visual-note",
+                          "domain":  "nodejs-event-loop-phase.png",
+                          "canonical_concept":  null,
+                          "extension":  ".png",
+                          "size_bytes":  3187553,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.nodejs-streams-buffer.png",
+                          "path":  "knowledge/visual-notes/nodejs-streams-buffer.png",
+                          "content_type":  "visual-note",
+                          "domain":  "nodejs-streams-buffer.png",
+                          "canonical_concept":  null,
+                          "extension":  ".png",
+                          "size_bytes":  27967,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.positioning.jpg",
+                          "path":  "knowledge/visual-notes/positioning.jpg",
+                          "content_type":  "visual-note",
+                          "domain":  "positioning.jpg",
+                          "canonical_concept":  null,
+                          "extension":  ".jpg",
+                          "size_bytes":  186594,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.pseudo-elements.png",
+                          "path":  "knowledge/visual-notes/pseudo-elements.png",
+                          "content_type":  "visual-note",
+                          "domain":  "pseudo-elements.png",
+                          "canonical_concept":  null,
+                          "extension":  ".png",
+                          "size_bytes":  17511,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.rxjs-maps.png",
+                          "path":  "knowledge/visual-notes/rxjs-maps.png",
+                          "content_type":  "visual-note",
+                          "domain":  "rxjs-maps.png",
+                          "canonical_concept":  null,
+                          "extension":  ".png",
+                          "size_bytes":  64749,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.semantic.png",
+                          "path":  "knowledge/visual-notes/semantic.png",
+                          "content_type":  "visual-note",
+                          "domain":  "semantic.png",
+                          "canonical_concept":  null,
+                          "extension":  ".png",
+                          "size_bytes":  238557,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.sql.sql_query_1.jpeg",
+                          "path":  "knowledge/visual-notes/sql/SQL_Query_1.jpeg",
+                          "content_type":  "visual-note",
+                          "domain":  "sql",
+                          "canonical_concept":  null,
+                          "extension":  ".jpeg",
+                          "size_bytes":  182663,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.sql.sql_query_10.jpeg",
+                          "path":  "knowledge/visual-notes/sql/SQL_Query_10.jpeg",
+                          "content_type":  "visual-note",
+                          "domain":  "sql",
+                          "canonical_concept":  null,
+                          "extension":  ".jpeg",
+                          "size_bytes":  158534,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.sql.sql_query_11.jpeg",
+                          "path":  "knowledge/visual-notes/sql/SQL_Query_11.jpeg",
+                          "content_type":  "visual-note",
+                          "domain":  "sql",
+                          "canonical_concept":  null,
+                          "extension":  ".jpeg",
+                          "size_bytes":  183593,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.sql.sql_query_2.jpeg",
+                          "path":  "knowledge/visual-notes/sql/SQL_Query_2.jpeg",
+                          "content_type":  "visual-note",
+                          "domain":  "sql",
+                          "canonical_concept":  null,
+                          "extension":  ".jpeg",
+                          "size_bytes":  132714,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.sql.sql_query_3.jpeg",
+                          "path":  "knowledge/visual-notes/sql/SQL_Query_3.jpeg",
+                          "content_type":  "visual-note",
+                          "domain":  "sql",
+                          "canonical_concept":  null,
+                          "extension":  ".jpeg",
+                          "size_bytes":  147875,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.sql.sql_query_4.jpeg",
+                          "path":  "knowledge/visual-notes/sql/SQL_Query_4.jpeg",
+                          "content_type":  "visual-note",
+                          "domain":  "sql",
+                          "canonical_concept":  null,
+                          "extension":  ".jpeg",
+                          "size_bytes":  195781,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.sql.sql_query_5.jpeg",
+                          "path":  "knowledge/visual-notes/sql/SQL_Query_5.jpeg",
+                          "content_type":  "visual-note",
+                          "domain":  "sql",
+                          "canonical_concept":  null,
+                          "extension":  ".jpeg",
+                          "size_bytes":  175000,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.sql.sql_query_6.jpeg",
+                          "path":  "knowledge/visual-notes/sql/SQL_Query_6.jpeg",
+                          "content_type":  "visual-note",
+                          "domain":  "sql",
+                          "canonical_concept":  null,
+                          "extension":  ".jpeg",
+                          "size_bytes":  153189,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.sql.sql_query_7.jpeg",
+                          "path":  "knowledge/visual-notes/sql/SQL_Query_7.jpeg",
+                          "content_type":  "visual-note",
+                          "domain":  "sql",
+                          "canonical_concept":  null,
+                          "extension":  ".jpeg",
+                          "size_bytes":  163681,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.sql.sql_query_8.jpeg",
+                          "path":  "knowledge/visual-notes/sql/SQL_Query_8.jpeg",
+                          "content_type":  "visual-note",
+                          "domain":  "sql",
+                          "canonical_concept":  null,
+                          "extension":  ".jpeg",
+                          "size_bytes":  167523,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.sql.sql_query_9.jpeg",
+                          "path":  "knowledge/visual-notes/sql/SQL_Query_9.jpeg",
+                          "content_type":  "visual-note",
+                          "domain":  "sql",
+                          "canonical_concept":  null,
+                          "extension":  ".jpeg",
+                          "size_bytes":  173509,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "knowledge.visual-notes.units.png",
+                          "path":  "knowledge/visual-notes/units.png",
+                          "content_type":  "visual-note",
+                          "domain":  "units.png",
+                          "canonical_concept":  null,
+                          "extension":  ".png",
+                          "size_bytes":  120273,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "practice.coding.01-javascript-coding.md",
+                          "path":  "practice/coding/01-javascript-coding.md",
+                          "content_type":  "practice",
+                          "domain":  "coding",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  14989,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "practice.coding.02-css-coding.md",
+                          "path":  "practice/coding/02-css-coding.md",
+                          "content_type":  "practice",
+                          "domain":  "coding",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  9149,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "practice.coding.03-angular-coding.md",
+                          "path":  "practice/coding/03-angular-coding.md",
+                          "content_type":  "practice",
+                          "domain":  "coding",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  22646,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "practice.coding.java.01-core-java-coding.md",
+                          "path":  "practice/coding/java/01-core-java-coding.md",
+                          "content_type":  "practice",
+                          "domain":  "coding",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  17258,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "practice.coding.java.01-java-coding.md",
+                          "path":  "practice/coding/java/01-Java-coding.md",
+                          "content_type":  "practice",
+                          "domain":  "coding",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  9712,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "practice.coding.sql.02-mysql-coding.md",
+                          "path":  "practice/coding/sql/02-MySQL-coding.md",
+                          "content_type":  "practice",
+                          "domain":  "coding",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  3413,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "projects.readme.md",
+                          "path":  "projects/README.md",
+                          "content_type":  "project",
+                          "domain":  "general",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  589,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "roadmap.architecture.readme.backup.md",
+                          "path":  "roadmap/architecture/README.backup.md",
+                          "content_type":  "roadmap",
+                          "domain":  "architecture",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  331,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "roadmap.architecture.readme.md",
+                          "path":  "roadmap/architecture/README.md",
+                          "content_type":  "roadmap",
+                          "domain":  "architecture",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  191,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "roadmap.backend.readme.backup.md",
+                          "path":  "roadmap/backend/README.backup.md",
+                          "content_type":  "roadmap",
+                          "domain":  "backend",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  243,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "roadmap.backend.readme.md",
+                          "path":  "roadmap/backend/README.md",
+                          "content_type":  "roadmap",
+                          "domain":  "backend",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  327,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "roadmap.cloud.readme.backup.md",
+                          "path":  "roadmap/cloud/README.backup.md",
+                          "content_type":  "roadmap",
+                          "domain":  "cloud",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  302,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "roadmap.cloud.readme.md",
+                          "path":  "roadmap/cloud/README.md",
+                          "content_type":  "roadmap",
+                          "domain":  "cloud",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  302,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "roadmap.database.readme.backup.md",
+                          "path":  "roadmap/database/README.backup.md",
+                          "content_type":  "roadmap",
+                          "domain":  "database",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  275,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "roadmap.database.readme.md",
+                          "path":  "roadmap/database/README.md",
+                          "content_type":  "roadmap",
+                          "domain":  "database",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  201,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "roadmap.devops.readme.backup.md",
+                          "path":  "roadmap/devops/README.backup.md",
+                          "content_type":  "roadmap",
+                          "domain":  "devops",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  244,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "roadmap.devops.readme.md",
+                          "path":  "roadmap/devops/README.md",
+                          "content_type":  "roadmap",
+                          "domain":  "devops",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  291,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "roadmap.foundations.readme.backup.md",
+                          "path":  "roadmap/foundations/README.backup.md",
+                          "content_type":  "roadmap",
+                          "domain":  "foundations",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  324,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "roadmap.foundations.readme.md",
+                          "path":  "roadmap/foundations/README.md",
+                          "content_type":  "roadmap",
+                          "domain":  "foundations",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  544,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "roadmap.frontend.readme.backup.md",
+                          "path":  "roadmap/frontend/README.backup.md",
+                          "content_type":  "roadmap",
+                          "domain":  "frontend",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  255,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "roadmap.frontend.readme.md",
+                          "path":  "roadmap/frontend/README.md",
+                          "content_type":  "roadmap",
+                          "domain":  "frontend",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  417,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "roadmap.networking.readme.backup.md",
+                          "path":  "roadmap/networking/README.backup.md",
+                          "content_type":  "roadmap",
+                          "domain":  "networking",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  264,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "roadmap.networking.readme.md",
+                          "path":  "roadmap/networking/README.md",
+                          "content_type":  "roadmap",
+                          "domain":  "networking",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  264,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "roadmap.readme.backup.md",
+                          "path":  "roadmap/README.backup.md",
+                          "content_type":  "roadmap",
+                          "domain":  "README.backup.md",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  519,
+                          "source_of_truth":  false
+                      },
+                      {
+                          "id":  "roadmap.readme.md",
+                          "path":  "roadmap/README.md",
+                          "content_type":  "roadmap",
+                          "domain":  "README.md",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  711,
+                          "source_of_truth":  false
+                      }
+                  ]
+}
