@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.1",
+  "repository": "Tech-Mastery-Hub",
+  "generated_at": "2026-09-27T18:28:48.921Z",
+  "source_schema": "ai/schemas/repository.yml",
+  "indexing_rules": [
+    "Exclude .git, _migration, ai/knowledge-index, templates, and canonical candidate metadata from indexed learning content.",
+    "Canonical concept pages are the reusable technical knowledge source of truth.",
+    "canonical_concept identifies the primary canonical owner of a document when applicable.",
+    "related_concepts identifies approved evidence-based relationships to canonical concepts.",
+    "Resource relationships are approved from repository evidence and validated against existing files.",
+    "Concept-to-concept relationships are maintained separately and require explicit evidence.",
+    "Do not infer relationships from filename similarity alone.",
+    "Do not index backup files, reports, templates, or migration copies as learning resources."
+  ],
+  "documents": []
+}

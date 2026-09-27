@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Tech-Mastery-Hub Visual Plan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "visual_required",
+    "selection_reason",
+    "source_preference"
+  ],
+  "properties": {
+    "visual_required": {
+      "type": "boolean"
+    },
+    "selection_reason": {
+      "type": "string"
+    },
+    "source_preference": {
+      "type": "string",
+      "enum": [
+        "repository_first",
+        "structured_first",
+        "generated"
+      ]
+    },
+    "preferred_type": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "repository_visual",
+        "structured_diagram",
+        "architecture",
+        "flow",
+        "timeline",
+        "comparison",
+        "lifecycle",
+        "data_flow",
+        "execution_flow",
+        "generated_illustration",
+        null
+      ]
+    }
+  }
+}

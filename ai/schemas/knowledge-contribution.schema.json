@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Tech-Mastery-Hub Knowledge Contribution",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "change_type",
+    "input_source",
+    "target_path",
+    "validation_required",
+    "human_approval_required"
+  ],
+  "properties": {
+    "change_type": {
+      "type": "string",
+      "enum": [
+        "new_concept",
+        "concept_update",
+        "interview",
+        "practice",
+        "visual_note",
+        "masterclass",
+        "resource",
+        "architecture",
+        "instruction",
+        "schema",
+        "workflow"
+      ]
+    },
+    "input_source": {
+      "type": "string",
+      "enum": [
+        "user",
+        "repository",
+        "external"
+      ]
+    },
+    "target_path": {
+      "type": "string",
+      "minLength": 1
+    },
+    "affected_concepts": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "security_status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "passed",
+        "failed",
+        "escalated"
+      ]
+    },
+    "validation_required": {
+      "type": "boolean"
+    },
+    "human_approval_required": {
+      "type": "boolean"
+    },
+    "risk_class": {
+      "type": "string",
+      "enum": [
+        "knowledge",
+        "protected_configuration"
+      ]
+    }
+  }
+}

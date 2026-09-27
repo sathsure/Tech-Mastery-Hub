@@ -1,0 +1,20 @@
+repository:
+  name: Tech-Mastery-Hub
+  purpose: Developer learning and mastery knowledge hub
+  source_of_truth: knowledge/concepts
+
+content_types:
+  - roadmap
+  - concept
+  - masterclass
+  - visual-note
+  - interview
+  - practice
+  - project
+  - resource
+
+ai:
+  enabled: planned
+  retrieval: planned
+  vision: planned
+  repository_updates: human-approval-required

@@ -1,0 +1,18 @@
+{
+  "sessionId": "product-completion-1790532940086",
+  "topic": "typescript",
+  "canonicalConcept": "typescript",
+  "learningMode": "learn",
+  "depth": "intermediate",
+  "completedSections": [
+    "explanation"
+  ],
+  "practiceAttempts": [],
+  "assessmentAttempts": [],
+  "mastery": "practicing",
+  "repositoryGap": false,
+  "provenance": [
+    "repository:knowledge/concepts/typescript/README.md",
+    "repository:interview/frontend/04-TypeScript.md"
+  ]
+}

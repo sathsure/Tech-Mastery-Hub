@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Tech-Mastery-Hub Visual Response",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "required",
+    "visual_type",
+    "source"
+  ],
+  "properties": {
+    "required": {
+      "type": "boolean"
+    },
+    "visual_type": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "repository_visual",
+        "structured_diagram",
+        "architecture",
+        "flow",
+        "timeline",
+        "comparison",
+        "lifecycle",
+        "data_flow",
+        "execution_flow",
+        "generated_illustration",
+        null
+      ]
+    },
+    "source": {
+      "type": "string",
+      "enum": [
+        "repository",
+        "structured",
+        "generated",
+        "none"
+      ]
+    },
+    "repository_path": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "title": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "alt_text": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "description": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "diagram_source": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "generation_prompt": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "persistent_candidate": {
+      "type": "boolean"
+    }
+  }
+}

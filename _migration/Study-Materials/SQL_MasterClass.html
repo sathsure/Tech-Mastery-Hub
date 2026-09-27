@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL Masterclass</title>
+    <!-- Reveal.js CSS for Animations and Slide formatting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reset.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/simple.min.css">
+    
+    <style>
+        /* Custom Presentation Styling */
+        .reveal { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+        .reveal h1, .reveal h2, .reveal h3 { font-weight: 700; text-transform: none; color: #1a365d; text-align: left; }
+        .reveal h2 { font-size: 1.6em; border-bottom: 3px solid #3182ce; padding-bottom: 10px; display: inline-block; margin-bottom: 30px; }
+        
+        /* Strict 50/50 Split Layout */
+        .split-layout {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            height: 65vh;
+            width: 100%;
+            gap: 20px;
+        }
+        
+        /* Left Column: Content (Max 50%) */
+        .left-col {
+            width: 50%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: left;
+            font-size: 0.65em;
+            line-height: 1.5;
+        }
+        
+        .left-col ul { margin-left: 20px; padding-left: 0; }
+        .left-col li { margin-bottom: 15px; }
+        .highlight { color: #e53e3e; font-weight: bold; }
+        .code-inline { background: #edf2f7; padding: 2px 6px; border-radius: 4px; font-family: monospace; color: #c53030;}
+        
+        /* Right Column: Images & Diagrams (Max 50%) */
+        .right-col {
+            width: 50%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f7fafc;
+            border-radius: 12px;
+            padding: 10px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.06);
+            box-sizing: border-box;
+        }
+
+        /* The rule that strictly prevents image cut-off */
+        .right-col img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain; /* Forces image to scale without clipping */
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        /* Custom HTML/CSS Diagrams (To replace broken web images) */
+        .css-diagram { display: flex; flex-direction: column; align-items: center; width: 100%; font-size: 0.5em; gap: 10px; }
+        .box { background: white; border: 2px solid #3182ce; padding: 15px; border-radius: 8px; width: 80%; text-align: center; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.1);}
+        .arrow { font-size: 2em; color: #718096; margin: -5px 0; }
+        
+        .grid-diagram { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
+        .grid-diagram .box { width: auto; font-size: 0.9em; padding: 10px;}
+        
+        pre { width: 100%; background: #2d3748; color: #e2e8f0; padding: 15px; border-radius: 8px; font-size: 0.9em; overflow-x: hidden;}
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- Slide 1: Title -->
+            <section>
+                <h1 style="text-align: center; font-size: 2.5em;">SQL Masterclass</h1>
+                <p style="text-align: center; color: #4a5568;">From Foundational Engine Architecture to Advanced Execution Strategies</p>
+            </section>
+
+            <!-- Slide 2 -->
+            <section>
+                <h2>1. What is SQL & RDBMS?</h2>
+                <div class="split-layout">
+                    <div class="left-col">
+                        <ul>
+                            <li><strong>SQL</strong> communicates with a Relational Database Management System (RDBMS).</li>
+                            <li><strong>The Relational Model:</strong> Data is normalized into logical Tables (Entities) consisting of Rows (Records) and Columns (Attributes).</li>
+                            <li><strong>Primary Keys (PK):</strong> A unique, non-null identifier for a row (e.g., <span class="code-inline">User_ID</span>).</li>
+                            <li><strong>Foreign Keys (FK):</strong> A column linking to the PK of another table. This enforces <em>Referential Integrity</em> (e.g., you can't create an order for a non-existent user).</li>
+                        </ul>
+                    </div>
+                    <div class="right-col">
+                        <div class="css-diagram">
+                            <div class="box" style="border-color: #38a169;">Users Table (PK: User_ID)</div>
+                            <div class="arrow">&darr; 1 to Many &darr;</div>
+                            <div class="box" style="border-color: #3182ce;">Orders Table (FK: User_ID)</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 3 -->
+            <section>
+                <h2>2. Inside the Engine Pipeline</h2>
+                <div class="split-layout">
+                    <div class="left-col">
+                        <ul>
+                            <li>Your query doesn't go straight to the hard drive. It passes through a complex pipeline.</li>
+                            <li><strong>1. The Parser:</strong> Validates syntax (spelling) and semantics (checks the data dictionary to ensure tables/columns actually exist).</li>
+                            <li><strong>2. The Optimizer:</strong> The "brain". It calculates possible execution paths and chooses the lowest "cost" plan based on CPU/memory statistics.</li>
+                            <li><strong>3. The Executor:</strong> Follows the plan, requests physical data blocks from the Storage Engine, and streams the result.</li>
+                        </ul>
+                    </div>
+                    <div class="right-col">
+                        <div class="css-diagram">
+                            <div class="box">SQL Query Text</div>
+                            <div class="arrow">&darr;</div>
+                            <div class="box">Parser (Syntax Check)</div>
+                            <div class="arrow">&darr;</div>
+                            <div class="box" style="background: #ebf8ff;">Optimizer (Cost Math)</div>
+                            <div class="arrow">&darr;</div>
+                            <div class="box">Executor (Data Retrieval)</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 4 -->
+            <section>
+                <h2>3. The 1,000 Record Problem</h2>
+                <div class="split-layout">
+                    <div class="left-col">
+                        <ul>
+                            <li><strong>Full Table Scan (No Index):</strong> Imagine searching a 1,000 record table. The engine reads every row sequentially. Even if it finds the match at row 500, it continues to row 1,000 checking for duplicates. This is an <strong>O(N) operation</strong>.</li>
+                            <li><strong>Index Seek (With Index):</strong> An Index builds a highly optimized structure storing sorted IDs with a pointer to the disk location.</li>
+                            <li>Searching for ID 500 navigates a tree: Is 500 > 500? No. > 250? Yes. It finds the row in ~10 operations (Log2 of 1000). This <strong>O(log N) operation</strong> scales instantly.</li>
+                        </ul>
+                    </div>
+                    <div class="right-col">
+                        <div class="css-diagram" style="flex-direction: row; gap: 20px;">
+                            <div class="box" style="background: #fed7d7;">Full Scan<br>O(N)<br>1000 Reads</div>
+                            <div class="box" style="background: #c6f6d5;">Index Seek<br>O(log N)<br>~10 Reads</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 5 -->
+            <section>
+                <h2>4. Deep Dive: B-Tree Indexes</h2>
+                <div class="split-layout">
+                    <div class="left-col">
+                        <ul>
+                            <li>Relational databases use a <strong>B-Tree (Balanced Tree)</strong> for log N search times.</li>
+                            <li><strong>Clustered Index:</strong> Dictates the physical sorting of the table on the hard disk. The "leaf" nodes contain the actual row data.</li>
+                            <li><strong>Non-Clustered Index:</strong> A separate structure. The leaf nodes contain a pointer reference back to the Clustered Index to fetch the full row.</li>
+                            <li><strong>The Trade-off:</strong> Indexes massively speed up <span class="code-inline">SELECT</span>, but slow down <span class="code-inline">INSERT/UPDATE</span> because the tree must be constantly re-balanced.</li>
+                        </ul>
+                    </div>
+                    <div class="right-col">
+                        <div class="css-diagram">
+                            <div class="box" style="width: 40%">Root Node (1-1000)</div>
+                            <div style="display: flex; gap: 20px; width: 100%; justify-content: center; margin-top: 10px;">
+                                <div class="box" style="width: 30%">1-500</div>
+                                <div class="box" style="width: 30%">501-1000</div>
+                            </div>
+                            <div style="display: flex; gap: 5px; width: 100%; justify-content: center; margin-top: 10px;">
+                                <div class="box" style="width: 20%; background: #e2e8f0;">Leaf (Data)</div>
+                                <div class="box" style="width: 20%; background: #e2e8f0;">Leaf (Data)</div>
+                                <div class="box" style="width: 20%; background: #e2e8f0;">Leaf (Data)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 6 -->
+            <section>
+                <h2>5. Logical Order of Execution</h2>
+                <div class="split-layout">
+                    <div class="left-col">
+                        <p>You write SQL starting with SELECT, but the engine reads it differently. <strong>This is the #1 debugging secret.</strong></p>
+                        <ol>
+                            <li><strong>FROM / JOIN:</strong> Gathers and merges base tables.</li>
+                            <li><strong>WHERE:</strong> Filters raw data. (You cannot use SELECT aliases here yet!).</li>
+                            <li><strong>GROUP BY:</strong> Aggregates data into buckets.</li>
+                            <li><strong>HAVING:</strong> Filters the aggregated buckets.</li>
+                            <li><strong>SELECT:</strong> Chooses columns and calculates math.</li>
+                            <li><strong>ORDER BY / LIMIT:</strong> Sorts and restricts output.</li>
+                        </ol>
+                    </div>
+                    <div class="right-col">
+                        <div class="css-diagram">
+                            <div class="box">1. FROM</div>
+                            <div class="box">2. WHERE</div>
+                            <div class="box">3. GROUP BY / HAVING</div>
+                            <div class="box" style="background:#bee3f8;">4. SELECT</div>
+                            <div class="box">5. ORDER BY</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 7 -->
+            <section>
+                <h2>6. Category: Select & Filter</h2>
+                <div class="split-layout">
+                    <div class="left-col">
+                        <ul>
+                            <li><strong>LIKE operator dangers:</strong> Using a wildcard at the start (<span class="code-inline">LIKE '%son'</span>) forces a full table scan because the B-Tree index cannot search backwards.</li>
+                            <li><strong>IN vs OR:</strong> <span class="code-inline">IN (1, 2)</span> is internally converted to a binary search if indexed, making it much faster than chaining <span class="code-inline">OR</span> conditions.</li>
+                            <li><strong>DISTINCT:</strong> Involves an expensive SORT/HASH operation. Never use it as a band-aid for bad joins creating duplicates.</li>
+                        </ul>
+                    </div>
+                    <div class="right-col">
+                        <!-- Strict bounding box ensures no cut off -->
+                        <img src="50596.jpg" alt="Select and Filter">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 8 -->
+            <section>
+                <h2>7. Interview Trap: WHERE vs HAVING</h2>
+                <div class="split-layout">
+                    <div class="left-col">
+                        <p><strong>The Trap:</strong> Candidates often just say "HAVING is for GROUP BY." This doesn't demonstrate engine knowledge.</p>
+                        <p><strong>The Expert Answer:</strong> Both filter data, but at completely different pipeline stages.</p>
+                        <ul>
+                            <li><strong>WHERE</strong> filters individual raw rows <em>before</em> any grouping happens. Indexes can be used here.</li>
+                            <li><strong>HAVING</strong> filters aggregated buckets of data <em>after</em> the GROUP BY math is calculated. Indexes cannot be used here.</li>
+                        </ul>
+                    </div>
+                    <div class="right-col">
+<pre><code>-- WHERE filters the raw rows
+SELECT department, SUM(sales)
+FROM employee_sales
+WHERE year = 2024 
+
+-- GROUP BY collapses the rows
+GROUP BY department
+
+-- HAVING filters the total buckets
+HAVING SUM(sales) > 100000;</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 9 -->
+            <section>
+                <h2>8. Category: Joins</h2>
+                <div class="split-layout">
+                    <div class="left-col">
+                        <ul>
+                            <li>Joins mathematically combine sets of data by calculating a Cartesian Product and filtering it via the <span class="code-inline">ON</span> clause.</li>
+                            <li><strong>INNER JOIN:</strong> Returns only the intersection. Data must exist in both tables.</li>
+                            <li><strong>LEFT JOIN:</strong> Retains all rows from the driving (left) table. Crucial for finding missing records by looking for NULLs on the right.</li>
+                            <li><strong>FULL OUTER:</strong> Returns all rows from both tables, placing NULLs where there is no match.</li>
+                        </ul>
+                    </div>
+                    <div class="right-col">
+                        <img src="50597.jpg" alt="Joins">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 10 -->
+            <section>
+                <h2>9. Deep Dive: Join Algorithms</h2>
+                <div class="split-layout">
+                    <div class="left-col">
+                        <p>When you write a JOIN, the engine physically executes it using one of three algorithms:</p>
+                        <ul>
+                            <li><strong>Nested Loop:</strong> For every row in Table A, scan Table B. Fast only if Table A is very small and Table B is indexed.</li>
+                            <li><strong>Hash Match:</strong> Hashes the smaller table into memory buckets, then scans the larger table to probe them. High memory usage, but fast for unsorted datasets.</li>
+                            <li><strong>Merge Join:</strong> Both inputs are sorted on the join key. The engine simply zips them together. Highly efficient.</li>
+                        </ul>
+                    </div>
+                    <div class="right-col">
+                        <div class="grid-diagram">
+                            <div class="box" style="background: #ebf8ff;">Nested Loop<br><span style="font-size:0.8em; font-weight:normal;">Row-by-row iteration</span></div>
+                            <div class="box" style="background: #f0fff4;">Merge Join<br><span style="font-size:0.8em; font-weight:normal;">Sorted Zipping</span></div>
+                            <div class="box" style="grid-column: span 2; background: #faf5ff;">Hash Match<br><span style="font-size:0.8em; font-weight:normal;">Memory Hash Buckets (Heavy lifting)</span></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 11 -->
+            <section>
+                <h2>10. Interview Trap: The Self Join</h2>
+                <div class="split-layout">
+                    <div class="left-col">
+                        <p><strong>The Question:</strong> "You have an Employee table with emp_id, name, and manager_id. Return a list of employees alongside their manager's name."</p>
+                        <p><strong>The Trap:</strong> Beginners get confused because there is only one table. How do you join a table to itself without a loop?</p>
+                        <p><strong>The Expert Answer:</strong> Use a Self Join by leveraging Table Aliases. You instruct the engine to treat the single table as if it were two separate, independent tables.</p>
+                    </div>
+                    <div class="right-col">
+<pre><code>SELECT 
+  e.name AS Employee, 
+  m.name AS Manager 
+FROM Employees e 
+
+-- Join the table to itself
+LEFT JOIN Employees m 
+  ON e.manager_id = m.emp_id;
+  
+-- Use LEFT JOIN so the CEO 
+-- (no manager) isn't dropped.</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 12 -->
+            <section>
+                <h2>11. Category: Aggregation & Grouping</h2>
+                <div class="split-layout">
+                    <div class="left-col">
+                        <ul>
+                            <li><strong>GROUP BY Mechanics:</strong> The engine sorts the data based on your grouping columns, creating isolated "buckets", then applies math (SUM, AVG) to each.</li>
+                            <li><strong>COUNT(*) vs COUNT(col):</strong> <span class="code-inline">COUNT(*)</span> counts the physical rows (including NULLs). <span class="code-inline">COUNT(col)</span> counts actual values, ignoring NULLs in that column.</li>
+                            <li><strong>ROLLUP & CUBE:</strong> Automatically generate subtotals and grand totals in a single pass over the data.</li>
+                        </ul>
+                    </div>
+                    <div class="right-col">
+                        <img src="50598.jpg" alt="Aggregation and Grouping">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 13 -->
+            <section>
+                <h2>12. Category: Window Functions</h2>
+                <div class="split-layout">
+                    <div class="left-col">
+                        <ul>
+                            <li>Window functions perform calculations across related rows <em>without</em> collapsing them into a single summary row.</li>
+                            <li><strong>OVER():</strong> Defines the context "window". If left empty, the window is the entire result set.</li>
+                            <li><strong>PARTITION BY:</strong> Resets the calculation for every unique value (e.g., Restarting a sales rank at 1 for each new Region).</li>
+                            <li><strong>ORDER BY (Inside OVER):</strong> Dictates the sorting within the partition. Essential for functions like <span class="code-inline">LAG</span>.</li>
+                        </ul>
+                    </div>
+                    <div class="right-col">
+                        <img src="50599.jpg" alt="Window Functions">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 14 -->
+            <section>
+                <h2>13. Interview Trap: Ranking Functions</h2>
+                <div class="split-layout">
+                    <div class="left-col">
+                        <p><strong>The Question:</strong> "What is the difference between ROW_NUMBER(), RANK(), and DENSE_RANK()?"</p>
+                        <p><strong>The Expert Answer:</strong> It is all about how they handle "Ties" (identical values).</p>
+                        <ul>
+                            <li><strong>ROW_NUMBER():</strong> Assigns a unique integer (1, 2, 3, 4). Breaks ties arbitrarily.</li>
+                            <li><strong>RANK():</strong> Assigns the same rank to ties, but <em>skips</em> the next numbers. (1, 2, 2, 4). Use for Olympic medals.</li>
+                            <li><strong>DENSE_RANK():</strong> Assigns the same rank to ties, but <em>does not skip</em>. (1, 2, 2, 3). Use for "Top 3 highest paid".</li>
+                        </ul>
+                    </div>
+                    <div class="right-col">
+                        <div class="css-diagram" style="align-items: flex-start; text-align: left; padding: 20px;">
+                            <p><strong>Data:</strong> 100, 100, 50</p>
+                            <p><span class="highlight">ROW_NUMBER:</span> 1, 2, 3</p>
+                            <p><span class="highlight">RANK:</span> 1, 1, 3</p>
+                            <p><span class="highlight">DENSE_RANK:</span> 1, 1, 2</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 15 -->
+            <section>
+                <h2>14. Category: Subqueries</h2>
+                <div class="split-layout">
+                    <div class="left-col">
+                        <ul>
+                            <li>A subquery is a query nested inside another query.</li>
+                            <li><strong>Scalar Subquery:</strong> Returns exactly one value. Used in mathematical comparisons (e.g., <span class="code-inline">> (SELECT AVG(salary)...)</span>).</li>
+                            <li><strong>List Subquery:</strong> Returns a single column of multiple rows. Paired with <span class="code-inline">IN</span>.</li>
+                            <li><strong>EXISTS:</strong> Highly optimized boolean check. It stops scanning the moment it finds a single true match, unlike IN which forces evaluation of the whole list.</li>
+                        </ul>
+                    </div>
+                    <div class="right-col">
+                        <img src="50600.jpg" alt="Subqueries">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 16 -->
+            <section>
+                <h2>15. Deep Dive: Correlated Subqueries</h2>
+                <div class="split-layout">
+                    <div class="left-col">
+                        <p><strong>Uncorrelated:</strong> Independent. The engine runs the inner query exactly once, and passes the result to the outer query. Very Fast.</p>
+                        <p><strong>Correlated (PERFORMANCE KILLER):</strong> The inner query references a column from the outer query. The engine is forced to execute the inner query <em>once for every single row</em> in the outer query.</p>
+                        <p><strong>The Fix:</strong> Correlated subqueries on large tables will freeze a database. Rewrite them as a JOIN or Window Function.</p>
+                    </div>
+                    <div class="right-col">
+                        <div class="css-diagram">
+                            <div class="box" style="background:#fed7d7;">Correlated (Looping)<br><span style="font-size:0.8em; font-weight:normal;">Outer Row 1 &rarr; Runs Inner<br>Outer Row 2 &rarr; Runs Inner<br>O(N * M) Complexity</span></div>
+                            <div class="box" style="background:#c6f6d5;">Uncorrelated (Linear)<br><span style="font-size:0.8em; font-weight:normal;">Runs Inner Once &rarr; Passes List &rarr; Runs Outer<br>O(N + M) Complexity</span></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 17 -->
+            <section>
+                <h2>16. Category: Data Shaping</h2>
+                <div class="split-layout">
+                    <div class="left-col">
+                        <ul>
+                            <li>SQL is a powerful engine for applying business logic on the fly.</li>
+                            <li><strong>CASE WHEN:</strong> The SQL equivalent of IF/ELSE. Evaluated sequentially—the first condition to resolve to TRUE wins, subsequent conditions are ignored.</li>
+                            <li><strong>COALESCE:</strong> Returns the first non-null value in a list. Critical for handling missing data mathematically without lengthy CASE statements.</li>
+                            <li><strong>CAST vs CONVERT:</strong> Convert data types. CAST is ANSI-standard. CONVERT allows specific string formatting (SQL Server).</li>
+                        </ul>
+                    </div>
+                    <div class="right-col">
+                        <img src="50601.jpg" alt="Data Shaping">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 18 -->
+            <section>
+                <h2>17. Category: CTEs & Set Operations</h2>
+                <div class="split-layout">
+                    <div class="left-col">
+                        <ul>
+                            <li><strong>CTEs (WITH clause):</strong> Acts as a virtual, temporary view that exists only during query execution. Vastly improves readability over nested subqueries.</li>
+                            <li><strong>Recursive CTEs:</strong> A CTE that references itself, used heavily for walking hierarchical tree data (like Org Charts).</li>
+                            <li><strong>VIEWS:</strong> A saved query definition. It does not store physical data; it executes the script dynamically when queried.</li>
+                        </ul>
+                    </div>
+                    <div class="right-col">
+                        <img src="50602.jpg" alt="CTEs and Sets">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 19 -->
+            <section>
+                <h2>18. Interview Trap: UNION vs UNION ALL</h2>
+                <div class="split-layout">
+                    <div class="left-col">
+                        <p><strong>The Question:</strong> "What is the difference between UNION and UNION ALL? Which is faster?"</p>
+                        <p><strong>The Trap:</strong> Candidates know UNION removes duplicates, but fail to explain the mechanical performance penalty.</p>
+                        <p><strong>The Expert Answer:</strong> <span class="code-inline">UNION ALL</span> blindly stacks the datasets vertically. It is extremely fast. <span class="code-inline">UNION</span> must remove duplicates, forcing the engine to perform a massive, memory-intensive SORT/HASH over the entire dataset. Always default to UNION ALL.</p>
+                    </div>
+                    <div class="right-col">
+                        <div class="css-diagram">
+                            <div class="box" style="background:#c6f6d5;">UNION ALL<br>Instant vertical stacking</div>
+                            <div class="box" style="background:#fed7d7;">UNION<br>Stack + Expensive HASH Sort</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 20 -->
+            <section>
+                <h2>19. Category: Data Quality</h2>
+                <div class="split-layout">
+                    <div class="left-col">
+                        <ul>
+                            <li>Real-world databases are messy. Data profiling is mandatory.</li>
+                            <li><strong>Duplicate Checking:</strong> Usually done by grouping on natural keys and using <span class="code-inline">HAVING COUNT(*) > 1</span>.</li>
+                            <li><strong>Handling NULLs:</strong> NULL is not zero or an empty string. It is "unknown". Any math with NULL results in NULL. You must use <span class="code-inline">IS NULL</span>, not <span class="code-inline">= NULL</span>.</li>
+                            <li><strong>IS DISTINCT FROM:</strong> Safely compares two columns that might contain NULLs, avoiding UNKNOWN evaluations.</li>
+                        </ul>
+                    </div>
+                    <div class="right-col">
+                        <img src="50603.jpg" alt="Data Quality">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 21 -->
+            <section>
+                <h2>20. Category: Date & Time</h2>
+                <div class="split-layout">
+                    <div class="left-col">
+                        <ul>
+                            <li>Time-series analysis relies heavily on Date functions.</li>
+                            <li><strong>DATE_TRUNC():</strong> Useful for time-series charts. It "rounds down" a timestamp to the nearest month, week, or day.</li>
+                            <li><strong>EXTRACT():</strong> Pulls a specific integer component (like the Year or Month) out of a timestamp for grouping logic.</li>
+                            <li><strong>DATEDIFF():</strong> Calculates the mathematical delta between two dates. Crucial for SLA or churn metrics.</li>
+                        </ul>
+                    </div>
+                    <div class="right-col">
+                        <img src="50604.jpg" alt="Date and Time">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 22 -->
+            <section>
+                <h2>21. Category: Strings & Math</h2>
+                <div class="split-layout">
+                    <div class="left-col">
+                        <ul>
+                            <li>Functions used for cleaning messy user input and standardizing output.</li>
+                            <li><strong>TRIM():</strong> Removes leading/trailing whitespace. Essential when joining on string columns with hidden spaces.</li>
+                            <li><strong>LOWER() / UPPER():</strong> Forces case consistency. Use when filtering strings to prevent missing case-sensitive matches.</li>
+                            <li><strong>CEIL() / FLOOR():</strong> Rounds up to the next integer, or drops the decimal completely (pagination, bucket sizing).</li>
+                        </ul>
+                    </div>
+                    <div class="right-col">
+                        <img src="50605.jpg" alt="Strings and Math">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 23 -->
+            <section>
+                <h2>22. Server Objects: Stored Procedures</h2>
+                <div class="split-layout">
+                    <div class="left-col">
+                        <ul>
+                            <li><strong>Pre-compiled Logic:</strong> Procedures are blocks of SQL saved on the server. Because they are compiled, the DB caches their Execution Plan, making them faster for repeated tasks.</li>
+                            <li><strong>Procedural Flow:</strong> They support variables, loops (WHILE), IF/ELSE statements, and data modification.</li>
+                            <li><strong>Security:</strong> Instead of granting users direct access to tables, grant execute permissions on a procedure, abstracting the schema.</li>
+                        </ul>
+                    </div>
+                    <div class="right-col">
+                        <div class="css-diagram">
+                            <div class="box">Application Call (Parameters)</div>
+                            <div class="arrow">&darr;</div>
+                            <div class="box" style="background:#e2e8f0;">Stored Procedure (Cached Plan)</div>
+                            <div class="arrow">&darr;</div>
+                            <div class="grid-diagram">
+                                <div class="box" style="border-color:#38a169;">Update Tables</div>
+                                <div class="box" style="border-color:#3182ce;">Return Dataset</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 24 -->
+            <section>
+                <h2>23. App Integration: Java JDBC</h2>
+                <div class="split-layout">
+                    <div class="left-col">
+                        <p>How a Java backend calls a Stored Procedure using JDBC.</p>
+                        <ul>
+                            <li><strong>CallableStatement:</strong> The interface used to execute procedures. It prevents SQL Injection via parameterization.</li>
+                            <li><strong>Performance:</strong> Sending a single <span class="code-inline">{call sp_name}</span> command reduces network payload compared to sending massive raw SQL strings over the wire.</li>
+                        </ul>
+                    </div>
+                    <div class="right-col">
+<pre><code>// 1. Connect & Prepare
+Connection conn = DriverManager
+  .getConnection(dbUrl, user, pass); 
+
+CallableStatement stmt = conn
+  .prepareCall("{call sp_GetEmp(?)}"); 
+
+// 2. Set Parameter & Execute
+stmt.setInt(1, 101); // Employee ID
+ResultSet rs = stmt.executeQuery();
+
+while(rs.next()) {
+  System.out.println(rs.getString("Name"));
+}</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 25 -->
+            <section>
+                <h2>24. Deep Dive: ACID Transactions</h2>
+                <div class="split-layout">
+                    <div class="left-col">
+                        <p>How databases ensure data integrity during crashes and concurrent updates.</p>
+                        <ul>
+                            <li><strong>Atomicity:</strong> "All or nothing." If a bank transfer (Update A, then Update B) fails midway, the entire transaction rolls back.</li>
+                            <li><strong>Consistency:</strong> Data must always abide by defined constraints before and after the transaction.</li>
+                            <li><strong>Isolation:</strong> Concurrent transactions do not interfere (using Row Locks).</li>
+                            <li><strong>Durability:</strong> Once a COMMIT is issued, the change is written to non-volatile disk.</li>
+                        </ul>
+                    </div>
+                    <div class="right-col">
+                        <div class="grid-diagram" style="gap: 20px;">
+                            <div class="box" style="background:#fed7d7; border-color:#e53e3e;"><strong>A</strong>tomicity<br><span style="font-size:0.7em; font-weight:normal;">All or Nothing</span></div>
+                            <div class="box" style="background:#bee3f8; border-color:#3182ce;"><strong>C</strong>onsistency<br><span style="font-size:0.7em; font-weight:normal;">Valid State</span></div>
+                            <div class="box" style="background:#c6f6d5; border-color:#38a169;"><strong>I</strong>solation<br><span style="font-size:0.7em; font-weight:normal;">Row Locking</span></div>
+                            <div class="box" style="background:#fefcbf; border-color:#d69e2e;"><strong>D</strong>urability<br><span style="font-size:0.7em; font-weight:normal;">Saved to Disk</span></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Initialization -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: true,
+            transition: 'slide' // Animations!
+        });
+    </script>
+</body>
+</html>

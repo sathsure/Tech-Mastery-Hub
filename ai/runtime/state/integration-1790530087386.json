@@ -1,0 +1,34 @@
+{
+  "sessionId": "integration-1790530087386",
+  "topic": "typescript",
+  "canonicalConcept": "typescript",
+  "learningMode": "learn",
+  "depth": "basic",
+  "completedSections": [
+    "explanation",
+    "demonstration",
+    "practice"
+  ],
+  "practiceAttempts": [
+    {
+      "prompt": "Explain or apply typescript with focus on Type Inference.",
+      "answer": "TypeScript infers types from initialization and expressions",
+      "correct": true,
+      "sourcePath": "knowledge/concepts/typescript/README.md"
+    }
+  ],
+  "assessmentAttempts": [
+    {
+      "question": "What is an important aspect of typescript related to Type Inference?",
+      "answer": "banana",
+      "correct": false,
+      "sourcePath": "knowledge/concepts/typescript/README.md"
+    }
+  ],
+  "mastery": "assessing",
+  "repositoryGap": false,
+  "provenance": [
+    "repository:knowledge/concepts/typescript/README.md",
+    "repository:interview/frontend/04-TypeScript.md"
+  ]
+}

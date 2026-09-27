@@ -1,0 +1,42 @@
+{
+  "sessionId": "product-completion-1790533649047",
+  "topic": "typescript",
+  "canonicalConcept": "typescript",
+  "learningMode": "learn",
+  "depth": "intermediate",
+  "completedSections": [
+    "explanation",
+    "visual",
+    "demonstration",
+    "practice",
+    "assessment"
+  ],
+  "practiceAttempts": [
+    {
+      "prompt": "Explain or apply typescript with focus on Type Inference.",
+      "answer": "# TypeScript\n## Definition\nTypeScript adds a static type system to JavaScript. The repository material focuses heavily on type inference, object modeling, generics, mapped types, and utility types.\n## Core Concepts\n### Type Inference\nTypeScript can infer types from initialization and function return expressions.\nlet s = \"hello\"; // string\nlet n = 123;     // number\nlet b = true;    // boolean\nThe source recommends allowing inference where it is clear and adding annotations where they improve clarity, such as function parameters and exported APIs.\n### `type` vs `interface`\n| Capability | `interface` | `type` |",
+      "correct": true,
+      "sourcePath": "knowledge/concepts/typescript/README.md"
+    }
+  ],
+  "assessmentAttempts": [
+    {
+      "question": "What is an important aspect of typescript related to Type Inference?",
+      "answer": "This answer is intentionally incorrect and unrelated.",
+      "correct": false,
+      "sourcePath": "knowledge/concepts/typescript/README.md"
+    },
+    {
+      "question": "What is an important aspect of typescript related to Type Inference?",
+      "answer": "# TypeScript\n## Definition\nTypeScript adds a static type system to JavaScript. The repository material focuses heavily on type inference, object modeling, generics, mapped types, and utility types.\n## Core Concepts\n### Type Inference\nTypeScript can infer types from initialization and function return expressions.\nlet s = \"hello\"; // string\nlet n = 123;     // number\nlet b = true;    // boolean\nThe source recommends allowing inference where it is clear and adding annotations where they improve clarity, such as function parameters and exported APIs.\n### `type` vs `interface`\n| Capability | `interface` | `type` |",
+      "correct": true,
+      "sourcePath": "knowledge/concepts/typescript/README.md"
+    }
+  ],
+  "mastery": "complete",
+  "repositoryGap": false,
+  "provenance": [
+    "repository:knowledge/concepts/typescript/README.md",
+    "repository:interview/frontend/04-TypeScript.md"
+  ]
+}
