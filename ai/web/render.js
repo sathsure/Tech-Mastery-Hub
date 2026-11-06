@@ -37,9 +37,9 @@ function enhanceCode(root, { final }) {
       holder.className = "diagram";
       if (final) {
         holder.dataset.mermaid = text;
-        holder.innerHTML = `<div class="diagram-loading">${icon("share")} Drawing diagram…</div>`;
+        holder.innerHTML = `<div class="diagram-loading">Loading diagram</div>`;
       } else {
-        holder.innerHTML = `<div class="diagram-loading">${icon("share")} Diagram will render when the answer finishes…</div>`;
+        holder.innerHTML = `<div class="diagram-loading">Diagram appears when the answer is complete</div>`;
       }
       pre.replaceWith(holder);
       continue;
@@ -86,7 +86,7 @@ function enhanceGenerated(root) {
   if (!heading) return false;
   const box = document.createElement("section");
   box.className = "beyond";
-  box.innerHTML = `<div class="beyond-head">${icon("sparkles")}<strong>Beyond your notes</strong><span>AI-generated — not from your repository. Verify before relying on it.</span></div>`;
+  box.innerHTML = `<div class="beyond-head">${icon("info")}<strong>Not from your notes</strong><span>General knowledge. Check before relying on it.</span></div>`;
   const body = document.createElement("div");
   body.className = "beyond-body";
   let next = heading.nextSibling;
@@ -115,11 +115,6 @@ function enhanceChecklists(root, checks) {
       item.classList.add("task");
       item.classList.toggle("done", box.checked);
     }
-    const done = items.filter(item => item.querySelector("input")?.checked).length;
-    const progress = document.createElement("div");
-    progress.className = "task-progress";
-    progress.innerHTML = `<div class="bar"><i style="width:${Math.round((done / items.length) * 100)}%"></i></div><span>${done}/${items.length} done</span>`;
-    list.before(progress);
   }
 }
 
@@ -192,24 +187,10 @@ function loadMermaid() {
       mermaid.initialize({
         startOnLoad: false,
         securityLevel: "strict",
-        theme: "base",
-        fontFamily: "var(--font-sans)",
-        themeVariables: {
-          darkMode: true,
-          background: "#0b1020",
-          primaryColor: "#122036",
-          primaryTextColor: "#e6edf7",
-          primaryBorderColor: "#38bdf8",
-          secondaryColor: "#1c1633",
-          secondaryBorderColor: "#a78bfa",
-          tertiaryColor: "#0f1a2b",
-          lineColor: "#64748b",
-          edgeLabelBackground: "#0b1020",
-          clusterBkg: "#0d1426",
-          clusterBorder: "#334155",
-          textColor: "#cbd5e1",
-          fontSize: "14px",
-        },
+        // Diagrams sit on a white card in both themes, like figures in documentation.
+        theme: "neutral",
+        fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif",
+        themeVariables: { fontSize: "14px" },
       });
       resolve(mermaid);
     };
@@ -235,7 +216,7 @@ export async function renderDiagrams(root) {
     delete holder.dataset.mermaid;
     try {
       const { svg } = await mermaid.render(`diagram-${++diagramCount}`, source);
-      holder.innerHTML = `<div class="diagram-svg">${svg}</div><figcaption>${icon("share")} Diagram</figcaption>`;
+      holder.innerHTML = `<div class="diagram-svg">${svg}</div>`;
     } catch {
       holder.innerHTML = `<div class="diagram-error">${icon("alert")} This diagram could not be drawn. Source:</div><pre><code>${escapeHtml(source)}</code></pre>`;
     }

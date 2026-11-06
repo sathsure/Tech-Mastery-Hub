@@ -42,7 +42,8 @@ export function buildRoadmapEntry(path: string, content: string, lookups: Lookup
     question: title,
     prompt: null,
     answer,
-    summary: summarize(answer),
+    // Role roadmaps open with the role's one-line description; study paths and index pages need no summary.
+    summary: isRole ? summarize(answer) : "",
     codeBlocks: [],
     visuals: [],
     contentType: "roadmap",
