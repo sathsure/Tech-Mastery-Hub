@@ -7,7 +7,7 @@ import { resolve } from "node:path";
 import type { AddressInfo } from "node:net";
 import { ClaudeAnswerModel, createAnswerModel, type AnswerModel, type AnswerModelEvent, type AnswerModelInput } from "./answer-model.js";
 import { renderUserTurn, SYSTEM_PROMPT } from "./answer-prompt.js";
-import { chatAllowed, createTutorApiServer, hostAllowed, validateChatRequest } from "./api-server.js";
+import { chatAllowed, clientAddress, createTutorApiServer, hostAllowed, validateChatRequest } from "./api-server.js";
 import { GENERATED_HEADING, type ChatEvent, type ChatRequest, type Evidence } from "./chat-contracts.js";
 import { buildEvidence, checkGrounding } from "./chat-evidence.js";
 import { runChat } from "./chat-service.js";
@@ -248,6 +248,9 @@ await check("security: host check, no open CORS, rate limit, history caps", asyn
   assert.equal(hostAllowed("127.0.0.1:8787"), true);
   assert.equal(hostAllowed("localhost"), true);
   assert.equal(hostAllowed("evil.example:8787"), false, "DNS-rebinding hosts are refused");
+  const proxied = { headers: { "x-forwarded-for": "203.0.113.7, 10.0.0.1" }, socket: { remoteAddress: "10.0.0.1" } } as unknown as Parameters<typeof clientAddress>[0];
+  assert.equal(clientAddress(proxied, true), "203.0.113.7", "behind a proxy, limits apply per visitor");
+  assert.equal(clientAddress(proxied, false), "10.0.0.1", "without TUTOR_TRUST_PROXY the header is ignored (it can be forged)");
   const now = 1_000_000;
   const client = `test-${Math.random()}`;
   let allowed = 0;

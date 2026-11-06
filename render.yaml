@@ -1,0 +1,30 @@
+# Render Blueprint: the Tech-Mastery-Hub AI Tutor as one free web service.
+# Render dashboard → New → Blueprint → pick this repository → Apply.
+services:
+  - type: web
+    name: tech-mastery-hub-tutor
+    runtime: node
+    plan: free
+    # The server reads the notes from the whole repository, so build from the repo root.
+    buildCommand: cd ai/runtime && npm ci && npm run build
+    startCommand: cd ai/runtime && npm run api
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      # Listen on all interfaces; Render supplies the port in PORT.
+      - key: TUTOR_HOST
+        value: 0.0.0.0
+      # Free to run: answers come straight from the notes. To use Claude, change this to
+      # "claude" and add ANTHROPIC_API_KEY as a secret in the dashboard (usage is billed to that key).
+      - key: TUTOR_ANSWER_MODE
+        value: repository
+      # Rate-limit per visitor using Render's X-Forwarded-For header.
+      - key: TUTOR_TRUST_PROXY
+        value: "1"
+      - key: TUTOR_CHAT_RATE_LIMIT
+        value: "20"
+      # Public deployment: turn off the older /tutor endpoint (it writes a file per session).
+      - key: TUTOR_PUBLIC
+        value: "1"

@@ -15,6 +15,23 @@ Set `ANTHROPIC_API_KEY` to have Claude write the answers from your notes. Withou
 answers straight from the notes (no model, no cost). See `ai/runtime/src/answer-model.ts` for
 `TUTOR_ANSWER_MODE`, `TUTOR_CLAUDE_MODEL` and `TUTOR_CLAUDE_EFFORT`.
 
+## Put it online for free (Render)
+
+The repository includes a [`render.yaml`](../../render.yaml) Blueprint for Render's free plan.
+
+1. Sign in at [render.com](https://render.com) with GitHub.
+2. **New → Blueprint**, choose `sathsure/Tech-Mastery-Hub` and the branch to deploy, then **Apply**.
+3. When the build finishes, open the `https://tech-mastery-hub-tutor.onrender.com` link Render shows
+   (the exact name may differ if it's taken).
+
+Free-plan behaviour: the service sleeps after 15 minutes without visitors, and the next visit takes
+about a minute to wake it. It runs in notes-only mode, so it costs nothing. To use Claude, set
+`TUTOR_ANSWER_MODE=claude` and add `ANTHROPIC_API_KEY` as a secret in the Render dashboard; every
+answer is then billed to that key, and anyone with the link can use it (20 chats per minute each).
+
+Public deployments set `TUTOR_PUBLIC=1` (turns off the older `/tutor` endpoint) and
+`TUTOR_TRUST_PROXY=1` (rate limits per visitor). See `render.yaml`.
+
 ## What's in it
 
 - Streaming answers with citation chips `[n]` linked to source cards and a "How it connects" map
