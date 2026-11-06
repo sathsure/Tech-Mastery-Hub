@@ -13,6 +13,12 @@ A comprehensive, step-by-step roadmap for a Full-Stack Developer. Covers modern 
 - [Cloud](cloud/README.md)
 - [Networking](networking/README.md)
 
+## Study paths and role roadmaps (generated drafts)
+
+- [Where to start: learning tracks](topics/README.md)
+- [Role roadmaps](roles/README.md)
+- [Content gaps report](../scripts/reports/content-gaps.md)
+
 ## Projects
 
 - [Project Suggestions](../projects/README.md)

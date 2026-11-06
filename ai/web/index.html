@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="theme-color" content="#070a12" />
+  <title>Tech-Mastery-Hub · AI Tutor</title>
+  <link rel="icon" href="/app/icon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/app/styles.css" />
+  <script type="module" src="/app/app.js"></script>
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <linearGradient id="brand-gradient" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#22d3ee" /><stop offset="55%" stop-color="#818cf8" /><stop offset="100%" stop-color="#e879f9" />
+      </linearGradient>
+    </defs>
+    <symbol id="i-logo" viewBox="0 0 32 32"><path d="M16 2.5 27.7 9.25v13.5L16 29.5 4.3 22.75V9.25z" fill="none" stroke="url(#brand-gradient)" stroke-width="2"/><circle cx="16" cy="11" r="2.2" fill="#22d3ee"/><circle cx="10.5" cy="19" r="2.2" fill="#818cf8"/><circle cx="21.5" cy="19" r="2.2" fill="#e879f9"/><path d="M16 11 10.5 19h11z" fill="none" stroke="url(#brand-gradient)" stroke-width="1.4" opacity=".8"/></symbol>
+    <symbol id="i-send" viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></symbol>
+    <symbol id="i-stop" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/></symbol>
+    <symbol id="i-sparkles" viewBox="0 0 24 24"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 3v4M17 5h4"/></symbol>
+    <symbol id="i-briefcase" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M3 13h18"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 2 10 5-10 5L2 7z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></symbol>
+    <symbol id="i-terminal" viewBox="0 0 24 24"><path d="m4 17 6-6-6-6"/><path d="M12 19h8"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+    <symbol id="i-panel" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M15 3v18"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></symbol>
+    <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></symbol>
+    <symbol id="i-compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5z"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></symbol>
+    <symbol id="i-zap" viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9z"/></symbol>
+    <symbol id="i-share" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></symbol>
+    <symbol id="i-message" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
+    <symbol id="i-shuffle" viewBox="0 0 24 24"><path d="M16 3h5v5"/><path d="M4 20 21 3"/><path d="M21 16v5h-5"/><path d="M15 15l6 6"/><path d="M4 4l5 5"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+    <symbol id="i-filter" viewBox="0 0 24 24"><path d="M3 4h18l-7 8v6l-4 2v-8z"/></symbol>
+    <symbol id="i-code" viewBox="0 0 24 24"><path d="m16 18 6-6-6-6M8 6l-6 6 6 6"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
+    <symbol id="i-cpu" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/></symbol>
+    <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></symbol>
+  </svg>
+
+  <div class="backdrop" aria-hidden="true"><div class="grid"></div><div class="glow glow-a"></div><div class="glow glow-b"></div></div>
+
+  <div class="shell" id="shell">
+    <aside class="sidebar" id="sidebar" aria-label="Navigation">
+      <div class="brand">
+        <svg class="brand-logo" aria-hidden="true"><use href="#i-logo"></use></svg>
+        <div class="brand-text"><strong>Tech-Mastery-Hub</strong><span>AI Tutor</span></div>
+        <button class="icon-btn only-mobile" type="button" data-action="close-sidebar" aria-label="Close menu"><svg class="icon"><use href="#i-x"></use></svg></button>
+      </div>
+
+      <button class="new-chat" type="button" data-action="new-chat">
+        <svg class="icon"><use href="#i-plus"></use></svg><span>New chat</span><kbd>Ctrl ⇧ O</kbd>
+      </button>
+      <button class="search-trigger" type="button" data-action="palette">
+        <svg class="icon"><use href="#i-search"></use></svg><span>Search your notes</span><kbd>Ctrl K</kbd>
+      </button>
+
+      <nav class="side-scroll">
+        <section class="side-section">
+          <h2>Learning topics</h2>
+          <ul class="topic-list" id="topic-list"><li class="skeleton"></li><li class="skeleton"></li><li class="skeleton"></li></ul>
+        </section>
+        <section class="side-section">
+          <h2>Career atlas</h2>
+          <ul class="topic-list" id="atlas-list"></ul>
+        </section>
+        <section class="side-section">
+          <h2>Recent chats</h2>
+          <ul class="recent-list" id="recent-list"></ul>
+        </section>
+      </nav>
+
+      <footer class="side-foot" id="side-foot">
+        <span class="engine" id="engine"><i class="dot"></i><span>Connecting…</span></span>
+      </footer>
+    </aside>
+
+    <main class="chat" id="chat">
+      <header class="topbar">
+        <button class="icon-btn only-mobile" type="button" data-action="open-sidebar" aria-label="Open menu"><svg class="icon"><use href="#i-menu"></use></svg></button>
+        <div class="topbar-title"><h1 id="chat-title">New chat</h1><span id="chat-subtitle">Answers come from your notes first, with every source cited</span></div>
+        <div class="topbar-actions">
+          <button class="icon-btn" type="button" data-action="export" title="Download chat as Markdown" aria-label="Download chat"><svg class="icon"><use href="#i-download"></use></svg></button>
+          <button class="icon-btn" type="button" data-action="toggle-sources" title="Sources panel" aria-label="Toggle sources panel"><svg class="icon"><use href="#i-panel"></use></svg></button>
+        </div>
+      </header>
+
+      <section class="thread" id="thread" aria-label="Conversation"></section>
+
+      <form class="composer" id="composer" autocomplete="off">
+        <div class="slash-menu" id="slash-menu" role="listbox" hidden></div>
+        <div class="composer-box">
+          <textarea id="input" rows="1" placeholder="Ask anything — a concept, an interview question, a role, a bug…" aria-label="Message"></textarea>
+          <div class="composer-bar">
+            <div class="composer-tools">
+              <button class="tool-btn" type="button" data-action="slash" title="Commands"><span class="slash">/</span>Commands</button>
+              <label class="topic-filter" title="Limit answers to one topic">
+                <svg class="icon"><use href="#i-filter"></use></svg>
+                <select id="topic-filter" aria-label="Topic filter"><option value="">All notes</option></select>
+              </label>
+            </div>
+            <div class="composer-send">
+              <span class="hint">Enter to send · Shift+Enter for a new line</span>
+              <button class="send-btn" id="send" type="submit" aria-label="Send"><svg class="icon"><use href="#i-send"></use></svg></button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </main>
+
+    <aside class="sources" id="sources" aria-label="Sources">
+      <header class="sources-head">
+        <div><h2>Sources</h2><span id="sources-sub">Ask a question to see where the answer comes from</span></div>
+        <button class="icon-btn" type="button" data-action="toggle-sources" aria-label="Close sources"><svg class="icon"><use href="#i-x"></use></svg></button>
+      </header>
+      <div class="sources-scroll">
+        <div class="map-card" id="map-card" hidden>
+          <div class="map-title"><svg class="icon"><use href="#i-share"></use></svg>How it connects</div>
+          <div id="map"></div>
+          <div class="map-legend"><span class="lg k-question">Interview Q</span><span class="lg k-follow">Follow-up</span><span class="lg k-role">Role</span><span class="lg k-term">Term</span><span class="lg k-note">Note</span><span class="lg k-roadmap">Roadmap</span></div>
+        </div>
+        <div class="source-cards" id="source-cards">
+          <div class="sources-empty">
+            <svg class="icon"><use href="#i-shield"></use></svg>
+            <p>Every answer lists the notes it used. Click a source to read it in full.</p>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <div class="overlay" id="viewer" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="viewer-title">
+      <header class="modal-head">
+        <div class="modal-meta" id="viewer-meta"></div>
+        <button class="icon-btn" type="button" data-action="close-overlay" aria-label="Close"><svg class="icon"><use href="#i-x"></use></svg></button>
+      </header>
+      <h2 id="viewer-title"></h2>
+      <div class="modal-body md" id="viewer-body"></div>
+      <footer class="modal-foot" id="viewer-foot"></footer>
+    </div>
+  </div>
+
+  <div class="overlay" id="palette" hidden>
+    <div class="palette" role="dialog" aria-modal="true" aria-label="Search your notes">
+      <div class="palette-input"><svg class="icon"><use href="#i-search"></use></svg><input id="palette-input" placeholder="Search 1,200+ questions, roles and terms…" aria-label="Search notes" /><kbd>Esc</kbd></div>
+      <div class="palette-meta" id="palette-meta"></div>
+      <ul class="palette-results" id="palette-results" role="listbox"></ul>
+      <footer class="palette-foot"><span><kbd>↑</kbd><kbd>↓</kbd> move</span><span><kbd>Enter</kbd> ask the tutor</span><span><kbd>Ctrl</kbd>+<kbd>Enter</kbd> read the source</span></footer>
+    </div>
+  </div>
+
+  <div class="overlay lightbox" id="lightbox" hidden><img alt="" id="lightbox-img" /><button class="icon-btn" type="button" data-action="close-overlay" aria-label="Close"><svg class="icon"><use href="#i-x"></use></svg></button></div>
+  <div class="toasts" id="toasts" aria-live="polite"></div>
+</body>
+</html>

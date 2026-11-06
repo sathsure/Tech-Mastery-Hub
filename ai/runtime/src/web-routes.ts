@@ -1,0 +1,169 @@
+/**
+ * Serves the chat web app (ai/web) and the small read-only endpoints it needs:
+ *   GET /                 the app
+ *   GET /app/<file>       app scripts and styles
+ *   GET /vendor/<name>    browser libraries from node_modules (fixed list)
+ *   GET /catalog          topics, Atlas sections and role families for the sidebar
+ *   GET /entry?id=...     one full source entry for the source viewer
+ */
+import type { IncomingMessage, ServerResponse } from "node:http";
+import { readFile } from "node:fs/promises";
+import { dirname, extname, isAbsolute, relative, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+import { rewriteImages, visualUrl } from "./chat-evidence.js";
+import { createAnswerModel } from "./answer-model.js";
+import { loadQuestionIndex } from "./question-index.js";
+import { REPOSITORY_ROOT } from "./question-indexer.js";
+import { TOPIC_LABELS } from "./topic-labels.js";
+
+const RUNTIME_DIR = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+const WEB_DIR = resolve(REPOSITORY_ROOT, "ai/web");
+const VENDOR: Record<string, string> = {
+  "marked.js": "marked/lib/marked.esm.js",
+  "purify.js": "dompurify/dist/purify.es.mjs",
+  "highlight.js": "@highlightjs/cdn-assets/es/highlight.min.js",
+  "mermaid.js": "mermaid/dist/mermaid.min.js",
+};
+const TYPES: Record<string, string> = {
+  ".html": "text/html; charset=utf-8",
+  ".js": "text/javascript; charset=utf-8",
+  ".mjs": "text/javascript; charset=utf-8",
+  ".css": "text/css; charset=utf-8",
+  ".svg": "image/svg+xml",
+  ".png": "image/png",
+  ".webmanifest": "application/manifest+json",
+};
+/** Scripts only from this server; inline styles are needed by Mermaid's SVG output. */
+const CSP = [
+  "default-src 'self'",
+  "script-src 'self'",
+  "style-src 'self' 'unsafe-inline'",
+  "img-src 'self' data: https:",
+  "connect-src 'self'",
+  "font-src 'self' data:",
+  "object-src 'none'",
+  "base-uri 'none'",
+  "frame-ancestors 'none'",
+].join("; ");
+
+export { TOPIC_LABELS };
+const ATLAS_TOPICS = ["roadmaps", "it-roles", "it-terminology", "tech-stack", "it-careers"];
+
+function sendFile(response: ServerResponse, status: number, body: Buffer | string, type: string, cache: string): void {
+  const headers: Record<string, string> = { "content-type": type, "cache-control": cache, "x-content-type-options": "nosniff", "referrer-policy": "no-referrer" };
+  if (type.startsWith("text/html")) headers["content-security-policy"] = CSP;
+  response.writeHead(status, headers);
+  response.end(body);
+}
+
+function sendJson(response: ServerResponse, status: number, payload: unknown): void {
+  sendFile(response, status, JSON.stringify(payload), "application/json; charset=utf-8", "no-cache");
+}
+
+/** Resolves `name` inside `root`, or null when it would leave it. */
+function inside(root: string, name: string): string | null {
+  const target = resolve(root, name);
+  const path = relative(root, target);
+  return !path || path.startsWith("..") || isAbsolute(path) ? null : target;
+}
+
+async function serveStatic(response: ServerResponse, file: string | null, cache: string): Promise<void> {
+  const type = file ? TYPES[extname(file).toLowerCase()] : undefined;
+  if (!file || !type) return sendJson(response, 404, { error: { code: "NOT_FOUND", message: "Not found." } });
+  try {
+    sendFile(response, 200, await readFile(file), type, cache);
+  } catch {
+    sendJson(response, 404, { error: { code: "NOT_FOUND", message: "Not found." } });
+  }
+}
+
+export async function buildCatalog() {
+  const index = await loadQuestionIndex();
+  const counts = new Map<string, number>();
+  const samples = new Map<string, string[]>();
+  for (const entry of index.entries) {
+    for (const topic of entry.topics) {
+      counts.set(topic, (counts.get(topic) ?? 0) + 1);
+      if (entry.kind === "question" && (samples.get(topic)?.length ?? 0) < 3) samples.set(topic, [...(samples.get(topic) ?? []), entry.question]);
+    }
+  }
+  const families = new Map<string, string[]>();
+  for (const entry of index.entries) {
+    if (entry.kind !== "role") continue;
+    const family = entry.section[1] ?? "Other";
+    families.set(family, [...(families.get(family) ?? []), entry.question.replace(/^What does an? /, "").replace(/ do\?$/, "")]);
+  }
+  const topic = (id: string) => ({ id, label: TOPIC_LABELS[id] ?? id, count: counts.get(id) ?? 0, samples: samples.get(id) ?? [] });
+  const model = createAnswerModel();
+  return {
+    answerMode: model ? "claude" : "repository",
+    model: model?.model ?? null,
+    stats: {
+      entries: index.stats.entries,
+      questions: index.stats.questions + index.stats.followUps,
+      roles: index.stats.roles,
+      terms: index.stats.terms,
+      codeBlocks: index.stats.codeBlocks,
+      visuals: index.stats.visuals,
+    },
+    topics: [...counts.keys()].filter(id => !ATLAS_TOPICS.includes(id)).map(topic).sort((a, b) => b.count - a.count),
+    atlas: ATLAS_TOPICS.filter(id => counts.has(id)).map(topic),
+    roleFamilies: [...families.entries()].map(([family, roles]) => ({ family, roles })),
+  };
+}
+
+async function entryPayload(id: string) {
+  const index = await loadQuestionIndex();
+  const entry = index.entries.find(item => item.id === id);
+  if (!entry) return null;
+  return {
+    id: entry.id,
+    kind: entry.kind,
+    question: entry.question,
+    prompt: entry.prompt ? rewriteImages(entry.prompt, entry) : null,
+    answer: rewriteImages(entry.answer, entry),
+    section: entry.section,
+    topics: entry.topics,
+    relatedTopics: entry.relatedTopics ?? [],
+    path: entry.source.path,
+    startLine: entry.source.startLine,
+    endLine: entry.source.endLine,
+    visuals: entry.visuals.flatMap(visual => {
+      const url = visualUrl(visual);
+      return url ? [{ url, alt: visual.alt }] : [];
+    }),
+    parent: entry.parentId ? { id: entry.parentId, question: index.entries.find(item => item.id === entry.parentId)?.question ?? "" } : null,
+    followUps: index.entries.filter(item => item.parentId === entry.id).map(item => ({ id: item.id, question: item.question })),
+  };
+}
+
+/** Handles web-app routes; returns false when the request is not one of them. */
+export async function handleWebRoute(request: IncomingMessage, response: ServerResponse): Promise<boolean> {
+  if (request.method !== "GET") return false;
+  const url = new URL(request.url ?? "/", "http://localhost");
+  const path = url.pathname;
+  if (path === "/" || path === "/index.html") {
+    await serveStatic(response, resolve(WEB_DIR, "index.html"), "no-cache");
+    return true;
+  }
+  if (path.startsWith("/app/")) {
+    await serveStatic(response, inside(WEB_DIR, decodeURIComponent(path.slice("/app/".length))), "no-cache");
+    return true;
+  }
+  if (path.startsWith("/vendor/")) {
+    const target = VENDOR[path.slice("/vendor/".length)];
+    await serveStatic(response, target ? resolve(RUNTIME_DIR, "node_modules", target) : null, "public, max-age=86400");
+    return true;
+  }
+  if (path === "/catalog") {
+    sendJson(response, 200, { data: await buildCatalog() });
+    return true;
+  }
+  if (path === "/entry") {
+    const id = url.searchParams.get("id") ?? "";
+    const payload = id.length > 0 && id.length <= 400 ? await entryPayload(id) : null;
+    sendJson(response, payload ? 200 : 404, payload ? { data: payload } : { error: { code: "NOT_FOUND", message: "Entry not found." } });
+    return true;
+  }
+  return false;
+}
