@@ -40,8 +40,6 @@ export function connectionMap(evidence, labels) {
   const sourceNodes = sources.map(source => `<g class="node-source ${KIND_CLASS[source.kind] ?? ""}" data-n="${source.n}" transform="translate(${source.pos[0]} ${source.pos[1]})" tabindex="0" role="button" aria-label="Source ${source.n}: ${escapeHtml(source.question)}"><title>${escapeHtml(source.question)}</title><circle r="12"/><text text-anchor="middle" dy="4">${source.n}</text></g>`);
 
   return `<svg class="connection-map" viewBox="0 0 ${W} ${H}" role="img" aria-label="How the sources connect">
-    <defs><radialGradient id="core-glow"><stop offset="0%" stop-color="#22d3ee" stop-opacity=".55"/><stop offset="100%" stop-color="#22d3ee" stop-opacity="0"/></radialGradient></defs>
-    <circle cx="${CX}" cy="${CY}" r="34" fill="url(#core-glow)"/>
     ${edges.join("")}
     <g class="node-core" transform="translate(${CX} ${CY})"><circle r="15"/><text text-anchor="middle" dy="4">?</text></g>
     ${topicNodes.join("")}
