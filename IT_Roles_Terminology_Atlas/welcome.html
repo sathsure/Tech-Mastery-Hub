@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Tell the IT Roles & Terminology Atlas about you to get personal role, salary and career recommendations.">
+<title>Welcome · IT Atlas</title>
+<link rel="stylesheet" href="IT_Roles_Terminology_Atlas.css">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#4f46e5">
+</head>
+<body class="welcome-page">
+<main class="wl">
+  <header class="wl-top">
+    <a class="brand" href="IT_Roles_Terminology_Atlas.html"><span class="brand-mark">IT</span><span>Roles &amp; Terminology Atlas</span></a>
+    <button class="btn-link" type="button" data-skip>Skip — just browse →</button>
+  </header>
+
+  <section class="wl-card" aria-labelledby="wlTitle">
+    <div class="wl-hero">
+      <h1 id="wlTitle">Let's make this atlas about you</h1>
+      <p>Three quick steps. Your answers stay in this browser — nothing is sent anywhere.</p>
+      <ul class="wl-gets">
+        <li><span>🎯</span>Roles that fit your skills</li>
+        <li><span>₹</span>Your pay vs the market</li>
+        <li><span>🧭</span>A plan to switch roles</li>
+      </ul>
+    </div>
+
+    <ol class="wl-steps" aria-label="Progress">
+      <li data-step-dot="1" class="on"><b>1</b>About you</li>
+      <li data-step-dot="2"><b>2</b>Your skills</li>
+      <li data-step-dot="3"><b>3</b>Pay &amp; goals</li>
+    </ol>
+
+    <form id="wlForm" novalidate>
+      <fieldset data-step="1">
+        <legend class="sr-only">About you</legend>
+        <label>Your name <small>optional — shown at the top right</small><input id="wName" autocomplete="given-name" maxlength="40" placeholder="e.g. Priya"></label>
+        <label>Current role<select id="wRole" required></select></label>
+        <label>Years of experience
+          <span class="wl-exp"><input id="wExp" type="number" min="0" max="45" step="0.5" value="0" inputmode="decimal">
+            <span class="chips" id="wExpChips"></span></span>
+        </label>
+      </fieldset>
+
+      <fieldset data-step="2" hidden>
+        <legend class="sr-only">Your skills</legend>
+        <label>Add the skills you actually use <small id="wSkillCount"></small>
+          <span class="skill-add"><input id="wSkillInput" list="wSkillList" placeholder="e.g. Java, AWS, Kubernetes, SQL" autocomplete="off"><button class="btn" type="button" id="wSkillAdd">Add</button></span>
+        </label>
+        <datalist id="wSkillList"></datalist>
+        <div id="wSkills" class="my-skills"></div>
+        <div id="wSuggest" class="suggest"></div>
+      </fieldset>
+
+      <fieldset data-step="3" hidden>
+        <legend class="sr-only">Pay and goals</legend>
+        <label>Current salary (CTC, LPA) <small>optional — compared with the market, never shared</small><input id="wCtc" type="number" min="0" max="500" step="0.5" inputmode="decimal" placeholder="e.g. 12"></label>
+        <div class="wl-row">
+          <label>City<select id="wCity"></select></label>
+          <label>Company type<select id="wCompany"></select></label>
+          <label>Work mode<select id="wMode"></select></label>
+        </div>
+        <label>Role you want next <small>optional — sets up your switch plan</small><select id="wTarget"></select></label>
+      </fieldset>
+
+      <p id="wError" class="wl-error" role="alert" hidden></p>
+      <div class="wl-nav">
+        <button class="btn-ghost" type="button" id="wBack" hidden>← Back</button>
+        <button class="btn-link" type="button" data-skip>Skip for now</button>
+        <button class="btn" type="submit" id="wNext">Next →</button>
+      </div>
+    </form>
+  </section>
+  <p class="wl-foot">You can change this any time from <b>your profile</b> at the top right of the atlas.</p>
+</main>
+
+<script src="it-atlas-data.js"></script>
+<script src="welcome.js"></script>
+</body>
+</html>

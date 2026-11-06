@@ -1,3 +1,11 @@
-﻿# Database
+# Database
 
-Database topics are currently contained within the original Backend section. They will be separated during the database-content migration phase without modifying the original source.
+In the original roadmap, database topics sit inside the Backend section:
+
+### Database
+- PostgreSQL
+- Prisma ORM (schema modeling, migrations, query builder)
+
+---
+
+_Source: [`_migration/Fullstack-Roadmap/README.md`](../../_migration/Fullstack-Roadmap/README.md), lines 119–121._
