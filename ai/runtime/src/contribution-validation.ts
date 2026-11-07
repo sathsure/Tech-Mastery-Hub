@@ -44,7 +44,7 @@ const normalizeContent = (value: string): string =>
     .trim();
 
 const canonicalFromPath = (path: string): string | null => {
-  const match = path.match(/^knowledge\/concepts\/([^/]+)\/README\.md$/i);
+  const match = /^knowledge\/concepts\/([^/]+)\/README\.md$/i.exec(path);
   return match ? match[1].toLowerCase() : null;
 };
 
@@ -153,45 +153,39 @@ export async function analyzeCanonicalOwnership(
   };
 }
 
+/** The first indexed file (other than the contribution's own path) whose content equals `proposed`. */
+async function findDuplicate(
+  proposed: string,
+  ownPath: string,
+  documents: Array<{ path?: unknown }>
+): Promise<string | null> {
+  for (const entry of documents) {
+    const indexedPath = String(entry.path ?? "");
+    if (!indexedPath || indexedPath.toLowerCase() === ownPath.toLowerCase()) continue;
+    try {
+      if (normalizeContent(await readRepositoryFile(indexedPath)) === proposed) return indexedPath;
+    } catch {
+      // Unreadable or missing files cannot be duplicates; keep checking the rest.
+    }
+  }
+  return null;
+}
+
 export async function detectContributionDuplicates(
   files: ContributionFile[]
 ): Promise<DuplicateResult> {
   const index = await loadKnowledgeIndex();
-  const documents = (index as any).documents ?? [];
+  const documents: Array<{ path?: unknown }> = (index as { documents?: Array<{ path?: unknown }> }).documents ?? [];
   const findings: string[] = [];
   const duplicatePaths: string[] = [];
 
   for (const file of files) {
     const proposed = normalizeContent(file.content);
-
-    if (!proposed) {
-      continue;
-    }
-
-    for (const entry of documents) {
-      const indexedPath = String(entry.path ?? "");
-
-      if (!indexedPath) {
-        continue;
-      }
-
-      if (indexedPath.toLowerCase() === pathOf(file.path).toLowerCase()) {
-        continue;
-      }
-
-      try {
-        const existing = await readRepositoryFile(indexedPath);
-        if (normalizeContent(existing) === proposed) {
-          duplicatePaths.push(indexedPath);
-          findings.push(
-            "Contribution content duplicates existing repository file: " +
-              indexedPath
-          );
-          break;
-        }
-      } catch {
-        continue;
-      }
+    if (!proposed) continue;
+    const duplicate = await findDuplicate(proposed, pathOf(file.path), documents);
+    if (duplicate) {
+      duplicatePaths.push(duplicate);
+      findings.push("Contribution content duplicates existing repository file: " + duplicate);
     }
   }
 

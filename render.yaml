@@ -20,7 +20,10 @@ services:
       # "claude" and add ANTHROPIC_API_KEY as a secret in the dashboard (usage is billed to that key).
       - key: TUTOR_ANSWER_MODE
         value: repository
-      # Rate-limit per visitor using Render's X-Forwarded-For header.
+      # Rate-limit per visitor. Render sits behind Cloudflare, which sets these headers itself
+      # (a visitor cannot forge them). Fallback: the last X-Forwarded-For entry, added by Render's proxy.
+      - key: TUTOR_CLIENT_IP_HEADER
+        value: "true-client-ip,cf-connecting-ip"
       - key: TUTOR_TRUST_PROXY
         value: "1"
       - key: TUTOR_CHAT_RATE_LIMIT

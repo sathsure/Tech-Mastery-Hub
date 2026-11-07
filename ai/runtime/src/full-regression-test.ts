@@ -22,7 +22,7 @@ for (const check of checks) {
   process.stdout.write(`\n===== ${check} =====\n`);
 
   const result = spawnSync(
-    "npm.cmd",
+    process.platform === "win32" ? "npm.cmd" : "npm",
     ["run", check],
     {
       stdio: "inherit",

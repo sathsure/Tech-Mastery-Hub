@@ -1,5 +1,4 @@
 import type {
-  ContextSource,
   TeachingContext,
   TeachingStrategy,
   VisualPlan

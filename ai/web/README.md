@@ -30,13 +30,19 @@ about a minute to wake it. It runs in notes-only mode, so it costs nothing. To u
 answer is then billed to that key, and anyone with the link can use it (20 chats per minute each).
 
 Public deployments set `TUTOR_PUBLIC=1` (turns off the older `/tutor` endpoint) and
-`TUTOR_TRUST_PROXY=1` (rate limits per visitor). See `render.yaml`.
+`TUTOR_CLIENT_IP_HEADER=true-client-ip,cf-connecting-ip` with `TUTOR_TRUST_PROXY=1` (rate limits per visitor;
+the visitor address comes from headers the proxy sets itself, never from a value the visitor can forge). See `render.yaml`.
 
 ## What's in it
 
-- Streaming answers with citation chips `[n]` linked to source cards and a "How it connects" map
+- Streaming answers with citation chips `[n]`; each chip and the **Sources** button open the source file on GitHub
+  (`TUTOR_GITHUB_REPO`, default `sathsure/Tech-Mastery-Hub`; `TUTOR_GITHUB_BRANCH`, default `main`)
+- Topic overviews show a topic's sections first; open one to see its questions (progressive disclosure)
+- Roadmap checklists are selectable: tick topics, then **Build my learning plan** for a prerequisite-ordered sequence
+- When the notes don't cover a question, the tutor says so and links to YouTube, Udemy and official docs
+- **Back** (button, `Alt+←` or the browser's back) returns to the previous screen and scroll position
 - "Beyond your notes" callout for anything the notes don't support, plus a grounding badge per answer
-- Code highlighting with copy, tables, interactive checklists (progress is saved), Mermaid diagrams,
+- Code highlighting with copy, tables, Mermaid diagrams,
   and your own diagrams from `knowledge/visual-notes`
 - Source viewer for the full note, with follow-ups
 - `Ctrl K` search across all questions, roles and terms; `/` commands (`/interview`, `/quiz`, `/code`,
@@ -50,9 +56,8 @@ Public deployments set `TUTOR_PUBLIC=1` (turns off the older `/tutor` endpoint) 
 |---|---|
 | `index.html` | Layout and icon set |
 | `styles.css` | Theme and responsive layout |
-| `app.js` | App logic: chat, sidebar, sources, search, commands |
+| `app.js` | App logic: chat, sidebar, back navigation, learning plans, search, commands |
 | `render.js` | Markdown rendering and enhancements |
-| `graph.js` | "How it connects" map |
 | `api.js` | Calls to `/chat`, `/search`, `/catalog`, `/entry` |
 | `store.js` | Saved chats |
 

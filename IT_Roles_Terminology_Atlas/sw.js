@@ -14,7 +14,12 @@ self.addEventListener("fetch", (e) => {
   if (req.method !== "GET" || new URL(req.url).origin !== location.origin) return;
   e.respondWith(caches.open(CACHE).then(async (c) => {
     const hit = await c.match(req, { ignoreSearch: true });
-    const net = fetch(req).then((r) => { if (r.ok) c.put(req, r.clone()); return r; }).catch(() => hit);
+    const net = fetch(req)
+      .then((r) => {
+        if (r.ok) c.put(req, r.clone());
+        return r;
+      })
+      .catch(() => hit);
     return hit || net;
   }));
 });

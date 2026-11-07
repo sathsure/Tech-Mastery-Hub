@@ -104,15 +104,9 @@ function normalizePath(path: string): string {
 function isSafeRelativePath(path: string): boolean {
   const normalized = normalizePath(path);
 
-  if (!normalized || normalized.startsWith("../") || normalized.includes("/../")) {
-    return false;
-  }
-
-  if (/^[A-Za-z]:\//.test(normalized)) {
-    return false;
-  }
-
-  return true;
+  const escapesRepository = normalized.startsWith("../") || normalized.includes("/../");
+  const isDriveAbsolute = /^[A-Za-z]:\//.test(normalized);
+  return Boolean(normalized) && !escapesRepository && !isDriveAbsolute;
 }
 
 export async function stageProposedChanges(

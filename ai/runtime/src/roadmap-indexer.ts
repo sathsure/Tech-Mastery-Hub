@@ -18,6 +18,14 @@ function topicFromSlug(slug: string, lookups: Lookups): string | null {
   return topics.find(topic => topic.replace(/[^a-z0-9]+/gi, "-").toLowerCase() === slug) ?? null;
 }
 
+/** Phrases a user might type to find this roadmap. */
+function roadmapNames(path: string, subject: string, isIndex: boolean, isRole: boolean): string[] {
+  if (isIndex && path.startsWith("roadmap/topics/")) return ["where to start", "start here", "learning tracks", "learning track"];
+  if (isIndex) return ["role roadmaps", "career roadmaps"];
+  if (isRole) return [`${subject} roadmap`];
+  return [`${subject} study path`, `${subject} roadmap`, `${subject} learning path`, `learn ${subject}`];
+}
+
 export function buildRoadmapEntry(path: string, content: string, lookups: Lookups): QuestionEntry {
   const lines = content.split("\n");
   const titleAt = lines.findIndex(line => /^# /.test(line));
@@ -29,11 +37,7 @@ export function buildRoadmapEntry(path: string, content: string, lookups: Lookup
   // Topics this roadmap links to (its study paths), for search narrowing and follow-up suggestions.
   const linked = [...new Set([...answer.matchAll(/\]\((?:\.\.\/topics\/)?([a-z0-9-]+)\.md\)/g)].map(match => topicFromSlug(match[1], lookups)).filter((item): item is string => !!item))];
   const subject = title.replace(/^Roadmap: /, "").replace(/ study path$/, "");
-  const names = isIndex
-    ? path.startsWith("roadmap/topics/") ? ["where to start", "start here", "learning tracks", "learning track"] : ["role roadmaps", "career roadmaps"]
-    : isRole
-      ? [`${subject} roadmap`]
-      : [`${subject} study path`, `${subject} roadmap`, `${subject} learning path`, `learn ${subject}`];
+  const names = roadmapNames(path, subject, isIndex, isRole);
   const topics = topic ? [topic] : ["roadmaps"];
   return {
     id: `${path}#roadmap`,

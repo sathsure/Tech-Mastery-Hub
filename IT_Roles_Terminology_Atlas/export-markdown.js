@@ -6,7 +6,7 @@ const A = require("./it-atlas-data.js");
 
 const cell = (s) => String(s || "").replace(/\|/g, "\\|");
 const list = (arr) => (arr && arr.length ? arr.join(", ") : "—");
-const famName = (id) => A.families.find((f) => f.id === id).name;
+
 const out = [];
 
 out.push("# IT Roles & Terminology Atlas", "");

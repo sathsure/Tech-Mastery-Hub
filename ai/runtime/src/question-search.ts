@@ -15,6 +15,7 @@ import { readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { QuestionEntry, QuestionEntryKind, QuestionIndex } from "./question-index-contracts.js";
+import { trimEndChars } from "./text-utils.js";
 
 const REPOSITORY_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "../../..");
 const INDEX_FILE = resolve(REPOSITORY_ROOT, "ai/knowledge-index/question-index.json");
@@ -137,7 +138,7 @@ export function stem(word: string): string {
 function rawTokens(text: string): string[] {
   const tokens: string[] = [];
   for (const token of normalize(text).replace(/`/g, " ").match(TOKEN) ?? []) {
-    const clean = token.replace(/[.]+$/, "");
+    const clean = trimEndChars(token, ".");
     if (!clean) continue;
     tokens.push(clean);
     if (/[./-]/.test(clean)) for (const part of clean.split(/[./-]/)) if (part) tokens.push(part);
@@ -173,8 +174,24 @@ export function editDistance(a: string, b: string, max = 2): number {
   return rows[a.length][b.length];
 }
 
+/** Text with fenced code blocks removed (code is indexed separately). */
+function withoutCodeBlocks(markdown: string): string {
+  const kept: string[] = [];
+  let inFence = false;
+  for (const line of markdown.split("\n")) {
+    if (line.trimStart().startsWith("```")) {
+      inFence = !inFence;
+      kept.push(" ");
+    } else if (!inFence) {
+      kept.push(line);
+    }
+  }
+  return kept.join("\n");
+}
+
 function allowedTypos(word: string): number {
-  return word.length >= 8 ? 2 : word.length >= 4 ? 1 : 0;
+  if (word.length >= 8) return 2;
+  return word.length >= 4 ? 1 : 0;
 }
 
 // ---------- Vocabulary ----------
@@ -257,7 +274,7 @@ function buildEngine(index: QuestionIndex, vocabulary: Vocabulary): Engine {
       section: terms(entry.section.join(" ")),
       summary: terms(entry.summary),
       prompt: terms(entry.prompt ?? ""),
-      answer: terms(entry.answer.replace(/^\s*```[\s\S]*?^\s*```\s*$/gm, " ")),
+      answer: terms(withoutCodeBlocks(entry.answer)),
     };
     const weighted = new Map<string, number>();
     let length = 0;
@@ -293,7 +310,10 @@ function buildEngine(index: QuestionIndex, vocabulary: Vocabulary): Engine {
     for (const topic of topics) {
       const key = `${topic} › ${doc.entry.source.path} › ${doc.entry.section.join(" › ")}`;
       let branch = branchMap.get(key);
-      if (!branch) branchMap.set(key, (branch = { key, topic, docs: [], maxContribution: new Map() }));
+      if (!branch) {
+        branch = { key, topic, docs: [], maxContribution: new Map() };
+        branchMap.set(key, branch);
+      }
       branch.docs.push(position);
       for (const term of doc.all) {
         const value = contribution(partial, doc, term, averageLength);
@@ -332,19 +352,38 @@ interface ParsedQuery {
   pinned: number[];
 }
 
-const INTENT_RULES: Array<[SearchIntent, RegExp]> = [
-  ["interview-prep", /\b(interview|interviews|prepare|preparing|preparation|prep|asked in|crack)\b/],
-  ["roadmap", /\b(roadmap|road map|where (do|should) i start|where to start|how (do|should) i (start|begin)|learning path|learn path|what should i learn|study plan|beginner)\b/],
-  ["role", /\b(role|roles|career|job|become an?|responsibilit\w*|(devops|frontend|backend|full ?stack|cloud|data|qa|test) (engineer|developer)|sre|architect)\b/],
-  ["code", /\b(code|coding|example|examples|implement|implementation|write|snippet|program|syntax|output)\b/],
-  ["visual", /\b(diagram|diagrams|visual|visually|visuali[sz]e|draw|picture|image|flow ?chart|illustrat\w*)\b/],
-  ["compare", /\b(vs|versus|difference|differences|differ|compare|comparison|better than|or)\b/],
-  ["debug", /\b(error|errors|exception|not working|doesn'?t work|issue|issues|bug|bugs|debug|debugging|fix|fails?|failing|slow|crash\w*|leak\w*|troubleshoot\w*)\b/],
-  ["quiz", /\b(quiz|test me|mock|assess|assessment|practice|practise|ask me)\b/],
+const INTENT_RULES: Array<[SearchIntent, RegExp[]]> = [
+  ["interview-prep", [/\b(interview|interviews|prepare|preparing|preparation|prep|asked in|crack)\b/]],
+  [
+    "roadmap",
+    [
+      /\b(roadmap|road map|learning path|learn path|study plan|beginner)\b/,
+      /\bwhere (do|should) i start\b|\bwhere to start\b/,
+      /\bhow (do|should) i (start|begin)\b|\bwhat should i learn\b/,
+    ],
+  ],
+  [
+    "role",
+    [
+      /\b(role|roles|career|job|become an?|responsibilit\w*|sre|architect)\b/,
+      /\b(devops|frontend|backend|full ?stack|cloud|data|qa|test) (engineer|developer)\b/,
+    ],
+  ],
+  ["code", [/\b(code|coding|example|examples|implement|implementation|write|snippet|program|syntax|output)\b/]],
+  ["visual", [/\b(diagram|diagrams|visual|visually|visuali[sz]e|draw|picture|image|flow ?chart|illustrat\w*)\b/]],
+  ["compare", [/\b(vs|versus|difference|differences|differ|compare|comparison|better than|or)\b/]],
+  [
+    "debug",
+    [
+      /\b(error|errors|exception|issue|issues|bug|bugs|debug|debugging|fix|fails?|failing|slow)\b/,
+      /\b(not working|doesn'?t work|crash\w*|leak\w*|troubleshoot\w*)\b/,
+    ],
+  ],
+  ["quiz", [/\b(quiz|test me|mock|assess|assessment|practice|practise|ask me)\b/]],
 ];
 
 function detectIntents(query: string): SearchIntent[] {
-  const found = INTENT_RULES.filter(([, pattern]) => pattern.test(query)).map(([intent]) => intent);
+  const found = INTENT_RULES.filter(([, patterns]) => patterns.some(pattern => pattern.test(query))).map(([intent]) => intent);
   // "or" alone is too weak to mean a comparison unless the query is a question about two things.
   if (found.includes("compare") && !/\b(vs|versus|differ\w*|compare|comparison|better than)\b/.test(query)) found.splice(found.indexOf("compare"), 1);
   return found.length ? found : ["explain"];
@@ -364,75 +403,84 @@ function matchPhrases(padded: string, phrases: Array<{ phrase: string; value: st
   return { matches, rest };
 }
 
-function parseQuery(query: string, engineRef: Engine, forcedTopic?: string): ParsedQuery {
-  const vocabulary = engineRef.vocabulary;
-  const text = normalize(query);
-  // Compound words that are aliases ("node.js", "ci/cd") stay whole; others split ("real-world" → real world),
-  // so "node.js" does not also match the "js" alias.
+type Phrase = { phrase: string; value: string };
+
+/**
+ * Compound words that are aliases ("node.js", "ci/cd") stay whole; others split ("real-world" → real world),
+ * so "node.js" does not also match the "js" alias.
+ */
+function phraseTokens(text: string, vocabulary: Vocabulary): string[] {
   const aliasSet = new Set([...Object.values(vocabulary.topicAliases), ...Object.values(vocabulary.domainAliases)].flat().map(normalize));
-  const phraseTokens: string[] = [];
+  const tokens: string[] = [];
   for (const token of text.replace(/`/g, " ").match(TOKEN) ?? []) {
-    const clean = token.replace(/[.]+$/, "");
-    if (aliasSet.has(clean) || !/[./-]/.test(clean)) phraseTokens.push(clean);
-    else phraseTokens.push(...clean.split(/[./-]/).filter(Boolean));
+    const clean = trimEndChars(token, ".");
+    if (aliasSet.has(clean) || !/[./-]/.test(clean)) tokens.push(clean);
+    else tokens.push(...clean.split(/[./-]/).filter(Boolean));
   }
-  const padded = ` ${phraseTokens.join(" ")} `;
+  return tokens;
+}
 
-  const topicPhrases = Object.entries(vocabulary.topicAliases).flatMap(([topic, aliases]) => aliases.map(alias => ({ phrase: normalize(alias), value: topic })));
-  const topicMatch = matchPhrases(padded, topicPhrases);
-  const topics: SearchResult["topics"] = [...new Set(topicMatch.matches)].map(topic => ({ topic, via: "alias" as const }));
-  if (forcedTopic) topics.splice(0, topics.length, { topic: forcedTopic, via: "filter" });
+/** Subject words, weighted; typos are corrected and a misspelt topic name becomes a topic. */
+interface SubjectWeights {
+  weights: Map<string, number>;
+  primary: string[];
+  corrections: SearchResult["corrections"];
+}
 
-  const domainPhrases = Object.entries(vocabulary.domainAliases).flatMap(([domain, aliases]) => aliases.map(alias => ({ phrase: normalize(alias), value: domain })));
-  const domainMatch = matchPhrases(topicMatch.rest, domainPhrases);
-  const domain = domainMatch.matches[0] ?? null;
+function typoTopicFor(token: string, topicPhrases: Phrase[]): Phrase | undefined {
+  const max = allowedTypos(token);
+  if (!max) return undefined;
+  return topicPhrases.find(item => !item.phrase.includes(" ") && item.phrase.length >= 5 && editDistance(token, item.phrase, max) <= max);
+}
 
-  // Only whole one-word aliases ("java"), not parts of longer ones ("lifecycle" in "request lifecycle").
-  const aliasWords = new Set([...topicPhrases, ...domainPhrases].filter(item => !/s/.test(item.phrase)).flatMap(item => terms(item.phrase)));
-  const remaining = rawTokens(domainMatch.rest.replace(/\|/g, " ")).filter(token => !/[./-]/.test(token));
-  const subjectTokens = remaining.filter(token => !STOPWORDS.has(token) && !INTENT_WORDS.has(token));
-
-  const weights = new Map<string, number>();
-  const corrections: SearchResult["corrections"] = [];
-  const primary: string[] = [];
-  const addWeight = (term: string, weight: number) => weights.set(term, Math.max(weights.get(term) ?? 0, weight));
-
+function weighSubject(
+  subjectTokens: string[],
+  engineRef: Engine,
+  topics: SearchResult["topics"],
+  topicPhrases: Phrase[],
+  aliasWords: Set<string>,
+): SubjectWeights {
+  const result: SubjectWeights = { weights: new Map(), primary: [], corrections: [] };
   for (const token of subjectTokens) {
     let term = stem(token);
     if (!engineRef.documentFrequency.has(term)) {
-      const typoTopic = !topics.length && allowedTypos(token)
-        ? topicPhrases.find(item => !item.phrase.includes(" ") && item.phrase.length >= 5 && editDistance(token, item.phrase, allowedTypos(token)) <= allowedTypos(token))
-        : undefined;
+      const typoTopic = topics.length ? undefined : typoTopicFor(token, topicPhrases);
       if (typoTopic) {
         topics.push({ topic: typoTopic.value, via: "typo" });
-        corrections.push({ from: token, to: typoTopic.phrase });
+        result.corrections.push({ from: token, to: typoTopic.phrase });
         continue;
       }
       const fixed = correctTypo(term, engineRef);
       if (fixed) {
-        corrections.push({ from: token, to: fixed });
+        result.corrections.push({ from: token, to: fixed });
         term = fixed;
       }
     }
     if (aliasWords.has(term) || COMPARE_WORDS.has(token)) {
-      addWeight(term, 0.3);
-      continue;
+      addWeight(result.weights, term, 0.3);
+    } else {
+      result.primary.push(term);
+      addWeight(result.weights, term, 1);
     }
-    primary.push(term);
-    addWeight(term, 1);
   }
+  return result;
+}
 
-  // Named topics and domains still add a little signal inside their branch.
-  for (const word of [...topicMatch.matches, ...domainMatch.matches]) for (const term of terms(word)) addWeight(term, 0.3);
+function addWeight(weights: Map<string, number>, term: string, weight: number): void {
+  weights.set(term, Math.max(weights.get(term) ?? 0, weight));
+}
 
-  // Synonyms widen the query: "di" also searches "dependency injection".
+/** Synonyms widen the query: "di" also searches "dependency injection". */
+function addSynonyms(weights: Map<string, number>, text: string, vocabulary: Vocabulary): void {
   const queryPadded = ` ${rawTokens(text).join(" ")} `;
   for (const group of vocabulary.termSynonyms) {
     if (!group.some(member => queryPadded.includes(` ${normalize(member)} `))) continue;
-    for (const member of group) for (const term of terms(member)) if (!INTENT_WORDS.has(term)) addWeight(term, 0.6);
+    for (const member of group) for (const term of terms(member)) if (!INTENT_WORDS.has(term)) addWeight(weights, term, 0.6);
   }
+}
 
-  // Exact names (roles, glossary terms, technologies): longest match first, each word used once.
+/** Exact names (roles, glossary terms, technologies) in the query: longest match first, each word used once. */
+function findNames(text: string, engineRef: Engine): Array<{ key: string; positions: number[] }> {
   const keyTokens = entityKey(text).split(" ").filter(Boolean);
   const used = new Array<boolean>(keyTokens.length).fill(false);
   const named: Array<{ key: string; positions: number[] }> = [];
@@ -441,29 +489,62 @@ function parseQuery(query: string, engineRef: Engine, forcedTopic?: string): Par
       if (used.slice(start, start + size).some(Boolean)) continue;
       const key = keyTokens.slice(start, start + size).join(" ");
       const positions = engineRef.entities.get(key);
-      if (!positions) continue;
       // A common technology name ("java") only counts as a lookup in a definition question.
-      if (engineRef.topicAliasKeys.has(key) && !DEFINITION.test(text)) continue;
+      if (!positions || (engineRef.topicAliasKeys.has(key) && !DEFINITION.test(text))) continue;
       named.push({ key, positions });
-      for (let i = start; i < start + size; i++) used[i] = true;
+      used.fill(true, start, start + size);
     }
   }
+  return named;
+}
+
+const KIND_RANK_ROADMAP_FIRST: Record<string, number> = { roadmap: 0, role: 1, term: 2, note: 3, question: 4, "follow-up": 5 };
+const KIND_RANK_ROLE_FIRST: Record<string, number> = { role: 0, roadmap: 1, term: 2, note: 3, question: 4, "follow-up": 5 };
+
+/**
+ * Entries to pin first, when the names are the whole subject: "devops engineer salary" yes, "kafka partitions" no.
+ * A roadmap goes first when one is asked for; otherwise right after the role it belongs to.
+ */
+function pinNamed(named: Array<{ key: string; positions: number[] }>, primary: string[], intents: SearchIntent[], engineRef: Engine): number[] {
   const nameTokens = new Set(named.flatMap(item => item.key.split(" ")));
-  // Pin only when the names are the whole subject: "devops engineer salary" yes, "kafka partitions" no.
   const leftover = primary.filter(term => !nameTokens.has(term) && !ABOUT_WORDS.has(term));
-  // A roadmap goes first when one is asked for; otherwise right after the role it belongs to.
+  if (!named.length || leftover.length) return [];
+  const kindRank = intents.includes("roadmap") ? KIND_RANK_ROADMAP_FIRST : KIND_RANK_ROLE_FIRST;
+  return [...new Set(named.flatMap(item => item.positions))]
+    .sort((a, b) => kindRank[engineRef.docs[a].entry.kind] - kindRank[engineRef.docs[b].entry.kind] || a - b)
+    .slice(0, 3);
+}
+
+function parseQuery(query: string, engineRef: Engine, forcedTopic?: string): ParsedQuery {
+  const vocabulary = engineRef.vocabulary;
+  const text = normalize(query);
+  const padded = ` ${phraseTokens(text, vocabulary).join(" ")} `;
+
+  const topicPhrases: Phrase[] = Object.entries(vocabulary.topicAliases).flatMap(([topic, aliases]) => aliases.map(alias => ({ phrase: normalize(alias), value: topic })));
+  const topicMatch = matchPhrases(padded, topicPhrases);
+  const topics: SearchResult["topics"] = [...new Set(topicMatch.matches)].map(topic => ({ topic, via: "alias" as const }));
+  if (forcedTopic) topics.splice(0, topics.length, { topic: forcedTopic, via: "filter" });
+
+  const domainPhrases: Phrase[] = Object.entries(vocabulary.domainAliases).flatMap(([domain, aliases]) => aliases.map(alias => ({ phrase: normalize(alias), value: domain })));
+  const domainMatch = matchPhrases(topicMatch.rest, domainPhrases);
+  const domain = domainMatch.matches[0] ?? null;
+
+  // Only whole one-word aliases ("java"), not parts of longer ones ("lifecycle" in "request lifecycle").
+  const aliasWords = new Set([...topicPhrases, ...domainPhrases].filter(item => !/\s/.test(item.phrase)).flatMap(item => terms(item.phrase)));
+  const remaining = rawTokens(domainMatch.rest.replace(/\|/g, " ")).filter(token => !/[./-]/.test(token));
+  const subjectTokens = remaining.filter(token => !STOPWORDS.has(token) && !INTENT_WORDS.has(token));
+  const { weights, primary, corrections } = weighSubject(subjectTokens, engineRef, topics, topicPhrases, aliasWords);
+
+  // Named topics and domains still add a little signal inside their branch.
+  for (const word of [...topicMatch.matches, ...domainMatch.matches]) for (const term of terms(word)) addWeight(weights, term, 0.3);
+  addSynonyms(weights, text, vocabulary);
+
+  const named = findNames(text, engineRef);
   const intents = detectIntents(text);
-  const kindRank: Record<string, number> = intents.includes("roadmap")
-    ? { roadmap: 0, role: 1, term: 2, note: 3, question: 4, "follow-up": 5 }
-    : { role: 0, roadmap: 1, term: 2, note: 3, question: 4, "follow-up": 5 };
-  const pinned = named.length && leftover.length === 0
-    ? [...new Set(named.flatMap(item => item.positions))]
-        .sort((a, b) => kindRank[engineRef.docs[a].entry.kind] - kindRank[engineRef.docs[b].entry.kind] || a - b)
-        .slice(0, 3)
-    : [];
+  const pinned = pinNamed(named, primary, intents, engineRef);
   if (pinned.length) {
     // Search around the named thing for related entries (salary notes, related terms).
-    for (const term of nameTokens) {
+    for (const term of new Set(named.flatMap(item => item.key.split(" ")))) {
       if (STOPWORDS.has(term)) continue;
       weights.set(term, 1);
       if (!primary.includes(term)) primary.push(term);
@@ -474,7 +555,7 @@ function parseQuery(query: string, engineRef: Engine, forcedTopic?: string): Par
   for (let i = 0; i + 1 < primary.length; i++) bigrams.push([primary[i], primary[i + 1]]);
 
   const uniqueTopics = topics.filter((item, position) => topics.findIndex(other => other.topic === item.topic) === position);
-  return { topics: uniqueTopics, domain, intents: detectIntents(text), weights, primary: [...new Set(primary)], bigrams, corrections, pinned };
+  return { topics: uniqueTopics, domain, intents, weights, primary: [...new Set(primary)], bigrams, corrections, pinned };
 }
 
 function correctTypo(term: string, engineRef: Engine): string | null {
@@ -506,32 +587,47 @@ interface Scored {
   matched: string[];
 }
 
-function scoreDoc(engineRef: Engine, doc: Doc, parsed: ParsedQuery): Scored | null {
+/** Weighted term matches plus phrase bonuses; the primary terms that matched. */
+function termScore(engineRef: Engine, doc: Doc, parsed: ParsedQuery): { score: number; matched: string[] } {
   let score = 0;
   const matched: string[] = [];
   for (const [term, weight] of parsed.weights) {
     const value = contribution(engineRef, doc, term, averageLength);
-    if (value > 0) {
-      score += value * weight;
-      if (parsed.primary.includes(term)) matched.push(term);
-    }
+    if (value <= 0) continue;
+    score += value * weight;
+    if (parsed.primary.includes(term)) matched.push(term);
   }
-  if (score <= 0) return null;
+  if (score <= 0) return { score: 0, matched };
   for (const [first, second] of parsed.bigrams) {
     const at = doc.questionTerms.indexOf(first);
     if (at >= 0 && doc.questionTerms[at + 1] === second) score += PHRASE_BONUS;
   }
-  const primaryCount = parsed.primary.length;
-  const coverage = primaryCount ? parsed.primary.filter(term => doc.strong.has(term)).length / primaryCount : 1;
-  const anyCoverage = primaryCount ? matched.length / primaryCount : 1;
-  score *= 0.4 + 0.3 * anyCoverage + 0.3 * coverage;
+  return { score, matched };
+}
+
+/** Multipliers for what the user asked for: diagrams, code, the named topic and domain. */
+function intentBoost(doc: Doc, parsed: ParsedQuery): number {
+  let boost = 1;
+  if (parsed.intents.includes("visual") && doc.entry.visuals.length) boost *= INTENT_BOOST;
+  if (parsed.intents.includes("code") && doc.entry.codeBlocks.length) boost *= INTENT_BOOST;
+  if (parsed.topics.some(item => doc.entry.topics.includes(item.topic))) boost *= TOPIC_BOOST;
+  if (parsed.domain && doc.entry.domain === parsed.domain) boost *= DOMAIN_BOOST;
+  return boost;
+}
+
+/** Share of the primary terms that pass the test; `empty` when there are none. */
+function share(primary: string[], test: (term: string) => boolean, empty: number): number {
+  return primary.length ? primary.filter(test).length / primary.length : empty;
+}
+
+function scoreDoc(engineRef: Engine, doc: Doc, parsed: ParsedQuery): Scored | null {
+  const { score: raw, matched } = termScore(engineRef, doc, parsed);
+  if (raw <= 0) return null;
+  const coverage = share(parsed.primary, term => doc.strong.has(term), 1);
+  const anyCoverage = share(parsed.primary, term => matched.includes(term), 1);
   // Query words in the question title are the strongest relevance signal (short glossary rows otherwise rank too high).
-  const titleCoverage = primaryCount ? parsed.primary.filter(term => doc.questionTerms.includes(term)).length / primaryCount : 0;
-  score *= 1 + TITLE_BOOST * titleCoverage;
-  if (parsed.intents.includes("visual") && doc.entry.visuals.length) score *= INTENT_BOOST;
-  if (parsed.intents.includes("code") && doc.entry.codeBlocks.length) score *= INTENT_BOOST;
-  if (parsed.topics.some(item => doc.entry.topics.includes(item.topic))) score *= TOPIC_BOOST;
-  if (parsed.domain && doc.entry.domain === parsed.domain) score *= DOMAIN_BOOST;
+  const titleCoverage = share(parsed.primary, term => doc.questionTerms.includes(term), 0);
+  const score = raw * (0.4 + 0.3 * anyCoverage + 0.3 * coverage) * (1 + TITLE_BOOST * titleCoverage) * intentBoost(doc, parsed);
   return { doc, score, coverage, matched };
 }
 
@@ -604,20 +700,23 @@ function browse(engineRef: Engine, predicate: (doc: Doc) => boolean, limit: numb
   }
   const bySection = new Map<string, Doc[]>();
   for (const doc of engineRef.docs) {
-    if (!predicate(doc)) continue;
+    if (!predicate(doc) || doc.entry.kind === "follow-up") continue;
     const key = `${doc.entry.source.path}|${doc.entry.section.join("|")}`;
-    if (!bySection.has(key)) bySection.set(key, []);
-    bySection.get(key)!.push(doc);
+    bySection.set(key, [...(bySection.get(key) ?? []), doc]);
   }
-  const queues = [...bySection.values()].map(list => list.filter(doc => doc.entry.kind !== "follow-up"));
-  const picked: Doc[] = [];
-  for (let round = 0; picked.length < limit && queues.some(queue => queue.length > round); round++) {
-    for (const queue of queues) {
-      if (picked.length >= limit) break;
-      if (queue[round]) picked.push(queue[round]);
+  return roundRobin([...bySection.values()], limit);
+}
+
+/** First item of each list, then the second of each, and so on, up to `limit`. */
+function roundRobin<T>(lists: T[][], limit: number): T[] {
+  const picked: T[] = [];
+  const longest = Math.max(0, ...lists.map(list => list.length));
+  for (let round = 0; round < longest; round++) {
+    for (const list of lists) {
+      if (round < list.length) picked.push(list[round]);
     }
   }
-  return picked;
+  return picked.slice(0, limit);
 }
 
 function suggestionsFor(engineRef: Engine, query: string, topics: string[]): SearchResult["suggestions"] {
@@ -663,126 +762,165 @@ export function searchQuestions(query: string, options: SearchOptions = {}): Sea
   };
 }
 
-function searchParsed(engineRef: Engine, query: string, parsed: ParsedQuery, limit: number, options: SearchOptions): SearchResult {
-  const kindAllowed = (doc: Doc) => !options.kinds || options.kinds.includes(doc.entry.kind);
-  const topicNames = parsed.topics.map(item => item.topic);
-  const inTopics = (doc: Doc) => !topicNames.length || doc.entry.topics.some(topic => topicNames.includes(topic));
-  const base: Omit<SearchResult, "mode" | "confidence" | "strategy" | "hits" | "facets" | "suggestions"> = {
-    query,
-    intents: parsed.intents,
-    topics: parsed.topics,
-    domain: parsed.domain,
-    terms: parsed.primary,
-    corrections: parsed.corrections,
-    entities: parsed.pinned.map(position => {
-      const entry = engineRef.docs[position].entry;
-      return { name: entry.names?.[0] ?? entry.question, id: entry.id, kind: entry.kind };
-    }),
+/** Everything one search needs, shared by the result builders below. */
+interface SearchContext {
+  engineRef: Engine;
+  query: string;
+  parsed: ParsedQuery;
+  limit: number;
+  options: SearchOptions;
+  topicNames: string[];
+  kindAllowed: (doc: Doc) => boolean;
+  base: Omit<SearchResult, "mode" | "confidence" | "strategy" | "hits" | "facets" | "suggestions">;
+}
+
+const NO_SUGGESTIONS: SearchResult["suggestions"] = { topics: [], questions: [] };
+
+/** A browse result: entries listed in order rather than scored. */
+function browseResult(
+  ctx: SearchContext,
+  docs: Doc[],
+  extra: Pick<SearchResult, "confidence" | "facets" | "suggestions"> & { narrowedTo: string[] },
+): SearchResult {
+  return {
+    ...ctx.base,
+    mode: "browse",
+    confidence: extra.confidence,
+    strategy: { narrowedTo: extra.narrowedTo, widened: false, branchesTotal: ctx.engineRef.branches.length, branchesVisited: 0, branchesPruned: 0, entriesScored: 0 },
+    hits: docs.map(doc => toHit({ doc, score: 0, coverage: 1, matched: [] }, "browse")),
+    facets: extra.facets,
+    suggestions: extra.suggestions,
   };
+}
 
-  // Only a topic or domain was named ("java", "prepare me for a frontend interview"): give an overview.
-  if (parsed.primary.length === 0 && (topicNames.length || parsed.domain)) {
-    const predicate = (doc: Doc) => kindAllowed(doc) && inTopics(doc) && (!parsed.domain || topicNames.length > 0 || doc.entry.domain === parsed.domain);
-    // A study path is the best overview when the user wants to learn or prepare.
-    const docs = browse(engineRef, predicate, limit, parsed.intents.includes("roadmap") || parsed.intents.includes("interview-prep"));
-    const counts = new Map<string, number>();
-    for (const doc of engineRef.docs) if (predicate(doc)) for (const topic of doc.entry.topics) counts.set(topic, (counts.get(topic) ?? 0) + 1);
-    return {
-      ...base,
-      mode: "browse",
-      confidence: docs.length ? "high" : "none",
-      strategy: { narrowedTo: topicNames, widened: false, branchesTotal: engineRef.branches.length, branchesVisited: 0, branchesPruned: 0, entriesScored: 0 },
-      hits: docs.map(doc => toHit({ doc, score: 0, coverage: 1, matched: [] }, "browse")),
-      facets: [...counts.entries()].sort((a, b) => b[1] - a[1]).map(([topic, count]) => ({ topic, count })),
-      suggestions: docs.length ? { topics: [], questions: [] } : suggestionsFor(engineRef, query, topicNames),
-    };
-  }
+/** Only a topic or domain was named ("java", "prepare me for a frontend interview"): give an overview. */
+function topicOverview(ctx: SearchContext): SearchResult {
+  const { engineRef, parsed, topicNames } = ctx;
+  const inTopics = (doc: Doc) => !topicNames.length || doc.entry.topics.some(topic => topicNames.includes(topic));
+  const inDomain = (doc: Doc) => !parsed.domain || topicNames.length > 0 || doc.entry.domain === parsed.domain;
+  const predicate = (doc: Doc) => ctx.kindAllowed(doc) && inTopics(doc) && inDomain(doc);
+  // A study path is the best overview when the user wants to learn or prepare.
+  const roadmapFirst = parsed.intents.includes("roadmap") || parsed.intents.includes("interview-prep");
+  const docs = browse(engineRef, predicate, ctx.limit, roadmapFirst);
+  const counts = new Map<string, number>();
+  for (const doc of engineRef.docs.filter(predicate)) for (const topic of doc.entry.topics) counts.set(topic, (counts.get(topic) ?? 0) + 1);
+  return browseResult(ctx, docs, {
+    confidence: docs.length ? "high" : "none",
+    narrowedTo: topicNames,
+    facets: [...counts.entries()].sort((a, b) => b[1] - a[1]).map(([topic, count]) => ({ topic, count })),
+    suggestions: docs.length ? NO_SUGGESTIONS : suggestionsFor(engineRef, ctx.query, topicNames),
+  });
+}
 
-  if (parsed.weights.size === 0 && parsed.intents.includes("roadmap")) {
-    // "Where do I start?": the learning tracks, the role roadmaps, then study paths in track order.
-    // Study paths follow the order the learning-tracks page lists them (HTML first).
-    const startHere = engineRef.docs.find(doc => doc.entry.source.path === START_HERE)?.entry.answer ?? "";
-    const trackOrder = [...startHere.matchAll(/\]\(\.\.\/topics\/([a-z0-9-]+)\.md\)/g)].map(match => `roadmap/topics/${match[1]}.md`);
-    const order = (doc: Doc) => {
-      const path = doc.entry.source.path;
-      if (path === START_HERE) return -2;
-      if (path === ROLES_INDEX) return -1;
-      const at = trackOrder.indexOf(path);
-      return at < 0 ? trackOrder.length : at;
-    };
-    const docs = engineRef.docs
-      .filter(doc => kindAllowed(doc) && doc.entry.kind === "roadmap" && (doc.entry.source.path === ROLES_INDEX || !doc.entry.source.path.startsWith("roadmap/roles/")))
-      .sort((a, b) => order(a) - order(b))
-      .slice(0, limit);
-    if (docs.length) {
-      return {
-        ...base,
-        mode: "browse",
-        confidence: "high",
-        strategy: { narrowedTo: ["roadmaps"], widened: false, branchesTotal: engineRef.branches.length, branchesVisited: 0, branchesPruned: 0, entriesScored: 0 },
-        hits: docs.map(doc => toHit({ doc, score: 0, coverage: 1, matched: [] }, "browse")),
-        facets: [{ topic: "roadmaps", count: docs.length }],
-        suggestions: { topics: [], questions: [] },
-      };
-    }
-  }
+/**
+ * "Where do I start?": the learning tracks, the role roadmaps, then study paths in track order.
+ * Study paths follow the order the learning-tracks page lists them (HTML first).
+ */
+function startHere(ctx: SearchContext): SearchResult | null {
+  const { engineRef } = ctx;
+  const startPage = engineRef.docs.find(doc => doc.entry.source.path === START_HERE)?.entry.answer ?? "";
+  const trackOrder = [...startPage.matchAll(/\]\(\.\.\/topics\/([a-z0-9-]+)\.md\)/g)].map(match => `roadmap/topics/${match[1]}.md`);
+  const order = (doc: Doc) => {
+    const path = doc.entry.source.path;
+    if (path === START_HERE) return -2;
+    if (path === ROLES_INDEX) return -1;
+    const at = trackOrder.indexOf(path);
+    return at < 0 ? trackOrder.length : at;
+  };
+  const isOverviewRoadmap = (doc: Doc) =>
+    doc.entry.kind === "roadmap" && (doc.entry.source.path === ROLES_INDEX || !doc.entry.source.path.startsWith("roadmap/roles/"));
+  const docs = engineRef.docs
+    .filter(doc => ctx.kindAllowed(doc) && isOverviewRoadmap(doc))
+    .sort((a, b) => order(a) - order(b))
+    .slice(0, ctx.limit);
+  if (!docs.length) return null;
+  return browseResult(ctx, docs, { confidence: "high", narrowedTo: ["roadmaps"], facets: [{ topic: "roadmaps", count: docs.length }], suggestions: NO_SUGGESTIONS });
+}
 
-  if (parsed.weights.size === 0 && parsed.intents.includes("role")) {
-    const docs = browse(engineRef, doc => kindAllowed(doc) && doc.entry.kind === "role", limit);
-    if (docs.length) {
-      return {
-        ...base,
-        mode: "browse",
-        confidence: "medium",
-        strategy: { narrowedTo: ["it-roles"], widened: false, branchesTotal: engineRef.branches.length, branchesVisited: 0, branchesPruned: 0, entriesScored: 0 },
-        hits: docs.map(doc => toHit({ doc, score: 0, coverage: 1, matched: [] }, "browse")),
-        facets: [{ topic: "it-roles", count: engineRef.topicCounts.get("it-roles") ?? 0 }],
-        suggestions: { topics: [], questions: [] },
-      };
-    }
-  }
+/** "What roles are there?": a sample of roles from each family. */
+function roleBrowse(ctx: SearchContext): SearchResult | null {
+  const docs = browse(ctx.engineRef, doc => ctx.kindAllowed(doc) && doc.entry.kind === "role", ctx.limit);
+  if (!docs.length) return null;
+  const count = ctx.engineRef.topicCounts.get("it-roles") ?? 0;
+  return browseResult(ctx, docs, { confidence: "medium", narrowedTo: ["it-roles"], facets: [{ topic: "it-roles", count }], suggestions: NO_SUGGESTIONS });
+}
 
-  if (parsed.weights.size === 0) {
-    return {
-      ...base,
-      mode: "empty",
-      confidence: "none",
-      strategy: { narrowedTo: [], widened: false, branchesTotal: engineRef.branches.length, branchesVisited: 0, branchesPruned: 0, entriesScored: 0 },
-      hits: [],
-      facets: [],
-      suggestions: suggestionsFor(engineRef, query, []),
-    };
-  }
+/** Nothing to search for: suggest where to start. */
+function emptyResult(ctx: SearchContext): SearchResult {
+  return {
+    ...ctx.base,
+    mode: "empty",
+    confidence: "none",
+    strategy: { narrowedTo: [], widened: false, branchesTotal: ctx.engineRef.branches.length, branchesVisited: 0, branchesPruned: 0, entriesScored: 0 },
+    hits: [],
+    facets: [],
+    suggestions: suggestionsFor(ctx.engineRef, ctx.query, []),
+  };
+}
 
-  // Keep extra candidates so facet counts and follow-up grouping have room.
-  const keep = Math.max(limit * 3, 20);
+/** Scores the branches of the named topics; widens to all topics when they hold too few good matches. */
+function scoreBranches(ctx: SearchContext, keep: number): { outcome: TreeOutcome; widened: boolean } {
+  const { engineRef, parsed, topicNames, options } = ctx;
   const narrowedBranches = topicNames.length ? engineRef.branches.filter(branch => topicNames.includes(branch.topic)) : engineRef.branches;
-  let outcome = searchTree(engineRef, narrowedBranches, parsed, keep, kindAllowed, options.exhaustive);
-  let widened = false;
+  const outcome = searchTree(engineRef, narrowedBranches, parsed, keep, ctx.kindAllowed, options.exhaustive);
   // Judge only the top `keep` results, which pruning returns exactly, so pruning never changes this decision.
   const strongEnough = (items: Scored[]) =>
-    [...items].sort((x, y) => y.score - x.score).slice(0, keep).filter(item => item.coverage >= 0.5).length >= Math.min(limit, 3);
-  if (topicNames.length && !options.topic && !strongEnough(outcome.scored)) {
-    const wider = searchTree(engineRef, engineRef.branches, parsed, keep, kindAllowed, options.exhaustive);
-    outcome = {
+    [...items].sort((x, y) => y.score - x.score).slice(0, keep).filter(item => item.coverage >= 0.5).length >= Math.min(ctx.limit, 3);
+  if (!topicNames.length || options.topic || strongEnough(outcome.scored)) return { outcome, widened: false };
+  const wider = searchTree(engineRef, engineRef.branches, parsed, keep, ctx.kindAllowed, options.exhaustive);
+  return {
+    outcome: {
       scored: [...new Map([...outcome.scored, ...wider.scored].map(item => [item.doc.entry.id, item])).values()],
       visited: outcome.visited + wider.visited,
       pruned: wider.pruned,
       entriesScored: outcome.entriesScored + wider.entriesScored,
-    };
-    widened = true;
+    },
+    widened: true,
+  };
+}
+
+function searchParsed(engineRef: Engine, query: string, parsed: ParsedQuery, limit: number, options: SearchOptions): SearchResult {
+  const ctx: SearchContext = {
+    engineRef,
+    query,
+    parsed,
+    limit,
+    options,
+    topicNames: parsed.topics.map(item => item.topic),
+    kindAllowed: (doc: Doc) => !options.kinds || options.kinds.includes(doc.entry.kind),
+    base: {
+      query,
+      intents: parsed.intents,
+      topics: parsed.topics,
+      domain: parsed.domain,
+      terms: parsed.primary,
+      corrections: parsed.corrections,
+      entities: parsed.pinned.map(position => {
+        const entry = engineRef.docs[position].entry;
+        return { name: entry.names?.[0] ?? entry.question, id: entry.id, kind: entry.kind };
+      }),
+    },
+  };
+
+  if (parsed.primary.length === 0 && (ctx.topicNames.length || parsed.domain)) return topicOverview(ctx);
+  if (parsed.weights.size === 0) {
+    const browsed = (parsed.intents.includes("roadmap") ? startHere(ctx) : null) ?? (parsed.intents.includes("role") ? roleBrowse(ctx) : null);
+    return browsed ?? emptyResult(ctx);
   }
 
-  const ranked = outcome.scored.sort((a, b) => b.score - a.score || a.doc.entry.id.localeCompare(b.doc.entry.id));
+  // Keep extra candidates so facet counts and follow-up grouping have room.
+  const keep = Math.max(limit * 3, 20);
+  const { outcome, widened } = scoreBranches(ctx, keep);
+  const ranked = [...outcome.scored].sort((a, b) => b.score - a.score || a.doc.entry.id.localeCompare(b.doc.entry.id));
   const facets = new Map<string, number>();
   for (const item of ranked) for (const topic of item.doc.entry.topics.length ? item.doc.entry.topics : ["(untagged)"]) facets.set(topic, (facets.get(topic) ?? 0) + 1);
   const confidence = confidenceOf(ranked[0], parsed.primary.length);
   return {
-    ...base,
+    ...ctx.base,
     mode: "search",
     confidence,
     strategy: {
-      narrowedTo: topicNames,
+      narrowedTo: ctx.topicNames,
       widened,
       branchesTotal: engineRef.branches.length,
       branchesVisited: outcome.visited,
@@ -791,7 +929,7 @@ function searchParsed(engineRef: Engine, query: string, parsed: ParsedQuery, lim
     },
     hits: ranked.slice(0, limit).map(item => toHit(item)),
     facets: [...facets.entries()].sort((a, b) => b[1] - a[1]).map(([topic, count]) => ({ topic, count })),
-    suggestions: confidence === "high" || confidence === "medium" ? { topics: [], questions: [] } : suggestionsFor(engineRef, query, topicNames),
+    suggestions: confidence === "high" || confidence === "medium" ? { topics: [], questions: [] } : suggestionsFor(engineRef, query, ctx.topicNames),
   };
 }
 

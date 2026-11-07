@@ -15,11 +15,11 @@ export const searchNotes = (query, limit = 8) => getJson(`/search?q=${encodeURIC
  * POST /chat and read the Server-Sent Events stream.
  * Calls onEvent for each event ({type: "meta"|"status"|"delta"|"done"|"error", ...}).
  */
-export async function streamChat({ message, history, topic }, onEvent, signal) {
+export async function streamChat({ message, history, topic, plan, overview }, onEvent, signal) {
   const response = await fetch("/chat", {
     method: "POST",
     headers: { "content-type": "application/json", accept: "text/event-stream" },
-    body: JSON.stringify({ message, history, topic: topic || undefined }),
+    body: JSON.stringify({ message, history, topic: topic || undefined, plan, overview: overview || undefined }),
     signal,
   });
   if (!response.ok || !response.body) {

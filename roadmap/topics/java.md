@@ -96,6 +96,12 @@
 
 ## Practice
 
+- [ ] [What will be the output?](../../practice/coding/java/01-core-java-coding.md)
+- [ ] [What will be the output?](../../practice/coding/java/01-core-java-coding.md)
+- [ ] [What will be the output?](../../practice/coding/java/01-core-java-coding.md)
+- [ ] [What will be the output?](../../practice/coding/java/01-core-java-coding.md)
+- [ ] [What will be the output?](../../practice/coding/java/01-core-java-coding.md)
+- [ ] [What will be the output?](../../practice/coding/java/01-core-java-coding.md)
 - [ ] [Merge Two Arrays Alternately](../../practice/coding/java/01-Java-coding.md)
 - [ ] [Reverse an Array](../../practice/coding/java/01-Java-coding.md)
 - [ ] [Find First Non-Repeating Character](../../practice/coding/java/01-Java-coding.md)
@@ -110,12 +116,6 @@
 - [ ] [Perfect Numbers](../../practice/coding/java/01-Java-coding.md)
 - [ ] [Two Sum Problem](../../practice/coding/java/01-Java-coding.md)
 - [ ] [Count Segments in a String](../../practice/coding/java/01-Java-coding.md)
-- [ ] [What will be the output?](../../practice/coding/java/01-core-java-coding.md)
-- [ ] [What will be the output?](../../practice/coding/java/01-core-java-coding.md)
-- [ ] [What will be the output?](../../practice/coding/java/01-core-java-coding.md)
-- [ ] [What will be the output?](../../practice/coding/java/01-core-java-coding.md)
-- [ ] [What will be the output?](../../practice/coding/java/01-core-java-coding.md)
-- [ ] [What will be the output?](../../practice/coding/java/01-core-java-coding.md)
 
 ## Diagrams
 

@@ -13,6 +13,15 @@ interface HttpModelResponse {
   }>;
 }
 
+/** A model call that takes longer than this is abandoned (TUTOR_MODEL_TIMEOUT_MS, default 60 s). */
+const REQUEST_TIMEOUT_MS = Number(process.env.TUTOR_MODEL_TIMEOUT_MS ?? "60000") || 60000;
+
+function trimTrailingSlashes(url: string): string {
+  let end = url.length;
+  while (end > 0 && url[end - 1] === "/") end--;
+  return url.slice(0, end);
+}
+
 export class HttpTutorModelProvider implements TutorModelProvider {
   readonly name = "http";
   readonly model: string;
@@ -37,7 +46,7 @@ export class HttpTutorModelProvider implements TutorModelProvider {
       throw new Error("Model provider model is required.");
     }
 
-    this.baseUrl = baseUrl.replace(/\/+$/, "");
+    this.baseUrl = trimTrailingSlashes(baseUrl);
     this.apiKey = apiKey;
     this.model = model;
   }
@@ -51,6 +60,8 @@ export class HttpTutorModelProvider implements TutorModelProvider {
         "content-type": "application/json",
         authorization: `Bearer ${this.apiKey}`
       },
+      // A provider that never answers must not hold the request open forever.
+      signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
       body: JSON.stringify({
         model: this.model,
         messages: request.messages,

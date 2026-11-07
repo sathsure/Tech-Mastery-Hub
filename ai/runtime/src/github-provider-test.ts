@@ -1,8 +1,5 @@
 ﻿import {
   inspectGitHubConfiguration,
-  createGitHubPullRequest,
-  verifyGitHubHumanApproval,
-  verifyGitHubMerge,
   createAuthoritativeReindexTrigger,
   GITHUB_GOVERNANCE
 } from "./github-provider.js";

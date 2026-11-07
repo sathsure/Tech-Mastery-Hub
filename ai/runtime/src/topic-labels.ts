@@ -9,3 +9,33 @@ export const TOPIC_LABELS: Record<string, string> = {
 };
 
 export const topicLabel = (topic: string): string => TOPIC_LABELS[topic] ?? topic;
+
+/** One line on what each topic covers; shown before its list of sections. */
+export const TOPIC_DESCRIPTIONS: Record<string, string> = {
+  javascript: "The language of the web: types, scope and closures, the event loop, async code and the DOM.",
+  typescript: "JavaScript with static types: type annotations, interfaces, generics and compiler settings.",
+  html: "The structure of web pages: elements, semantics, forms, accessibility and browser behaviour.",
+  css: "Styling and layout: the box model, selectors, Flexbox, Grid, responsive design and animation.",
+  angular: "Google's TypeScript framework: components, modules, dependency injection, routing and change detection.",
+  react: "A library for building UIs from components: JSX, state, hooks, rendering and performance.",
+  rxjs: "Reactive programming with observables: operators, subjects and handling async streams.",
+  nodejs: "JavaScript on the server: the runtime, modules, streams, the event loop and building APIs.",
+  java: "Core Java for backend work: OOP, collections, Java 8+ features, concurrency and the JVM.",
+  spring: "Spring Boot for Java services: dependency injection, auto-configuration, REST, data access and testing.",
+  "spring-security": "Securing Spring applications: authentication, authorization, JWT, OAuth2 and filters.",
+  "spring-cloud": "Spring tools for microservices: configuration, discovery, gateways and resilience.",
+  microservices: "Building systems as small services: design, communication, data, resilience and deployment.",
+  "rest-api": "Designing HTTP APIs: resources, methods, status codes, versioning and security.",
+  "database/sql": "Relational databases and SQL: queries, joins, indexes, transactions and tuning.",
+  devops: "Shipping and running software: CI/CD, containers, infrastructure and monitoring.",
+  aws: "Amazon Web Services: core compute, storage, networking and deployment services.",
+  "web-architecture": "How web applications fit together: clients, servers, caching, scaling and rendering choices.",
+  "web-vitals": "Measuring and improving page experience: loading, interactivity and visual stability.",
+  "it-roles": "What each IT job involves: day-to-day work, skills, tools, experience needed and where it leads.",
+  "it-terminology": "Short definitions of the terms you hear at work and in interviews, grouped by area (SDLC, frontend, backend, cloud, AI, security, business).",
+  "tech-stack": "Which tools and technologies are used at each layer of a system, and what each one is for.",
+  "it-careers": "Career ladders, salary ranges in India (LPA) by role and experience, and working abroad.",
+  roadmaps: "Step-by-step learning paths: study paths per topic and roadmaps per job role.",
+};
+
+export const topicDescription = (topic: string): string | null => TOPIC_DESCRIPTIONS[topic] ?? null;

@@ -632,7 +632,30 @@ footer p { margin: 0 0 8px; }
   .fit-bar { grid-column: 2 / 4; grid-row: 2; }
   .cmp-tray { left: 16px; right: 16px; transform: none; max-width: none; }
 }
-@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+
+/* ===== Motion & polish ===== */
+.icon-btn { display: inline-grid; place-items: center; color: var(--muted); transition: color .15s, border-color .15s, transform .15s; }
+.icon-btn:hover { color: var(--accent); border-color: var(--accent); }
+.icon-btn .ic { width: 18px; height: 18px; }
+.topbar { background: color-mix(in srgb, var(--surface) 82%, transparent); backdrop-filter: saturate(160%) blur(12px); -webkit-backdrop-filter: saturate(160%) blur(12px); }
+.tabs button { transition: color .2s, border-color .25s cubic-bezier(.2,.8,.2,1); }
+.tabs button .ic { transition: transform .2s cubic-bezier(.2,.8,.2,1), opacity .2s; }
+.tabs button:hover .ic { transform: translateY(-1px); }
+.quick-card, .family, .stack-card, .detail-card { transition: transform .22s cubic-bezier(.2,.8,.2,1), border-color .15s, box-shadow .22s; }
+.quick-card:hover, .family:hover { box-shadow: 0 2px 4px rgba(20, 24, 40, .06), 0 14px 32px rgba(79, 70, 229, .14); }
+button:active:not([disabled]) { transform: scale(.98); }
+.hint .ic { color: var(--accent); margin-right: 4px; }
+.wl-gets li .ic { width: 15px; height: 15px; }
+#wlForm fieldset:not([hidden]) { animation: fade .3s cubic-bezier(.2,.8,.2,1); }
+.wl-card { animation: fade .45s cubic-bezier(.2,.8,.2,1); }
+.wl-steps li { transition: color .25s, border-color .35s; }
+.wl-steps li b { transition: background .25s, color .25s; }
+::view-transition-old(root) { animation: .16s ease both vt-out; }
+::view-transition-new(root) { animation: .3s cubic-bezier(.2,.8,.2,1) both vt-in; }
+@keyframes vt-out { to { opacity: 0; } }
+@keyframes vt-in { from { opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after, ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
 
 /* ===== Print / Save as PDF ===== */
 @media print {

@@ -1,8 +1,8 @@
 {
   "schema_version": "1.0.0",
   "repository": "Tech-Mastery-Hub",
-  "generated_at": "2026-11-06T18:01:15.848Z",
-  "source_fingerprint": "188668f11f7446afe029d0c0fe6c5c0e710cde4af7682b8417745d04a78cd3bb",
+  "generated_at": "2026-11-07T08:57:03.068Z",
+  "source_fingerprint": "8ca5000cf24226139407be4d60b1c4d9a1e13b446d4ea684247c805032d59156",
   "stats": {
     "files": 107,
     "entries": 1317,
@@ -326,8 +326,8 @@
       "missingVisuals": 0
     },
     {
-      "path": "practice/coding/java/01-Java-coding.md",
-      "questions": 14,
+      "path": "practice/coding/java/01-core-java-coding.md",
+      "questions": 6,
       "followUps": 0,
       "notes": 0,
       "roles": 0,
@@ -337,8 +337,8 @@
       "missingVisuals": 0
     },
     {
-      "path": "practice/coding/java/01-core-java-coding.md",
-      "questions": 6,
+      "path": "practice/coding/java/01-Java-coding.md",
+      "questions": 14,
       "followUps": 0,
       "notes": 0,
       "roles": 0,
@@ -352,17 +352,6 @@
       "questions": 6,
       "followUps": 0,
       "notes": 0,
-      "roles": 0,
-      "terms": 0,
-      "roadmaps": 0,
-      "withoutAnswer": 0,
-      "missingVisuals": 0
-    },
-    {
-      "path": "roadmap/README.md",
-      "questions": 0,
-      "followUps": 0,
-      "notes": 5,
       "roles": 0,
       "terms": 0,
       "roadmaps": 0,
@@ -458,13 +447,13 @@
       "missingVisuals": 0
     },
     {
-      "path": "roadmap/roles/README.md",
+      "path": "roadmap/README.md",
       "questions": 0,
       "followUps": 0,
-      "notes": 0,
+      "notes": 5,
       "roles": 0,
       "terms": 0,
-      "roadmaps": 1,
+      "roadmaps": 0,
       "withoutAnswer": 0,
       "missingVisuals": 0
     },
@@ -898,6 +887,17 @@
       "missingVisuals": 0
     },
     {
+      "path": "roadmap/roles/README.md",
+      "questions": 0,
+      "followUps": 0,
+      "notes": 0,
+      "roles": 0,
+      "terms": 0,
+      "roadmaps": 1,
+      "withoutAnswer": 0,
+      "missingVisuals": 0
+    },
+    {
       "path": "roadmap/roles/release-build-engineer.md",
       "questions": 0,
       "followUps": 0,
@@ -954,17 +954,6 @@
     },
     {
       "path": "roadmap/roles/ui-ux-designer.md",
-      "questions": 0,
-      "followUps": 0,
-      "notes": 0,
-      "roles": 0,
-      "terms": 0,
-      "roadmaps": 1,
-      "withoutAnswer": 0,
-      "missingVisuals": 0
-    },
-    {
-      "path": "roadmap/topics/README.md",
       "questions": 0,
       "followUps": 0,
       "notes": 0,
@@ -1086,6 +1075,17 @@
     },
     {
       "path": "roadmap/topics/react.md",
+      "questions": 0,
+      "followUps": 0,
+      "notes": 0,
+      "roles": 0,
+      "terms": 0,
+      "roadmaps": 1,
+      "withoutAnswer": 0,
+      "missingVisuals": 0
+    },
+    {
+      "path": "roadmap/topics/README.md",
       "questions": 0,
       "followUps": 0,
       "notes": 0,
@@ -30096,516 +30096,6 @@
       "contentHash": "3eed2a0dff625884"
     },
     {
-      "id": "practice/coding/java/01-Java-coding.md#merge-two-arrays-alternately",
-      "kind": "question",
-      "parentId": null,
-      "question": "Merge Two Arrays Alternately",
-      "prompt": "> ```java\n> // INPUT\n> int[] x = {6, 4, 8, 3, 5};\n> int[] y = {4, 5, 1, 3, 8};\n>\n> // OUTPUT\n> int[] k = {4, 6, 5, 4, 1, 8, 3, 3, 8, 5};\n> ```",
-      "answer": "```java\nList<Integer> list = new ArrayList<>();\n\nfor (int i = 0; i < x.length; i++) {\n    list.add(y[i]);  // auto-boxing int → Integer\n    list.add(x[i]);\n}\n\nint[] k = list.stream()\n              .mapToInt(Integer::intValue)\n              .toArray();\n```",
-      "summary": "",
-      "codeBlocks": [
-        {
-          "language": "java",
-          "code": "// INPUT\nint[] x = {6, 4, 8, 3, 5};\nint[] y = {4, 5, 1, 3, 8};\n\n// OUTPUT\nint[] k = {4, 6, 5, 4, 1, 8, 3, 3, 8, 5};"
-        },
-        {
-          "language": "java",
-          "code": "List<Integer> list = new ArrayList<>();\n\nfor (int i = 0; i < x.length; i++) {\n    list.add(y[i]);  // auto-boxing int → Integer\n    list.add(x[i]);\n}\n\nint[] k = list.stream()\n              .mapToInt(Integer::intValue)\n              .toArray();"
-        }
-      ],
-      "visuals": [],
-      "contentType": "practice",
-      "domain": "coding",
-      "topics": [
-        "java"
-      ],
-      "section": [],
-      "difficulty": null,
-      "keywords": [
-        "merge",
-        "two",
-        "arrays",
-        "alternately",
-        "java"
-      ],
-      "source": {
-        "path": "practice/coding/java/01-Java-coding.md",
-        "startLine": 1,
-        "endLine": 25
-      },
-      "contentHash": "9266c552ac093af7"
-    },
-    {
-      "id": "practice/coding/java/01-Java-coding.md#reverse-an-array",
-      "kind": "question",
-      "parentId": null,
-      "question": "Reverse an Array",
-      "prompt": null,
-      "answer": "```java\nint[] arr = {1, 2, 3, 4};\n\nSystem.out.println(Arrays.toString(arr)); // [1,2,3,4]\nfor(int i=0,j=arr.length -1;i<j;i++,j--) {\n  int temp = arr[i];\n  arr[i] = arr[j];\n  arr[j]=temp;\n}\nSystem.out.println(Arrays.toString(arr)); // [4,3,2,1]\n\n/* ---- Works only for object arrays, not primitives.---- */\nInteger[] arr = {1, 2, 3};\nSystem.out.println(Arrays.toString(arr)); // [1,2,3,4]\nCollections.reverse(Arrays.asList(arr));\nSystem.out.println(Arrays.toString(arr)); // [4,3,2,1]\n```",
-      "summary": "",
-      "codeBlocks": [
-        {
-          "language": "java",
-          "code": "int[] arr = {1, 2, 3, 4};\n\nSystem.out.println(Arrays.toString(arr)); // [1,2,3,4]\nfor(int i=0,j=arr.length -1;i<j;i++,j--) {\n  int temp = arr[i];\n  arr[i] = arr[j];\n  arr[j]=temp;\n}\nSystem.out.println(Arrays.toString(arr)); // [4,3,2,1]\n\n/* ---- Works only for object arrays, not primitives.---- */\nInteger[] arr = {1, 2, 3};\nSystem.out.println(Arrays.toString(arr)); // [1,2,3,4]\nCollections.reverse(Arrays.asList(arr));\nSystem.out.println(Arrays.toString(arr)); // [4,3,2,1]"
-        }
-      ],
-      "visuals": [],
-      "contentType": "practice",
-      "domain": "coding",
-      "topics": [
-        "java"
-      ],
-      "section": [],
-      "difficulty": null,
-      "keywords": [
-        "reverse",
-        "array",
-        "java"
-      ],
-      "source": {
-        "path": "practice/coding/java/01-Java-coding.md",
-        "startLine": 27,
-        "endLine": 47
-      },
-      "contentHash": "f941e25717ef9c29"
-    },
-    {
-      "id": "practice/coding/java/01-Java-coding.md#find-first-non-repeating-character",
-      "kind": "question",
-      "parentId": null,
-      "question": "Find First Non-Repeating Character",
-      "prompt": "> Input: \"swiss\"\n> Output: 'w'",
-      "answer": "```java\npublic static Character firstNonRepeating(String input) {\n    Map<Character, Long> countMap =\n            input.chars()\n                 .mapToObj(c -> (char) c)\n                 .collect(Collectors.groupingBy(\n                         Function.identity(),\n                         LinkedHashMap::new,\n                         Collectors.counting()\n                 ));\n\n    return countMap.entrySet()\n                   .stream()\n                   .filter(e -> e.getValue() == 1)\n                   .map(Map.Entry::getKey)\n                   .findFirst()\n                   .orElse(null);\n}\n```",
-      "summary": "",
-      "codeBlocks": [
-        {
-          "language": "java",
-          "code": "public static Character firstNonRepeating(String input) {\n    Map<Character, Long> countMap =\n            input.chars()\n                 .mapToObj(c -> (char) c)\n                 .collect(Collectors.groupingBy(\n                         Function.identity(),\n                         LinkedHashMap::new,\n                         Collectors.counting()\n                 ));\n\n    return countMap.entrySet()\n                   .stream()\n                   .filter(e -> e.getValue() == 1)\n                   .map(Map.Entry::getKey)\n                   .findFirst()\n                   .orElse(null);\n}"
-        }
-      ],
-      "visuals": [],
-      "contentType": "practice",
-      "domain": "coding",
-      "topics": [
-        "java"
-      ],
-      "section": [],
-      "difficulty": null,
-      "keywords": [
-        "find",
-        "first",
-        "non-repeating",
-        "character",
-        "java"
-      ],
-      "source": {
-        "path": "practice/coding/java/01-Java-coding.md",
-        "startLine": 49,
-        "endLine": 74
-      },
-      "contentHash": "b8f0a1c34d2f593a"
-    },
-    {
-      "id": "practice/coding/java/01-Java-coding.md#remove-duplicates-from-a-list-preserve-order",
-      "kind": "question",
-      "parentId": null,
-      "question": "Remove Duplicates from a List (Preserve Order)",
-      "prompt": null,
-      "answer": "```java\npublic static List<Integer> removeDuplicates(List<Integer> list) {\n    return new ArrayList<>(new LinkedHashSet<>(list));\n}\n\n// OR\n\nSet<Integer> set = list\n                    .stream()\n                    .collect(Collectors.toCollection(LinkedHashSet::new))\n```",
-      "summary": "",
-      "codeBlocks": [
-        {
-          "language": "java",
-          "code": "public static List<Integer> removeDuplicates(List<Integer> list) {\n    return new ArrayList<>(new LinkedHashSet<>(list));\n}\n\n// OR\n\nSet<Integer> set = list\n                    .stream()\n                    .collect(Collectors.toCollection(LinkedHashSet::new))"
-        }
-      ],
-      "visuals": [],
-      "contentType": "practice",
-      "domain": "coding",
-      "topics": [
-        "java"
-      ],
-      "section": [],
-      "difficulty": null,
-      "keywords": [
-        "remove",
-        "duplicates",
-        "list",
-        "preserve",
-        "order",
-        "java"
-      ],
-      "source": {
-        "path": "practice/coding/java/01-Java-coding.md",
-        "startLine": 78,
-        "endLine": 92
-      },
-      "contentHash": "1d4ca9c2ee7ab9e3"
-    },
-    {
-      "id": "practice/coding/java/01-Java-coding.md#count-word-occurrences",
-      "kind": "question",
-      "parentId": null,
-      "question": "Count Word Occurrences",
-      "prompt": "> Input: \"java spring java angular spring java\"",
-      "answer": "```java\npublic static Map<String, Long> wordCount(String input) {\n    return Arrays.stream(input.split(\" \"))\n            .collect(Collectors.groupingBy(\n                    word -> word,\n                    LinkedHashMap::new,\n                    Collectors.counting()\n            ));\n}\n```",
-      "summary": "",
-      "codeBlocks": [
-        {
-          "language": "java",
-          "code": "public static Map<String, Long> wordCount(String input) {\n    return Arrays.stream(input.split(\" \"))\n            .collect(Collectors.groupingBy(\n                    word -> word,\n                    LinkedHashMap::new,\n                    Collectors.counting()\n            ));\n}"
-        }
-      ],
-      "visuals": [],
-      "contentType": "practice",
-      "domain": "coding",
-      "topics": [
-        "java"
-      ],
-      "section": [],
-      "difficulty": null,
-      "keywords": [
-        "count",
-        "word",
-        "occurrences",
-        "java"
-      ],
-      "source": {
-        "path": "practice/coding/java/01-Java-coding.md",
-        "startLine": 96,
-        "endLine": 111
-      },
-      "contentHash": "bbedd913aef8ffd1"
-    },
-    {
-      "id": "practice/coding/java/01-Java-coding.md#check-if-string-is-palindrome-ignore-case-spaces",
-      "kind": "question",
-      "parentId": null,
-      "question": "Check if String is Palindrome (Ignore Case & Spaces)",
-      "prompt": null,
-      "answer": "```java\npublic static boolean isPalindrome(String s) {\n    String cleaned = s.replaceAll(\"[^a-zA-Z0-9]\", \"\").toLowerCase();\n    return new StringBuilder(cleaned).reverse().toString().equals(cleaned);\n}\n```",
-      "summary": "",
-      "codeBlocks": [
-        {
-          "language": "java",
-          "code": "public static boolean isPalindrome(String s) {\n    String cleaned = s.replaceAll(\"[^a-zA-Z0-9]\", \"\").toLowerCase();\n    return new StringBuilder(cleaned).reverse().toString().equals(cleaned);\n}"
-        }
-      ],
-      "visuals": [],
-      "contentType": "practice",
-      "domain": "coding",
-      "topics": [
-        "java"
-      ],
-      "section": [],
-      "difficulty": null,
-      "keywords": [
-        "check",
-        "string",
-        "palindrome",
-        "ignore",
-        "case",
-        "spaces",
-        "java"
-      ],
-      "source": {
-        "path": "practice/coding/java/01-Java-coding.md",
-        "startLine": 115,
-        "endLine": 124
-      },
-      "contentHash": "149a8c7356f83e77"
-    },
-    {
-      "id": "practice/coding/java/01-Java-coding.md#find-second-highest-number-in-array",
-      "kind": "question",
-      "parentId": null,
-      "question": "Find Second Highest Number in Array",
-      "prompt": null,
-      "answer": "```java\npublic static int secondHighest(int[] arr) {\n    int first = Integer.MIN_VALUE;\n    int second = Integer.MIN_VALUE;\n\n    for (int num : arr) {\n        if (num > first) {\n            second = first;\n            first = num;\n        } else if (num > second && num != first) {\n            second = num;\n        }\n    }\n    return second;\n}\n```",
-      "summary": "",
-      "codeBlocks": [
-        {
-          "language": "java",
-          "code": "public static int secondHighest(int[] arr) {\n    int first = Integer.MIN_VALUE;\n    int second = Integer.MIN_VALUE;\n\n    for (int num : arr) {\n        if (num > first) {\n            second = first;\n            first = num;\n        } else if (num > second && num != first) {\n            second = num;\n        }\n    }\n    return second;\n}"
-        }
-      ],
-      "visuals": [],
-      "contentType": "practice",
-      "domain": "coding",
-      "topics": [
-        "java"
-      ],
-      "section": [],
-      "difficulty": null,
-      "keywords": [
-        "find",
-        "second",
-        "highest",
-        "number",
-        "array",
-        "java"
-      ],
-      "source": {
-        "path": "practice/coding/java/01-Java-coding.md",
-        "startLine": 128,
-        "endLine": 147
-      },
-      "contentHash": "9b69a86ad0839e47"
-    },
-    {
-      "id": "practice/coding/java/01-Java-coding.md#thread-safe-counter",
-      "kind": "question",
-      "parentId": null,
-      "question": "Thread-Safe Counter",
-      "prompt": null,
-      "answer": "```java\nclass Counter {\n    private AtomicInteger count = new AtomicInteger(0);\n\n    public void increment() {\n        count.incrementAndGet();\n    }\n\n    public int getValue() {\n        return count.get();\n    }\n}\n```",
-      "summary": "",
-      "codeBlocks": [
-        {
-          "language": "java",
-          "code": "class Counter {\n    private AtomicInteger count = new AtomicInteger(0);\n\n    public void increment() {\n        count.incrementAndGet();\n    }\n\n    public int getValue() {\n        return count.get();\n    }\n}"
-        }
-      ],
-      "visuals": [],
-      "contentType": "practice",
-      "domain": "coding",
-      "topics": [
-        "java"
-      ],
-      "section": [],
-      "difficulty": null,
-      "keywords": [
-        "thread-safe",
-        "counter",
-        "java"
-      ],
-      "source": {
-        "path": "practice/coding/java/01-Java-coding.md",
-        "startLine": 151,
-        "endLine": 167
-      },
-      "contentHash": "f5f1a2f2951ab67f"
-    },
-    {
-      "id": "practice/coding/java/01-Java-coding.md#reverse-words-in-a-sentence",
-      "kind": "question",
-      "parentId": null,
-      "question": "Reverse Words in a Sentence",
-      "prompt": "> Input: \"Java is powerful\"\n> Output: \"powerful is Java\"",
-      "answer": "```java\npublic static String reverseWords(String s) {\n    String[] words = s.split(\" \");\n    Collections.reverse(Arrays.asList(words));\n    return String.join(\" \", words);\n}\n```",
-      "summary": "",
-      "codeBlocks": [
-        {
-          "language": "java",
-          "code": "public static String reverseWords(String s) {\n    String[] words = s.split(\" \");\n    Collections.reverse(Arrays.asList(words));\n    return String.join(\" \", words);\n}"
-        }
-      ],
-      "visuals": [],
-      "contentType": "practice",
-      "domain": "coding",
-      "topics": [
-        "java"
-      ],
-      "section": [],
-      "difficulty": null,
-      "keywords": [
-        "reverse",
-        "words",
-        "sentence",
-        "java"
-      ],
-      "source": {
-        "path": "practice/coding/java/01-Java-coding.md",
-        "startLine": 171,
-        "endLine": 184
-      },
-      "contentHash": "b4634e90bc7d35ba"
-    },
-    {
-      "id": "practice/coding/java/01-Java-coding.md#reverse-a-linkedlist",
-      "kind": "question",
-      "parentId": null,
-      "question": "Reverse a LinkedList",
-      "prompt": null,
-      "answer": "```java\npublic class Main {\n    public static void main(String[] args) {\n\n        Node node = new Node(1);                 // create head node\n        node.next = new Node(1);                 // link second node\n        node.next.next = new Node(1);            // link third node\n        node.next.next.next = new Node(1);       // link fourth node\n\n        printNode(node);                         // print original list\n\n        node = reverse(node);                    // update head after reversal\n\n        printNode(node);                         // print reversed list\n    }\n\n    static void printNode(Node node) {\n        Node curr = node;                        // start traversal from head\n        while (curr != null) {                   // traverse till end of list\n            System.out.println(curr.data);       // print current node data\n            curr = curr.next;                    // move to next node\n        }\n    }\n\n    static Node reverse(Node node) {\n        Node prev = null;                        // will become new head\n        Node curr = node;                        // start from current head\n\n        while (curr != null) {                   // iterate till list ends\n            Node next = curr.next;               // store next node\n            curr.next = prev;                    // reverse the link\n            prev = curr;                         // move prev forward\n            curr = next;                         // move curr forward\n        }\n        return prev;                             // return new head\n    }\n}\n\nclass Node {\n    int data;\n    Node next;\n\n    Node(int data) {\n        this.data = data;                        // store node value\n        this.next = null;                        // initialize next as null\n    }\n}\n```",
-      "summary": "",
-      "codeBlocks": [
-        {
-          "language": "java",
-          "code": "public class Main {\n    public static void main(String[] args) {\n\n        Node node = new Node(1);                 // create head node\n        node.next = new Node(1);                 // link second node\n        node.next.next = new Node(1);            // link third node\n        node.next.next.next = new Node(1);       // link fourth node\n\n        printNode(node);                         // print original list\n\n        node = reverse(node);                    // update head after reversal\n\n        printNode(node);                         // print reversed list\n    }\n\n    static void printNode(Node node) {\n        Node curr = node;                        // start traversal from head\n        while (curr != null) {                   // traverse till end of list\n            System.out.println(curr.data);       // print current node data\n            curr = curr.next;                    // move to next node\n        }\n    }\n\n    static Node reverse(Node node) {\n        Node prev = null;                        // will become new head\n        Node curr = node;                        // start from current head\n\n        while (curr != null) {                   // iterate till list ends\n            Node next = curr.next;               // store next node\n            curr.next = prev;                    // reverse the link\n            prev = curr;                         // move prev forward\n            curr = next;                         // move curr forward\n        }\n        return prev;                             // return new head\n    }\n}\n\nclass Node {\n    int data;\n    Node next;\n\n    Node(int data) {\n        this.data = data;                        // store node value\n        this.next = null;                        // initialize next as null\n    }\n}"
-        }
-      ],
-      "visuals": [],
-      "contentType": "practice",
-      "domain": "coding",
-      "topics": [
-        "java"
-      ],
-      "section": [],
-      "difficulty": null,
-      "keywords": [
-        "reverse",
-        "linkedlist",
-        "java"
-      ],
-      "source": {
-        "path": "practice/coding/java/01-Java-coding.md",
-        "startLine": 188,
-        "endLine": 239
-      },
-      "contentHash": "9b2700acac789bef"
-    },
-    {
-      "id": "practice/coding/java/01-Java-coding.md#employee-department-related-questions",
-      "kind": "question",
-      "parentId": null,
-      "question": "Employee–Department Related Questions",
-      "prompt": "> You are given two classes, `Employee` and `Department`.\n> Each department references employees using `empId`.\n> Write a program to:\n>\n> 1. Find the total number of employees\n> 2. Find the total number of employees grouped by department name\n> 3. Identify the department with the lowest number of employees\n> 4. Identify the department with the highest number of employees\n> 5. Calculate the average employee score",
-      "answer": "```java\n/* ---- Model Classes ----*/\nclass Employee {\n    String empId;\n    String empName;\n    int empScore;\n}\n\nclass Department {\n    String depId;\n    String depName;\n    String empId; // Foreign key reference\n}\n\n\n/* ---- Total Number of Employees ----*/\nint totalEmployees = employees.size(); // Direct count\n\n/* ---- Employees per Department ----*/\nMap<String, Long> empCountByDept =\n    departments.stream()\n        .collect(Collectors.groupingBy(\n            d -> d.depName,\n            Collectors.counting()\n        )); // Group by department name\n\n/* ---- Department with Lowest Employees ----*/\nString minDept =\n    empCountByDept.entrySet()\n        .stream()\n        .min(Map.Entry.comparingByValue())\n        .get()\n        .getKey(); // Lowest count department\n\n/* ---- Department with Highest Employees ----*/\nString maxDept =\n    empCountByDept.entrySet()\n        .stream()\n        .max(Map.Entry.comparingByValue())\n        .get()\n        .getKey(); // Highest count department\n\n/* ---- Average Employee Score ----*/\ndouble avgScore =\n    employees.stream()\n        .mapToInt(e -> e.empScore)\n        .average()\n        .orElse(0); // Handles empty list safely\n```",
-      "summary": "",
-      "codeBlocks": [
-        {
-          "language": "java",
-          "code": "/* ---- Model Classes ----*/\nclass Employee {\n    String empId;\n    String empName;\n    int empScore;\n}\n\nclass Department {\n    String depId;\n    String depName;\n    String empId; // Foreign key reference\n}\n\n\n/* ---- Total Number of Employees ----*/\nint totalEmployees = employees.size(); // Direct count\n\n/* ---- Employees per Department ----*/\nMap<String, Long> empCountByDept =\n    departments.stream()\n        .collect(Collectors.groupingBy(\n            d -> d.depName,\n            Collectors.counting()\n        )); // Group by department name\n\n/* ---- Department with Lowest Employees ----*/\nString minDept =\n    empCountByDept.entrySet()\n        .stream()\n        .min(Map.Entry.comparingByValue())\n        .get()\n        .getKey(); // Lowest count department\n\n/* ---- Department with Highest Employees ----*/\nString maxDept =\n    empCountByDept.entrySet()\n        .stream()\n        .max(Map.Entry.comparingByValue())\n        .get()\n        .getKey(); // Highest count department\n\n/* ---- Average Employee Score ----*/\ndouble avgScore =\n    employees.stream()\n        .mapToInt(e -> e.empScore)\n        .average()\n        .orElse(0); // Handles empty list safely"
-        }
-      ],
-      "visuals": [],
-      "contentType": "practice",
-      "domain": "coding",
-      "topics": [
-        "java"
-      ],
-      "section": [],
-      "difficulty": null,
-      "keywords": [
-        "employee",
-        "department",
-        "related",
-        "questions",
-        "java"
-      ],
-      "source": {
-        "path": "practice/coding/java/01-Java-coding.md",
-        "startLine": 243,
-        "endLine": 305
-      },
-      "contentHash": "c465e426b02d2cbd"
-    },
-    {
-      "id": "practice/coding/java/01-Java-coding.md#perfect-numbers",
-      "kind": "question",
-      "parentId": null,
-      "question": "Perfect Numbers",
-      "prompt": "> Write a program to find all **perfect numbers** up to a given input `N`.\n> A perfect number is one where the sum of its positive divisors (excluding itself) equals the number.",
-      "answer": "```java\nstatic List<Integer> findPerfectNumbers(int n) {\n    List<Integer> result = new ArrayList<>();\n\n    for (int i = 2; i <= n; i++) {\n        int sum = 1; // 1 is always a divisor\n\n        for (int j = 2; j <= i / 2; j++) {\n            if (i % j == 0) sum += j; // Add divisor\n        }\n\n        if (sum == i) result.add(i); // Perfect number check\n    }\n    return result;\n}\n```\n\n**Time Complexity:** `O(n²)`\n**Output (1000):** `[6, 28, 496]`",
-      "summary": "Time Complexity: O(n²) Output (1000): [6, 28, 496]",
-      "codeBlocks": [
-        {
-          "language": "java",
-          "code": "static List<Integer> findPerfectNumbers(int n) {\n    List<Integer> result = new ArrayList<>();\n\n    for (int i = 2; i <= n; i++) {\n        int sum = 1; // 1 is always a divisor\n\n        for (int j = 2; j <= i / 2; j++) {\n            if (i % j == 0) sum += j; // Add divisor\n        }\n\n        if (sum == i) result.add(i); // Perfect number check\n    }\n    return result;\n}"
-        }
-      ],
-      "visuals": [],
-      "contentType": "practice",
-      "domain": "coding",
-      "topics": [
-        "java"
-      ],
-      "section": [],
-      "difficulty": null,
-      "keywords": [
-        "perfect",
-        "numbers",
-        "java"
-      ],
-      "source": {
-        "path": "practice/coding/java/01-Java-coding.md",
-        "startLine": 309,
-        "endLine": 334
-      },
-      "contentHash": "9f38e1adf4758977"
-    },
-    {
-      "id": "practice/coding/java/01-Java-coding.md#two-sum-problem",
-      "kind": "question",
-      "parentId": null,
-      "question": "Two Sum Problem",
-      "prompt": "> Given an integer array and a target value, find the indices of two numbers whose sum equals the target.\n> Implement:\n>\n> - A brute-force solution (O(n²))\n> - An optimized solution (O(n))",
-      "answer": "**Approach 1: Brute Force (O(n²))**\n\n```java\nstatic int[] twoSumBrute(int[] nums, int target) {\n    for (int i = 0; i < nums.length; i++) {\n        for (int j = i + 1; j < nums.length; j++) {\n            if (nums[i] + nums[j] == target)\n                return new int[]{i, j}; // Match found\n        }\n    }\n    return new int[]{};\n}\n```\n\n**Approach 2: Optimized (O(n)) – HashMap**\n\n```java\nstatic int[] twoSumOptimized(int[] nums, int target) {\n    Map<Integer, Integer> map = new HashMap<>();\n\n    for (int i = 0; i < nums.length; i++) {\n        int diff = target - nums[i];\n\n        if (map.containsKey(diff))\n            return new int[]{map.get(diff), i}; // Complement found\n\n        map.put(nums[i], i); // Store number with index\n    }\n    return new int[]{};\n}\n```",
-      "summary": "Approach 1: Brute Force (O(n²))",
-      "codeBlocks": [
-        {
-          "language": "java",
-          "code": "static int[] twoSumBrute(int[] nums, int target) {\n    for (int i = 0; i < nums.length; i++) {\n        for (int j = i + 1; j < nums.length; j++) {\n            if (nums[i] + nums[j] == target)\n                return new int[]{i, j}; // Match found\n        }\n    }\n    return new int[]{};\n}"
-        },
-        {
-          "language": "java",
-          "code": "static int[] twoSumOptimized(int[] nums, int target) {\n    Map<Integer, Integer> map = new HashMap<>();\n\n    for (int i = 0; i < nums.length; i++) {\n        int diff = target - nums[i];\n\n        if (map.containsKey(diff))\n            return new int[]{map.get(diff), i}; // Complement found\n\n        map.put(nums[i], i); // Store number with index\n    }\n    return new int[]{};\n}"
-        }
-      ],
-      "visuals": [],
-      "contentType": "practice",
-      "domain": "coding",
-      "topics": [
-        "java"
-      ],
-      "section": [],
-      "difficulty": null,
-      "keywords": [
-        "two",
-        "sum",
-        "problem",
-        "approach 1: brute force (o(n²))",
-        "approach 2: optimized (o(n)) – hashmap",
-        "java"
-      ],
-      "source": {
-        "path": "practice/coding/java/01-Java-coding.md",
-        "startLine": 338,
-        "endLine": 378
-      },
-      "contentHash": "65111f8a2ad10ba5"
-    },
-    {
-      "id": "practice/coding/java/01-Java-coding.md#count-segments-in-a-string",
-      "kind": "question",
-      "parentId": null,
-      "question": "Count Segments in a String",
-      "prompt": "> ```java\n> Input:  \"Hello, my name is John\"\n> Output: 5\n>\n> Input:  \"Hello\"\n> Output: 1\n> ```",
-      "answer": "```java\npublic int countSegments(String s) {\n    int count = 0;\n    for (int i = 0; i < s.length(); i++) {\n        if (s.charAt(i) != ' ' && (i == 0 || s.charAt(i - 1) == ' ')) {\n            count++;\n        }\n    }\n    return count;\n}\n```",
-      "summary": "",
-      "codeBlocks": [
-        {
-          "language": "java",
-          "code": "Input:  \"Hello, my name is John\"\nOutput: 5\n\nInput:  \"Hello\"\nOutput: 1"
-        },
-        {
-          "language": "java",
-          "code": "public int countSegments(String s) {\n    int count = 0;\n    for (int i = 0; i < s.length(); i++) {\n        if (s.charAt(i) != ' ' && (i == 0 || s.charAt(i - 1) == ' ')) {\n            count++;\n        }\n    }\n    return count;\n}"
-        }
-      ],
-      "visuals": [],
-      "contentType": "practice",
-      "domain": "coding",
-      "topics": [
-        "java"
-      ],
-      "section": [],
-      "difficulty": null,
-      "keywords": [
-        "count",
-        "segments",
-        "string",
-        "java"
-      ],
-      "source": {
-        "path": "practice/coding/java/01-Java-coding.md",
-        "startLine": 382,
-        "endLine": 404
-      },
-      "contentHash": "8c4db484f0d1a692"
-    },
-    {
       "id": "practice/coding/java/01-core-java-coding.md#what-will-be-the-output",
       "kind": "question",
       "parentId": null,
@@ -31122,6 +30612,516 @@
       "contentHash": "ca29d5d2e9331fa0"
     },
     {
+      "id": "practice/coding/java/01-Java-coding.md#merge-two-arrays-alternately",
+      "kind": "question",
+      "parentId": null,
+      "question": "Merge Two Arrays Alternately",
+      "prompt": "> ```java\n> // INPUT\n> int[] x = {6, 4, 8, 3, 5};\n> int[] y = {4, 5, 1, 3, 8};\n>\n> // OUTPUT\n> int[] k = {4, 6, 5, 4, 1, 8, 3, 3, 8, 5};\n> ```",
+      "answer": "```java\nList<Integer> list = new ArrayList<>();\n\nfor (int i = 0; i < x.length; i++) {\n    list.add(y[i]);  // auto-boxing int → Integer\n    list.add(x[i]);\n}\n\nint[] k = list.stream()\n              .mapToInt(Integer::intValue)\n              .toArray();\n```",
+      "summary": "",
+      "codeBlocks": [
+        {
+          "language": "java",
+          "code": "// INPUT\nint[] x = {6, 4, 8, 3, 5};\nint[] y = {4, 5, 1, 3, 8};\n\n// OUTPUT\nint[] k = {4, 6, 5, 4, 1, 8, 3, 3, 8, 5};"
+        },
+        {
+          "language": "java",
+          "code": "List<Integer> list = new ArrayList<>();\n\nfor (int i = 0; i < x.length; i++) {\n    list.add(y[i]);  // auto-boxing int → Integer\n    list.add(x[i]);\n}\n\nint[] k = list.stream()\n              .mapToInt(Integer::intValue)\n              .toArray();"
+        }
+      ],
+      "visuals": [],
+      "contentType": "practice",
+      "domain": "coding",
+      "topics": [
+        "java"
+      ],
+      "section": [],
+      "difficulty": null,
+      "keywords": [
+        "merge",
+        "two",
+        "arrays",
+        "alternately",
+        "java"
+      ],
+      "source": {
+        "path": "practice/coding/java/01-Java-coding.md",
+        "startLine": 1,
+        "endLine": 25
+      },
+      "contentHash": "9266c552ac093af7"
+    },
+    {
+      "id": "practice/coding/java/01-Java-coding.md#reverse-an-array",
+      "kind": "question",
+      "parentId": null,
+      "question": "Reverse an Array",
+      "prompt": null,
+      "answer": "```java\nint[] arr = {1, 2, 3, 4};\n\nSystem.out.println(Arrays.toString(arr)); // [1,2,3,4]\nfor(int i=0,j=arr.length -1;i<j;i++,j--) {\n  int temp = arr[i];\n  arr[i] = arr[j];\n  arr[j]=temp;\n}\nSystem.out.println(Arrays.toString(arr)); // [4,3,2,1]\n\n/* ---- Works only for object arrays, not primitives.---- */\nInteger[] arr = {1, 2, 3};\nSystem.out.println(Arrays.toString(arr)); // [1,2,3,4]\nCollections.reverse(Arrays.asList(arr));\nSystem.out.println(Arrays.toString(arr)); // [4,3,2,1]\n```",
+      "summary": "",
+      "codeBlocks": [
+        {
+          "language": "java",
+          "code": "int[] arr = {1, 2, 3, 4};\n\nSystem.out.println(Arrays.toString(arr)); // [1,2,3,4]\nfor(int i=0,j=arr.length -1;i<j;i++,j--) {\n  int temp = arr[i];\n  arr[i] = arr[j];\n  arr[j]=temp;\n}\nSystem.out.println(Arrays.toString(arr)); // [4,3,2,1]\n\n/* ---- Works only for object arrays, not primitives.---- */\nInteger[] arr = {1, 2, 3};\nSystem.out.println(Arrays.toString(arr)); // [1,2,3,4]\nCollections.reverse(Arrays.asList(arr));\nSystem.out.println(Arrays.toString(arr)); // [4,3,2,1]"
+        }
+      ],
+      "visuals": [],
+      "contentType": "practice",
+      "domain": "coding",
+      "topics": [
+        "java"
+      ],
+      "section": [],
+      "difficulty": null,
+      "keywords": [
+        "reverse",
+        "array",
+        "java"
+      ],
+      "source": {
+        "path": "practice/coding/java/01-Java-coding.md",
+        "startLine": 27,
+        "endLine": 47
+      },
+      "contentHash": "f941e25717ef9c29"
+    },
+    {
+      "id": "practice/coding/java/01-Java-coding.md#find-first-non-repeating-character",
+      "kind": "question",
+      "parentId": null,
+      "question": "Find First Non-Repeating Character",
+      "prompt": "> Input: \"swiss\"\n> Output: 'w'",
+      "answer": "```java\npublic static Character firstNonRepeating(String input) {\n    Map<Character, Long> countMap =\n            input.chars()\n                 .mapToObj(c -> (char) c)\n                 .collect(Collectors.groupingBy(\n                         Function.identity(),\n                         LinkedHashMap::new,\n                         Collectors.counting()\n                 ));\n\n    return countMap.entrySet()\n                   .stream()\n                   .filter(e -> e.getValue() == 1)\n                   .map(Map.Entry::getKey)\n                   .findFirst()\n                   .orElse(null);\n}\n```",
+      "summary": "",
+      "codeBlocks": [
+        {
+          "language": "java",
+          "code": "public static Character firstNonRepeating(String input) {\n    Map<Character, Long> countMap =\n            input.chars()\n                 .mapToObj(c -> (char) c)\n                 .collect(Collectors.groupingBy(\n                         Function.identity(),\n                         LinkedHashMap::new,\n                         Collectors.counting()\n                 ));\n\n    return countMap.entrySet()\n                   .stream()\n                   .filter(e -> e.getValue() == 1)\n                   .map(Map.Entry::getKey)\n                   .findFirst()\n                   .orElse(null);\n}"
+        }
+      ],
+      "visuals": [],
+      "contentType": "practice",
+      "domain": "coding",
+      "topics": [
+        "java"
+      ],
+      "section": [],
+      "difficulty": null,
+      "keywords": [
+        "find",
+        "first",
+        "non-repeating",
+        "character",
+        "java"
+      ],
+      "source": {
+        "path": "practice/coding/java/01-Java-coding.md",
+        "startLine": 49,
+        "endLine": 74
+      },
+      "contentHash": "b8f0a1c34d2f593a"
+    },
+    {
+      "id": "practice/coding/java/01-Java-coding.md#remove-duplicates-from-a-list-preserve-order",
+      "kind": "question",
+      "parentId": null,
+      "question": "Remove Duplicates from a List (Preserve Order)",
+      "prompt": null,
+      "answer": "```java\npublic static List<Integer> removeDuplicates(List<Integer> list) {\n    return new ArrayList<>(new LinkedHashSet<>(list));\n}\n\n// OR\n\nSet<Integer> set = list\n                    .stream()\n                    .collect(Collectors.toCollection(LinkedHashSet::new))\n```",
+      "summary": "",
+      "codeBlocks": [
+        {
+          "language": "java",
+          "code": "public static List<Integer> removeDuplicates(List<Integer> list) {\n    return new ArrayList<>(new LinkedHashSet<>(list));\n}\n\n// OR\n\nSet<Integer> set = list\n                    .stream()\n                    .collect(Collectors.toCollection(LinkedHashSet::new))"
+        }
+      ],
+      "visuals": [],
+      "contentType": "practice",
+      "domain": "coding",
+      "topics": [
+        "java"
+      ],
+      "section": [],
+      "difficulty": null,
+      "keywords": [
+        "remove",
+        "duplicates",
+        "list",
+        "preserve",
+        "order",
+        "java"
+      ],
+      "source": {
+        "path": "practice/coding/java/01-Java-coding.md",
+        "startLine": 78,
+        "endLine": 92
+      },
+      "contentHash": "1d4ca9c2ee7ab9e3"
+    },
+    {
+      "id": "practice/coding/java/01-Java-coding.md#count-word-occurrences",
+      "kind": "question",
+      "parentId": null,
+      "question": "Count Word Occurrences",
+      "prompt": "> Input: \"java spring java angular spring java\"",
+      "answer": "```java\npublic static Map<String, Long> wordCount(String input) {\n    return Arrays.stream(input.split(\" \"))\n            .collect(Collectors.groupingBy(\n                    word -> word,\n                    LinkedHashMap::new,\n                    Collectors.counting()\n            ));\n}\n```",
+      "summary": "",
+      "codeBlocks": [
+        {
+          "language": "java",
+          "code": "public static Map<String, Long> wordCount(String input) {\n    return Arrays.stream(input.split(\" \"))\n            .collect(Collectors.groupingBy(\n                    word -> word,\n                    LinkedHashMap::new,\n                    Collectors.counting()\n            ));\n}"
+        }
+      ],
+      "visuals": [],
+      "contentType": "practice",
+      "domain": "coding",
+      "topics": [
+        "java"
+      ],
+      "section": [],
+      "difficulty": null,
+      "keywords": [
+        "count",
+        "word",
+        "occurrences",
+        "java"
+      ],
+      "source": {
+        "path": "practice/coding/java/01-Java-coding.md",
+        "startLine": 96,
+        "endLine": 111
+      },
+      "contentHash": "bbedd913aef8ffd1"
+    },
+    {
+      "id": "practice/coding/java/01-Java-coding.md#check-if-string-is-palindrome-ignore-case-spaces",
+      "kind": "question",
+      "parentId": null,
+      "question": "Check if String is Palindrome (Ignore Case & Spaces)",
+      "prompt": null,
+      "answer": "```java\npublic static boolean isPalindrome(String s) {\n    String cleaned = s.replaceAll(\"[^a-zA-Z0-9]\", \"\").toLowerCase();\n    return new StringBuilder(cleaned).reverse().toString().equals(cleaned);\n}\n```",
+      "summary": "",
+      "codeBlocks": [
+        {
+          "language": "java",
+          "code": "public static boolean isPalindrome(String s) {\n    String cleaned = s.replaceAll(\"[^a-zA-Z0-9]\", \"\").toLowerCase();\n    return new StringBuilder(cleaned).reverse().toString().equals(cleaned);\n}"
+        }
+      ],
+      "visuals": [],
+      "contentType": "practice",
+      "domain": "coding",
+      "topics": [
+        "java"
+      ],
+      "section": [],
+      "difficulty": null,
+      "keywords": [
+        "check",
+        "string",
+        "palindrome",
+        "ignore",
+        "case",
+        "spaces",
+        "java"
+      ],
+      "source": {
+        "path": "practice/coding/java/01-Java-coding.md",
+        "startLine": 115,
+        "endLine": 124
+      },
+      "contentHash": "149a8c7356f83e77"
+    },
+    {
+      "id": "practice/coding/java/01-Java-coding.md#find-second-highest-number-in-array",
+      "kind": "question",
+      "parentId": null,
+      "question": "Find Second Highest Number in Array",
+      "prompt": null,
+      "answer": "```java\npublic static int secondHighest(int[] arr) {\n    int first = Integer.MIN_VALUE;\n    int second = Integer.MIN_VALUE;\n\n    for (int num : arr) {\n        if (num > first) {\n            second = first;\n            first = num;\n        } else if (num > second && num != first) {\n            second = num;\n        }\n    }\n    return second;\n}\n```",
+      "summary": "",
+      "codeBlocks": [
+        {
+          "language": "java",
+          "code": "public static int secondHighest(int[] arr) {\n    int first = Integer.MIN_VALUE;\n    int second = Integer.MIN_VALUE;\n\n    for (int num : arr) {\n        if (num > first) {\n            second = first;\n            first = num;\n        } else if (num > second && num != first) {\n            second = num;\n        }\n    }\n    return second;\n}"
+        }
+      ],
+      "visuals": [],
+      "contentType": "practice",
+      "domain": "coding",
+      "topics": [
+        "java"
+      ],
+      "section": [],
+      "difficulty": null,
+      "keywords": [
+        "find",
+        "second",
+        "highest",
+        "number",
+        "array",
+        "java"
+      ],
+      "source": {
+        "path": "practice/coding/java/01-Java-coding.md",
+        "startLine": 128,
+        "endLine": 147
+      },
+      "contentHash": "9b69a86ad0839e47"
+    },
+    {
+      "id": "practice/coding/java/01-Java-coding.md#thread-safe-counter",
+      "kind": "question",
+      "parentId": null,
+      "question": "Thread-Safe Counter",
+      "prompt": null,
+      "answer": "```java\nclass Counter {\n    private AtomicInteger count = new AtomicInteger(0);\n\n    public void increment() {\n        count.incrementAndGet();\n    }\n\n    public int getValue() {\n        return count.get();\n    }\n}\n```",
+      "summary": "",
+      "codeBlocks": [
+        {
+          "language": "java",
+          "code": "class Counter {\n    private AtomicInteger count = new AtomicInteger(0);\n\n    public void increment() {\n        count.incrementAndGet();\n    }\n\n    public int getValue() {\n        return count.get();\n    }\n}"
+        }
+      ],
+      "visuals": [],
+      "contentType": "practice",
+      "domain": "coding",
+      "topics": [
+        "java"
+      ],
+      "section": [],
+      "difficulty": null,
+      "keywords": [
+        "thread-safe",
+        "counter",
+        "java"
+      ],
+      "source": {
+        "path": "practice/coding/java/01-Java-coding.md",
+        "startLine": 151,
+        "endLine": 167
+      },
+      "contentHash": "f5f1a2f2951ab67f"
+    },
+    {
+      "id": "practice/coding/java/01-Java-coding.md#reverse-words-in-a-sentence",
+      "kind": "question",
+      "parentId": null,
+      "question": "Reverse Words in a Sentence",
+      "prompt": "> Input: \"Java is powerful\"\n> Output: \"powerful is Java\"",
+      "answer": "```java\npublic static String reverseWords(String s) {\n    String[] words = s.split(\" \");\n    Collections.reverse(Arrays.asList(words));\n    return String.join(\" \", words);\n}\n```",
+      "summary": "",
+      "codeBlocks": [
+        {
+          "language": "java",
+          "code": "public static String reverseWords(String s) {\n    String[] words = s.split(\" \");\n    Collections.reverse(Arrays.asList(words));\n    return String.join(\" \", words);\n}"
+        }
+      ],
+      "visuals": [],
+      "contentType": "practice",
+      "domain": "coding",
+      "topics": [
+        "java"
+      ],
+      "section": [],
+      "difficulty": null,
+      "keywords": [
+        "reverse",
+        "words",
+        "sentence",
+        "java"
+      ],
+      "source": {
+        "path": "practice/coding/java/01-Java-coding.md",
+        "startLine": 171,
+        "endLine": 184
+      },
+      "contentHash": "b4634e90bc7d35ba"
+    },
+    {
+      "id": "practice/coding/java/01-Java-coding.md#reverse-a-linkedlist",
+      "kind": "question",
+      "parentId": null,
+      "question": "Reverse a LinkedList",
+      "prompt": null,
+      "answer": "```java\npublic class Main {\n    public static void main(String[] args) {\n\n        Node node = new Node(1);                 // create head node\n        node.next = new Node(1);                 // link second node\n        node.next.next = new Node(1);            // link third node\n        node.next.next.next = new Node(1);       // link fourth node\n\n        printNode(node);                         // print original list\n\n        node = reverse(node);                    // update head after reversal\n\n        printNode(node);                         // print reversed list\n    }\n\n    static void printNode(Node node) {\n        Node curr = node;                        // start traversal from head\n        while (curr != null) {                   // traverse till end of list\n            System.out.println(curr.data);       // print current node data\n            curr = curr.next;                    // move to next node\n        }\n    }\n\n    static Node reverse(Node node) {\n        Node prev = null;                        // will become new head\n        Node curr = node;                        // start from current head\n\n        while (curr != null) {                   // iterate till list ends\n            Node next = curr.next;               // store next node\n            curr.next = prev;                    // reverse the link\n            prev = curr;                         // move prev forward\n            curr = next;                         // move curr forward\n        }\n        return prev;                             // return new head\n    }\n}\n\nclass Node {\n    int data;\n    Node next;\n\n    Node(int data) {\n        this.data = data;                        // store node value\n        this.next = null;                        // initialize next as null\n    }\n}\n```",
+      "summary": "",
+      "codeBlocks": [
+        {
+          "language": "java",
+          "code": "public class Main {\n    public static void main(String[] args) {\n\n        Node node = new Node(1);                 // create head node\n        node.next = new Node(1);                 // link second node\n        node.next.next = new Node(1);            // link third node\n        node.next.next.next = new Node(1);       // link fourth node\n\n        printNode(node);                         // print original list\n\n        node = reverse(node);                    // update head after reversal\n\n        printNode(node);                         // print reversed list\n    }\n\n    static void printNode(Node node) {\n        Node curr = node;                        // start traversal from head\n        while (curr != null) {                   // traverse till end of list\n            System.out.println(curr.data);       // print current node data\n            curr = curr.next;                    // move to next node\n        }\n    }\n\n    static Node reverse(Node node) {\n        Node prev = null;                        // will become new head\n        Node curr = node;                        // start from current head\n\n        while (curr != null) {                   // iterate till list ends\n            Node next = curr.next;               // store next node\n            curr.next = prev;                    // reverse the link\n            prev = curr;                         // move prev forward\n            curr = next;                         // move curr forward\n        }\n        return prev;                             // return new head\n    }\n}\n\nclass Node {\n    int data;\n    Node next;\n\n    Node(int data) {\n        this.data = data;                        // store node value\n        this.next = null;                        // initialize next as null\n    }\n}"
+        }
+      ],
+      "visuals": [],
+      "contentType": "practice",
+      "domain": "coding",
+      "topics": [
+        "java"
+      ],
+      "section": [],
+      "difficulty": null,
+      "keywords": [
+        "reverse",
+        "linkedlist",
+        "java"
+      ],
+      "source": {
+        "path": "practice/coding/java/01-Java-coding.md",
+        "startLine": 188,
+        "endLine": 239
+      },
+      "contentHash": "9b2700acac789bef"
+    },
+    {
+      "id": "practice/coding/java/01-Java-coding.md#employee-department-related-questions",
+      "kind": "question",
+      "parentId": null,
+      "question": "Employee–Department Related Questions",
+      "prompt": "> You are given two classes, `Employee` and `Department`.\n> Each department references employees using `empId`.\n> Write a program to:\n>\n> 1. Find the total number of employees\n> 2. Find the total number of employees grouped by department name\n> 3. Identify the department with the lowest number of employees\n> 4. Identify the department with the highest number of employees\n> 5. Calculate the average employee score",
+      "answer": "```java\n/* ---- Model Classes ----*/\nclass Employee {\n    String empId;\n    String empName;\n    int empScore;\n}\n\nclass Department {\n    String depId;\n    String depName;\n    String empId; // Foreign key reference\n}\n\n\n/* ---- Total Number of Employees ----*/\nint totalEmployees = employees.size(); // Direct count\n\n/* ---- Employees per Department ----*/\nMap<String, Long> empCountByDept =\n    departments.stream()\n        .collect(Collectors.groupingBy(\n            d -> d.depName,\n            Collectors.counting()\n        )); // Group by department name\n\n/* ---- Department with Lowest Employees ----*/\nString minDept =\n    empCountByDept.entrySet()\n        .stream()\n        .min(Map.Entry.comparingByValue())\n        .get()\n        .getKey(); // Lowest count department\n\n/* ---- Department with Highest Employees ----*/\nString maxDept =\n    empCountByDept.entrySet()\n        .stream()\n        .max(Map.Entry.comparingByValue())\n        .get()\n        .getKey(); // Highest count department\n\n/* ---- Average Employee Score ----*/\ndouble avgScore =\n    employees.stream()\n        .mapToInt(e -> e.empScore)\n        .average()\n        .orElse(0); // Handles empty list safely\n```",
+      "summary": "",
+      "codeBlocks": [
+        {
+          "language": "java",
+          "code": "/* ---- Model Classes ----*/\nclass Employee {\n    String empId;\n    String empName;\n    int empScore;\n}\n\nclass Department {\n    String depId;\n    String depName;\n    String empId; // Foreign key reference\n}\n\n\n/* ---- Total Number of Employees ----*/\nint totalEmployees = employees.size(); // Direct count\n\n/* ---- Employees per Department ----*/\nMap<String, Long> empCountByDept =\n    departments.stream()\n        .collect(Collectors.groupingBy(\n            d -> d.depName,\n            Collectors.counting()\n        )); // Group by department name\n\n/* ---- Department with Lowest Employees ----*/\nString minDept =\n    empCountByDept.entrySet()\n        .stream()\n        .min(Map.Entry.comparingByValue())\n        .get()\n        .getKey(); // Lowest count department\n\n/* ---- Department with Highest Employees ----*/\nString maxDept =\n    empCountByDept.entrySet()\n        .stream()\n        .max(Map.Entry.comparingByValue())\n        .get()\n        .getKey(); // Highest count department\n\n/* ---- Average Employee Score ----*/\ndouble avgScore =\n    employees.stream()\n        .mapToInt(e -> e.empScore)\n        .average()\n        .orElse(0); // Handles empty list safely"
+        }
+      ],
+      "visuals": [],
+      "contentType": "practice",
+      "domain": "coding",
+      "topics": [
+        "java"
+      ],
+      "section": [],
+      "difficulty": null,
+      "keywords": [
+        "employee",
+        "department",
+        "related",
+        "questions",
+        "java"
+      ],
+      "source": {
+        "path": "practice/coding/java/01-Java-coding.md",
+        "startLine": 243,
+        "endLine": 305
+      },
+      "contentHash": "c465e426b02d2cbd"
+    },
+    {
+      "id": "practice/coding/java/01-Java-coding.md#perfect-numbers",
+      "kind": "question",
+      "parentId": null,
+      "question": "Perfect Numbers",
+      "prompt": "> Write a program to find all **perfect numbers** up to a given input `N`.\n> A perfect number is one where the sum of its positive divisors (excluding itself) equals the number.",
+      "answer": "```java\nstatic List<Integer> findPerfectNumbers(int n) {\n    List<Integer> result = new ArrayList<>();\n\n    for (int i = 2; i <= n; i++) {\n        int sum = 1; // 1 is always a divisor\n\n        for (int j = 2; j <= i / 2; j++) {\n            if (i % j == 0) sum += j; // Add divisor\n        }\n\n        if (sum == i) result.add(i); // Perfect number check\n    }\n    return result;\n}\n```\n\n**Time Complexity:** `O(n²)`\n**Output (1000):** `[6, 28, 496]`",
+      "summary": "Time Complexity: O(n²) Output (1000): [6, 28, 496]",
+      "codeBlocks": [
+        {
+          "language": "java",
+          "code": "static List<Integer> findPerfectNumbers(int n) {\n    List<Integer> result = new ArrayList<>();\n\n    for (int i = 2; i <= n; i++) {\n        int sum = 1; // 1 is always a divisor\n\n        for (int j = 2; j <= i / 2; j++) {\n            if (i % j == 0) sum += j; // Add divisor\n        }\n\n        if (sum == i) result.add(i); // Perfect number check\n    }\n    return result;\n}"
+        }
+      ],
+      "visuals": [],
+      "contentType": "practice",
+      "domain": "coding",
+      "topics": [
+        "java"
+      ],
+      "section": [],
+      "difficulty": null,
+      "keywords": [
+        "perfect",
+        "numbers",
+        "java"
+      ],
+      "source": {
+        "path": "practice/coding/java/01-Java-coding.md",
+        "startLine": 309,
+        "endLine": 334
+      },
+      "contentHash": "9f38e1adf4758977"
+    },
+    {
+      "id": "practice/coding/java/01-Java-coding.md#two-sum-problem",
+      "kind": "question",
+      "parentId": null,
+      "question": "Two Sum Problem",
+      "prompt": "> Given an integer array and a target value, find the indices of two numbers whose sum equals the target.\n> Implement:\n>\n> - A brute-force solution (O(n²))\n> - An optimized solution (O(n))",
+      "answer": "**Approach 1: Brute Force (O(n²))**\n\n```java\nstatic int[] twoSumBrute(int[] nums, int target) {\n    for (int i = 0; i < nums.length; i++) {\n        for (int j = i + 1; j < nums.length; j++) {\n            if (nums[i] + nums[j] == target)\n                return new int[]{i, j}; // Match found\n        }\n    }\n    return new int[]{};\n}\n```\n\n**Approach 2: Optimized (O(n)) – HashMap**\n\n```java\nstatic int[] twoSumOptimized(int[] nums, int target) {\n    Map<Integer, Integer> map = new HashMap<>();\n\n    for (int i = 0; i < nums.length; i++) {\n        int diff = target - nums[i];\n\n        if (map.containsKey(diff))\n            return new int[]{map.get(diff), i}; // Complement found\n\n        map.put(nums[i], i); // Store number with index\n    }\n    return new int[]{};\n}\n```",
+      "summary": "Approach 1: Brute Force (O(n²))",
+      "codeBlocks": [
+        {
+          "language": "java",
+          "code": "static int[] twoSumBrute(int[] nums, int target) {\n    for (int i = 0; i < nums.length; i++) {\n        for (int j = i + 1; j < nums.length; j++) {\n            if (nums[i] + nums[j] == target)\n                return new int[]{i, j}; // Match found\n        }\n    }\n    return new int[]{};\n}"
+        },
+        {
+          "language": "java",
+          "code": "static int[] twoSumOptimized(int[] nums, int target) {\n    Map<Integer, Integer> map = new HashMap<>();\n\n    for (int i = 0; i < nums.length; i++) {\n        int diff = target - nums[i];\n\n        if (map.containsKey(diff))\n            return new int[]{map.get(diff), i}; // Complement found\n\n        map.put(nums[i], i); // Store number with index\n    }\n    return new int[]{};\n}"
+        }
+      ],
+      "visuals": [],
+      "contentType": "practice",
+      "domain": "coding",
+      "topics": [
+        "java"
+      ],
+      "section": [],
+      "difficulty": null,
+      "keywords": [
+        "two",
+        "sum",
+        "problem",
+        "approach 1: brute force (o(n²))",
+        "approach 2: optimized (o(n)) – hashmap",
+        "java"
+      ],
+      "source": {
+        "path": "practice/coding/java/01-Java-coding.md",
+        "startLine": 338,
+        "endLine": 378
+      },
+      "contentHash": "65111f8a2ad10ba5"
+    },
+    {
+      "id": "practice/coding/java/01-Java-coding.md#count-segments-in-a-string",
+      "kind": "question",
+      "parentId": null,
+      "question": "Count Segments in a String",
+      "prompt": "> ```java\n> Input:  \"Hello, my name is John\"\n> Output: 5\n>\n> Input:  \"Hello\"\n> Output: 1\n> ```",
+      "answer": "```java\npublic int countSegments(String s) {\n    int count = 0;\n    for (int i = 0; i < s.length(); i++) {\n        if (s.charAt(i) != ' ' && (i == 0 || s.charAt(i - 1) == ' ')) {\n            count++;\n        }\n    }\n    return count;\n}\n```",
+      "summary": "",
+      "codeBlocks": [
+        {
+          "language": "java",
+          "code": "Input:  \"Hello, my name is John\"\nOutput: 5\n\nInput:  \"Hello\"\nOutput: 1"
+        },
+        {
+          "language": "java",
+          "code": "public int countSegments(String s) {\n    int count = 0;\n    for (int i = 0; i < s.length(); i++) {\n        if (s.charAt(i) != ' ' && (i == 0 || s.charAt(i - 1) == ' ')) {\n            count++;\n        }\n    }\n    return count;\n}"
+        }
+      ],
+      "visuals": [],
+      "contentType": "practice",
+      "domain": "coding",
+      "topics": [
+        "java"
+      ],
+      "section": [],
+      "difficulty": null,
+      "keywords": [
+        "count",
+        "segments",
+        "string",
+        "java"
+      ],
+      "source": {
+        "path": "practice/coding/java/01-Java-coding.md",
+        "startLine": 382,
+        "endLine": 404
+      },
+      "contentHash": "8c4db484f0d1a692"
+    },
+    {
       "id": "practice/coding/sql/02-MySQL-coding.md#questions",
       "kind": "question",
       "parentId": null,
@@ -31327,149 +31327,6 @@
         "endLine": 150
       },
       "contentHash": "1228f98f4c25425f"
-    },
-    {
-      "id": "roadmap/README.md#developer-roadmap",
-      "kind": "note",
-      "parentId": null,
-      "question": "Developer Roadmap",
-      "prompt": null,
-      "answer": "A comprehensive, step-by-step roadmap for a Full-Stack Developer. Covers modern frontend, backend, DevOps, and performance practices using TypeScript, React, Next.js, NestJS, PostgreSQL, and Docker.",
-      "summary": "A comprehensive, step-by-step roadmap for a Full-Stack Developer. Covers modern frontend, backend, DevOps, and performance practices using TypeScript, React, Next.js, NestJS, PostgreSQL, and Docker.",
-      "codeBlocks": [],
-      "visuals": [],
-      "contentType": "roadmap",
-      "domain": "README.md",
-      "topics": [],
-      "section": [],
-      "difficulty": null,
-      "keywords": [
-        "developer",
-        "roadmap"
-      ],
-      "source": {
-        "path": "roadmap/README.md",
-        "startLine": 1,
-        "endLine": 3
-      },
-      "contentHash": "a2f26789e2087ab9"
-    },
-    {
-      "id": "roadmap/README.md#roadmap-areas",
-      "kind": "note",
-      "parentId": null,
-      "question": "Roadmap Areas",
-      "prompt": null,
-      "answer": "- [Foundations](foundations/README.md)\n- [Frontend](frontend/README.md)\n- [Backend](backend/README.md)\n- [Database](database/README.md)\n- [DevOps / Infrastructure](devops/README.md)\n- [Performance, SEO and Best Practices](architecture/README.md)\n- [Cloud](cloud/README.md)\n- [Networking](networking/README.md)",
-      "summary": "Foundations Frontend Backend Database DevOps / Infrastructure Performance, SEO and Best Practices Cloud Networking",
-      "codeBlocks": [],
-      "visuals": [],
-      "contentType": "roadmap",
-      "domain": "README.md",
-      "topics": [],
-      "section": [
-        "Developer Roadmap"
-      ],
-      "difficulty": null,
-      "keywords": [
-        "roadmap",
-        "areas"
-      ],
-      "source": {
-        "path": "roadmap/README.md",
-        "startLine": 5,
-        "endLine": 14
-      },
-      "contentHash": "8a8c4173fce2e354"
-    },
-    {
-      "id": "roadmap/README.md#study-paths-and-role-roadmaps-generated-drafts",
-      "kind": "note",
-      "parentId": null,
-      "question": "Study paths and role roadmaps (generated drafts)",
-      "prompt": null,
-      "answer": "- [Where to start: learning tracks](topics/README.md)\n- [Role roadmaps](roles/README.md)\n- [Content gaps report](../scripts/reports/content-gaps.md)",
-      "summary": "Where to start: learning tracks Role roadmaps Content gaps report",
-      "codeBlocks": [],
-      "visuals": [],
-      "contentType": "roadmap",
-      "domain": "README.md",
-      "topics": [],
-      "section": [
-        "Developer Roadmap",
-        "Roadmap Areas"
-      ],
-      "difficulty": null,
-      "keywords": [
-        "study",
-        "paths",
-        "role",
-        "roadmaps",
-        "generated",
-        "drafts"
-      ],
-      "source": {
-        "path": "roadmap/README.md",
-        "startLine": 16,
-        "endLine": 20
-      },
-      "contentHash": "c9f4c9b44c35ff85"
-    },
-    {
-      "id": "roadmap/README.md#projects",
-      "kind": "note",
-      "parentId": null,
-      "question": "Projects",
-      "prompt": null,
-      "answer": "- [Project Suggestions](../projects/README.md)",
-      "summary": "Project Suggestions",
-      "codeBlocks": [],
-      "visuals": [],
-      "contentType": "roadmap",
-      "domain": "README.md",
-      "topics": [],
-      "section": [
-        "Developer Roadmap",
-        "Study paths and role roadmaps (generated drafts)"
-      ],
-      "difficulty": null,
-      "keywords": [
-        "projects"
-      ],
-      "source": {
-        "path": "roadmap/README.md",
-        "startLine": 22,
-        "endLine": 24
-      },
-      "contentHash": "e18f70dcbfadb031"
-    },
-    {
-      "id": "roadmap/README.md#source",
-      "kind": "note",
-      "parentId": null,
-      "question": "Source",
-      "prompt": null,
-      "answer": "Content migrated from `_migration/Fullstack-Roadmap/README.md`.",
-      "summary": "Content migrated from _migration/Fullstack-Roadmap/README.md.",
-      "codeBlocks": [],
-      "visuals": [],
-      "contentType": "roadmap",
-      "domain": "README.md",
-      "topics": [],
-      "section": [
-        "Developer Roadmap",
-        "Projects"
-      ],
-      "difficulty": null,
-      "keywords": [
-        "source"
-      ],
-      "source": {
-        "path": "roadmap/README.md",
-        "startLine": 26,
-        "endLine": 28
-      },
-      "contentHash": "e9ee1639e199f7c1"
     },
     {
       "id": "roadmap/architecture/README.md#performance-seo-best-practices",
@@ -32244,41 +32101,147 @@
       "contentHash": "26fb6e46501cba28"
     },
     {
-      "id": "roadmap/roles/README.md#roadmap",
-      "kind": "roadmap",
+      "id": "roadmap/README.md#developer-roadmap",
+      "kind": "note",
       "parentId": null,
-      "question": "Role roadmaps",
+      "question": "Developer Roadmap",
       "prompt": null,
-      "answer": "## Data & AI\n\n- [AI / LLM Engineer](../roles/ai-llm-engineer.md)\n- [Analytics Engineer](../roles/analytics-engineer.md)\n- [BI Developer](../roles/bi-developer.md)\n- [Data Analyst](../roles/data-analyst.md)\n- [Data Engineer](../roles/data-engineer.md)\n- [Data Scientist](../roles/data-scientist.md)\n- [Database Administrator](../roles/database-administrator.md)\n- [Machine Learning Engineer](../roles/machine-learning-engineer.md)\n- [MLOps Engineer](../roles/mlops-engineer.md)\n\n## AI-Era & Emerging Roles\n\n- [AI Agent Engineer](../roles/ai-agent-engineer.md)\n- [AI Automation Engineer](../roles/ai-automation-engineer.md)\n- [AI Evaluation Engineer](../roles/ai-evaluation-engineer.md)\n- [AI Infrastructure / LLMOps Engineer](../roles/ai-infrastructure-llmops-engineer.md)\n- [AI Product Manager](../roles/ai-product-manager.md)\n- [AI Solutions Architect](../roles/ai-solutions-architect.md)\n- [Developer Advocate](../roles/developer-advocate.md)\n- [Forward Deployed Engineer](../roles/forward-deployed-engineer.md)\n\n## Security\n\n- [Application Security / DevSecOps Engineer](../roles/application-security-devsecops-engineer.md)\n- [Cloud Security Engineer](../roles/cloud-security-engineer.md)\n\n## Quality & Testing\n\n- [Automation Test Engineer](../roles/automation-test-engineer.md)\n- [Manual QA / Test Engineer](../roles/manual-qa-test-engineer.md)\n- [Performance Test Engineer](../roles/performance-test-engineer.md)\n\n## Software Development\n\n- [Backend Developer](../roles/backend-developer.md)\n- [Blockchain Developer](../roles/blockchain-developer.md)\n- [ERP / CRM Developer](../roles/erp-crm-developer.md)\n- [Frontend Developer](../roles/frontend-developer.md)\n- [Full Stack Developer](../roles/full-stack-developer.md)\n- [Mainframe Developer](../roles/mainframe-developer.md)\n- [Mobile Developer](../roles/mobile-developer.md)\n\n## Business & Delivery\n\n- [Business Analyst](../roles/business-analyst.md)\n- [Customer Success Engineer](../roles/customer-success-engineer.md)\n- [Solutions / Sales Engineer](../roles/solutions-sales-engineer.md)\n- [Technical Writer](../roles/technical-writer.md)\n\n## Architecture & Leadership\n\n- [Cloud Architect](../roles/cloud-architect.md)\n- [Data Architect](../roles/data-architect.md)\n- [Solution Architect](../roles/solution-architect.md)\n\n## Cloud, DevOps & Infrastructure\n\n- [Cloud Engineer](../roles/cloud-engineer.md)\n- [DevOps Engineer](../roles/devops-engineer.md)\n- [FinOps Engineer / Analyst](../roles/finops-engineer-analyst.md)\n- [Platform Engineer](../roles/platform-engineer.md)\n- [Release / Build Engineer](../roles/release-build-engineer.md)\n- [Site Reliability Engineer](../roles/site-reliability-engineer.md)\n\n## Product & Design\n\n- [Product Manager](../roles/product-manager.md)\n- [UI/UX Designer](../roles/ui-ux-designer.md)\n\n## IT Support & Operations\n\n- [Production / Application Support](../roles/production-application-support.md)\n\nNew to tech? Start with the [learning tracks](../topics/README.md).",
-      "summary": "",
+      "answer": "A comprehensive, step-by-step roadmap for a Full-Stack Developer. Covers modern frontend, backend, DevOps, and performance practices using TypeScript, React, Next.js, NestJS, PostgreSQL, and Docker.",
+      "summary": "A comprehensive, step-by-step roadmap for a Full-Stack Developer. Covers modern frontend, backend, DevOps, and performance practices using TypeScript, React, Next.js, NestJS, PostgreSQL, and Docker.",
       "codeBlocks": [],
       "visuals": [],
       "contentType": "roadmap",
-      "domain": "roadmap",
-      "topics": [
-        "roadmaps"
+      "domain": "README.md",
+      "topics": [],
+      "section": [],
+      "difficulty": null,
+      "keywords": [
+        "developer",
+        "roadmap"
       ],
+      "source": {
+        "path": "roadmap/README.md",
+        "startLine": 1,
+        "endLine": 3
+      },
+      "contentHash": "a2f26789e2087ab9"
+    },
+    {
+      "id": "roadmap/README.md#roadmap-areas",
+      "kind": "note",
+      "parentId": null,
+      "question": "Roadmap Areas",
+      "prompt": null,
+      "answer": "- [Foundations](foundations/README.md)\n- [Frontend](frontend/README.md)\n- [Backend](backend/README.md)\n- [Database](database/README.md)\n- [DevOps / Infrastructure](devops/README.md)\n- [Performance, SEO and Best Practices](architecture/README.md)\n- [Cloud](cloud/README.md)\n- [Networking](networking/README.md)",
+      "summary": "Foundations Frontend Backend Database DevOps / Infrastructure Performance, SEO and Best Practices Cloud Networking",
+      "codeBlocks": [],
+      "visuals": [],
+      "contentType": "roadmap",
+      "domain": "README.md",
+      "topics": [],
       "section": [
-        "Roadmaps",
-        "Topics"
+        "Developer Roadmap"
       ],
       "difficulty": null,
       "keywords": [
-        "role roadmaps",
-        "career roadmaps",
-        "role",
-        "roadmaps"
-      ],
-      "names": [
-        "role roadmaps",
-        "career roadmaps"
+        "roadmap",
+        "areas"
       ],
       "source": {
-        "path": "roadmap/roles/README.md",
-        "startLine": 2,
-        "endLine": 79
+        "path": "roadmap/README.md",
+        "startLine": 5,
+        "endLine": 14
       },
-      "contentHash": "37128868b1b48d00"
+      "contentHash": "8a8c4173fce2e354"
+    },
+    {
+      "id": "roadmap/README.md#study-paths-and-role-roadmaps-generated-drafts",
+      "kind": "note",
+      "parentId": null,
+      "question": "Study paths and role roadmaps (generated drafts)",
+      "prompt": null,
+      "answer": "- [Where to start: learning tracks](topics/README.md)\n- [Role roadmaps](roles/README.md)\n- [Content gaps report](../scripts/reports/content-gaps.md)",
+      "summary": "Where to start: learning tracks Role roadmaps Content gaps report",
+      "codeBlocks": [],
+      "visuals": [],
+      "contentType": "roadmap",
+      "domain": "README.md",
+      "topics": [],
+      "section": [
+        "Developer Roadmap",
+        "Roadmap Areas"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "study",
+        "paths",
+        "role",
+        "roadmaps",
+        "generated",
+        "drafts"
+      ],
+      "source": {
+        "path": "roadmap/README.md",
+        "startLine": 16,
+        "endLine": 20
+      },
+      "contentHash": "c9f4c9b44c35ff85"
+    },
+    {
+      "id": "roadmap/README.md#projects",
+      "kind": "note",
+      "parentId": null,
+      "question": "Projects",
+      "prompt": null,
+      "answer": "- [Project Suggestions](../projects/README.md)",
+      "summary": "Project Suggestions",
+      "codeBlocks": [],
+      "visuals": [],
+      "contentType": "roadmap",
+      "domain": "README.md",
+      "topics": [],
+      "section": [
+        "Developer Roadmap",
+        "Study paths and role roadmaps (generated drafts)"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "projects"
+      ],
+      "source": {
+        "path": "roadmap/README.md",
+        "startLine": 22,
+        "endLine": 24
+      },
+      "contentHash": "e18f70dcbfadb031"
+    },
+    {
+      "id": "roadmap/README.md#source",
+      "kind": "note",
+      "parentId": null,
+      "question": "Source",
+      "prompt": null,
+      "answer": "Content migrated from `_migration/Fullstack-Roadmap/README.md`.",
+      "summary": "Content migrated from _migration/Fullstack-Roadmap/README.md.",
+      "codeBlocks": [],
+      "visuals": [],
+      "contentType": "roadmap",
+      "domain": "README.md",
+      "topics": [],
+      "section": [
+        "Developer Roadmap",
+        "Projects"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "source"
+      ],
+      "source": {
+        "path": "roadmap/README.md",
+        "startLine": 26,
+        "endLine": 28
+      },
+      "contentHash": "e9ee1639e199f7c1"
     },
     {
       "id": "roadmap/roles/ai-agent-engineer.md#roadmap",
@@ -32286,7 +32249,7 @@
       "parentId": null,
       "question": "Roadmap: AI Agent Engineer",
       "prompt": null,
-      "answer": "Builds autonomous AI agents that plan, call tools and complete multi-step tasks.\n\n## Prerequisites\n\n- [HTML](../topics/html.md)\n- [Java](../topics/java.md)\n- Usually 2+ years of experience when hired\n\n## Stage 1: Core skills\n\n- [ ] [JavaScript](../topics/javascript.md)\n- [ ] [Spring Boot](../topics/spring.md)\n\n## Stage 2: Frameworks and depth\n\n- [ ] [TypeScript](../topics/typescript.md)\n\n## Stage 3: Interview preparation\n\n- [ ] Solve the practice problems in these topics\n- [ ] Mock interview: `/interview Java`\n- [ ] Mock interview: `/interview Spring Boot`\n- [ ] Mock interview: `/interview TypeScript`\n\n## Also needed (not in your notes yet)\n\nPython, LangGraph, Claude Agent SDK, OpenAI Agents SDK, CrewAI, AutoGen, MCP, A2A protocol, Claude / GPT / Gemini APIs, Vector DBs, Langfuse / LangSmith, Temporal, Redis\n\n## Where it leads\n\nGrow: AI / LLM Engineer, AI Solutions Architect · Lead: Engineering Manager · Pivot: Forward Deployed Engineer (FDE), AI Evaluation (Evals) Engineer",
+      "answer": "## Role overview\n\nBuilds autonomous AI agents that plan, call tools and complete multi-step tasks.\n\n## Prerequisites\n\n- [HTML](../topics/html.md)\n- [Java](../topics/java.md)\n- Usually 2+ years of experience when hired\n\n## Learning stages\n\n### Stage 1: Core skills\n\n- [ ] [JavaScript](../topics/javascript.md)\n- [ ] [Spring Boot](../topics/spring.md)\n\n### Stage 2: Frameworks and depth\n\n- [ ] [TypeScript](../topics/typescript.md)\n\n## Also needed\n\nPython, LangGraph, Claude Agent SDK, OpenAI Agents SDK, CrewAI, AutoGen, MCP, A2A protocol, Claude / GPT / Gemini APIs, Vector DBs, Langfuse / LangSmith, Temporal, Redis\n\n## Where it leads\n\nGrow: AI / LLM Engineer, AI Solutions Architect · Lead: Engineering Manager · Pivot: Forward Deployed Engineer (FDE), AI Evaluation (Evals) Engineer",
       "summary": "Builds autonomous AI agents that plan, call tools and complete multi-step tasks.",
       "codeBlocks": [],
       "visuals": [],
@@ -32325,9 +32288,9 @@
       "source": {
         "path": "roadmap/roles/ai-agent-engineer.md",
         "startLine": 2,
-        "endLine": 35
+        "endLine": 32
       },
-      "contentHash": "42ac5ffbb33c5784"
+      "contentHash": "f405f5eff8b82048"
     },
     {
       "id": "roadmap/roles/ai-automation-engineer.md#roadmap",
@@ -32335,7 +32298,7 @@
       "parentId": null,
       "question": "Roadmap: AI Automation Engineer",
       "prompt": null,
-      "answer": "Automates business processes using AI plus workflow tools.\n\n## Prerequisites\n\n- [HTML](../topics/html.md)\n- Usually 1+ years of experience when hired\n\n## Stage 1: Core skills\n\n- [ ] [JavaScript](../topics/javascript.md)\n\n## Stage 2: Interview preparation\n\n- [ ] Solve the practice problems in these topics\n- [ ] Mock interview: `/interview JavaScript`\n- [ ] Mock interview: `/interview HTML`\n\n## Also needed (not in your notes yet)\n\nPython, n8n, Make, Zapier, Power Automate + Copilot, UiPath (Agentic), Claude / OpenAI APIs, Google/Microsoft 365 APIs, Airtable, Webhooks\n\n## Where it leads\n\nGrow: AI Agent Engineer · Lead: — · Pivot: Forward Deployed Engineer (FDE), Business Analyst (BA)",
+      "answer": "## Role overview\n\nAutomates business processes using AI plus workflow tools.\n\n## Prerequisites\n\n- [HTML](../topics/html.md)\n- Usually 1+ years of experience when hired\n\n## Learning stages\n\n### Stage 1: Core skills\n\n- [ ] [JavaScript](../topics/javascript.md)\n\n## Also needed\n\nPython, n8n, Make, Zapier, Power Automate + Copilot, UiPath (Agentic), Claude / OpenAI APIs, Google/Microsoft 365 APIs, Airtable, Webhooks\n\n## Where it leads\n\nGrow: AI Agent Engineer · Lead: — · Pivot: Forward Deployed Engineer (FDE), Business Analyst (BA)",
       "summary": "Automates business processes using AI plus workflow tools.",
       "codeBlocks": [],
       "visuals": [],
@@ -32371,9 +32334,9 @@
       "source": {
         "path": "roadmap/roles/ai-automation-engineer.md",
         "startLine": 2,
-        "endLine": 28
+        "endLine": 26
       },
-      "contentHash": "f2f687f0b293cef6"
+      "contentHash": "2b3bf29748d6c14c"
     },
     {
       "id": "roadmap/roles/ai-evaluation-engineer.md#roadmap",
@@ -32381,7 +32344,7 @@
       "parentId": null,
       "question": "Roadmap: AI Evaluation Engineer",
       "prompt": null,
-      "answer": "Measures whether AI outputs are correct, safe and improving between versions.\n\n## Prerequisites\n\n- None. Start with Stage 1.\n- Usually 2+ years of experience when hired\n\n## Stage 1: Core skills\n\n- [ ] [SQL](../topics/database-sql.md)\n\n## Stage 2: Interview preparation\n\n- [ ] Solve the practice problems in these topics\n- [ ] Mock interview: `/interview SQL`\n\n## Also needed (not in your notes yet)\n\nPython, Ragas, DeepEval, OpenAI Evals, LLM-as-judge, Inspect, Braintrust, LangSmith, Langfuse, promptfoo, Weights & Biases\n\n## Where it leads\n\nGrow: AI / LLM Engineer, AI Red Teamer / AI Safety Engineer · Lead: Engineering Manager · Pivot: Machine Learning Engineer, Responsible AI / AI Governance Lead",
+      "answer": "## Role overview\n\nMeasures whether AI outputs are correct, safe and improving between versions.\n\n## Prerequisites\n\n- None. Start with Stage 1.\n- Usually 2+ years of experience when hired\n\n## Learning stages\n\n### Stage 1: Core skills\n\n- [ ] [SQL](../topics/database-sql.md)\n\n## Also needed\n\nPython, Ragas, DeepEval, OpenAI Evals, LLM-as-judge, Inspect, Braintrust, LangSmith, Langfuse, promptfoo, Weights & Biases\n\n## Where it leads\n\nGrow: AI / LLM Engineer, AI Red Teamer / AI Safety Engineer · Lead: Engineering Manager · Pivot: Machine Learning Engineer, Responsible AI / AI Governance Lead",
       "summary": "Measures whether AI outputs are correct, safe and improving between versions.",
       "codeBlocks": [],
       "visuals": [],
@@ -32418,9 +32381,9 @@
       "source": {
         "path": "roadmap/roles/ai-evaluation-engineer.md",
         "startLine": 2,
-        "endLine": 27
+        "endLine": 26
       },
-      "contentHash": "99019f81085a7806"
+      "contentHash": "d3f66a833d1b7237"
     },
     {
       "id": "roadmap/roles/ai-infrastructure-llmops-engineer.md#roadmap",
@@ -32428,7 +32391,7 @@
       "parentId": null,
       "question": "Roadmap: AI Infrastructure / LLMOps Engineer",
       "prompt": null,
-      "answer": "Runs and scales model serving, GPUs and AI pipelines in production.\n\n## Prerequisites\n\n- None. Start with Stage 1.\n- Usually 3+ years of experience when hired\n\n## Stage 1: Core skills\n\n- [ ] [DevOps](../topics/devops.md)\n\n## Stage 2: Interview preparation\n\n- [ ] Mock interview: `/interview DevOps`\n\n## Also needed (not in your notes yet)\n\nPython, Go, C++/CUDA (advanced), Bash, vLLM, TensorRT-LLM, Text Generation Inference, Ray, NVIDIA GPUs, Ollama, Triton Inference Server, Prometheus, LiteLLM gateway\n\n## Where it leads\n\nGrow: Platform Engineer, AI Solutions Architect · Lead: Engineering Manager · Pivot: Machine Learning Engineer, Site Reliability Engineer (SRE)",
+      "answer": "## Role overview\n\nRuns and scales model serving, GPUs and AI pipelines in production.\n\n## Prerequisites\n\n- None. Start with Stage 1.\n- Usually 3+ years of experience when hired\n\n## Learning stages\n\n### Stage 1: Core skills\n\n- [ ] [DevOps](../topics/devops.md)\n\n## Also needed\n\nPython, Go, C++/CUDA (advanced), Bash, vLLM, TensorRT-LLM, Text Generation Inference, Ray, NVIDIA GPUs, Ollama, Triton Inference Server, Prometheus, LiteLLM gateway\n\n## Where it leads\n\nGrow: Platform Engineer, AI Solutions Architect · Lead: Engineering Manager · Pivot: Machine Learning Engineer, Site Reliability Engineer (SRE)",
       "summary": "Runs and scales model serving, GPUs and AI pipelines in production.",
       "codeBlocks": [],
       "visuals": [],
@@ -32468,7 +32431,7 @@
         "startLine": 2,
         "endLine": 26
       },
-      "contentHash": "a77a666a86598fa2"
+      "contentHash": "353e5b9585e2dccb"
     },
     {
       "id": "roadmap/roles/ai-llm-engineer.md#roadmap",
@@ -32476,7 +32439,7 @@
       "parentId": null,
       "question": "Roadmap: AI / LLM Engineer",
       "prompt": null,
-      "answer": "Builds apps on top of large language models — chatbots, agents, RAG.\n\n## Prerequisites\n\n- [HTML](../topics/html.md)\n- [Java](../topics/java.md)\n- Usually 2+ years of experience when hired\n\n## Stage 1: Core skills\n\n- [ ] [JavaScript](../topics/javascript.md)\n- [ ] [Spring Boot](../topics/spring.md)\n\n## Stage 2: Frameworks and depth\n\n- [ ] [TypeScript](../topics/typescript.md)\n\n## Stage 3: Interview preparation\n\n- [ ] Solve the practice problems in these topics\n- [ ] Mock interview: `/interview Java`\n- [ ] Mock interview: `/interview Spring Boot`\n- [ ] Mock interview: `/interview TypeScript`\n\n## Also needed (not in your notes yet)\n\nPython, LangChain, LlamaIndex, Semantic Kernel, MCP SDKs, Vercel AI SDK, Claude / OpenAI / Gemini APIs, Vector DBs (pgvector, Pinecone), Langfuse / LangSmith\n\n## Where it leads\n\nGrow: AI Solutions Architect, Tech Lead · Lead: AI Product Manager, Engineering Manager · Pivot: Forward Deployed Engineer (FDE), AI Agent Engineer, AI Infrastructure / LLMOps Engineer",
+      "answer": "## Role overview\n\nBuilds apps on top of large language models — chatbots, agents, RAG.\n\n## Prerequisites\n\n- [HTML](../topics/html.md)\n- [Java](../topics/java.md)\n- Usually 2+ years of experience when hired\n\n## Learning stages\n\n### Stage 1: Core skills\n\n- [ ] [JavaScript](../topics/javascript.md)\n- [ ] [Spring Boot](../topics/spring.md)\n\n### Stage 2: Frameworks and depth\n\n- [ ] [TypeScript](../topics/typescript.md)\n\n## Also needed\n\nPython, LangChain, LlamaIndex, Semantic Kernel, MCP SDKs, Vercel AI SDK, Claude / OpenAI / Gemini APIs, Vector DBs (pgvector, Pinecone), Langfuse / LangSmith\n\n## Where it leads\n\nGrow: AI Solutions Architect, Tech Lead · Lead: AI Product Manager, Engineering Manager · Pivot: Forward Deployed Engineer (FDE), AI Agent Engineer, AI Infrastructure / LLMOps Engineer",
       "summary": "Builds apps on top of large language models — chatbots, agents, RAG.",
       "codeBlocks": [],
       "visuals": [],
@@ -32515,9 +32478,9 @@
       "source": {
         "path": "roadmap/roles/ai-llm-engineer.md",
         "startLine": 2,
-        "endLine": 35
+        "endLine": 32
       },
-      "contentHash": "cd39005b50eed7dd"
+      "contentHash": "0bc0ec9d45ff1e2b"
     },
     {
       "id": "roadmap/roles/ai-product-manager.md#roadmap",
@@ -32525,7 +32488,7 @@
       "parentId": null,
       "question": "Roadmap: AI Product Manager",
       "prompt": null,
-      "answer": "Decides which AI features to build and how to measure their value and risks.\n\n## Prerequisites\n\n- None. Start with Stage 1.\n- Usually 4+ years of experience when hired\n\n## Stage 1: Core skills\n\n- [ ] [SQL](../topics/database-sql.md)\n\n## Stage 2: Interview preparation\n\n- [ ] Solve the practice problems in these topics\n- [ ] Mock interview: `/interview SQL`\n\n## Also needed (not in your notes yet)\n\nPython (helpful), Agile, OKRs, AI evaluation basics, Responsible AI, Jira, Claude / ChatGPT, Model playgrounds, Amplitude, Figma\n\n## Where it leads\n\nGrow: — · Lead: CTO / CIO · Pivot: Forward Deployed Engineer (FDE), AI Solutions Architect",
+      "answer": "## Role overview\n\nDecides which AI features to build and how to measure their value and risks.\n\n## Prerequisites\n\n- None. Start with Stage 1.\n- Usually 4+ years of experience when hired\n\n## Learning stages\n\n### Stage 1: Core skills\n\n- [ ] [SQL](../topics/database-sql.md)\n\n## Also needed\n\nPython (helpful), Agile, OKRs, AI evaluation basics, Responsible AI, Jira, Claude / ChatGPT, Model playgrounds, Amplitude, Figma\n\n## Where it leads\n\nGrow: — · Lead: CTO / CIO · Pivot: Forward Deployed Engineer (FDE), AI Solutions Architect",
       "summary": "Decides which AI features to build and how to measure their value and risks.",
       "codeBlocks": [],
       "visuals": [],
@@ -32560,9 +32523,9 @@
       "source": {
         "path": "roadmap/roles/ai-product-manager.md",
         "startLine": 2,
-        "endLine": 27
+        "endLine": 26
       },
-      "contentHash": "532b5ea2128bcb5b"
+      "contentHash": "90ef3c06d2b576fc"
     },
     {
       "id": "roadmap/roles/ai-solutions-architect.md#roadmap",
@@ -32570,7 +32533,7 @@
       "parentId": null,
       "question": "Roadmap: AI Solutions Architect",
       "prompt": null,
-      "answer": "Designs end-to-end AI systems — models, data, RAG, agents, security and cost.\n\n## Prerequisites\n\n- [DevOps](../topics/devops.md)\n- [HTML](../topics/html.md)\n- [Java](../topics/java.md)\n- Usually 8+ years of experience when hired\n\n## Stage 1: Core skills\n\n- [ ] [AWS](../topics/aws.md)\n- [ ] [JavaScript](../topics/javascript.md)\n\n## Stage 2: Frameworks and depth\n\n- [ ] [TypeScript](../topics/typescript.md)\n\n## Stage 3: Interview preparation\n\n- [ ] Solve the practice problems in these topics\n- [ ] Mock interview: `/interview AWS`\n- [ ] Mock interview: `/interview DevOps`\n- [ ] Mock interview: `/interview Java`\n\n## Also needed (not in your notes yet)\n\nPython, RAG architectures, Agent patterns, MCP, Azure AI Foundry / Azure OpenAI, Google Vertex AI, Vector DBs, Draw.io\n\n## Where it leads\n\nGrow: Enterprise Architect · Lead: CTO / CIO · Pivot: Forward Deployed Engineer (FDE), AI Product Manager",
+      "answer": "## Role overview\n\nDesigns end-to-end AI systems — models, data, RAG, agents, security and cost.\n\n## Prerequisites\n\n- [DevOps](../topics/devops.md)\n- [HTML](../topics/html.md)\n- [Java](../topics/java.md)\n- Usually 8+ years of experience when hired\n\n## Learning stages\n\n### Stage 1: Core skills\n\n- [ ] [AWS](../topics/aws.md)\n- [ ] [JavaScript](../topics/javascript.md)\n\n### Stage 2: Frameworks and depth\n\n- [ ] [TypeScript](../topics/typescript.md)\n\n## Also needed\n\nPython, RAG architectures, Agent patterns, MCP, Azure AI Foundry / Azure OpenAI, Google Vertex AI, Vector DBs, Draw.io\n\n## Where it leads\n\nGrow: Enterprise Architect · Lead: CTO / CIO · Pivot: Forward Deployed Engineer (FDE), AI Product Manager",
       "summary": "Designs end-to-end AI systems — models, data, RAG, agents, security and cost.",
       "codeBlocks": [],
       "visuals": [],
@@ -32610,9 +32573,9 @@
       "source": {
         "path": "roadmap/roles/ai-solutions-architect.md",
         "startLine": 2,
-        "endLine": 36
+        "endLine": 33
       },
-      "contentHash": "513e287147d5c3e6"
+      "contentHash": "14d5c3184bd93d6d"
     },
     {
       "id": "roadmap/roles/analytics-engineer.md#roadmap",
@@ -32620,7 +32583,7 @@
       "parentId": null,
       "question": "Roadmap: Analytics Engineer",
       "prompt": null,
-      "answer": "Builds clean, tested data models that analysts and BI tools use.\n\n## Prerequisites\n\n- None. Start with Stage 1.\n- Usually 2+ years of experience when hired\n\n## Stage 1: Core skills\n\n- [ ] [SQL](../topics/database-sql.md)\n\n## Stage 2: Interview preparation\n\n- [ ] Solve the practice problems in these topics\n- [ ] Mock interview: `/interview SQL`\n\n## Also needed (not in your notes yet)\n\nPython, Jinja, dbt, Dimensional modelling, Snowflake, BigQuery, Databricks, Looker, Git\n\n## Where it leads\n\nGrow: Data Engineer, Data Architect · Lead: Engineering Manager · Pivot: Data Scientist, AI / LLM Engineer",
+      "answer": "## Role overview\n\nBuilds clean, tested data models that analysts and BI tools use.\n\n## Prerequisites\n\n- None. Start with Stage 1.\n- Usually 2+ years of experience when hired\n\n## Learning stages\n\n### Stage 1: Core skills\n\n- [ ] [SQL](../topics/database-sql.md)\n\n## Also needed\n\nPython, Jinja, dbt, Dimensional modelling, Snowflake, BigQuery, Databricks, Looker, Git\n\n## Where it leads\n\nGrow: Data Engineer, Data Architect · Lead: Engineering Manager · Pivot: Data Scientist, AI / LLM Engineer",
       "summary": "Builds clean, tested data models that analysts and BI tools use.",
       "codeBlocks": [],
       "visuals": [],
@@ -32654,9 +32617,9 @@
       "source": {
         "path": "roadmap/roles/analytics-engineer.md",
         "startLine": 2,
-        "endLine": 27
+        "endLine": 26
       },
-      "contentHash": "961579625c672799"
+      "contentHash": "254e7f98427bd76c"
     },
     {
       "id": "roadmap/roles/application-security-devsecops-engineer.md#roadmap",
@@ -32664,7 +32627,7 @@
       "parentId": null,
       "question": "Roadmap: Application Security / DevSecOps Engineer",
       "prompt": null,
-      "answer": "Builds security into code and pipelines.\n\n## Prerequisites\n\n- None. Start with Stage 1.\n- Usually 3+ years of experience when hired\n\n## Stage 1: Core skills\n\n- [ ] [DevOps](../topics/devops.md)\n- [ ] [Java](../topics/java.md)\n\n## Stage 2: Interview preparation\n\n- [ ] Solve the practice problems in these topics\n- [ ] Mock interview: `/interview DevOps`\n- [ ] Mock interview: `/interview Java`\n\n## Also needed (not in your notes yet)\n\nPython, Go, OWASP, SAST/DAST, Threat modelling (STRIDE), SonarQube, Snyk, Checkmarx, Trivy, OWASP ZAP\n\n## Where it leads\n\nGrow: Cloud Security Engineer, Solution Architect · Lead: Engineering Manager · Pivot: AI Red Teamer / AI Safety Engineer",
+      "answer": "## Role overview\n\nBuilds security into code and pipelines.\n\n## Prerequisites\n\n- None. Start with Stage 1.\n- Usually 3+ years of experience when hired\n\n## Learning stages\n\n### Stage 1: Core skills\n\n- [ ] [DevOps](../topics/devops.md)\n- [ ] [Java](../topics/java.md)\n\n## Also needed\n\nPython, Go, OWASP, SAST/DAST, Threat modelling (STRIDE), SonarQube, Snyk, Checkmarx, Trivy, OWASP ZAP\n\n## Where it leads\n\nGrow: Cloud Security Engineer, Solution Architect · Lead: Engineering Manager · Pivot: AI Red Teamer / AI Safety Engineer",
       "summary": "Builds security into code and pipelines.",
       "codeBlocks": [],
       "visuals": [],
@@ -32704,9 +32667,9 @@
       "source": {
         "path": "roadmap/roles/application-security-devsecops-engineer.md",
         "startLine": 2,
-        "endLine": 29
+        "endLine": 27
       },
-      "contentHash": "cca1f349c4642623"
+      "contentHash": "b3ba9865acb9ee27"
     },
     {
       "id": "roadmap/roles/automation-test-engineer.md#roadmap",
@@ -32714,7 +32677,7 @@
       "parentId": null,
       "question": "Roadmap: Automation Test Engineer",
       "prompt": null,
-      "answer": "Writes code that tests software automatically.\n\n## Prerequisites\n\n- [HTML](../topics/html.md)\n- [Java](../topics/java.md)\n- [REST API](../topics/rest-api.md)\n- Usually 1+ years of experience when hired\n\n## Stage 1: Core skills\n\n- [ ] [JavaScript](../topics/javascript.md)\n\n## Stage 2: Frameworks and depth\n\n- [ ] [TypeScript](../topics/typescript.md)\n\n## Stage 3: Interview preparation\n\n- [ ] Solve the practice problems in these topics\n- [ ] Mock interview: `/interview Java`\n- [ ] Mock interview: `/interview JavaScript`\n- [ ] Mock interview: `/interview HTML`\n\n## Also useful\n\n[DevOps](../topics/devops.md)\n\n## Also needed (not in your notes yet)\n\nPython, Selenium, Playwright, Cypress, TestNG, JUnit, Cucumber (BDD), Appium, BrowserStack\n\n## Where it leads\n\nGrow: Tech Lead · Lead: Engineering Manager · Pivot: Backend Developer, Full Stack Developer, AI Evaluation (Evals) Engineer, DevOps Engineer",
+      "answer": "## Role overview\n\nWrites code that tests software automatically.\n\n## Prerequisites\n\n- [HTML](../topics/html.md)\n- [Java](../topics/java.md)\n- [REST API](../topics/rest-api.md)\n- Usually 1+ years of experience when hired\n\n## Learning stages\n\n### Stage 1: Core skills\n\n- [ ] [JavaScript](../topics/javascript.md)\n\n### Stage 2: Frameworks and depth\n\n- [ ] [TypeScript](../topics/typescript.md)\n\n## Also useful\n\n[DevOps](../topics/devops.md)\n\n## Also needed\n\nPython, Selenium, Playwright, Cypress, TestNG, JUnit, Cucumber (BDD), Appium, BrowserStack\n\n## Where it leads\n\nGrow: Tech Lead · Lead: Engineering Manager · Pivot: Backend Developer, Full Stack Developer, AI Evaluation (Evals) Engineer, DevOps Engineer",
       "summary": "Writes code that tests software automatically.",
       "codeBlocks": [],
       "visuals": [],
@@ -32756,9 +32719,9 @@
       "source": {
         "path": "roadmap/roles/automation-test-engineer.md",
         "startLine": 2,
-        "endLine": 39
+        "endLine": 36
       },
-      "contentHash": "2d7e913bacb4f119"
+      "contentHash": "f93b32ad2baa5067"
     },
     {
       "id": "roadmap/roles/backend-developer.md#roadmap",
@@ -32766,7 +32729,7 @@
       "parentId": null,
       "question": "Roadmap: Backend Developer",
       "prompt": null,
-      "answer": "Builds server-side logic, APIs and database access.\n\n## Prerequisites\n\n- [SQL](../topics/database-sql.md)\n- [HTML](../topics/html.md)\n- [Java](../topics/java.md)\n- [REST API](../topics/rest-api.md)\n\n## Stage 1: Core skills\n\n- [ ] [JavaScript](../topics/javascript.md)\n- [ ] [Microservices](../topics/microservices.md)\n- [ ] [Spring Boot](../topics/spring.md)\n\n## Stage 2: Frameworks and depth\n\n- [ ] [Node.js](../topics/nodejs.md)\n- [ ] [TypeScript](../topics/typescript.md)\n\n## Stage 3: Interview preparation\n\n- [ ] Solve the practice problems in these topics\n- [ ] Mock interview: `/interview SQL`\n- [ ] Mock interview: `/interview Java`\n- [ ] Mock interview: `/interview JavaScript`\n\n## Also useful\n\n[DevOps](../topics/devops.md)\n\n## Also needed (not in your notes yet)\n\nPython, C#, Go, Django, FastAPI, .NET, NestJS, IntelliJ, Postman, Git, Kafka, Redis\n\n## Where it leads\n\nGrow: Full Stack Developer, Tech Lead, Solution Architect · Lead: Engineering Manager · Pivot: AI / LLM Engineer, Data Engineer, Platform Engineer, Forward Deployed Engineer (FDE)",
+      "answer": "## Role overview\n\nBuilds server-side logic, APIs and database access.\n\n## Prerequisites\n\n- [SQL](../topics/database-sql.md)\n- [HTML](../topics/html.md)\n- [Java](../topics/java.md)\n- [REST API](../topics/rest-api.md)\n\n## Learning stages\n\n### Stage 1: Core skills\n\n- [ ] [JavaScript](../topics/javascript.md)\n- [ ] [Microservices](../topics/microservices.md)\n- [ ] [Spring Boot](../topics/spring.md)\n\n### Stage 2: Frameworks and depth\n\n- [ ] [Node.js](../topics/nodejs.md)\n- [ ] [TypeScript](../topics/typescript.md)\n\n## Also useful\n\n[DevOps](../topics/devops.md)\n\n## Also needed\n\nPython, C#, Go, Django, FastAPI, .NET, NestJS, IntelliJ, Postman, Git, Kafka, Redis\n\n## Where it leads\n\nGrow: Full Stack Developer, Tech Lead, Solution Architect · Lead: Engineering Manager · Pivot: AI / LLM Engineer, Data Engineer, Platform Engineer, Forward Deployed Engineer (FDE)",
       "summary": "Builds server-side logic, APIs and database access.",
       "codeBlocks": [],
       "visuals": [],
@@ -32809,9 +32772,9 @@
       "source": {
         "path": "roadmap/roles/backend-developer.md",
         "startLine": 2,
-        "endLine": 42
+        "endLine": 39
       },
-      "contentHash": "78bbd0c088c527f9"
+      "contentHash": "e1184d67bd3aba1d"
     },
     {
       "id": "roadmap/roles/bi-developer.md#roadmap",
@@ -32819,7 +32782,7 @@
       "parentId": null,
       "question": "Roadmap: BI Developer",
       "prompt": null,
-      "answer": "Builds enterprise reporting and data models for business users.\n\n## Prerequisites\n\n- None. Start with Stage 1.\n\n## Stage 1: Core skills\n\n- [ ] [SQL](../topics/database-sql.md)\n\n## Stage 2: Interview preparation\n\n- [ ] Solve the practice problems in these topics\n- [ ] Mock interview: `/interview SQL`\n\n## Also needed (not in your notes yet)\n\nDAX, MDX, SSIS, SSAS, Power BI, Tableau, Qlik, SSRS\n\n## Where it leads\n\nGrow: Analytics Engineer, Data Engineer · Lead: Project Manager · Pivot: Data Scientist, Business Analyst (BA)",
+      "answer": "## Role overview\n\nBuilds enterprise reporting and data models for business users.\n\n## Prerequisites\n\n- None. Start with Stage 1.\n\n## Learning stages\n\n### Stage 1: Core skills\n\n- [ ] [SQL](../topics/database-sql.md)\n\n## Also needed\n\nDAX, MDX, SSIS, SSAS, Power BI, Tableau, Qlik, SSRS\n\n## Where it leads\n\nGrow: Analytics Engineer, Data Engineer · Lead: Project Manager · Pivot: Data Scientist, Business Analyst (BA)",
       "summary": "Builds enterprise reporting and data models for business users.",
       "codeBlocks": [],
       "visuals": [],
@@ -32853,9 +32816,9 @@
       "source": {
         "path": "roadmap/roles/bi-developer.md",
         "startLine": 2,
-        "endLine": 26
+        "endLine": 25
       },
-      "contentHash": "7f042757824b4427"
+      "contentHash": "5085ec0feecf7f8e"
     },
     {
       "id": "roadmap/roles/blockchain-developer.md#roadmap",
@@ -32863,7 +32826,7 @@
       "parentId": null,
       "question": "Roadmap: Blockchain Developer",
       "prompt": null,
-      "answer": "Builds smart contracts and decentralised applications.\n\n## Prerequisites\n\n- [HTML](../topics/html.md)\n- Usually 1+ years of experience when hired\n\n## Stage 1: Core skills\n\n- [ ] [JavaScript](../topics/javascript.md)\n\n## Stage 2: Interview preparation\n\n- [ ] Solve the practice problems in these topics\n- [ ] Mock interview: `/interview JavaScript`\n- [ ] Mock interview: `/interview HTML`\n\n## Also needed (not in your notes yet)\n\nSolidity, Rust, Go, Ethereum, Hardhat, Hyperledger, MetaMask, Foundry\n\n## Where it leads\n\nGrow: Tech Lead, Solution Architect · Lead: — · Pivot: Backend Developer, Full Stack Developer, Application Security (AppSec) / DevSecOps Engineer",
+      "answer": "## Role overview\n\nBuilds smart contracts and decentralised applications.\n\n## Prerequisites\n\n- [HTML](../topics/html.md)\n- Usually 1+ years of experience when hired\n\n## Learning stages\n\n### Stage 1: Core skills\n\n- [ ] [JavaScript](../topics/javascript.md)\n\n## Also needed\n\nSolidity, Rust, Go, Ethereum, Hardhat, Hyperledger, MetaMask, Foundry\n\n## Where it leads\n\nGrow: Tech Lead, Solution Architect · Lead: — · Pivot: Backend Developer, Full Stack Developer, Application Security (AppSec) / DevSecOps Engineer",
       "summary": "Builds smart contracts and decentralised applications.",
       "codeBlocks": [],
       "visuals": [],
@@ -32898,9 +32861,9 @@
       "source": {
         "path": "roadmap/roles/blockchain-developer.md",
         "startLine": 2,
-        "endLine": 28
+        "endLine": 26
       },
-      "contentHash": "ff379b4e8178fe1f"
+      "contentHash": "eb1726febae709a4"
     },
     {
       "id": "roadmap/roles/business-analyst.md#roadmap",
@@ -32908,7 +32871,7 @@
       "parentId": null,
       "question": "Roadmap: Business Analyst",
       "prompt": null,
-      "answer": "Gathers business requirements and translates them for developers.\n\n## Prerequisites\n\n- None. Start with Stage 1.\n\n## Stage 1: Core skills\n\n- [ ] [SQL](../topics/database-sql.md)\n\n## Stage 2: Interview preparation\n\n- [ ] Solve the practice problems in these topics\n- [ ] Mock interview: `/interview SQL`\n\n## Also needed (not in your notes yet)\n\nBABOK, UML, BPMN, Jira, Confluence, Visio, Excel\n\n## Where it leads\n\nGrow: Product Owner (PO), Product Manager (PM) · Lead: Project Manager · Pivot: Data Analyst, AI Product Manager, Pre-Sales / Solutions Consultant",
+      "answer": "## Role overview\n\nGathers business requirements and translates them for developers.\n\n## Prerequisites\n\n- None. Start with Stage 1.\n\n## Learning stages\n\n### Stage 1: Core skills\n\n- [ ] [SQL](../topics/database-sql.md)\n\n## Also needed\n\nBABOK, UML, BPMN, Jira, Confluence, Visio, Excel\n\n## Where it leads\n\nGrow: Product Owner (PO), Product Manager (PM) · Lead: Project Manager · Pivot: Data Analyst, AI Product Manager, Pre-Sales / Solutions Consultant",
       "summary": "Gathers business requirements and translates them for developers.",
       "codeBlocks": [],
       "visuals": [],
@@ -32944,9 +32907,9 @@
       "source": {
         "path": "roadmap/roles/business-analyst.md",
         "startLine": 2,
-        "endLine": 26
+        "endLine": 25
       },
-      "contentHash": "c9719009adff13cd"
+      "contentHash": "de7b2ef6a15d3cad"
     },
     {
       "id": "roadmap/roles/cloud-architect.md#roadmap",
@@ -32954,7 +32917,7 @@
       "parentId": null,
       "question": "Roadmap: Cloud Architect",
       "prompt": null,
-      "answer": "Designs secure, scalable, cost-effective cloud systems.\n\n## Prerequisites\n\n- [DevOps](../topics/devops.md)\n- Usually 7+ years of experience when hired\n\n## Stage 1: Core skills\n\n- [ ] [AWS](../topics/aws.md)\n\n## Stage 2: Interview preparation\n\n- [ ] Mock interview: `/interview AWS`\n- [ ] Mock interview: `/interview DevOps`\n\n## Also needed (not in your notes yet)\n\nHCL, Python, Azure Well-Architected, Azure, GCP, Terraform\n\n## Where it leads\n\nGrow: Enterprise Architect, AI Solutions Architect · Lead: CTO / CIO, Engineering Manager · Pivot: Pre-Sales / Solutions Consultant",
+      "answer": "## Role overview\n\nDesigns secure, scalable, cost-effective cloud systems.\n\n## Prerequisites\n\n- [DevOps](../topics/devops.md)\n- Usually 7+ years of experience when hired\n\n## Learning stages\n\n### Stage 1: Core skills\n\n- [ ] [AWS](../topics/aws.md)\n\n## Also needed\n\nHCL, Python, Azure Well-Architected, Azure, GCP, Terraform\n\n## Where it leads\n\nGrow: Enterprise Architect, AI Solutions Architect · Lead: CTO / CIO, Engineering Manager · Pivot: Pre-Sales / Solutions Consultant",
       "summary": "Designs secure, scalable, cost-effective cloud systems.",
       "codeBlocks": [],
       "visuals": [],
@@ -32989,9 +32952,9 @@
       "source": {
         "path": "roadmap/roles/cloud-architect.md",
         "startLine": 2,
-        "endLine": 27
+        "endLine": 26
       },
-      "contentHash": "dd1c66f6fbadfa55"
+      "contentHash": "606fef77387b572a"
     },
     {
       "id": "roadmap/roles/cloud-engineer.md#roadmap",
@@ -32999,7 +32962,7 @@
       "parentId": null,
       "question": "Roadmap: Cloud Engineer",
       "prompt": null,
-      "answer": "Builds and manages infrastructure on AWS, Azure or GCP.\n\n## Prerequisites\n\n- [DevOps](../topics/devops.md)\n- Usually 1+ years of experience when hired\n\n## Stage 1: Core skills\n\n- [ ] [AWS](../topics/aws.md)\n\n## Stage 2: Interview preparation\n\n- [ ] Mock interview: `/interview AWS`\n- [ ] Mock interview: `/interview DevOps`\n\n## Also needed (not in your notes yet)\n\nPython, Bash, HCL, JSON/YAML, Terraform, CloudFormation, Bicep, CDK, Azure, Google Cloud, CLI tools\n\n## Where it leads\n\nGrow: Cloud Architect, Platform Engineer, Site Reliability Engineer (SRE) · Lead: Engineering Manager · Pivot: Cloud Security Engineer, FinOps Engineer / Analyst, AI Infrastructure / LLMOps Engineer",
+      "answer": "## Role overview\n\nBuilds and manages infrastructure on AWS, Azure or GCP.\n\n## Prerequisites\n\n- [DevOps](../topics/devops.md)\n- Usually 1+ years of experience when hired\n\n## Learning stages\n\n### Stage 1: Core skills\n\n- [ ] [AWS](../topics/aws.md)\n\n## Also needed\n\nPython, Bash, HCL, JSON/YAML, Terraform, CloudFormation, Bicep, CDK, Azure, Google Cloud, CLI tools\n\n## Where it leads\n\nGrow: Cloud Architect, Platform Engineer, Site Reliability Engineer (SRE) · Lead: Engineering Manager · Pivot: Cloud Security Engineer, FinOps Engineer / Analyst, AI Infrastructure / LLMOps Engineer",
       "summary": "Builds and manages infrastructure on AWS, Azure or GCP.",
       "codeBlocks": [],
       "visuals": [],
@@ -33034,9 +32997,9 @@
       "source": {
         "path": "roadmap/roles/cloud-engineer.md",
         "startLine": 2,
-        "endLine": 27
+        "endLine": 26
       },
-      "contentHash": "86f6056db29a19a2"
+      "contentHash": "8f659bf351ae2cbc"
     },
     {
       "id": "roadmap/roles/cloud-security-engineer.md#roadmap",
@@ -33044,7 +33007,7 @@
       "parentId": null,
       "question": "Roadmap: Cloud Security Engineer",
       "prompt": null,
-      "answer": "Secures cloud accounts, identities and data.\n\n## Prerequisites\n\n- [DevOps](../topics/devops.md)\n- Usually 4+ years of experience when hired\n\n## Stage 1: Core skills\n\n- [ ] [AWS](../topics/aws.md)\n\n## Stage 2: Interview preparation\n\n- [ ] Mock interview: `/interview AWS`\n- [ ] Mock interview: `/interview DevOps`\n\n## Also needed (not in your notes yet)\n\nPython, HCL, CIS Benchmarks, Zero Trust, Azure Defender, Wiz, Prisma Cloud\n\n## Where it leads\n\nGrow: Cloud Architect, Enterprise Architect · Lead: Engineering Manager · Pivot: AI Red Teamer / AI Safety Engineer, Responsible AI / AI Governance Lead",
+      "answer": "## Role overview\n\nSecures cloud accounts, identities and data.\n\n## Prerequisites\n\n- [DevOps](../topics/devops.md)\n- Usually 4+ years of experience when hired\n\n## Learning stages\n\n### Stage 1: Core skills\n\n- [ ] [AWS](../topics/aws.md)\n\n## Also needed\n\nPython, HCL, CIS Benchmarks, Zero Trust, Azure Defender, Wiz, Prisma Cloud\n\n## Where it leads\n\nGrow: Cloud Architect, Enterprise Architect · Lead: Engineering Manager · Pivot: AI Red Teamer / AI Safety Engineer, Responsible AI / AI Governance Lead",
       "summary": "Secures cloud accounts, identities and data.",
       "codeBlocks": [],
       "visuals": [],
@@ -33080,9 +33043,9 @@
       "source": {
         "path": "roadmap/roles/cloud-security-engineer.md",
         "startLine": 2,
-        "endLine": 27
+        "endLine": 26
       },
-      "contentHash": "dd3cc03b4010eab5"
+      "contentHash": "82c6393d47258d3e"
     },
     {
       "id": "roadmap/roles/customer-success-engineer.md#roadmap",
@@ -33090,7 +33053,7 @@
       "parentId": null,
       "question": "Roadmap: Customer Success Engineer",
       "prompt": null,
-      "answer": "Helps customers adopt and get value from a product after purchase.\n\n## Prerequisites\n\n- None. Start with Stage 1.\n- Usually 1+ years of experience when hired\n\n## Stage 1: Core skills\n\n- [ ] [SQL](../topics/database-sql.md)\n\n## Stage 2: Interview preparation\n\n- [ ] Solve the practice problems in these topics\n- [ ] Mock interview: `/interview SQL`\n\n## Also needed (not in your notes yet)\n\nPython (basic), Onboarding playbooks, Zendesk, Gainsight, Jira\n\n## Where it leads\n\nGrow: Solutions / Sales Engineer, Forward Deployed Engineer (FDE) · Lead: — · Pivot: Product Manager (PM)",
+      "answer": "## Role overview\n\nHelps customers adopt and get value from a product after purchase.\n\n## Prerequisites\n\n- None. Start with Stage 1.\n- Usually 1+ years of experience when hired\n\n## Learning stages\n\n### Stage 1: Core skills\n\n- [ ] [SQL](../topics/database-sql.md)\n\n## Also needed\n\nPython (basic), Onboarding playbooks, Zendesk, Gainsight, Jira\n\n## Where it leads\n\nGrow: Solutions / Sales Engineer, Forward Deployed Engineer (FDE) · Lead: — · Pivot: Product Manager (PM)",
       "summary": "Helps customers adopt and get value from a product after purchase.",
       "codeBlocks": [],
       "visuals": [],
@@ -33125,9 +33088,9 @@
       "source": {
         "path": "roadmap/roles/customer-success-engineer.md",
         "startLine": 2,
-        "endLine": 27
+        "endLine": 26
       },
-      "contentHash": "fcc58d3c7ac38954"
+      "contentHash": "893a73822d3fb66a"
     },
     {
       "id": "roadmap/roles/data-analyst.md#roadmap",
@@ -33135,7 +33098,7 @@
       "parentId": null,
       "question": "Roadmap: Data Analyst",
       "prompt": null,
-      "answer": "Turns data into reports, dashboards and business answers.\n\n## Prerequisites\n\n- None. Start with Stage 1.\n\n## Stage 1: Core skills\n\n- [ ] [SQL](../topics/database-sql.md)\n\n## Stage 2: Interview preparation\n\n- [ ] Solve the practice problems in these topics\n- [ ] Mock interview: `/interview SQL`\n\n## Also needed (not in your notes yet)\n\nPython, R, Excel formulas, pandas, DAX, Excel, Power BI, Tableau, Looker\n\n## Where it leads\n\nGrow: Analytics Engineer, Data Scientist · Lead: Product Manager (PM) · Pivot: Data Engineer, Business Analyst (BA)",
+      "answer": "## Role overview\n\nTurns data into reports, dashboards and business answers.\n\n## Prerequisites\n\n- None. Start with Stage 1.\n\n## Learning stages\n\n### Stage 1: Core skills\n\n- [ ] [SQL](../topics/database-sql.md)\n\n## Also needed\n\nPython, R, Excel formulas, pandas, DAX, Excel, Power BI, Tableau, Looker\n\n## Where it leads\n\nGrow: Analytics Engineer, Data Scientist · Lead: Product Manager (PM) · Pivot: Data Engineer, Business Analyst (BA)",
       "summary": "Turns data into reports, dashboards and business answers.",
       "codeBlocks": [],
       "visuals": [],
@@ -33170,9 +33133,9 @@
       "source": {
         "path": "roadmap/roles/data-analyst.md",
         "startLine": 2,
-        "endLine": 26
+        "endLine": 25
       },
-      "contentHash": "24adf67f393c80fd"
+      "contentHash": "bc993958dc6288f6"
     },
     {
       "id": "roadmap/roles/data-architect.md#roadmap",
@@ -33180,7 +33143,7 @@
       "parentId": null,
       "question": "Roadmap: Data Architect",
       "prompt": null,
-      "answer": "Designs how data is stored, connected and governed.\n\n## Prerequisites\n\n- None. Start with Stage 1.\n- Usually 8+ years of experience when hired\n\n## Stage 1: Core skills\n\n- [ ] [SQL](../topics/database-sql.md)\n\n## Stage 2: Interview preparation\n\n- [ ] Solve the practice problems in these topics\n- [ ] Mock interview: `/interview SQL`\n\n## Also needed (not in your notes yet)\n\nPython, Data Mesh, Lakehouse, Kimball / Inmon, ERwin, Snowflake, Databricks\n\n## Where it leads\n\nGrow: Enterprise Architect, AI Solutions Architect · Lead: CTO / CIO · Pivot: AI Infrastructure / LLMOps Engineer",
+      "answer": "## Role overview\n\nDesigns how data is stored, connected and governed.\n\n## Prerequisites\n\n- None. Start with Stage 1.\n- Usually 8+ years of experience when hired\n\n## Learning stages\n\n### Stage 1: Core skills\n\n- [ ] [SQL](../topics/database-sql.md)\n\n## Also needed\n\nPython, Data Mesh, Lakehouse, Kimball / Inmon, ERwin, Snowflake, Databricks\n\n## Where it leads\n\nGrow: Enterprise Architect, AI Solutions Architect · Lead: CTO / CIO · Pivot: AI Infrastructure / LLMOps Engineer",
       "summary": "Designs how data is stored, connected and governed.",
       "codeBlocks": [],
       "visuals": [],
@@ -33214,9 +33177,9 @@
       "source": {
         "path": "roadmap/roles/data-architect.md",
         "startLine": 2,
-        "endLine": 27
+        "endLine": 26
       },
-      "contentHash": "24da44c2920006f2"
+      "contentHash": "8e11c3947ee6e8b5"
     },
     {
       "id": "roadmap/roles/data-engineer.md#roadmap",
@@ -33224,7 +33187,7 @@
       "parentId": null,
       "question": "Roadmap: Data Engineer",
       "prompt": null,
-      "answer": "Builds pipelines that move and transform data into warehouses and lakes.\n\n## Prerequisites\n\n- [SQL](../topics/database-sql.md)\n- [DevOps](../topics/devops.md)\n- [Java](../topics/java.md)\n\n## Stage 1: Core skills\n\n- [ ] [AWS](../topics/aws.md)\n\n## Stage 2: Interview preparation\n\n- [ ] Solve the practice problems in these topics\n- [ ] Mock interview: `/interview AWS`\n- [ ] Mock interview: `/interview DevOps`\n- [ ] Mock interview: `/interview SQL`\n\n## Also needed (not in your notes yet)\n\nPython, Scala, Apache Spark, Kafka, Airflow, dbt, Flink, Delta Lake / Iceberg, Snowflake, Databricks, BigQuery, Redshift\n\n## Where it leads\n\nGrow: Data Architect, Tech Lead · Lead: Engineering Manager · Pivot: Machine Learning Engineer, MLOps Engineer, AI / LLM Engineer, Platform Engineer",
+      "answer": "## Role overview\n\nBuilds pipelines that move and transform data into warehouses and lakes.\n\n## Prerequisites\n\n- [SQL](../topics/database-sql.md)\n- [DevOps](../topics/devops.md)\n- [Java](../topics/java.md)\n\n## Learning stages\n\n### Stage 1: Core skills\n\n- [ ] [AWS](../topics/aws.md)\n\n## Also needed\n\nPython, Scala, Apache Spark, Kafka, Airflow, dbt, Flink, Delta Lake / Iceberg, Snowflake, Databricks, BigQuery, Redshift\n\n## Where it leads\n\nGrow: Data Architect, Tech Lead · Lead: Engineering Manager · Pivot: Machine Learning Engineer, MLOps Engineer, AI / LLM Engineer, Platform Engineer",
       "summary": "Builds pipelines that move and transform data into warehouses and lakes.",
       "codeBlocks": [],
       "visuals": [],
@@ -33262,9 +33225,9 @@
       "source": {
         "path": "roadmap/roles/data-engineer.md",
         "startLine": 2,
-        "endLine": 30
+        "endLine": 27
       },
-      "contentHash": "deccfcf24f3b3e99"
+      "contentHash": "7ba9bd9530852ea1"
     },
     {
       "id": "roadmap/roles/data-scientist.md#roadmap",
@@ -33272,7 +33235,7 @@
       "parentId": null,
       "question": "Roadmap: Data Scientist",
       "prompt": null,
-      "answer": "Uses statistics and ML to find patterns and make predictions.\n\n## Prerequisites\n\n- None. Start with Stage 1.\n- Usually 1+ years of experience when hired\n\n## Stage 1: Core skills\n\n- [ ] [SQL](../topics/database-sql.md)\n\n## Stage 2: Interview preparation\n\n- [ ] Solve the practice problems in these topics\n- [ ] Mock interview: `/interview SQL`\n\n## Also needed (not in your notes yet)\n\nPython, R, scikit-learn, pandas, NumPy, XGBoost, TensorFlow/PyTorch, Jupyter, Databricks, MLflow\n\n## Where it leads\n\nGrow: Machine Learning Engineer, AI / LLM Engineer · Lead: AI Product Manager, Engineering Manager · Pivot: AI Evaluation (Evals) Engineer, Forward Deployed Engineer (FDE)",
+      "answer": "## Role overview\n\nUses statistics and ML to find patterns and make predictions.\n\n## Prerequisites\n\n- None. Start with Stage 1.\n- Usually 1+ years of experience when hired\n\n## Learning stages\n\n### Stage 1: Core skills\n\n- [ ] [SQL](../topics/database-sql.md)\n\n## Also needed\n\nPython, R, scikit-learn, pandas, NumPy, XGBoost, TensorFlow/PyTorch, Jupyter, Databricks, MLflow\n\n## Where it leads\n\nGrow: Machine Learning Engineer, AI / LLM Engineer · Lead: AI Product Manager, Engineering Manager · Pivot: AI Evaluation (Evals) Engineer, Forward Deployed Engineer (FDE)",
       "summary": "Uses statistics and ML to find patterns and make predictions.",
       "codeBlocks": [],
       "visuals": [],
@@ -33307,9 +33270,9 @@
       "source": {
         "path": "roadmap/roles/data-scientist.md",
         "startLine": 2,
-        "endLine": 27
+        "endLine": 26
       },
-      "contentHash": "73dce884cec7770c"
+      "contentHash": "c6f224e1cd4e9511"
     },
     {
       "id": "roadmap/roles/database-administrator.md#roadmap",
@@ -33317,7 +33280,7 @@
       "parentId": null,
       "question": "Roadmap: Database Administrator",
       "prompt": null,
-      "answer": "Installs, tunes, backs up and secures databases.\n\n## Prerequisites\n\n- [SQL](../topics/database-sql.md)\n- [DevOps](../topics/devops.md)\n- Usually 1+ years of experience when hired\n\n## Stage 1: Core skills\n\n- [ ] [AWS](../topics/aws.md)\n\n## Stage 2: Interview preparation\n\n- [ ] Solve the practice problems in these topics\n- [ ] Mock interview: `/interview AWS`\n- [ ] Mock interview: `/interview DevOps`\n- [ ] Mock interview: `/interview SQL`\n\n## Also needed (not in your notes yet)\n\nBash, Oracle, PostgreSQL, MongoDB, pgAdmin, SSMS, Oracle Enterprise Manager\n\n## Where it leads\n\nGrow: Data Engineer, Data Architect · Lead: — · Pivot: Cloud Engineer, Site Reliability Engineer (SRE), Platform Engineer",
+      "answer": "## Role overview\n\nInstalls, tunes, backs up and secures databases.\n\n## Prerequisites\n\n- [SQL](../topics/database-sql.md)\n- [DevOps](../topics/devops.md)\n- Usually 1+ years of experience when hired\n\n## Learning stages\n\n### Stage 1: Core skills\n\n- [ ] [AWS](../topics/aws.md)\n\n## Also needed\n\nBash, Oracle, PostgreSQL, MongoDB, pgAdmin, SSMS, Oracle Enterprise Manager\n\n## Where it leads\n\nGrow: Data Engineer, Data Architect · Lead: — · Pivot: Cloud Engineer, Site Reliability Engineer (SRE), Platform Engineer",
       "summary": "Installs, tunes, backs up and secures databases.",
       "codeBlocks": [],
       "visuals": [],
@@ -33355,9 +33318,9 @@
       "source": {
         "path": "roadmap/roles/database-administrator.md",
         "startLine": 2,
-        "endLine": 30
+        "endLine": 27
       },
-      "contentHash": "6544c3be1c9ea944"
+      "contentHash": "20f9450d26ae8f64"
     },
     {
       "id": "roadmap/roles/developer-advocate.md#roadmap",
@@ -33365,7 +33328,7 @@
       "parentId": null,
       "question": "Roadmap: Developer Advocate",
       "prompt": null,
-      "answer": "Helps developers succeed with a platform through content, demos and community.\n\n## Prerequisites\n\n- [HTML](../topics/html.md)\n- Usually 3+ years of experience when hired\n\n## Stage 1: Core skills\n\n- [ ] [JavaScript](../topics/javascript.md)\n\n## Stage 2: Frameworks and depth\n\n- [ ] [TypeScript](../topics/typescript.md)\n\n## Stage 3: Interview preparation\n\n- [ ] Solve the practice problems in these topics\n- [ ] Mock interview: `/interview JavaScript`\n- [ ] Mock interview: `/interview HTML`\n- [ ] Mock interview: `/interview TypeScript`\n\n## Also needed (not in your notes yet)\n\nPython, Platform SDKs, Docs-as-code, GitHub, YouTube, Discord, Docusaurus\n\n## Where it leads\n\nGrow: Product Manager (PM) · Lead: Engineering Manager · Pivot: Solutions / Sales Engineer, Forward Deployed Engineer (FDE)",
+      "answer": "## Role overview\n\nHelps developers succeed with a platform through content, demos and community.\n\n## Prerequisites\n\n- [HTML](../topics/html.md)\n- Usually 3+ years of experience when hired\n\n## Learning stages\n\n### Stage 1: Core skills\n\n- [ ] [JavaScript](../topics/javascript.md)\n\n### Stage 2: Frameworks and depth\n\n- [ ] [TypeScript](../topics/typescript.md)\n\n## Also needed\n\nPython, Platform SDKs, Docs-as-code, GitHub, YouTube, Discord, Docusaurus\n\n## Where it leads\n\nGrow: Product Manager (PM) · Lead: Engineering Manager · Pivot: Solutions / Sales Engineer, Forward Deployed Engineer (FDE)",
       "summary": "Helps developers succeed with a platform through content, demos and community.",
       "codeBlocks": [],
       "visuals": [],
@@ -33403,9 +33366,9 @@
       "source": {
         "path": "roadmap/roles/developer-advocate.md",
         "startLine": 2,
-        "endLine": 33
+        "endLine": 30
       },
-      "contentHash": "dea3cdb7c0954381"
+      "contentHash": "7c33c31c5796df7c"
     },
     {
       "id": "roadmap/roles/devops-engineer.md#roadmap",
@@ -33413,7 +33376,7 @@
       "parentId": null,
       "question": "Roadmap: DevOps Engineer",
       "prompt": null,
-      "answer": "Automates building, testing and deploying software.\n\n## Prerequisites\n\n- None. Start with Stage 1.\n- Usually 1+ years of experience when hired\n\n## Stage 1: Core skills\n\n- [ ] [DevOps](../topics/devops.md)\n\n## Stage 2: Interview preparation\n\n- [ ] Mock interview: `/interview DevOps`\n\n## Also needed (not in your notes yet)\n\nBash, Python, YAML, Groovy, HCL, Terraform, Ansible, GitHub Actions, GitLab CI, Argo CD, Helm, SonarQube\n\n## Where it leads\n\nGrow: Platform Engineer, Site Reliability Engineer (SRE), Cloud Architect · Lead: Engineering Manager · Pivot: AI Infrastructure / LLMOps Engineer, MLOps Engineer, Application Security (AppSec) / DevSecOps Engineer, Cloud Security Engineer",
+      "answer": "## Role overview\n\nAutomates building, testing and deploying software.\n\n## Prerequisites\n\n- None. Start with Stage 1.\n- Usually 1+ years of experience when hired\n\n## Learning stages\n\n### Stage 1: Core skills\n\n- [ ] [DevOps](../topics/devops.md)\n\n## Also needed\n\nBash, Python, YAML, Groovy, HCL, Terraform, Ansible, GitHub Actions, GitLab CI, Argo CD, Helm, SonarQube\n\n## Where it leads\n\nGrow: Platform Engineer, Site Reliability Engineer (SRE), Cloud Architect · Lead: Engineering Manager · Pivot: AI Infrastructure / LLMOps Engineer, MLOps Engineer, Application Security (AppSec) / DevSecOps Engineer, Cloud Security Engineer",
       "summary": "Automates building, testing and deploying software.",
       "codeBlocks": [],
       "visuals": [],
@@ -33449,7 +33412,7 @@
         "startLine": 2,
         "endLine": 26
       },
-      "contentHash": "62b6d17836c0e2c9"
+      "contentHash": "03e22277b67b3153"
     },
     {
       "id": "roadmap/roles/erp-crm-developer.md#roadmap",
@@ -33457,7 +33420,7 @@
       "parentId": null,
       "question": "Roadmap: ERP / CRM Developer",
       "prompt": null,
-      "answer": "Customises business platforms like SAP and Salesforce.\n\n## Prerequisites\n\n- [HTML](../topics/html.md)\n\n## Stage 1: Core skills\n\n- [ ] [JavaScript](../topics/javascript.md)\n\n## Stage 2: Interview preparation\n\n- [ ] Solve the practice problems in these topics\n- [ ] Mock interview: `/interview JavaScript`\n- [ ] Mock interview: `/interview HTML`\n\n## Also needed (not in your notes yet)\n\nABAP (SAP), Apex (Salesforce), X++ (Dynamics), SAP S/4HANA, Salesforce Lightning, ServiceNow, SAP GUI, Salesforce DX, ServiceNow Studio\n\n## Where it leads\n\nGrow: Solution Architect, Tech Lead · Lead: Project Manager · Pivot: Business Analyst (BA), Pre-Sales / Solutions Consultant, AI Automation Engineer",
+      "answer": "## Role overview\n\nCustomises business platforms like SAP and Salesforce.\n\n## Prerequisites\n\n- [HTML](../topics/html.md)\n\n## Learning stages\n\n### Stage 1: Core skills\n\n- [ ] [JavaScript](../topics/javascript.md)\n\n## Also needed\n\nABAP (SAP), Apex (Salesforce), X++ (Dynamics), SAP S/4HANA, Salesforce Lightning, ServiceNow, SAP GUI, Salesforce DX, ServiceNow Studio\n\n## Where it leads\n\nGrow: Solution Architect, Tech Lead · Lead: Project Manager · Pivot: Business Analyst (BA), Pre-Sales / Solutions Consultant, AI Automation Engineer",
       "summary": "Customises business platforms like SAP and Salesforce.",
       "codeBlocks": [],
       "visuals": [],
@@ -33494,9 +33457,9 @@
       "source": {
         "path": "roadmap/roles/erp-crm-developer.md",
         "startLine": 2,
-        "endLine": 27
+        "endLine": 25
       },
-      "contentHash": "cf00d8ba37df85aa"
+      "contentHash": "c14d0910304bbf52"
     },
     {
       "id": "roadmap/roles/finops-engineer-analyst.md#roadmap",
@@ -33504,7 +33467,7 @@
       "parentId": null,
       "question": "Roadmap: FinOps Engineer / Analyst",
       "prompt": null,
-      "answer": "Tracks and reduces cloud and AI spend.\n\n## Prerequisites\n\n- None. Start with Stage 1.\n- Usually 3+ years of experience when hired\n\n## Stage 1: Core skills\n\n- [ ] [SQL](../topics/database-sql.md)\n\n## Stage 2: Interview preparation\n\n- [ ] Solve the practice problems in these topics\n- [ ] Mock interview: `/interview SQL`\n\n## Also useful\n\n[AWS](../topics/aws.md)\n\n## Also needed (not in your notes yet)\n\nPython, FinOps Framework, Azure Cost Management, CloudHealth, Kubecost\n\n## Where it leads\n\nGrow: Cloud Architect · Lead: Delivery / Program Manager · Pivot: Cloud Engineer, Product Manager (PM)",
+      "answer": "## Role overview\n\nTracks and reduces cloud and AI spend.\n\n## Prerequisites\n\n- None. Start with Stage 1.\n- Usually 3+ years of experience when hired\n\n## Learning stages\n\n### Stage 1: Core skills\n\n- [ ] [SQL](../topics/database-sql.md)\n\n## Also useful\n\n[AWS](../topics/aws.md)\n\n## Also needed\n\nPython, FinOps Framework, Azure Cost Management, CloudHealth, Kubecost\n\n## Where it leads\n\nGrow: Cloud Architect · Lead: Delivery / Program Manager · Pivot: Cloud Engineer, Product Manager (PM)",
       "summary": "Tracks and reduces cloud and AI spend.",
       "codeBlocks": [],
       "visuals": [],
@@ -33540,9 +33503,9 @@
       "source": {
         "path": "roadmap/roles/finops-engineer-analyst.md",
         "startLine": 2,
-        "endLine": 31
+        "endLine": 30
       },
-      "contentHash": "6d00e18b0733b1e7"
+      "contentHash": "fe507b3d2950e7c2"
     },
     {
       "id": "roadmap/roles/forward-deployed-engineer.md#roadmap",
@@ -33550,7 +33513,7 @@
       "parentId": null,
       "question": "Roadmap: Forward Deployed Engineer",
       "prompt": null,
-      "answer": "Engineer embedded with a customer to build and deploy the company's product (often AI) into the customer's real systems.\n\n## Prerequisites\n\n- [SQL](../topics/database-sql.md)\n- [HTML](../topics/html.md)\n- [Java](../topics/java.md)\n- Usually 3+ years of experience when hired\n\n## Stage 1: Core skills\n\n- [ ] [JavaScript](../topics/javascript.md)\n\n## Stage 2: Frameworks and depth\n\n- [ ] [React](../topics/react.md)\n- [ ] [TypeScript](../topics/typescript.md)\n\n## Stage 3: Interview preparation\n\n- [ ] Solve the practice problems in these topics\n- [ ] Mock interview: `/interview SQL`\n- [ ] Mock interview: `/interview Java`\n- [ ] Mock interview: `/interview JavaScript`\n\n## Also useful\n\n[AWS](../topics/aws.md), [DevOps](../topics/devops.md)\n\n## Also needed (not in your notes yet)\n\nPython, LLM SDKs (Claude, OpenAI), FastAPI, MCP, LangGraph, Palantir Foundry/AIP, Git, Jupyter, Postman, Customer data platforms\n\n## Where it leads\n\nGrow: AI Solutions Architect, Tech Lead · Lead: Engineering Manager · Pivot: AI Product Manager, Solutions / Sales Engineer",
+      "answer": "## Role overview\n\nEngineer embedded with a customer to build and deploy the company's product (often AI) into the customer's real systems.\n\n## Prerequisites\n\n- [SQL](../topics/database-sql.md)\n- [HTML](../topics/html.md)\n- [Java](../topics/java.md)\n- Usually 3+ years of experience when hired\n\n## Learning stages\n\n### Stage 1: Core skills\n\n- [ ] [JavaScript](../topics/javascript.md)\n\n### Stage 2: Frameworks and depth\n\n- [ ] [React](../topics/react.md)\n- [ ] [TypeScript](../topics/typescript.md)\n\n## Also useful\n\n[AWS](../topics/aws.md), [DevOps](../topics/devops.md)\n\n## Also needed\n\nPython, LLM SDKs (Claude, OpenAI), FastAPI, MCP, LangGraph, Palantir Foundry/AIP, Git, Jupyter, Postman, Customer data platforms\n\n## Where it leads\n\nGrow: AI Solutions Architect, Tech Lead · Lead: Engineering Manager · Pivot: AI Product Manager, Solutions / Sales Engineer",
       "summary": "Engineer embedded with a customer to build and deploy the company's product (often AI) into the customer's real systems.",
       "codeBlocks": [],
       "visuals": [],
@@ -33595,9 +33558,9 @@
       "source": {
         "path": "roadmap/roles/forward-deployed-engineer.md",
         "startLine": 2,
-        "endLine": 40
+        "endLine": 37
       },
-      "contentHash": "df27f6511e66c787"
+      "contentHash": "985fd8f413c7b89a"
     },
     {
       "id": "roadmap/roles/frontend-developer.md#roadmap",
@@ -33605,7 +33568,7 @@
       "parentId": null,
       "question": "Roadmap: Frontend Developer",
       "prompt": null,
-      "answer": "Builds the user interface people see and click in the browser.\n\n## Prerequisites\n\n- [HTML](../topics/html.md)\n- [REST API](../topics/rest-api.md)\n\n## Stage 1: Core skills\n\n- [ ] [CSS](../topics/css.md)\n- [ ] [JavaScript](../topics/javascript.md)\n\n## Stage 2: Frameworks and depth\n\n- [ ] [React](../topics/react.md)\n- [ ] [TypeScript](../topics/typescript.md)\n- [ ] [Web Vitals](../topics/web-vitals.md)\n\n## Stage 3: Specialisation\n\n- [ ] [Angular](../topics/angular.md)\n- [ ] [RxJS](../topics/rxjs.md)\n\n## Stage 4: Interview preparation\n\n- [ ] Solve the practice problems in these topics\n- [ ] Mock interview: `/interview Angular`\n- [ ] Mock interview: `/interview TypeScript`\n- [ ] Mock interview: `/interview JavaScript`\n\n## Also useful\n\n[Node.js](../topics/nodejs.md)\n\n## Also needed (not in your notes yet)\n\nVue, VS Code, Chrome DevTools, Vite, Figma, Jest, Playwright, Storybook\n\n## Where it leads\n\nGrow: Full Stack Developer, Tech Lead · Lead: Engineering Manager · Pivot: Mobile Developer, AI Agent Engineer, UI/UX Designer, Developer Advocate (DevRel)",
+      "answer": "## Role overview\n\nBuilds the user interface people see and click in the browser.\n\n## Prerequisites\n\n- [HTML](../topics/html.md)\n- [REST API](../topics/rest-api.md)\n\n## Learning stages\n\n### Stage 1: Core skills\n\n- [ ] [CSS](../topics/css.md)\n- [ ] [JavaScript](../topics/javascript.md)\n\n### Stage 2: Frameworks and depth\n\n- [ ] [React](../topics/react.md)\n- [ ] [TypeScript](../topics/typescript.md)\n- [ ] [Web Vitals](../topics/web-vitals.md)\n\n### Stage 3: Specialisation\n\n- [ ] [Angular](../topics/angular.md)\n- [ ] [RxJS](../topics/rxjs.md)\n\n## Also useful\n\n[Node.js](../topics/nodejs.md)\n\n## Also needed\n\nVue, VS Code, Chrome DevTools, Vite, Figma, Jest, Playwright, Storybook\n\n## Where it leads\n\nGrow: Full Stack Developer, Tech Lead · Lead: Engineering Manager · Pivot: Mobile Developer, AI Agent Engineer, UI/UX Designer, Developer Advocate (DevRel)",
       "summary": "Builds the user interface people see and click in the browser.",
       "codeBlocks": [],
       "visuals": [],
@@ -33649,9 +33612,9 @@
       "source": {
         "path": "roadmap/roles/frontend-developer.md",
         "startLine": 2,
-        "endLine": 45
+        "endLine": 42
       },
-      "contentHash": "574d073ba643fa1e"
+      "contentHash": "16848d727e496e1b"
     },
     {
       "id": "roadmap/roles/full-stack-developer.md#roadmap",
@@ -33659,7 +33622,7 @@
       "parentId": null,
       "question": "Roadmap: Full Stack Developer",
       "prompt": null,
-      "answer": "Works on both frontend and backend of an application.\n\n## Prerequisites\n\n- [SQL](../topics/database-sql.md)\n- [DevOps](../topics/devops.md)\n- [HTML](../topics/html.md)\n- [Java](../topics/java.md)\n- [REST API](../topics/rest-api.md)\n\n## Stage 1: Core skills\n\n- [ ] [JavaScript](../topics/javascript.md)\n- [ ] [Spring Boot](../topics/spring.md)\n\n## Stage 2: Frameworks and depth\n\n- [ ] [Node.js](../topics/nodejs.md)\n- [ ] [React](../topics/react.md)\n- [ ] [TypeScript](../topics/typescript.md)\n\n## Stage 3: Specialisation\n\n- [ ] [Angular](../topics/angular.md)\n\n## Stage 4: Interview preparation\n\n- [ ] Solve the practice problems in these topics\n- [ ] Mock interview: `/interview Angular`\n- [ ] Mock interview: `/interview TypeScript`\n- [ ] Mock interview: `/interview JavaScript`\n\n## Also useful\n\n[AWS](../topics/aws.md)\n\n## Also needed (not in your notes yet)\n\nMEAN/MERN stacks, Git, Postman\n\n## Where it leads\n\nGrow: Tech Lead, Solution Architect, Cloud Architect · Lead: Engineering Manager · Pivot: AI / LLM Engineer, Forward Deployed Engineer (FDE), AI Agent Engineer, Platform Engineer, Product Manager (PM)",
+      "answer": "## Role overview\n\nWorks on both frontend and backend of an application.\n\n## Prerequisites\n\n- [SQL](../topics/database-sql.md)\n- [DevOps](../topics/devops.md)\n- [HTML](../topics/html.md)\n- [Java](../topics/java.md)\n- [REST API](../topics/rest-api.md)\n\n## Learning stages\n\n### Stage 1: Core skills\n\n- [ ] [JavaScript](../topics/javascript.md)\n- [ ] [Spring Boot](../topics/spring.md)\n\n### Stage 2: Frameworks and depth\n\n- [ ] [Node.js](../topics/nodejs.md)\n- [ ] [React](../topics/react.md)\n- [ ] [TypeScript](../topics/typescript.md)\n\n### Stage 3: Specialisation\n\n- [ ] [Angular](../topics/angular.md)\n\n## Also useful\n\n[AWS](../topics/aws.md)\n\n## Also needed\n\nMEAN/MERN stacks, Git, Postman\n\n## Where it leads\n\nGrow: Tech Lead, Solution Architect, Cloud Architect · Lead: Engineering Manager · Pivot: AI / LLM Engineer, Forward Deployed Engineer (FDE), AI Agent Engineer, Platform Engineer, Product Manager (PM)",
       "summary": "Works on both frontend and backend of an application.",
       "codeBlocks": [],
       "visuals": [],
@@ -33705,9 +33668,9 @@
       "source": {
         "path": "roadmap/roles/full-stack-developer.md",
         "startLine": 2,
-        "endLine": 47
+        "endLine": 44
       },
-      "contentHash": "3afbb8d9a7c25717"
+      "contentHash": "0c33b747a6d79313"
     },
     {
       "id": "roadmap/roles/machine-learning-engineer.md#roadmap",
@@ -33715,7 +33678,7 @@
       "parentId": null,
       "question": "Roadmap: Machine Learning Engineer",
       "prompt": null,
-      "answer": "Puts ML models into production and keeps them working.\n\n## Prerequisites\n\n- None. Start with Stage 1.\n- Usually 2+ years of experience when hired\n\n## Stage 1: Core skills\n\n- [ ] [Java](../topics/java.md)\n\n## Stage 2: Interview preparation\n\n- [ ] Solve the practice problems in these topics\n- [ ] Mock interview: `/interview Java`\n\n## Also useful\n\n[DevOps](../topics/devops.md)\n\n## Also needed (not in your notes yet)\n\nPython, C++, PyTorch, TensorFlow, Hugging Face, ONNX, MLflow, Kubeflow, SageMaker, Vertex AI\n\n## Where it leads\n\nGrow: AI / LLM Engineer, AI Solutions Architect, Tech Lead · Lead: Engineering Manager · Pivot: AI Infrastructure / LLMOps Engineer, Forward Deployed Engineer (FDE), AI Agent Engineer",
+      "answer": "## Role overview\n\nPuts ML models into production and keeps them working.\n\n## Prerequisites\n\n- None. Start with Stage 1.\n- Usually 2+ years of experience when hired\n\n## Learning stages\n\n### Stage 1: Core skills\n\n- [ ] [Java](../topics/java.md)\n\n## Also useful\n\n[DevOps](../topics/devops.md)\n\n## Also needed\n\nPython, C++, PyTorch, TensorFlow, Hugging Face, ONNX, MLflow, Kubeflow, SageMaker, Vertex AI\n\n## Where it leads\n\nGrow: AI / LLM Engineer, AI Solutions Architect, Tech Lead · Lead: Engineering Manager · Pivot: AI Infrastructure / LLMOps Engineer, Forward Deployed Engineer (FDE), AI Agent Engineer",
       "summary": "Puts ML models into production and keeps them working.",
       "codeBlocks": [],
       "visuals": [],
@@ -33751,9 +33714,9 @@
       "source": {
         "path": "roadmap/roles/machine-learning-engineer.md",
         "startLine": 2,
-        "endLine": 31
+        "endLine": 30
       },
-      "contentHash": "d19bb2414880a3d1"
+      "contentHash": "155d1e42cd6773a4"
     },
     {
       "id": "roadmap/roles/mainframe-developer.md#roadmap",
@@ -33761,7 +33724,7 @@
       "parentId": null,
       "question": "Roadmap: Mainframe Developer",
       "prompt": null,
-      "answer": "Maintains core banking/insurance systems on IBM mainframes.\n\n## Prerequisites\n\n- None. Start with Stage 1.\n\n## Stage 1: Core skills\n\n- [ ] [SQL](../topics/database-sql.md)\n\n## Stage 2: Interview preparation\n\n- [ ] Solve the practice problems in these topics\n- [ ] Mock interview: `/interview SQL`\n\n## Also needed (not in your notes yet)\n\nCOBOL, JCL, PL/I, REXX, CICS, IMS, IBM z/OS, DB2, ISPF, Endevor\n\n## Where it leads\n\nGrow: Tech Lead, Solution Architect · Lead: Project Manager · Pivot: Backend Developer, Cloud Engineer, Data Engineer",
+      "answer": "## Role overview\n\nMaintains core banking/insurance systems on IBM mainframes.\n\n## Prerequisites\n\n- None. Start with Stage 1.\n\n## Learning stages\n\n### Stage 1: Core skills\n\n- [ ] [SQL](../topics/database-sql.md)\n\n## Also needed\n\nCOBOL, JCL, PL/I, REXX, CICS, IMS, IBM z/OS, DB2, ISPF, Endevor\n\n## Where it leads\n\nGrow: Tech Lead, Solution Architect · Lead: Project Manager · Pivot: Backend Developer, Cloud Engineer, Data Engineer",
       "summary": "Maintains core banking/insurance systems on IBM mainframes.",
       "codeBlocks": [],
       "visuals": [],
@@ -33795,9 +33758,9 @@
       "source": {
         "path": "roadmap/roles/mainframe-developer.md",
         "startLine": 2,
-        "endLine": 26
+        "endLine": 25
       },
-      "contentHash": "b8a1c5a70fd900da"
+      "contentHash": "a7b0ec36b7e2c3ad"
     },
     {
       "id": "roadmap/roles/manual-qa-test-engineer.md#roadmap",
@@ -33805,7 +33768,7 @@
       "parentId": null,
       "question": "Roadmap: Manual QA / Test Engineer",
       "prompt": null,
-      "answer": "Tests software by hand to find bugs before users do.\n\n## Prerequisites\n\n- None. Start with Stage 1.\n\n## Stage 1: Core skills\n\n- [ ] [SQL](../topics/database-sql.md)\n\n## Stage 2: Interview preparation\n\n- [ ] Solve the practice problems in these topics\n- [ ] Mock interview: `/interview SQL`\n\n## Also needed (not in your notes yet)\n\nSTLC, Test case design, Jira, TestRail, Zephyr, Postman\n\n## Where it leads\n\nGrow: Automation Test Engineer (SDET) · Lead: Scrum Master / Agile Coach, Project Manager · Pivot: Business Analyst (BA), AI Evaluation (Evals) Engineer, Performance Test Engineer",
+      "answer": "## Role overview\n\nTests software by hand to find bugs before users do.\n\n## Prerequisites\n\n- None. Start with Stage 1.\n\n## Learning stages\n\n### Stage 1: Core skills\n\n- [ ] [SQL](../topics/database-sql.md)\n\n## Also needed\n\nSTLC, Test case design, Jira, TestRail, Zephyr, Postman\n\n## Where it leads\n\nGrow: Automation Test Engineer (SDET) · Lead: Scrum Master / Agile Coach, Project Manager · Pivot: Business Analyst (BA), AI Evaluation (Evals) Engineer, Performance Test Engineer",
       "summary": "Tests software by hand to find bugs before users do.",
       "codeBlocks": [],
       "visuals": [],
@@ -33844,9 +33807,9 @@
       "source": {
         "path": "roadmap/roles/manual-qa-test-engineer.md",
         "startLine": 2,
-        "endLine": 26
+        "endLine": 25
       },
-      "contentHash": "d08c04d1238488d4"
+      "contentHash": "6d890407a7e46468"
     },
     {
       "id": "roadmap/roles/mlops-engineer.md#roadmap",
@@ -33854,7 +33817,7 @@
       "parentId": null,
       "question": "Roadmap: MLOps Engineer",
       "prompt": null,
-      "answer": "Automates training, deployment and monitoring of ML models.\n\n## Prerequisites\n\n- None. Start with Stage 1.\n- Usually 3+ years of experience when hired\n\n## Stage 1: Core skills\n\n- [ ] [DevOps](../topics/devops.md)\n\n## Stage 2: Interview preparation\n\n- [ ] Mock interview: `/interview DevOps`\n\n## Also needed (not in your notes yet)\n\nPython, Bash, YAML, Kubeflow, MLflow, Airflow, SageMaker, Weights & Biases\n\n## Where it leads\n\nGrow: AI Infrastructure / LLMOps Engineer, Platform Engineer · Lead: Engineering Manager · Pivot: Machine Learning Engineer, Site Reliability Engineer (SRE)",
+      "answer": "## Role overview\n\nAutomates training, deployment and monitoring of ML models.\n\n## Prerequisites\n\n- None. Start with Stage 1.\n- Usually 3+ years of experience when hired\n\n## Learning stages\n\n### Stage 1: Core skills\n\n- [ ] [DevOps](../topics/devops.md)\n\n## Also needed\n\nPython, Bash, YAML, Kubeflow, MLflow, Airflow, SageMaker, Weights & Biases\n\n## Where it leads\n\nGrow: AI Infrastructure / LLMOps Engineer, Platform Engineer · Lead: Engineering Manager · Pivot: Machine Learning Engineer, Site Reliability Engineer (SRE)",
       "summary": "Automates training, deployment and monitoring of ML models.",
       "codeBlocks": [],
       "visuals": [],
@@ -33890,7 +33853,7 @@
         "startLine": 2,
         "endLine": 26
       },
-      "contentHash": "c5a39d951a37c27b"
+      "contentHash": "b467dc5f185dfc57"
     },
     {
       "id": "roadmap/roles/mobile-developer.md#roadmap",
@@ -33898,7 +33861,7 @@
       "parentId": null,
       "question": "Roadmap: Mobile Developer",
       "prompt": null,
-      "answer": "Builds apps for Android and iOS phones and tablets.\n\n## Prerequisites\n\n- [HTML](../topics/html.md)\n- [Java](../topics/java.md)\n\n## Stage 1: Core skills\n\n- [ ] [JavaScript](../topics/javascript.md)\n\n## Stage 2: Frameworks and depth\n\n- [ ] [React](../topics/react.md)\n- [ ] [TypeScript](../topics/typescript.md)\n\n## Stage 3: Interview preparation\n\n- [ ] Solve the practice problems in these topics\n- [ ] Mock interview: `/interview Java`\n- [ ] Mock interview: `/interview React`\n- [ ] Mock interview: `/interview JavaScript`\n\n## Also needed (not in your notes yet)\n\nKotlin, Swift, Dart, Android SDK, Jetpack Compose, SwiftUI, Flutter, Android Studio, Xcode, Firebase, TestFlight, Fastlane\n\n## Where it leads\n\nGrow: Full Stack Developer, Tech Lead · Lead: Engineering Manager · Pivot: XR (AR/VR) Developer, AI Agent Engineer, Product Manager (PM)",
+      "answer": "## Role overview\n\nBuilds apps for Android and iOS phones and tablets.\n\n## Prerequisites\n\n- [HTML](../topics/html.md)\n- [Java](../topics/java.md)\n\n## Learning stages\n\n### Stage 1: Core skills\n\n- [ ] [JavaScript](../topics/javascript.md)\n\n### Stage 2: Frameworks and depth\n\n- [ ] [React](../topics/react.md)\n- [ ] [TypeScript](../topics/typescript.md)\n\n## Also needed\n\nKotlin, Swift, Dart, Android SDK, Jetpack Compose, SwiftUI, Flutter, Android Studio, Xcode, Firebase, TestFlight, Fastlane\n\n## Where it leads\n\nGrow: Full Stack Developer, Tech Lead · Lead: Engineering Manager · Pivot: XR (AR/VR) Developer, AI Agent Engineer, Product Manager (PM)",
       "summary": "Builds apps for Android and iOS phones and tablets.",
       "codeBlocks": [],
       "visuals": [],
@@ -33936,9 +33899,9 @@
       "source": {
         "path": "roadmap/roles/mobile-developer.md",
         "startLine": 2,
-        "endLine": 34
+        "endLine": 31
       },
-      "contentHash": "0eb79ed674c92457"
+      "contentHash": "f835d3c6914f89ad"
     },
     {
       "id": "roadmap/roles/performance-test-engineer.md#roadmap",
@@ -33946,7 +33909,7 @@
       "parentId": null,
       "question": "Roadmap: Performance Test Engineer",
       "prompt": null,
-      "answer": "Checks speed, load and stability under heavy traffic.\n\n## Prerequisites\n\n- [HTML](../topics/html.md)\n- [Java](../topics/java.md)\n- Usually 2+ years of experience when hired\n\n## Stage 1: Core skills\n\n- [ ] [JavaScript](../topics/javascript.md)\n\n## Stage 2: Interview preparation\n\n- [ ] Solve the practice problems in these topics\n- [ ] Mock interview: `/interview Java`\n- [ ] Mock interview: `/interview JavaScript`\n- [ ] Mock interview: `/interview HTML`\n\n## Also needed (not in your notes yet)\n\nScala, JMeter, k6, Gatling, LoadRunner, Grafana, APM tools\n\n## Where it leads\n\nGrow: Site Reliability Engineer (SRE), Tech Lead · Lead: — · Pivot: Platform Engineer, Backend Developer",
+      "answer": "## Role overview\n\nChecks speed, load and stability under heavy traffic.\n\n## Prerequisites\n\n- [HTML](../topics/html.md)\n- [Java](../topics/java.md)\n- Usually 2+ years of experience when hired\n\n## Learning stages\n\n### Stage 1: Core skills\n\n- [ ] [JavaScript](../topics/javascript.md)\n\n## Also needed\n\nScala, JMeter, k6, Gatling, LoadRunner, Grafana, APM tools\n\n## Where it leads\n\nGrow: Site Reliability Engineer (SRE), Tech Lead · Lead: — · Pivot: Platform Engineer, Backend Developer",
       "summary": "Checks speed, load and stability under heavy traffic.",
       "codeBlocks": [],
       "visuals": [],
@@ -33983,9 +33946,9 @@
       "source": {
         "path": "roadmap/roles/performance-test-engineer.md",
         "startLine": 2,
-        "endLine": 30
+        "endLine": 27
       },
-      "contentHash": "b7885a1685a00395"
+      "contentHash": "28b053bf22d1e915"
     },
     {
       "id": "roadmap/roles/platform-engineer.md#roadmap",
@@ -33993,7 +33956,7 @@
       "parentId": null,
       "question": "Roadmap: Platform Engineer",
       "prompt": null,
-      "answer": "Builds internal platforms so developers can ship without friction.\n\n## Prerequisites\n\n- [DevOps](../topics/devops.md)\n- [HTML](../topics/html.md)\n- Usually 4+ years of experience when hired\n\n## Stage 1: Core skills\n\n- [ ] [JavaScript](../topics/javascript.md)\n\n## Stage 2: Frameworks and depth\n\n- [ ] [TypeScript](../topics/typescript.md)\n\n## Stage 3: Interview preparation\n\n- [ ] Solve the practice problems in these topics\n- [ ] Mock interview: `/interview DevOps`\n- [ ] Mock interview: `/interview TypeScript`\n- [ ] Mock interview: `/interview JavaScript`\n\n## Also needed (not in your notes yet)\n\nGo, Python, Backstage, Crossplane, Terraform, Argo CD, Helm\n\n## Where it leads\n\nGrow: Cloud Architect, Tech Lead · Lead: Engineering Manager · Pivot: AI Infrastructure / LLMOps Engineer",
+      "answer": "## Role overview\n\nBuilds internal platforms so developers can ship without friction.\n\n## Prerequisites\n\n- [DevOps](../topics/devops.md)\n- [HTML](../topics/html.md)\n- Usually 4+ years of experience when hired\n\n## Learning stages\n\n### Stage 1: Core skills\n\n- [ ] [JavaScript](../topics/javascript.md)\n\n### Stage 2: Frameworks and depth\n\n- [ ] [TypeScript](../topics/typescript.md)\n\n## Also needed\n\nGo, Python, Backstage, Crossplane, Terraform, Argo CD, Helm\n\n## Where it leads\n\nGrow: Cloud Architect, Tech Lead · Lead: Engineering Manager · Pivot: AI Infrastructure / LLMOps Engineer",
       "summary": "Builds internal platforms so developers can ship without friction.",
       "codeBlocks": [],
       "visuals": [],
@@ -34030,9 +33993,9 @@
       "source": {
         "path": "roadmap/roles/platform-engineer.md",
         "startLine": 2,
-        "endLine": 34
+        "endLine": 31
       },
-      "contentHash": "9a7f3c4b268ce078"
+      "contentHash": "2b9c3b8153fc7c86"
     },
     {
       "id": "roadmap/roles/product-manager.md#roadmap",
@@ -34040,7 +34003,7 @@
       "parentId": null,
       "question": "Roadmap: Product Manager",
       "prompt": null,
-      "answer": "Decides what to build and why, based on user and business needs.\n\n## Prerequisites\n\n- None. Start with Stage 1.\n- Usually 3+ years of experience when hired\n\n## Stage 1: Core skills\n\n- [ ] [SQL](../topics/database-sql.md)\n\n## Stage 2: Interview preparation\n\n- [ ] Solve the practice problems in these topics\n- [ ] Mock interview: `/interview SQL`\n\n## Also needed (not in your notes yet)\n\nAgile, OKRs, RICE prioritisation, Jira, Confluence, Productboard, Amplitude, Mixpanel\n\n## Where it leads\n\nGrow: AI Product Manager · Lead: CTO / CIO · Pivot: Solutions / Sales Engineer",
+      "answer": "## Role overview\n\nDecides what to build and why, based on user and business needs.\n\n## Prerequisites\n\n- None. Start with Stage 1.\n- Usually 3+ years of experience when hired\n\n## Learning stages\n\n### Stage 1: Core skills\n\n- [ ] [SQL](../topics/database-sql.md)\n\n## Also needed\n\nAgile, OKRs, RICE prioritisation, Jira, Confluence, Productboard, Amplitude, Mixpanel\n\n## Where it leads\n\nGrow: AI Product Manager · Lead: CTO / CIO · Pivot: Solutions / Sales Engineer",
       "summary": "Decides what to build and why, based on user and business needs.",
       "codeBlocks": [],
       "visuals": [],
@@ -34076,9 +34039,9 @@
       "source": {
         "path": "roadmap/roles/product-manager.md",
         "startLine": 2,
-        "endLine": 27
+        "endLine": 26
       },
-      "contentHash": "bb877cfe8036edf1"
+      "contentHash": "1f7bee6351e7f01b"
     },
     {
       "id": "roadmap/roles/production-application-support.md#roadmap",
@@ -34086,7 +34049,7 @@
       "parentId": null,
       "question": "Roadmap: Production / Application Support",
       "prompt": null,
-      "answer": "Keeps live business apps running and fixes production issues.\n\n## Prerequisites\n\n- None. Start with Stage 1.\n- Usually 1+ years of experience when hired\n\n## Stage 1: Core skills\n\n- [ ] [SQL](../topics/database-sql.md)\n\n## Stage 2: Interview preparation\n\n- [ ] Solve the practice problems in these topics\n- [ ] Mock interview: `/interview SQL`\n\n## Also needed (not in your notes yet)\n\nBash, Python, ITIL, Runbooks, Splunk, ServiceNow, Dynatrace, AppDynamics\n\n## Where it leads\n\nGrow: Site Reliability Engineer (SRE), DevOps Engineer · Lead: Project Manager · Pivot: Backend Developer, Cloud Engineer",
+      "answer": "## Role overview\n\nKeeps live business apps running and fixes production issues.\n\n## Prerequisites\n\n- None. Start with Stage 1.\n- Usually 1+ years of experience when hired\n\n## Learning stages\n\n### Stage 1: Core skills\n\n- [ ] [SQL](../topics/database-sql.md)\n\n## Also needed\n\nBash, Python, ITIL, Runbooks, Splunk, ServiceNow, Dynatrace, AppDynamics\n\n## Where it leads\n\nGrow: Site Reliability Engineer (SRE), DevOps Engineer · Lead: Project Manager · Pivot: Backend Developer, Cloud Engineer",
       "summary": "Keeps live business apps running and fixes production issues.",
       "codeBlocks": [],
       "visuals": [],
@@ -34122,9 +34085,46 @@
       "source": {
         "path": "roadmap/roles/production-application-support.md",
         "startLine": 2,
-        "endLine": 27
+        "endLine": 26
       },
-      "contentHash": "69299f816dce1869"
+      "contentHash": "051a7aa01a7fbbfe"
+    },
+    {
+      "id": "roadmap/roles/README.md#roadmap",
+      "kind": "roadmap",
+      "parentId": null,
+      "question": "Role roadmaps",
+      "prompt": null,
+      "answer": "## Data & AI\n\n- [AI / LLM Engineer](../roles/ai-llm-engineer.md)\n- [Analytics Engineer](../roles/analytics-engineer.md)\n- [BI Developer](../roles/bi-developer.md)\n- [Data Analyst](../roles/data-analyst.md)\n- [Data Engineer](../roles/data-engineer.md)\n- [Data Scientist](../roles/data-scientist.md)\n- [Database Administrator](../roles/database-administrator.md)\n- [Machine Learning Engineer](../roles/machine-learning-engineer.md)\n- [MLOps Engineer](../roles/mlops-engineer.md)\n\n## AI-Era & Emerging Roles\n\n- [AI Agent Engineer](../roles/ai-agent-engineer.md)\n- [AI Automation Engineer](../roles/ai-automation-engineer.md)\n- [AI Evaluation Engineer](../roles/ai-evaluation-engineer.md)\n- [AI Infrastructure / LLMOps Engineer](../roles/ai-infrastructure-llmops-engineer.md)\n- [AI Product Manager](../roles/ai-product-manager.md)\n- [AI Solutions Architect](../roles/ai-solutions-architect.md)\n- [Developer Advocate](../roles/developer-advocate.md)\n- [Forward Deployed Engineer](../roles/forward-deployed-engineer.md)\n\n## Security\n\n- [Application Security / DevSecOps Engineer](../roles/application-security-devsecops-engineer.md)\n- [Cloud Security Engineer](../roles/cloud-security-engineer.md)\n\n## Quality & Testing\n\n- [Automation Test Engineer](../roles/automation-test-engineer.md)\n- [Manual QA / Test Engineer](../roles/manual-qa-test-engineer.md)\n- [Performance Test Engineer](../roles/performance-test-engineer.md)\n\n## Software Development\n\n- [Backend Developer](../roles/backend-developer.md)\n- [Blockchain Developer](../roles/blockchain-developer.md)\n- [ERP / CRM Developer](../roles/erp-crm-developer.md)\n- [Frontend Developer](../roles/frontend-developer.md)\n- [Full Stack Developer](../roles/full-stack-developer.md)\n- [Mainframe Developer](../roles/mainframe-developer.md)\n- [Mobile Developer](../roles/mobile-developer.md)\n\n## Business & Delivery\n\n- [Business Analyst](../roles/business-analyst.md)\n- [Customer Success Engineer](../roles/customer-success-engineer.md)\n- [Solutions / Sales Engineer](../roles/solutions-sales-engineer.md)\n- [Technical Writer](../roles/technical-writer.md)\n\n## Architecture & Leadership\n\n- [Cloud Architect](../roles/cloud-architect.md)\n- [Data Architect](../roles/data-architect.md)\n- [Solution Architect](../roles/solution-architect.md)\n\n## Cloud, DevOps & Infrastructure\n\n- [Cloud Engineer](../roles/cloud-engineer.md)\n- [DevOps Engineer](../roles/devops-engineer.md)\n- [FinOps Engineer / Analyst](../roles/finops-engineer-analyst.md)\n- [Platform Engineer](../roles/platform-engineer.md)\n- [Release / Build Engineer](../roles/release-build-engineer.md)\n- [Site Reliability Engineer](../roles/site-reliability-engineer.md)\n\n## Product & Design\n\n- [Product Manager](../roles/product-manager.md)\n- [UI/UX Designer](../roles/ui-ux-designer.md)\n\n## IT Support & Operations\n\n- [Production / Application Support](../roles/production-application-support.md)\n\nNew to tech? Start with the [learning tracks](../topics/README.md).",
+      "summary": "",
+      "codeBlocks": [],
+      "visuals": [],
+      "contentType": "roadmap",
+      "domain": "roadmap",
+      "topics": [
+        "roadmaps"
+      ],
+      "section": [
+        "Roadmaps",
+        "Topics"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "role roadmaps",
+        "career roadmaps",
+        "role",
+        "roadmaps"
+      ],
+      "names": [
+        "role roadmaps",
+        "career roadmaps"
+      ],
+      "source": {
+        "path": "roadmap/roles/README.md",
+        "startLine": 2,
+        "endLine": 79
+      },
+      "contentHash": "37128868b1b48d00"
     },
     {
       "id": "roadmap/roles/release-build-engineer.md#roadmap",
@@ -34132,7 +34132,7 @@
       "parentId": null,
       "question": "Roadmap: Release / Build Engineer",
       "prompt": null,
-      "answer": "Manages versions, builds and release schedules.\n\n## Prerequisites\n\n- None. Start with Stage 1.\n- Usually 1+ years of experience when hired\n\n## Stage 1: Core skills\n\n- [ ] [DevOps](../topics/devops.md)\n\n## Stage 2: Interview preparation\n\n- [ ] Mock interview: `/interview DevOps`\n\n## Also needed (not in your notes yet)\n\nBash, Groovy, Python, Bazel, Artifactory, Nexus, Git\n\n## Where it leads\n\nGrow: DevOps Engineer, Platform Engineer · Lead: — · Pivot: Site Reliability Engineer (SRE)",
+      "answer": "## Role overview\n\nManages versions, builds and release schedules.\n\n## Prerequisites\n\n- None. Start with Stage 1.\n- Usually 1+ years of experience when hired\n\n## Learning stages\n\n### Stage 1: Core skills\n\n- [ ] [DevOps](../topics/devops.md)\n\n## Also needed\n\nBash, Groovy, Python, Bazel, Artifactory, Nexus, Git\n\n## Where it leads\n\nGrow: DevOps Engineer, Platform Engineer · Lead: — · Pivot: Site Reliability Engineer (SRE)",
       "summary": "Manages versions, builds and release schedules.",
       "codeBlocks": [],
       "visuals": [],
@@ -34169,7 +34169,7 @@
         "startLine": 2,
         "endLine": 26
       },
-      "contentHash": "f5d707a11e667c72"
+      "contentHash": "d42df96c83f44cd1"
     },
     {
       "id": "roadmap/roles/site-reliability-engineer.md#roadmap",
@@ -34177,7 +34177,7 @@
       "parentId": null,
       "question": "Roadmap: Site Reliability Engineer",
       "prompt": null,
-      "answer": "Keeps production reliable using software engineering practices.\n\n## Prerequisites\n\n- None. Start with Stage 1.\n- Usually 3+ years of experience when hired\n\n## Stage 1: Core skills\n\n- [ ] [DevOps](../topics/devops.md)\n\n## Stage 2: Interview preparation\n\n- [ ] Mock interview: `/interview DevOps`\n\n## Also needed (not in your notes yet)\n\nGo, Python, Bash, OpenTelemetry, Prometheus, Grafana, PagerDuty, Datadog, ELK\n\n## Where it leads\n\nGrow: Platform Engineer, Cloud Architect, Tech Lead · Lead: Engineering Manager · Pivot: AI Infrastructure / LLMOps Engineer, Cloud Security Engineer",
+      "answer": "## Role overview\n\nKeeps production reliable using software engineering practices.\n\n## Prerequisites\n\n- None. Start with Stage 1.\n- Usually 3+ years of experience when hired\n\n## Learning stages\n\n### Stage 1: Core skills\n\n- [ ] [DevOps](../topics/devops.md)\n\n## Also needed\n\nGo, Python, Bash, OpenTelemetry, Prometheus, Grafana, PagerDuty, Datadog, ELK\n\n## Where it leads\n\nGrow: Platform Engineer, Cloud Architect, Tech Lead · Lead: Engineering Manager · Pivot: AI Infrastructure / LLMOps Engineer, Cloud Security Engineer",
       "summary": "Keeps production reliable using software engineering practices.",
       "codeBlocks": [],
       "visuals": [],
@@ -34216,7 +34216,7 @@
         "startLine": 2,
         "endLine": 26
       },
-      "contentHash": "4a97f1e45ec0bd68"
+      "contentHash": "34f3aa0075d18826"
     },
     {
       "id": "roadmap/roles/solution-architect.md#roadmap",
@@ -34224,7 +34224,7 @@
       "parentId": null,
       "question": "Roadmap: Solution Architect",
       "prompt": null,
-      "answer": "Designs the technical solution for a specific business problem or project.\n\n## Prerequisites\n\n- [Java](../topics/java.md)\n- [REST API](../topics/rest-api.md)\n- Usually 8+ years of experience when hired\n\n## Stage 1: Core skills\n\n- [ ] [Microservices](../topics/microservices.md)\n\n## Stage 2: Interview preparation\n\n- [ ] Solve the practice problems in these topics\n- [ ] Mock interview: `/interview Java`\n- [ ] Mock interview: `/interview Microservices`\n- [ ] Mock interview: `/interview REST API`\n\n## Also needed (not in your notes yet)\n\nEvent-driven, TOGAF (optional), Draw.io, Lucidchart, C4 model, ArchiMate\n\n## Where it leads\n\nGrow: Enterprise Architect, AI Solutions Architect, Cloud Architect · Lead: CTO / CIO, Engineering Manager · Pivot: Pre-Sales / Solutions Consultant, Forward Deployed Engineer (FDE)",
+      "answer": "## Role overview\n\nDesigns the technical solution for a specific business problem or project.\n\n## Prerequisites\n\n- [Java](../topics/java.md)\n- [REST API](../topics/rest-api.md)\n- Usually 8+ years of experience when hired\n\n## Learning stages\n\n### Stage 1: Core skills\n\n- [ ] [Microservices](../topics/microservices.md)\n\n## Also needed\n\nEvent-driven, TOGAF (optional), Draw.io, Lucidchart, C4 model, ArchiMate\n\n## Where it leads\n\nGrow: Enterprise Architect, AI Solutions Architect, Cloud Architect · Lead: CTO / CIO, Engineering Manager · Pivot: Pre-Sales / Solutions Consultant, Forward Deployed Engineer (FDE)",
       "summary": "Designs the technical solution for a specific business problem or project.",
       "codeBlocks": [],
       "visuals": [],
@@ -34260,9 +34260,9 @@
       "source": {
         "path": "roadmap/roles/solution-architect.md",
         "startLine": 2,
-        "endLine": 30
+        "endLine": 27
       },
-      "contentHash": "f63d24a376a4ca0b"
+      "contentHash": "1d86892ee8d8bc2c"
     },
     {
       "id": "roadmap/roles/solutions-sales-engineer.md#roadmap",
@@ -34270,7 +34270,7 @@
       "parentId": null,
       "question": "Roadmap: Solutions / Sales Engineer",
       "prompt": null,
-      "answer": "Technical expert who supports sales with demos and proofs of concept.\n\n## Prerequisites\n\n- [SQL](../topics/database-sql.md)\n- [HTML](../topics/html.md)\n- Usually 3+ years of experience when hired\n\n## Stage 1: Core skills\n\n- [ ] [JavaScript](../topics/javascript.md)\n\n## Stage 2: Interview preparation\n\n- [ ] Solve the practice problems in these topics\n- [ ] Mock interview: `/interview SQL`\n- [ ] Mock interview: `/interview JavaScript`\n- [ ] Mock interview: `/interview HTML`\n\n## Also needed (not in your notes yet)\n\nPython, POC delivery, Demo environments, CRM (Salesforce), Postman\n\n## Where it leads\n\nGrow: Pre-Sales / Solutions Consultant, Solution Architect · Lead: — · Pivot: Forward Deployed Engineer (FDE), Product Manager (PM), Developer Advocate (DevRel)",
+      "answer": "## Role overview\n\nTechnical expert who supports sales with demos and proofs of concept.\n\n## Prerequisites\n\n- [SQL](../topics/database-sql.md)\n- [HTML](../topics/html.md)\n- Usually 3+ years of experience when hired\n\n## Learning stages\n\n### Stage 1: Core skills\n\n- [ ] [JavaScript](../topics/javascript.md)\n\n## Also needed\n\nPython, POC delivery, Demo environments, CRM (Salesforce), Postman\n\n## Where it leads\n\nGrow: Pre-Sales / Solutions Consultant, Solution Architect · Lead: — · Pivot: Forward Deployed Engineer (FDE), Product Manager (PM), Developer Advocate (DevRel)",
       "summary": "Technical expert who supports sales with demos and proofs of concept.",
       "codeBlocks": [],
       "visuals": [],
@@ -34307,9 +34307,9 @@
       "source": {
         "path": "roadmap/roles/solutions-sales-engineer.md",
         "startLine": 2,
-        "endLine": 30
+        "endLine": 27
       },
-      "contentHash": "bb54468c2ac4745a"
+      "contentHash": "9e41b3619ba7838b"
     },
     {
       "id": "roadmap/roles/technical-writer.md#roadmap",
@@ -34317,7 +34317,7 @@
       "parentId": null,
       "question": "Roadmap: Technical Writer",
       "prompt": null,
-      "answer": "Writes user guides, API docs and internal documentation.\n\n## Prerequisites\n\n- None. Start with Stage 1.\n\n## Stage 1: Core skills\n\n- [ ] [HTML](../topics/html.md)\n\n## Stage 2: Interview preparation\n\n- [ ] Mock interview: `/interview HTML`\n\n## Also needed (not in your notes yet)\n\nMarkdown, Docs-as-code, OpenAPI, Confluence, Docusaurus, MkDocs, Swagger\n\n## Where it leads\n\nGrow: Developer Advocate (DevRel) · Lead: — · Pivot: Product Owner (PO), UX Researcher, Context / Prompt Engineer",
+      "answer": "## Role overview\n\nWrites user guides, API docs and internal documentation.\n\n## Prerequisites\n\n- None. Start with Stage 1.\n\n## Learning stages\n\n### Stage 1: Core skills\n\n- [ ] [HTML](../topics/html.md)\n\n## Also needed\n\nMarkdown, Docs-as-code, OpenAPI, Confluence, Docusaurus, MkDocs, Swagger\n\n## Where it leads\n\nGrow: Developer Advocate (DevRel) · Lead: — · Pivot: Product Owner (PO), UX Researcher, Context / Prompt Engineer",
       "summary": "Writes user guides, API docs and internal documentation.",
       "codeBlocks": [],
       "visuals": [],
@@ -34354,7 +34354,7 @@
         "startLine": 2,
         "endLine": 25
       },
-      "contentHash": "f6bf1264b6134a94"
+      "contentHash": "aa19a6e176f50c98"
     },
     {
       "id": "roadmap/roles/ui-ux-designer.md#roadmap",
@@ -34362,7 +34362,7 @@
       "parentId": null,
       "question": "Roadmap: UI/UX Designer",
       "prompt": null,
-      "answer": "Designs how a product looks (UI) and how easy it is to use (UX).\n\n## Prerequisites\n\n- [HTML](../topics/html.md)\n\n## Stage 1: Core skills\n\n- [ ] [CSS](../topics/css.md)\n\n## Stage 2: Interview preparation\n\n- [ ] Solve the practice problems in these topics\n- [ ] Mock interview: `/interview CSS`\n- [ ] Mock interview: `/interview HTML`\n\n## Also needed (not in your notes yet)\n\nDesign systems, Material Design, Design Thinking, Figma, Adobe XD, Sketch, Miro\n\n## Where it leads\n\nGrow: Conversational AI Designer · Lead: Product Manager (PM) · Pivot: Frontend Developer, XR (AR/VR) Developer, UX Researcher",
+      "answer": "## Role overview\n\nDesigns how a product looks (UI) and how easy it is to use (UX).\n\n## Prerequisites\n\n- [HTML](../topics/html.md)\n\n## Learning stages\n\n### Stage 1: Core skills\n\n- [ ] [CSS](../topics/css.md)\n\n## Also needed\n\nDesign systems, Material Design, Design Thinking, Figma, Adobe XD, Sketch, Miro\n\n## Where it leads\n\nGrow: Conversational AI Designer · Lead: Product Manager (PM) · Pivot: Frontend Developer, XR (AR/VR) Developer, UX Researcher",
       "summary": "Designs how a product looks (UI) and how easy it is to use (UX).",
       "codeBlocks": [],
       "visuals": [],
@@ -34399,71 +34399,9 @@
       "source": {
         "path": "roadmap/roles/ui-ux-designer.md",
         "startLine": 2,
-        "endLine": 27
+        "endLine": 25
       },
-      "contentHash": "4fcd4bc93b9712a7"
-    },
-    {
-      "id": "roadmap/topics/README.md#roadmap",
-      "kind": "roadmap",
-      "parentId": null,
-      "question": "Where to start",
-      "prompt": null,
-      "answer": "Pick a track and follow the study paths in order.\n\n## Frontend\n\nBuild user interfaces for the browser.\n\n1. [ ] [HTML](../topics/html.md)\n2. [ ] [CSS](../topics/css.md)\n3. [ ] [JavaScript](../topics/javascript.md)\n4. [ ] [TypeScript](../topics/typescript.md)\n5. [ ] [Web Vitals](../topics/web-vitals.md)\n6. [ ] [React](../topics/react.md)\n7. [ ] [Angular](../topics/angular.md)\n8. [ ] [RxJS](../topics/rxjs.md)\n\n## Backend with Java\n\nBuild services with Java and Spring.\n\n1. [ ] [Java](../topics/java.md)\n2. [ ] [SQL](../topics/database-sql.md)\n3. [ ] [REST API](../topics/rest-api.md)\n4. [ ] [Spring Boot](../topics/spring.md)\n5. [ ] [Spring Security](../topics/spring-security.md)\n6. [ ] [Microservices](../topics/microservices.md)\n7. [ ] [Spring Cloud](../topics/spring-cloud.md)\n\n## Backend with Node.js\n\nBuild services with JavaScript on the server.\n\n1. [ ] [JavaScript](../topics/javascript.md)\n2. [ ] [Node.js](../topics/nodejs.md)\n3. [ ] [REST API](../topics/rest-api.md)\n4. [ ] [SQL](../topics/database-sql.md)\n5. [ ] [Web Architecture](../topics/web-architecture.md)\n\n## DevOps and cloud\n\nShip, run and scale applications.\n\n1. [ ] [DevOps](../topics/devops.md)\n2. [ ] [AWS](../topics/aws.md)\n3. [ ] [Microservices](../topics/microservices.md)\n\nLooking for a job role? See the [role roadmaps](../roles/README.md).",
-      "summary": "",
-      "codeBlocks": [],
-      "visuals": [],
-      "contentType": "roadmap",
-      "domain": "roadmap",
-      "topics": [
-        "roadmaps"
-      ],
-      "section": [
-        "Roadmaps",
-        "Topics"
-      ],
-      "difficulty": null,
-      "keywords": [
-        "where to start",
-        "start here",
-        "learning tracks",
-        "learning track",
-        "start",
-        "roadmaps"
-      ],
-      "names": [
-        "where to start",
-        "start here",
-        "learning tracks",
-        "learning track"
-      ],
-      "relatedTopics": [
-        "html",
-        "css",
-        "javascript",
-        "typescript",
-        "web-vitals",
-        "react",
-        "angular",
-        "rxjs",
-        "java",
-        "database/sql",
-        "rest-api",
-        "spring",
-        "spring-security",
-        "microservices",
-        "spring-cloud",
-        "nodejs",
-        "web-architecture",
-        "devops",
-        "aws"
-      ],
-      "source": {
-        "path": "roadmap/topics/README.md",
-        "startLine": 2,
-        "endLine": 49
-      },
-      "contentHash": "bb69e91608ea84c0"
+      "contentHash": "0733f839678a298b"
     },
     {
       "id": "roadmap/topics/angular.md#roadmap",
@@ -34606,7 +34544,7 @@
       "parentId": null,
       "question": "SQL study path",
       "prompt": null,
-      "answer": "## Prerequisites\n\n- None. This is a starting point.\n- Overview: [SQL concepts](../../knowledge/concepts/database/sql/README.md)\n\n## 1. Questions\n\n- [ ] [What is an RDBMS?](../../interview/backend/java/08-MySQL.md)\n- [ ] [Primary Key vs Unique Key vs Foreign Key?](../../interview/backend/java/08-MySQL.md)\n- [ ] [What is Normalization?](../../interview/backend/java/08-MySQL.md)\n- [ ] [What is Index?](../../interview/backend/java/08-MySQL.md)\n- [ ] [Which performs better, `JOIN` or `SUBQUERY`?](../../interview/backend/java/08-MySQL.md)\n- [ ] [What is a View?](../../interview/backend/java/08-MySQL.md)\n- [ ] [What is a Stored Procedure?](../../interview/backend/java/08-MySQL.md)\n- [ ] [I see there is a performance issue with the DB. How will you identify the issue? Is there any log you can check?](../../interview/backend/java/08-MySQL.md)\n- [ ] [EXPLAIN / ANALYZE Query](../../interview/backend/java/08-MySQL.md)\n- [ ] [JOIN Types (INNER, LEFT, RIGHT)](../../interview/backend/java/08-MySQL.md)\n- [ ] [Database Sharing](../../interview/backend/java/08-MySQL.md)\n- [ ] [Database Replication](../../interview/backend/java/08-MySQL.md)\n- [ ] [Production Bug / SQL Issue – Root Cause Analysis](../../interview/backend/java/08-MySQL.md)\n- [ ] [What happens internally when a transaction fails midway in a Spring Boot application?](../../interview/backend/java/08-MySQL.md)\n- [ ] [How do you handle if multiple users / threads access same DB data at the same time?](../../interview/backend/java/08-MySQL.md)\n\n## Practice\n\n- [ ] [Questions](../../practice/coding/sql/02-MySQL-coding.md)\n- [ ] [What is the output of the following query?](../../practice/coding/sql/02-MySQL-coding.md)\n- [ ] [COUNT(*), COUNT(col)](../../practice/coding/sql/02-MySQL-coding.md)\n- [ ] [Second Highest Salary](../../practice/coding/sql/02-MySQL-coding.md)\n- [ ] [Duplicate Records](../../practice/coding/sql/02-MySQL-coding.md)\n- [ ] [EXISTS vs IN](../../practice/coding/sql/02-MySQL-coding.md)\n\n## Related roles\n\n[AI Evaluation Engineer](../roles/ai-evaluation-engineer.md) · [AI Product Manager](../roles/ai-product-manager.md) · [Analytics Engineer](../roles/analytics-engineer.md) · [BI Developer](../roles/bi-developer.md) · [Backend Developer](../roles/backend-developer.md) · [Business Analyst](../roles/business-analyst.md) · [Customer Success Engineer](../roles/customer-success-engineer.md) · [Data Analyst](../roles/data-analyst.md) · [Data Architect](../roles/data-architect.md) · [Data Engineer](../roles/data-engineer.md) · [Data Scientist](../roles/data-scientist.md) · [Database Administrator](../roles/database-administrator.md) · [FinOps Engineer / Analyst](../roles/finops-engineer-analyst.md) · [Forward Deployed Engineer](../roles/forward-deployed-engineer.md) · [Full Stack Developer](../roles/full-stack-developer.md) · [Mainframe Developer](../roles/mainframe-developer.md) · [Manual QA / Test Engineer](../roles/manual-qa-test-engineer.md) · [Product Manager](../roles/product-manager.md) · [Production / Application Support](../roles/production-application-support.md) · [Solutions / Sales Engineer](../roles/solutions-sales-engineer.md)",
+      "answer": "## Prerequisites\n\n- None. This is a starting point.\n- Overview: [SQL concepts](../../knowledge/concepts/database/sql/README.md)\n\n## 1. Questions\n\n- [ ] [What is an RDBMS?](../../interview/backend/java/08-MySQL.md)\n- [ ] [Primary Key vs Unique Key vs Foreign Key?](../../interview/backend/java/08-MySQL.md)\n- [ ] [What is Normalization?](../../interview/backend/java/08-MySQL.md)\n- [ ] [What is Index?](../../interview/backend/java/08-MySQL.md)\n- [ ] [Which performs better, `JOIN` or `SUBQUERY`?](../../interview/backend/java/08-MySQL.md)\n- [ ] [What is a View?](../../interview/backend/java/08-MySQL.md)\n- [ ] [What is a Stored Procedure?](../../interview/backend/java/08-MySQL.md)\n- [ ] [I see there is a performance issue with the DB. How will you identify the issue? Is there any log you can check?](../../interview/backend/java/08-MySQL.md)\n- [ ] [EXPLAIN / ANALYZE Query](../../interview/backend/java/08-MySQL.md)\n- [ ] [JOIN Types (INNER, LEFT, RIGHT)](../../interview/backend/java/08-MySQL.md)\n- [ ] [Database Sharing](../../interview/backend/java/08-MySQL.md)\n- [ ] [Database Replication](../../interview/backend/java/08-MySQL.md)\n- [ ] [Production Bug / SQL Issue – Root Cause Analysis](../../interview/backend/java/08-MySQL.md)\n- [ ] [What happens internally when a transaction fails midway in a Spring Boot application?](../../interview/backend/java/08-MySQL.md)\n- [ ] [How do you handle if multiple users / threads access same DB data at the same time?](../../interview/backend/java/08-MySQL.md)\n\n## Practice\n\n- [ ] [Questions](../../practice/coding/sql/02-MySQL-coding.md)\n- [ ] [What is the output of the following query?](../../practice/coding/sql/02-MySQL-coding.md)\n- [ ] [COUNT(*), COUNT(col)](../../practice/coding/sql/02-MySQL-coding.md)\n- [ ] [Second Highest Salary](../../practice/coding/sql/02-MySQL-coding.md)\n- [ ] [Duplicate Records](../../practice/coding/sql/02-MySQL-coding.md)\n- [ ] [EXISTS vs IN](../../practice/coding/sql/02-MySQL-coding.md)\n\n## Related roles\n\n[AI Evaluation Engineer](../roles/ai-evaluation-engineer.md) · [AI Product Manager](../roles/ai-product-manager.md) · [Analytics Engineer](../roles/analytics-engineer.md) · [Backend Developer](../roles/backend-developer.md) · [BI Developer](../roles/bi-developer.md) · [Business Analyst](../roles/business-analyst.md) · [Customer Success Engineer](../roles/customer-success-engineer.md) · [Data Analyst](../roles/data-analyst.md) · [Data Architect](../roles/data-architect.md) · [Data Engineer](../roles/data-engineer.md) · [Data Scientist](../roles/data-scientist.md) · [Database Administrator](../roles/database-administrator.md) · [FinOps Engineer / Analyst](../roles/finops-engineer-analyst.md) · [Forward Deployed Engineer](../roles/forward-deployed-engineer.md) · [Full Stack Developer](../roles/full-stack-developer.md) · [Mainframe Developer](../roles/mainframe-developer.md) · [Manual QA / Test Engineer](../roles/manual-qa-test-engineer.md) · [Product Manager](../roles/product-manager.md) · [Production / Application Support](../roles/production-application-support.md) · [Solutions / Sales Engineer](../roles/solutions-sales-engineer.md)",
       "summary": "",
       "codeBlocks": [],
       "visuals": [],
@@ -34641,7 +34579,7 @@
         "startLine": 2,
         "endLine": 39
       },
-      "contentHash": "502245eadf56306c"
+      "contentHash": "ceb7c903540e71a4"
     },
     {
       "id": "roadmap/topics/devops.md#roadmap",
@@ -34733,7 +34671,7 @@
       "parentId": null,
       "question": "Java study path",
       "prompt": null,
-      "answer": "## Prerequisites\n\n- None. This is a starting point.\n- Overview: [Java concepts](../../knowledge/concepts/java/README.md)\n\n## 1. OOP & Design Thinking\n\n- [ ] [Why OOP was introduced?](../../interview/backend/java/01-Java-1.md)\n- [ ] [How do you design a system where the same operation behaves differently based on the object type, without changing the calling code?](../../interview/backend/java/01-Java-1.md)\n- [ ] [How do you apply OOP principles in real-world systems?](../../interview/backend/java/01-Java-1.md)\n- [ ] [Have you ever violated OOP principles intentionally?](../../interview/backend/java/01-Java-1.md)\n- [ ] [What design principles do you follow while writing Java code?](../../interview/backend/java/01-Java-1.md)\n\n## 2. Core Java\n\n- [ ] [Difference between == and equals()?](../../interview/backend/java/01-Java-1.md)\n- [ ] [String vs StringBuilder vs StringBuffer?](../../interview/backend/java/01-Java-1.md)\n- [ ] [final vs finally vs finalize?](../../interview/backend/java/01-Java-1.md)\n- [ ] [What are the design patterns that you used in Java?](../../interview/backend/java/01-Java-1.md)\n- [ ] [Checked Exception vs Unchecked Exception](../../interview/backend/java/01-Java-1.md)\n- [ ] [What is JNA?](../../interview/backend/java/01-Java-1.md)\n\n## 3. Collections Framework\n\n- [ ] [What is the Collections Framework?](../../interview/backend/java/01-Java-1.md)\n- [ ] [Difference between `Collection` and `Collections`](../../interview/backend/java/01-Java-1.md)\n- [ ] [Difference between `List`, `Set`, and `Map`](../../interview/backend/java/01-Java-1.md)\n- [ ] [Why does `Map` not extend `Collection`?](../../interview/backend/java/01-Java-1.md)\n- [ ] [Difference Between `ArrayList` and `LinkedList`](../../interview/backend/java/01-Java-1.md)\n- [ ] [How does `HashMap` work internally?](../../interview/backend/java/01-Java-1.md)\n- [ ] [How does ConcurrentHashMap work internally?](../../interview/backend/java/01-Java-1.md)\n- [ ] [Difference between `HashMap`, `LinkedHashMap`, `TreeMap`](../../interview/backend/java/01-Java-1.md)\n- [ ] [What is fail-fast vs fail-safe iterator?](../../interview/backend/java/01-Java-1.md)\n- [ ] [Difference between `Iterator` and `ListIterator`](../../interview/backend/java/01-Java-1.md)\n- [ ] [Difference between `Comparable` and `Comparator`](../../interview/backend/java/01-Java-1.md)\n- [ ] [What is `WeakHashMap`?](../../interview/backend/java/01-Java-1.md)\n- [ ] [When would you prefer immutable collections?](../../interview/backend/java/01-Java-1.md)\n\n## 4. Equals and Hashcode\n\n- [ ] [How do equals() and hashCode() work together?](../../interview/backend/java/01-Java-1.md)\n\n## 5. Java 8+ Features\n\n- [ ] [What major changes did Java 8 introduce?](../../interview/backend/java/01-Java-1.md)\n- [ ] [`input.toCharArray()` vs `input.chars()`?](../../interview/backend/java/01-Java-1.md)\n- [ ] [map vs mapToInt vs mapToObj vs mapToLong vs mapToDouble vs flatMap?](../../interview/backend/java/01-Java-1.md)\n- [ ] [Collectors to Remember](../../interview/backend/java/01-Java-1.md)\n- [ ] [Optional.isPresent vs Optional.IfPresent](../../interview/backend/java/01-Java-1.md)\n- [ ] [`filter()` vs `peek()`](../../interview/backend/java/01-Java-1.md)\n- [ ] [`findFirst()` vs `findAny()`](../../interview/backend/java/01-Java-1.md)\n- [ ] [`map()` vs `flatMap()`](../../interview/backend/java/01-Java-1.md)\n- [ ] [Intermediate vs Terminal Operations](../../interview/backend/java/01-Java-1.md)\n- [ ] [Types of Functional Interfaces](../../interview/backend/java/01-Java-1.md)\n\n## 6. Extended Functional Interface Table (Important for Interviews)\n\n- [ ] [Features of `Optional`](../../interview/backend/java/01-Java-1.md)\n- [ ] [Why `Optional` Should NOT Be Used as Method Parameter?](../../interview/backend/java/01-Java-1.md)\n\n## 7. Immutability & Object Design\n\n- [ ] [Why do you prefer immutable objects?](../../interview/backend/java/01-Java-1.md)\n- [ ] [How do you design immutable classes?](../../interview/backend/java/01-Java-1.md)\n- [ ] [How Do You Design a Singleton Class?](../../interview/backend/java/01-Java-1.md)\n- [ ] [AutoBoxing & AutoUnboxing](../../interview/backend/java/01-Java-1.md)\n- [ ] [JVM Internal Question](../../interview/backend/java/01-Java-1.md)\n\n## 8. Major Java Features (9 → 21)\n\n- [ ] [What are the major java features introduced after 8?](../../interview/backend/java/01-Java-2.md)\n\n## 9. Concurrency & Multithreading\n\n- [ ] [How do you handle concurrency in Java applications?](../../interview/backend/java/01-Java-2.md)\n- [ ] [Deadlocks – How do they occur and how do you prevent them?](../../interview/backend/java/01-Java-2.md)\n- [ ] [Process vs Thread?](../../interview/backend/java/01-Java-2.md)\n- [ ] [`volatile` Keyword?](../../interview/backend/java/01-Java-2.md)\n- [ ] [Callable vs Runnable](../../interview/backend/java/01-Java-2.md)\n- [ ] [Fixed Thread Pool vs Cached Thread Pool](../../interview/backend/java/01-Java-2.md)\n\n## 10. JVM Deep Dive\n\n- [ ] [What does Serializable mean?](../../interview/backend/java/01-Java-2.md)\n- [ ] [Explain JVM memory structure. Heap vs Stack vs Metaspace](../../interview/backend/java/01-Java-2.md)\n- [ ] [How does Garbage Collection work?](../../interview/backend/java/01-Java-2.md)\n- [ ] [What causes memory leaks in Java?](../../interview/backend/java/01-Java-2.md)\n\n## 11. JVM vs JRE vs JDK\n\n- [ ] [JVM Internals](../../interview/backend/java/01-Java-2.md)\n- [ ] [How Do You Build a Java Application?](../../interview/backend/java/01-Java-2.md)\n\n## Practice\n\n- [ ] [Merge Two Arrays Alternately](../../practice/coding/java/01-Java-coding.md)\n- [ ] [Reverse an Array](../../practice/coding/java/01-Java-coding.md)\n- [ ] [Find First Non-Repeating Character](../../practice/coding/java/01-Java-coding.md)\n- [ ] [Remove Duplicates from a List (Preserve Order)](../../practice/coding/java/01-Java-coding.md)\n- [ ] [Count Word Occurrences](../../practice/coding/java/01-Java-coding.md)\n- [ ] [Check if String is Palindrome (Ignore Case & Spaces)](../../practice/coding/java/01-Java-coding.md)\n- [ ] [Find Second Highest Number in Array](../../practice/coding/java/01-Java-coding.md)\n- [ ] [Thread-Safe Counter](../../practice/coding/java/01-Java-coding.md)\n- [ ] [Reverse Words in a Sentence](../../practice/coding/java/01-Java-coding.md)\n- [ ] [Reverse a LinkedList](../../practice/coding/java/01-Java-coding.md)\n- [ ] [Employee–Department Related Questions](../../practice/coding/java/01-Java-coding.md)\n- [ ] [Perfect Numbers](../../practice/coding/java/01-Java-coding.md)\n- [ ] [Two Sum Problem](../../practice/coding/java/01-Java-coding.md)\n- [ ] [Count Segments in a String](../../practice/coding/java/01-Java-coding.md)\n- [ ] [What will be the output?](../../practice/coding/java/01-core-java-coding.md)\n- [ ] [What will be the output?](../../practice/coding/java/01-core-java-coding.md)\n- [ ] [What will be the output?](../../practice/coding/java/01-core-java-coding.md)\n- [ ] [What will be the output?](../../practice/coding/java/01-core-java-coding.md)\n- [ ] [What will be the output?](../../practice/coding/java/01-core-java-coding.md)\n- [ ] [What will be the output?](../../practice/coding/java/01-core-java-coding.md)\n\n## Diagrams\n\n- [CompositionVsInheritance](../../knowledge/visual-notes/backend/composition-vs-inheritance.png)\n- [Collections](../../knowledge/visual-notes/backend/java-collections.png)\n\n## Related roles\n\n[AI / LLM Engineer](../roles/ai-llm-engineer.md) · [AI Agent Engineer](../roles/ai-agent-engineer.md) · [AI Solutions Architect](../roles/ai-solutions-architect.md) · [Application Security / DevSecOps Engineer](../roles/application-security-devsecops-engineer.md) · [Automation Test Engineer](../roles/automation-test-engineer.md) · [Backend Developer](../roles/backend-developer.md) · [Data Engineer](../roles/data-engineer.md) · [Forward Deployed Engineer](../roles/forward-deployed-engineer.md) · [Full Stack Developer](../roles/full-stack-developer.md) · [Machine Learning Engineer](../roles/machine-learning-engineer.md) · [Mobile Developer](../roles/mobile-developer.md) · [Performance Test Engineer](../roles/performance-test-engineer.md) · [Solution Architect](../roles/solution-architect.md)",
+      "answer": "## Prerequisites\n\n- None. This is a starting point.\n- Overview: [Java concepts](../../knowledge/concepts/java/README.md)\n\n## 1. OOP & Design Thinking\n\n- [ ] [Why OOP was introduced?](../../interview/backend/java/01-Java-1.md)\n- [ ] [How do you design a system where the same operation behaves differently based on the object type, without changing the calling code?](../../interview/backend/java/01-Java-1.md)\n- [ ] [How do you apply OOP principles in real-world systems?](../../interview/backend/java/01-Java-1.md)\n- [ ] [Have you ever violated OOP principles intentionally?](../../interview/backend/java/01-Java-1.md)\n- [ ] [What design principles do you follow while writing Java code?](../../interview/backend/java/01-Java-1.md)\n\n## 2. Core Java\n\n- [ ] [Difference between == and equals()?](../../interview/backend/java/01-Java-1.md)\n- [ ] [String vs StringBuilder vs StringBuffer?](../../interview/backend/java/01-Java-1.md)\n- [ ] [final vs finally vs finalize?](../../interview/backend/java/01-Java-1.md)\n- [ ] [What are the design patterns that you used in Java?](../../interview/backend/java/01-Java-1.md)\n- [ ] [Checked Exception vs Unchecked Exception](../../interview/backend/java/01-Java-1.md)\n- [ ] [What is JNA?](../../interview/backend/java/01-Java-1.md)\n\n## 3. Collections Framework\n\n- [ ] [What is the Collections Framework?](../../interview/backend/java/01-Java-1.md)\n- [ ] [Difference between `Collection` and `Collections`](../../interview/backend/java/01-Java-1.md)\n- [ ] [Difference between `List`, `Set`, and `Map`](../../interview/backend/java/01-Java-1.md)\n- [ ] [Why does `Map` not extend `Collection`?](../../interview/backend/java/01-Java-1.md)\n- [ ] [Difference Between `ArrayList` and `LinkedList`](../../interview/backend/java/01-Java-1.md)\n- [ ] [How does `HashMap` work internally?](../../interview/backend/java/01-Java-1.md)\n- [ ] [How does ConcurrentHashMap work internally?](../../interview/backend/java/01-Java-1.md)\n- [ ] [Difference between `HashMap`, `LinkedHashMap`, `TreeMap`](../../interview/backend/java/01-Java-1.md)\n- [ ] [What is fail-fast vs fail-safe iterator?](../../interview/backend/java/01-Java-1.md)\n- [ ] [Difference between `Iterator` and `ListIterator`](../../interview/backend/java/01-Java-1.md)\n- [ ] [Difference between `Comparable` and `Comparator`](../../interview/backend/java/01-Java-1.md)\n- [ ] [What is `WeakHashMap`?](../../interview/backend/java/01-Java-1.md)\n- [ ] [When would you prefer immutable collections?](../../interview/backend/java/01-Java-1.md)\n\n## 4. Equals and Hashcode\n\n- [ ] [How do equals() and hashCode() work together?](../../interview/backend/java/01-Java-1.md)\n\n## 5. Java 8+ Features\n\n- [ ] [What major changes did Java 8 introduce?](../../interview/backend/java/01-Java-1.md)\n- [ ] [`input.toCharArray()` vs `input.chars()`?](../../interview/backend/java/01-Java-1.md)\n- [ ] [map vs mapToInt vs mapToObj vs mapToLong vs mapToDouble vs flatMap?](../../interview/backend/java/01-Java-1.md)\n- [ ] [Collectors to Remember](../../interview/backend/java/01-Java-1.md)\n- [ ] [Optional.isPresent vs Optional.IfPresent](../../interview/backend/java/01-Java-1.md)\n- [ ] [`filter()` vs `peek()`](../../interview/backend/java/01-Java-1.md)\n- [ ] [`findFirst()` vs `findAny()`](../../interview/backend/java/01-Java-1.md)\n- [ ] [`map()` vs `flatMap()`](../../interview/backend/java/01-Java-1.md)\n- [ ] [Intermediate vs Terminal Operations](../../interview/backend/java/01-Java-1.md)\n- [ ] [Types of Functional Interfaces](../../interview/backend/java/01-Java-1.md)\n\n## 6. Extended Functional Interface Table (Important for Interviews)\n\n- [ ] [Features of `Optional`](../../interview/backend/java/01-Java-1.md)\n- [ ] [Why `Optional` Should NOT Be Used as Method Parameter?](../../interview/backend/java/01-Java-1.md)\n\n## 7. Immutability & Object Design\n\n- [ ] [Why do you prefer immutable objects?](../../interview/backend/java/01-Java-1.md)\n- [ ] [How do you design immutable classes?](../../interview/backend/java/01-Java-1.md)\n- [ ] [How Do You Design a Singleton Class?](../../interview/backend/java/01-Java-1.md)\n- [ ] [AutoBoxing & AutoUnboxing](../../interview/backend/java/01-Java-1.md)\n- [ ] [JVM Internal Question](../../interview/backend/java/01-Java-1.md)\n\n## 8. Major Java Features (9 → 21)\n\n- [ ] [What are the major java features introduced after 8?](../../interview/backend/java/01-Java-2.md)\n\n## 9. Concurrency & Multithreading\n\n- [ ] [How do you handle concurrency in Java applications?](../../interview/backend/java/01-Java-2.md)\n- [ ] [Deadlocks – How do they occur and how do you prevent them?](../../interview/backend/java/01-Java-2.md)\n- [ ] [Process vs Thread?](../../interview/backend/java/01-Java-2.md)\n- [ ] [`volatile` Keyword?](../../interview/backend/java/01-Java-2.md)\n- [ ] [Callable vs Runnable](../../interview/backend/java/01-Java-2.md)\n- [ ] [Fixed Thread Pool vs Cached Thread Pool](../../interview/backend/java/01-Java-2.md)\n\n## 10. JVM Deep Dive\n\n- [ ] [What does Serializable mean?](../../interview/backend/java/01-Java-2.md)\n- [ ] [Explain JVM memory structure. Heap vs Stack vs Metaspace](../../interview/backend/java/01-Java-2.md)\n- [ ] [How does Garbage Collection work?](../../interview/backend/java/01-Java-2.md)\n- [ ] [What causes memory leaks in Java?](../../interview/backend/java/01-Java-2.md)\n\n## 11. JVM vs JRE vs JDK\n\n- [ ] [JVM Internals](../../interview/backend/java/01-Java-2.md)\n- [ ] [How Do You Build a Java Application?](../../interview/backend/java/01-Java-2.md)\n\n## Practice\n\n- [ ] [What will be the output?](../../practice/coding/java/01-core-java-coding.md)\n- [ ] [What will be the output?](../../practice/coding/java/01-core-java-coding.md)\n- [ ] [What will be the output?](../../practice/coding/java/01-core-java-coding.md)\n- [ ] [What will be the output?](../../practice/coding/java/01-core-java-coding.md)\n- [ ] [What will be the output?](../../practice/coding/java/01-core-java-coding.md)\n- [ ] [What will be the output?](../../practice/coding/java/01-core-java-coding.md)\n- [ ] [Merge Two Arrays Alternately](../../practice/coding/java/01-Java-coding.md)\n- [ ] [Reverse an Array](../../practice/coding/java/01-Java-coding.md)\n- [ ] [Find First Non-Repeating Character](../../practice/coding/java/01-Java-coding.md)\n- [ ] [Remove Duplicates from a List (Preserve Order)](../../practice/coding/java/01-Java-coding.md)\n- [ ] [Count Word Occurrences](../../practice/coding/java/01-Java-coding.md)\n- [ ] [Check if String is Palindrome (Ignore Case & Spaces)](../../practice/coding/java/01-Java-coding.md)\n- [ ] [Find Second Highest Number in Array](../../practice/coding/java/01-Java-coding.md)\n- [ ] [Thread-Safe Counter](../../practice/coding/java/01-Java-coding.md)\n- [ ] [Reverse Words in a Sentence](../../practice/coding/java/01-Java-coding.md)\n- [ ] [Reverse a LinkedList](../../practice/coding/java/01-Java-coding.md)\n- [ ] [Employee–Department Related Questions](../../practice/coding/java/01-Java-coding.md)\n- [ ] [Perfect Numbers](../../practice/coding/java/01-Java-coding.md)\n- [ ] [Two Sum Problem](../../practice/coding/java/01-Java-coding.md)\n- [ ] [Count Segments in a String](../../practice/coding/java/01-Java-coding.md)\n\n## Diagrams\n\n- [CompositionVsInheritance](../../knowledge/visual-notes/backend/composition-vs-inheritance.png)\n- [Collections](../../knowledge/visual-notes/backend/java-collections.png)\n\n## Related roles\n\n[AI / LLM Engineer](../roles/ai-llm-engineer.md) · [AI Agent Engineer](../roles/ai-agent-engineer.md) · [AI Solutions Architect](../roles/ai-solutions-architect.md) · [Application Security / DevSecOps Engineer](../roles/application-security-devsecops-engineer.md) · [Automation Test Engineer](../roles/automation-test-engineer.md) · [Backend Developer](../roles/backend-developer.md) · [Data Engineer](../roles/data-engineer.md) · [Forward Deployed Engineer](../roles/forward-deployed-engineer.md) · [Full Stack Developer](../roles/full-stack-developer.md) · [Machine Learning Engineer](../roles/machine-learning-engineer.md) · [Mobile Developer](../roles/mobile-developer.md) · [Performance Test Engineer](../roles/performance-test-engineer.md) · [Solution Architect](../roles/solution-architect.md)",
       "summary": "",
       "codeBlocks": [],
       "visuals": [],
@@ -34767,7 +34705,7 @@
         "startLine": 2,
         "endLine": 128
       },
-      "contentHash": "1148e581c92ec616"
+      "contentHash": "265414daa5adc80f"
     },
     {
       "id": "roadmap/topics/javascript.md#roadmap",
@@ -34949,6 +34887,68 @@
         "endLine": 55
       },
       "contentHash": "bffd1d3fe18e36c5"
+    },
+    {
+      "id": "roadmap/topics/README.md#roadmap",
+      "kind": "roadmap",
+      "parentId": null,
+      "question": "Where to start",
+      "prompt": null,
+      "answer": "Pick a track and follow the study paths in order.\n\n## Frontend\n\nBuild user interfaces for the browser.\n\n1. [ ] [HTML](../topics/html.md)\n2. [ ] [CSS](../topics/css.md)\n3. [ ] [JavaScript](../topics/javascript.md)\n4. [ ] [TypeScript](../topics/typescript.md)\n5. [ ] [Web Vitals](../topics/web-vitals.md)\n6. [ ] [React](../topics/react.md)\n7. [ ] [Angular](../topics/angular.md)\n8. [ ] [RxJS](../topics/rxjs.md)\n\n## Backend with Java\n\nBuild services with Java and Spring.\n\n1. [ ] [Java](../topics/java.md)\n2. [ ] [SQL](../topics/database-sql.md)\n3. [ ] [REST API](../topics/rest-api.md)\n4. [ ] [Spring Boot](../topics/spring.md)\n5. [ ] [Spring Security](../topics/spring-security.md)\n6. [ ] [Microservices](../topics/microservices.md)\n7. [ ] [Spring Cloud](../topics/spring-cloud.md)\n\n## Backend with Node.js\n\nBuild services with JavaScript on the server.\n\n1. [ ] [JavaScript](../topics/javascript.md)\n2. [ ] [Node.js](../topics/nodejs.md)\n3. [ ] [REST API](../topics/rest-api.md)\n4. [ ] [SQL](../topics/database-sql.md)\n5. [ ] [Web Architecture](../topics/web-architecture.md)\n\n## DevOps and cloud\n\nShip, run and scale applications.\n\n1. [ ] [DevOps](../topics/devops.md)\n2. [ ] [AWS](../topics/aws.md)\n3. [ ] [Microservices](../topics/microservices.md)\n\nLooking for a job role? See the [role roadmaps](../roles/README.md).",
+      "summary": "",
+      "codeBlocks": [],
+      "visuals": [],
+      "contentType": "roadmap",
+      "domain": "roadmap",
+      "topics": [
+        "roadmaps"
+      ],
+      "section": [
+        "Roadmaps",
+        "Topics"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "where to start",
+        "start here",
+        "learning tracks",
+        "learning track",
+        "start",
+        "roadmaps"
+      ],
+      "names": [
+        "where to start",
+        "start here",
+        "learning tracks",
+        "learning track"
+      ],
+      "relatedTopics": [
+        "html",
+        "css",
+        "javascript",
+        "typescript",
+        "web-vitals",
+        "react",
+        "angular",
+        "rxjs",
+        "java",
+        "database/sql",
+        "rest-api",
+        "spring",
+        "spring-security",
+        "microservices",
+        "spring-cloud",
+        "nodejs",
+        "web-architecture",
+        "devops",
+        "aws"
+      ],
+      "source": {
+        "path": "roadmap/topics/README.md",
+        "startLine": 2,
+        "endLine": 49
+      },
+      "contentHash": "bb69e91608ea84c0"
     },
     {
       "id": "roadmap/topics/rest-api.md#roadmap",

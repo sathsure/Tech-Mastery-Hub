@@ -6,6 +6,7 @@
  * Each entry keeps the exact line range in the Markdown, so answers can cite it.
  */
 import type { QuestionEntry, QuestionEntryKind } from "./question-index-contracts.js";
+import { byText, replaceParenGroups } from "./text-utils.js";
 import { cleanHeading, extractKeywords, hash, plainText, scanLines, slugify, summarize, trimBlock, type Line, type Lookups } from "./question-indexer.js";
 
 const PART_TOPICS: Record<string, string> = {
@@ -59,7 +60,7 @@ function tableRows(lines: Line[]): Array<{ cells: string[]; line: Line }> {
       line,
       cells: line.text
         .trim()
-        .replace(/^\||\|$/g, "")
+        .replace(/(?:^\|)|(?:\|$)/g, "")
         .split(/(?<!\\)\|/)
         .map(cell => cell.replace(/\\\|/g, "|").trim()),
     }));
@@ -81,7 +82,7 @@ function relatedTopics(text: string, lookups: Lookups): string[] {
   return Object.entries(lookups.topicAliases)
     .filter(([topic, aliases]) => !atlasTopics.has(topic) && aliases.some(alias => padded.includes(phraseText(alias))))
     .map(([topic]) => topic)
-    .sort();
+    .sort(byText);
 }
 
 function article(name: string): string {
@@ -104,13 +105,14 @@ function uniqueNames(names: Array<string | undefined>): string[] {
 }
 
 function roleNames(heading: string, lines: Line[]): { name: string; base: string; names: string[] } {
-  const name = heading.replace(/\s*\(New\)\s*$/i, "").trim();
-  const base = name.replace(/\s*\([^)]*\)\s*/g, " ").replace(/\s+/g, " ").trim();
+  const trimmed = heading.trim();
+  const name = (/\(new\)$/i.test(trimmed) ? trimmed.slice(0, -"(New)".length) : trimmed).trim();
+  const base = replaceParenGroups(name, " ").replace(/\s+/g, " ").trim();
   const abbreviations = [...name.matchAll(/\(([A-Za-z]{2,8})\)/g)].map(match => match[1]);
   // "Scrum Master / Agile Coach" → both, but not "ERP / CRM Developer" → "ERP".
   const alternatives = base.includes(" / ") && base.split(" / ").every(part => part.trim().includes(" ")) ? base.split(" / ") : [];
   const akaLine = lines.find(line => /^\s*-\s*\*\*Also called:\*\*/.test(line.text));
-  const aka = akaLine ? plainText(akaLine.text.replace(/^\s*-\s*\*\*Also called:\*\*/, "")).split(/\s*,\s*/) : [];
+  const aka = akaLine ? plainText(akaLine.text.replace(/^\s*-\s*\*\*Also called:\*\*/, "")).split(",").map(part => part.trim()) : [];
   return { name, base, names: uniqueNames([name, base, ...abbreviations, ...alternatives, ...aka]) };
 }
 
@@ -119,150 +121,193 @@ function lastLine(lines: Line[], fallback: number): number {
   return filled.length ? filled[filled.length - 1].number : fallback;
 }
 
-export function buildAtlasEntries(sourcePath: string, content: string, lookups: Lookups): QuestionEntry[] {
-  const entries: QuestionEntry[] = [];
-  const usedIds = new Set<string>();
+/** One Atlas entry before it gets its id and index fields. */
+interface AtlasDraft {
+  kind: QuestionEntryKind;
+  slug: string;
+  question: string;
+  answer: string;
+  section: string[];
+  topic: string;
+  domain: string;
+  names?: string[];
+  related?: string[];
+  startLine: number;
+  endLine: number;
+}
 
-  const add = (input: {
-    kind: QuestionEntryKind;
-    slug: string;
-    question: string;
-    answer: string;
-    section: string[];
-    topic: string;
-    domain: string;
-    names?: string[];
-    related?: string[];
-    startLine: number;
-    endLine: number;
-  }) => {
-    let id = `${sourcePath}#${slugify(input.slug)}`;
-    for (let suffix = 2; usedIds.has(id); suffix++) id = `${sourcePath}#${slugify(input.slug)}-${suffix}`;
-    usedIds.add(id);
-    const topics = [input.topic];
-    entries.push({
-      id,
-      kind: input.kind,
-      parentId: null,
-      question: input.question,
-      prompt: null,
-      answer: input.answer,
-      summary: summarize(input.answer),
-      codeBlocks: [],
-      visuals: [],
-      contentType: "atlas",
-      domain: input.domain,
-      topics,
-      section: input.section,
-      difficulty: null,
-      keywords: [...new Set([...(input.names ?? []).map(name => name.toLowerCase()), ...extractKeywords(input.question, input.answer, topics)])].slice(0, 24),
-      ...(input.names?.length ? { names: input.names } : {}),
-      ...(input.related?.length ? { relatedTopics: input.related } : {}),
-      source: { path: sourcePath, startLine: input.startLine, endLine: input.endLine },
-      contentHash: hash(`${input.question}\n${input.answer}`),
-    });
+function toEntry(sourcePath: string, id: string, draft: AtlasDraft): QuestionEntry {
+  const topics = [draft.topic];
+  const nameKeywords = (draft.names ?? []).map(name => name.toLowerCase());
+  return {
+    id,
+    kind: draft.kind,
+    parentId: null,
+    question: draft.question,
+    prompt: null,
+    answer: draft.answer,
+    summary: summarize(draft.answer),
+    codeBlocks: [],
+    visuals: [],
+    contentType: "atlas",
+    domain: draft.domain,
+    topics,
+    section: draft.section,
+    difficulty: null,
+    keywords: [...new Set([...nameKeywords, ...extractKeywords(draft.question, draft.answer, topics)])].slice(0, 24),
+    ...(draft.names?.length ? { names: draft.names } : {}),
+    ...(draft.related?.length ? { relatedTopics: draft.related } : {}),
+    source: { path: sourcePath, startLine: draft.startLine, endLine: draft.endLine },
+    contentHash: hash(`${draft.question}\n${draft.answer}`),
   };
+}
 
-  for (const block of splitBlocks(scanLines(content))) {
-    const body = trimBlock(block.lines.map(line => line.text)).join("\n");
-    const topic = PART_TOPICS[block.part] ?? DEFAULT_TOPIC;
+/** A role (level-4 heading under "IT Roles"); family headings only carry a one-line description. */
+function roleDrafts(block: Block, body: string, topic: string, lookups: Lookups): AtlasDraft[] {
+  if (block.level !== 4) return [];
+  const role = roleNames(block.heading, block.lines);
+  return [
+    {
+      kind: "role",
+      slug: `role ${role.base}`,
+      question: `What does ${article(role.base)} ${role.base} do?`,
+      answer: body,
+      section: ["IT Roles", block.group],
+      topic,
+      domain: "careers",
+      names: role.names,
+      related: relatedTopics(body, lookups),
+      startLine: block.startLine,
+      endLine: lastLine(block.lines, block.startLine),
+    },
+  ];
+}
 
-    if (block.part === "IT Roles") {
-      if (block.level !== 4) continue; // Family headings only carry a one-line description.
-      const role = roleNames(block.heading, block.lines);
-      add({
-        kind: "role",
-        slug: `role ${role.base}`,
-        question: `What does ${article(role.base)} ${role.base} do?`,
-        answer: body,
-        section: ["IT Roles", block.group],
-        topic,
-        domain: "careers",
-        names: role.names,
-        related: relatedTopics(body, lookups),
-        startLine: block.startLine,
-        endLine: lastLine(block.lines, block.startLine),
-      });
-      continue;
-    }
+/** "**API** (Application Programming Interface)" → term "API", full name "Application Programming Interface". */
+function glossaryTerm(termCell: string): { term: string; full: string | null } {
+  const term = /\*\*(.+?)\*\*/.exec(termCell)?.[1]?.trim() ?? plainText(termCell);
+  const rest = termCell.replace(/\*\*.+?\*\*/, "").trim();
+  const open = rest.lastIndexOf("(");
+  const full = rest.endsWith(")") && open >= 0 ? rest.slice(open + 1, -1).trim() || null : null;
+  return { term, full };
+}
 
-    if (block.part === "Glossary") {
-      if (block.level !== 3) continue;
-      for (const { cells, line } of tableRows(block.lines)) {
-        const [termCell = "", meaning = ""] = cells;
-        const term = /\*\*(.+?)\*\*/.exec(termCell)?.[1]?.trim() ?? plainText(termCell);
-        const full = /\(([^)]+)\)\s*$/.exec(termCell.replace(/\*\*.+?\*\*/, ""))?.[1]?.trim() ?? null;
-        if (!term || !meaning) continue;
-        add({
-          kind: "term",
-          slug: `term ${term}`,
-          question: full ? `What is ${term} (${full})?` : `What is ${term}?`,
-          answer: `**${term}**${full ? ` (${full})` : ""} — ${meaning}`,
-          section: ["Glossary", block.heading],
-          topic,
-          domain: "terminology",
-          names: uniqueNames([term, full ?? undefined, ...term.split(/\s*\/\s*/).filter(part => part.length >= 2 && term.includes(" / "))]),
-          related: relatedTopics(`${term} ${full ?? ""} ${meaning}`, lookups),
-          startLine: line.number,
-          endLine: line.number,
-        });
-      }
-      continue;
-    }
-
-    if (block.part === "Technology Stack Map") {
-      if (block.level !== 3) continue;
-      const rows = tableRows(block.lines);
-      add({
-        kind: "note",
-        slug: `stack ${block.heading}`,
-        question: `Technology stack: ${block.heading}`,
-        answer: body,
-        section: ["Technology Stack Map"],
+/** One term per glossary table row. */
+function glossaryDrafts(block: Block, topic: string, lookups: Lookups): AtlasDraft[] {
+  if (block.level !== 3) return [];
+  return tableRows(block.lines).flatMap(({ cells, line }): AtlasDraft[] => {
+    const [termCell = "", meaning = ""] = cells;
+    const { term, full } = glossaryTerm(termCell);
+    if (!term || !meaning) return [];
+    const parts = term.includes(" / ") ? term.split("/").map(part => part.trim()).filter(part => part.length >= 2) : [];
+    return [
+      {
+        kind: "term",
+        slug: `term ${term}`,
+        question: full ? `What is ${term} (${full})?` : `What is ${term}?`,
+        answer: `**${term}**${full ? ` (${full})` : ""} — ${meaning}`,
+        section: ["Glossary", block.heading],
         topic,
         domain: "terminology",
-        related: relatedTopics(body, lookups),
-        startLine: block.startLine,
-        endLine: lastLine(block.lines, block.startLine),
-      });
-      for (const { cells, line } of rows) {
-        const [tech = "", usedFor = ""] = cells.map(cell => plainText(cell));
-        if (!tech || !usedFor) continue;
-        const parts = tech.split(/\s*\/\s*/).map(part => part.replace(/\s*\([^)]*\)/g, "").trim());
-        // "Apache Kafka" should also answer to "Kafka".
-        const unbranded = parts.map(part => part.replace(/^(Apache|Amazon|AWS|Google|Microsoft|Azure|Oracle|IBM)\s+/, "")).filter(part => !parts.includes(part));
-        add({
-          kind: "term",
-          slug: `tech ${tech}`,
-          question: `What is ${tech} used for?`,
-          answer: `**${tech}** — ${usedFor}\n\n_Stack layer: ${block.heading}_`,
-          section: ["Technology Stack Map", block.heading],
-          topic,
-          domain: "terminology",
-          names: uniqueNames([tech, ...(parts.length > 1 ? parts : []), ...unbranded]),
-          related: relatedTopics(`${tech} ${usedFor}`, lookups),
-          startLine: line.number,
-          endLine: line.number,
-        });
-      }
-      continue;
-    }
+        names: uniqueNames([term, full ?? undefined, ...parts]),
+        related: relatedTopics(`${term} ${full ?? ""} ${meaning}`, lookups),
+        startLine: line.number,
+        endLine: line.number,
+      },
+    ];
+  });
+}
 
-    // Everything else (career ladder, salary, abroad, who-does-what): one note per section with content.
-    if (block.level > 3 || !body.trim()) continue;
-    const title = block.level === 2 ? block.heading : `${block.part}: ${block.heading}`;
-    add({
+const VENDOR_PREFIX = /^(Apache|Amazon|AWS|Google|Microsoft|Azure|Oracle|IBM)\s+/;
+
+/** "Kafka (event streaming) / Pulsar" → ["Kafka", "Pulsar"]. */
+function technologyNames(tech: string): string[] {
+  return tech.split("/").map(part => replaceParenGroups(part, "").replace(/\s+/g, " ").trim());
+}
+
+/** A note for the stack layer, then one term per technology row. */
+function stackDrafts(block: Block, body: string, topic: string, lookups: Lookups): AtlasDraft[] {
+  if (block.level !== 3) return [];
+  const layer: AtlasDraft = {
+    kind: "note",
+    slug: `stack ${block.heading}`,
+    question: `Technology stack: ${block.heading}`,
+    answer: body,
+    section: ["Technology Stack Map"],
+    topic,
+    domain: "terminology",
+    related: relatedTopics(body, lookups),
+    startLine: block.startLine,
+    endLine: lastLine(block.lines, block.startLine),
+  };
+  const rows = tableRows(block.lines).flatMap(({ cells, line }): AtlasDraft[] => {
+    const [tech = "", usedFor = ""] = cells.map(cell => plainText(cell));
+    if (!tech || !usedFor) return [];
+    const parts = technologyNames(tech);
+    // "Apache Kafka" should also answer to "Kafka".
+    const unbranded = parts.map(part => part.replace(VENDOR_PREFIX, "")).filter(part => !parts.includes(part));
+    return [
+      {
+        kind: "term",
+        slug: `tech ${tech}`,
+        question: `What is ${tech} used for?`,
+        answer: `**${tech}** — ${usedFor}\n\n_Stack layer: ${block.heading}_`,
+        section: ["Technology Stack Map", block.heading],
+        topic,
+        domain: "terminology",
+        names: uniqueNames([tech, ...(parts.length > 1 ? parts : []), ...unbranded]),
+        related: relatedTopics(`${tech} ${usedFor}`, lookups),
+        startLine: line.number,
+        endLine: line.number,
+      },
+    ];
+  });
+  return [layer, ...rows];
+}
+
+/** Everything else (career ladder, salary, abroad, who-does-what): one note per section with content. */
+function noteDrafts(block: Block, body: string, topic: string, lookups: Lookups): AtlasDraft[] {
+  if (block.level > 3 || !body.trim()) return [];
+  const topLevel = block.level === 2;
+  const title = topLevel ? block.heading : `${block.part}: ${block.heading}`;
+  return [
+    {
       kind: "note",
       slug: title,
       question: title,
       answer: body,
-      section: block.level === 2 ? [] : [block.part],
+      section: topLevel ? [] : [block.part],
       topic,
       domain: "careers",
       related: relatedTopics(`${block.heading}\n${body}`, lookups),
       startLine: block.startLine,
       endLine: lastLine(block.lines, block.startLine),
-    });
-  }
-  return entries;
+    },
+  ];
+}
+
+function draftsFor(block: Block, lookups: Lookups): AtlasDraft[] {
+  const body = trimBlock(block.lines.map(line => line.text)).join("\n");
+  const topic = PART_TOPICS[block.part] ?? DEFAULT_TOPIC;
+  if (block.part === "IT Roles") return roleDrafts(block, body, topic, lookups);
+  if (block.part === "Glossary") return glossaryDrafts(block, topic, lookups);
+  if (block.part === "Technology Stack Map") return stackDrafts(block, body, topic, lookups);
+  return noteDrafts(block, body, topic, lookups);
+}
+
+export function buildAtlasEntries(sourcePath: string, content: string, lookups: Lookups): QuestionEntry[] {
+  const usedIds = new Set<string>();
+  const uniqueId = (slug: string) => {
+    let id = `${sourcePath}#${slugify(slug)}`;
+    let suffix = 2;
+    while (usedIds.has(id)) {
+      id = `${sourcePath}#${slugify(slug)}-${suffix}`;
+      suffix++;
+    }
+    usedIds.add(id);
+    return id;
+  };
+  return splitBlocks(scanLines(content))
+    .flatMap(block => draftsFor(block, lookups))
+    .map(draft => toEntry(sourcePath, uniqueId(draft.slug), draft));
 }

@@ -3,6 +3,7 @@ import { loadQuestionIndex } from "./question-index.js";
 import type { QuestionEntry } from "./question-index-contracts.js";
 import type { SearchResult } from "./question-search.js";
 import { topicLabel } from "./topic-labels.js";
+import { askLink } from "./chat-guidance.js";
 
 const VISUAL_ROOT = "knowledge/visual-notes/";
 /** Sources passed with their full answer; the rest go as summaries so the model sees what else exists. */
@@ -94,12 +95,21 @@ export function checkGrounding(answer: string, evidence: Evidence[]): Grounding 
  */
 export function composeRepositoryAnswer(search: SearchResult, evidence: Evidence[]): string {
   if (!evidence.length) {
-    const topics = search.suggestions.topics.slice(0, 6).map(topic => `\`${topic}\``).join(", ");
+    const topics = search.suggestions.topics.slice(0, 6).map(topic => askLink(topicLabel(topic), `Explore ${topicLabel(topic)}`)).join(", ");
     return [
-      "I couldn't find this in your notes.",
-      topics ? `Try one of these topics: ${topics}.` : "",
-      ...search.suggestions.questions.slice(0, 3).map(item => `- ${item.question}`),
+      "I couldn't find this in your notes, so I won't guess an answer.",
+      topics ? `Topics your notes do cover: ${topics}.` : "",
+      search.suggestions.questions.length ? ["Questions that might be close:", ...search.suggestions.questions.slice(0, 3).map(item => `- ${askLink(item.question, item.question)}`)].join("\n") : "",
     ].filter(Boolean).join("\n\n");
+  }
+
+  // A weak match is not an answer: say so and offer the closest entries instead of showing one as if it were.
+  if (search.confidence === "low") {
+    return [
+      "Your notes don't answer this directly. The closest entries are:",
+      "",
+      ...evidence.slice(0, 4).map(item => `- ${askLink(item.question, item.question)} [${item.n}]`),
+    ].join("\n");
   }
 
   // An overview led by a roadmap shows the roadmap itself (a checklist), then the rest.
@@ -108,33 +118,78 @@ export function composeRepositoryAnswer(search: SearchResult, evidence: Evidence
     return [heading, "", ...evidence.map(item => `- **${item.question}** — ${item.summary || "see the source"} [${item.n}]`)].join("\n");
   }
 
-  const [top, ...rest] = evidence;
-  const intro = search.confidence === "low" ? "_Closest match in your notes; it may not fully answer your question._\n\n" : "";
+  // The best match only; related entries are offered as follow-up questions.
+  const [top] = evidence;
   const body = top.answer ?? top.summary;
-  const related = rest.length ? ["", "**Related in your notes**", ...rest.map(item => `- ${item.question} [${item.n}]`)] : [];
-  return [`${intro}**${top.question}** [${top.n}]`, "", body, ...related].join("\n");
+  const intro = search.confidence === "medium" ? "_Closest entry in your notes; it may not cover everything you asked._\n\n" : "";
+  return [`${intro}**${top.question}** [${top.n}]`, "", body].join("\n");
+}
+
+/** "Forward Deployed Engineer (FDE) (New)" → "Forward Deployed Engineer": drops trailing "(...)" groups. */
+export function withoutTrailingParentheses(text: string): string {
+  let result = text.trim();
+  while (result.endsWith(")")) {
+    const open = result.lastIndexOf("(");
+    if (open < 0) break;
+    result = result.slice(0, open).trim();
+  }
+  return result;
+}
+
+/** Suggestions in front (prepend) and behind (append) the shared ones. */
+interface FollowUpParts {
+  first: string[];
+  last: string[];
+}
+
+function roadmapFollowUps(top: Evidence): FollowUpParts {
+  const last = top.relatedTopics.slice(0, 2).map(topic => `Prepare me for a ${topicLabel(topic)} interview`);
+  const role = top.question.startsWith("Roadmap: ") ? top.question.slice("Roadmap: ".length) : null;
+  if (role) return { first: [`${role} salary in India (LPA)`, `What does a ${role} do?`], last };
+  if (top.topics[0] && top.topics[0] !== "roadmaps") last.push(`Quiz me on ${topicLabel(top.topics[0])}`);
+  return { first: [], last };
+}
+
+function roleFollowUps(top: Evidence): FollowUpParts {
+  const role = withoutTrailingParentheses(top.question.replace(/^What does an? /, "").replace(/ do\?$/, ""));
+  return { first: [`Roadmap to become a ${role}`, `${role} salary in India (LPA)`], last: [] };
+}
+
+/** Career and salary notes: diagrams and mock interviews don't fit; offer the role itself. */
+function careerFollowUps(top: Evidence): FollowUpParts {
+  const colon = top.question.indexOf(": ");
+  const role = colon >= 0 ? withoutTrailingParentheses(top.question.slice(colon + 2)) : "";
+  const last = role && top.topics.includes("it-careers") ? [`What does a ${role} do?`, `Roadmap to become a ${role}`] : [];
+  return { first: [], last };
+}
+
+/** A question from the notes: practise answering it, see code or a diagram, or get quizzed. */
+function questionFollowUps(top: Evidence, search: SearchResult): FollowUpParts {
+  const wants = (intent: SearchResult["intents"][number]) => search.intents.includes(intent);
+  const last: string[] = [];
+  if (!wants("interview-prep")) last.push(`How would I answer this in an interview: ${top.question}`);
+  const hasCode = top.codeLanguages.length > 0;
+  if (hasCode && !wants("code")) last.push(`Show a code example for: ${top.question}`);
+  if (!hasCode && !wants("visual")) last.push(`Show a diagram of: ${top.question}`);
+  const subject = search.entities[0]?.name ?? search.topics[0]?.topic ?? top.question.replace(/\?$/, "");
+  if (!wants("quiz")) last.push(`Quiz me on ${search.topics[0]?.topic ?? subject}`);
+  return { first: [], last };
+}
+
+const CAREER_TOPICS = new Set(["it-careers", "it-roles", "tech-stack"]);
+
+function followUpsFor(top: Evidence | undefined, search: SearchResult): FollowUpParts {
+  if (!top) return { first: [], last: [] };
+  if (top.kind === "roadmap") return roadmapFollowUps(top);
+  if (top.kind === "role") return roleFollowUps(top);
+  if (top.topics.some(topic => CAREER_TOPICS.has(topic))) return careerFollowUps(top);
+  return questionFollowUps(top, search);
 }
 
 /** Next questions to offer as chips: built from the matches, never invented. */
 export function suggestFollowUps(search: SearchResult, evidence: Evidence[], followUpQuestions: string[]): string[] {
-  const top = evidence[0];
-  const suggestions: string[] = [];
-  const subject = search.entities[0]?.name ?? search.topics[0]?.topic ?? top?.question.replace(/\?$/, "");
-  suggestions.push(...followUpQuestions.slice(0, 2));
-  if (top?.kind === "roadmap") {
-    suggestions.push(...top.relatedTopics.slice(0, 2).map(topic => `Prepare me for a ${topicLabel(topic)} interview`));
-    const role = /^Roadmap: (.+)$/.exec(top.question)?.[1];
-    if (role) suggestions.push(`What does a ${role} do?`, `${role} salary`);
-    else if (top.topics[0] && top.topics[0] !== "roadmaps") suggestions.push(`Quiz me on ${topicLabel(top.topics[0])}`);
-  } else if (top?.kind === "role") {
-    const role = search.entities[0]?.name ?? top.question.replace(/^What does an? /, "").replace(/ do\?$/, "");
-    suggestions.push(`Roadmap to become a ${role}`, `${role} salary and skills`);
-  } else if (top) {
-    if (!search.intents.includes("interview-prep")) suggestions.push(`How would I answer this in an interview: ${top.question}`);
-    if (top.codeLanguages.length && !search.intents.includes("code")) suggestions.push(`Show a code example for: ${top.question}`);
-    if (!top.codeLanguages.length && !search.intents.includes("visual")) suggestions.push(`Show a diagram of: ${top.question}`);
-    if (subject && !search.intents.includes("quiz")) suggestions.push(`Quiz me on ${search.topics[0]?.topic ?? subject}`);
-  }
-  for (const item of evidence.slice(1)) if (item.kind !== "note") suggestions.push(item.question);
+  const { first, last } = followUpsFor(evidence[0], search);
+  const related = evidence.slice(1).filter(item => item.kind !== "note").map(item => item.question);
+  const suggestions = [...first, ...followUpQuestions.slice(0, 2), ...last, ...related];
   return [...new Set(suggestions.map(text => text.trim()).filter(text => text && text.length <= 160))].slice(0, 4);
 }
