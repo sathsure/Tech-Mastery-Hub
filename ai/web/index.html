@@ -90,6 +90,7 @@
       </div>
 
       <nav class="side-scroll" aria-label="Topics and history">
+        <ul class="nav-list primary-nav" id="primary-list" aria-label="Start here"></ul>
         <details class="side-section" data-section="topics" open>
           <summary><svg class="icon chevron"><use href="#i-chevron"></use></svg>Topics</summary>
           <p class="side-intro">Interview questions and notes for each technology. Pick one to see its main sections first.</p>
@@ -97,7 +98,7 @@
         </details>
         <details class="side-section" data-section="atlas">
           <summary><svg class="icon chevron"><use href="#i-chevron"></use></svg>Career atlas</summary>
-          <p class="side-intro">Understand the IT industry: job roles, a glossary of common terms, the tech stack, salaries and roadmaps.</p>
+          <p class="side-intro">Understand the IT industry: job roles, the tech stack, salaries, working abroad and roadmaps.</p>
           <ul class="nav-list" id="atlas-list"></ul>
         </details>
         <details class="side-section" data-section="recent" open>
@@ -115,6 +116,7 @@
       <header class="topbar">
         <button class="icon-btn only-mobile" type="button" data-action="open-sidebar" aria-label="Open menu"><svg class="icon"><use href="#i-menu"></use></svg></button>
         <button class="ghost-btn back-btn" id="back" type="button" data-action="back" title="Back to where you were (Alt+←)" aria-label="Back" hidden><svg class="icon"><use href="#i-back"></use></svg><span class="back-label">Back</span></button>
+        <button class="icon-btn forward-btn" id="forward" type="button" data-action="forward" title="Forward (Alt+→)" aria-label="Forward" hidden><svg class="icon"><use href="#i-arrow"></use></svg></button>
         <div class="topbar-title"><h1 id="chat-title">New chat</h1></div>
         <div class="topbar-actions">
           <button class="icon-btn" type="button" data-action="theme" title="Switch light / dark" aria-label="Switch light or dark theme"><svg class="icon theme-icon"><use href="#i-moon"></use></svg></button>

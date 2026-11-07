@@ -10,6 +10,7 @@ import { renderUserTurn, SYSTEM_PROMPT } from "./answer-prompt.js";
 import { chatAllowed, clientAddress, createTutorApiServer, hostAllowed, validateChatRequest } from "./api-server.js";
 import { GENERATED_HEADING, type ChatEvent, type ChatRequest, type Evidence } from "./chat-contracts.js";
 import { buildEvidence, checkGrounding } from "./chat-evidence.js";
+import type { Card } from "./chat-cards.js";
 import { runChat } from "./chat-service.js";
 import { REPOSITORY_ROOT } from "./question-indexer.js";
 import { searchQuestions } from "./question-search.js";
@@ -47,6 +48,11 @@ async function collect(request: ChatRequest, model: AnswerModel | null, signal?:
   const done = events.find((event): event is Extract<ChatEvent, { type: "done" }> => event.type === "done");
   const answer = events.flatMap(event => (event.type === "delta" ? [event.text] : [])).join("");
   return { events, meta, done, answer };
+}
+
+/** The cards in an answer's ```tmh-cards blocks. */
+function cardsIn(answer: string): Card[] {
+  return [...answer.matchAll(/```tmh-cards\n([\s\S]*?)\n```/g)].flatMap(match => JSON.parse(match[1]) as Card[]);
 }
 
 const sampleEvidence = (n: number): Evidence => ({
@@ -102,15 +108,16 @@ await check("system prompt is stable and evidence cannot pose as instructions", 
   assert.equal(turn.match(/<question>/g)?.length, 1);
 });
 
-await check("notes-only answer: cited, streamed, with follow-ups", async () => {
+await check("notes-only answer: concise title, streamed, with follow-ups", async () => {
   const { events, meta, done, answer } = await collect({ message: "closures" }, null);
   assert.equal(events[0].type, "meta");
   assert.equal(events.at(-1)?.type, "done");
   assert.equal(meta?.answerMode, "repository");
   assert.match(meta?.evidence[0].question ?? "", /closures/i);
-  assert.match(answer, /\*\*How would you explain closures.*\[1\]/);
+  assert.match(answer, /^\*\*How would you explain closures[^\n]*\*\*\n/, "the title is the entry itself");
+  assert.doesNotMatch(answer.split("\n")[0], /\[\d\]/, "no source numbers in the title");
   assert.equal(done?.answerMode, "repository");
-  assert.ok(done?.grounding.cited.includes(1) && !done.grounding.generatedSection && done.grounding.invalid.length === 0);
+  assert.ok(!done?.grounding.uncited && !done?.grounding.generatedSection && done?.grounding.invalid.length === 0);
   assert.ok((done?.followUps.length ?? 0) >= 2, `follow-ups: ${done?.followUps}`);
 });
 
@@ -124,25 +131,55 @@ await check("notes-only answer: nothing found gives suggestions, not invented co
 
 await check("notes-only answer: interview prep opens the study path, without an internal 'related' list", async () => {
   const { answer, done } = await collect({ message: "Prepare me for a Java backend interview" }, null);
-  assert.match(answer, /^\*\*Java study path\*\* \[1\]/);
-  assert.match(answer, /- \[ \] \[/, "the study path is a checklist");
-  assert.ok(done?.grounding.cited.includes(1));
+  assert.match(answer, /^\*\*Java study path\*\*\n/);
+  assert.match(answer, /^1\. \[/m, "the study path is a numbered list");
+  assert.doesNotMatch(answer, /- \[ \]/, "no checkboxes in a study path");
+  assert.equal(done?.grounding.uncited, false);
   assert.doesNotMatch(answer, /Related in your notes/);
 });
 
-await check("overview: main sections first, details collapsed until opened", async () => {
+await check("overview: one card per section, items ask their question", async () => {
   const { answer, done } = await collect({ message: "Explore Java" }, null);
   assert.equal(done?.view, "overview");
   assert.match(answer, /^\*\*Java\*\* — /, "starts by saying what the topic covers");
-  assert.match(answer, /It has \d+ sections: /);
-  assert.match(answer, /<details class="outline"><summary>Collections Framework <small>\d+<\/small><\/summary>/);
-  assert.ok(!/<details[^>]* open/.test(answer), "sections start collapsed");
-  assert.match(answer, /\(#ask:What%20is%20the%20Collections%20Framework%3F\)/, "items ask their question");
+  const cards = cardsIn(answer);
+  const collections = cards.find(card => card.title === "Collections Framework");
+  assert.ok(collections?.type === "topic", `sections: ${cards.map(card => card.title)}`);
+  assert.ok(collections.items.some(item => item.ask === "What is the Collections Framework?"), "items ask their question");
+  assert.ok(!cards.some(card => /^Part \d/.test(card.title)), "no numbering in card titles");
   const glossary = await collect({ message: "Explore Glossary", overview: "it-terminology" }, null);
   assert.match(glossary.answer, /^\*\*Glossary\*\* — Short definitions/, "the glossary explains itself before listing terms");
+  const categories = cardsIn(glossary.answer).filter(card => card.type === "topic");
+  assert.ok(categories.length > 5 && categories.every(card => card.chips), "glossary terms show as chips");
+  assert.ok(!categories.some(card => /General/.test(card.title)), "no catch-all General category");
+  const git = categories.find(card => card.title === "Git & Version Control");
+  assert.ok(git?.items.some(item => item.label === "Version Control / Git"), "terms use concise titles");
   const domain = await collect({ message: "Explore frontend" }, null);
   assert.equal(domain.done?.view, "overview");
-  assert.match(domain.answer, /\[React\]\(#ask:Explore%20React\)/);
+  const react = cardsIn(domain.answer).find(card => card.title === "React");
+  assert.ok(react?.type === "topic");
+  assert.deepEqual(react.actions[0], { label: "Start Learning", ask: "Explore React", overview: "react" });
+});
+
+await check("career cards: a role and the working-abroad countries", async () => {
+  const role = await collect({ message: "What does a Data Analyst do?" }, null);
+  const [card] = cardsIn(role.answer);
+  assert.ok(card?.type === "role", role.answer.slice(0, 200));
+  assert.equal(card.title, "Data Analyst", "concise title");
+  assert.ok(card.technical.includes("Data cleaning") && card.tools.includes("Power BI"));
+  assert.deepEqual(card.progression.grow, ["Analytics Engineer", "Data Scientist"]);
+  assert.equal(card.experience, "0+ years");
+  for (const action of card.actions) assert.ok(action.ask, "every button asks something");
+  const countries = await collect({ message: "Which countries can I work in from India?" }, null);
+  const grid = cardsIn(countries.answer);
+  assert.ok(grid.length >= 10 && grid.every(item => item.type === "country"), `cards: ${grid.length}`);
+  const germany = grid.find(item => item.title === "Germany");
+  assert.ok(germany?.type === "country" && germany.badge === "Realistic" && germany.flag);
+  assert.ok(germany.details.some(item => item.label === "Visa route"));
+  assert.match(germany.actions.find(item => item.label === "Explore Jobs")?.href ?? "", /^https:\/\/www\.linkedin\.com\/jobs\/search\//);
+  const details = await collect({ message: germany.actions[0].ask! }, null);
+  assert.match(details.answer, /^\*\*Germany — Realistic\*\*/, "View Details opens that country's note");
+  assert.ok(!details.done?.followUps.some(text => /What does a Germany/.test(text)), `follow-ups: ${details.done?.followUps}`);
 });
 
 await check("weak matches say so and point to outside resources instead of answering", async () => {
@@ -291,6 +328,11 @@ await check("short follow-ups use the previous question to find sources", async 
   const { meta } = await collect({ message: "show me the code", history: [{ role: "user", content: "closures" }, { role: "assistant", content: "..." }] }, null);
   assert.match(meta?.searchedFor ?? "", /closures/);
   assert.match(meta?.evidence[0].question ?? "", /closures/i);
+  // A request that opens something of its own is not a follow-up, whatever was asked before.
+  const history = [{ role: "user" as const, content: "Working in Germany from India" }, { role: "assistant" as const, content: "**Germany — Realistic**" }];
+  const start = await collect({ message: "Where do I start?", history }, null);
+  assert.equal(start.meta?.searchedFor, "Where do I start?");
+  assert.match(start.answer, /^\*\*Where to start\*\*/);
 });
 
 await check("diagrams from the notes get browser URLs that exist on disk", async () => {
@@ -396,9 +438,9 @@ await check("API: /chat streams events, JSON mode, validation, and /visuals", as
     assert.ok(events.some(event => event.type === "delta" && event.text.includes("SDLC")));
 
     const json = await post({ message: "closures", stream: false });
-    const body = (await json.json()) as { data: { answer: string; done: { grounding: { cited: number[] } } } };
+    const body = (await json.json()) as { data: { answer: string; done: { grounding: { uncited: boolean } } } };
     assert.match(body.data.answer, /closures/i);
-    assert.ok(body.data.done.grounding.cited.includes(1));
+    assert.equal(body.data.done.grounding.uncited, false);
 
     assert.equal((await post({ message: "" })).status, 400);
     assert.equal((await fetch(`${base}/chat`)).status, 405);

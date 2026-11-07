@@ -8,135 +8,135 @@
 
 ## 1. Angular
 
-- [ ] [Our data table loads very slowly when there are thousands of rows. How would you improve its performance?](../../interview/backend/java/08-Architecture.md)
-- [ ] [Scrolling the data table feels laggy. What would you check first?](../../interview/backend/java/08-Architecture.md)
-- [ ] [Sorting and filtering freeze the UI for a moment. How would you fix this?](../../interview/backend/java/08-Architecture.md)
-- [ ] [After adding a data-table library, the bundle size increased a lot. What would you do?](../../interview/backend/java/08-Architecture.md)
-- [ ] [The data table is not needed on the home page, but it still affects load time. How would you handle this?](../../interview/backend/java/08-Architecture.md)
-- [ ] [The table works fine locally but is slow in production. How would you debug this?](../../interview/backend/java/08-Architecture.md)
-- [ ] [API responses are very large and slow down table loading. What would you suggest?](../../interview/backend/java/08-Architecture.md)
-- [ ] [How would you verify if GZip compression is working?](../../interview/backend/java/08-Architecture.md)
-- [ ] [Two users see different data in the table at the same time. How would you handle this?](../../interview/backend/java/08-Architecture.md)
-- [ ] [Filters applied by one user should not affect another user. How would you ensure this?](../../interview/backend/java/08-Architecture.md)
-- [ ] [The table data reloads again and again when navigating back. How would you optimize this?](../../interview/backend/java/08-Architecture.md)
-- [ ] [How would you decide between using a table library or building your own?](../../interview/backend/java/08-Architecture.md)
-- [ ] [A table library causes performance issues but is used across the app. What would you do?](../../interview/backend/java/08-Architecture.md)
-- [ ] [The table shows user-generated content. How would you keep it secure?](../../interview/backend/java/08-Architecture.md)
-- [ ] [How would you measure table performance in real user environments?](../../interview/backend/java/08-Architecture.md)
-- [ ] [A fix for table performance needs major refactoring. How would you plan it?](../../interview/backend/java/08-Architecture.md)
+1. [Our data table loads very slowly when there are thousands of rows. How would you improve its performance?](../../interview/backend/java/08-Architecture.md)
+2. [Scrolling the data table feels laggy. What would you check first?](../../interview/backend/java/08-Architecture.md)
+3. [Sorting and filtering freeze the UI for a moment. How would you fix this?](../../interview/backend/java/08-Architecture.md)
+4. [After adding a data-table library, the bundle size increased a lot. What would you do?](../../interview/backend/java/08-Architecture.md)
+5. [The data table is not needed on the home page, but it still affects load time. How would you handle this?](../../interview/backend/java/08-Architecture.md)
+6. [The table works fine locally but is slow in production. How would you debug this?](../../interview/backend/java/08-Architecture.md)
+7. [API responses are very large and slow down table loading. What would you suggest?](../../interview/backend/java/08-Architecture.md)
+8. [How would you verify if GZip compression is working?](../../interview/backend/java/08-Architecture.md)
+9. [Two users see different data in the table at the same time. How would you handle this?](../../interview/backend/java/08-Architecture.md)
+10. [Filters applied by one user should not affect another user. How would you ensure this?](../../interview/backend/java/08-Architecture.md)
+11. [The table data reloads again and again when navigating back. How would you optimize this?](../../interview/backend/java/08-Architecture.md)
+12. [How would you decide between using a table library or building your own?](../../interview/backend/java/08-Architecture.md)
+13. [A table library causes performance issues but is used across the app. What would you do?](../../interview/backend/java/08-Architecture.md)
+14. [The table shows user-generated content. How would you keep it secure?](../../interview/backend/java/08-Architecture.md)
+15. [How would you measure table performance in real user environments?](../../interview/backend/java/08-Architecture.md)
+16. [A fix for table performance needs major refactoring. How would you plan it?](../../interview/backend/java/08-Architecture.md)
 
 ## 2. Part 1 — Angular Basics & Architecture
 
-- [ ] [How would you describe Angular to someone coming from AngularJS — what are the fundamental differences?](../../interview/frontend/05-Angular-1.md)
+1. [How would you describe Angular to someone coming from AngularJS — what are the fundamental differences?](../../interview/frontend/05-Angular-1.md)
 
 ## 3. Part 2 — Components, Templates & Data Binding
 
-- [ ] [What types of data binding does Angular support?](../../interview/frontend/05-Angular-1.md)
-- [ ] [Can you walk me through the difference between Components and Directives in Angular?](../../interview/frontend/05-Angular-1.md)
-  - [ ] [Is every component a directive?](../../interview/frontend/05-Angular-1.md)
-  - [ ] [Can directives have lifecycle hooks?](../../interview/frontend/05-Angular-1.md)
-  - [ ] [Which directive manipulates DOM structure?](../../interview/frontend/05-Angular-1.md)
-- [ ] [Can you explain ViewEncapsulation in Angular and the trade-offs between the available modes?](../../interview/frontend/05-Angular-1.md)
-- [ ] [When would you use `::ng-deep` in Angular, and what are the risks of relying on it?](../../interview/frontend/05-Angular-1.md)
+1. [What types of data binding does Angular support?](../../interview/frontend/05-Angular-1.md)
+2. [Can you walk me through the difference between Components and Directives in Angular?](../../interview/frontend/05-Angular-1.md)
+   - [Is every component a directive?](../../interview/frontend/05-Angular-1.md)
+   - [Can directives have lifecycle hooks?](../../interview/frontend/05-Angular-1.md)
+   - [Which directive manipulates DOM structure?](../../interview/frontend/05-Angular-1.md)
+3. [Can you explain ViewEncapsulation in Angular and the trade-offs between the available modes?](../../interview/frontend/05-Angular-1.md)
+4. [When would you use `::ng-deep` in Angular, and what are the risks of relying on it?](../../interview/frontend/05-Angular-1.md)
 
 ## 4. Part 3 — Lifecycle Hooks
 
-- [ ] [What are Angular lifecycle hooks?](../../interview/frontend/05-Angular-1.md)
-  - [ ] [Can you walk through a comprehensive lifecycle example?](../../interview/frontend/05-Angular-1.md)
+1. [What are Angular lifecycle hooks?](../../interview/frontend/05-Angular-1.md)
+   - [Can you walk through a comprehensive lifecycle example?](../../interview/frontend/05-Angular-1.md)
 
 ## 5. Part 4 — Directives
 
-- [ ] [How do `*ngIf` and `*ngFor` work conceptually?](../../interview/frontend/05-Angular-1.md)
-  - [ ] [Why is `trackBy` important when rendering lists with `*ngFor`?](../../interview/frontend/05-Angular-1.md)
-- [ ] [How do attribute directives work internally?](../../interview/frontend/05-Angular-1.md)
-- [ ] [What are the new control flow blocks `@if`, `@for`, `@switch`?](../../interview/frontend/05-Angular-1.md)
+1. [How do `*ngIf` and `*ngFor` work conceptually?](../../interview/frontend/05-Angular-1.md)
+   - [Why is `trackBy` important when rendering lists with `*ngFor`?](../../interview/frontend/05-Angular-1.md)
+2. [How do attribute directives work internally?](../../interview/frontend/05-Angular-1.md)
+3. [What are the new control flow blocks `@if`, `@for`, `@switch`?](../../interview/frontend/05-Angular-1.md)
 
 ## 6. Part 5 — Modules & Standalone APIs
 
-- [ ] [How do Standalone Components differ from NgModules?](../../interview/frontend/05-Angular-1.md)
+1. [How do Standalone Components differ from NgModules?](../../interview/frontend/05-Angular-1.md)
 
 ## 7. Part 6 — View & DOM Interaction
 
-- [ ] [How does `@ViewChild` work, and when would you use it over other approaches to access child elements?](../../interview/frontend/05-Angular-1.md)
-- [ ] [Why is direct DOM manipulation via `ElementRef` discouraged? Use `Renderer2` instead?](../../interview/frontend/05-Angular-1.md)
+1. [How does `@ViewChild` work, and when would you use it over other approaches to access child elements?](../../interview/frontend/05-Angular-1.md)
+2. [Why is direct DOM manipulation via `ElementRef` discouraged? Use `Renderer2` instead?](../../interview/frontend/05-Angular-1.md)
 
 ## 8. Part 7 — Pipes
 
-- [ ] [What are Angular pipes? Pure vs Impure?](../../interview/frontend/05-Angular-1.md)
-  - [ ] [Why are pure pipes preferred?](../../interview/frontend/05-Angular-1.md)
-  - [ ] [When would you use an impure pipe?](../../interview/frontend/05-Angular-1.md)
-  - [ ] [How do you create a custom pipe?](../../interview/frontend/05-Angular-1.md)
-  - [ ] [Should pipes perform async operations or API calls?](../../interview/frontend/05-Angular-1.md)
-  - [ ] [Is the `async` pipe pure or impure, and why is it safe?](../../interview/frontend/05-Angular-1.md)
+1. [What are Angular pipes? Pure vs Impure?](../../interview/frontend/05-Angular-1.md)
+   - [Why are pure pipes preferred?](../../interview/frontend/05-Angular-1.md)
+   - [When would you use an impure pipe?](../../interview/frontend/05-Angular-1.md)
+   - [How do you create a custom pipe?](../../interview/frontend/05-Angular-1.md)
+   - [Should pipes perform async operations or API calls?](../../interview/frontend/05-Angular-1.md)
+   - [Is the `async` pipe pure or impure, and why is it safe?](../../interview/frontend/05-Angular-1.md)
 
 ## 9. Part 8 — Dependency Injection (DI)
 
-- [ ] [How does Angular's DI system and hierarchy work?](../../interview/frontend/05-Angular-1.md)
-  - [ ] [Difference between `providedIn: 'root'` vs `'any'` vs `'platform'`?](../../interview/frontend/05-Angular-1.md)
-  - [ ] [Can you explain multi-providers in Angular and give a real-world scenario where you'd use one?](../../interview/frontend/05-Angular-1.md)
-  - [ ] [What are Injection Tokens, and why are they required?](../../interview/frontend/05-Angular-1.md)
-  - [ ] [If a service is provided in both root and a lazy-loaded module, how many instances exist?](../../interview/frontend/05-Angular-1.md)
+1. [How does Angular's DI system and hierarchy work?](../../interview/frontend/05-Angular-1.md)
+   - [Difference between `providedIn: 'root'` vs `'any'` vs `'platform'`?](../../interview/frontend/05-Angular-1.md)
+   - [Can you explain multi-providers in Angular and give a real-world scenario where you'd use one?](../../interview/frontend/05-Angular-1.md)
+   - [What are Injection Tokens, and why are they required?](../../interview/frontend/05-Angular-1.md)
+   - [If a service is provided in both root and a lazy-loaded module, how many instances exist?](../../interview/frontend/05-Angular-1.md)
 
 ## 10. Part 9 — Routing
 
-- [ ] [What are the core concepts of Angular routing?](../../interview/frontend/05-Angular-1.md)
-  - [ ] [What are route guards and what types exist?](../../interview/frontend/05-Angular-1.md)
-  - [ ] [Difference between `CanActivate`, `CanLoad`, and `CanMatch`?](../../interview/frontend/05-Angular-1.md)
-  - [ ] [How do you configure lazy-loaded modules or routes?](../../interview/frontend/05-Angular-1.md)
-  - [ ] [How do you access route parameters and query parameters?](../../interview/frontend/05-Angular-1.md)
+1. [What are the core concepts of Angular routing?](../../interview/frontend/05-Angular-1.md)
+   - [What are route guards and what types exist?](../../interview/frontend/05-Angular-1.md)
+   - [Difference between `CanActivate`, `CanLoad`, and `CanMatch`?](../../interview/frontend/05-Angular-1.md)
+   - [How do you configure lazy-loaded modules or routes?](../../interview/frontend/05-Angular-1.md)
+   - [How do you access route parameters and query parameters?](../../interview/frontend/05-Angular-1.md)
 
 ## 11. Part 10 — Angular Forms
 
-- [ ] [Differences between Template-driven and Reactive forms?](../../interview/frontend/05-Angular-1.md)
-- [ ] [What happens when you mix `(ngModel)` with Reactive Forms?](../../interview/frontend/05-Angular-1.md)
-- [ ] [How do you create a custom form control in Angular? (`ControlValueAccessor`)](../../interview/frontend/05-Angular-1.md)
-- [ ] [How would you globally trim leading and trailing spaces from user input?](../../interview/frontend/05-Angular-1.md)
-- [ ] [What are Signals in Angular?](../../interview/frontend/05-Angular-1.md)
+1. [Differences between Template-driven and Reactive forms?](../../interview/frontend/05-Angular-1.md)
+2. [What happens when you mix `(ngModel)` with Reactive Forms?](../../interview/frontend/05-Angular-1.md)
+3. [How do you create a custom form control in Angular? (`ControlValueAccessor`)](../../interview/frontend/05-Angular-1.md)
+4. [How would you globally trim leading and trailing spaces from user input?](../../interview/frontend/05-Angular-1.md)
+5. [What are Signals in Angular?](../../interview/frontend/05-Angular-1.md)
 
 ## 12. Part 1 — Change Detection & Zones
 
-- [ ] [How does Angular's change detection mechanism work, and how did it evolve from AngularJS?](../../interview/frontend/05-Angular-2.md)
+1. [How does Angular's change detection mechanism work, and how did it evolve from AngularJS?](../../interview/frontend/05-Angular-2.md)
 
 ## 13. Part 2 — The Angular Build System
 
-- [ ] [Explain Angular's building tools and how they have evolved.](../../interview/frontend/05-Angular-2.md)
+1. [Explain Angular's building tools and how they have evolved.](../../interview/frontend/05-Angular-2.md)
 
 ## 14. Part 4 — HMR & Dev Server Internals
 
-- [ ] [Can you walk me through how HMR works and how Angular integrates it into the dev server?](../../interview/frontend/05-Angular-2.md)
-  - [ ] [How do the Compiler and Bundler work together?](../../interview/frontend/05-Angular-2.md)
+1. [Can you walk me through how HMR works and how Angular integrates it into the dev server?](../../interview/frontend/05-Angular-2.md)
+   - [How do the Compiler and Bundler work together?](../../interview/frontend/05-Angular-2.md)
 
 ## 15. Part 5 — Form State Persistence
 
-- [ ] [How do you preserve form data on refresh but clear it on browser close?](../../interview/frontend/05-Angular-2.md)
-  - [ ] [How do you preserve form data on refresh based on user role?](../../interview/frontend/05-Angular-2.md)
+1. [How do you preserve form data on refresh but clear it on browser close?](../../interview/frontend/05-Angular-2.md)
+   - [How do you preserve form data on refresh based on user role?](../../interview/frontend/05-Angular-2.md)
 
 ## 16. Part 6 — Architecture & API Concerns
 
-- [ ] [How do you hide backend endpoints from the browser's Network tab?](../../interview/frontend/05-Angular-2.md)
+1. [How do you hide backend endpoints from the browser's Network tab?](../../interview/frontend/05-Angular-2.md)
 
 ## 17. Part 7 — Version Migration & Deprecated Concepts
 
-- [ ] [Can we jump from Angular 5 → Angular 19 directly?](../../interview/frontend/05-Angular-2.md)
-- [ ] [Name some deprecated/removed concepts from Angular 5 → 19.](../../interview/frontend/05-Angular-2.md)
+1. [Can we jump from Angular 5 → Angular 19 directly?](../../interview/frontend/05-Angular-2.md)
+2. [Name some deprecated/removed concepts from Angular 5 → 19.](../../interview/frontend/05-Angular-2.md)
 
 ## 18. Part 9 — RxJS in Angular
 
-- [ ] [How does RxJS interact with Angular's Zones and Change Detection?](../../interview/frontend/06-RxJS.md)
-- [ ] [How does Angular's `HttpClient` use RxJS?](../../interview/frontend/06-RxJS.md)
-- [ ] [Trick: If you subscribe twice to the same `this.http.get(...)`, how many HTTP calls happen?](../../interview/frontend/06-RxJS.md)
-- [ ] [How do you avoid multiple HTTP calls when many components need the same data?](../../interview/frontend/06-RxJS.md)
-- [ ] [What does the `async` pipe do?](../../interview/frontend/06-RxJS.md)
-- [ ] [When should you NOT use the `async` pipe?](../../interview/frontend/06-RxJS.md)
-- [ ] [How would you model component state using RxJS?](../../interview/frontend/06-RxJS.md)
-- [ ] [Example: How to debounce a search input in Angular?](../../interview/frontend/06-RxJS.md)
-- [ ] [How does RxJS fit into NgRx?](../../interview/frontend/06-RxJS.md)
+1. [How does RxJS interact with Angular's Zones and Change Detection?](../../interview/frontend/06-RxJS.md)
+2. [How does Angular's `HttpClient` use RxJS?](../../interview/frontend/06-RxJS.md)
+3. [Trick: If you subscribe twice to the same `this.http.get(...)`, how many HTTP calls happen?](../../interview/frontend/06-RxJS.md)
+4. [How do you avoid multiple HTTP calls when many components need the same data?](../../interview/frontend/06-RxJS.md)
+5. [What does the `async` pipe do?](../../interview/frontend/06-RxJS.md)
+6. [When should you NOT use the `async` pipe?](../../interview/frontend/06-RxJS.md)
+7. [How would you model component state using RxJS?](../../interview/frontend/06-RxJS.md)
+8. [Example: How to debounce a search input in Angular?](../../interview/frontend/06-RxJS.md)
+9. [How does RxJS fit into NgRx?](../../interview/frontend/06-RxJS.md)
 
 ## Practice
 
-- [ ] [Build a small Angular application that manages users. It should load initial data from an API, allow CRUD operations, use forms, routing, dialogs, caching, and some custom Angular features. Explain your design decisions.](../../practice/coding/03-angular-coding.md)
-- [ ] [You are building a search autocomplete. You must debounce user input, avoid multiple API calls, cache results for 5 minutes, and cancel stale requests. How would you design this in Angular using RxJS?](../../practice/coding/03-angular-coding.md)
-- [ ] [Rebuild the autocomplete using Angular Signals + RxJS interop. How does it differ from the classic approach?](../../practice/coding/03-angular-coding.md)
+1. [Build a small Angular application that manages users. It should load initial data from an API, allow CRUD operations, use forms, routing, dialogs, caching, and some custom Angular features. Explain your design decisions.](../../practice/coding/03-angular-coding.md)
+2. [You are building a search autocomplete. You must debounce user input, avoid multiple API calls, cache results for 5 minutes, and cancel stale requests. How would you design this in Angular using RxJS?](../../practice/coding/03-angular-coding.md)
+3. [Rebuild the autocomplete using Angular Signals + RxJS interop. How does it differ from the classic approach?](../../practice/coding/03-angular-coding.md)
 
 ## Diagrams
 

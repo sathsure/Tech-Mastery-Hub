@@ -8,72 +8,72 @@
 
 ## 1. AI Fundamentals
 
-- [ ] [What is AI?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
-- [ ] [What is the difference between AI, Machine Learning and Deep Learning?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
-- [ ] [What is Generative AI?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
-- [ ] [What is an LLM (Large Language Model)?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
-- [ ] [What is NLP?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
-- [ ] [What is a neural network?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
-- [ ] [What is the difference between supervised and unsupervised learning?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+1. [What is AI?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+2. [What is the difference between AI, Machine Learning and Deep Learning?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+3. [What is Generative AI?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+4. [What is an LLM (Large Language Model)?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+5. [What is NLP?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+6. [What is a neural network?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+7. [What is the difference between supervised and unsupervised learning?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
 
 ## 2. LLMs and Generative AI
 
-- [ ] [What is ChatGPT (or Claude) based on internally?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
-- [ ] [How does an LLM work at a high level?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
-- [ ] [What is a token?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
-- [ ] [What is a context window?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
-- [ ] [What is temperature?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
-- [ ] [What is hallucination?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
-- [ ] [What is prompt engineering?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
-- [ ] [What is fine-tuning?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+1. [What is ChatGPT (or Claude) based on internally?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+2. [How does an LLM work at a high level?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+3. [What is a token?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+4. [What is a context window?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+5. [What is temperature?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+6. [What is hallucination?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+7. [What is prompt engineering?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+8. [What is fine-tuning?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
 
 ## 3. RAG, Embeddings and Vector Databases
 
-- [ ] [What is RAG (Retrieval-Augmented Generation)?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
-- [ ] [Why do we need RAG?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
-- [ ] [What are embeddings?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
-- [ ] [What is a vector database?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
-- [ ] [What is semantic search?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
-- [ ] [What is the difference between RAG and fine-tuning?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
-- [ ] [What is chunking?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+1. [What is RAG (Retrieval-Augmented Generation)?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+2. [Why do we need RAG?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+3. [What are embeddings?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+4. [What is a vector database?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+5. [What is semantic search?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+6. [What is the difference between RAG and fine-tuning?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+7. [What is chunking?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
 
 ## 4. AI Agents and MCP
 
-- [ ] [What is an AI agent?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
-- [ ] [What is the difference between an LLM and an AI agent?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
-- [ ] [What is tool calling (function calling)?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
-- [ ] [What is MCP (Model Context Protocol)?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
-- [ ] [What is a multi-agent architecture?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
-- [ ] [What is an agentic workflow?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+1. [What is an AI agent?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+2. [What is the difference between an LLM and an AI agent?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+3. [What is tool calling (function calling)?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+4. [What is MCP (Model Context Protocol)?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+5. [What is a multi-agent architecture?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+6. [What is an agentic workflow?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
 
 ## 5. AI Integration in Spring Boot
 
-- [ ] [How would you integrate an LLM API (OpenAI, Claude…) into Spring Boot?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
-- [ ] [How would you build an AI chatbot with Spring Boot and Angular?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
-- [ ] [How would you implement RAG using company documents in Spring Boot?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
-- [ ] [How would you secure sensitive data sent to an external LLM?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
-- [ ] [How would you handle LLM API rate limits and token costs?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
-- [ ] [How would you implement streaming AI responses?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
-- [ ] [How would you reduce hallucinations?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
-- [ ] [How would you evaluate the accuracy of AI-generated answers?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
-- [ ] [How would you implement AI response caching?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
-- [ ] [How would you design fallbacks if the LLM provider is unavailable?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+1. [How would you integrate an LLM API (OpenAI, Claude…) into Spring Boot?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+2. [How would you build an AI chatbot with Spring Boot and Angular?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+3. [How would you implement RAG using company documents in Spring Boot?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+4. [How would you secure sensitive data sent to an external LLM?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+5. [How would you handle LLM API rate limits and token costs?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+6. [How would you implement streaming AI responses?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+7. [How would you reduce hallucinations?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+8. [How would you evaluate the accuracy of AI-generated answers?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+9. [How would you implement AI response caching?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+10. [How would you design fallbacks if the LLM provider is unavailable?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
 
 ## 6. Scenario-Based Questions
 
-- [ ] [Your company has 10,000 PDF documents. Employees want answers based only on those documents. How would you design it?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
-- [ ] [An LLM API takes 20 seconds to respond. How would you improve the user experience?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
-- [ ] [The AI gives incorrect answers about financial information. How would you minimise this?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
-- [ ] [How would you prevent prompt injection attacks?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
-- [ ] [How would you build a secure enterprise AI chatbot?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+1. [Your company has 10,000 PDF documents. Employees want answers based only on those documents. How would you design it?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+2. [An LLM API takes 20 seconds to respond. How would you improve the user experience?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+3. [The AI gives incorrect answers about financial information. How would you minimise this?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+4. [How would you prevent prompt injection attacks?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+5. [How would you build a secure enterprise AI chatbot?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
 
 ## 7. AWS Cloud Practitioner › DEPLOYMENT & MIGRATION › Trick Questions
 
-- [ ] [AI & MACHINE LEARNING](../../interview/architecture/02-aws-cloud.md)
+1. [AI & MACHINE LEARNING](../../interview/architecture/02-aws-cloud.md)
 
 ## 8. AWS Cloud Practitioner › DEPLOYMENT & MIGRATION › AI & MACHINE LEARNING
 
-- [ ] [Trick Questions](../../interview/architecture/02-aws-cloud.md)
+1. [Trick Questions](../../interview/architecture/02-aws-cloud.md)
 
 ## Diagrams
 

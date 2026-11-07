@@ -8,117 +8,117 @@
 
 ## 1. Questions
 
-- [ ] [AWS Cloud Practitioner](../../interview/architecture/02-aws-cloud.md)
+1. [AWS Cloud Practitioner](../../interview/architecture/02-aws-cloud.md)
 
 ## 2. AWS Cloud Practitioner › COMPUTE SERVICES
 
-- [ ] [Core Compute Services (VERY IMPORTANT)](../../interview/architecture/02-aws-cloud.md)
+1. [Core Compute Services (VERY IMPORTANT)](../../interview/architecture/02-aws-cloud.md)
 
 ## 3. AWS Cloud Practitioner › COMPUTE SERVICES › Core Compute Services (VERY IMPORTANT)
 
-- [ ] [Container & Modern Compute (High-Level Awareness)](../../interview/architecture/02-aws-cloud.md)
+1. [Container & Modern Compute (High-Level Awareness)](../../interview/architecture/02-aws-cloud.md)
 
 ## 4. AWS Cloud Practitioner › COMPUTE SERVICES › Container & Modern Compute (High-Level Awareness)
 
-- [ ] [Batch & Specialized Compute (Basic Recognition Only)](../../interview/architecture/02-aws-cloud.md)
+1. [Batch & Specialized Compute (Basic Recognition Only)](../../interview/architecture/02-aws-cloud.md)
 
 ## 5. AWS Cloud Practitioner › COMPUTE SERVICES › Batch & Specialized Compute (Basic Recognition Only)
 
-- [ ] [Hybrid & Edge Compute (Conceptual Awareness)](../../interview/architecture/02-aws-cloud.md)
+1. [Hybrid & Edge Compute (Conceptual Awareness)](../../interview/architecture/02-aws-cloud.md)
 
 ## 6. AWS Cloud Practitioner › COMPUTE SERVICES › Hybrid & Edge Compute (Conceptual Awareness)
 
-- [ ] [Trick Questions](../../interview/architecture/02-aws-cloud.md)
+1. [Trick Questions](../../interview/architecture/02-aws-cloud.md)
 
 ## 7. AWS Cloud Practitioner › COMPUTE SERVICES › Trick Questions
 
-- [ ] [STORAGE SERVICES](../../interview/architecture/02-aws-cloud.md)
+1. [STORAGE SERVICES](../../interview/architecture/02-aws-cloud.md)
 
 ## 8. AWS Cloud Practitioner › STORAGE SERVICES
 
-- [ ] [Trick Questions](../../interview/architecture/02-aws-cloud.md)
+1. [Trick Questions](../../interview/architecture/02-aws-cloud.md)
 
 ## 9. AWS Cloud Practitioner › STORAGE SERVICES › Trick Questions
 
-- [ ] [AWS DATABASE SERVICES](../../interview/architecture/02-aws-cloud.md)
+1. [AWS DATABASE SERVICES](../../interview/architecture/02-aws-cloud.md)
 
 ## 10. AWS Cloud Practitioner › AWS DATABASE SERVICES
 
-- [ ] [Trick Questions](../../interview/architecture/02-aws-cloud.md)
+1. [Trick Questions](../../interview/architecture/02-aws-cloud.md)
 
 ## 11. AWS Cloud Practitioner › AWS DATABASE SERVICES › Trick Questions
 
-- [ ] [NETWORKING & CONTENT DELIVERY](../../interview/architecture/02-aws-cloud.md)
+1. [NETWORKING & CONTENT DELIVERY](../../interview/architecture/02-aws-cloud.md)
 
 ## 12. AWS Cloud Practitioner › NETWORKING & CONTENT DELIVERY
 
-- [ ] [Trick Questions](../../interview/architecture/02-aws-cloud.md)
+1. [Trick Questions](../../interview/architecture/02-aws-cloud.md)
 
 ## 13. AWS Cloud Practitioner › NETWORKING & CONTENT DELIVERY › Trick Questions
 
-- [ ] [SECURITY, IDENTITY & COMPLIANCE](../../interview/architecture/02-aws-cloud.md)
+1. [SECURITY, IDENTITY & COMPLIANCE](../../interview/architecture/02-aws-cloud.md)
 
 ## 14. AWS Cloud Practitioner › SECURITY, IDENTITY & COMPLIANCE
 
-- [ ] [Trick Questions](../../interview/architecture/02-aws-cloud.md)
+1. [Trick Questions](../../interview/architecture/02-aws-cloud.md)
 
 ## 15. AWS Cloud Practitioner › SECURITY, IDENTITY & COMPLIANCE › Trick Questions
 
-- [ ] [MANAGEMENT & MONITORING](../../interview/architecture/02-aws-cloud.md)
+1. [MANAGEMENT & MONITORING](../../interview/architecture/02-aws-cloud.md)
 
 ## 16. AWS Cloud Practitioner › MANAGEMENT & MONITORING
 
-- [ ] [Trick Questions](../../interview/architecture/02-aws-cloud.md)
+1. [Trick Questions](../../interview/architecture/02-aws-cloud.md)
 
 ## 17. AWS Cloud Practitioner › MANAGEMENT & MONITORING › Trick Questions
 
-- [ ] [PRICING & COST MANAGEMENT](../../interview/architecture/02-aws-cloud.md)
+1. [PRICING & COST MANAGEMENT](../../interview/architecture/02-aws-cloud.md)
 
 ## 18. AWS Cloud Practitioner › MANAGEMENT & MONITORING › PRICING & COST MANAGEMENT
 
-- [ ] [Trick Questions](../../interview/architecture/02-aws-cloud.md)
+1. [Trick Questions](../../interview/architecture/02-aws-cloud.md)
 
 ## 19. AWS Cloud Practitioner › DEPLOYMENT & MIGRATION
 
-- [ ] [DEPLOYMENT SERVICES (Application & Infrastructure Deployment)](../../interview/architecture/02-aws-cloud.md)
+1. [DEPLOYMENT SERVICES (Application & Infrastructure Deployment)](../../interview/architecture/02-aws-cloud.md)
 
 ## 20. AWS Cloud Practitioner › DEPLOYMENT & MIGRATION › DEPLOYMENT SERVICES (Application & Infrastructure Deployment)
 
-- [ ] [MIGRATION PLANNING & DISCOVERY](../../interview/architecture/02-aws-cloud.md)
+1. [MIGRATION PLANNING & DISCOVERY](../../interview/architecture/02-aws-cloud.md)
 
 ## 21. AWS Cloud Practitioner › DEPLOYMENT & MIGRATION › MIGRATION PLANNING & DISCOVERY
 
-- [ ] [APPLICATION & SERVER MIGRATION](../../interview/architecture/02-aws-cloud.md)
+1. [APPLICATION & SERVER MIGRATION](../../interview/architecture/02-aws-cloud.md)
 
 ## 22. AWS Cloud Practitioner › DEPLOYMENT & MIGRATION › APPLICATION & SERVER MIGRATION
 
-- [ ] [DATABASE MIGRATION](../../interview/architecture/02-aws-cloud.md)
+1. [DATABASE MIGRATION](../../interview/architecture/02-aws-cloud.md)
 
 ## 23. AWS Cloud Practitioner › DEPLOYMENT & MIGRATION › DATABASE MIGRATION
 
-- [ ] [DATA TRANSFER (ONLINE & HYBRID)](../../interview/architecture/02-aws-cloud.md)
+1. [DATA TRANSFER (ONLINE & HYBRID)](../../interview/architecture/02-aws-cloud.md)
 
 ## 24. AWS Cloud Practitioner › DEPLOYMENT & MIGRATION › DATA TRANSFER (ONLINE & HYBRID)
 
-- [ ] [Trick Questions](../../interview/architecture/02-aws-cloud.md)
+1. [Trick Questions](../../interview/architecture/02-aws-cloud.md)
 
 ## 25. AWS Cloud Practitioner › DEPLOYMENT & MIGRATION › Trick Questions
 
-- [ ] [APPLICATION INTEGRATION](../../interview/architecture/02-aws-cloud.md)
-- [ ] [ANALYTICS (FOUNDATION LEVEL)](../../interview/architecture/02-aws-cloud.md)
-- [ ] [AI & MACHINE LEARNING](../../interview/architecture/02-aws-cloud.md)
+1. [APPLICATION INTEGRATION](../../interview/architecture/02-aws-cloud.md)
+2. [ANALYTICS (FOUNDATION LEVEL)](../../interview/architecture/02-aws-cloud.md)
+3. [AI & MACHINE LEARNING](../../interview/architecture/02-aws-cloud.md)
 
 ## 26. AWS Cloud Practitioner › DEPLOYMENT & MIGRATION › APPLICATION INTEGRATION
 
-- [ ] [Trick Questions](../../interview/architecture/02-aws-cloud.md)
+1. [Trick Questions](../../interview/architecture/02-aws-cloud.md)
 
 ## 27. AWS Cloud Practitioner › DEPLOYMENT & MIGRATION › ANALYTICS (FOUNDATION LEVEL)
 
-- [ ] [Trick Questions](../../interview/architecture/02-aws-cloud.md)
+1. [Trick Questions](../../interview/architecture/02-aws-cloud.md)
 
 ## 28. AWS Cloud Practitioner › DEPLOYMENT & MIGRATION › AI & MACHINE LEARNING
 
-- [ ] [Trick Questions](../../interview/architecture/02-aws-cloud.md)
+1. [Trick Questions](../../interview/architecture/02-aws-cloud.md)
 
 ## Diagrams
 

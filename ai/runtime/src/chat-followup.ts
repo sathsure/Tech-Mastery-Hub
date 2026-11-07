@@ -36,6 +36,8 @@ export function looksLikeFollowUp(message: string, direct: SearchResult): boolea
   if (words === 0 || words > MAX_FOLLOW_UP_WORDS) return false;
   const namesSubject = direct.topics.length > 0 || direct.entities.length > 0 || direct.domain !== null;
   if (REFERRING.test(message)) return true;
+  // "Where do I start?" opens something of its own (the roadmap index), whatever came before.
+  if (direct.mode === "browse" && direct.hits.length > 0) return false;
   return direct.terms.length === 0 && !namesSubject;
 }
 

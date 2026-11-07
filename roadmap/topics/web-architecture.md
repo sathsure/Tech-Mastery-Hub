@@ -9,74 +9,74 @@
 
 ## 1. Part 1 — MEAN Architecture Fundamentals
 
-- [ ] [Explain the high-level MEAN stack architecture](../../interview/frontend/09-Web_Architecture.md)
-- [ ] [Explain the complete request lifecycle in a MEAN application](../../interview/frontend/09-Web_Architecture.md)
-- [ ] [How does Express middleware execution order work?](../../interview/frontend/09-Web_Architecture.md)
+1. [Explain the high-level MEAN stack architecture](../../interview/frontend/09-Web_Architecture.md)
+2. [Explain the complete request lifecycle in a MEAN application](../../interview/frontend/09-Web_Architecture.md)
+3. [How does Express middleware execution order work?](../../interview/frontend/09-Web_Architecture.md)
 
 ## 2. Part 2 — Authentication, Authorization & Security
 
-- [ ] [How do you implement authentication in MEAN applications?](../../interview/frontend/09-Web_Architecture.md)
-  - [ ] [How do you handle authorization and role management?](../../interview/frontend/09-Web_Architecture.md)
-- [ ] [How do you secure APIs beyond authentication?](../../interview/frontend/09-Web_Architecture.md)
-- [ ] [How do you prevent XSS and injection attacks?](../../interview/frontend/09-Web_Architecture.md)
-- [ ] [Explain CORS and how you configure it correctly](../../interview/frontend/09-Web_Architecture.md)
-- [ ] [How do you manage environment configurations?](../../interview/frontend/09-Web_Architecture.md)
+1. [How do you implement authentication in MEAN applications?](../../interview/frontend/09-Web_Architecture.md)
+   - [How do you handle authorization and role management?](../../interview/frontend/09-Web_Architecture.md)
+2. [How do you secure APIs beyond authentication?](../../interview/frontend/09-Web_Architecture.md)
+3. [How do you prevent XSS and injection attacks?](../../interview/frontend/09-Web_Architecture.md)
+4. [Explain CORS and how you configure it correctly](../../interview/frontend/09-Web_Architecture.md)
+5. [How do you manage environment configurations?](../../interview/frontend/09-Web_Architecture.md)
 
 ## 3. Part 3 — Backend Design Patterns
 
-- [ ] [How do you structure a large Node.js backend?](../../interview/frontend/09-Web_Architecture.md)
+1. [How do you structure a large Node.js backend?](../../interview/frontend/09-Web_Architecture.md)
 
 ## 4. Part 4 — Backend-for-Frontend (BFF) Pattern
 
-- [ ] [Can you walk me through the Backend-for-Frontend pattern and describe a situation where you'd recommend it?](../../interview/frontend/09-Web_Architecture.md)
-  - [ ] [How do you avoid the BFF becoming a "god service" with all the logic?](../../interview/frontend/09-Web_Architecture.md)
-  - [ ] [How do you keep BFFs from drifting from each other?](../../interview/frontend/09-Web_Architecture.md)
-  - [ ] [What's the failure mode if a downstream service is slow?](../../interview/frontend/09-Web_Architecture.md)
-  - [ ] [Where does authentication happen — gateway, BFF, or microservices?](../../interview/frontend/09-Web_Architecture.md)
+1. [Can you walk me through the Backend-for-Frontend pattern and describe a situation where you'd recommend it?](../../interview/frontend/09-Web_Architecture.md)
+   - [How do you avoid the BFF becoming a "god service" with all the logic?](../../interview/frontend/09-Web_Architecture.md)
+   - [How do you keep BFFs from drifting from each other?](../../interview/frontend/09-Web_Architecture.md)
+   - [What's the failure mode if a downstream service is slow?](../../interview/frontend/09-Web_Architecture.md)
+   - [Where does authentication happen — gateway, BFF, or microservices?](../../interview/frontend/09-Web_Architecture.md)
 
 ## 5. Part 5 — Performance & Frontend Optimization
 
-- [ ] [How do you optimize Angular performance?](../../interview/frontend/09-Web_Architecture.md)
-- [ ] [Explain Angular route guards](../../interview/frontend/09-Web_Architecture.md)
+1. [How do you optimize Angular performance?](../../interview/frontend/09-Web_Architecture.md)
+2. [Explain Angular route guards](../../interview/frontend/09-Web_Architecture.md)
 
 ## 6. Part 6 — Node.js Internals & Concurrency
 
-- [ ] [Why is Node.js suitable for high-concurrency systems?](../../interview/frontend/09-Web_Architecture.md)
-  - [ ] [What blocks the Node.js event loop?](../../interview/frontend/09-Web_Architecture.md)
-  - [ ] [How do you handle long-running or heavy jobs?](../../interview/frontend/09-Web_Architecture.md)
+1. [Why is Node.js suitable for high-concurrency systems?](../../interview/frontend/09-Web_Architecture.md)
+   - [What blocks the Node.js event loop?](../../interview/frontend/09-Web_Architecture.md)
+   - [How do you handle long-running or heavy jobs?](../../interview/frontend/09-Web_Architecture.md)
 
 ## 7. Part 7 — Scalable APIs & Caching
 
-- [ ] [How do you design scalable APIs?](../../interview/frontend/09-Web_Architecture.md)
-- [ ] [How would you explain API idempotency, and can you give an example of where it could go wrong if ignored?](../../interview/frontend/09-Web_Architecture.md)
-- [ ] [How do you implement caching effectively?](../../interview/frontend/09-Web_Architecture.md)
+1. [How do you design scalable APIs?](../../interview/frontend/09-Web_Architecture.md)
+2. [How would you explain API idempotency, and can you give an example of where it could go wrong if ignored?](../../interview/frontend/09-Web_Architecture.md)
+3. [How do you implement caching effectively?](../../interview/frontend/09-Web_Architecture.md)
 
 ## 8. Part 8 — MongoDB Best Practices
 
-- [ ] [How do you optimize MongoDB performance?](../../interview/frontend/09-Web_Architecture.md)
-  - [ ] [How do you manage schema changes in MongoDB?](../../interview/frontend/09-Web_Architecture.md)
+1. [How do you optimize MongoDB performance?](../../interview/frontend/09-Web_Architecture.md)
+   - [How do you manage schema changes in MongoDB?](../../interview/frontend/09-Web_Architecture.md)
 
 ## 9. Part 9 — Resilience & Failure Handling
 
-- [ ] [How do you handle secure file uploads?](../../interview/frontend/09-Web_Architecture.md)
-- [ ] [How do you prevent API abuse?](../../interview/frontend/09-Web_Architecture.md)
-- [ ] [How do you prevent accidental data leaks?](../../interview/frontend/09-Web_Architecture.md)
-- [ ] [How do you handle partial failures in distributed systems?](../../interview/frontend/09-Web_Architecture.md)
-- [ ] [What happens if MongoDB goes down?](../../interview/frontend/09-Web_Architecture.md)
-- [ ] [What happens when Node.js crashes in production?](../../interview/frontend/09-Web_Architecture.md)
+1. [How do you handle secure file uploads?](../../interview/frontend/09-Web_Architecture.md)
+2. [How do you prevent API abuse?](../../interview/frontend/09-Web_Architecture.md)
+3. [How do you prevent accidental data leaks?](../../interview/frontend/09-Web_Architecture.md)
+4. [How do you handle partial failures in distributed systems?](../../interview/frontend/09-Web_Architecture.md)
+5. [What happens if MongoDB goes down?](../../interview/frontend/09-Web_Architecture.md)
+6. [What happens when Node.js crashes in production?](../../interview/frontend/09-Web_Architecture.md)
 
 ## 10. Part 10 — Observability, Deployments & HA
 
-- [ ] [How do you design logging for production?](../../interview/frontend/09-Web_Architecture.md)
-  - [ ] [Logs vs Monitoring — explain the difference](../../interview/frontend/09-Web_Architecture.md)
-- [ ] [How do you manage secrets securely?](../../interview/frontend/09-Web_Architecture.md)
-- [ ] [How do you handle deployments?](../../interview/frontend/09-Web_Architecture.md)
-- [ ] [How do you ensure high availability?](../../interview/frontend/09-Web_Architecture.md)
-- [ ] [How do you debug slow APIs in production?](../../interview/frontend/09-Web_Architecture.md)
-- [ ] [How do you protect frontend applications?](../../interview/frontend/09-Web_Architecture.md)
-- [ ] [How do you design for traffic spikes?](../../interview/frontend/09-Web_Architecture.md)
+1. [How do you design logging for production?](../../interview/frontend/09-Web_Architecture.md)
+   - [Logs vs Monitoring — explain the difference](../../interview/frontend/09-Web_Architecture.md)
+2. [How do you manage secrets securely?](../../interview/frontend/09-Web_Architecture.md)
+3. [How do you handle deployments?](../../interview/frontend/09-Web_Architecture.md)
+4. [How do you ensure high availability?](../../interview/frontend/09-Web_Architecture.md)
+5. [How do you debug slow APIs in production?](../../interview/frontend/09-Web_Architecture.md)
+6. [How do you protect frontend applications?](../../interview/frontend/09-Web_Architecture.md)
+7. [How do you design for traffic spikes?](../../interview/frontend/09-Web_Architecture.md)
 
 ## 11. Part 11 — Final System Design Question
 
-- [ ] [Final Question: Design a MEAN system for 1 million users](../../interview/frontend/09-Web_Architecture.md)
+1. [Final Question: Design a MEAN system for 1 million users](../../interview/frontend/09-Web_Architecture.md)
 

@@ -8,17 +8,17 @@
 
 ## 1. How They Work
 
-- [ ] [How does RabbitMQ deliver messages?](../../interview/architecture/messaging-rabbitmq-kafka.md)
-- [ ] [How does Kafka deliver events?](../../interview/architecture/messaging-rabbitmq-kafka.md)
-- [ ] [How do Kafka consumer groups and partitions work?](../../interview/architecture/messaging-rabbitmq-kafka.md)
-- [ ] [What is the difference between RabbitMQ and Kafka?](../../interview/architecture/messaging-rabbitmq-kafka.md)
-- [ ] [What are common misconceptions about RabbitMQ and Kafka?](../../interview/architecture/messaging-rabbitmq-kafka.md)
+1. [How does RabbitMQ deliver messages?](../../interview/architecture/messaging-rabbitmq-kafka.md)
+2. [How does Kafka deliver events?](../../interview/architecture/messaging-rabbitmq-kafka.md)
+3. [How do Kafka consumer groups and partitions work?](../../interview/architecture/messaging-rabbitmq-kafka.md)
+4. [What is the difference between RabbitMQ and Kafka?](../../interview/architecture/messaging-rabbitmq-kafka.md)
+5. [What are common misconceptions about RabbitMQ and Kafka?](../../interview/architecture/messaging-rabbitmq-kafka.md)
 
 ## 2. When to Use Which
 
-- [ ] [When should you use RabbitMQ (use cases)?](../../interview/architecture/messaging-rabbitmq-kafka.md)
-- [ ] [When should you use Kafka (use cases)?](../../interview/architecture/messaging-rabbitmq-kafka.md)
-- [ ] [How do you choose between RabbitMQ and Kafka for a requirement?](../../interview/architecture/messaging-rabbitmq-kafka.md)
+1. [When should you use RabbitMQ (use cases)?](../../interview/architecture/messaging-rabbitmq-kafka.md)
+2. [When should you use Kafka (use cases)?](../../interview/architecture/messaging-rabbitmq-kafka.md)
+3. [How do you choose between RabbitMQ and Kafka for a requirement?](../../interview/architecture/messaging-rabbitmq-kafka.md)
 
 ## Related roles
 

@@ -113,8 +113,17 @@ function materialFor(entries: QuestionEntry[], topic: string): Material {
   };
 }
 
-function item(entry: QuestionEntry, fromDir: string, indent = ""): string {
-  return `${indent}- [ ] [${entry.question.replace(/[[\]]/g, "")}](${link(fromDir, entry.source.path)})`;
+/** A study path is read in order: numbered steps, with follow-up questions nested under their question. */
+function entryLink(entry: QuestionEntry, fromDir: string): string {
+  return `[${entry.question.replace(/[[\]]/g, "")}](${link(fromDir, entry.source.path)})`;
+}
+
+function item(entry: QuestionEntry, fromDir: string, position: number): string {
+  return `${position}. ${entryLink(entry, fromDir)}`;
+}
+
+function childItem(entry: QuestionEntry, fromDir: string): string {
+  return `   - ${entryLink(entry, fromDir)}`;
 }
 
 const studyPath = (topic: string) => `[${label(topic)}](../topics/${topicSlug(topic)}.md)`;
@@ -133,7 +142,7 @@ function topicPath(topic: string, entries: QuestionEntry[], plans: RolePlan[]): 
   const stages = [...groups.entries()].map(([key, list], index) => {
     const [path, section] = key.split("|");
     const title = section || (files.size > 1 ? posix.basename(path, ".md") : "Questions");
-    const lines = list.flatMap(entry => [item(entry, dir), ...(material.followUps.get(entry.id) ?? []).map(child => item(child, dir, "  "))]);
+    const lines = list.flatMap((entry, position) => [item(entry, dir, position + 1), ...(material.followUps.get(entry.id) ?? []).map(child => childItem(child, dir))]);
     return [`## ${index + 1}. ${title}`, "", ...lines, ""].join("\n");
   });
   const concept = `knowledge/concepts/${topic}/README.md`;
@@ -152,7 +161,7 @@ function topicPath(topic: string, entries: QuestionEntry[], plans: RolePlan[]): 
     existsSync(resolve(REPOSITORY_ROOT, concept)) ? `- Overview: [${label(topic)} concepts](${link(dir, concept)})` : null,
     "",
     ...stages,
-    material.practice.length ? ["## Practice", "", ...material.practice.map(entry => item(entry, dir)), ""].join("\n") : null,
+    material.practice.length ? ["## Practice", "", ...material.practice.map((entry, position) => item(entry, dir, position + 1)), ""].join("\n") : null,
     visuals.length ? ["## Diagrams", "", ...visuals.map(visual => `- [${visual.alt || posix.basename(visual.path!)}](${link(dir, visual.path!)})`), ""].join("\n") : null,
     usedBy.length ? ["## Related roles", "", usedBy.map(name => `[${name}](../roles/${roleSlug(name)}.md)`).join(" · "), ""].join("\n") : null,
   ].filter((part): part is string => part !== null).join("\n").replace(/\n{3,}/g, "\n\n") + "\n";

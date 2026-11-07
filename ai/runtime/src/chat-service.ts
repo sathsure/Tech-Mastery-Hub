@@ -13,11 +13,13 @@ import type Anthropic from "@anthropic-ai/sdk";
 import { createAnswerModel, describeModelError, type AnswerModel } from "./answer-model.js";
 import { renderUserTurn, SYSTEM_PROMPT } from "./answer-prompt.js";
 import type { AnswerMode, AnswerView, ChatEvent, ChatRequest, Evidence } from "./chat-contracts.js";
-import { buildEvidence, checkGrounding, composeRepositoryAnswer, MAX_EVIDENCE, suggestFollowUps } from "./chat-evidence.js";
+import { buildEvidence, checkGrounding, composeRepositoryAnswer, MAX_EVIDENCE, suggestFollowUps, withoutTrailingParentheses } from "./chat-evidence.js";
+import { cardsBlock, conciseTitle, countryCard, isCountryNote, roleCard } from "./chat-cards.js";
+import type { QuestionEntry } from "./question-index-contracts.js";
 import { buildLearningPlan, buildOverview, buildTopicList, learningResources, LEARN_MORE_HEADING } from "./chat-guidance.js";
 import { composeFollowUpAnswer, looksLikeFollowUp, previousTurn } from "./chat-followup.js";
 import { TOPIC_DESCRIPTIONS, topicLabel } from "./topic-labels.js";
-import { getFollowUps } from "./question-index.js";
+import { getFollowUps, loadQuestionIndex } from "./question-index.js";
 import { searchQuestions, type SearchConfidence, type SearchResult } from "./question-search.js";
 
 export const MAX_HISTORY_TURNS = 8;
@@ -99,6 +101,7 @@ async function* builtAnswer(
   view: AnswerView,
   text: string,
   followUps: string[],
+  evidence: Evidence[] = [],
 ): AsyncGenerator<ChatEvent> {
   yield {
     type: "meta",
@@ -109,7 +112,7 @@ async function* builtAnswer(
     mode: search.mode,
     topics: search.topics.map(item => item.topic),
     entities: search.entities,
-    evidence: [],
+    evidence,
     answerMode: "repository",
   };
   for (const piece of chunks(text)) yield { type: "delta", text: piece };
@@ -118,7 +121,7 @@ async function* builtAnswer(
     answerMode: "repository",
     view,
     model: null,
-    grounding: checkGrounding(text, []),
+    grounding: { ...checkGrounding(text, evidence), uncited: false },
     followUps,
     suggestions: { topics: [], questions: [] },
     notice: null,
@@ -160,11 +163,59 @@ async function overviewAnswer(
   const topics = overviewTopics(search, evidence);
   if (topics.length > 1) {
     const followUps = topics.slice(0, 3).map(topic => `Explore ${topicLabel(topic)}`);
-    return builtAnswer(request, search, "overview", buildTopicList(topics), followUps);
+    return builtAnswer(request, search, "overview", await buildTopicList(topics), followUps);
   }
   if (topics.length === 0) return null;
   const overview = await buildOverview(topics[0]);
   return overview ? builtAnswer(request, search, "overview", overview.markdown, topicFollowUps(topics[0])) : null;
+}
+
+/** Intents a role card doesn't answer: they need the roadmap, a comparison or practice instead. */
+const NOT_A_ROLE_CARD = new Set<SearchResult["intents"][number]>(["compare", "roadmap", "interview-prep", "quiz", "code", "visual", "debug"]);
+
+const WORKING_ABROAD = /^Working Abroad from India \([^)]*\)$/;
+
+function roleCardMarkdown(entry: QuestionEntry, entries: QuestionEntry[]): string {
+  const name = withoutTrailingParentheses(conciseTitle(entry));
+  const roadmap = entries.find(item => item.kind === "roadmap" && withoutTrailingParentheses(item.question.replace(/^Roadmap:\s*/, "")) === name);
+  const topic = (entry.relatedTopics ?? []).find(item => item in TOPIC_DESCRIPTIONS && !ATLAS_TOPICS.has(item));
+  const card = roleCard(entry, {
+    roadmap: roadmap ? `Roadmap to become a ${name}` : null,
+    interviewTopic: topic ? topicLabel(topic) : null,
+  });
+  return cardsBlock([card]);
+}
+
+/** All countries as cards, most realistic first, under the overview's own disclaimer. */
+function countriesMarkdown(overview: QuestionEntry, entries: QuestionEntry[]): string {
+  const cards = entries.filter(isCountryNote).flatMap(entry => countryCard(entry, overview) ?? []);
+  const disclaimer = overview.answer.split("\n").find(line => line.startsWith("> "));
+  return ["**Working abroad from India**", "", disclaimer ? `_${disclaimer.slice(2).trim()}_` : "", "", cardsBlock(cards)].join("\n");
+}
+
+/**
+ * Career roles and the countries overview read best as cards. They are built from the notes in both
+ * answer modes, so every field is exactly what the notes say.
+ */
+async function cardAnswer(
+  request: ChatRequest,
+  search: SearchResult,
+  evidence: Evidence[],
+  followUp: boolean,
+): Promise<AsyncGenerator<ChatEvent> | null> {
+  const top = evidence[0];
+  if (!top || followUp || CONFIDENCE_RANK[search.confidence] < CONFIDENCE_RANK.medium) return null;
+  const { entries } = await loadQuestionIndex();
+  const entry = entries.find(item => item.id === top.id);
+  if (!entry) return null;
+  if (entry.kind === "role" && !search.intents.some(intent => NOT_A_ROLE_CARD.has(intent))) {
+    return builtAnswer(request, search, "answer", roleCardMarkdown(entry, entries), suggestFollowUps(search, evidence, []), [top]);
+  }
+  if (entry.kind === "note" && WORKING_ABROAD.test(entry.question)) {
+    const followUps = ["Working in Germany from India", "How to actually get an interview abroad"];
+    return builtAnswer(request, search, "answer", countriesMarkdown(entry, entries), followUps, [top]);
+  }
+  return null;
 }
 
 /** What the model produced; the caller decides whether the notes must fill in. */
@@ -273,6 +324,11 @@ export async function* runChat(request: ChatRequest, options: ChatOptions = {}):
     yield* overview;
     return;
   }
+  const cards = await cardAnswer(request, search, evidence, found.followUp);
+  if (cards) {
+    yield* cards;
+    return;
+  }
 
   const followUpQuestions = evidence[0] ? (await getFollowUps(evidence[0].id)).map(entry => entry.question) : [];
   yield {
@@ -310,7 +366,8 @@ export async function* runChat(request: ChatRequest, options: ChatOptions = {}):
     answerMode,
     view: "answer",
     model: outcome.model,
-    grounding: checkGrounding(answer, evidence),
+    // Notes-only answers quote the sources rather than cite them, so a missing [n] is not a warning.
+    grounding: { ...checkGrounding(answer, evidence), ...(answerMode === "repository" ? { uncited: false } : {}) },
     // A weak match's own follow-ups would lead away from the question; the answer lists the closest entries instead.
     followUps: search.confidence === "low" ? [] : suggestFollowUps(search, evidence, followUpQuestions),
     suggestions: search.suggestions,
