@@ -162,6 +162,14 @@ for (const lookup of LOOKUPS) {
   });
 }
 
+await check("a topic name opens that topic's overview", () => {
+  for (const [query, topic] of [["messaging", "messaging"], ["java", "java"], ["leetcode", "dsa"]] as const) {
+    const result = searchQuestions(query, { limit: 8 });
+    assert.equal(result.mode, "browse", `"${query}" mode ${result.mode}`);
+    assert.ok(result.topics.some(item => item.topic === topic), `"${query}" topics ${JSON.stringify(result.topics)}`);
+  }
+});
+
 await check("a named role also brings its salary section", () => {
   for (const [query, salary] of [["devops engineer salary", /DevOps \/ Cloud \/ SRE/], ["how much does a data engineer earn", /Skills vs Salary.*Data Engineer/]] as const) {
     const hits = searchQuestions(query, { limit: 4 }).hits;

@@ -7,18 +7,19 @@ Measures whether AI outputs are correct, safe and improving between versions.
 
 ## Prerequisites
 
-- None. Start with Stage 1.
+- [SQL](../topics/database-sql.md)
+- [REST API](../topics/rest-api.md)
 - Usually 2+ years of experience when hired
 
 ## Learning stages
 
 ### Stage 1: Core skills
 
-- [ ] [SQL](../topics/database-sql.md)
+- [ ] [AI & LLMs](../topics/ai.md)
 
 ## Also needed
 
-Python, Ragas, DeepEval, OpenAI Evals, LLM-as-judge, Inspect, Braintrust, LangSmith, Langfuse, promptfoo, Weights & Biases
+Python, Ragas, DeepEval, OpenAI Evals, Inspect, Braintrust, LangSmith, Langfuse, promptfoo, Weights & Biases
 
 ## Where it leads
 

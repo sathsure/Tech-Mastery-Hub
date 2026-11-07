@@ -10,12 +10,14 @@ Engineer embedded with a customer to build and deploy the company's product (oft
 - [SQL](../topics/database-sql.md)
 - [HTML](../topics/html.md)
 - [Java](../topics/java.md)
+- [REST API](../topics/rest-api.md)
 - Usually 3+ years of experience when hired
 
 ## Learning stages
 
 ### Stage 1: Core skills
 
+- [ ] [AI & LLMs](../topics/ai.md)
 - [ ] [JavaScript](../topics/javascript.md)
 
 ### Stage 2: Frameworks and depth
@@ -29,7 +31,7 @@ Engineer embedded with a customer to build and deploy the company's product (oft
 
 ## Also needed
 
-Python, LLM SDKs (Claude, OpenAI), FastAPI, MCP, LangGraph, Palantir Foundry/AIP, Git, Jupyter, Postman, Customer data platforms
+Python, FastAPI, LangGraph, Palantir Foundry/AIP, Git, Jupyter, Postman, Customer data platforms
 
 ## Where it leads
 

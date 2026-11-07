@@ -4,6 +4,7 @@ export const TOPIC_LABELS: Record<string, string> = {
   rxjs: "RxJS", nodejs: "Node.js", java: "Java", spring: "Spring Boot", "spring-security": "Spring Security",
   "spring-cloud": "Spring Cloud", microservices: "Microservices", "rest-api": "REST API", "database/sql": "SQL",
   devops: "DevOps", aws: "AWS", "web-architecture": "Web Architecture", "web-vitals": "Web Vitals",
+  dsa: "DSA (Python)", messaging: "Kafka & RabbitMQ", ai: "AI & LLMs",
   "it-roles": "IT Roles", "it-terminology": "Glossary", "tech-stack": "Tech Stack", "it-careers": "Careers & Salary",
   roadmaps: "Roadmaps",
 };
@@ -31,6 +32,9 @@ export const TOPIC_DESCRIPTIONS: Record<string, string> = {
   aws: "Amazon Web Services: core compute, storage, networking and deployment services.",
   "web-architecture": "How web applications fit together: clients, servers, caching, scaling and rendering choices.",
   "web-vitals": "Measuring and improving page experience: loading, interactivity and visual stability.",
+  dsa: "Data structures and algorithms for coding interviews: Big O, patterns and LeetCode problems solved in Python.",
+  messaging: "Asynchronous messaging: RabbitMQ task queues, Kafka event streams, and when to choose which.",
+  ai: "AI for developers: LLMs, tokens, RAG, embeddings, vector databases, agents, MCP and Spring Boot integration.",
   "it-roles": "What each IT job involves: day-to-day work, skills, tools, experience needed and where it leads.",
   "it-terminology": "Short definitions of the terms you hear at work and in interviews, grouped by area (SDLC, frontend, backend, cloud, AI, security, business).",
   "tech-stack": "Which tools and technologies are used at each layer of a system, and what each one is for.",

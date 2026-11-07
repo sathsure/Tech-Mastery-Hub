@@ -8,6 +8,7 @@ Builds server-side logic, APIs and database access.
 ## Prerequisites
 
 - [SQL](../topics/database-sql.md)
+- [DSA (Python)](../topics/dsa.md)
 - [HTML](../topics/html.md)
 - [Java](../topics/java.md)
 - [REST API](../topics/rest-api.md)
@@ -22,6 +23,7 @@ Builds server-side logic, APIs and database access.
 
 ### Stage 2: Frameworks and depth
 
+- [ ] [Kafka & RabbitMQ](../topics/messaging.md)
 - [ ] [Node.js](../topics/nodejs.md)
 - [ ] [TypeScript](../topics/typescript.md)
 

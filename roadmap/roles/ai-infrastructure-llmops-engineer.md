@@ -7,18 +7,19 @@ Runs and scales model serving, GPUs and AI pipelines in production.
 
 ## Prerequisites
 
-- None. Start with Stage 1.
+- [DevOps](../topics/devops.md)
+- [REST API](../topics/rest-api.md)
 - Usually 3+ years of experience when hired
 
 ## Learning stages
 
 ### Stage 1: Core skills
 
-- [ ] [DevOps](../topics/devops.md)
+- [ ] [AI & LLMs](../topics/ai.md)
 
 ## Also needed
 
-Python, Go, C++/CUDA (advanced), Bash, vLLM, TensorRT-LLM, Text Generation Inference, Ray, NVIDIA GPUs, Ollama, Triton Inference Server, Prometheus, LiteLLM gateway
+Python, Go, C++/CUDA (advanced), Bash, vLLM, Text Generation Inference, Ray, NVIDIA GPUs, Ollama, Triton Inference Server, Prometheus, LiteLLM gateway
 
 ## Where it leads
 

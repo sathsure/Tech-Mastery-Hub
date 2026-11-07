@@ -147,6 +147,7 @@ const NAV_ICONS = {
   html: "code", css: "brush", javascript: "braces", typescript: "braces", react: "atom", angular: "hexagon", rxjs: "waves",
   nodejs: "server", java: "coffee", spring: "leaf", "spring-security": "lock", "spring-cloud": "cloud", microservices: "boxes",
   "rest-api": "plug", "database/sql": "database", devops: "infinity", aws: "cloud", "web-architecture": "network", "web-vitals": "gauge",
+  dsa: "graduation", messaging: "route", ai: "sparkles",
   "it-roles": "briefcase", "it-terminology": "book", "tech-stack": "layers", "it-careers": "trend", roadmaps: "map",
 };
 

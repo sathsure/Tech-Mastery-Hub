@@ -6,7 +6,20 @@
 - [Java](../topics/java.md)
 - Overview: [Spring Boot concepts](../../knowledge/concepts/spring/README.md)
 
-## 1. Spring Core & Fundamentals
+## 1. AI Integration in Spring Boot
+
+- [ ] [How would you integrate an LLM API (OpenAI, Claude…) into Spring Boot?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+- [ ] [How would you build an AI chatbot with Spring Boot and Angular?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+- [ ] [How would you implement RAG using company documents in Spring Boot?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+- [ ] [How would you secure sensitive data sent to an external LLM?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+- [ ] [How would you handle LLM API rate limits and token costs?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+- [ ] [How would you implement streaming AI responses?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+- [ ] [How would you reduce hallucinations?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+- [ ] [How would you evaluate the accuracy of AI-generated answers?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+- [ ] [How would you implement AI response caching?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+- [ ] [How would you design fallbacks if the LLM provider is unavailable?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+
+## 2. Spring Core & Fundamentals
 
 - [ ] [What is Spring, Why it was introduced?](../../interview/backend/java/03-Spring-1.md)
 - [ ] [What is Spring IoC and how is it implemented internally?](../../interview/backend/java/03-Spring-1.md)
@@ -19,20 +32,20 @@
 - [ ] [What is Spring AOP, Why it was introduced?](../../interview/backend/java/03-Spring-1.md)
 - [ ] [What is Spring Modular Design?](../../interview/backend/java/03-Spring-1.md)
 
-## 2. Other Spring Concepts
+## 3. Other Spring Concepts
 
 - [ ] [Spring HATEOAS](../../interview/backend/java/03-Spring-1.md)
 - [ ] [Thymeleaf](../../interview/backend/java/03-Spring-1.md)
 - [ ] [application.properties vs application.yml?](../../interview/backend/java/03-Spring-1.md)
 - [ ] [What Unit Testing technique you used in Java and Spring?](../../interview/backend/java/03-Spring-1.md)
 
-## 3. Database
+## 4. Database
 
 - [ ] [What is DataSource?](../../interview/backend/java/03-Spring-2.md)
 - [ ] [What is connection pooling?](../../interview/backend/java/03-Spring-2.md)
 - [ ] [How do I allow only certain threads to use certain DB connections?](../../interview/backend/java/03-Spring-2.md)
 
-## 4. Spring Data JPA
+## 5. Spring Data JPA
 
 - [ ] [What is Declarative Transactions, Spring Transactions & Spring Data JPA?](../../interview/backend/java/03-Spring-2.md)
 - [ ] [Explain what is JPA Entity class, How pagination works in Spring Data JPA?](../../interview/backend/java/03-Spring-2.md)
@@ -44,11 +57,11 @@
 - [ ] [First-Level vs Second-Level Cache](../../interview/backend/java/03-Spring-2.md)
 - [ ] [Spring JPA Inheritance](../../interview/backend/java/03-Spring-2.md)
 
-## 5. 04-Spring-annotation
+## 6. 04-Spring-annotation
 
 - [ ] [What are some commonly used Spring annotations and what are they used for?](../../interview/backend/java/04-Spring-annotation.md)
 
-## 6. Spring Security
+## 7. Spring Security
 
 - [ ] [What is Spring Security and why do we need it??](../../interview/backend/java/05-Spring-Security.md)
 - [ ] [Explain authentication vs authorization with a real example.](../../interview/backend/java/05-Spring-Security.md)
@@ -62,13 +75,28 @@
 - [ ] [SAML vs JWT](../../interview/backend/java/05-Spring-Security.md)
 - [ ] [SAML vs OAuth vs OIDC](../../interview/backend/java/05-Spring-Security.md)
 
-## 7. Spring Boot Configuration & Production Readiness
+## 8. Transaction Basics
+
+- [ ] [What does @Transactional actually do?](../../interview/backend/java/07-Spring-Transactions.md)
+- [ ] [What is a Spring proxy?](../../interview/backend/java/07-Spring-Transactions.md)
+- [ ] [In a Spring service, what can go wrong when using @Transactional?](../../interview/backend/java/07-Spring-Transactions.md)
+- [ ] [A method calls another transactional method on the same instance. Is the second transaction boundary applied?](../../interview/backend/java/07-Spring-Transactions.md)
+
+## 9. Rollback Rules and Propagation
+
+- [ ] [Which exceptions make @Transactional roll back?](../../interview/backend/java/07-Spring-Transactions.md)
+- [ ] [What are REQUIRED and REQUIRES_NEW propagation?](../../interview/backend/java/07-Spring-Transactions.md)
+- [ ] [What happens when both methods are in the same service and one uses REQUIRES_NEW?](../../interview/backend/java/07-Spring-Transactions.md)
+- [ ] [How does Spring know when to commit or roll back?](../../interview/backend/java/07-Spring-Transactions.md)
+- [ ] [What is the difference between save and commit?](../../interview/backend/java/07-Spring-Transactions.md)
+
+## 10. Spring Boot Configuration & Production Readiness
 
 - [ ] [Our application behaves differently in local and production environments. How would you manage this?](../../interview/backend/java/08-Architecture.md)
 - [ ] [How would you make sure debug logs don’t affect production performance?](../../interview/backend/java/08-Architecture.md)
 - [ ] [The app startup time increased after adding new modules. How would you improve it?](../../interview/backend/java/08-Architecture.md)
 
-## 8. Database Design & Access (Spring Boot + MySQL)
+## 11. Database Design & Access (Spring Boot + MySQL)
 
 - [ ] [Our database tables are growing very fast and queries are getting slow. What would you check first?](../../interview/backend/java/08-Architecture.md)
 - [ ] [A single API call is hitting the database multiple times. How would you optimize this?](../../interview/backend/java/08-Architecture.md)

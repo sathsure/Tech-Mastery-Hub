@@ -47,13 +47,17 @@ export const PREREQUISITES: Record<string, string[]> = {
   "spring-cloud": ["spring", "microservices"],
   devops: [],
   aws: ["devops"],
+  dsa: [],
+  messaging: ["microservices"],
+  ai: ["rest-api"],
 };
 
 export const TRACKS: Array<{ name: string; description: string; topics: string[] }> = [
   { name: "Frontend", description: "Build user interfaces for the browser.", topics: ["html", "css", "javascript", "typescript", "web-vitals", "react", "angular", "rxjs"] },
   { name: "Backend with Java", description: "Build services with Java and Spring.", topics: ["java", "database/sql", "rest-api", "spring", "spring-security", "microservices", "spring-cloud"] },
   { name: "Backend with Node.js", description: "Build services with JavaScript on the server.", topics: ["javascript", "nodejs", "rest-api", "database/sql", "web-architecture"] },
-  { name: "DevOps and cloud", description: "Ship, run and scale applications.", topics: ["devops", "aws", "microservices"] },
+  { name: "DevOps and cloud", description: "Ship, run and scale applications.", topics: ["devops", "aws", "microservices", "messaging"] },
+  { name: "Coding interviews and AI", description: "Crack coding rounds and build with AI.", topics: ["dsa", "ai"] },
 ];
 
 const STAGE_NAMES = ["Foundations", "Core skills", "Frameworks and depth", "Specialisation", "Architecture"];
@@ -185,9 +189,29 @@ function topicsIn(text: string, aliases: Record<string, string[]>, covered: Set<
 }
 
 /** Comma-separated skills that match no topic in the notes. */
+/** "A, B (C, D), E" → ["A", "B (C, D)", "E"]: commas inside parentheses don't split. */
+function splitSkills(text: string): string[] {
+  const parts: string[] = [];
+  let depth = 0;
+  let current = "";
+  for (const char of text) {
+    if (char === "(") depth++;
+    if (char === ")") depth = Math.max(0, depth - 1);
+    if (char === "," && depth === 0) {
+      parts.push(current.trim());
+      current = "";
+    } else {
+      current += char;
+    }
+  }
+  parts.push(current.trim());
+  return parts.filter(Boolean);
+}
+
 function uncovered(text: string | null, aliases: Record<string, string[]>): string[] {
   if (!text) return [];
-  return text.split(/,\s*/).map(part => part.trim()).filter(part => part && !Object.values(aliases).flat().some(word => ` ${entityKey(part)} `.includes(` ${entityKey(word)} `)));
+  const words = Object.values(aliases).flat();
+  return splitSkills(text).filter(part => !words.some(word => ` ${entityKey(part)} `.includes(` ${entityKey(word)} `)));
 }
 
 interface RolePlan {

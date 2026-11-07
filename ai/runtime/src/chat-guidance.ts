@@ -120,6 +120,9 @@ const DOCS: Record<string, { name: string; url: string }> = {
   aws: { name: "AWS documentation", url: "https://docs.aws.amazon.com/" },
   "web-vitals": { name: "web.dev Web Vitals", url: "https://web.dev/articles/vitals" },
   "rest-api": { name: "MDN HTTP", url: "https://developer.mozilla.org/en-US/docs/Web/HTTP" },
+  messaging: { name: "Apache Kafka docs", url: "https://kafka.apache.org/documentation/" },
+  dsa: { name: "Python Time Complexity (wiki)", url: "https://wiki.python.org/moin/TimeComplexity" },
+  ai: { name: "Spring AI reference", url: "https://docs.spring.io/spring-ai/reference/" },
 };
 
 export const LEARN_MORE_HEADING = "**Learn more elsewhere**";

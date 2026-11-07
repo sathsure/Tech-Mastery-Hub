@@ -20,3 +20,34 @@
 - [ ] [SAML vs JWT](../../interview/backend/java/05-Spring-Security.md)
 - [ ] [SAML vs OAuth vs OIDC](../../interview/backend/java/05-Spring-Security.md)
 
+## 2. Authentication Flow
+
+- [ ] [What are access tokens and refresh tokens, and why use both?](../../interview/backend/java/09-JWT-Access-Refresh-Tokens.md)
+- [ ] [What is the complete login-to-dashboard flow with JWT?](../../interview/backend/java/09-JWT-Access-Refresh-Tokens.md)
+- [ ] [What happens when the access token expires?](../../interview/backend/java/09-JWT-Access-Refresh-Tokens.md)
+- [ ] [What happens when the refresh token expires?](../../interview/backend/java/09-JWT-Access-Refresh-Tokens.md)
+- [ ] [How do you implement the token refresh API in Spring Boot?](../../interview/backend/java/09-JWT-Access-Refresh-Tokens.md)
+
+## 3. Tricky Interview Questions
+
+- [ ] [Can an expired access token be used to get a new access token?](../../interview/backend/java/09-JWT-Access-Refresh-Tokens.md)
+- [ ] [Does the refresh API need a valid access token?](../../interview/backend/java/09-JWT-Access-Refresh-Tokens.md)
+- [ ] [What happens if five API calls return 401 at the same time?](../../interview/backend/java/09-JWT-Access-Refresh-Tokens.md)
+- [ ] [What happens if a refresh token is stolen?](../../interview/backend/java/09-JWT-Access-Refresh-Tokens.md)
+- [ ] [Can a JWT be invalidated immediately?](../../interview/backend/java/09-JWT-Access-Refresh-Tokens.md)
+- [ ] [What should happen when the user logs out?](../../interview/backend/java/09-JWT-Access-Refresh-Tokens.md)
+- [ ] [What is the difference between 401 and 403?](../../interview/backend/java/09-JWT-Access-Refresh-Tokens.md)
+- [ ] [What happens if a user's role changes while their JWT is still valid?](../../interview/backend/java/09-JWT-Access-Refresh-Tokens.md)
+- [ ] [Should a JWT be stored in localStorage?](../../interview/backend/java/09-JWT-Access-Refresh-Tokens.md)
+- [ ] [Can two refresh requests with the same refresh token both succeed?](../../interview/backend/java/09-JWT-Access-Refresh-Tokens.md)
+- [ ] [What if the refresh token is valid but the user account has been disabled?](../../interview/backend/java/09-JWT-Access-Refresh-Tokens.md)
+- [ ] [What if a refresh token is revoked before its expiry date?](../../interview/backend/java/09-JWT-Access-Refresh-Tokens.md)
+- [ ] [Can the refresh token's expiry be extended every time the user is active?](../../interview/backend/java/09-JWT-Access-Refresh-Tokens.md)
+- [ ] [What happens if the access token expires while a long request is running?](../../interview/backend/java/09-JWT-Access-Refresh-Tokens.md)
+- [ ] [If the refresh token is in an HttpOnly cookie, how does Angular send it?](../../interview/backend/java/09-JWT-Access-Refresh-Tokens.md)
+- [ ] [What if the refresh token expires while the user is actively using the app?](../../interview/backend/java/09-JWT-Access-Refresh-Tokens.md)
+- [ ] [What if the backend issues a new token but the response never reaches Angular?](../../interview/backend/java/09-JWT-Access-Refresh-Tokens.md)
+- [ ] [Should every 401 response trigger a token refresh?](../../interview/backend/java/09-JWT-Access-Refresh-Tokens.md)
+- [ ] [How do you prevent CSRF when tokens are stored in cookies?](../../interview/backend/java/09-JWT-Access-Refresh-Tokens.md)
+- [ ] [What should a senior Spring Boot developer know about JWT authentication?](../../interview/backend/java/09-JWT-Access-Refresh-Tokens.md)
+

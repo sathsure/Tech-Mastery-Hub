@@ -6,7 +6,7 @@
 - None. This is a starting point.
 - Overview: [SQL concepts](../../knowledge/concepts/database/sql/README.md)
 
-## 1. Questions
+## 1. 08-MySQL
 
 - [ ] [What is an RDBMS?](../../interview/backend/java/08-MySQL.md)
 - [ ] [Primary Key vs Unique Key vs Foreign Key?](../../interview/backend/java/08-MySQL.md)
@@ -23,6 +23,66 @@
 - [ ] [Production Bug / SQL Issue – Root Cause Analysis](../../interview/backend/java/08-MySQL.md)
 - [ ] [What happens internally when a transaction fails midway in a Spring Boot application?](../../interview/backend/java/08-MySQL.md)
 - [ ] [How do you handle if multiple users / threads access same DB data at the same time?](../../interview/backend/java/08-MySQL.md)
+
+## 2. Tree Types
+
+- [ ] [What is a Binary Search Tree (BST), and what is its limitation?](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
+- [ ] [What is an M-way search tree?](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
+- [ ] [What is a B-Tree?](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
+- [ ] [What is a B+ Tree?](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
+- [ ] [Why must all leaf nodes be at the same level?](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
+- [ ] [Where does a search start in a B-Tree or B+ Tree?](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
+- [ ] [Why are B+ Tree leaves (leaf nodes) linked?](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
+- [ ] [What is the difference between multilevel indexing and a B+ Tree?](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
+
+## 3. B-Tree vs B+ Tree
+
+- [ ] [What is the difference between a B-Tree and a B+ Tree?](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
+- [ ] [Which is faster for SQL queries: B-Tree or B+ Tree?](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
+- [ ] [Which index structure do SQL databases use?](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
+
+## 4. Insertion
+
+- [ ] [How does insertion work in a B-Tree? (Order 6 example)](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
+- [ ] [How does insertion work in a B+ Tree? (Order 6 example)](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
+
+## 5. Deletion
+
+- [ ] [How does deletion work in a B-Tree?](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
+- [ ] [How does deletion work in a B+ Tree?](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
+- [ ] [How does B-Tree deletion differ from B+ Tree deletion?](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
+
+## 6. Quick Revision
+
+- [ ] [What are the most important B-Tree and B+ Tree interview questions?](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
+
+## 7. Indexes
+
+- [ ] [How does an index work?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
+- [ ] [What is the internal structure of an index?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
+- [ ] [Is an index a separate table?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
+- [ ] [Where is an index stored?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
+- [ ] [How does SQL know that an index exists, and who decides to use it?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
+- [ ] [Why might MySQL do a full table scan even though there is an index on employee_id?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
+- [ ] [How does an index improve a JOIN on customer_id?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
+- [ ] [Why not index every column?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
+
+## 8. Query Execution Order
+
+- [ ] [What is the logical query execution order in SQL?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
+- [ ] [Where do indexes fit when a SQL query runs?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
+
+## 9. WHERE, HAVING and GROUP BY
+
+- [ ] [What is the difference between the WHERE and HAVING clauses?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
+- [ ] [Does HAVING require the aggregate column in SELECT?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
+- [ ] [What happens if you add a non-aggregated column (name) to SELECT without adding it to GROUP BY?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
+- [ ] [What happens if you add name to GROUP BY as well?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
+- [ ] [Can you use HAVING without GROUP BY?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
+
+## 10. Quick Revision
+
+- [ ] [What are the key SQL indexing and GROUP BY interview answers?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
 
 ## Practice
 

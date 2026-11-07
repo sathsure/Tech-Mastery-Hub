@@ -20,7 +20,9 @@
 - [AI Evaluation Engineer](../roles/ai-evaluation-engineer.md)
 - [AI Infrastructure / LLMOps Engineer](../roles/ai-infrastructure-llmops-engineer.md)
 - [AI Product Manager](../roles/ai-product-manager.md)
+- [AI Red Teamer / AI Safety Engineer](../roles/ai-red-teamer-ai-safety-engineer.md)
 - [AI Solutions Architect](../roles/ai-solutions-architect.md)
+- [Context / Prompt Engineer](../roles/context-prompt-engineer.md)
 - [Developer Advocate](../roles/developer-advocate.md)
 - [Forward Deployed Engineer](../roles/forward-deployed-engineer.md)
 

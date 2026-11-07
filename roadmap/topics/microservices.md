@@ -6,47 +6,61 @@
 - [REST API](../topics/rest-api.md)
 - Overview: [Microservices concepts](../../knowledge/concepts/microservices/README.md)
 
-## 1. DESIGN STRUCTURE (REST Orchestration)
+## 1. How They Work
+
+- [ ] [How does RabbitMQ deliver messages?](../../interview/architecture/messaging-rabbitmq-kafka.md)
+- [ ] [How does Kafka deliver events?](../../interview/architecture/messaging-rabbitmq-kafka.md)
+- [ ] [How do Kafka consumer groups and partitions work?](../../interview/architecture/messaging-rabbitmq-kafka.md)
+- [ ] [What is the difference between RabbitMQ and Kafka?](../../interview/architecture/messaging-rabbitmq-kafka.md)
+- [ ] [What are common misconceptions about RabbitMQ and Kafka?](../../interview/architecture/messaging-rabbitmq-kafka.md)
+
+## 2. When to Use Which
+
+- [ ] [When should you use RabbitMQ (use cases)?](../../interview/architecture/messaging-rabbitmq-kafka.md)
+- [ ] [When should you use Kafka (use cases)?](../../interview/architecture/messaging-rabbitmq-kafka.md)
+- [ ] [How do you choose between RabbitMQ and Kafka for a requirement?](../../interview/architecture/messaging-rabbitmq-kafka.md)
+
+## 3. DESIGN STRUCTURE (REST Orchestration)
 
 - [ ] [Repo 1 → dashboard-service](../../interview/architecture/microservice-architecture.md)
 
-## 2. DESIGN STRUCTURE (REST Orchestration) › Repo 1 → dashboard-service
+## 4. DESIGN STRUCTURE (REST Orchestration) › Repo 1 → dashboard-service
 
 - [ ] [Repo 2 → credit-card-service](../../interview/architecture/microservice-architecture.md)
 
-## 3. DESIGN STRUCTURE (REST Orchestration) › Repo 2 → credit-card-service
+## 5. DESIGN STRUCTURE (REST Orchestration) › Repo 2 → credit-card-service
 
 - [ ] [Repo 3 → upi-service](../../interview/architecture/microservice-architecture.md)
 
-## 4. DATA FLOW
+## 6. DATA FLOW
 
 - [ ] [User closes Credit Subtask](../../interview/architecture/microservice-architecture.md)
 
-## 5. DATABASE DESIGN
+## 7. DATABASE DESIGN
 
 - [ ] [DATABASE 1 → dashboard_db](../../interview/architecture/microservice-architecture.md)
 
-## 6. DATABASE DESIGN › DATABASE 1 → dashboard_db
+## 8. DATABASE DESIGN › DATABASE 1 → dashboard_db
 
 - [ ] [DATABASE 2 → credit_db](../../interview/architecture/microservice-architecture.md)
 
-## 7. DATABASE DESIGN › DATABASE 2 → credit_db
+## 9. DATABASE DESIGN › DATABASE 2 → credit_db
 
 - [ ] [DATABASE 3 → upi_db](../../interview/architecture/microservice-architecture.md)
 
-## 8. DATABASE DESIGN › DATABASE 3 → upi_db
+## 10. DATABASE DESIGN › DATABASE 3 → upi_db
 
 - [ ] [TOTAL TABLE COUNT (Current System)](../../interview/architecture/microservice-architecture.md)
 
-## 9. DATABASE DESIGN › TOTAL TABLE COUNT (Current System)
+## 11. DATABASE DESIGN › TOTAL TABLE COUNT (Current System)
 
 - [ ] [HOW DATA IS PASSED](../../interview/architecture/microservice-architecture.md)
 
-## 10. HOW DATA IS PASSED
+## 12. HOW DATA IS PASSED
 
 - [ ] [FUTURE: ADD WalletService](../../interview/architecture/microservice-architecture.md)
 
-## 11. FUTURE: ADD WalletService
+## 13. FUTURE: ADD WalletService
 
 - [ ] [DATABASE 4 → wallet_db](../../interview/architecture/microservice-architecture.md)
 
