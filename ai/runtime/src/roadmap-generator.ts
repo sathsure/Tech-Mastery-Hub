@@ -47,13 +47,17 @@ export const PREREQUISITES: Record<string, string[]> = {
   "spring-cloud": ["spring", "microservices"],
   devops: [],
   aws: ["devops"],
+  dsa: [],
+  messaging: ["microservices"],
+  ai: ["rest-api"],
 };
 
 export const TRACKS: Array<{ name: string; description: string; topics: string[] }> = [
   { name: "Frontend", description: "Build user interfaces for the browser.", topics: ["html", "css", "javascript", "typescript", "web-vitals", "react", "angular", "rxjs"] },
   { name: "Backend with Java", description: "Build services with Java and Spring.", topics: ["java", "database/sql", "rest-api", "spring", "spring-security", "microservices", "spring-cloud"] },
   { name: "Backend with Node.js", description: "Build services with JavaScript on the server.", topics: ["javascript", "nodejs", "rest-api", "database/sql", "web-architecture"] },
-  { name: "DevOps and cloud", description: "Ship, run and scale applications.", topics: ["devops", "aws", "microservices"] },
+  { name: "DevOps and cloud", description: "Ship, run and scale applications.", topics: ["devops", "aws", "microservices", "messaging"] },
+  { name: "Coding interviews and AI", description: "Crack coding rounds and build with AI.", topics: ["dsa", "ai"] },
 ];
 
 const STAGE_NAMES = ["Foundations", "Core skills", "Frameworks and depth", "Specialisation", "Architecture"];
@@ -109,8 +113,17 @@ function materialFor(entries: QuestionEntry[], topic: string): Material {
   };
 }
 
-function item(entry: QuestionEntry, fromDir: string, indent = ""): string {
-  return `${indent}- [ ] [${entry.question.replace(/[[\]]/g, "")}](${link(fromDir, entry.source.path)})`;
+/** A study path is read in order: numbered steps, with follow-up questions nested under their question. */
+function entryLink(entry: QuestionEntry, fromDir: string): string {
+  return `[${entry.question.replace(/[[\]]/g, "")}](${link(fromDir, entry.source.path)})`;
+}
+
+function item(entry: QuestionEntry, fromDir: string, position: number): string {
+  return `${position}. ${entryLink(entry, fromDir)}`;
+}
+
+function childItem(entry: QuestionEntry, fromDir: string): string {
+  return `   - ${entryLink(entry, fromDir)}`;
 }
 
 const studyPath = (topic: string) => `[${label(topic)}](../topics/${topicSlug(topic)}.md)`;
@@ -129,7 +142,7 @@ function topicPath(topic: string, entries: QuestionEntry[], plans: RolePlan[]): 
   const stages = [...groups.entries()].map(([key, list], index) => {
     const [path, section] = key.split("|");
     const title = section || (files.size > 1 ? posix.basename(path, ".md") : "Questions");
-    const lines = list.flatMap(entry => [item(entry, dir), ...(material.followUps.get(entry.id) ?? []).map(child => item(child, dir, "  "))]);
+    const lines = list.flatMap((entry, position) => [item(entry, dir, position + 1), ...(material.followUps.get(entry.id) ?? []).map(child => childItem(child, dir))]);
     return [`## ${index + 1}. ${title}`, "", ...lines, ""].join("\n");
   });
   const concept = `knowledge/concepts/${topic}/README.md`;
@@ -148,7 +161,7 @@ function topicPath(topic: string, entries: QuestionEntry[], plans: RolePlan[]): 
     existsSync(resolve(REPOSITORY_ROOT, concept)) ? `- Overview: [${label(topic)} concepts](${link(dir, concept)})` : null,
     "",
     ...stages,
-    material.practice.length ? ["## Practice", "", ...material.practice.map(entry => item(entry, dir)), ""].join("\n") : null,
+    material.practice.length ? ["## Practice", "", ...material.practice.map((entry, position) => item(entry, dir, position + 1)), ""].join("\n") : null,
     visuals.length ? ["## Diagrams", "", ...visuals.map(visual => `- [${visual.alt || posix.basename(visual.path!)}](${link(dir, visual.path!)})`), ""].join("\n") : null,
     usedBy.length ? ["## Related roles", "", usedBy.map(name => `[${name}](../roles/${roleSlug(name)}.md)`).join(" · "), ""].join("\n") : null,
   ].filter((part): part is string => part !== null).join("\n").replace(/\n{3,}/g, "\n\n") + "\n";
@@ -185,9 +198,29 @@ function topicsIn(text: string, aliases: Record<string, string[]>, covered: Set<
 }
 
 /** Comma-separated skills that match no topic in the notes. */
+/** "A, B (C, D), E" → ["A", "B (C, D)", "E"]: commas inside parentheses don't split. */
+function splitSkills(text: string): string[] {
+  const parts: string[] = [];
+  let depth = 0;
+  let current = "";
+  for (const char of text) {
+    if (char === "(") depth++;
+    if (char === ")") depth = Math.max(0, depth - 1);
+    if (char === "," && depth === 0) {
+      parts.push(current.trim());
+      current = "";
+    } else {
+      current += char;
+    }
+  }
+  parts.push(current.trim());
+  return parts.filter(Boolean);
+}
+
 function uncovered(text: string | null, aliases: Record<string, string[]>): string[] {
   if (!text) return [];
-  return text.split(/,\s*/).map(part => part.trim()).filter(part => part && !Object.values(aliases).flat().some(word => ` ${entityKey(part)} `.includes(` ${entityKey(word)} `)));
+  const words = Object.values(aliases).flat();
+  return splitSkills(text).filter(part => !words.some(word => ` ${entityKey(part)} `.includes(` ${entityKey(word)} `)));
 }
 
 interface RolePlan {

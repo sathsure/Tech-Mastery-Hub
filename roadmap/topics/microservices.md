@@ -6,49 +6,63 @@
 - [REST API](../topics/rest-api.md)
 - Overview: [Microservices concepts](../../knowledge/concepts/microservices/README.md)
 
-## 1. DESIGN STRUCTURE (REST Orchestration)
+## 1. How They Work
 
-- [ ] [Repo 1 → dashboard-service](../../interview/architecture/microservice-architecture.md)
+1. [How does RabbitMQ deliver messages?](../../interview/architecture/messaging-rabbitmq-kafka.md)
+2. [How does Kafka deliver events?](../../interview/architecture/messaging-rabbitmq-kafka.md)
+3. [How do Kafka consumer groups and partitions work?](../../interview/architecture/messaging-rabbitmq-kafka.md)
+4. [What is the difference between RabbitMQ and Kafka?](../../interview/architecture/messaging-rabbitmq-kafka.md)
+5. [What are common misconceptions about RabbitMQ and Kafka?](../../interview/architecture/messaging-rabbitmq-kafka.md)
 
-## 2. DESIGN STRUCTURE (REST Orchestration) › Repo 1 → dashboard-service
+## 2. When to Use Which
 
-- [ ] [Repo 2 → credit-card-service](../../interview/architecture/microservice-architecture.md)
+1. [When should you use RabbitMQ (use cases)?](../../interview/architecture/messaging-rabbitmq-kafka.md)
+2. [When should you use Kafka (use cases)?](../../interview/architecture/messaging-rabbitmq-kafka.md)
+3. [How do you choose between RabbitMQ and Kafka for a requirement?](../../interview/architecture/messaging-rabbitmq-kafka.md)
 
-## 3. DESIGN STRUCTURE (REST Orchestration) › Repo 2 → credit-card-service
+## 3. DESIGN STRUCTURE (REST Orchestration)
 
-- [ ] [Repo 3 → upi-service](../../interview/architecture/microservice-architecture.md)
+1. [Repo 1 → dashboard-service](../../interview/architecture/microservice-architecture.md)
 
-## 4. DATA FLOW
+## 4. DESIGN STRUCTURE (REST Orchestration) › Repo 1 → dashboard-service
 
-- [ ] [User closes Credit Subtask](../../interview/architecture/microservice-architecture.md)
+1. [Repo 2 → credit-card-service](../../interview/architecture/microservice-architecture.md)
 
-## 5. DATABASE DESIGN
+## 5. DESIGN STRUCTURE (REST Orchestration) › Repo 2 → credit-card-service
 
-- [ ] [DATABASE 1 → dashboard_db](../../interview/architecture/microservice-architecture.md)
+1. [Repo 3 → upi-service](../../interview/architecture/microservice-architecture.md)
 
-## 6. DATABASE DESIGN › DATABASE 1 → dashboard_db
+## 6. DATA FLOW
 
-- [ ] [DATABASE 2 → credit_db](../../interview/architecture/microservice-architecture.md)
+1. [User closes Credit Subtask](../../interview/architecture/microservice-architecture.md)
 
-## 7. DATABASE DESIGN › DATABASE 2 → credit_db
+## 7. DATABASE DESIGN
 
-- [ ] [DATABASE 3 → upi_db](../../interview/architecture/microservice-architecture.md)
+1. [DATABASE 1 → dashboard_db](../../interview/architecture/microservice-architecture.md)
 
-## 8. DATABASE DESIGN › DATABASE 3 → upi_db
+## 8. DATABASE DESIGN › DATABASE 1 → dashboard_db
 
-- [ ] [TOTAL TABLE COUNT (Current System)](../../interview/architecture/microservice-architecture.md)
+1. [DATABASE 2 → credit_db](../../interview/architecture/microservice-architecture.md)
 
-## 9. DATABASE DESIGN › TOTAL TABLE COUNT (Current System)
+## 9. DATABASE DESIGN › DATABASE 2 → credit_db
 
-- [ ] [HOW DATA IS PASSED](../../interview/architecture/microservice-architecture.md)
+1. [DATABASE 3 → upi_db](../../interview/architecture/microservice-architecture.md)
 
-## 10. HOW DATA IS PASSED
+## 10. DATABASE DESIGN › DATABASE 3 → upi_db
 
-- [ ] [FUTURE: ADD WalletService](../../interview/architecture/microservice-architecture.md)
+1. [TOTAL TABLE COUNT (Current System)](../../interview/architecture/microservice-architecture.md)
 
-## 11. FUTURE: ADD WalletService
+## 11. DATABASE DESIGN › TOTAL TABLE COUNT (Current System)
 
-- [ ] [DATABASE 4 → wallet_db](../../interview/architecture/microservice-architecture.md)
+1. [HOW DATA IS PASSED](../../interview/architecture/microservice-architecture.md)
+
+## 12. HOW DATA IS PASSED
+
+1. [FUTURE: ADD WalletService](../../interview/architecture/microservice-architecture.md)
+
+## 13. FUTURE: ADD WalletService
+
+1. [DATABASE 4 → wallet_db](../../interview/architecture/microservice-architecture.md)
 
 ## Related roles
 

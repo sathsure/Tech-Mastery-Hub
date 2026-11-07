@@ -8,87 +8,87 @@
 
 ## 1. Part 1 — Fundamentals
 
-- [ ] [In simple terms, what is CSS and how does it relate to HTML?](../../interview/frontend/02-CSS.md)
-- [ ] [How does the browser decide which styles to apply?](../../interview/frontend/02-CSS.md)
-- [ ] [How do inline, internal, and external styles differ?](../../interview/frontend/02-CSS.md)
-- [ ] [What are CSS selectors and what types are available?](../../interview/frontend/02-CSS.md)
-- [ ] [Descendant vs child selectors](../../interview/frontend/02-CSS.md)
-- [ ] [What are pseudo-classes vs pseudo-elements?](../../interview/frontend/02-CSS.md)
-- [ ] [Can you walk me through CSS specificity and how it affects style resolution?](../../interview/frontend/02-CSS.md)
-  - [ ] [Why is `!important` risky?](../../interview/frontend/02-CSS.md)
+1. [In simple terms, what is CSS and how does it relate to HTML?](../../interview/frontend/02-CSS.md)
+2. [How does the browser decide which styles to apply?](../../interview/frontend/02-CSS.md)
+3. [How do inline, internal, and external styles differ?](../../interview/frontend/02-CSS.md)
+4. [What are CSS selectors and what types are available?](../../interview/frontend/02-CSS.md)
+5. [Descendant vs child selectors](../../interview/frontend/02-CSS.md)
+6. [What are pseudo-classes vs pseudo-elements?](../../interview/frontend/02-CSS.md)
+7. [Can you walk me through CSS specificity and how it affects style resolution?](../../interview/frontend/02-CSS.md)
+   - [Why is `!important` risky?](../../interview/frontend/02-CSS.md)
 
 ## 2. Part 2 — Box Model, Display & Units
 
-- [ ] [How does the CSS box model work?](../../interview/frontend/02-CSS.md)
-- [ ] [Difference between `content-box` and `border-box`?](../../interview/frontend/02-CSS.md)
-- [ ] [What are the different CSS display types?](../../interview/frontend/02-CSS.md)
-  - [ ] [Where do `width` and `height` apply?](../../interview/frontend/02-CSS.md)
-  - [ ] [Why does `height: 100%` fail?](../../interview/frontend/02-CSS.md)
-- [ ] [How do CSS units differ?](../../interview/frontend/02-CSS.md)
-- [ ] [Why is `100vh` tricky on mobile?](../../interview/frontend/02-CSS.md)
+1. [How does the CSS box model work?](../../interview/frontend/02-CSS.md)
+2. [Difference between `content-box` and `border-box`?](../../interview/frontend/02-CSS.md)
+3. [What are the different CSS display types?](../../interview/frontend/02-CSS.md)
+   - [Where do `width` and `height` apply?](../../interview/frontend/02-CSS.md)
+   - [Why does `height: 100%` fail?](../../interview/frontend/02-CSS.md)
+4. [How do CSS units differ?](../../interview/frontend/02-CSS.md)
+5. [Why is `100vh` tricky on mobile?](../../interview/frontend/02-CSS.md)
 
 ## 3. Part 3 — Positioning
 
-- [ ] [What CSS position types exist?](../../interview/frontend/02-CSS.md)
-- [ ] [How does the `inset` shorthand work in CSS and what problem does it solve?](../../interview/frontend/02-CSS.md)
+1. [What CSS position types exist?](../../interview/frontend/02-CSS.md)
+2. [How does the `inset` shorthand work in CSS and what problem does it solve?](../../interview/frontend/02-CSS.md)
 
 ## 4. Part 4 — Flexbox
 
-- [ ] [What problem does Flexbox solve?](../../interview/frontend/02-CSS.md)
-  - [ ] [Explain `flex-grow`, `flex-shrink`, `flex-basis`](../../interview/frontend/02-CSS.md)
-  - [ ] [Common Flexbox confusions](../../interview/frontend/02-CSS.md)
-  - [ ] [`justify-content` vs `align-content` vs `align-items` vs `justify-self` vs `align-self`?](../../interview/frontend/02-CSS.md)
+1. [What problem does Flexbox solve?](../../interview/frontend/02-CSS.md)
+   - [Explain `flex-grow`, `flex-shrink`, `flex-basis`](../../interview/frontend/02-CSS.md)
+   - [Common Flexbox confusions](../../interview/frontend/02-CSS.md)
+   - [`justify-content` vs `align-content` vs `align-items` vs `justify-self` vs `align-self`?](../../interview/frontend/02-CSS.md)
 
 ## 5. Part 5 — CSS Grid
 
-- [ ] [How does CSS Grid work, and how is it different from Flexbox?](../../interview/frontend/02-CSS.md)
-  - [ ] [Important Grid properties](../../interview/frontend/02-CSS.md)
+1. [How does CSS Grid work, and how is it different from Flexbox?](../../interview/frontend/02-CSS.md)
+   - [Important Grid properties](../../interview/frontend/02-CSS.md)
 
 ## 6. Part 6 — Logical Properties
 
-- [ ] [What are logical properties and why prefer them over physical ones?](../../interview/frontend/02-CSS.md)
+1. [What are logical properties and why prefer them over physical ones?](../../interview/frontend/02-CSS.md)
 
 ## 7. Part 7 — Modern CSS
 
-- [ ] [What are CSS Custom Properties (Variables)?](../../interview/frontend/02-CSS.md)
-- [ ] [What are container queries?](../../interview/frontend/02-CSS.md)
-- [ ] [Can you explain the `:has()` selector and give a real-world example of where you'd use it?](../../interview/frontend/02-CSS.md)
-- [ ] [What's the difference between `*`, `:root`, and `body`?](../../interview/frontend/02-CSS.md)
+1. [What are CSS Custom Properties (Variables)?](../../interview/frontend/02-CSS.md)
+2. [What are container queries?](../../interview/frontend/02-CSS.md)
+3. [Can you explain the `:has()` selector and give a real-world example of where you'd use it?](../../interview/frontend/02-CSS.md)
+4. [What's the difference between `*`, `:root`, and `body`?](../../interview/frontend/02-CSS.md)
 
 ## 8. Part 8 — Performance & Animation
 
-- [ ] [Why do some animations feel janky?](../../interview/frontend/02-CSS.md)
+1. [Why do some animations feel janky?](../../interview/frontend/02-CSS.md)
 
 ## 9. Trick Questions & Common Bugs
 
-- [ ] [Why styles sometimes don't apply?](../../interview/frontend/02-CSS.md)
-- [ ] [Why is `z-index` not working?](../../interview/frontend/02-CSS.md)
-- [ ] [Why doesn't `text-overflow: ellipsis` work?](../../interview/frontend/02-CSS.md)
-- [ ] [Why does `position: sticky` fail?](../../interview/frontend/02-CSS.md)
-- [ ] [Why does margin collapse happen?](../../interview/frontend/02-CSS.md)
-- [ ] [Why do inline elements ignore width and height?](../../interview/frontend/02-CSS.md)
-- [ ] [Why does `flex: 1` ignore width?](../../interview/frontend/02-CSS.md)
-- [ ] [Why is `!important` not working here?](../../interview/frontend/02-CSS.md)
-- [ ] [Why does this child selector not match?](../../interview/frontend/02-CSS.md)
-- [ ] [Why does `overflow: hidden` break dropdowns?](../../interview/frontend/02-CSS.md)
-- [ ] [Why does absolute positioning break layout height?](../../interview/frontend/02-CSS.md)
-- [ ] [Why does Grid overflow unexpectedly?](../../interview/frontend/02-CSS.md)
-- [ ] [Why does `:hover` not work on mobile?](../../interview/frontend/02-CSS.md)
-- [ ] [How would you build a sticky header inside a scroll container?](../../interview/frontend/02-CSS.md)
+1. [Why styles sometimes don't apply?](../../interview/frontend/02-CSS.md)
+2. [Why is `z-index` not working?](../../interview/frontend/02-CSS.md)
+3. [Why doesn't `text-overflow: ellipsis` work?](../../interview/frontend/02-CSS.md)
+4. [Why does `position: sticky` fail?](../../interview/frontend/02-CSS.md)
+5. [Why does margin collapse happen?](../../interview/frontend/02-CSS.md)
+6. [Why do inline elements ignore width and height?](../../interview/frontend/02-CSS.md)
+7. [Why does `flex: 1` ignore width?](../../interview/frontend/02-CSS.md)
+8. [Why is `!important` not working here?](../../interview/frontend/02-CSS.md)
+9. [Why does this child selector not match?](../../interview/frontend/02-CSS.md)
+10. [Why does `overflow: hidden` break dropdowns?](../../interview/frontend/02-CSS.md)
+11. [Why does absolute positioning break layout height?](../../interview/frontend/02-CSS.md)
+12. [Why does Grid overflow unexpectedly?](../../interview/frontend/02-CSS.md)
+13. [Why does `:hover` not work on mobile?](../../interview/frontend/02-CSS.md)
+14. [How would you build a sticky header inside a scroll container?](../../interview/frontend/02-CSS.md)
 
 ## Practice
 
-- [ ] [How would you center a div both vertically and horizontally? Walk me through the different approaches.](../../practice/coding/02-css-coding.md)
-- [ ] [How would you convert a row layout to a column layout on mobile using CSS?](../../practice/coding/02-css-coding.md)
-- [ ] [How would you make a div perfectly circular using only CSS?](../../practice/coding/02-css-coding.md)
-- [ ] [How do you make an element stick to the top of the viewport while the user scrolls?](../../practice/coding/02-css-coding.md)
-- [ ] [A developer used `margin: auto` expecting vertical centering, but it didn't work. What's the issue and how would you fix it?](../../practice/coding/02-css-coding.md)
-- [ ] [How would you build a responsive 3-column grid that collapses to a single column on mobile?](../../practice/coding/02-css-coding.md)
-- [ ] [How do you truncate overflowing text with an ellipsis after exactly 2 lines?](../../practice/coding/02-css-coding.md)
-- [ ] [How would you build a full-page modal overlay using CSS?](../../practice/coding/02-css-coding.md)
-- [ ] [Can you create a loading spinner using only CSS — no JavaScript, no images?](../../practice/coding/02-css-coding.md)
-- [ ] [How would you build a custom styled checkbox or toggle switch using only CSS?](../../practice/coding/02-css-coding.md)
-- [ ] [Design a User Profile Card UI component using CSS — what would your approach be?](../../practice/coding/02-css-coding.md)
+1. [How would you center a div both vertically and horizontally? Walk me through the different approaches.](../../practice/coding/02-css-coding.md)
+2. [How would you convert a row layout to a column layout on mobile using CSS?](../../practice/coding/02-css-coding.md)
+3. [How would you make a div perfectly circular using only CSS?](../../practice/coding/02-css-coding.md)
+4. [How do you make an element stick to the top of the viewport while the user scrolls?](../../practice/coding/02-css-coding.md)
+5. [A developer used `margin: auto` expecting vertical centering, but it didn't work. What's the issue and how would you fix it?](../../practice/coding/02-css-coding.md)
+6. [How would you build a responsive 3-column grid that collapses to a single column on mobile?](../../practice/coding/02-css-coding.md)
+7. [How do you truncate overflowing text with an ellipsis after exactly 2 lines?](../../practice/coding/02-css-coding.md)
+8. [How would you build a full-page modal overlay using CSS?](../../practice/coding/02-css-coding.md)
+9. [Can you create a loading spinner using only CSS — no JavaScript, no images?](../../practice/coding/02-css-coding.md)
+10. [How would you build a custom styled checkbox or toggle switch using only CSS?](../../practice/coding/02-css-coding.md)
+11. [Design a User Profile Card UI component using CSS — what would your approach be?](../../practice/coding/02-css-coding.md)
 
 ## Diagrams
 

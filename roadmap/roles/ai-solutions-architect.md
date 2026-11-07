@@ -10,12 +10,14 @@ Designs end-to-end AI systems — models, data, RAG, agents, security and cost.
 - [DevOps](../topics/devops.md)
 - [HTML](../topics/html.md)
 - [Java](../topics/java.md)
+- [REST API](../topics/rest-api.md)
 - Usually 8+ years of experience when hired
 
 ## Learning stages
 
 ### Stage 1: Core skills
 
+- [ ] [AI & LLMs](../topics/ai.md)
 - [ ] [AWS](../topics/aws.md)
 - [ ] [JavaScript](../topics/javascript.md)
 
@@ -25,7 +27,7 @@ Designs end-to-end AI systems — models, data, RAG, agents, security and cost.
 
 ## Also needed
 
-Python, RAG architectures, Agent patterns, MCP, Azure AI Foundry / Azure OpenAI, Google Vertex AI, Vector DBs, Draw.io
+Python, Agent patterns, Azure AI Foundry / Azure OpenAI, Google Vertex AI, Draw.io
 
 ## Where it leads
 

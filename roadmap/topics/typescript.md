@@ -8,38 +8,38 @@
 
 ## 1. Part 1 — Basics
 
-- [ ] [Difference between `const` and `as const`?](../../interview/frontend/04-TypeScript.md)
-- [ ] [How does TypeScript's type inference work?](../../interview/frontend/04-TypeScript.md)
+1. [Difference between `const` and `as const`?](../../interview/frontend/04-TypeScript.md)
+2. [How does TypeScript's type inference work?](../../interview/frontend/04-TypeScript.md)
 
 ## 2. Part 2 — Types vs Interfaces
 
-- [ ] [Difference between `type` and `interface`. When do you use each?](../../interview/frontend/04-TypeScript.md)
+1. [Difference between `type` and `interface`. When do you use each?](../../interview/frontend/04-TypeScript.md)
 
 ## 3. Part 3 — Generics & Mapped Types
 
-- [ ] [Explain Generics with constraints](../../interview/frontend/04-TypeScript.md)
-- [ ] [What are mapped types?](../../interview/frontend/04-TypeScript.md)
+1. [Explain Generics with constraints](../../interview/frontend/04-TypeScript.md)
+2. [What are mapped types?](../../interview/frontend/04-TypeScript.md)
 
 ## 4. Part 4 — Utility Types
 
-- [ ] [Explain `Partial`, `Pick`, `Omit`, `ReturnType`](../../interview/frontend/04-TypeScript.md)
-- [ ] [Other commonly-used utility types](../../interview/frontend/04-TypeScript.md)
+1. [Explain `Partial`, `Pick`, `Omit`, `ReturnType`](../../interview/frontend/04-TypeScript.md)
+2. [Other commonly-used utility types](../../interview/frontend/04-TypeScript.md)
 
 ## 5. Part 5 — Type Guards & Narrowing
 
-- [ ] [What are `never`, `unknown`, and `void`? When to use each?](../../interview/frontend/04-TypeScript.md)
-  - [ ] [How do you create custom type guards?](../../interview/frontend/04-TypeScript.md)
-  - [ ] [What are discriminated unions?](../../interview/frontend/04-TypeScript.md)
-  - [ ] [Can you walk me through declaration merging in TypeScript and give a practical example?](../../interview/frontend/04-TypeScript.md)
+1. [What are `never`, `unknown`, and `void`? When to use each?](../../interview/frontend/04-TypeScript.md)
+   - [How do you create custom type guards?](../../interview/frontend/04-TypeScript.md)
+   - [What are discriminated unions?](../../interview/frontend/04-TypeScript.md)
+   - [Can you walk me through declaration merging in TypeScript and give a practical example?](../../interview/frontend/04-TypeScript.md)
 
 ## 6. Part 7 — Advanced Concepts
 
-- [ ] [Explain structural typing in TypeScript](../../interview/frontend/04-TypeScript.md)
-- [ ] [What are decorators and how are they applied?](../../interview/frontend/04-TypeScript.md)
-  - [ ] [How does the `satisfies` operator work and when would you use it over a type annotation?](../../interview/frontend/04-TypeScript.md)
-  - [ ] [What are Template Literal Types?](../../interview/frontend/04-TypeScript.md)
-  - [ ] [How do `enum` and `as const` compare, and when would you prefer one over the other?](../../interview/frontend/04-TypeScript.md)
-  - [ ] [Can you explain `keyof` and `typeof` in TypeScript and show how they work together?](../../interview/frontend/04-TypeScript.md)
+1. [Explain structural typing in TypeScript](../../interview/frontend/04-TypeScript.md)
+2. [What are decorators and how are they applied?](../../interview/frontend/04-TypeScript.md)
+   - [How does the `satisfies` operator work and when would you use it over a type annotation?](../../interview/frontend/04-TypeScript.md)
+   - [What are Template Literal Types?](../../interview/frontend/04-TypeScript.md)
+   - [How do `enum` and `as const` compare, and when would you prefer one over the other?](../../interview/frontend/04-TypeScript.md)
+   - [Can you explain `keyof` and `typeof` in TypeScript and show how they work together?](../../interview/frontend/04-TypeScript.md)
 
 ## Related roles
 

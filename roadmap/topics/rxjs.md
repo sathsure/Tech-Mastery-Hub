@@ -8,115 +8,115 @@
 
 ## 1. Part 1 — Core Concepts
 
-- [ ] [How would you explain RxJS to a developer who's never used reactive programming before?](../../interview/frontend/06-RxJS.md)
-- [ ] [Can you walk me through what an Observable is and how it differs from a Promise?](../../interview/frontend/06-RxJS.md)
-- [ ] [What role does an Observer play in RxJS, and how does it interact with an Observable?](../../interview/frontend/06-RxJS.md)
-- [ ] [What does a Subscription represent in RxJS, and why is managing it important?](../../interview/frontend/06-RxJS.md)
-- [ ] [Can you explain what an RxJS operator is and how operators are composed in a pipeline?](../../interview/frontend/06-RxJS.md)
-- [ ] [What's the difference between Pipeable and Creation operators?](../../interview/frontend/06-RxJS.md)
-- [ ] [Is an Observable lazy or eager?](../../interview/frontend/06-RxJS.md)
-- [ ] [Can Observables be synchronous?](../../interview/frontend/06-RxJS.md)
-- [ ] [What are the three notifications an Observable can emit?](../../interview/frontend/06-RxJS.md)
-- [ ] [Can an Observable emit after `complete`?](../../interview/frontend/06-RxJS.md)
+1. [How would you explain RxJS to a developer who's never used reactive programming before?](../../interview/frontend/06-RxJS.md)
+2. [Can you walk me through what an Observable is and how it differs from a Promise?](../../interview/frontend/06-RxJS.md)
+3. [What role does an Observer play in RxJS, and how does it interact with an Observable?](../../interview/frontend/06-RxJS.md)
+4. [What does a Subscription represent in RxJS, and why is managing it important?](../../interview/frontend/06-RxJS.md)
+5. [Can you explain what an RxJS operator is and how operators are composed in a pipeline?](../../interview/frontend/06-RxJS.md)
+6. [What's the difference between Pipeable and Creation operators?](../../interview/frontend/06-RxJS.md)
+7. [Is an Observable lazy or eager?](../../interview/frontend/06-RxJS.md)
+8. [Can Observables be synchronous?](../../interview/frontend/06-RxJS.md)
+9. [What are the three notifications an Observable can emit?](../../interview/frontend/06-RxJS.md)
+10. [Can an Observable emit after `complete`?](../../interview/frontend/06-RxJS.md)
 
 ## 2. Part 2 — Cold vs Hot & Multicasting
 
-- [ ] [How would you describe a Cold Observable, and when does it matter whether an Observable is cold or hot?](../../interview/frontend/06-RxJS.md)
-  - [ ] [How does a Hot Observable differ from a Cold one, and can you give a real-world example of each?](../../interview/frontend/06-RxJS.md)
-  - [ ] [How do you convert a cold Observable to a hot one?](../../interview/frontend/06-RxJS.md)
-- [ ] [`share()` vs `shareReplay()` — explain with example](../../interview/frontend/06-RxJS.md)
-- [ ] [Trick: What's a common memory leak pitfall with `shareReplay`?](../../interview/frontend/06-RxJS.md)
+1. [How would you describe a Cold Observable, and when does it matter whether an Observable is cold or hot?](../../interview/frontend/06-RxJS.md)
+   - [How does a Hot Observable differ from a Cold one, and can you give a real-world example of each?](../../interview/frontend/06-RxJS.md)
+   - [How do you convert a cold Observable to a hot one?](../../interview/frontend/06-RxJS.md)
+2. [`share()` vs `shareReplay()` — explain with example](../../interview/frontend/06-RxJS.md)
+3. [Trick: What's a common memory leak pitfall with `shareReplay`?](../../interview/frontend/06-RxJS.md)
 
 ## 3. Part 3 — Subjects
 
-- [ ] [Can you explain what a Subject is in RxJS and when you'd reach for it over a plain Observable?](../../interview/frontend/06-RxJS.md)
-  - [ ] [Difference between `Subject`, `BehaviorSubject`, `ReplaySubject`, and `AsyncSubject`?](../../interview/frontend/06-RxJS.md)
-- [ ] [Trick: Does `BehaviorSubject` emit its current value immediately on subscription?](../../interview/frontend/06-RxJS.md)
-- [ ] [Trick: Can a `Subject` emit values before anyone subscribes?](../../interview/frontend/06-RxJS.md)
-- [ ] [Trick: What happens if you call `.next()` on a completed `Subject`?](../../interview/frontend/06-RxJS.md)
-- [ ] [Why is exposing a `BehaviorSubject` directly from a service considered a design smell?](../../interview/frontend/06-RxJS.md)
+1. [Can you explain what a Subject is in RxJS and when you'd reach for it over a plain Observable?](../../interview/frontend/06-RxJS.md)
+   - [Difference between `Subject`, `BehaviorSubject`, `ReplaySubject`, and `AsyncSubject`?](../../interview/frontend/06-RxJS.md)
+2. [Trick: Does `BehaviorSubject` emit its current value immediately on subscription?](../../interview/frontend/06-RxJS.md)
+3. [Trick: Can a `Subject` emit values before anyone subscribes?](../../interview/frontend/06-RxJS.md)
+4. [Trick: What happens if you call `.next()` on a completed `Subject`?](../../interview/frontend/06-RxJS.md)
+5. [Why is exposing a `BehaviorSubject` directly from a service considered a design smell?](../../interview/frontend/06-RxJS.md)
 
 ## 4. Part 4 — Transformation Operators
 
-- [ ] [What does `map` do?](../../interview/frontend/06-RxJS.md)
-  - [ ] [What does `filter` do?](../../interview/frontend/06-RxJS.md)
-  - [ ] [What does the `tap` operator do, and when would you use it in a real application?](../../interview/frontend/06-RxJS.md)
-  - [ ] [What does `scan` do?](../../interview/frontend/06-RxJS.md)
+1. [What does `map` do?](../../interview/frontend/06-RxJS.md)
+   - [What does `filter` do?](../../interview/frontend/06-RxJS.md)
+   - [What does the `tap` operator do, and when would you use it in a real application?](../../interview/frontend/06-RxJS.md)
+   - [What does `scan` do?](../../interview/frontend/06-RxJS.md)
 
 ## 5. Part 5 — Higher-Order Mapping (switchMap & friends)
 
-- [ ] [Difference between `map` and `switchMap`?](../../interview/frontend/06-RxJS.md)
-- [ ] [Explain `mergeMap` (a.k.a. `flatMap`)](../../interview/frontend/06-RxJS.md)
-  - [ ] [Explain `concatMap`](../../interview/frontend/06-RxJS.md)
-  - [ ] [Explain `exhaustMap`](../../interview/frontend/06-RxJS.md)
-- [ ] [Trick: For autocomplete search, which operator is best?](../../interview/frontend/06-RxJS.md)
-- [ ] [Trick: For a login button that must ignore double-clicks, which operator?](../../interview/frontend/06-RxJS.md)
-- [ ] [Trick: For a queue of tasks executed strictly in order, which operator?](../../interview/frontend/06-RxJS.md)
+1. [Difference between `map` and `switchMap`?](../../interview/frontend/06-RxJS.md)
+2. [Explain `mergeMap` (a.k.a. `flatMap`)](../../interview/frontend/06-RxJS.md)
+   - [Explain `concatMap`](../../interview/frontend/06-RxJS.md)
+   - [Explain `exhaustMap`](../../interview/frontend/06-RxJS.md)
+3. [Trick: For autocomplete search, which operator is best?](../../interview/frontend/06-RxJS.md)
+4. [Trick: For a login button that must ignore double-clicks, which operator?](../../interview/frontend/06-RxJS.md)
+5. [Trick: For a queue of tasks executed strictly in order, which operator?](../../interview/frontend/06-RxJS.md)
 
 ## 6. Part 6 — Combination Operators
 
-- [ ] [Difference between `combineLatest` and `forkJoin`?](../../interview/frontend/06-RxJS.md)
-- [ ] [Difference between `merge` and `concat`?](../../interview/frontend/06-RxJS.md)
-- [ ] [What does `withLatestFrom` do?](../../interview/frontend/06-RxJS.md)
-- [ ] [Use case for `race`?](../../interview/frontend/06-RxJS.md)
-- [ ] [Trick: Does `combineLatest(a$, b$)` emit if `a$` emits but `b$` has never emitted?](../../interview/frontend/06-RxJS.md)
+1. [Difference between `combineLatest` and `forkJoin`?](../../interview/frontend/06-RxJS.md)
+2. [Difference between `merge` and `concat`?](../../interview/frontend/06-RxJS.md)
+3. [What does `withLatestFrom` do?](../../interview/frontend/06-RxJS.md)
+4. [Use case for `race`?](../../interview/frontend/06-RxJS.md)
+5. [Trick: Does `combineLatest(a$, b$)` emit if `a$` emits but `b$` has never emitted?](../../interview/frontend/06-RxJS.md)
 
 ## 7. Part 7 — Error Handling & Retry
 
-- [ ] [How does `catchError` work?](../../interview/frontend/06-RxJS.md)
-  - [ ] [Where should `catchError` be placed — before or after `retry`?](../../interview/frontend/06-RxJS.md)
-  - [ ] [What does `retry` do?](../../interview/frontend/06-RxJS.md)
-  - [ ] [Difference between `retry` and `repeat`?](../../interview/frontend/06-RxJS.md)
-  - [ ] [What does `finalize` do in RxJS, and how does it compare to `catchError` for cleanup?](../../interview/frontend/06-RxJS.md)
-- [ ] [Trick: If you `catchError` and return `EMPTY`, does the stream complete?](../../interview/frontend/06-RxJS.md)
-- [ ] [Trick: Can `catchError` swallow an error and keep the outer stream alive?](../../interview/frontend/06-RxJS.md)
+1. [How does `catchError` work?](../../interview/frontend/06-RxJS.md)
+   - [Where should `catchError` be placed — before or after `retry`?](../../interview/frontend/06-RxJS.md)
+   - [What does `retry` do?](../../interview/frontend/06-RxJS.md)
+   - [Difference between `retry` and `repeat`?](../../interview/frontend/06-RxJS.md)
+   - [What does `finalize` do in RxJS, and how does it compare to `catchError` for cleanup?](../../interview/frontend/06-RxJS.md)
+2. [Trick: If you `catchError` and return `EMPTY`, does the stream complete?](../../interview/frontend/06-RxJS.md)
+3. [Trick: Can `catchError` swallow an error and keep the outer stream alive?](../../interview/frontend/06-RxJS.md)
 
 ## 8. Part 8 — Schedulers
 
-- [ ] [Can you explain what a Scheduler is in RxJS and when you'd need to explicitly specify one?](../../interview/frontend/06-RxJS.md)
-- [ ] [Why might you use `observeOn(asyncScheduler)`?](../../interview/frontend/06-RxJS.md)
+1. [Can you explain what a Scheduler is in RxJS and when you'd need to explicitly specify one?](../../interview/frontend/06-RxJS.md)
+2. [Why might you use `observeOn(asyncScheduler)`?](../../interview/frontend/06-RxJS.md)
 
 ## 9. Part 9 — RxJS in Angular
 
-- [ ] [How does RxJS interact with Angular's Zones and Change Detection?](../../interview/frontend/06-RxJS.md)
-- [ ] [How does Angular's `HttpClient` use RxJS?](../../interview/frontend/06-RxJS.md)
-- [ ] [Trick: If you subscribe twice to the same `this.http.get(...)`, how many HTTP calls happen?](../../interview/frontend/06-RxJS.md)
-- [ ] [How do you avoid multiple HTTP calls when many components need the same data?](../../interview/frontend/06-RxJS.md)
-- [ ] [What does the `async` pipe do?](../../interview/frontend/06-RxJS.md)
-- [ ] [When should you NOT use the `async` pipe?](../../interview/frontend/06-RxJS.md)
-- [ ] [How would you model component state using RxJS?](../../interview/frontend/06-RxJS.md)
-- [ ] [Example: How to debounce a search input in Angular?](../../interview/frontend/06-RxJS.md)
-- [ ] [How does RxJS fit into NgRx?](../../interview/frontend/06-RxJS.md)
+1. [How does RxJS interact with Angular's Zones and Change Detection?](../../interview/frontend/06-RxJS.md)
+2. [How does Angular's `HttpClient` use RxJS?](../../interview/frontend/06-RxJS.md)
+3. [Trick: If you subscribe twice to the same `this.http.get(...)`, how many HTTP calls happen?](../../interview/frontend/06-RxJS.md)
+4. [How do you avoid multiple HTTP calls when many components need the same data?](../../interview/frontend/06-RxJS.md)
+5. [What does the `async` pipe do?](../../interview/frontend/06-RxJS.md)
+6. [When should you NOT use the `async` pipe?](../../interview/frontend/06-RxJS.md)
+7. [How would you model component state using RxJS?](../../interview/frontend/06-RxJS.md)
+8. [Example: How to debounce a search input in Angular?](../../interview/frontend/06-RxJS.md)
+9. [How does RxJS fit into NgRx?](../../interview/frontend/06-RxJS.md)
 
 ## 10. Part 10 — Memory Leaks & Unsubscribe Patterns
 
-- [ ] [How do memory leaks occur with RxJS in Angular?](../../interview/frontend/06-RxJS.md)
-  - [ ] [Ways to avoid manual `unsubscribe`?](../../interview/frontend/06-RxJS.md)
-  - [ ] [The `takeUntil(destroy$)` pattern (classic)](../../interview/frontend/06-RxJS.md)
-  - [ ] [`takeUntilDestroyed()` — the modern way](../../interview/frontend/06-RxJS.md)
-  - [ ] [Which streams generally do NOT need manual unsubscribe?](../../interview/frontend/06-RxJS.md)
-- [ ] [Trick: Does a `BehaviorSubject` with no subscribers cause a memory leak by itself?](../../interview/frontend/06-RxJS.md)
-- [ ] [Trick: Does `subscribe` return a Promise?](../../interview/frontend/06-RxJS.md)
-- [ ] [Trick: If you call `unsubscribe()` on a completed stream, what happens?](../../interview/frontend/06-RxJS.md)
+1. [How do memory leaks occur with RxJS in Angular?](../../interview/frontend/06-RxJS.md)
+   - [Ways to avoid manual `unsubscribe`?](../../interview/frontend/06-RxJS.md)
+   - [The `takeUntil(destroy$)` pattern (classic)](../../interview/frontend/06-RxJS.md)
+   - [`takeUntilDestroyed()` — the modern way](../../interview/frontend/06-RxJS.md)
+   - [Which streams generally do NOT need manual unsubscribe?](../../interview/frontend/06-RxJS.md)
+2. [Trick: Does a `BehaviorSubject` with no subscribers cause a memory leak by itself?](../../interview/frontend/06-RxJS.md)
+3. [Trick: Does `subscribe` return a Promise?](../../interview/frontend/06-RxJS.md)
+4. [Trick: If you call `unsubscribe()` on a completed stream, what happens?](../../interview/frontend/06-RxJS.md)
 
 ## 11. Part 11 — Trick Questions Round
 
-- [ ] [Trick: Will `map` execute if no one subscribes?](../../interview/frontend/06-RxJS.md)
-- [ ] [Trick: Does `tap` change the emitted values?](../../interview/frontend/06-RxJS.md)
-- [ ] [Trick: `interval(1000).pipe(take(0))` — does it emit anything?](../../interview/frontend/06-RxJS.md)
-- [ ] [Trick: `from(1,2,3).pipe(switchMap(x => of(x)))` — can any values be cancelled?](../../interview/frontend/06-RxJS.md)
-- [ ] [Trick: `share()` vs `shareReplay(1)` for HTTP caching?](../../interview/frontend/06-RxJS.md)
+1. [Trick: Will `map` execute if no one subscribes?](../../interview/frontend/06-RxJS.md)
+2. [Trick: Does `tap` change the emitted values?](../../interview/frontend/06-RxJS.md)
+3. [Trick: `interval(1000).pipe(take(0))` — does it emit anything?](../../interview/frontend/06-RxJS.md)
+4. [Trick: `from(1,2,3).pipe(switchMap(x => of(x)))` — can any values be cancelled?](../../interview/frontend/06-RxJS.md)
+5. [Trick: `share()` vs `shareReplay(1)` for HTTP caching?](../../interview/frontend/06-RxJS.md)
 
 ## 12. Part 12 — Real-World Mock Scenarios
 
-- [ ] [Mock: You have an infinite WebSocket stream. Some components need it; others don't. Design?](../../interview/frontend/06-RxJS.md)
-- [ ] [Mock: File upload progress with cancel support. RxJS approach?](../../interview/frontend/06-RxJS.md)
-- [ ] [Mock: Poll a backend every 10s, but stop on navigation away or error.](../../interview/frontend/06-RxJS.md)
-- [ ] [Mock: Combine backend prefs + local UI overrides. Model with RxJS?](../../interview/frontend/06-RxJS.md)
-- [ ] [Mock: Three dependent HTTP calls — B depends on A, C depends on B. Implementation?](../../interview/frontend/06-RxJS.md)
-- [ ] [Mock: Debounce keystrokes, but execute immediately on Enter key.](../../interview/frontend/06-RxJS.md)
-- [ ] [Mock: Wizard where each step depends on the previous result and can be retried. Operator choices?](../../interview/frontend/06-RxJS.md)
-- [ ] [You have two REST APIs:](../../interview/frontend/06-RxJS.md)
+1. [Mock: You have an infinite WebSocket stream. Some components need it; others don't. Design?](../../interview/frontend/06-RxJS.md)
+2. [Mock: File upload progress with cancel support. RxJS approach?](../../interview/frontend/06-RxJS.md)
+3. [Mock: Poll a backend every 10s, but stop on navigation away or error.](../../interview/frontend/06-RxJS.md)
+4. [Mock: Combine backend prefs + local UI overrides. Model with RxJS?](../../interview/frontend/06-RxJS.md)
+5. [Mock: Three dependent HTTP calls — B depends on A, C depends on B. Implementation?](../../interview/frontend/06-RxJS.md)
+6. [Mock: Debounce keystrokes, but execute immediately on Enter key.](../../interview/frontend/06-RxJS.md)
+7. [Mock: Wizard where each step depends on the previous result and can be retried. Operator choices?](../../interview/frontend/06-RxJS.md)
+8. [You have two REST APIs:](../../interview/frontend/06-RxJS.md)
 
 ## Diagrams
 

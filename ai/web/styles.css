@@ -565,3 +565,69 @@ html.theming .thread { view-transition-name: none; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after, ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; transition: none !important; }
 }
+
+/* ---------- Cards: roles, countries, topics ---------- */
+.mode::before { content: none; }
+.mode { padding: 1px 8px; border: 1px solid var(--border); border-radius: 999px; font-size: 12px; }
+.primary-nav { margin: 2px 0 8px; padding-bottom: 8px; border-bottom: 1px solid var(--border-muted); }
+.primary-nav .nav-item { font-weight: 500; color: var(--text); }
+.forward-btn { width: 32px; height: 32px; }
+
+.card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; margin: 12px 0; }
+.card-grid.single { grid-template-columns: minmax(0, 1fr); max-width: 680px; }
+.card { display: flex; flex-direction: column; gap: 10px; min-width: 0; padding: 14px 16px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); }
+.card:hover { border-color: color-mix(in srgb, var(--accent) 35%, var(--border)); }
+.card-head { display: flex; align-items: center; gap: 8px; }
+.card-head h3 { flex: 1; min-width: 0; margin: 0; font-size: 15px; font-weight: 600; line-height: 1.35; color: var(--text); }
+/* Flag emoji; where the system has no flag glyphs (Windows) the two letters read as a country-code badge. */
+.card-flag { flex: none; display: inline-grid; place-items: center; min-width: 30px; height: 22px; padding: 0 4px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg-subtle); font-family: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", system-ui, sans-serif; font-size: 14px; font-weight: 600; letter-spacing: 0.04em; color: var(--text-2); line-height: 1; }
+.card .badge { flex: none; padding: 1px 8px; border-radius: 999px; background: var(--bg-muted); color: var(--text-2); font-size: 12px; font-weight: 500; line-height: 20px; white-space: nowrap; }
+.card .badge.good { background: color-mix(in srgb, var(--success) 14%, transparent); color: var(--success); }
+.card .badge.mid { background: var(--attention-bg); color: var(--attention); }
+.card .badge.hard { background: color-mix(in srgb, var(--danger) 12%, transparent); color: var(--danger); }
+.card-aka { margin: -6px 0 0; font-size: 12.5px; color: var(--muted); }
+.card-summary { margin: 0; font-size: 14px; color: var(--text-2); }
+.card-field { display: flex; flex-direction: column; gap: 5px; }
+.card-label { font-size: 11.5px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+.card-field p { margin: 0; font-size: 14px; color: var(--text-2); }
+.card-dl { display: grid; grid-template-columns: max-content 1fr; gap: 4px 12px; margin: 0; font-size: 13.5px; }
+.card-dl dt { color: var(--muted); }
+.card-dl dd { margin: 0; color: var(--text); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip-tag, .chip-link { padding: 2px 9px; border: 1px solid var(--border); border-radius: 999px; background: var(--bg-subtle); color: var(--text-2); font-size: 12.5px; line-height: 20px; }
+.chip-link { cursor: pointer; }
+.chip-link:hover, .card-link:hover { border-color: var(--accent); color: var(--accent); }
+.card-list { margin: 0; padding-left: 18px; font-size: 14px; }
+.card-list li { margin: 3px 0; }
+.card-link { padding: 0; border: 0; background: none; color: var(--text); font: inherit; text-align: left; cursor: pointer; }
+.card-progress { margin: 0; padding: 0; list-style: none; font-size: 13.5px; }
+.card-progress li { display: flex; gap: 10px; margin: 2px 0; color: var(--text); }
+.card-progress span { flex: none; width: 76px; color: var(--muted); }
+.card .card-more { margin: 0; border-radius: var(--radius-sm); background: var(--bg-subtle); }
+.card .card-more > summary { padding: 6px 10px; font-size: 13px; font-weight: 500; color: var(--text-2); }
+.card-more-body { display: flex; flex-direction: column; gap: 10px; padding: 4px 12px 12px; }
+.card-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; padding-top: 4px; }
+.card-btn { display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg); color: var(--text); font-size: 13px; font-weight: 500; text-decoration: none; cursor: pointer; transition: border-color var(--fast), background var(--fast), color var(--fast); }
+.card-btn:hover { border-color: var(--accent); color: var(--accent); text-decoration: none; }
+.card-btn.primary { border-color: var(--accent); background: var(--accent); color: var(--accent-text); }
+.card-btn.primary:hover { background: var(--accent-hover); color: var(--accent-text); }
+.card-btn .icon { width: 13px; height: 13px; }
+.card-error { display: flex; align-items: center; gap: 6px; color: var(--muted); }
+
+/* Loading placeholders */
+.skeleton { display: flex; flex-direction: column; gap: 8px; margin: 4px 0 6px; }
+.skeleton[hidden] { display: none; }
+.skeleton span, .skeleton-card { display: block; height: 12px; border-radius: 6px; background: linear-gradient(90deg, var(--bg-muted) 0%, var(--bg-hover) 50%, var(--bg-muted) 100%); background-size: 200% 100%; animation: shimmer 1.4s ease-in-out infinite; }
+.skeleton span.short { width: 55%; }
+.skeleton-card { height: 140px; border: 0; }
+@keyframes shimmer { from { background-position: 100% 0; } to { background-position: -100% 0; } }
+.boot-error .btn { margin-top: 12px; }
+
+@media (max-width: 640px) {
+  .card-grid { grid-template-columns: minmax(0, 1fr); }
+  .card { padding: 12px 14px; }
+  .back-label { display: inline; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .skeleton span, .skeleton-card { animation: none; }
+}

@@ -9,12 +9,14 @@ Builds autonomous AI agents that plan, call tools and complete multi-step tasks.
 
 - [HTML](../topics/html.md)
 - [Java](../topics/java.md)
+- [REST API](../topics/rest-api.md)
 - Usually 2+ years of experience when hired
 
 ## Learning stages
 
 ### Stage 1: Core skills
 
+- [ ] [AI & LLMs](../topics/ai.md)
 - [ ] [JavaScript](../topics/javascript.md)
 - [ ] [Spring Boot](../topics/spring.md)
 
@@ -24,7 +26,7 @@ Builds autonomous AI agents that plan, call tools and complete multi-step tasks.
 
 ## Also needed
 
-Python, LangGraph, Claude Agent SDK, OpenAI Agents SDK, CrewAI, AutoGen, MCP, A2A protocol, Claude / GPT / Gemini APIs, Vector DBs, Langfuse / LangSmith, Temporal, Redis
+Python, LangGraph, Claude Agent SDK, OpenAI Agents SDK, CrewAI, AutoGen, A2A protocol, Claude / GPT / Gemini APIs, Langfuse / LangSmith, Temporal, Redis
 
 ## Where it leads
 

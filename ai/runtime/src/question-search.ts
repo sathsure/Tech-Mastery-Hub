@@ -470,6 +470,19 @@ function addWeight(weights: Map<string, number>, term: string, weight: number): 
   weights.set(term, Math.max(weights.get(term) ?? 0, weight));
 }
 
+/**
+ * "WHERE vs HAVING": both words are stop words in plain English, so the question would have no subject.
+ * When "having" appears with another SQL cue, search the SQL topic for clauses instead.
+ */
+function addSqlClauseSubject(text: string, topics: SearchResult["topics"], weights: Map<string, number>, primary: string[]): void {
+  const padded = ` ${text} `;
+  if (!padded.includes(" having ") || !/ (where|group by|sql|clause|clauses) /.test(padded)) return;
+  if (!topics.some(item => item.topic === "database/sql")) topics.push({ topic: "database/sql", via: "alias" });
+  const clause = stem("clause");
+  addWeight(weights, clause, 1);
+  if (!primary.includes(clause)) primary.push(clause);
+}
+
 /** Synonyms widen the query: "di" also searches "dependency injection". */
 function addSynonyms(weights: Map<string, number>, text: string, vocabulary: Vocabulary): void {
   const queryPadded = ` ${rawTokens(text).join(" ")} `;
@@ -505,12 +518,30 @@ const KIND_RANK_ROLE_FIRST: Record<string, number> = { role: 0, roadmap: 1, term
  * Entries to pin first, when the names are the whole subject: "devops engineer salary" yes, "kafka partitions" no.
  * A roadmap goes first when one is asked for; otherwise right after the role it belongs to.
  */
-function pinNamed(named: Array<{ key: string; positions: number[] }>, primary: string[], intents: SearchIntent[], engineRef: Engine): number[] {
+const ATLAS_TOPIC_IDS = new Set(["it-roles", "it-terminology", "tech-stack", "it-careers", "roadmaps"]);
+
+function pinNamed(
+  named: Array<{ key: string; positions: number[] }>,
+  primary: string[],
+  intents: SearchIntent[],
+  engineRef: Engine,
+  text: string,
+  topics: string[],
+): number[] {
   const nameTokens = new Set(named.flatMap(item => item.key.split(" ")));
   const leftover = primary.filter(term => !nameTokens.has(term) && !ABOUT_WORDS.has(term));
   if (!named.length || leftover.length) return [];
+  // "RabbitMQ vs Kafka", "When should I use Kafka?": the notes on comparing or choosing beat a one-line definition.
+  if (intents.includes("compare") || /\bwhen\b/.test(text)) return [];
   const kindRank = intents.includes("roadmap") ? KIND_RANK_ROADMAP_FIRST : KIND_RANK_ROLE_FIRST;
+  // "What is a Spring proxy?": when the question names a learning topic, only pin entries about that topic.
+  const learning = topics.filter(topic => !ATLAS_TOPIC_IDS.has(topic));
+  const onTopic = (position: number) => {
+    const entry = engineRef.docs[position].entry;
+    return !learning.length || [...entry.topics, ...(entry.relatedTopics ?? [])].some(topic => learning.includes(topic));
+  };
   return [...new Set(named.flatMap(item => item.positions))]
+    .filter(onTopic)
     .sort((a, b) => kindRank[engineRef.docs[a].entry.kind] - kindRank[engineRef.docs[b].entry.kind] || a - b)
     .slice(0, 3);
 }
@@ -534,6 +565,7 @@ function parseQuery(query: string, engineRef: Engine, forcedTopic?: string): Par
   const remaining = rawTokens(domainMatch.rest.replace(/\|/g, " ")).filter(token => !/[./-]/.test(token));
   const subjectTokens = remaining.filter(token => !STOPWORDS.has(token) && !INTENT_WORDS.has(token));
   const { weights, primary, corrections } = weighSubject(subjectTokens, engineRef, topics, topicPhrases, aliasWords);
+  addSqlClauseSubject(text, topics, weights, primary);
 
   // Named topics and domains still add a little signal inside their branch.
   for (const word of [...topicMatch.matches, ...domainMatch.matches]) for (const term of terms(word)) addWeight(weights, term, 0.3);
@@ -541,7 +573,7 @@ function parseQuery(query: string, engineRef: Engine, forcedTopic?: string): Par
 
   const named = findNames(text, engineRef);
   const intents = detectIntents(text);
-  const pinned = pinNamed(named, primary, intents, engineRef);
+  const pinned = pinNamed(named, primary, intents, engineRef, text, topics.map(item => item.topic));
   if (pinned.length) {
     // Search around the named thing for related entries (salary notes, related terms).
     for (const term of new Set(named.flatMap(item => item.key.split(" ")))) {
@@ -576,6 +608,16 @@ function correctTypo(term: string, engineRef: Engine): string | null {
 const TOPIC_BOOST = 1.3;
 const DOMAIN_BOOST = 1.1;
 const PHRASE_BONUS = 2;
+/** All query words in the title, in order and next to each other: "O(log n)" beats "O(n log n)". */
+const EXACT_PHRASE_BONUS = 3;
+
+function titleHasPhrase(title: string[], phrase: string[]): boolean {
+  if (phrase.length < 2 || phrase.length > title.length) return false;
+  for (let start = 0; start + phrase.length <= title.length; start++) {
+    if (phrase.every((term, i) => title[start + i] === term)) return true;
+  }
+  return false;
+}
 /** Favour entries with a diagram / code when the user asks for one. */
 const INTENT_BOOST = 1.15;
 const TITLE_BOOST = 0.5;
@@ -602,12 +644,18 @@ function termScore(engineRef: Engine, doc: Doc, parsed: ParsedQuery): { score: n
     const at = doc.questionTerms.indexOf(first);
     if (at >= 0 && doc.questionTerms[at + 1] === second) score += PHRASE_BONUS;
   }
+  if (titleHasPhrase(doc.questionTerms, parsed.primary)) score += EXACT_PHRASE_BONUS;
   return { score, matched };
 }
+
+/** Study paths list every question of a topic, so they match many words; they lead only when a path is asked for. */
+const STUDY_PATH_DAMPING = 0.6;
 
 /** Multipliers for what the user asked for: diagrams, code, the named topic and domain. */
 function intentBoost(doc: Doc, parsed: ParsedQuery): number {
   let boost = 1;
+  const wantsPath = parsed.intents.includes("roadmap") || parsed.intents.includes("interview-prep");
+  if (doc.entry.kind === "roadmap" && !wantsPath) boost *= STUDY_PATH_DAMPING;
   if (parsed.intents.includes("visual") && doc.entry.visuals.length) boost *= INTENT_BOOST;
   if (parsed.intents.includes("code") && doc.entry.codeBlocks.length) boost *= INTENT_BOOST;
   if (parsed.topics.some(item => doc.entry.topics.includes(item.topic))) boost *= TOPIC_BOOST;
@@ -636,7 +684,8 @@ function upperBound(branch: Branch, parsed: ParsedQuery): number {
   for (const [term, weight] of parsed.weights) bound += (branch.maxContribution.get(term) ?? 0) * weight;
   if (bound === 0) return 0;
   const intentBoost = (parsed.intents.includes("visual") ? INTENT_BOOST : 1) * (parsed.intents.includes("code") ? INTENT_BOOST : 1);
-  return (bound + PHRASE_BONUS * parsed.bigrams.length) * TOPIC_BOOST * DOMAIN_BOOST * intentBoost * (1 + TITLE_BOOST);
+  const exact = parsed.primary.length >= 2 ? EXACT_PHRASE_BONUS : 0;
+  return (bound + PHRASE_BONUS * parsed.bigrams.length + exact) * TOPIC_BOOST * DOMAIN_BOOST * intentBoost * (1 + TITLE_BOOST);
 }
 
 interface TreeOutcome {
@@ -698,13 +747,17 @@ function browse(engineRef: Engine, predicate: (doc: Doc) => boolean, limit: numb
     const roadmaps = engineRef.docs.filter(doc => predicate(doc) && doc.entry.kind === "roadmap");
     return [...roadmaps, ...browse(engineRef, doc => predicate(doc) && doc.entry.kind !== "roadmap", limit)].slice(0, limit);
   }
-  const bySection = new Map<string, Doc[]>();
+  // One question per file first, then per section within each file, so every file of the topic is represented.
+  const byFile = new Map<string, Map<string, Doc[]>>();
   for (const doc of engineRef.docs) {
     if (!predicate(doc) || doc.entry.kind === "follow-up") continue;
-    const key = `${doc.entry.source.path}|${doc.entry.section.join("|")}`;
-    bySection.set(key, [...(bySection.get(key) ?? []), doc]);
+    const sections = byFile.get(doc.entry.source.path) ?? new Map<string, Doc[]>();
+    const key = doc.entry.section.join("|");
+    sections.set(key, [...(sections.get(key) ?? []), doc]);
+    byFile.set(doc.entry.source.path, sections);
   }
-  return roundRobin([...bySection.values()], limit);
+  const fileQueues = [...byFile.values()].map(sections => roundRobin([...sections.values()], Number.POSITIVE_INFINITY));
+  return roundRobin(fileQueues, limit);
 }
 
 /** First item of each list, then the second of each, and so on, up to `limit`. */
@@ -902,7 +955,9 @@ function searchParsed(engineRef: Engine, query: string, parsed: ParsedQuery, lim
     },
   };
 
-  if (parsed.primary.length === 0 && (ctx.topicNames.length || parsed.domain)) return topicOverview(ctx);
+  // "Java vs Python" compares two topics: search for the comparison rather than listing both topics.
+  const comparesTopics = parsed.intents.includes("compare") && ctx.topicNames.length > 1;
+  if (parsed.primary.length === 0 && (ctx.topicNames.length || parsed.domain) && !comparesTopics) return topicOverview(ctx);
   if (parsed.weights.size === 0) {
     const browsed = (parsed.intents.includes("roadmap") ? startHere(ctx) : null) ?? (parsed.intents.includes("role") ? roleBrowse(ctx) : null);
     return browsed ?? emptyResult(ctx);

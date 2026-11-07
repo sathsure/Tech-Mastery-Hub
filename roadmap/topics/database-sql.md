@@ -6,32 +6,92 @@
 - None. This is a starting point.
 - Overview: [SQL concepts](../../knowledge/concepts/database/sql/README.md)
 
-## 1. Questions
+## 1. 08-MySQL
 
-- [ ] [What is an RDBMS?](../../interview/backend/java/08-MySQL.md)
-- [ ] [Primary Key vs Unique Key vs Foreign Key?](../../interview/backend/java/08-MySQL.md)
-- [ ] [What is Normalization?](../../interview/backend/java/08-MySQL.md)
-- [ ] [What is Index?](../../interview/backend/java/08-MySQL.md)
-- [ ] [Which performs better, `JOIN` or `SUBQUERY`?](../../interview/backend/java/08-MySQL.md)
-- [ ] [What is a View?](../../interview/backend/java/08-MySQL.md)
-- [ ] [What is a Stored Procedure?](../../interview/backend/java/08-MySQL.md)
-- [ ] [I see there is a performance issue with the DB. How will you identify the issue? Is there any log you can check?](../../interview/backend/java/08-MySQL.md)
-- [ ] [EXPLAIN / ANALYZE Query](../../interview/backend/java/08-MySQL.md)
-- [ ] [JOIN Types (INNER, LEFT, RIGHT)](../../interview/backend/java/08-MySQL.md)
-- [ ] [Database Sharing](../../interview/backend/java/08-MySQL.md)
-- [ ] [Database Replication](../../interview/backend/java/08-MySQL.md)
-- [ ] [Production Bug / SQL Issue – Root Cause Analysis](../../interview/backend/java/08-MySQL.md)
-- [ ] [What happens internally when a transaction fails midway in a Spring Boot application?](../../interview/backend/java/08-MySQL.md)
-- [ ] [How do you handle if multiple users / threads access same DB data at the same time?](../../interview/backend/java/08-MySQL.md)
+1. [What is an RDBMS?](../../interview/backend/java/08-MySQL.md)
+2. [Primary Key vs Unique Key vs Foreign Key?](../../interview/backend/java/08-MySQL.md)
+3. [What is Normalization?](../../interview/backend/java/08-MySQL.md)
+4. [What is Index?](../../interview/backend/java/08-MySQL.md)
+5. [Which performs better, `JOIN` or `SUBQUERY`?](../../interview/backend/java/08-MySQL.md)
+6. [What is a View?](../../interview/backend/java/08-MySQL.md)
+7. [What is a Stored Procedure?](../../interview/backend/java/08-MySQL.md)
+8. [I see there is a performance issue with the DB. How will you identify the issue? Is there any log you can check?](../../interview/backend/java/08-MySQL.md)
+9. [EXPLAIN / ANALYZE Query](../../interview/backend/java/08-MySQL.md)
+10. [JOIN Types (INNER, LEFT, RIGHT)](../../interview/backend/java/08-MySQL.md)
+11. [Database Sharing](../../interview/backend/java/08-MySQL.md)
+12. [Database Replication](../../interview/backend/java/08-MySQL.md)
+13. [Production Bug / SQL Issue – Root Cause Analysis](../../interview/backend/java/08-MySQL.md)
+14. [What happens internally when a transaction fails midway in a Spring Boot application?](../../interview/backend/java/08-MySQL.md)
+15. [How do you handle if multiple users / threads access same DB data at the same time?](../../interview/backend/java/08-MySQL.md)
+
+## 2. Tree Types
+
+1. [What is a Binary Search Tree (BST), and what is its limitation?](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
+2. [What is an M-way search tree?](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
+3. [What is a B-Tree?](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
+4. [What is a B+ Tree?](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
+5. [Why must all leaf nodes be at the same level?](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
+6. [Where does a search start in a B-Tree or B+ Tree?](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
+7. [Why are B+ Tree leaves (leaf nodes) linked?](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
+8. [What is the difference between multilevel indexing and a B+ Tree?](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
+
+## 3. B-Tree vs B+ Tree
+
+1. [What is the difference between a B-Tree and a B+ Tree?](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
+2. [Which is faster for SQL queries: B-Tree or B+ Tree?](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
+3. [Which index structure do SQL databases use?](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
+
+## 4. Insertion
+
+1. [How does insertion work in a B-Tree? (Order 6 example)](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
+2. [How does insertion work in a B+ Tree? (Order 6 example)](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
+
+## 5. Deletion
+
+1. [How does deletion work in a B-Tree?](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
+2. [How does deletion work in a B+ Tree?](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
+3. [How does B-Tree deletion differ from B+ Tree deletion?](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
+
+## 6. Quick Revision
+
+1. [What are the most important B-Tree and B+ Tree interview questions?](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
+
+## 7. Indexes
+
+1. [How does an index work?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
+2. [What is the internal structure of an index?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
+3. [Is an index a separate table?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
+4. [Where is an index stored?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
+5. [How does SQL know that an index exists, and who decides to use it?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
+6. [Why might MySQL do a full table scan even though there is an index on employee_id?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
+7. [How does an index improve a JOIN on customer_id?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
+8. [Why not index every column?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
+
+## 8. Query Execution Order
+
+1. [What is the logical query execution order in SQL?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
+2. [Where do indexes fit when a SQL query runs?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
+
+## 9. WHERE, HAVING and GROUP BY
+
+1. [What is the difference between the WHERE and HAVING clauses?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
+2. [Does HAVING require the aggregate column in SELECT?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
+3. [What happens if you add a non-aggregated column (name) to SELECT without adding it to GROUP BY?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
+4. [What happens if you add name to GROUP BY as well?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
+5. [Can you use HAVING without GROUP BY?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
+
+## 10. Quick Revision
+
+1. [What are the key SQL indexing and GROUP BY interview answers?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
 
 ## Practice
 
-- [ ] [Questions](../../practice/coding/sql/02-MySQL-coding.md)
-- [ ] [What is the output of the following query?](../../practice/coding/sql/02-MySQL-coding.md)
-- [ ] [COUNT(*), COUNT(col)](../../practice/coding/sql/02-MySQL-coding.md)
-- [ ] [Second Highest Salary](../../practice/coding/sql/02-MySQL-coding.md)
-- [ ] [Duplicate Records](../../practice/coding/sql/02-MySQL-coding.md)
-- [ ] [EXISTS vs IN](../../practice/coding/sql/02-MySQL-coding.md)
+1. [Questions](../../practice/coding/sql/02-MySQL-coding.md)
+2. [What is the output of the following query?](../../practice/coding/sql/02-MySQL-coding.md)
+3. [COUNT(*), COUNT(col)](../../practice/coding/sql/02-MySQL-coding.md)
+4. [Second Highest Salary](../../practice/coding/sql/02-MySQL-coding.md)
+5. [Duplicate Records](../../practice/coding/sql/02-MySQL-coding.md)
+6. [EXISTS vs IN](../../practice/coding/sql/02-MySQL-coding.md)
 
 ## Related roles
 

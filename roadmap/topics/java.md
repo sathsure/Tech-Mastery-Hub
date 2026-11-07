@@ -8,114 +8,114 @@
 
 ## 1. OOP & Design Thinking
 
-- [ ] [Why OOP was introduced?](../../interview/backend/java/01-Java-1.md)
-- [ ] [How do you design a system where the same operation behaves differently based on the object type, without changing the calling code?](../../interview/backend/java/01-Java-1.md)
-- [ ] [How do you apply OOP principles in real-world systems?](../../interview/backend/java/01-Java-1.md)
-- [ ] [Have you ever violated OOP principles intentionally?](../../interview/backend/java/01-Java-1.md)
-- [ ] [What design principles do you follow while writing Java code?](../../interview/backend/java/01-Java-1.md)
+1. [Why OOP was introduced?](../../interview/backend/java/01-Java-1.md)
+2. [How do you design a system where the same operation behaves differently based on the object type, without changing the calling code?](../../interview/backend/java/01-Java-1.md)
+3. [How do you apply OOP principles in real-world systems?](../../interview/backend/java/01-Java-1.md)
+4. [Have you ever violated OOP principles intentionally?](../../interview/backend/java/01-Java-1.md)
+5. [What design principles do you follow while writing Java code?](../../interview/backend/java/01-Java-1.md)
 
 ## 2. Core Java
 
-- [ ] [Difference between == and equals()?](../../interview/backend/java/01-Java-1.md)
-- [ ] [String vs StringBuilder vs StringBuffer?](../../interview/backend/java/01-Java-1.md)
-- [ ] [final vs finally vs finalize?](../../interview/backend/java/01-Java-1.md)
-- [ ] [What are the design patterns that you used in Java?](../../interview/backend/java/01-Java-1.md)
-- [ ] [Checked Exception vs Unchecked Exception](../../interview/backend/java/01-Java-1.md)
-- [ ] [What is JNA?](../../interview/backend/java/01-Java-1.md)
+1. [Difference between == and equals()?](../../interview/backend/java/01-Java-1.md)
+2. [String vs StringBuilder vs StringBuffer?](../../interview/backend/java/01-Java-1.md)
+3. [final vs finally vs finalize?](../../interview/backend/java/01-Java-1.md)
+4. [What are the design patterns that you used in Java?](../../interview/backend/java/01-Java-1.md)
+5. [Checked Exception vs Unchecked Exception](../../interview/backend/java/01-Java-1.md)
+6. [What is JNA?](../../interview/backend/java/01-Java-1.md)
 
 ## 3. Collections Framework
 
-- [ ] [What is the Collections Framework?](../../interview/backend/java/01-Java-1.md)
-- [ ] [Difference between `Collection` and `Collections`](../../interview/backend/java/01-Java-1.md)
-- [ ] [Difference between `List`, `Set`, and `Map`](../../interview/backend/java/01-Java-1.md)
-- [ ] [Why does `Map` not extend `Collection`?](../../interview/backend/java/01-Java-1.md)
-- [ ] [Difference Between `ArrayList` and `LinkedList`](../../interview/backend/java/01-Java-1.md)
-- [ ] [How does `HashMap` work internally?](../../interview/backend/java/01-Java-1.md)
-- [ ] [How does ConcurrentHashMap work internally?](../../interview/backend/java/01-Java-1.md)
-- [ ] [Difference between `HashMap`, `LinkedHashMap`, `TreeMap`](../../interview/backend/java/01-Java-1.md)
-- [ ] [What is fail-fast vs fail-safe iterator?](../../interview/backend/java/01-Java-1.md)
-- [ ] [Difference between `Iterator` and `ListIterator`](../../interview/backend/java/01-Java-1.md)
-- [ ] [Difference between `Comparable` and `Comparator`](../../interview/backend/java/01-Java-1.md)
-- [ ] [What is `WeakHashMap`?](../../interview/backend/java/01-Java-1.md)
-- [ ] [When would you prefer immutable collections?](../../interview/backend/java/01-Java-1.md)
+1. [What is the Collections Framework?](../../interview/backend/java/01-Java-1.md)
+2. [Difference between `Collection` and `Collections`](../../interview/backend/java/01-Java-1.md)
+3. [Difference between `List`, `Set`, and `Map`](../../interview/backend/java/01-Java-1.md)
+4. [Why does `Map` not extend `Collection`?](../../interview/backend/java/01-Java-1.md)
+5. [Difference Between `ArrayList` and `LinkedList`](../../interview/backend/java/01-Java-1.md)
+6. [How does `HashMap` work internally?](../../interview/backend/java/01-Java-1.md)
+7. [How does ConcurrentHashMap work internally?](../../interview/backend/java/01-Java-1.md)
+8. [Difference between `HashMap`, `LinkedHashMap`, `TreeMap`](../../interview/backend/java/01-Java-1.md)
+9. [What is fail-fast vs fail-safe iterator?](../../interview/backend/java/01-Java-1.md)
+10. [Difference between `Iterator` and `ListIterator`](../../interview/backend/java/01-Java-1.md)
+11. [Difference between `Comparable` and `Comparator`](../../interview/backend/java/01-Java-1.md)
+12. [What is `WeakHashMap`?](../../interview/backend/java/01-Java-1.md)
+13. [When would you prefer immutable collections?](../../interview/backend/java/01-Java-1.md)
 
 ## 4. Equals and Hashcode
 
-- [ ] [How do equals() and hashCode() work together?](../../interview/backend/java/01-Java-1.md)
+1. [How do equals() and hashCode() work together?](../../interview/backend/java/01-Java-1.md)
 
 ## 5. Java 8+ Features
 
-- [ ] [What major changes did Java 8 introduce?](../../interview/backend/java/01-Java-1.md)
-- [ ] [`input.toCharArray()` vs `input.chars()`?](../../interview/backend/java/01-Java-1.md)
-- [ ] [map vs mapToInt vs mapToObj vs mapToLong vs mapToDouble vs flatMap?](../../interview/backend/java/01-Java-1.md)
-- [ ] [Collectors to Remember](../../interview/backend/java/01-Java-1.md)
-- [ ] [Optional.isPresent vs Optional.IfPresent](../../interview/backend/java/01-Java-1.md)
-- [ ] [`filter()` vs `peek()`](../../interview/backend/java/01-Java-1.md)
-- [ ] [`findFirst()` vs `findAny()`](../../interview/backend/java/01-Java-1.md)
-- [ ] [`map()` vs `flatMap()`](../../interview/backend/java/01-Java-1.md)
-- [ ] [Intermediate vs Terminal Operations](../../interview/backend/java/01-Java-1.md)
-- [ ] [Types of Functional Interfaces](../../interview/backend/java/01-Java-1.md)
+1. [What major changes did Java 8 introduce?](../../interview/backend/java/01-Java-1.md)
+2. [`input.toCharArray()` vs `input.chars()`?](../../interview/backend/java/01-Java-1.md)
+3. [map vs mapToInt vs mapToObj vs mapToLong vs mapToDouble vs flatMap?](../../interview/backend/java/01-Java-1.md)
+4. [Collectors to Remember](../../interview/backend/java/01-Java-1.md)
+5. [Optional.isPresent vs Optional.IfPresent](../../interview/backend/java/01-Java-1.md)
+6. [`filter()` vs `peek()`](../../interview/backend/java/01-Java-1.md)
+7. [`findFirst()` vs `findAny()`](../../interview/backend/java/01-Java-1.md)
+8. [`map()` vs `flatMap()`](../../interview/backend/java/01-Java-1.md)
+9. [Intermediate vs Terminal Operations](../../interview/backend/java/01-Java-1.md)
+10. [Types of Functional Interfaces](../../interview/backend/java/01-Java-1.md)
 
 ## 6. Extended Functional Interface Table (Important for Interviews)
 
-- [ ] [Features of `Optional`](../../interview/backend/java/01-Java-1.md)
-- [ ] [Why `Optional` Should NOT Be Used as Method Parameter?](../../interview/backend/java/01-Java-1.md)
+1. [Features of `Optional`](../../interview/backend/java/01-Java-1.md)
+2. [Why `Optional` Should NOT Be Used as Method Parameter?](../../interview/backend/java/01-Java-1.md)
 
 ## 7. Immutability & Object Design
 
-- [ ] [Why do you prefer immutable objects?](../../interview/backend/java/01-Java-1.md)
-- [ ] [How do you design immutable classes?](../../interview/backend/java/01-Java-1.md)
-- [ ] [How Do You Design a Singleton Class?](../../interview/backend/java/01-Java-1.md)
-- [ ] [AutoBoxing & AutoUnboxing](../../interview/backend/java/01-Java-1.md)
-- [ ] [JVM Internal Question](../../interview/backend/java/01-Java-1.md)
+1. [Why do you prefer immutable objects?](../../interview/backend/java/01-Java-1.md)
+2. [How do you design immutable classes?](../../interview/backend/java/01-Java-1.md)
+3. [How Do You Design a Singleton Class?](../../interview/backend/java/01-Java-1.md)
+4. [AutoBoxing & AutoUnboxing](../../interview/backend/java/01-Java-1.md)
+5. [JVM Internal Question](../../interview/backend/java/01-Java-1.md)
 
 ## 8. Major Java Features (9 → 21)
 
-- [ ] [What are the major java features introduced after 8?](../../interview/backend/java/01-Java-2.md)
+1. [What are the major java features introduced after 8?](../../interview/backend/java/01-Java-2.md)
 
 ## 9. Concurrency & Multithreading
 
-- [ ] [How do you handle concurrency in Java applications?](../../interview/backend/java/01-Java-2.md)
-- [ ] [Deadlocks – How do they occur and how do you prevent them?](../../interview/backend/java/01-Java-2.md)
-- [ ] [Process vs Thread?](../../interview/backend/java/01-Java-2.md)
-- [ ] [`volatile` Keyword?](../../interview/backend/java/01-Java-2.md)
-- [ ] [Callable vs Runnable](../../interview/backend/java/01-Java-2.md)
-- [ ] [Fixed Thread Pool vs Cached Thread Pool](../../interview/backend/java/01-Java-2.md)
+1. [How do you handle concurrency in Java applications?](../../interview/backend/java/01-Java-2.md)
+2. [Deadlocks – How do they occur and how do you prevent them?](../../interview/backend/java/01-Java-2.md)
+3. [Process vs Thread?](../../interview/backend/java/01-Java-2.md)
+4. [`volatile` Keyword?](../../interview/backend/java/01-Java-2.md)
+5. [Callable vs Runnable](../../interview/backend/java/01-Java-2.md)
+6. [Fixed Thread Pool vs Cached Thread Pool](../../interview/backend/java/01-Java-2.md)
 
 ## 10. JVM Deep Dive
 
-- [ ] [What does Serializable mean?](../../interview/backend/java/01-Java-2.md)
-- [ ] [Explain JVM memory structure. Heap vs Stack vs Metaspace](../../interview/backend/java/01-Java-2.md)
-- [ ] [How does Garbage Collection work?](../../interview/backend/java/01-Java-2.md)
-- [ ] [What causes memory leaks in Java?](../../interview/backend/java/01-Java-2.md)
+1. [What does Serializable mean?](../../interview/backend/java/01-Java-2.md)
+2. [Explain JVM memory structure. Heap vs Stack vs Metaspace](../../interview/backend/java/01-Java-2.md)
+3. [How does Garbage Collection work?](../../interview/backend/java/01-Java-2.md)
+4. [What causes memory leaks in Java?](../../interview/backend/java/01-Java-2.md)
 
 ## 11. JVM vs JRE vs JDK
 
-- [ ] [JVM Internals](../../interview/backend/java/01-Java-2.md)
-- [ ] [How Do You Build a Java Application?](../../interview/backend/java/01-Java-2.md)
+1. [JVM Internals](../../interview/backend/java/01-Java-2.md)
+2. [How Do You Build a Java Application?](../../interview/backend/java/01-Java-2.md)
 
 ## Practice
 
-- [ ] [What will be the output?](../../practice/coding/java/01-core-java-coding.md)
-- [ ] [What will be the output?](../../practice/coding/java/01-core-java-coding.md)
-- [ ] [What will be the output?](../../practice/coding/java/01-core-java-coding.md)
-- [ ] [What will be the output?](../../practice/coding/java/01-core-java-coding.md)
-- [ ] [What will be the output?](../../practice/coding/java/01-core-java-coding.md)
-- [ ] [What will be the output?](../../practice/coding/java/01-core-java-coding.md)
-- [ ] [Merge Two Arrays Alternately](../../practice/coding/java/01-Java-coding.md)
-- [ ] [Reverse an Array](../../practice/coding/java/01-Java-coding.md)
-- [ ] [Find First Non-Repeating Character](../../practice/coding/java/01-Java-coding.md)
-- [ ] [Remove Duplicates from a List (Preserve Order)](../../practice/coding/java/01-Java-coding.md)
-- [ ] [Count Word Occurrences](../../practice/coding/java/01-Java-coding.md)
-- [ ] [Check if String is Palindrome (Ignore Case & Spaces)](../../practice/coding/java/01-Java-coding.md)
-- [ ] [Find Second Highest Number in Array](../../practice/coding/java/01-Java-coding.md)
-- [ ] [Thread-Safe Counter](../../practice/coding/java/01-Java-coding.md)
-- [ ] [Reverse Words in a Sentence](../../practice/coding/java/01-Java-coding.md)
-- [ ] [Reverse a LinkedList](../../practice/coding/java/01-Java-coding.md)
-- [ ] [Employee–Department Related Questions](../../practice/coding/java/01-Java-coding.md)
-- [ ] [Perfect Numbers](../../practice/coding/java/01-Java-coding.md)
-- [ ] [Two Sum Problem](../../practice/coding/java/01-Java-coding.md)
-- [ ] [Count Segments in a String](../../practice/coding/java/01-Java-coding.md)
+1. [What will be the output?](../../practice/coding/java/01-core-java-coding.md)
+2. [What will be the output?](../../practice/coding/java/01-core-java-coding.md)
+3. [What will be the output?](../../practice/coding/java/01-core-java-coding.md)
+4. [What will be the output?](../../practice/coding/java/01-core-java-coding.md)
+5. [What will be the output?](../../practice/coding/java/01-core-java-coding.md)
+6. [What will be the output?](../../practice/coding/java/01-core-java-coding.md)
+7. [Merge Two Arrays Alternately](../../practice/coding/java/01-Java-coding.md)
+8. [Reverse an Array](../../practice/coding/java/01-Java-coding.md)
+9. [Find First Non-Repeating Character](../../practice/coding/java/01-Java-coding.md)
+10. [Remove Duplicates from a List (Preserve Order)](../../practice/coding/java/01-Java-coding.md)
+11. [Count Word Occurrences](../../practice/coding/java/01-Java-coding.md)
+12. [Check if String is Palindrome (Ignore Case & Spaces)](../../practice/coding/java/01-Java-coding.md)
+13. [Find Second Highest Number in Array](../../practice/coding/java/01-Java-coding.md)
+14. [Thread-Safe Counter](../../practice/coding/java/01-Java-coding.md)
+15. [Reverse Words in a Sentence](../../practice/coding/java/01-Java-coding.md)
+16. [Reverse a LinkedList](../../practice/coding/java/01-Java-coding.md)
+17. [Employee–Department Related Questions](../../practice/coding/java/01-Java-coding.md)
+18. [Perfect Numbers](../../practice/coding/java/01-Java-coding.md)
+19. [Two Sum Problem](../../practice/coding/java/01-Java-coding.md)
+20. [Count Segments in a String](../../practice/coding/java/01-Java-coding.md)
 
 ## Diagrams
 

@@ -8,75 +8,75 @@
 
 ## 1. Part 1 — Functions & Scope
 
-- [ ] [Can you walk me through `call()`, `apply()`, and `bind()` — how they differ and when you'd use each?](../../interview/frontend/03-JavaScript.md)
-- [ ] [How would you explain closures to someone new to JavaScript, and can you give a real-world use case?](../../interview/frontend/03-JavaScript.md)
-- [ ] [Can you explain currying and walk through how you'd implement it?](../../interview/frontend/03-JavaScript.md)
-- [ ] [What are higher-order functions?](../../interview/frontend/03-JavaScript.md)
+1. [Can you walk me through `call()`, `apply()`, and `bind()` — how they differ and when you'd use each?](../../interview/frontend/03-JavaScript.md)
+2. [How would you explain closures to someone new to JavaScript, and can you give a real-world use case?](../../interview/frontend/03-JavaScript.md)
+3. [Can you explain currying and walk through how you'd implement it?](../../interview/frontend/03-JavaScript.md)
+4. [What are higher-order functions?](../../interview/frontend/03-JavaScript.md)
 
 ## 2. Part 2 — `this` and Prototypes
 
-- [ ] [How does JavaScript prototype inheritance work?](../../interview/frontend/03-JavaScript.md)
-- [ ] [Why does `this` behave differently in arrow vs normal functions?](../../interview/frontend/03-JavaScript.md)
+1. [How does JavaScript prototype inheritance work?](../../interview/frontend/03-JavaScript.md)
+2. [Why does `this` behave differently in arrow vs normal functions?](../../interview/frontend/03-JavaScript.md)
 
 ## 3. Part 3 — Hoisting & TDZ
 
-- [ ] [Can you walk me through how hoisting works in JavaScript and where it can catch developers off guard?](../../interview/frontend/03-JavaScript.md)
-  - [ ] [Can you explain the Temporal Dead Zone and how variable shadowing interacts with it?](../../interview/frontend/03-JavaScript.md)
+1. [Can you walk me through how hoisting works in JavaScript and where it can catch developers off guard?](../../interview/frontend/03-JavaScript.md)
+   - [Can you explain the Temporal Dead Zone and how variable shadowing interacts with it?](../../interview/frontend/03-JavaScript.md)
 
 ## 4. Part 4 — Type Coercion & Equality
 
-- [ ] [Explain why ` == !` is `true`](../../interview/frontend/03-JavaScript.md)
-- [ ] [Why does `typeof null === "object"`?](../../interview/frontend/03-JavaScript.md)
+1. [Explain why ` == !` is `true`](../../interview/frontend/03-JavaScript.md)
+2. [Why does `typeof null === "object"`?](../../interview/frontend/03-JavaScript.md)
 
 ## 5. Part 5 — Event Loop & Async
 
-- [ ] [How does the JavaScript Event Loop work?](../../interview/frontend/03-JavaScript.md)
-- [ ] [What will this code output, and why?](../../interview/frontend/03-JavaScript.md)
-- [ ] [Difference between `Promise.all`, `allSettled`, `race`, and `any`?](../../interview/frontend/03-JavaScript.md)
-  - [ ] [You're calling three backend APIs in parallel. One critical, two optional. Which do you use?](../../interview/frontend/03-JavaScript.md)
-  - [ ] [Implement an API timeout using Promises.](../../interview/frontend/03-JavaScript.md)
-  - [ ] [You have 3 CDN URLs for the same resource. Use the fastest. Which?](../../interview/frontend/03-JavaScript.md)
+1. [How does the JavaScript Event Loop work?](../../interview/frontend/03-JavaScript.md)
+2. [What will this code output, and why?](../../interview/frontend/03-JavaScript.md)
+3. [Difference between `Promise.all`, `allSettled`, `race`, and `any`?](../../interview/frontend/03-JavaScript.md)
+   - [You're calling three backend APIs in parallel. One critical, two optional. Which do you use?](../../interview/frontend/03-JavaScript.md)
+   - [Implement an API timeout using Promises.](../../interview/frontend/03-JavaScript.md)
+   - [You have 3 CDN URLs for the same resource. Use the fastest. Which?](../../interview/frontend/03-JavaScript.md)
 
 ## 6. Part 6 — Implementing Built-in Methods
 
-- [ ] [If `Array.prototype.map` is removed, how do you recreate it?](../../interview/frontend/03-JavaScript.md)
-  - [ ] [How would you implement `Array.prototype.filter` from scratch?](../../interview/frontend/03-JavaScript.md)
-  - [ ] [How would you implement `Array.prototype.reduce` from scratch?](../../interview/frontend/03-JavaScript.md)
-- [ ] [How would you implement a debounce function?](../../interview/frontend/03-JavaScript.md)
-  - [ ] [How would you implement a throttle function?](../../interview/frontend/03-JavaScript.md)
+1. [If `Array.prototype.map` is removed, how do you recreate it?](../../interview/frontend/03-JavaScript.md)
+   - [How would you implement `Array.prototype.filter` from scratch?](../../interview/frontend/03-JavaScript.md)
+   - [How would you implement `Array.prototype.reduce` from scratch?](../../interview/frontend/03-JavaScript.md)
+2. [How would you implement a debounce function?](../../interview/frontend/03-JavaScript.md)
+   - [How would you implement a throttle function?](../../interview/frontend/03-JavaScript.md)
 
 ## 7. Part 7 — Modern JS Features
 
-- [ ] [How does optional chaining work and when would you reach for it over a manual null check?](../../interview/frontend/03-JavaScript.md)
-  - [ ] [How does nullish coalescing differ from the OR operator, and when does that distinction matter?](../../interview/frontend/03-JavaScript.md)
-- [ ] [Difference between `Map` and `Object`?](../../interview/frontend/03-JavaScript.md)
-- [ ] [What are Generators (`function*`)?](../../interview/frontend/03-JavaScript.md)
-- [ ] [Can you explain the difference between shallow and deep copies — and what pitfalls come with each?](../../interview/frontend/03-JavaScript.md)
-- [ ] [What's the difference between `for...in` and `for...of`?](../../interview/frontend/03-JavaScript.md)
+1. [How does optional chaining work and when would you reach for it over a manual null check?](../../interview/frontend/03-JavaScript.md)
+   - [How does nullish coalescing differ from the OR operator, and when does that distinction matter?](../../interview/frontend/03-JavaScript.md)
+2. [Difference between `Map` and `Object`?](../../interview/frontend/03-JavaScript.md)
+3. [What are Generators (`function*`)?](../../interview/frontend/03-JavaScript.md)
+4. [Can you explain the difference between shallow and deep copies — and what pitfalls come with each?](../../interview/frontend/03-JavaScript.md)
+5. [What's the difference between `for...in` and `for...of`?](../../interview/frontend/03-JavaScript.md)
 
 ## Practice
 
-- [ ] [Move all `0`s to the end without changing the order of other elements](../../practice/coding/01-javascript-coding.md)
-- [ ] [Write a function that checks whether two arrays are equal — same elements in the same order. How would you handle edge cases like different lengths or nested arrays?](../../practice/coding/01-javascript-coding.md)
-- [ ] [Split an array into chunks](../../practice/coding/01-javascript-coding.md)
-- [ ] [Flatten a nested array](../../practice/coding/01-javascript-coding.md)
-- [ ] [Find max and min values in an array](../../practice/coding/01-javascript-coding.md)
-- [ ] [Remove duplicates from an array](../../practice/coding/01-javascript-coding.md)
-- [ ] [Find the second largest number in an array](../../practice/coding/01-javascript-coding.md)
-- [ ] [Check if two strings are anagrams](../../practice/coding/01-javascript-coding.md)
-- [ ] [Find the first non-repeating character in a string](../../practice/coding/01-javascript-coding.md)
-- [ ] [Find the frequency of each character in a string](../../practice/coding/01-javascript-coding.md)
-- [ ] [Find the length of a string without using built-in methods](../../practice/coding/01-javascript-coding.md)
-- [ ] [Reverse a string](../../practice/coding/01-javascript-coding.md)
-- [ ] [Reverse a string while preserving word order](../../practice/coding/01-javascript-coding.md)
-- [ ] [Difference between `substring()` and `slice()`?](../../practice/coding/01-javascript-coding.md)
-- [ ] [Generate the Fibonacci series](../../practice/coding/01-javascript-coding.md)
-- [ ] [Implement FizzBuzz](../../practice/coding/01-javascript-coding.md)
-- [ ] [Implement memoization](../../practice/coding/01-javascript-coding.md)
-- [ ] [Implement debounce](../../practice/coding/01-javascript-coding.md)
-- [ ] [Implement throttle](../../practice/coding/01-javascript-coding.md)
-- [ ] [Implement a deep clone function](../../practice/coding/01-javascript-coding.md)
-- [ ] [Implement a Promise.all from scratch](../../practice/coding/01-javascript-coding.md)
+1. [Move all `0`s to the end without changing the order of other elements](../../practice/coding/01-javascript-coding.md)
+2. [Write a function that checks whether two arrays are equal — same elements in the same order. How would you handle edge cases like different lengths or nested arrays?](../../practice/coding/01-javascript-coding.md)
+3. [Split an array into chunks](../../practice/coding/01-javascript-coding.md)
+4. [Flatten a nested array](../../practice/coding/01-javascript-coding.md)
+5. [Find max and min values in an array](../../practice/coding/01-javascript-coding.md)
+6. [Remove duplicates from an array](../../practice/coding/01-javascript-coding.md)
+7. [Find the second largest number in an array](../../practice/coding/01-javascript-coding.md)
+8. [Check if two strings are anagrams](../../practice/coding/01-javascript-coding.md)
+9. [Find the first non-repeating character in a string](../../practice/coding/01-javascript-coding.md)
+10. [Find the frequency of each character in a string](../../practice/coding/01-javascript-coding.md)
+11. [Find the length of a string without using built-in methods](../../practice/coding/01-javascript-coding.md)
+12. [Reverse a string](../../practice/coding/01-javascript-coding.md)
+13. [Reverse a string while preserving word order](../../practice/coding/01-javascript-coding.md)
+14. [Difference between `substring()` and `slice()`?](../../practice/coding/01-javascript-coding.md)
+15. [Generate the Fibonacci series](../../practice/coding/01-javascript-coding.md)
+16. [Implement FizzBuzz](../../practice/coding/01-javascript-coding.md)
+17. [Implement memoization](../../practice/coding/01-javascript-coding.md)
+18. [Implement debounce](../../practice/coding/01-javascript-coding.md)
+19. [Implement throttle](../../practice/coding/01-javascript-coding.md)
+20. [Implement a deep clone function](../../practice/coding/01-javascript-coding.md)
+21. [Implement a Promise.all from scratch](../../practice/coding/01-javascript-coding.md)
 
 ## Diagrams
 

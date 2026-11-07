@@ -1409,7 +1409,7 @@ Role multipliers vs a generic software engineer: Full Stack Developer ×1, Front
 
 ## Glossary
 
-### General & SDLC
+### SDLC & Releases
 
 | Term | Meaning |
 |---|---|
@@ -1420,17 +1420,32 @@ Role multipliers vs a generic software engineer: Full Stack Developer ×1, Front
 | **UAT** (User Acceptance Testing) | Business users confirm the software meets their needs before release. |
 | **POC** (Proof of Concept) | Small experiment to prove an idea works technically. |
 | **MVP** (Minimum Viable Product) | Smallest usable version of a product released to learn from users. |
+| **Hotfix / Patch** | Urgent fix released directly to production. |
+| **Semantic Versioning** (SemVer) | MAJOR.MINOR.PATCH — breaking.feature.fix (e.g. 2.4.1). |
+
+### Git & Version Control
+
+| Term | Meaning |
+|---|---|
+| **Version Control / Git** | Tracks code changes over time. Git is the standard tool. |
+| **Branch / Merge / PR** | Branch = separate line of work; PR (Pull Request) = request to merge it after review. |
+| **Commit** | A saved snapshot of changes with a message, author and unique ID (hash). |
+| **Clone / Fork** | Clone = local copy of a repository. Fork = your own server-side copy of someone else's repository, used to propose changes. |
+| **Rebase** | Replays your commits on top of another branch for a linear history. Avoid rebasing commits others already use. |
+| **Merge Conflict** | Two branches changed the same lines; Git can't combine them automatically, so you resolve them by hand. |
+| **Tag** | A named pointer to a specific commit, typically used to mark releases (e.g. v1.4.0). |
+
+### Programming Basics
+
+| Term | Meaning |
+|---|---|
 | **Legacy System** | Old system still in use, usually hard to change. |
 | **Technical Debt** | Future cost of shortcuts taken today in code or design. |
 | **Refactoring** | Improving code structure without changing behaviour. |
-| **Version Control / Git** | Tracks code changes over time. Git is the standard tool. |
-| **Branch / Merge / PR** | Branch = separate line of work; PR (Pull Request) = request to merge it after review. |
 | **IDE** (Integrated Development Environment) | Code editor with build/debug tools. E.g. IntelliJ, VS Code, Eclipse. |
 | **SDK** (Software Development Kit) | Package of libraries and tools to build for a platform. |
 | **Library vs Framework** | You call a library; a framework calls your code (inversion of control). |
 | **Open Source** | Software with public source code anyone can use under a licence. |
-| **Hotfix / Patch** | Urgent fix released directly to production. |
-| **Semantic Versioning** (SemVer) | MAJOR.MINOR.PATCH — breaking.feature.fix (e.g. 2.4.1). |
 | **Compiled vs Interpreted** | Compiled turns code into machine code before running (C, Go); interpreted runs line by line (Python, JS). Java compiles to bytecode for the JVM. |
 | **Runtime** | Environment that executes code: JVM, Node.js, .NET CLR, browser. |
 

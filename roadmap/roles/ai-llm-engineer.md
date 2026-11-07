@@ -9,12 +9,14 @@ Builds apps on top of large language models — chatbots, agents, RAG.
 
 - [HTML](../topics/html.md)
 - [Java](../topics/java.md)
+- [REST API](../topics/rest-api.md)
 - Usually 2+ years of experience when hired
 
 ## Learning stages
 
 ### Stage 1: Core skills
 
+- [ ] [AI & LLMs](../topics/ai.md)
 - [ ] [JavaScript](../topics/javascript.md)
 - [ ] [Spring Boot](../topics/spring.md)
 
@@ -24,7 +26,7 @@ Builds apps on top of large language models — chatbots, agents, RAG.
 
 ## Also needed
 
-Python, LangChain, LlamaIndex, Semantic Kernel, MCP SDKs, Vercel AI SDK, Claude / OpenAI / Gemini APIs, Vector DBs (pgvector, Pinecone), Langfuse / LangSmith
+Python, LangChain, LlamaIndex, Semantic Kernel, Vercel AI SDK, Claude / OpenAI / Gemini APIs, Langfuse / LangSmith
 
 ## Where it leads
 

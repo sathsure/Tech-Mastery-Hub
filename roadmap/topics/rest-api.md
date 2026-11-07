@@ -8,21 +8,21 @@
 
 ## 1. Exception Handling – Senior Strategy
 
-- [ ] [How do you design exception handling in large Java applications?](../../interview/backend/java/02-REST-Api.md)
-- [ ] [Checked vs unchecked exceptions – what is your strategy?](../../interview/backend/java/02-REST-Api.md)
-- [ ] [Important HTTP Status Codes to Know](../../interview/backend/java/02-REST-Api.md)
-- [ ] [If I replace GET with PUT, can I still fetch records?](../../interview/backend/java/02-REST-Api.md)
-- [ ] [Can we get Request Body in GET?](../../interview/backend/java/02-REST-Api.md)
-- [ ] [Without @Controller, can we receive API?](../../interview/backend/java/02-REST-Api.md)
-- [ ] [How do you implement global HTTP status handling in Spring Boot without setting the status code in each controller method?](../../interview/backend/java/02-REST-Api.md)
+1. [How do you design exception handling in large Java applications?](../../interview/backend/java/02-REST-Api.md)
+2. [Checked vs unchecked exceptions – what is your strategy?](../../interview/backend/java/02-REST-Api.md)
+3. [Important HTTP Status Codes to Know](../../interview/backend/java/02-REST-Api.md)
+4. [If I replace GET with PUT, can I still fetch records?](../../interview/backend/java/02-REST-Api.md)
+5. [Can we get Request Body in GET?](../../interview/backend/java/02-REST-Api.md)
+6. [Without @Controller, can we receive API?](../../interview/backend/java/02-REST-Api.md)
+7. [How do you implement global HTTP status handling in Spring Boot without setting the status code in each controller method?](../../interview/backend/java/02-REST-Api.md)
 
 ## 2. REST API & Controller Design
 
-- [ ] [Our REST API is getting hard to maintain as features grow. How would you structure controllers better?](../../interview/backend/java/08-Architecture.md)
-- [ ] [Multiple controllers are returning different response formats. How would you standardize this?](../../interview/backend/java/08-Architecture.md)
-- [ ] [One controller method is doing validation, business logic, and DB calls. How would you fix this?](../../interview/backend/java/08-Architecture.md)
+1. [Our REST API is getting hard to maintain as features grow. How would you structure controllers better?](../../interview/backend/java/08-Architecture.md)
+2. [Multiple controllers are returning different response formats. How would you standardize this?](../../interview/backend/java/08-Architecture.md)
+3. [One controller method is doing validation, business logic, and DB calls. How would you fix this?](../../interview/backend/java/08-Architecture.md)
 
 ## Related roles
 
-[Automation Test Engineer](../roles/automation-test-engineer.md) · [Backend Developer](../roles/backend-developer.md) · [Frontend Developer](../roles/frontend-developer.md) · [Full Stack Developer](../roles/full-stack-developer.md) · [Solution Architect](../roles/solution-architect.md)
+[AI / LLM Engineer](../roles/ai-llm-engineer.md) · [AI Agent Engineer](../roles/ai-agent-engineer.md) · [AI Evaluation Engineer](../roles/ai-evaluation-engineer.md) · [AI Infrastructure / LLMOps Engineer](../roles/ai-infrastructure-llmops-engineer.md) · [AI Red Teamer / AI Safety Engineer](../roles/ai-red-teamer-ai-safety-engineer.md) · [AI Solutions Architect](../roles/ai-solutions-architect.md) · [Automation Test Engineer](../roles/automation-test-engineer.md) · [Backend Developer](../roles/backend-developer.md) · [Context / Prompt Engineer](../roles/context-prompt-engineer.md) · [Forward Deployed Engineer](../roles/forward-deployed-engineer.md) · [Frontend Developer](../roles/frontend-developer.md) · [Full Stack Developer](../roles/full-stack-developer.md) · [Solution Architect](../roles/solution-architect.md)
 

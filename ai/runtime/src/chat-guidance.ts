@@ -12,6 +12,7 @@ import { PREREQUISITES, topicLevels, topicSlug, withPrerequisites } from "./road
 import { TOPIC_LABELS, topicDescription, topicLabel } from "./topic-labels.js";
 import type { PlanRequest } from "./chat-contracts.js";
 import { trimEndChars } from "./text-utils.js";
+import { cardsBlock, conciseTitle, type TopicCard } from "./chat-cards.js";
 
 /** Markdown link that asks the tutor a question when clicked. */
 export function askLink(text: string, question: string): string {
@@ -34,10 +35,15 @@ function sectionTitle(entry: QuestionEntry): string {
   return entry.source.path.startsWith("practice/") ? `${fileTitle(entry.source.path)} (practice)` : fileTitle(entry.source.path);
 }
 
-/** Shorter item text inside its section: "Skills vs Salary — India (LPA): Data Engineer" → "Data Engineer". */
+/** "Part 1 — Core Concepts" → "Core Concepts": cards keep the order, so the number adds nothing. */
+function displayTitle(section: string): string {
+  return section.replace(/^(?:(?:Part|Section|Stage)\s+\d+\s*[—–:-]\s*|\d+[.)]\s+)/i, "");
+}
+
+/** Shorter item text inside its section: "Skills vs Salary — India (LPA): Data Engineer" → "Data Engineer", "What is Git?" → "Git". */
 function itemText(entry: QuestionEntry, section: string): string {
   const prefix = `${section}: `;
-  return entry.question.startsWith(prefix) ? entry.question.slice(prefix.length) : entry.question;
+  return entry.question.startsWith(prefix) ? entry.question.slice(prefix.length) : conciseTitle(entry);
 }
 
 /** Ask for an item: roles and terms already read as questions; headings get "Explain". */
@@ -51,54 +57,78 @@ export interface Overview {
   items: number;
 }
 
-/** Topic overview: what the topic covers, then each section collapsed with its questions inside. */
-export async function buildOverview(topic: string): Promise<Overview | null> {
-  const index = await loadQuestionIndex();
-  const entries = index.entries.filter(entry => entry.topics.includes(topic) && OVERVIEW_KINDS.has(entry.kind));
-  if (!entries.length) return null;
+/** A topic's entries grouped by section, in note order. */
+function sectionsOf(entries: QuestionEntry[], topic: string): Map<string, QuestionEntry[]> {
   const sections = new Map<string, QuestionEntry[]>();
   for (const entry of entries) {
+    if (!entry.topics.includes(topic) || !OVERVIEW_KINDS.has(entry.kind)) continue;
     const title = sectionTitle(entry);
     sections.set(title, [...(sections.get(title) ?? []), entry]);
   }
-  const studyPath = index.entries.find(entry => entry.kind === "roadmap" && entry.source.path === `roadmap/topics/${topicSlug(topic)}.md`);
+  return sections;
+}
+
+function hasStudyPath(entries: QuestionEntry[], topic: string): boolean {
+  return entries.some(entry => entry.kind === "roadmap" && entry.source.path === `roadmap/topics/${topicSlug(topic)}.md`);
+}
+
+/** Glossary categories read best as chips of short terms; other sections as lists of questions. */
+const CHIP_TOPICS = new Set(["it-terminology", "it-roles", "tech-stack"]);
+
+/** Topic overview: what the topic covers, then one card per section with its items. */
+export async function buildOverview(topic: string): Promise<Overview | null> {
+  const index = await loadQuestionIndex();
+  const sections = sectionsOf(index.entries, topic);
+  if (!sections.size) return null;
   const label = topicLabel(topic);
   const description = topicDescription(topic);
-  const names = [...sections.keys()];
-  const blocks = [...sections.entries()].map(([title, list]) => {
-    const shown = list.slice(0, MAX_ITEMS_PER_SECTION);
-    const more = list.length - shown.length;
-    return [
-      `<details class="outline"><summary>${escapeHtml(title)} <small>${list.length}</small></summary>`,
-      "",
-      ...shown.map(entry => `- ${askLink(itemText(entry, title), itemQuestion(entry))}`),
-      ...(more > 0 ? [`- …and ${more} more. Use **Search notes** to find them.`] : []),
-      "",
-      "</details>",
-    ].join("\n");
+  const studyPath = hasStudyPath(index.entries, topic);
+  const cards: TopicCard[] = [...sections.entries()].map(([title, list]) => {
+    const items = list.slice(0, MAX_ITEMS_PER_SECTION).map(entry => ({ label: itemText(entry, title), ask: itemQuestion(entry) }));
+    return {
+      type: "topic",
+      title: displayTitle(title),
+      description: null,
+      chips: CHIP_TOPICS.has(topic),
+      items,
+      actions: CHIP_TOPICS.has(topic) ? [] : [{ label: "Start Learning", ask: items[0].ask }],
+    };
   });
+  const items = cards.reduce((sum, card) => sum + card.items.length, 0);
   const markdown = [
     `**${label}**${description ? ` — ${description}` : ""}`,
     "",
-    `It has ${names.length} ${names.length === 1 ? "section" : "sections"}: ${names.slice(0, 6).join(", ")}${names.length > 6 ? ", and more" : ""}. Open a section to see what it covers, then pick an item for the full answer.`,
+    cardsBlock(cards),
     "",
-    ...blocks.flatMap(block => [block, ""]),
     studyPath ? `Want a guided order? ${askLink(`Open the ${label} study path`, `${label} study path`)}` : "",
   ].join("\n").trim();
-  return { markdown, sections: names.length, items: entries.length };
+  return { markdown, sections: sections.size, items };
 }
 
-/** Several topics at once ("Explore frontend"): each topic with one line, to open on its own. */
-export function buildTopicList(topics: string[]): string {
-  return [
-    "This covers several topics. Pick one to see what it includes:",
-    "",
-    ...topics.map(topic => `- ${askLink(topicLabel(topic), `Explore ${topicLabel(topic)}`)}${topicDescription(topic) ? ` — ${topicDescription(topic)}` : ""}`),
-  ].join("\n");
+/** "Start here" for topics without prerequisites, else what to learn first. */
+function prerequisiteBadge(topic: string): string {
+  const needs = PREREQUISITES[topic] ?? [];
+  return needs.length ? `After ${needs.map(topicLabel).join(", ")}` : "Start here";
 }
 
-function escapeHtml(text: string): string {
-  return text.replace(/[&<>"]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[ch]!);
+/** Several topics at once ("Explore frontend"): one card per topic, with its main sections. */
+export async function buildTopicList(topics: string[]): Promise<string> {
+  const index = await loadQuestionIndex();
+  const cards: TopicCard[] = topics.map(topic => {
+    const label = topicLabel(topic);
+    const actions: TopicCard["actions"] = [{ label: "Start Learning", ask: `Explore ${label}`, overview: topic }];
+    if (hasStudyPath(index.entries, topic)) actions.push({ label: "Study Path", ask: `${label} study path` });
+    return {
+      type: "topic",
+      title: label,
+      badge: topic in PREREQUISITES ? prerequisiteBadge(topic) : undefined,
+      description: topicDescription(topic),
+      chips: false,
+      items: [...sectionsOf(index.entries, topic).keys()].slice(0, 4).map(section => ({ label: displayTitle(section) })),
+      actions,
+    };
+  });
+  return ["This covers several topics. Pick one to start:", "", cardsBlock(cards)].join("\n");
 }
 
 // ---------- Outside resources ----------
@@ -120,6 +150,9 @@ const DOCS: Record<string, { name: string; url: string }> = {
   aws: { name: "AWS documentation", url: "https://docs.aws.amazon.com/" },
   "web-vitals": { name: "web.dev Web Vitals", url: "https://web.dev/articles/vitals" },
   "rest-api": { name: "MDN HTTP", url: "https://developer.mozilla.org/en-US/docs/Web/HTTP" },
+  messaging: { name: "Apache Kafka docs", url: "https://kafka.apache.org/documentation/" },
+  dsa: { name: "Python Time Complexity (wiki)", url: "https://wiki.python.org/moin/TimeComplexity" },
+  ai: { name: "Spring AI reference", url: "https://docs.spring.io/spring-ai/reference/" },
 };
 
 export const LEARN_MORE_HEADING = "**Learn more elsewhere**";

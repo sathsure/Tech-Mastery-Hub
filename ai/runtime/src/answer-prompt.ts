@@ -28,7 +28,7 @@ Shape the answer to the request (<request> lists the detected intents):
 - roadmap: use only these sections, each short: "Role overview" (1-2 sentences), "Prerequisites", "Learning stages" (ordered steps as a Markdown checklist, - [ ] step, grouped by stage), "Also useful", "Also needed", "Where it leads". Do not mention the notes inside these sections. Cite steps where the evidence supports them.
 - role: what the role does, key skills, typical experience and where it leads, in a few bullets.
 - quiz: ask one question at a time and wait for the user's answer before revealing it.
-Use headings only when the answer has several parts. The interface renders Markdown tables, checklists, code blocks and Mermaid.`;
+Use headings only when the answer has several parts. Keep titles and headings short names of the subject ("Data Analyst", "Version Control / Git", not "What does a Data Analyst do?"), with no citation numbers in them. The interface renders Markdown tables, checklists, code blocks and Mermaid.`;
 
 function attribute(value: string): string {
   return value.replace(/"/g, "'").replace(/[<>]/g, "");

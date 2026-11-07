@@ -45,5 +45,13 @@ Ship, run and scale applications.
 1. [ ] [DevOps](../topics/devops.md)
 2. [ ] [AWS](../topics/aws.md)
 3. [ ] [Microservices](../topics/microservices.md)
+4. [ ] [Kafka & RabbitMQ](../topics/messaging.md)
+
+## Coding interviews and AI
+
+Crack coding rounds and build with AI.
+
+1. [ ] [DSA (Python)](../topics/dsa.md)
+2. [ ] [AI & LLMs](../topics/ai.md)
 
 Looking for a job role? See the [role roadmaps](../roles/README.md).

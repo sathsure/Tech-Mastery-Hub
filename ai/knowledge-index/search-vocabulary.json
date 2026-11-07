@@ -2,6 +2,9 @@
   "schema_version": "1.0.0",
   "description": "Search vocabulary for the AI tutor. topicAliases: words that name a topic (used to narrow the search). termSynonyms: equivalent terms (used to widen the query). Edit freely, then run: npm run search-check",
   "topicAliases": {
+    "dsa": ["dsa", "data structures", "data structure", "data structures and algorithms", "leetcode"],
+    "messaging": ["message queue", "message broker", "event streaming", "messaging"],
+    "ai": ["llm", "llms", "rag", "generative ai", "genai", "gen ai", "embeddings", "vector database", "prompt engineering", "mcp", "ai agent", "ai agents", "tool calling", "function calling", "vector db", "vector dbs", "artificial intelligence", "machine learning"],
     "javascript": ["javascript", "js", "ecmascript", "es6", "vanilla js"],
     "typescript": ["typescript", "ts"],
     "html": ["html", "html5", "semantic html"],
@@ -27,6 +30,7 @@
     "it-careers": ["career ladder", "career path", "career hierarchy", "job levels", "designation", "designations", "salary", "salaries", "lpa", "ctc", "working abroad", "abroad", "onsite"]
   },
   "termSynonyms": [
+    ["use cases", "use case", "when should i use", "when should you use", "when to use"],
     ["di", "dependency injection"],
     ["ioc", "inversion of control"],
     ["oop", "object oriented programming", "object-oriented"],

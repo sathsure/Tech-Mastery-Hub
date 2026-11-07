@@ -1,5 +1,5 @@
 import { fetchCatalog, fetchEntry, searchNotes, streamChat } from "./api.js";
-import { escapeHtml, icon, markdownToText, renderMarkdown } from "./render.js";
+import { escapeHtml, icon, markdownToText, renderMarkdown, withCardsAsText } from "./render.js";
 import { deleteConversation, getConversation, listConversations, newConversation, saveConversation } from "./store.js";
 
 const $ = selector => document.querySelector(selector);
@@ -13,11 +13,14 @@ const state = {
   labels: {},
   conversation: newConversation(),
   controller: null,
-  /** Where Back returns to: earlier screens, newest last ({ id, scrollTop }). */
-  back: [],
 };
 
-const MAX_BACK = 50;
+/**
+ * Screens visited in this tab, kept in step with the browser's history: `at` is the current screen,
+ * `max` the furthest one Forward can reach, `scroll` the scroll position each screen was left at.
+ */
+const nav = { at: 0, max: 0, scroll: {} };
+const NAV_KEY = "tmh.nav";
 
 const KIND_LABELS = { question: "Interview question", "follow-up": "Follow-up", note: "Note", role: "Role", term: "Term", roadmap: "Roadmap" };
 const KIND_CLASS = { question: "k-question", "follow-up": "k-follow", note: "k-note", role: "k-role", term: "k-term", roadmap: "k-roadmap" };
@@ -80,40 +83,77 @@ function sourceUrl(item) {
   return `${state.catalog.github}${path}${plain}${lines}`;
 }
 
-// ---------- Back navigation ----------
-// Each new question or chat switch remembers the screen you left (chat and scroll position).
-// Back (button, Alt+←, or the browser's back) returns to it exactly, without re-asking anything.
+// ---------- Back / Forward navigation ----------
+// Every new question and every chat switch is a screen in the browser's history. Back and Forward
+// (buttons, Alt+← / Alt+→, or the browser's own) return to a screen exactly as it was left: same chat,
+// same scroll position, same open sections and ticked items, without asking anything again.
 
-function rememberScreen() {
-  if (!state.conversation.messages.length) return;
-  state.back.push({ id: state.conversation.id, scrollTop: thread.scrollTop });
-  if (state.back.length > MAX_BACK) state.back.shift();
-  history.pushState({ tmhBack: state.back.length }, "", location.href);
-  updateBack();
+function loadNav() {
+  try {
+    Object.assign(nav, JSON.parse(sessionStorage.getItem(NAV_KEY) ?? "{}"));
+  } catch {
+    // Starts a fresh history; navigation still works.
+  }
+  nav.at = Number.isInteger(history.state?.tmh) ? history.state.tmh : 0;
+  nav.max = Math.max(nav.max, nav.at);
 }
 
-function updateBack() {
-  $("#back").hidden = !state.back.length;
+function saveNav() {
+  try {
+    sessionStorage.setItem(NAV_KEY, JSON.stringify(nav));
+  } catch {
+    // Not saved; positions are kept for this page only.
+  }
 }
 
-function restoreScreen() {
-  const screen = state.back.pop();
-  updateBack();
-  if (!screen) return;
-  if (state.controller) state.controller.abort();
-  if (screen.id !== state.conversation.id) {
-    const stored = getConversation(screen.id);
-    if (!stored) return;
-    state.conversation = stored;
-    topicFilter.value = stored.topic ?? "";
-    withTransition(() => {
-      renderThread({ scrollTop: screen.scrollTop });
-      renderRecent();
-    });
-    history.replaceState(history.state, "", `?c=${stored.id}`);
+const screenUrl = id => (id ? `?c=${encodeURIComponent(id)}` : location.pathname);
+
+/** Note where the current screen is scrolled to, so returning to it lands in the same place. */
+function rememberScroll() {
+  nav.scroll[nav.at] = thread.scrollTop;
+  saveNav();
+}
+
+/** Start a new screen for chat `id`; screens ahead of the current one are dropped, as in a browser. */
+function pushScreen(id) {
+  rememberScroll();
+  nav.at += 1;
+  nav.max = nav.at;
+  for (const key of Object.keys(nav.scroll)) if (Number(key) >= nav.at) delete nav.scroll[key];
+  history.pushState({ tmh: nav.at, c: id }, "", screenUrl(id));
+  saveNav();
+  updateNavButtons();
+}
+
+/** Update the current screen's chat without adding a history entry. */
+function replaceScreen(id) {
+  history.replaceState({ tmh: nav.at, c: id }, "", screenUrl(id));
+}
+
+function updateNavButtons() {
+  $("#back").hidden = nav.at <= 0;
+  $("#forward").hidden = nav.at >= nav.max;
+}
+
+/** The browser moved to another screen (Back or Forward): show it as it was left. */
+function showScreen(screen) {
+  rememberScroll();
+  nav.at = screen.tmh;
+  saveNav();
+  updateNavButtons();
+  const top = nav.scroll[nav.at];
+  if (screen.c === state.conversation.id) {
+    if (top !== undefined) settleScroll(top);
     return;
   }
-  settleScroll(screen.scrollTop);
+  // A different chat: stop any answer still being written there; it is saved as far as it got.
+  if (state.controller) state.controller.abort();
+  state.conversation = (screen.c && getConversation(screen.c)) || { ...newConversation(), ...(screen.c ? { id: screen.c } : {}) };
+  topicFilter.value = state.conversation.topic ?? "";
+  withTransition(() => {
+    renderThread({ scrollTop: top });
+    renderRecent();
+  });
 }
 
 /** Scroll to `top` and keep it there while an earlier smooth scroll winds down. */
@@ -129,9 +169,13 @@ function settleScroll(top) {
   setTimeout(apply, 600);
 }
 
+// The browser's history drives both buttons, so its own Back and Forward behave the same way.
 function goBack() {
-  // The browser's history drives Back, so its own back button behaves the same way.
-  if (state.back.length) history.back();
+  if (nav.at > 0) history.back();
+}
+
+function goForward() {
+  if (nav.at < nav.max) history.forward();
 }
 
 const reducedMotion = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -147,6 +191,7 @@ const NAV_ICONS = {
   html: "code", css: "brush", javascript: "braces", typescript: "braces", react: "atom", angular: "hexagon", rxjs: "waves",
   nodejs: "server", java: "coffee", spring: "leaf", "spring-security": "lock", "spring-cloud": "cloud", microservices: "boxes",
   "rest-api": "plug", "database/sql": "database", devops: "infinity", aws: "cloud", "web-architecture": "network", "web-vitals": "gauge",
+  dsa: "graduation", messaging: "route", ai: "sparkles",
   "it-roles": "briefcase", "it-terminology": "book", "tech-stack": "layers", "it-careers": "trend", roadmaps: "map",
 };
 
@@ -190,8 +235,11 @@ function renderSidebar() {
   const topics = [...state.catalog.topics].sort((a, b) => a.label.localeCompare(b.label));
   // Each item opens an overview: what the section covers, then its parts to pick from.
   const navItem = item => `<li><button type="button" class="nav-item" data-ask="${item.id === "roadmaps" ? "Where do I start?" : `Explore ${escapeHtml(item.label)}`}" ${item.id === "roadmaps" ? "" : `data-overview="${escapeHtml(item.id)}"`} title="${escapeHtml(item.description ?? item.label)}">${icon(NAV_ICONS[item.id] ?? "book", "nav-ic")}<span>${escapeHtml(item.label)}</span></button></li>`;
+  // The glossary and the learning roadmap are the main ways in, so they lead the sidebar.
+  const primary = ["it-terminology", "roadmaps"].map(id => atlas.find(item => item.id === id)).filter(Boolean);
+  $("#primary-list").innerHTML = primary.map(navItem).join("");
   $("#topic-list").innerHTML = topics.map(navItem).join("");
-  $("#atlas-list").innerHTML = atlas.map(navItem).join("");
+  $("#atlas-list").innerHTML = atlas.filter(item => !primary.includes(item)).map(navItem).join("");
   topicFilter.innerHTML = `<option value="">All notes</option>` + [...topics, ...atlas].map(topic => `<option value="${escapeHtml(topic.id)}">${escapeHtml(topic.label)}</option>`).join("");
   topicFilter.value = state.conversation.topic ?? "";
   const engine = $("#engine");
@@ -293,28 +341,21 @@ function groundingHtml(message) {
   if (message.meta?.confidence === "low") return `<span class="grounding">${icon("info")}Not covered directly by your notes</span>`;
   if (g.generatedSection) return `<span class="grounding mixed">${icon("info")}Includes information not from your notes</span>`;
   if (g.uncited) return `<span class="grounding warn">${icon("alert")}Check the sources for this answer</span>`;
-  return `<span class="grounding ok">${icon("check")}From your notes</span>`;
+  // A normal answer from the notes needs no label.
+  return "";
 }
 
-const VIEW_LABELS = { overview: "Overview", plan: "Learning plan" };
-
-/** "Overview", "Learning plan", the Claude model's name, or "From your notes". */
-function headLabel(message, mode) {
-  const viewLabel = VIEW_LABELS[message.done?.view];
-  if (viewLabel) return viewLabel;
-  return mode === "claude" ? prettyModel(message.done?.model ?? state.catalog?.model) : "From your notes";
-}
-
+/** Only what helps: a link to the sources, and which AI model wrote the answer when one did. */
 function assistantHead(message) {
   const meta = message.meta;
   if (!meta) return "";
   const mode = message.done?.answerMode ?? meta.answerMode;
-  const label = headLabel(message, mode);
+  const model = mode === "claude" && message.done ? `<span class="mode">${escapeHtml(prettyModel(message.done.model ?? state.catalog?.model))}</span>` : "";
   // Sources opens the main source file on GitHub; each [n] chip opens its own.
   const top = meta.evidence[0];
   const url = sourceUrl(top);
   const sources = url ? `<a class="src-btn" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer" title="${escapeHtml(`${top.path} — open on GitHub`)}">${icon("file")}Sources${icon("external")}</a>` : "";
-  return `<span class="who"><svg aria-hidden="true"><use href="#i-logo"></use></svg>Tutor</span><span class="mode">${escapeHtml(label)}</span>${sources}`;
+  return `${model}${sources}`;
 }
 
 function assistantView(message, index) {
@@ -324,6 +365,7 @@ function assistantView(message, index) {
   element.innerHTML = `<div class="bubble">
       <header class="msg-head"></header>
       <div class="status-line" aria-live="polite"><span class="status-text">Searching your notes</span></div>
+      <div class="skeleton" aria-hidden="true"><span></span><span></span><span class="short"></span></div>
       <div class="md"></div>
       <div class="notice" hidden></div>
       <footer class="msg-foot" hidden></footer>
@@ -397,6 +439,8 @@ function updateAssistant(element, message, { final, status } = {}) {
   element.querySelector(".msg-head").innerHTML = assistantHead(message);
   const statusLine = element.querySelector(".status-line");
   statusLine.hidden = final || (Boolean(message.content) && !status);
+  // Placeholder lines until the first words arrive.
+  element.querySelector(".skeleton").hidden = final || Boolean(message.content);
   if (status) statusLine.querySelector(".status-text").textContent = status;
   renderAnswerBody(element, message, final, index);
   renderNotice(element, message, index);
@@ -451,7 +495,7 @@ async function openEntry(id) {
       <div class="viewer-actions">${sourceUrl(entry) ? `<a class="ghost-btn" href="${escapeHtml(sourceUrl(entry))}" target="_blank" rel="noopener noreferrer">${icon("external")}<span>Open on GitHub</span></a>` : ""}<button type="button" class="ghost-btn" data-copy-path="${escapeHtml(`${entry.path}:${entry.startLine}`)}">${icon("copy")}<span>Copy path</span></button><button type="button" class="primary-btn" data-ask="${escapeHtml(entry.question)}">${icon("message")}<span>Ask the tutor about this</span></button></div>`;
   } catch (error) {
     $("#viewer-title").textContent = "Could not open this source";
-    $("#viewer-body").innerHTML = `<p>${escapeHtml(error.message)}</p>`;
+    $("#viewer-body").innerHTML = `<p>${escapeHtml(friendlyError(error.message))}</p>`;
   }
 }
 
@@ -526,7 +570,11 @@ function historyFor(messages) {
   return messages
     .filter(message => message.content?.trim() && !message.error)
     .slice(-8)
-    .map(message => ({ role: message.role, content: message.content.length > 6000 ? `${message.content.slice(0, 6000)}\n…` : message.content }));
+    .map(message => {
+      // Cards travel as their plain-text summary: the tutor needs the facts, not the card data.
+      const content = withCardsAsText(message.content);
+      return { role: message.role, content: content.length > 6000 ? `${content.slice(0, 6000)}\n…` : content };
+    });
 }
 
 /** Status line for a "status" event: thinking, a fallback notice, or nothing once writing starts. */
@@ -551,15 +599,26 @@ function applyEvent(assistant, event) {
       assistant.done = event;
       return undefined;
     case "error":
-      assistant.error = event.message;
+      assistant.error = friendlyError(event.message);
       return undefined;
     default:
       return undefined;
   }
 }
 
+/** Short, friendly text for a failure; technical details stay out of the chat. */
+function friendlyError(message) {
+  const text = String(message ?? "");
+  if (/failed to fetch|networkerror|load failed|network/i.test(text)) return "Couldn't reach the tutor. Check your connection and try again.";
+  if (/429|too many/i.test(text)) return "Too many questions at once. Wait a minute, then try again.";
+  if (/timeout|timed out/i.test(text)) return "The answer took too long. Try again.";
+  // Server messages are already written for people; anything long or code-like is not.
+  if (text && text.length <= 160 && !/\bat \S+:\d+|Error:|\{|\}/.test(text)) return text;
+  return "Something went wrong while answering. Try again.";
+}
+
 function failureMessage(error, assistant) {
-  if (error.name !== "AbortError") return error.message || "Something went wrong.";
+  if (error.name !== "AbortError") return friendlyError(error.message);
   return assistant.content ? "Stopped." : "Stopped before an answer was written.";
 }
 
@@ -569,9 +628,12 @@ function failureMessage(error, assistant) {
  */
 async function send(rawText, { replaceFrom, plan, overview } = {}) {
   const text = expandCommand(rawText);
-  if (!text || state.controller) return;
+  if (!text) return;
+  // One answer at a time: a second click or Enter while answering does not send again.
+  if (state.controller) return toast("Wait for this answer to finish, or press Stop");
   const conversation = state.conversation;
-  if (replaceFrom === undefined) rememberScreen();
+  // A new question is a new screen; Back returns to the answer you were reading.
+  if (replaceFrom === undefined && conversation.messages.length) pushScreen(conversation.id);
   if (replaceFrom !== undefined) conversation.messages.splice(replaceFrom);
   const turns = historyFor(conversation.messages);
   if (!conversation.messages.length) {
@@ -625,15 +687,19 @@ async function send(rawText, { replaceFrom, plan, overview } = {}) {
     paint(true);
     saveConversation(conversation);
     renderRecent();
-    history.replaceState(null, "", `?c=${conversation.id}`);
+    // Only if the reader is still on this chat (Back may have taken them to another one).
+    if (state.conversation === conversation) replaceScreen(conversation.id);
   }
 }
 
 /** Open a saved chat (or a new one). `animate: false` at startup, where later code needs the DOM at once. */
-function loadConversation(id, { animate = true } = {}) {
-  if (id !== state.conversation.id) rememberScreen();
+function loadConversation(id, { animate = true, remember = true } = {}) {
   const stored = id ? getConversation(id) : null;
-  state.conversation = stored ?? newConversation();
+  const next = stored ?? newConversation();
+  // Leaving a chat that has messages is a new screen; an empty chat is simply replaced.
+  const push = remember && next.id !== state.conversation.id && state.conversation.messages.length > 0;
+  if (push) pushScreen(next.id);
+  state.conversation = next;
   topicFilter.value = state.conversation.topic ?? "";
   const draw = () => {
     renderThread();
@@ -641,7 +707,7 @@ function loadConversation(id, { animate = true } = {}) {
   };
   if (animate) withTransition(draw);
   else draw();
-  history.replaceState(null, "", stored ? `?c=${stored.id}` : location.pathname);
+  if (!push) replaceScreen(stored ? stored.id : null);
 }
 
 function exportConversation() {
@@ -651,7 +717,7 @@ function exportConversation() {
   for (const message of conversation.messages) {
     if (message.role === "user") lines.push(`## You`, "", message.content, "");
     else {
-      lines.push(`## Tutor`, "", message.content, "");
+      lines.push(`## Tutor`, "", withCardsAsText(message.content), "");
       if (message.meta?.evidence.length) lines.push("**Sources**", "", ...message.meta.evidence.map(item => `${item.n}. ${item.question} — \`${item.path}:${item.startLine}\``), "");
     }
   }
@@ -676,6 +742,8 @@ const ACTIONS = {
   },
   palette: () => openPalette(),
   back: () => goBack(),
+  forward: () => goForward(),
+  reload: () => location.reload(),
   theme: () => toggleTheme(),
   jump: () => thread.scrollTo({ top: thread.scrollHeight, behavior: reducedMotion() ? "auto" : "smooth" }),
   "close-panels": closeSidebar,
@@ -777,8 +845,8 @@ document.addEventListener(
   true,
 );
 
-addEventListener("popstate", () => {
-  if (state.back.length) restoreScreen();
+addEventListener("popstate", event => {
+  if (Number.isInteger(event.state?.tmh)) showScreen(event.state);
 });
 
 document.addEventListener("change", event => {
@@ -830,7 +898,18 @@ input.addEventListener("keydown", event => {
   }
 });
 
-thread.addEventListener("scroll", () => updateJump(), { passive: true });
+let scrollSaveTimer = 0;
+thread.addEventListener(
+  "scroll",
+  () => {
+    updateJump();
+    // Keep this screen's position, so Back / Forward and reloads return to it.
+    nav.scroll[nav.at] = thread.scrollTop;
+    clearTimeout(scrollSaveTimer);
+    scrollSaveTimer = setTimeout(saveNav, 300);
+  },
+  { passive: true },
+);
 addEventListener("resize", () => {
   thread.style.setProperty("--thread-h", `${thread.clientHeight}px`);
   updateJump();
@@ -851,7 +930,7 @@ $("#palette-input").addEventListener("input", event => {
       const result = await searchNotes(query, 10);
       if ($("#palette-input").value.trim() === query) renderPaletteResults(result.hits, result);
     } catch (error) {
-      toast(error.message, "error");
+      toast(friendlyError(error.message), "error");
     }
   }, 120);
 });
@@ -896,11 +975,17 @@ document.addEventListener("keydown", event => {
     input.value = "/";
     renderSlashMenu();
   }
-  if (event.altKey && event.key === "ArrowLeft" && !typing && state.back.length) {
-    event.preventDefault();
-    goBack();
-  }
+  if (!typing) historyKey(event);
 });
+
+/** Alt+← / Alt+→ move Back and Forward, like the browser. */
+const HISTORY_KEYS = { ArrowLeft: () => goBack(), ArrowRight: () => goForward() };
+function historyKey(event) {
+  const move = event.altKey ? HISTORY_KEYS[event.key] : undefined;
+  if (!move) return;
+  event.preventDefault();
+  move();
+}
 
 // ---------- Start ----------
 
@@ -910,19 +995,23 @@ async function start() {
   try {
     state.catalog = await fetchCatalog();
   } catch {
-    thread.innerHTML = `<div class="boot-error">${icon("alert")}<h2>Couldn't load the tutor</h2><p>Refresh the page to try again.</p></div>`;
+    thread.innerHTML = `<div class="boot-error">${icon("alert")}<h2>Couldn't reach the tutor</h2><p>Check your connection, then try again.</p><button type="button" class="btn btn-primary" data-action="reload">${icon("refresh")}<span>Try again</span></button></div>`;
     $("#engine").innerHTML = `<i class="dot"></i><span>Offline</span>`;
     return;
   }
   state.labels = Object.fromEntries([...state.catalog.topics, ...state.catalog.atlas].map(topic => [topic.id, topic.label]));
   const params = new URLSearchParams(location.search);
-  loadConversation(params.get("c"), { animate: false });
+  loadNav();
+  loadConversation(params.get("c"), { animate: false, remember: false });
+  // After a reload, return to where this screen was scrolled.
+  const top = nav.scroll[nav.at];
+  if (top !== undefined && state.conversation.messages.length) requestAnimationFrame(() => settleScroll(top));
   if (params.get("topic")) {
     state.conversation.topic = params.get("topic");
     topicFilter.value = state.conversation.topic;
   }
   renderSidebar();
-  updateBack();
+  updateNavButtons();
   if (params.get("q")) send(params.get("q"));
   else input.focus();
 }

@@ -4,6 +4,7 @@ import type { QuestionEntry } from "./question-index-contracts.js";
 import type { SearchResult } from "./question-search.js";
 import { topicLabel } from "./topic-labels.js";
 import { askLink } from "./chat-guidance.js";
+import { conciseTitle, isCountryNote } from "./chat-cards.js";
 
 const VISUAL_ROOT = "knowledge/visual-notes/";
 /** Sources passed with their full answer; the rest go as summaries so the model sees what else exists. */
@@ -91,7 +92,7 @@ export function checkGrounding(answer: string, evidence: Evidence[]): Grounding 
 
 /**
  * Answer built only from the notes: used when no AI model is configured, or when the model fails.
- * Everything here is quoted from the repository and cited.
+ * Everything here is quoted from the repository; the Sources link shows where it came from.
  */
 export function composeRepositoryAnswer(search: SearchResult, evidence: Evidence[]): string {
   if (!evidence.length) {
@@ -108,21 +109,24 @@ export function composeRepositoryAnswer(search: SearchResult, evidence: Evidence
     return [
       "Your notes don't answer this directly. The closest entries are:",
       "",
-      ...evidence.slice(0, 4).map(item => `- ${askLink(item.question, item.question)} [${item.n}]`),
+      ...evidence.slice(0, 4).map(item => `- ${askLink(conciseTitle(item), item.question)}`),
     ].join("\n");
   }
 
   // An overview led by a roadmap shows the roadmap itself (a checklist), then the rest.
   if (search.mode === "browse" && evidence[0].kind !== "roadmap") {
-    const heading = search.topics.length ? `Here is an overview of **${search.topics.map(item => item.topic).join(", ")}** from your notes:` : "From your notes:";
-    return [heading, "", ...evidence.map(item => `- **${item.question}** — ${item.summary || "see the source"} [${item.n}]`)].join("\n");
+    const heading = search.topics.length ? `**${search.topics.map(item => topicLabel(item.topic)).join(", ")}**` : "**Closest topics**";
+    return [heading, "", ...evidence.map(item => `- ${askLink(conciseTitle(item), item.question)} — ${item.summary || "see the source"}`)].join("\n");
   }
 
   // The best match only; related entries are offered as follow-up questions.
   const [top] = evidence;
   const body = top.answer ?? top.summary;
   const intro = search.confidence === "medium" ? "_Closest entry in your notes; it may not cover everything you asked._\n\n" : "";
-  return [`${intro}**${top.question}** [${top.n}]`, "", body].join("\n");
+  const title = `**${conciseTitle(top)}**`;
+  // Glossary answers already open with the term in bold.
+  if (body.startsWith(title)) return `${intro}${body}`;
+  return [`${intro}${title}`, "", body].join("\n");
 }
 
 /** "Forward Deployed Engineer (FDE) (New)" → "Forward Deployed Engineer": drops trailing "(...)" groups. */
@@ -157,6 +161,7 @@ function roleFollowUps(top: Evidence): FollowUpParts {
 
 /** Career and salary notes: diagrams and mock interviews don't fit; offer the role itself. */
 function careerFollowUps(top: Evidence): FollowUpParts {
+  if (isCountryNote(top)) return { first: ["Which countries can I work in from India?", "How to actually get an interview abroad"], last: [] };
   const colon = top.question.indexOf(": ");
   const role = colon >= 0 ? withoutTrailingParentheses(top.question.slice(colon + 2)) : "";
   const last = role && top.topics.includes("it-careers") ? [`What does a ${role} do?`, `Roadmap to become a ${role}`] : [];
@@ -189,7 +194,10 @@ function followUpsFor(top: Evidence | undefined, search: SearchResult): FollowUp
 /** Next questions to offer as chips: built from the matches, never invented. */
 export function suggestFollowUps(search: SearchResult, evidence: Evidence[], followUpQuestions: string[]): string[] {
   const { first, last } = followUpsFor(evidence[0], search);
-  const related = evidence.slice(1).filter(item => item.kind !== "note").map(item => item.question);
+  // Related entries only from the answer's own topic, so the chips stay on its subject.
+  const top = evidence[0];
+  const sameTopic = (item: Evidence) => !top || item.topics.some(topic => top.topics.includes(topic));
+  const related = evidence.slice(1).filter(item => item.kind !== "note" && sameTopic(item)).map(item => item.question);
   const suggestions = [...first, ...followUpQuestions.slice(0, 2), ...last, ...related];
   return [...new Set(suggestions.map(text => text.trim()).filter(text => text && text.length <= 160))].slice(0, 4);
 }

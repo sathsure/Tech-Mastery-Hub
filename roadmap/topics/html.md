@@ -8,56 +8,56 @@
 
 ## 1. HTML Interview Preparation › Part 1 — Browser Internals & Rendering
 
-- [ ] [How does a browser render a webpage?](../../interview/frontend/01-HTML.md)
-  - [ ] [Why does `transform: translateX(...)` perform better than `left: ...`?](../../interview/frontend/01-HTML.md)
-  - [ ] [Can you walk me through the Critical Rendering Path and why it matters for performance?](../../interview/frontend/01-HTML.md)
+1. [How does a browser render a webpage?](../../interview/frontend/01-HTML.md)
+   - [Why does `transform: translateX(...)` perform better than `left: ...`?](../../interview/frontend/01-HTML.md)
+   - [Can you walk me through the Critical Rendering Path and why it matters for performance?](../../interview/frontend/01-HTML.md)
 
 ## 2. HTML Interview Preparation › Part 2 — Semantic HTML & Structure
 
-- [ ] [What does "semantic HTML" mean?](../../interview/frontend/01-HTML.md)
-- [ ] [Difference between `<div>` and `<span>`?](../../interview/frontend/01-HTML.md)
-- [ ] [Difference between `id` and `class`?](../../interview/frontend/01-HTML.md)
-- [ ] [Difference between `<section>`, `<article>`, and `<div>`?](../../interview/frontend/01-HTML.md)
+1. [What does "semantic HTML" mean?](../../interview/frontend/01-HTML.md)
+2. [Difference between `<div>` and `<span>`?](../../interview/frontend/01-HTML.md)
+3. [Difference between `id` and `class`?](../../interview/frontend/01-HTML.md)
+4. [Difference between `<section>`, `<article>`, and `<div>`?](../../interview/frontend/01-HTML.md)
 
 ## 3. HTML Interview Preparation › Part 3 — Attributes & Data
 
-- [ ] [What are `data-*` attributes?](../../interview/frontend/01-HTML.md)
-- [ ] [Difference between `<script>`, `async`, and `defer`?](../../interview/frontend/01-HTML.md)
-- [ ] [How would you explain the difference between preload, prefetch, and preconnect — and when would you reach for each?](../../interview/frontend/01-HTML.md)
+1. [What are `data-*` attributes?](../../interview/frontend/01-HTML.md)
+2. [Difference between `<script>`, `async`, and `defer`?](../../interview/frontend/01-HTML.md)
+3. [How would you explain the difference between preload, prefetch, and preconnect — and when would you reach for each?](../../interview/frontend/01-HTML.md)
 
 ## 4. HTML Interview Preparation › Part 4 — Accessibility (a11y)
 
-- [ ] [How do you approach accessibility (a11y) in HTML, and what does it mean to you in practice?](../../interview/frontend/01-HTML.md)
-  - [ ] [What are ARIA attributes?](../../interview/frontend/01-HTML.md)
+1. [How do you approach accessibility (a11y) in HTML, and what does it mean to you in practice?](../../interview/frontend/01-HTML.md)
+   - [What are ARIA attributes?](../../interview/frontend/01-HTML.md)
 
 ## 5. HTML Interview Preparation › Part 5 — DOM, Performance & Modern Features
 
-- [ ] [Difference between DOM and Virtual DOM?](../../interview/frontend/01-HTML.md)
-- [ ] [What are Web Components?](../../interview/frontend/01-HTML.md)
-  - [ ] [What is the `<template>` and `<slot>` element?](../../interview/frontend/01-HTML.md)
+1. [Difference between DOM and Virtual DOM?](../../interview/frontend/01-HTML.md)
+2. [What are Web Components?](../../interview/frontend/01-HTML.md)
+   - [What is the `<template>` and `<slot>` element?](../../interview/frontend/01-HTML.md)
 
 ## 6. HTML Interview Preparation › Part 6 — SEO
 
-- [ ] [How does HTML structure impact SEO?](../../interview/frontend/01-HTML.md)
-  - [ ] [What is the difference between `<meta>` tags for SEO and Open Graph?](../../interview/frontend/01-HTML.md)
+1. [How does HTML structure impact SEO?](../../interview/frontend/01-HTML.md)
+   - [What is the difference between `<meta>` tags for SEO and Open Graph?](../../interview/frontend/01-HTML.md)
 
 ## 7. Trick Questions & Mock Scenarios
 
-- [ ] [Is ARIA better than semantic HTML?](../../interview/frontend/01-HTML.md)
-- [ ] [Does HTML support multithreading?](../../interview/frontend/01-HTML.md)
-- [ ] [Why does broken HTML still work?](../../interview/frontend/01-HTML.md)
-- [ ] [Does `display: none` remove an element from the DOM?](../../interview/frontend/01-HTML.md)
-  - [ ] [Difference between `display: none` and `hidden` attribute?](../../interview/frontend/01-HTML.md)
+1. [Is ARIA better than semantic HTML?](../../interview/frontend/01-HTML.md)
+2. [Does HTML support multithreading?](../../interview/frontend/01-HTML.md)
+3. [Why does broken HTML still work?](../../interview/frontend/01-HTML.md)
+4. [Does `display: none` remove an element from the DOM?](../../interview/frontend/01-HTML.md)
+   - [Difference between `display: none` and `hidden` attribute?](../../interview/frontend/01-HTML.md)
 
 ## 8. Mock Interview Scenarios
 
-- [ ] [We're getting complaints that the page feels slow, but the HTML is pretty small. Where would you start debugging?](../../interview/frontend/01-HTML.md)
-- [ ] [A QA engineer filed a bug — screen reader users are hearing content in the wrong order. How would you investigate that?](../../interview/frontend/01-HTML.md)
-- [ ] [Our mobile users are seeing a broken layout, but everything looks fine on desktop. What would you look for?](../../interview/frontend/01-HTML.md)
-- [ ] [A user reported they can't operate our form using only the keyboard — the buttons aren't responding. What could be causing that?](../../interview/frontend/01-HTML.md)
-- [ ] [After a major redesign, our SEO rankings dropped significantly. What HTML-related things would you investigate?](../../interview/frontend/01-HTML.md)
-- [ ] [After a dynamic DOM update, click handlers on some elements stop working. Why does this happen and how would you fix it?](../../interview/frontend/01-HTML.md)
-- [ ] [Our page scores poorly on CLS in Lighthouse. Walk me through how you'd reduce it.](../../interview/frontend/01-HTML.md)
+1. [We're getting complaints that the page feels slow, but the HTML is pretty small. Where would you start debugging?](../../interview/frontend/01-HTML.md)
+2. [A QA engineer filed a bug — screen reader users are hearing content in the wrong order. How would you investigate that?](../../interview/frontend/01-HTML.md)
+3. [Our mobile users are seeing a broken layout, but everything looks fine on desktop. What would you look for?](../../interview/frontend/01-HTML.md)
+4. [A user reported they can't operate our form using only the keyboard — the buttons aren't responding. What could be causing that?](../../interview/frontend/01-HTML.md)
+5. [After a major redesign, our SEO rankings dropped significantly. What HTML-related things would you investigate?](../../interview/frontend/01-HTML.md)
+6. [After a dynamic DOM update, click handlers on some elements stop working. Why does this happen and how would you fix it?](../../interview/frontend/01-HTML.md)
+7. [Our page scores poorly on CLS in Lighthouse. Walk me through how you'd reduce it.](../../interview/frontend/01-HTML.md)
 
 ## Diagrams
 
