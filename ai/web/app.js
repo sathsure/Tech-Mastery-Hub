@@ -1,5 +1,4 @@
 import { fetchCatalog, fetchEntry, searchNotes, streamChat } from "./api.js";
-import { connectionMap } from "./graph.js";
 import { escapeHtml, icon, markdownToText, renderMarkdown } from "./render.js";
 import { deleteConversation, getConversation, listConversations, newConversation, saveConversation } from "./store.js";
 
@@ -14,9 +13,11 @@ const state = {
   labels: {},
   conversation: newConversation(),
   controller: null,
-  /** Index of the assistant message whose sources are shown. */
-  sourcesFor: -1,
+  /** Where Back returns to: earlier screens, newest last ({ id, scrollTop }). */
+  back: [],
 };
+
+const MAX_BACK = 50;
 
 const KIND_LABELS = { question: "Interview question", "follow-up": "Follow-up", note: "Note", role: "Role", term: "Term", roadmap: "Roadmap" };
 const KIND_CLASS = { question: "k-question", "follow-up": "k-follow", note: "k-note", role: "k-role", term: "k-term", roadmap: "k-roadmap" };
@@ -63,7 +64,91 @@ function topicLabel(id) {
   return state.labels[id] ?? id;
 }
 
+/** GitHub page for a source, scrolled to its lines. */
+function lineAnchor(item) {
+  if (!item.startLine) return "";
+  const end = item.endLine && item.endLine !== item.startLine ? `-L${item.endLine}` : "";
+  return `#L${item.startLine}${end}`;
+}
+
+function sourceUrl(item) {
+  if (!item?.path || !state.catalog?.github) return null;
+  const path = item.path.split("/").map(encodeURIComponent).join("/");
+  const lines = lineAnchor(item);
+  // ?plain=1 shows Markdown as source, so the line anchor lands on the exact entry.
+  const plain = /\.md$/i.test(item.path) && lines ? "?plain=1" : "";
+  return `${state.catalog.github}${path}${plain}${lines}`;
+}
+
+// ---------- Back navigation ----------
+// Each new question or chat switch remembers the screen you left (chat and scroll position).
+// Back (button, Alt+←, or the browser's back) returns to it exactly, without re-asking anything.
+
+function rememberScreen() {
+  if (!state.conversation.messages.length) return;
+  state.back.push({ id: state.conversation.id, scrollTop: thread.scrollTop });
+  if (state.back.length > MAX_BACK) state.back.shift();
+  history.pushState({ tmhBack: state.back.length }, "", location.href);
+  updateBack();
+}
+
+function updateBack() {
+  $("#back").hidden = !state.back.length;
+}
+
+function restoreScreen() {
+  const screen = state.back.pop();
+  updateBack();
+  if (!screen) return;
+  if (state.controller) state.controller.abort();
+  if (screen.id !== state.conversation.id) {
+    const stored = getConversation(screen.id);
+    if (!stored) return;
+    state.conversation = stored;
+    topicFilter.value = stored.topic ?? "";
+    withTransition(() => {
+      renderThread({ scrollTop: screen.scrollTop });
+      renderRecent();
+    });
+    history.replaceState(history.state, "", `?c=${stored.id}`);
+    return;
+  }
+  settleScroll(screen.scrollTop);
+}
+
+/** Scroll to `top` and keep it there while an earlier smooth scroll winds down. */
+function settleScroll(top) {
+  const apply = () => {
+    // Only correct small drift; a large difference means the reader has scrolled since.
+    if (Math.abs(thread.scrollTop - top) < 80) thread.scrollTo({ top, behavior: "instant" });
+    updateJump();
+  };
+  thread.scrollTo({ top, behavior: "instant" });
+  requestAnimationFrame(apply);
+  setTimeout(apply, 250);
+  setTimeout(apply, 600);
+}
+
+function goBack() {
+  // The browser's history drives Back, so its own back button behaves the same way.
+  if (state.back.length) history.back();
+}
+
 const reducedMotion = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/** Run a DOM update as an animated page change (View Transitions API) where the browser supports it. */
+function withTransition(update) {
+  if (!document.startViewTransition || reducedMotion() || document.hidden) return update();
+  document.startViewTransition(update);
+}
+
+/** Line icon for each sidebar item. */
+const NAV_ICONS = {
+  html: "code", css: "brush", javascript: "braces", typescript: "braces", react: "atom", angular: "hexagon", rxjs: "waves",
+  nodejs: "server", java: "coffee", spring: "leaf", "spring-security": "lock", "spring-cloud": "cloud", microservices: "boxes",
+  "rest-api": "plug", "database/sql": "database", devops: "infinity", aws: "cloud", "web-architecture": "network", "web-vitals": "gauge",
+  "it-roles": "briefcase", "it-terminology": "book", "tech-stack": "layers", "it-careers": "trend", roadmaps: "map",
+};
 
 /**
  * Bring a question to the top of the view. Its answer then grows below it without moving the page,
@@ -103,13 +188,10 @@ function renderSidebar() {
   const { atlas } = state.catalog;
   // Names only, alphabetical: the sidebar is navigation, not statistics.
   const topics = [...state.catalog.topics].sort((a, b) => a.label.localeCompare(b.label));
-  $("#topic-list").innerHTML = topics
-    .map(topic => `<li><button type="button" class="nav-item" data-ask="Explore ${escapeHtml(topic.label)}"><span>${escapeHtml(topic.label)}</span></button></li>`)
-    .join("");
-  const atlasPrompts = { roadmaps: "Where do I start?", "it-roles": "What roles are there in IT?", "it-terminology": "What is SDLC?", "tech-stack": "What is Kafka used for?", "it-careers": "Career ladder" };
-  $("#atlas-list").innerHTML = atlas
-    .map(item => `<li><button type="button" class="nav-item" data-ask="${escapeHtml(atlasPrompts[item.id] ?? item.label)}"><span>${escapeHtml(item.label)}</span></button></li>`)
-    .join("");
+  // Each item opens an overview: what the section covers, then its parts to pick from.
+  const navItem = item => `<li><button type="button" class="nav-item" data-ask="${item.id === "roadmaps" ? "Where do I start?" : `Explore ${escapeHtml(item.label)}`}" ${item.id === "roadmaps" ? "" : `data-overview="${escapeHtml(item.id)}"`} title="${escapeHtml(item.description ?? item.label)}">${icon(NAV_ICONS[item.id] ?? "book", "nav-ic")}<span>${escapeHtml(item.label)}</span></button></li>`;
+  $("#topic-list").innerHTML = topics.map(navItem).join("");
+  $("#atlas-list").innerHTML = atlas.map(navItem).join("");
   topicFilter.innerHTML = `<option value="">All notes</option>` + [...topics, ...atlas].map(topic => `<option value="${escapeHtml(topic.id)}">${escapeHtml(topic.label)}</option>`).join("");
   topicFilter.value = state.conversation.topic ?? "";
   const engine = $("#engine");
@@ -123,7 +205,7 @@ function renderRecent() {
   const list = listConversations();
   $("#recent-list").innerHTML = list.length
     ? list
-        .map(item => `<li class="${item.id === state.conversation.id ? "active" : ""}"><button type="button" class="nav-item" data-open="${item.id}"><span>${escapeHtml(item.title)}</span></button><button type="button" class="recent-del" data-delete="${item.id}" aria-label="Delete chat">${icon("trash")}</button></li>`)
+        .map(item => `<li class="${item.id === state.conversation.id ? "active" : ""}"><button type="button" class="nav-item" data-open="${escapeHtml(item.id)}">${icon("message", "nav-ic")}<span>${escapeHtml(item.title)}</span></button><button type="button" class="recent-del" data-delete="${escapeHtml(item.id)}" aria-label="Delete chat">${icon("trash")}</button></li>`)
         .join("")
     : `<li class="recent-empty">No chats yet</li>`;
 }
@@ -156,7 +238,10 @@ function applyTheme(theme) {
 
 function toggleTheme() {
   const next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
-  applyTheme(next);
+  // Cross-fade the whole page between themes.
+  document.documentElement.classList.add("theming");
+  withTransition(() => applyTheme(next));
+  setTimeout(() => document.documentElement.classList.remove("theming"), 600);
   try {
     localStorage.setItem("tmh.theme", next);
   } catch {
@@ -167,11 +252,20 @@ function toggleTheme() {
 // ---------- Welcome ----------
 
 function renderWelcome() {
-  // Kept short on purpose: one line of context and a few ways in.
-  const starters = ["How does the event loop work?", "Prepare me for a Java interview", "What does a DevOps engineer do?", "Where do I start?"];
+  // A short hero, four ways in, and a few starter questions.
+  const features = [
+    { icon: "layers", title: "Explore topics", text: "Java, React, SQL and more: see the sections first, then dive in.", ask: "Explore Java", overview: "java" },
+    { icon: "graduation", title: "Interview prep", text: "Model answers, key points and likely follow-ups.", ask: "Prepare me for a Java interview" },
+    { icon: "map", title: "Roadmaps", text: "Pick topics and get a learning plan in the right order.", ask: "Roadmap to become a Forward Deployed Engineer" },
+    { icon: "briefcase", title: "Career atlas", text: "IT roles, a glossary of terms, and salaries in India.", ask: "Explore IT Roles", overview: "it-roles" },
+  ];
+  const starters = ["How does the event loop work?", "What does a DevOps engineer do?", "How does HashMap work internally?", "Where do I start?"];
   thread.innerHTML = `<div class="welcome">
-    <h2>Ask about any topic in your notes</h2>
-    <p>Interview questions, concepts, IT roles and learning roadmaps.</p>
+    <span class="hero-badge"><svg aria-hidden="true"><use href="#i-logo"></use></svg>Your notes, as a tutor</span>
+    <h2>Learn faster. <em>Interview with confidence.</em></h2>
+    <p>Answers come from your Tech-Mastery-Hub notes, with every source a click away on GitHub.</p>
+    <div class="features">${features.map(item => `<button type="button" class="feature" data-ask="${escapeHtml(item.ask)}" ${item.overview ? `data-overview="${item.overview}"` : ""}><span class="feature-ic">${icon(item.icon)}</span><b>${escapeHtml(item.title)}</b><span>${escapeHtml(item.text)}</span></button>`).join("")}</div>
+    <p class="starters-label">Try asking</p>
     <div class="starters">${starters.map(q => `<button type="button" class="starter" data-ask="${escapeHtml(q)}"><span>${escapeHtml(q)}</span>${icon("arrow")}</button>`).join("")}</div>
   </div>`;
 }
@@ -190,23 +284,37 @@ function userView(message) {
 function groundingHtml(message) {
   const done = message.done;
   if (!done) return "";
+  // Overviews and plans are built from the notes' structure; there is nothing to verify.
+  if (done.view === "overview" || done.view === "plan") return "";
   const g = done.grounding;
   const sources = message.meta?.evidence.length ?? 0;
   if (g.invalid.length) return `<span class="grounding warn">${icon("alert")}Refers to a source that doesn't exist</span>`;
   if (!sources) return `<span class="grounding">${icon("info")}Not found in your notes</span>`;
+  if (message.meta?.confidence === "low") return `<span class="grounding">${icon("info")}Not covered directly by your notes</span>`;
   if (g.generatedSection) return `<span class="grounding mixed">${icon("info")}Includes information not from your notes</span>`;
   if (g.uncited) return `<span class="grounding warn">${icon("alert")}Check the sources for this answer</span>`;
   return `<span class="grounding ok">${icon("check")}From your notes</span>`;
+}
+
+const VIEW_LABELS = { overview: "Overview", plan: "Learning plan" };
+
+/** "Overview", "Learning plan", the Claude model's name, or "From your notes". */
+function headLabel(message, mode) {
+  const viewLabel = VIEW_LABELS[message.done?.view];
+  if (viewLabel) return viewLabel;
+  return mode === "claude" ? prettyModel(message.done?.model ?? state.catalog?.model) : "From your notes";
 }
 
 function assistantHead(message) {
   const meta = message.meta;
   if (!meta) return "";
   const mode = message.done?.answerMode ?? meta.answerMode;
-  const label = mode === "claude" ? prettyModel(message.done?.model ?? state.catalog?.model) : "From your notes";
-  const sources = meta.evidence.length ? `<button type="button" class="src-btn" data-sources>${icon("file")}Sources</button>` : "";
-  const weak = meta.confidence === "low" ? `<span class="match-note">Closest match</span>` : "";
-  return `<span class="who"><svg aria-hidden="true"><use href="#i-logo"></use></svg>Tutor</span><span class="mode">${escapeHtml(label)}</span>${weak}${sources}`;
+  const label = headLabel(message, mode);
+  // Sources opens the main source file on GitHub; each [n] chip opens its own.
+  const top = meta.evidence[0];
+  const url = sourceUrl(top);
+  const sources = url ? `<a class="src-btn" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer" title="${escapeHtml(`${top.path} — open on GitHub`)}">${icon("file")}Sources${icon("external")}</a>` : "";
+  return `<span class="who"><svg aria-hidden="true"><use href="#i-logo"></use></svg>Tutor</span><span class="mode">${escapeHtml(label)}</span>${sources}`;
 }
 
 function assistantView(message, index) {
@@ -225,93 +333,94 @@ function assistantView(message, index) {
   return element;
 }
 
+/** Text of the plan bar for `picked` selected items. */
+function planBarText(picked) {
+  const lead = picked ? `${picked} selected.` : "Select the topics you want to learn.";
+  return `${lead} The tutor will put them in the right order.`;
+}
+
+function planBarHtml(index, picked) {
+  const disabled = picked ? "" : "disabled";
+  return `<div class="plan-bar"><span>${planBarText(picked)}</span><button type="button" class="btn btn-primary" data-plan="${index}" ${disabled}>${icon("list")}<span>Build my learning plan</span></button></div>`;
+}
+
+function renderAnswerBody(element, message, final, index) {
+  const body = element.querySelector(".md");
+  const evidence = message.meta?.evidence ?? [];
+  const { tasks } = renderMarkdown(body, message.content, {
+    evidenceCount: evidence.length,
+    sourceUrl: n => sourceUrl(evidence[n - 1]),
+    final,
+    checks: message.checks ?? {},
+    open: message.open ?? {},
+  });
+  element.classList.toggle("streaming", !final);
+  if (!final && message.content) body.insertAdjacentHTML("beforeend", `<span class="caret"></span>`);
+  // A checklist (roadmap or study path) can be turned into a learning plan.
+  if (final && tasks && message.done?.view !== "plan") {
+    const picked = Object.values(message.checks ?? {}).filter(Boolean).length;
+    body.insertAdjacentHTML("beforeend", planBarHtml(index, picked));
+  }
+}
+
+const retryButton = (index, label) =>
+  `<button type="button" class="ghost-btn" data-retry="${index}">${icon("refresh")}<span>${label}</span></button>`;
+
+function renderNotice(element, message, index) {
+  const notice = element.querySelector(".notice");
+  const noticeText = message.error ?? message.done?.notice;
+  notice.hidden = !noticeText;
+  if (!noticeText) return;
+  const retry = message.error ? retryButton(index, "Try again") : "";
+  notice.innerHTML = `${icon("alert")}<span>${escapeHtml(noticeText)}</span>${retry}`;
+}
+
+function renderFooter(element, message, final, index) {
+  const foot = element.querySelector(".msg-foot");
+  foot.hidden = !final || !message.done;
+  if (foot.hidden) return;
+  const isLast = index === state.conversation.messages.length - 1;
+  const copy = `<button type="button" class="ghost-btn" data-copy-answer="${index}">${icon("copy")}<span>Copy</span></button>`;
+  foot.innerHTML = `${groundingHtml(message)}<span class="foot-actions">${copy}${isLast ? retryButton(index, "Regenerate") : ""}</span>`;
+}
+
+function renderFollowUps(element, message, final) {
+  const chips = final && message.done ? message.done.followUps.slice(0, 3) : [];
+  const buttons = chips.map(text => `<button type="button" class="followup" data-ask="${escapeHtml(text)}"><span>${escapeHtml(text)}</span>${icon("arrow")}</button>`);
+  element.querySelector(".followups").innerHTML = chips.length
+    ? `<span class="followups-label">Related questions</span><div class="followup-list">${buttons.join("")}</div>`
+    : "";
+}
+
 function updateAssistant(element, message, { final, status } = {}) {
   const index = Number(element.dataset.index);
   element.querySelector(".msg-head").innerHTML = assistantHead(message);
   const statusLine = element.querySelector(".status-line");
   statusLine.hidden = final || (Boolean(message.content) && !status);
   if (status) statusLine.querySelector(".status-text").textContent = status;
-  const body = element.querySelector(".md");
-  renderMarkdown(body, message.content, { evidenceCount: message.meta?.evidence.length ?? 0, final, checks: message.checks ?? {} });
-  element.classList.toggle("streaming", !final);
-  if (!final && message.content) body.insertAdjacentHTML("beforeend", `<span class="caret"></span>`);
-
-  const notice = element.querySelector(".notice");
-  const noticeText = message.error ?? message.done?.notice;
-  notice.hidden = !noticeText;
-  if (noticeText) notice.innerHTML = `${icon("alert")}<span>${escapeHtml(noticeText)}</span>${message.error ? `<button type="button" class="ghost-btn" data-retry="${index}">${icon("refresh")}<span>Try again</span></button>` : ""}`;
-
-  const foot = element.querySelector(".msg-foot");
-  foot.hidden = !final || !message.done;
-  if (final && message.done) {
-    foot.innerHTML = `${groundingHtml(message)}<span class="foot-actions">
-      <button type="button" class="ghost-btn" data-copy-answer="${index}">${icon("copy")}<span>Copy</span></button>
-      ${index === state.conversation.messages.length - 1 ? `<button type="button" class="ghost-btn" data-retry="${index}">${icon("refresh")}<span>Regenerate</span></button>` : ""}</span>`;
-  }
-  const followUps = element.querySelector(".followups");
-  const chips = final && message.done ? message.done.followUps.slice(0, 3) : [];
-  followUps.innerHTML = chips.length
-    ? `<span class="followups-label">Related questions</span><div class="followup-list">${chips.map(text => `<button type="button" class="followup" data-ask="${escapeHtml(text)}"><span>${escapeHtml(text)}</span>${icon("arrow")}</button>`).join("")}</div>`
-    : "";
+  renderAnswerBody(element, message, final, index);
+  renderNotice(element, message, index);
+  renderFooter(element, message, final, index);
+  renderFollowUps(element, message, final);
 }
 
-function renderThread() {
+/** Draw the whole chat. With `scrollTop`, return to that exact position (Back). */
+function renderThread({ scrollTop } = {}) {
   const messages = state.conversation.messages;
   $("#chat-title").textContent = state.conversation.title;
   if (!messages.length) {
     renderWelcome();
-    showSources(-1);
     return;
   }
   thread.innerHTML = "";
   messages.forEach((message, index) => thread.append(message.role === "user" ? userView(message) : assistantView(message, index)));
-  const lastAssistant = messages.map((message, index) => (message.role === "assistant" ? index : -1)).filter(index => index >= 0).pop() ?? -1;
-  showSources(lastAssistant);
   // Reopened chats show the last question at the top, with its answer below.
   const questions = thread.querySelectorAll(".msg.user");
   requestAnimationFrame(() => {
     anchorToQuestion(questions[questions.length - 1], { smooth: false });
+    if (scrollTop !== undefined) settleScroll(scrollTop);
     updateJump();
   });
-}
-
-// ---------- Sources panel ----------
-
-function showSources(index) {
-  state.sourcesFor = index;
-  const message = state.conversation.messages[index];
-  const cards = $("#source-cards");
-  const mapCard = $("#map-card");
-  if (!message?.meta) {
-    $("#sources-sub").textContent = "Sources for each answer appear here.";
-    mapCard.hidden = true;
-    cards.innerHTML = "";
-    return;
-  }
-  const { evidence } = message.meta;
-  $("#sources-sub").textContent = evidence.length ? "Select a source to read it in full." : "No matching notes.";
-  mapCard.hidden = evidence.length < 2;
-  $("#map").innerHTML = connectionMap(evidence, state.labels);
-  // Title, short summary and kind; file paths and match details are in the source view.
-  cards.innerHTML = evidence
-    .map(item => `<article class="source-card" data-n="${item.n}" data-entry="${escapeHtml(item.id)}" tabindex="0">
-        <header><span class="source-n">${item.n}</span><span class="kind">${KIND_LABELS[item.kind] ?? escapeHtml(item.kind)}</span></header>
-        <h3>${escapeHtml(item.question)}</h3>
-        ${item.summary ? `<p>${escapeHtml(item.summary)}</p>` : ""}
-        ${item.visuals[0] ? `<img class="source-thumb" src="${escapeHtml(item.visuals[0].url)}" alt="${escapeHtml(item.visuals[0].alt || item.question)}" loading="lazy">` : ""}
-        ${item.kind === "role" && item.relatedTopics?.length ? `<div class="skills"><span>Skills to learn</span>${item.relatedTopics.slice(0, 5).map(topic => `<button type="button" class="chip mini" data-ask="Prepare me for a ${escapeHtml(topicLabel(topic))} interview">${escapeHtml(topicLabel(topic))}</button>`).join("")}</div>` : ""}
-      </article>`)
-    .join("");
-}
-
-function highlightSource(n, scroll = true) {
-  for (const element of document.querySelectorAll(".source-card.flash, .node-source.flash")) element.classList.remove("flash");
-  const card = document.querySelector(`.source-card[data-n="${n}"]`);
-  if (!card) return;
-  card.classList.add("flash");
-  document.querySelector(`.node-source[data-n="${n}"]`)?.classList.add("flash");
-  if (scroll) card.scrollIntoView({ block: "nearest", behavior: "smooth" });
-  setTimeout(() => card.classList.remove("flash"), 1600);
 }
 
 // ---------- Overlays ----------
@@ -339,7 +448,7 @@ async function openEntry(id) {
     const markdown = [entry.parent ? `> Follow-up to: **${entry.parent.question}**` : "", entry.section.length ? `_${entry.section.join(" › ")}_` : "", entry.prompt ?? "", entry.answer].filter(Boolean).join("\n\n");
     renderMarkdown($("#viewer-body"), markdown, { final: true });
     $("#viewer-foot").innerHTML = `${entry.followUps.length ? `<div class="viewer-follow"><span>Follow-ups</span>${entry.followUps.map(item => `<button type="button" class="chip" data-entry-open="${escapeHtml(item.id)}">${escapeHtml(item.question)}</button>`).join("")}</div>` : ""}
-      <div class="viewer-actions"><button type="button" class="ghost-btn" data-copy-path="${escapeHtml(`${entry.path}:${entry.startLine}`)}">${icon("copy")}<span>Copy path</span></button><button type="button" class="primary-btn" data-ask="${escapeHtml(entry.question)}">${icon("message")}<span>Ask the tutor about this</span></button></div>`;
+      <div class="viewer-actions">${sourceUrl(entry) ? `<a class="ghost-btn" href="${escapeHtml(sourceUrl(entry))}" target="_blank" rel="noopener noreferrer">${icon("external")}<span>Open on GitHub</span></a>` : ""}<button type="button" class="ghost-btn" data-copy-path="${escapeHtml(`${entry.path}:${entry.startLine}`)}">${icon("copy")}<span>Copy path</span></button><button type="button" class="primary-btn" data-ask="${escapeHtml(entry.question)}">${icon("message")}<span>Ask the tutor about this</span></button></div>`;
   } catch (error) {
     $("#viewer-title").textContent = "Could not open this source";
     $("#viewer-body").innerHTML = `<p>${escapeHtml(error.message)}</p>`;
@@ -362,9 +471,10 @@ function renderPaletteResults(hits, result) {
   paletteHits = hits;
   paletteActive = 0;
   $("#palette-meta").innerHTML = result?.corrections.length ? `Showing results for “${escapeHtml(result.corrections.map(c => c.to).join(" "))}”` : "";
+  const emptyState = result ? `<li class="palette-empty">Nothing matched. Press Enter to ask the tutor anyway.</li>` : "";
   $("#palette-results").innerHTML = hits.length
     ? hits.map((hit, i) => `<li class="palette-item ${i === 0 ? "active" : ""}" data-i="${i}" role="option"><span class="kind ${KIND_CLASS[hit.kind] ?? ""}">${KIND_LABELS[hit.kind] ?? escapeHtml(hit.kind)}</span><span class="palette-q">${escapeHtml(hit.question)}</span><span class="palette-topic">${escapeHtml(hit.topics.map(topicLabel).join(", "))}</span><button type="button" class="icon-btn" data-entry-open="${escapeHtml(hit.id)}" aria-label="Read source">${icon("eye")}</button></li>`).join("")
-    : result ? `<li class="palette-empty">Nothing matched. Press Enter to ask the tutor anyway.</li>` : "";
+    : emptyState;
 }
 
 function movePalette(delta) {
@@ -399,11 +509,14 @@ function completeSlash(name) {
 
 /** "/quiz java" → "Quiz me on java". Plain text passes through. */
 function expandCommand(text) {
-  const match = /^\/(\w+)\s*(.*)$/s.exec(text.trim());
-  if (!match) return text.trim();
-  const command = COMMANDS.find(item => item.name === match[1].toLowerCase());
-  if (!command) return text.trim();
-  const argument = match[2].trim() || (state.conversation.topic ? topicLabel(state.conversation.topic) : "");
+  const trimmed = text.trim();
+  if (!trimmed.startsWith("/")) return trimmed;
+  const space = trimmed.search(/\s/);
+  const name = (space < 0 ? trimmed.slice(1) : trimmed.slice(1, space)).toLowerCase();
+  const command = COMMANDS.find(item => item.name === name);
+  if (!command) return trimmed;
+  const typed = space < 0 ? "" : trimmed.slice(space).trim();
+  const argument = typed || (state.conversation.topic ? topicLabel(state.conversation.topic) : "");
   return argument ? command.text.replace("{}", argument) : command.text.replace(" {}", "").replace("{}", "this");
 }
 
@@ -416,10 +529,49 @@ function historyFor(messages) {
     .map(message => ({ role: message.role, content: message.content.length > 6000 ? `${message.content.slice(0, 6000)}\n…` : message.content }));
 }
 
-async function send(rawText, { replaceFrom } = {}) {
+/** Status line for a "status" event: thinking, a fallback notice, or nothing once writing starts. */
+function statusText(event) {
+  if (event.stage === "thinking") return "Thinking";
+  if (event.stage === "fallback") return event.message ?? "Using your notes";
+  return "";
+}
+
+/** Applies one stream event to the answer; returns the new status line, or undefined to leave it. */
+function applyEvent(assistant, event) {
+  switch (event.type) {
+    case "meta":
+      assistant.meta = event;
+      return event.evidence.length ? "Preparing the answer" : "Checking your notes";
+    case "status":
+      return statusText(event);
+    case "delta":
+      assistant.content += event.text;
+      return "";
+    case "done":
+      assistant.done = event;
+      return undefined;
+    case "error":
+      assistant.error = event.message;
+      return undefined;
+    default:
+      return undefined;
+  }
+}
+
+function failureMessage(error, assistant) {
+  if (error.name !== "AbortError") return error.message || "Something went wrong.";
+  return assistant.content ? "Stopped." : "Stopped before an answer was written.";
+}
+
+/**
+ * Ask a question. options: replaceFrom (regenerate from this message), plan (items picked from a
+ * checklist), overview (a topic id from the sidebar).
+ */
+async function send(rawText, { replaceFrom, plan, overview } = {}) {
   const text = expandCommand(rawText);
   if (!text || state.controller) return;
   const conversation = state.conversation;
+  if (replaceFrom === undefined) rememberScreen();
   if (replaceFrom !== undefined) conversation.messages.splice(replaceFrom);
   const turns = historyFor(conversation.messages);
   if (!conversation.messages.length) {
@@ -427,13 +579,15 @@ async function send(rawText, { replaceFrom } = {}) {
     thread.innerHTML = "";
   }
   $("#chat-title").textContent = conversation.title;
-  const user = { role: "user", content: text };
+  const user = { role: "user", content: text, ...(plan ? { plan } : {}), ...(overview ? { overview } : {}) };
   const assistant = { role: "assistant", content: "", meta: null, done: null, checks: {} };
   conversation.messages.push(user, assistant);
   const index = conversation.messages.length - 1;
   const questionView = userView(user);
+  questionView.classList.add("enter");
   thread.append(questionView);
   const view = assistantView(assistant, index);
+  view.classList.add("enter");
   thread.append(view);
   input.value = "";
   autosize();
@@ -454,51 +608,39 @@ async function send(rawText, { replaceFrom } = {}) {
   };
 
   try {
-    await streamChat({ message: text, history: turns, topic: conversation.topic }, event => {
-      if (event.type === "meta") {
-        assistant.meta = event;
-        status = event.evidence.length ? "Preparing the answer" : "Checking your notes";
-        showSources(index);
-        schedule();
-      } else if (event.type === "status") {
-        status = event.stage === "thinking" ? "Thinking" : event.stage === "fallback" ? (event.message ?? "Using your notes") : "Writing";
-        if (event.stage === "writing") status = "";
-        schedule();
-      } else if (event.type === "delta") {
-        assistant.content += event.text;
-        status = "";
-        schedule();
-      } else if (event.type === "done") {
-        assistant.done = event;
-      } else if (event.type === "error") {
-        assistant.error = event.message;
-      }
+    const request = { message: text, history: turns, topic: conversation.topic, plan, overview };
+    await streamChat(request, event => {
+      const next = applyEvent(assistant, event);
+      if (next === undefined) return;
+      status = next;
+      schedule();
     }, controller.signal);
   } catch (error) {
-    if (error.name === "AbortError") {
-      assistant.error = assistant.content ? "Stopped." : "Stopped before an answer was written.";
-    } else {
-      assistant.error = error.message || "Something went wrong.";
-    }
+    assistant.error = failureMessage(error, assistant);
   } finally {
     if (frame) cancelAnimationFrame(frame);
     state.controller = null;
     setStreaming(false);
     if (!assistant.done && !assistant.error) assistant.error = "The answer ended unexpectedly.";
     paint(true);
-    showSources(index);
     saveConversation(conversation);
     renderRecent();
     history.replaceState(null, "", `?c=${conversation.id}`);
   }
 }
 
-function loadConversation(id) {
+/** Open a saved chat (or a new one). `animate: false` at startup, where later code needs the DOM at once. */
+function loadConversation(id, { animate = true } = {}) {
+  if (id !== state.conversation.id) rememberScreen();
   const stored = id ? getConversation(id) : null;
   state.conversation = stored ?? newConversation();
   topicFilter.value = state.conversation.topic ?? "";
-  renderThread();
-  renderRecent();
+  const draw = () => {
+    renderThread();
+    renderRecent();
+  };
+  if (animate) withTransition(draw);
+  else draw();
   history.replaceState(null, "", stored ? `?c=${stored.id}` : location.pathname);
 }
 
@@ -523,70 +665,120 @@ function exportConversation() {
 
 // ---------- Events ----------
 
-document.addEventListener("click", event => {
-  const target = event.target.closest("button, [data-entry], .node-source, img.md-img, .overlay");
-  if (!target) return;
+const closeSidebar = () => document.body.classList.remove("sidebar-open");
 
-  if (target.classList.contains("overlay") && event.target === target) return closeOverlays();
-  if (target.matches("img.md-img")) {
-    $("#lightbox-img").src = target.src;
-    $("#lightbox-img").alt = target.alt;
-    return openOverlay("lightbox");
-  }
-  const action = target.dataset.action;
-  if (action === "new-chat") return loadConversation(null), document.body.classList.remove("sidebar-open"), input.focus();
-  if (action === "palette") return openPalette();
-  if (action === "toggle-sources") return document.body.classList.toggle("sources-hidden");
-  if (action === "theme") return toggleTheme();
-  if (action === "jump") return thread.scrollTo({ top: thread.scrollHeight, behavior: reducedMotion() ? "auto" : "smooth" });
-  if (action === "close-panels") {
-    document.body.classList.remove("sidebar-open");
-    if (matchMedia("(max-width: 1180px)").matches) document.body.classList.add("sources-hidden");
-    return;
-  }
-  if (action === "open-sidebar") return document.body.classList.add("sidebar-open");
-  if (action === "close-sidebar") return document.body.classList.remove("sidebar-open");
-  if (action === "close-overlay") return closeOverlays();
-  if (action === "export") return exportConversation();
-  if (action === "slash") {
+/** Buttons with data-action="...". */
+const ACTIONS = {
+  "new-chat": () => {
+    loadConversation(null);
+    closeSidebar();
+    input.focus();
+  },
+  palette: () => openPalette(),
+  back: () => goBack(),
+  theme: () => toggleTheme(),
+  jump: () => thread.scrollTo({ top: thread.scrollHeight, behavior: reducedMotion() ? "auto" : "smooth" }),
+  "close-panels": closeSidebar,
+  "open-sidebar": () => document.body.classList.add("sidebar-open"),
+  "close-sidebar": closeSidebar,
+  "close-overlay": () => closeOverlays(),
+  export: () => exportConversation(),
+  slash: () => {
     input.value = "/";
     input.focus();
-    return renderSlashMenu();
+    renderSlashMenu();
+  },
+};
+
+function deleteChat(id) {
+  deleteConversation(id);
+  if (id === state.conversation.id) loadConversation(null);
+  renderRecent();
+}
+
+function retryAnswer(value) {
+  const at = Number(value);
+  const question = state.conversation.messages[at - 1];
+  if (question?.content) send(question.content, { replaceFrom: at - 1, plan: question.plan, overview: question.overview });
+}
+
+/** Buttons identified by a data attribute, checked in this order: [dataset key, handler(value, button)]. */
+const DATA_HANDLERS = [
+  [
+    "ask",
+    (value, target) => {
+      closeOverlays();
+      closeSidebar();
+      send(value, { overview: target.dataset.overview });
+    },
+  ],
+  ["plan", value => submitPlan(Number(value))],
+  ["command", value => completeSlash(value)],
+  [
+    "open",
+    value => {
+      loadConversation(value);
+      closeSidebar();
+    },
+  ],
+  ["delete", value => deleteChat(value)],
+  ["entryOpen", value => openEntry(value)],
+  ["copyPath", value => copyText(value, "Path copied")],
+  ["copy", (_, target) => copyText(target.closest(".code-block")?.querySelector("pre")?.innerText ?? "", "Code copied")],
+  ["copyAnswer", value => copyText(markdownToText(state.conversation.messages[Number(value)].content), "Answer copied")],
+  ["retry", value => retryAnswer(value)],
+];
+
+function openLightbox(image) {
+  $("#lightbox-img").src = image.src;
+  $("#lightbox-img").alt = image.alt;
+  openOverlay("lightbox");
+}
+
+document.addEventListener("click", event => {
+  const target = event.target.closest("button, img.md-img, .overlay");
+  if (!target) return;
+  if (target.classList.contains("overlay")) {
+    if (event.target === target) closeOverlays();
+    return;
   }
-  if (target.dataset.ask) {
-    closeOverlays();
-    document.body.classList.remove("sidebar-open");
-    return send(target.dataset.ask);
-  }
-  if (target.dataset.command) return completeSlash(target.dataset.command);
-  if (target.dataset.open) return loadConversation(target.dataset.open), document.body.classList.remove("sidebar-open");
-  if (target.dataset.delete) {
-    deleteConversation(target.dataset.delete);
-    if (target.dataset.delete === state.conversation.id) loadConversation(null);
-    return renderRecent();
-  }
-  if (target.dataset.entryOpen) return openEntry(target.dataset.entryOpen);
-  if (target.dataset.copyPath) return copyText(target.dataset.copyPath, "Path copied");
-  if (target.matches("[data-copy]")) return copyText(target.closest(".code-block")?.querySelector("pre")?.innerText ?? "", "Code copied");
-  if (target.dataset.copyAnswer) return copyText(markdownToText(state.conversation.messages[Number(target.dataset.copyAnswer)].content), "Answer copied");
-  if (target.dataset.retry) {
-    const at = Number(target.dataset.retry);
-    const question = state.conversation.messages[at - 1]?.content;
-    if (question) return send(question, { replaceFrom: at - 1 });
-  }
-  if (target.matches("[data-sources]")) {
-    const index = Number(target.closest(".msg").dataset.index);
-    showSources(index);
-    return document.body.classList.remove("sources-hidden");
-  }
-  if (target.classList.contains("cite")) {
-    const index = Number(target.closest(".msg")?.dataset.index);
-    if (state.sourcesFor !== index) showSources(index);
-    document.body.classList.remove("sources-hidden");
-    return highlightSource(target.dataset.n);
-  }
-  if (target.classList.contains("node-source")) return highlightSource(target.dataset.n);
-  if (target.dataset.entry && !event.target.closest("button")) return openEntry(target.dataset.entry);
+  if (target.matches("img.md-img")) return openLightbox(target);
+  const action = ACTIONS[target.dataset.action];
+  if (action) return action();
+  const handler = DATA_HANDLERS.find(([key]) => target.dataset[key] !== undefined);
+  if (handler) handler[1](target.dataset[handler[0]], target);
+});
+
+/** Turn the ticked checklist items of one answer into a learning plan. */
+function submitPlan(index) {
+  const view = thread.querySelector(`.msg.assistant[data-index="${index}"]`);
+  const message = state.conversation.messages[index];
+  if (!view || !message) return;
+  const items = [...view.querySelectorAll("input[data-check]:checked")].map(box => ({ label: box.dataset.label || "Item", ...(box.dataset.topic ? { topic: box.dataset.topic } : {}) }));
+  if (!items.length) return toast("Select at least one topic first", "error");
+  // The roadmap's own title ("Roadmap: Forward Deployed Engineer"), else the answer's first heading.
+  const title = message.meta?.evidence[0]?.kind === "roadmap" ? message.meta.evidence[0].question : (view.querySelector(".md h1, .md h2, .md strong")?.textContent ?? "").trim();
+  const names = items.map(item => item.label);
+  const text = `Build my learning plan: ${names.slice(0, 6).join(", ")}${names.length > 6 ? ` and ${names.length - 6} more` : ""}`;
+  send(text, { plan: { title: title.slice(0, 200), items: items.slice(0, 60).map(item => ({ ...item, label: item.label.slice(0, 200) })) } });
+}
+
+// Overview sections remember whether they are open, so Back and reloads show them as you left them.
+document.addEventListener(
+  "toggle",
+  event => {
+    const details = event.target;
+    if (!(details instanceof HTMLDetailsElement) || !details.matches("details.outline")) return;
+    const message = state.conversation.messages[Number(details.closest(".msg")?.dataset.index)];
+    if (!message) return;
+    message.open = { ...(message.open ?? {}), [details.dataset.outline]: details.open };
+    saveConversation(state.conversation);
+  },
+  true,
+);
+
+addEventListener("popstate", () => {
+  if (state.back.length) restoreScreen();
 });
 
 document.addEventListener("change", event => {
@@ -598,29 +790,20 @@ document.addEventListener("change", event => {
   if (!message) return;
   message.checks = { ...(message.checks ?? {}), [box.dataset.check]: box.checked };
   saveConversation(state.conversation);
-  updateAssistant(view, message, { final: true });
-});
-
-document.addEventListener("mouseover", event => {
-  const cite = event.target.closest(".cite");
-  const node = event.target.closest(".node-source");
-  if (cite || node) {
-    const n = (cite ?? node).dataset.n;
-    const index = Number(cite?.closest(".msg")?.dataset.index);
-    if (!cite || index === state.sourcesFor) {
-      document.querySelectorAll(".source-card").forEach(card => card.classList.toggle("hover", card.dataset.n === n));
-      document.querySelectorAll(".node-source, .edge").forEach(item => item.classList.toggle("hover", item.dataset.n === n));
-    }
+  // Update the plan bar in place: redrawing the answer would move the page under the reader.
+  const bar = view.querySelector(".plan-bar");
+  if (bar) {
+    const picked = view.querySelectorAll("input[data-check]:checked").length;
+    bar.querySelector("span").textContent = planBarText(picked);
+    bar.querySelector("[data-plan]").disabled = !picked;
   }
 });
-document.addEventListener("mouseout", event => {
-  if (event.target.closest(".cite, .node-source")) document.querySelectorAll(".hover").forEach(item => item.classList.remove("hover"));
-});
+
 
 $("#composer").addEventListener("submit", event => {
   event.preventDefault();
   if (state.controller) return state.controller.abort();
-  void send(input.value);
+  send(input.value);
 });
 
 input.addEventListener("input", () => {
@@ -685,7 +868,7 @@ $("#palette-input").addEventListener("keydown", event => {
     const text = hit?.question ?? event.target.value.trim();
     if (!text) return;
     closeOverlays();
-    void send(text);
+    send(text);
   }
 });
 
@@ -700,7 +883,10 @@ document.addEventListener("keydown", event => {
     return loadConversation(null);
   }
   if (event.key === "Escape") {
-    if (!$("#slash-menu").hidden) return ($("#slash-menu").hidden = true);
+    if (!$("#slash-menu").hidden) {
+      $("#slash-menu").hidden = true;
+      return;
+    }
     if (document.body.classList.contains("has-overlay")) return closeOverlays();
     if (state.controller) return state.controller.abort();
   }
@@ -710,8 +896,10 @@ document.addEventListener("keydown", event => {
     input.value = "/";
     renderSlashMenu();
   }
-  const card = document.activeElement?.closest?.(".source-card");
-  if (event.key === "Enter" && card && !typing) openEntry(card.dataset.entry);
+  if (event.altKey && event.key === "ArrowLeft" && !typing && state.back.length) {
+    event.preventDefault();
+    goBack();
+  }
 });
 
 // ---------- Start ----------
@@ -728,15 +916,15 @@ async function start() {
   }
   state.labels = Object.fromEntries([...state.catalog.topics, ...state.catalog.atlas].map(topic => [topic.id, topic.label]));
   const params = new URLSearchParams(location.search);
-  loadConversation(params.get("c"));
+  loadConversation(params.get("c"), { animate: false });
   if (params.get("topic")) {
     state.conversation.topic = params.get("topic");
     topicFilter.value = state.conversation.topic;
   }
   renderSidebar();
-  if (matchMedia("(max-width: 1180px)").matches) document.body.classList.add("sources-hidden");
-  if (params.get("q")) void send(params.get("q"));
+  updateBack();
+  if (params.get("q")) send(params.get("q"));
   else input.focus();
 }
 
-void start();
+start();

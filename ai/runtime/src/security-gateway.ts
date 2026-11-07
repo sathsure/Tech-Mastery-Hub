@@ -3,8 +3,8 @@ import type { ContributionFile, ContributionRequest, SecurityAssessment, Securit
 const SECRET_PATTERNS: Array<[string, RegExp]> = [
   ["private-key", /-----BEGIN (?:RSA |EC |OPENSSH |DSA )?PRIVATE KEY-----/i],
   ["aws-access-key", /\bAKIA[0-9A-Z]{16}\b/],
-  ["github-token", /\b(?:ghp|gho|ghs|ghr)_[A-Za-z0-9_]{20,}\b/],
-  ["generic-secret-assignment", /\b(?:password|passwd|secret|api[_-]?key|access[_-]?token)\s*[:=]\s*["']?[A-Za-z0-9+/_=-]{8,}/i]
+  ["github-token", /\b(?:ghp|gho|ghs|ghr)_\w{20,}\b/],
+  ["generic-secret-assignment", /\b(?:password|passwd|secret|api[_-]?key|access[_-]?token)\s*[:=]\s*["']?[\w+/=-]{8,}/i]
 ];
 
 const INJECTION_PATTERNS: Array<[string, RegExp]> = [

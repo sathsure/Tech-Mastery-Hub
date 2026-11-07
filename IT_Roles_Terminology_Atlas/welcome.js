@@ -4,7 +4,7 @@
   const A = window.ATLAS, S = A.salary;
   const $ = (s) => document.querySelector(s);
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-  const slug = (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  const slug = (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(?:^-)|(?:-$)/g, "");
   const load = (k, d) => { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch { return d; } };
   const save = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} };
   const DASH = "IT_Roles_Terminology_Atlas.html";
@@ -23,7 +23,11 @@
   const opts = (arr) => arr.map((x, i) => `<option value="${i}">${esc(x.n)}</option>`).join("");
   $("#wCity").innerHTML = opts(S.cities); $("#wCompany").innerHTML = opts(S.companies); $("#wMode").innerHTML = opts(S.workModes);
   $("#wSkillList").innerHTML = S.skills.map((s) => `<option value="${esc(s.n)}">`).join("");
-  $("#wExpChips").innerHTML = [0, 1, 3, 5, 8, 12].map((y) => `<button class="chip" type="button" data-exp="${y}">${y ? `${y} yr${y === 1 ? "" : "s"}` : "Fresher"}</button>`).join("");
+  const expLabel = (y) => {
+    if (!y) return "Fresher";
+    return `${y} yr${y === 1 ? "" : "s"}`;
+  };
+  $("#wExpChips").innerHTML = [0, 1, 3, 5, 8, 12].map((y) => `<button class="chip" type="button" data-exp="${y}">${expLabel(y)}</button>`).join("");
 
   // Prefill when editing an existing profile.
   if (!prev.skipped) {
@@ -54,11 +58,16 @@
       ? skills.map((s, i) => `<span class="skill ok">${esc(s)}<button type="button" data-rm="${i}" aria-label="Remove ${esc(s)}">×</button></span>`).join("")
       : `<p class="empty-inline">No skills yet — pick from the suggestions below or type your own.</p>`;
     const sug = suggestionsFor();
-    $("#wSuggest").innerHTML = sug.length ? `<label>Common for your role${+$("#wExp").value ? ` at ${$("#wExp").value} yrs` : ""}</label>
+    const atExp = +$("#wExp").value ? ` at ${$("#wExp").value} yrs` : "";
+    $("#wSuggest").innerHTML = sug.length ? `<label>Common for your role${atExp}</label>
       <div class="chips">${sug.map((s) => `<button class="chip sug sug-expected" type="button" data-add="${esc(s)}">+ ${esc(s)}</button>`).join("")}
       <button class="btn-link" type="button" data-add-all>Add all</button></div>` : "";
   }
-  const addSkill = (raw) => { const n = canon(raw.trim()); if (n && !has(n)) skills.push(n); renderSkills(); };
+  const addSkill = (raw) => {
+    const n = canon(raw.trim());
+    if (n && !has(n)) skills.push(n);
+    renderSkills();
+  };
   $("#wSkillAdd").addEventListener("click", () => { addSkill($("#wSkillInput").value); $("#wSkillInput").value = ""; $("#wSkillInput").focus(); });
   $("#wSkillInput").addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); $("#wSkillAdd").click(); } });
   $("#wSkills").addEventListener("click", (e) => { const b = e.target.closest("[data-rm]"); if (b) { skills.splice(+b.dataset.rm, 1); renderSkills(); } });
@@ -112,7 +121,10 @@
   const editing = !!prev.role && !prev.skipped;
   document.querySelectorAll("[data-skip]").forEach((b) => {
     if (editing) b.textContent = "Cancel — back to the atlas";
-    b.addEventListener("click", () => { if (!editing) save("atlas-profile", { skipped: true }); location.href = DASH; });
+    b.addEventListener("click", () => {
+      if (!editing) save("atlas-profile", { skipped: true });
+      location.href = DASH;
+    });
   });
   if (editing) {
     $(".wl-foot").innerHTML = `Want recommendations off? <button class="btn-link" type="button" id="wForget">Remove my details</button>`;

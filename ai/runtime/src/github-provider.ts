@@ -1,5 +1,6 @@
 ﻿import { execFile } from "node:child_process";
 import { promisify } from "node:util";
+import { trimEndChars } from "./text-utils.js";
 
 const execFileAsync = promisify(execFile);
 
@@ -95,11 +96,10 @@ async function getRemoteUrl(remoteName = "origin"): Promise<string> {
 function parseGitHubRemote(remoteUrl: string): GitHubRepository | null {
   const normalized = remoteUrl
     .replace(/^git@github\.com:/, "https://github.com/")
-    .replace(/\.git$/, "")
-    .replace(/\/+$/, "");
+    .replace(/\.git$/, "");
 
-  const match = normalized.match(
-    /^https:\/\/github\.com\/([^/]+)\/([^/]+)$/
+  const match = /^https:\/\/github\.com\/([^/]+)\/([^/]+)$/.exec(
+    trimEndChars(normalized, "/")
   );
 
   if (!match) {

@@ -14,7 +14,7 @@ import { rewriteImages, visualUrl } from "./chat-evidence.js";
 import { createAnswerModel } from "./answer-model.js";
 import { loadQuestionIndex } from "./question-index.js";
 import { REPOSITORY_ROOT } from "./question-indexer.js";
-import { TOPIC_LABELS } from "./topic-labels.js";
+import { TOPIC_DESCRIPTIONS, TOPIC_LABELS } from "./topic-labels.js";
 
 const RUNTIME_DIR = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const WEB_DIR = resolve(REPOSITORY_ROOT, "ai/web");
@@ -48,6 +48,9 @@ const CSP = [
 
 export { TOPIC_LABELS };
 const ATLAS_TOPICS = ["roadmaps", "it-roles", "it-terminology", "tech-stack", "it-careers"];
+/** Where "Sources" links point: the notes on GitHub (TUTOR_GITHUB_REPO = owner/name, TUTOR_GITHUB_BRANCH). */
+const GITHUB_REPO = /^[\w.-]+\/[\w.-]+$/.test(process.env.TUTOR_GITHUB_REPO ?? "") ? process.env.TUTOR_GITHUB_REPO! : "sathsure/Tech-Mastery-Hub";
+const GITHUB_BRANCH = /^[\w./-]+$/.test(process.env.TUTOR_GITHUB_BRANCH ?? "") ? process.env.TUTOR_GITHUB_BRANCH! : "main";
 
 function sendFile(response: ServerResponse, status: number, body: Buffer | string, type: string, cache: string): void {
   const headers: Record<string, string> = { "content-type": type, "cache-control": cache, "x-content-type-options": "nosniff", "referrer-policy": "no-referrer" };
@@ -60,8 +63,14 @@ function sendJson(response: ServerResponse, status: number, payload: unknown): v
   sendFile(response, status, JSON.stringify(payload), "application/json; charset=utf-8", "no-cache");
 }
 
-/** Resolves `name` inside `root`, or null when it would leave it. */
-function inside(root: string, name: string): string | null {
+/** Resolves the URL-encoded `name` inside `root`, or null when it is malformed or would leave it. */
+function inside(root: string, encodedName: string): string | null {
+  let name: string;
+  try {
+    name = decodeURIComponent(encodedName);
+  } catch {
+    return null;
+  }
   const target = resolve(root, name);
   const path = relative(root, target);
   return !path || path.startsWith("..") || isAbsolute(path) ? null : target;
@@ -93,11 +102,12 @@ export async function buildCatalog() {
     const family = entry.section[1] ?? "Other";
     families.set(family, [...(families.get(family) ?? []), entry.question.replace(/^What does an? /, "").replace(/ do\?$/, "")]);
   }
-  const topic = (id: string) => ({ id, label: TOPIC_LABELS[id] ?? id, count: counts.get(id) ?? 0, samples: samples.get(id) ?? [] });
+  const topic = (id: string) => ({ id, label: TOPIC_LABELS[id] ?? id, description: TOPIC_DESCRIPTIONS[id] ?? null, count: counts.get(id) ?? 0, samples: samples.get(id) ?? [] });
   const model = createAnswerModel();
   return {
     answerMode: model ? "claude" : "repository",
     model: model?.model ?? null,
+    github: `https://github.com/${GITHUB_REPO}/blob/${GITHUB_BRANCH}/`,
     stats: {
       entries: index.stats.entries,
       questions: index.stats.questions + index.stats.followUps,
@@ -147,7 +157,7 @@ export async function handleWebRoute(request: IncomingMessage, response: ServerR
     return true;
   }
   if (path.startsWith("/app/")) {
-    await serveStatic(response, inside(WEB_DIR, decodeURIComponent(path.slice("/app/".length))), "no-cache");
+    await serveStatic(response, inside(WEB_DIR, path.slice("/app/".length)), "no-cache");
     return true;
   }
   if (path.startsWith("/vendor/")) {

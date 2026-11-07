@@ -54,26 +54,44 @@ function enhanceCode(root, { final }) {
   }
 }
 
-function enhanceCitations(root, evidenceCount) {
+/** A citation chip: a link to the source on GitHub when it exists, otherwise a marked-invalid button. */
+function citationChip(n, evidenceCount, sourceUrl) {
+  const valid = n >= 1 && n <= evidenceCount;
+  const url = valid ? sourceUrl?.(n) : null;
+  const chip = document.createElement(url ? "a" : "button");
+  if (url) {
+    chip.href = url;
+    chip.target = "_blank";
+    chip.rel = "noopener noreferrer";
+    chip.title = "Open the source on GitHub";
+  } else {
+    chip.type = "button";
+  }
+  chip.className = valid ? "cite" : "cite invalid";
+  chip.dataset.n = String(n);
+  chip.textContent = String(n);
+  chip.setAttribute("aria-label", `Source ${n}`);
+  return chip;
+}
+
+/** Text nodes that contain [n] and are not inside code, links or existing chips. */
+function citationTextNodes(root) {
+  const skip = node => node.parentElement?.closest("code, pre, a, .cite") || !/\[\d{1,2}\]/.test(node.nodeValue ?? "");
   const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
-    acceptNode: node => (node.parentElement?.closest("code, pre, a, .cite") || !/\[\d{1,2}\]/.test(node.nodeValue ?? "") ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT),
+    acceptNode: node => (skip(node) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT),
   });
   const nodes = [];
   while (walker.nextNode()) nodes.push(walker.currentNode);
-  for (const node of nodes) {
+  return nodes;
+}
+
+function enhanceCitations(root, evidenceCount, sourceUrl) {
+  for (const node of citationTextNodes(root)) {
     const fragment = document.createDocumentFragment();
     let last = 0;
     const text = node.nodeValue ?? "";
     for (const match of text.matchAll(/\[(\d{1,2})\]/g)) {
-      fragment.append(text.slice(last, match.index));
-      const n = Number(match[1]);
-      const chip = document.createElement("button");
-      chip.type = "button";
-      chip.className = n >= 1 && n <= evidenceCount ? "cite" : "cite invalid";
-      chip.dataset.n = String(n);
-      chip.textContent = String(n);
-      chip.setAttribute("aria-label", `Source ${n}`);
-      fragment.append(chip);
+      fragment.append(text.slice(last, match.index), citationChip(Number(match[1]), evidenceCount, sourceUrl));
       last = (match.index ?? 0) + match[0].length;
     }
     fragment.append(text.slice(last));
@@ -100,6 +118,7 @@ function enhanceGenerated(root) {
   return true;
 }
 
+/** Checklists are selections: tick the items you want, then build a plan from them. */
 function enhanceChecklists(root, checks) {
   let index = 0;
   for (const list of root.querySelectorAll("ul, ol")) {
@@ -111,29 +130,53 @@ function enhanceChecklists(root, checks) {
       const key = String(index++);
       box.disabled = false;
       box.dataset.check = key;
-      if (key in checks) box.checked = Boolean(checks[key]);
+      box.checked = Boolean(checks[key]);
+      // What the plan needs: the item's text, and its study-path topic when it links to one.
+      const link = item.querySelector(".repo-link, a");
+      box.dataset.label = (link?.textContent ?? item.textContent ?? "").trim();
+      const topic = /\/topics\/([a-z0-9-]+)\.md/.exec(link?.dataset.href ?? "")?.[1];
+      if (topic && topic !== "README") box.dataset.topic = topic;
+      box.setAttribute("aria-label", `Select ${box.dataset.label}`);
       item.classList.add("task");
-      item.classList.toggle("done", box.checked);
     }
   }
+  return index;
+}
+
+/** Overview sections stay open or closed as the reader left them. */
+function enhanceOutlines(root, open) {
+  [...root.querySelectorAll("details.outline")].forEach((details, i) => {
+    details.dataset.outline = String(i);
+    if (open[i]) details.open = true;
+  });
 }
 
 /**
  * Links between repository files (from roadmaps and notes) can't open in the browser app,
  * so they ask the tutor instead: a study path, a role roadmap, or the linked question.
  */
+/** What a link to a repository file asks: the study path, the role roadmap, or the link text. */
+function repoLinkQuestion(href, file, text, fromName) {
+  if (href.includes("/topics/")) {
+    if (file === "README") return "Where do I start?";
+    const subject = /study path/i.test(text) ? fromName : text;
+    return `${subject} study path`;
+  }
+  if (href.includes("/roles/")) return file === "README" ? "Role roadmaps" : `${text} roadmap`;
+  return text;
+}
+
 function repoLink(link, href) {
   const text = (link.textContent ?? "").trim();
   const file = href.split("#")[0].split("/").pop().replace(/\.md$/i, "");
   const fromName = file.replace(/-/g, " ");
-  let ask = text;
-  if (/\/topics\//.test(href)) ask = file === "README" ? "Where do I start?" : `${/study path/i.test(text) ? fromName : text} study path`;
-  else if (/\/roles\//.test(href)) ask = file === "README" ? "Role roadmaps" : `${text} roadmap`;
+  const ask = repoLinkQuestion(href, file, text, fromName);
   const button = document.createElement("button");
   button.type = "button";
   button.className = "repo-link";
   button.dataset.ask = ask;
   button.title = `${href} — ask the tutor`;
+  button.dataset.href = href;
   button.textContent = text || fromName;
   return button;
 }
@@ -148,7 +191,19 @@ function enhanceMisc(root) {
   }
   for (const link of root.querySelectorAll("a[href]")) {
     const href = link.getAttribute("href") ?? "";
-    if (/^https?:/i.test(href)) {
+    if (href.startsWith("#ask:")) {
+      // Built answers link to questions; clicking one asks it.
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "ask-link";
+      try {
+        button.dataset.ask = decodeURIComponent(href.slice(5));
+      } catch {
+        button.dataset.ask = link.textContent ?? "";
+      }
+      button.textContent = link.textContent ?? "";
+      link.replaceWith(button);
+    } else if (/^https?:/i.test(href)) {
       link.target = "_blank";
       link.rel = "noopener noreferrer";
     } else if (/\.md(#.*)?$/i.test(href) && !href.startsWith("/")) {
@@ -163,18 +218,20 @@ function enhanceMisc(root) {
 
 /**
  * Render markdown into `target`.
- * options: evidenceCount (citations above it are marked invalid), final (draw diagrams), checks (saved checklist state).
+ * options: evidenceCount (citations above it are marked invalid), sourceUrl(n) (link for citation n),
+ * final (draw diagrams), checks (saved checklist state), open (saved open overview sections).
  */
-export function renderMarkdown(target, markdown, { evidenceCount = 0, final = true, checks = {} } = {}) {
+export function renderMarkdown(target, markdown, { evidenceCount = 0, sourceUrl = null, final = true, checks = {}, open = {} } = {}) {
   const html = DOMPurify.sanitize(marked.parse(markdown ?? ""), { FORBID_TAGS: ["style", "form", "iframe"], FORBID_ATTR: ["style"] });
   target.innerHTML = html;
   enhanceCode(target, { final });
-  enhanceCitations(target, evidenceCount);
+  enhanceCitations(target, evidenceCount, sourceUrl);
   const generated = enhanceGenerated(target);
-  enhanceChecklists(target, checks);
   enhanceMisc(target);
-  if (final) void renderDiagrams(target);
-  return { generated };
+  const tasks = enhanceChecklists(target, checks);
+  enhanceOutlines(target, open);
+  if (final) renderDiagrams(target);
+  return { generated, tasks };
 }
 
 let mermaidLoading = null;

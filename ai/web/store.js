@@ -28,8 +28,14 @@ export function getConversation(id) {
   return read().find(item => item.id === id) ?? null;
 }
 
+/** 128 random bits as hex, for browsers without crypto.randomUUID (non-secure contexts). */
+function randomId() {
+  const bytes = crypto.getRandomValues(new Uint8Array(16));
+  return Array.from(bytes, byte => byte.toString(16).padStart(2, "0")).join("");
+}
+
 export function newConversation() {
-  const id = (crypto.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(16).slice(2)}`);
+  const id = crypto.randomUUID?.() ?? randomId();
   return { id, title: "New chat", topic: null, createdAt: Date.now(), updatedAt: Date.now(), messages: [] };
 }
 

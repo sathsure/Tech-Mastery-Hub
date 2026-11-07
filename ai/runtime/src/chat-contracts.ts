@@ -12,7 +12,21 @@ export interface ChatRequest {
   history?: ChatTurn[];
   /** Optional topic filter chosen in the UI. */
   topic?: string;
+  /** Items picked from a roadmap checklist; the answer is a learning sequence for them. */
+  plan?: PlanRequest;
+  /** A topic id picked in the sidebar: answer with that topic's overview. */
+  overview?: string;
 }
+
+export interface PlanRequest {
+  /** The roadmap the items were picked from, e.g. "Roadmap: Forward Deployed Engineer". */
+  title: string;
+  /** `topic` is a study-path slug (e.g. "database-sql") when the item links to one. */
+  items: Array<{ label: string; topic?: string }>;
+}
+
+/** How the answer was produced: a written answer, a topic overview, or a learning plan. */
+export type AnswerView = "answer" | "overview" | "plan";
 
 /** One numbered source given to the model and shown in the UI. Citations [n] refer to `n`. */
 export interface Evidence {
@@ -66,6 +80,7 @@ export type ChatEvent =
   | {
       type: "done";
       answerMode: AnswerMode;
+      view: AnswerView;
       model: string | null;
       grounding: Grounding;
       followUps: string[];

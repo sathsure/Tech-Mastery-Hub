@@ -12,6 +12,7 @@ import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import { fileURLToPath } from "node:url";
 import type { MergeVerification } from "./reindex-contracts.js";
+import { byText } from "./text-utils.js";
 
 const execFileAsync = promisify(execFile);
 
@@ -123,9 +124,7 @@ function isExcluded(path: string): boolean {
 }
 
 function canonicalFromPath(path: string): string | null {
-  const match = path.match(
-    /^knowledge\/concepts\/(.+)\/README\.md$/i
-  );
+  const match = /^knowledge\/concepts\/(.+)\/README\.md$/i.exec(path);
 
   return match ? match[1].toLowerCase() : null;
 }
@@ -222,7 +221,7 @@ async function discoverCanonicalConceptPaths(): Promise<string[]> {
     return [];
   }
 
-  return discovered.sort();
+  return discovered.sort(byText);
 }
 async function loadCurrentIndex(): Promise<KnowledgeIndex> {
   const raw = (await readFile(INDEX_PATH, "utf8")).replace(/^\uFEFF/, "");
@@ -277,6 +276,39 @@ function preserveDocumentMetadata(
   };
 }
 
+/** Size of a repository file, or null when it no longer exists. */
+async function fileSize(path: string): Promise<number | null> {
+  try {
+    const fileStat = await stat(resolve(REPOSITORY_ROOT, normalizePath(path)));
+    return fileStat.isFile() ? fileStat.size : null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * The documents of the rebuilt index: every indexed file that still exists (metadata kept, size refreshed),
+ * then any canonical concept README that is not indexed yet.
+ */
+async function rebuildDocuments(
+  existing: IndexedDocument[],
+  existingByPath: Map<string, IndexedDocument>
+): Promise<IndexedDocument[]> {
+  const documents: IndexedDocument[] = [];
+  for (const document of existing) {
+    const path = normalizePath(document.path);
+    if (isExcluded(path)) continue;
+    const size = await fileSize(path);
+    if (size !== null) documents.push(preserveDocumentMetadata(document, path, size));
+  }
+  for (const path of await discoverCanonicalConceptPaths()) {
+    if (existingByPath.has(path.toLowerCase())) continue;
+    const size = await fileSize(path);
+    if (size !== null) documents.push(preserveDocumentMetadata(undefined, path, size));
+  }
+  return documents;
+}
+
 async function buildCandidate(): Promise<ReindexBuildResult> {
   const current = await loadCurrentIndex();
 
@@ -289,9 +321,7 @@ async function buildCandidate(): Promise<ReindexBuildResult> {
     );
   }
 
-
-
-  const documents: IndexedDocument[] = [];
+  const documents = await rebuildDocuments(current.documents, existingByPath);
 
 
   const currentPaths = new Set(
@@ -370,116 +400,62 @@ async function buildCandidate(): Promise<ReindexBuildResult> {
   };
 }
 
+/** Every canonical concept the candidate knows about, from its metadata and its concept README paths. */
+function knownConcepts(candidate: KnowledgeIndex): Set<string> {
+  const concepts = new Set<string>();
+  for (const document of candidate.documents) {
+    if (document.canonical_concept) concepts.add(String(document.canonical_concept).toLowerCase());
+    const fromPath = canonicalFromPath(document.path);
+    if (fromPath) concepts.add(fromPath.toLowerCase());
+  }
+  return concepts;
+}
+
+/** Problems with one indexed document: excluded, missing, wrong owner, or broken relationships. */
+async function documentFindings(document: IndexedDocument, concepts: Set<string>): Promise<string[]> {
+  const findings: string[] = [];
+  if (isExcluded(document.path)) findings.push("Excluded path appeared in candidate index: " + document.path);
+  if ((await fileSize(document.path)) === null) {
+    findings.push(await missingFileFinding(document.path));
+  }
+  const canonical = canonicalFromPath(document.path);
+  if (canonical && String(document.canonical_concept ?? "").toLowerCase() !== canonical) {
+    findings.push("Canonical ownership mismatch: " + document.path + " expected " + canonical);
+  }
+  if (!Array.isArray(document.related_concepts)) {
+    findings.push("related_concepts must be an array: " + document.path);
+    return findings;
+  }
+  for (const relationship of document.related_concepts) {
+    if (!concepts.has(String(relationship).toLowerCase())) {
+      findings.push("Invalid related concept '" + relationship + "' for " + document.path);
+    }
+  }
+  return findings;
+}
+
+/** "does not exist" or "is not a file", matching the wording the audit log has always used. */
+async function missingFileFinding(path: string): Promise<string> {
+  try {
+    await stat(resolve(REPOSITORY_ROOT, normalizePath(path)));
+    return "Indexed path is not a file: " + path;
+  } catch {
+    return "Indexed file does not exist: " + path;
+  }
+}
+
 async function validateCandidate(
   candidate: KnowledgeIndex
 ): Promise<ReindexValidation> {
   const findings: string[] = [];
+  const concepts = knownConcepts(candidate);
   const paths = new Set<string>();
-  const canonicalConcepts = new Set<string>();
 
   for (const document of candidate.documents) {
-    const indexedCanonical =
-      document.canonical_concept;
-
-    if (indexedCanonical) {
-      canonicalConcepts.add(
-        String(indexedCanonical).toLowerCase()
-      );
-    }
-
-    const pathCanonical =
-      canonicalFromPath(document.path);
-
-    if (pathCanonical) {
-      canonicalConcepts.add(
-        pathCanonical.toLowerCase()
-      );
-    }
-  }
-
-  for (const document of candidate.documents) {
-    const normalized =
-      normalizePath(document.path).toLowerCase();
-
-    if (paths.has(normalized)) {
-      findings.push(
-        "Duplicate indexed path: " +
-          document.path
-      );
-    }
-
+    const normalized = normalizePath(document.path).toLowerCase();
+    if (paths.has(normalized)) findings.push("Duplicate indexed path: " + document.path);
     paths.add(normalized);
-
-    if (isExcluded(document.path)) {
-      findings.push(
-        "Excluded path appeared in candidate index: " +
-          document.path
-      );
-    }
-
-    const absolute = resolve(
-      REPOSITORY_ROOT,
-      normalizePath(document.path)
-    );
-
-    try {
-      const fileStat = await stat(absolute);
-
-      if (!fileStat.isFile()) {
-        findings.push(
-          "Indexed path is not a file: " +
-            document.path
-        );
-      }
-    } catch {
-      findings.push(
-        "Indexed file does not exist: " +
-          document.path
-      );
-    }
-
-    const canonical =
-      canonicalFromPath(document.path);
-
-    if (
-      canonical &&
-      String(
-        document.canonical_concept ?? ""
-      ).toLowerCase() !== canonical
-    ) {
-      findings.push(
-        "Canonical ownership mismatch: " +
-          document.path +
-          " expected " +
-          canonical
-      );
-    }
-
-    if (!Array.isArray(document.related_concepts)) {
-      findings.push(
-        "related_concepts must be an array: " +
-          document.path
-      );
-      continue;
-    }
-
-    for (const relationship of document.related_concepts) {
-      const normalizedRelationship =
-        String(relationship).toLowerCase();
-
-      if (
-        !canonicalConcepts.has(
-          normalizedRelationship
-        )
-      ) {
-        findings.push(
-          "Invalid related concept '" +
-            relationship +
-            "' for " +
-            document.path
-        );
-      }
-    }
+    findings.push(...(await documentFindings(document, concepts)));
   }
 
   if (candidate.schema_version !== "1.1") {
@@ -505,7 +481,7 @@ async function validateCandidate(
     valid: findings.length === 0,
     findings,
     documentCount: candidate.documents.length,
-    canonicalConceptCount: canonicalConcepts.size
+    canonicalConceptCount: concepts.size
   };
 }
 async function appendAudit(
@@ -681,6 +657,14 @@ export async function executeAuthoritativeReindex(
 export async function validateCurrentIndex(): Promise<ReindexValidation> {
   const current = await loadCurrentIndex();
   return validateCandidate(current);
+}
+
+/** Builds and validates a rebuilt index in memory, writing nothing. */
+export async function previewReindex(): Promise<ReindexValidation> {
+  const current = await loadCurrentIndex();
+  const existingByPath = new Map(current.documents.map(document => [normalizePath(document.path).toLowerCase(), document]));
+  const documents = await rebuildDocuments(current.documents, existingByPath);
+  return validateCandidate({ ...current, documents });
 }
 
 

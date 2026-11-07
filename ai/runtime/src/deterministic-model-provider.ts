@@ -1,3 +1,4 @@
+import { labelledLine } from "./text-utils.js";
 import type {
   ModelGenerationRequest,
   ModelGenerationResult,
@@ -19,20 +20,20 @@ function extractEvidence(request: ModelGenerationRequest): string {
 }
 
 function extractSourcePath(evidence: string): string | null {
-  const match = evidence.match(/^SOURCE:\s*(.+)$/m);
-  return match ? match[1].trim() : null;
+  return labelledLine(evidence, "SOURCE");
 }
 
 function extractRepositoryContent(evidence: string): string {
-  const sourceMatch = evidence.match(
-    /^SOURCE:\s*.+\r?\n([\s\S]*)$/m
-  );
+  const lines = evidence.split(/\r?\n/);
+  const sourceLine = lines.findIndex(line => line.startsWith("SOURCE:"));
 
-  if (!sourceMatch) {
+  if (sourceLine < 0) {
     return "";
   }
 
-  return sourceMatch[1]
+  return lines
+    .slice(sourceLine + 1)
+    .join("\n")
     .replace(/^```[\w-]*\r?\n?/gm, "")
     .replace(/^```\r?\n?/gm, "")
     .trim();
@@ -61,7 +62,7 @@ function buildExplanation(
   return [
     `AI-generated explanation of ${topic}:`,
     "",
-    ...lines.map(line => `• ${line}`),
+    ...lines.map(line => `ï¿½ ${line}`),
     "",
     "This explanation is derived from the trusted repository evidence supplied to the tutor."
   ].join("\n");
@@ -178,11 +179,8 @@ export class DeterministicTutorModelProvider
       };
     }
 
-    const topicMatch = request.messages
-      .find(message => message.role === "user")
-      ?.content.match(/^TOPIC:\s*(.+)$/m);
-
-    const topic = topicMatch?.[1]?.trim() ?? "the requested topic";
+    const userContent = request.messages.find(message => message.role === "user")?.content ?? "";
+    const topic = labelledLine(userContent, "TOPIC") ?? "the requested topic";
     const systemInstruction =
       request.messages.find(message => message.role === "system")
         ?.content ?? "";

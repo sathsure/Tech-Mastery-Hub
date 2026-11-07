@@ -10,6 +10,12 @@ import { existsSync, readdirSync, readFileSync, statSync, writeFileSync } from "
 import { dirname, posix, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { buildAtlasEntries } from "./atlas-indexer.js";
+import { byText, parseHeading, stripTags, trimChars, trimEndWhere, trimStartWhere, unlinkMarkdown } from "./text-utils.js";
+
+/** "Event loop diagram image" → "Event loop diagram". */
+function withoutImageSuffix(alt: string): string {
+  return (alt.toLowerCase().endsWith("image") ? alt.slice(0, -"image".length) : alt).trim();
+}
 import { buildRoadmapEntry, isGeneratedRoadmap, linkRoadmapsToRoles } from "./roadmap-indexer.js";
 import {
   QUESTION_INDEX_SCHEMA_VERSION,
@@ -42,24 +48,23 @@ const KEYCAP = /[0-9#*]️?⃣/gu;
 
 /** Removes emoji, markdown emphasis, escapes and leading numbering from a heading. */
 export function cleanHeading(raw: string): string {
-  return raw
+  const cleaned = raw
     .replace(KEYCAP, "")
     .replace(EMOJI, "")
     .replace(/\\([_*`#\[\]()!-])/g, "$1")
     .replace(/\*\*|__/g, "")
     .replace(/^[\s↳—–:-]+/, "")
     .replace(/^follow-?up\s*:\s*/i, "")
-    .replace(/^(q?\d+[.)]\s+)/i, "")
-    .replace(/[\s_*]+$/, "")
-    .trim();
+    .replace(/^(q?\d+[.)]\s+)/i, "");
+  return trimEndWhere(cleaned, char => /[\s_*]/.test(char)).trim();
 }
 
 export function slugify(text: string): string {
-  const slug = text
+  const dashed = text
     .toLowerCase()
     .replace(/`/g, "")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
+    .replace(/[^a-z0-9]+/g, "-");
+  const slug = trimChars(dashed, "-");
   if (!slug) return "entry";
   if (slug.length <= 64) return slug;
   const cut = slug.slice(0, 64);
@@ -81,10 +86,8 @@ export function trimBlock(lines: string[]): string[] {
 }
 
 export function plainText(markdown: string): string {
-  return markdown
-    .replace(/!\[[^\]]*\]\([^)]*\)/g, "")
-    .replace(/\[([^\]]+)\]\([^)]*\)/g, "$1")
-    .replace(/<[^>]+>/g, "")
+  const withoutImages = markdown.replace(/!\[[^\]]*\]\([^)]*\)/g, "");
+  return stripTags(unlinkMarkdown(withoutImages))
     .replace(KEYCAP, "")
     .replace(EMOJI, "")
     .replace(/\\([_*`#\[\]()!-])/g, "$1")
@@ -128,7 +131,7 @@ export function extractCodeBlocks(markdown: string): CodeBlock[] {
   const unquoted = markdown.replace(/^[ \t]*> ?/gm, "");
   const fence = /^\s*(```|~~~)\s*([\w+#.-]*)[^\n]*\n([\s\S]*?)^\s*\1\s*$/gm;
   for (const match of unquoted.matchAll(fence)) {
-    const code = match[3].replace(/\s+$/, "");
+    const code = match[3].trimEnd();
     if (code.trim()) blocks.push({ language: (match[2] || "text").toLowerCase(), code });
   }
   return blocks;
@@ -148,7 +151,8 @@ const LABELS = new Set(["code example", "example", "answer", "note", "fix", "why
 export function extractKeywords(question: string, answer: string, topics: string[]): string[] {
   const words = new Set<string>();
   const add = (term: string) => {
-    let value = term.toLowerCase().replace(/^[^a-z0-9@#.]+|[^a-z0-9#+)]+$/g, "");
+    const lower = term.toLowerCase();
+    let value = trimEndWhere(trimStartWhere(lower, char => !/[a-z0-9@#.]/.test(char)), char => !/[a-z0-9#+)]/.test(char));
     if (value.endsWith(")") && !value.includes("(")) value = value.slice(0, -1);
     if (value.includes("(") && !value.includes(")")) value += ")";
     if (value.length > 1 && !STOPWORDS.has(value) && !LABELS.has(value) && !/^\d+$/.test(value)) words.add(value);
@@ -196,7 +200,7 @@ function walk(relativeDir: string, filter: (path: string) => boolean): string[] 
     if (statSync(resolve(REPOSITORY_ROOT, child)).isDirectory()) results.push(...walk(child, filter));
     else if (filter(child)) results.push(child);
   }
-  return results.sort();
+  return results.sort(byText);
 }
 
 export interface Lookups {
@@ -210,7 +214,7 @@ export interface Lookups {
 function loadLookups(): Lookups {
   const index = JSON.parse(readText(CONTENT_INDEX_PATH)) as { documents: ContentIndexDocument[] };
   const documents = new Map(index.documents.map(document => [document.path, document]));
-  const concepts = [...new Set(index.documents.map(document => document.canonical_concept).filter((c): c is string => !!c))].sort();
+  const concepts = [...new Set(index.documents.map(document => document.canonical_concept).filter((c): c is string => !!c))].sort(byText);
   const visualsByName = new Map<string, string>();
   for (const path of walk(VISUAL_ROOT, p => /\.(png|jpe?g|gif|svg|webp)$/i.test(p))) {
     const name = posix.basename(path).toLowerCase();
@@ -223,7 +227,7 @@ function loadLookups(): Lookups {
 }
 
 function resolveVisual(reference: string, sourcePath: string, lookups: Lookups): { path: string | null; exists: boolean } {
-  const src = reference.split(/\s+/)[0].replace(/^<|>$/g, "");
+  const src = reference.split(/\s+/)[0].replace(/(?:^<)|(?:>$)/g, "");
   if (src.startsWith("data:")) return { path: null, exists: false };
   const candidate = src.startsWith(LEGACY_ASSET_PREFIX)
     ? posix.join(VISUAL_ROOT, src.slice(LEGACY_ASSET_PREFIX.length))
@@ -245,7 +249,7 @@ function extractVisuals(lines: Line[], sourcePath: string, placement: VisualRef[
   for (const item of found) {
     const external = /^(https?:)?\/\//i.test(item.reference);
     const resolved = external ? { path: item.reference, exists: true } : resolveVisual(item.reference, sourcePath, lookups);
-    visuals.push({ ...resolved, origin: external ? "external" : "repository", reference: item.reference, alt: item.alt.replace(/\s*image$/i, "").trim(), placement });
+    visuals.push({ ...resolved, origin: external ? "external" : "repository", reference: item.reference, alt: withoutImageSuffix(item.alt), placement });
   }
   return visuals;
 }
@@ -298,12 +302,12 @@ export function scanLines(content: string): Line[] {
       return { text, number: index + 1, inFence: true, heading: null, role: null };
     }
     if (fence !== null) return { text, number: index + 1, inFence: true, heading: null, role: null };
-    const headingMatch = /^(#{1,6})\s+(.*)$/.exec(text.trim());
+    const heading = parseHeading(text.trim());
     return {
       text,
       number: index + 1,
       inFence: false,
-      heading: headingMatch ? { level: headingMatch[1].length, raw: headingMatch[2] } : null,
+      heading,
       role: classify(text),
     };
   });
@@ -354,58 +358,74 @@ function setCrumb(crumbs: Map<number, string>, level: number, text: string): voi
   crumbs.set(level, text);
 }
 
-function parseQuestions(lines: Line[]): Draft[] {
-  const breaking = sectionLevels(lines);
-  const crumbs = new Map<number, string>();
-  const drafts: Draft[] = [];
-  let current: Draft | null = null;
-  let lastMain: number | null = null;
-  let pendingVisualLines: Line[] = [];
+/** Running state while splitting a file into questions and their follow-ups. */
+interface QuestionParse {
+  breaking: Set<number>;
+  crumbs: Map<number, string>;
+  drafts: Draft[];
+  current: Draft | null;
+  /** Index (in drafts) of the last main question; follow-ups attach to it. */
+  lastMain: number | null;
+  /** Lines before the first question of a section (e.g. a section diagram). */
+  pendingVisualLines: Line[];
+}
 
-  const close = () => {
-    if (current) drafts.push(current);
-    current = null;
+function closeDraft(state: QuestionParse): void {
+  if (state.current) state.drafts.push(state.current);
+  state.current = null;
+}
+
+function startQuestion(state: QuestionParse, line: Line): void {
+  closeDraft(state);
+  const isFollowUp = line.role === "follow-up" && state.lastMain !== null;
+  const raw = line.heading ? line.heading.raw : line.text.trim();
+  state.current = {
+    kind: isFollowUp ? "follow-up" : "question",
+    title: cleanHeading(raw),
+    parentKey: isFollowUp ? state.lastMain : null,
+    startLine: line.number,
+    section: sectionPath(state.crumbs),
+    promptLines: [],
+    answerLines: [],
+    answerStarted: false,
+    sectionVisualLines: state.pendingVisualLines,
   };
+  state.pendingVisualLines = [];
+  if (!isFollowUp) state.lastMain = state.drafts.length;
+}
 
+/** A body line: before the answer marker it belongs to the prompt, after it to the answer. */
+function addBodyLine(draft: Draft, line: Line): void {
+  if (line.role === "answer-marker") {
+    draft.answerStarted = true;
+    return;
+  }
+  (draft.answerStarted ? draft.answerLines : draft.promptLines).push(line);
+}
+
+function parseQuestions(lines: Line[]): Draft[] {
+  const state: QuestionParse = {
+    breaking: sectionLevels(lines),
+    crumbs: new Map(),
+    drafts: [],
+    current: null,
+    lastMain: null,
+    pendingVisualLines: [],
+  };
   for (const line of lines) {
     if (line.role === "question" || line.role === "follow-up") {
-      close();
-      const isFollowUp = line.role === "follow-up" && lastMain !== null;
-      const raw = line.heading ? line.heading.raw : line.text.trim();
-      current = {
-        kind: isFollowUp ? "follow-up" : "question",
-        title: cleanHeading(raw),
-        parentKey: isFollowUp ? lastMain : null,
-        startLine: line.number,
-        section: sectionPath(crumbs),
-        promptLines: [],
-        answerLines: [],
-        answerStarted: false,
-        sectionVisualLines: pendingVisualLines,
-      };
-      pendingVisualLines = [];
-      if (!isFollowUp) lastMain = drafts.length;
-      continue;
+      startQuestion(state, line);
+    } else if (line.heading && !line.role && state.breaking.has(line.heading.level)) {
+      closeDraft(state);
+      setCrumb(state.crumbs, line.heading.level, cleanHeading(line.heading.raw));
+    } else if (state.current) {
+      addBodyLine(state.current, line);
+    } else {
+      state.pendingVisualLines.push(line);
     }
-    if (line.heading && !line.role && breaking.has(line.heading.level)) {
-      close();
-      setCrumb(crumbs, line.heading.level, cleanHeading(line.heading.raw));
-      continue;
-    }
-    if (!current) {
-      pendingVisualLines.push(line);
-      continue;
-    }
-    const draft: Draft = current;
-    if (line.role === "answer-marker" && !draft.answerStarted) {
-      draft.answerStarted = true;
-      continue;
-    }
-    if (line.role === "answer-marker") continue;
-    (draft.answerStarted ? draft.answerLines : draft.promptLines).push(line);
   }
-  close();
-  return drafts;
+  closeDraft(state);
+  return state.drafts;
 }
 
 /** For files with no questions (reference notes): one entry per heading up to level 3. */
@@ -439,6 +459,13 @@ function parseNotes(lines: Line[]): Draft[] {
 
 // ---------- Building entries ----------
 
+/** The Atlas, generated roadmaps and ordinary notes each have their own builder. */
+function entriesForFile(path: string, content: string, lookups: Lookups): QuestionEntry[] {
+  if (path === ATLAS_PATH) return buildAtlasEntries(path, content, lookups);
+  if (isGeneratedRoadmap(path, content)) return [buildRoadmapEntry(path, content, lookups)];
+  return buildEntries(path, content, lookups);
+}
+
 function buildEntries(sourcePath: string, content: string, lookups: Lookups): QuestionEntry[] {
   const lines = scanLines(content);
   const hasQuestions = lines.some(line => line.role === "question");
@@ -448,7 +475,7 @@ function buildEntries(sourcePath: string, content: string, lookups: Lookups): Qu
   const idsByDraft: string[] = [];
   const entries: QuestionEntry[] = [];
 
-  drafts.forEach((draft, index) => {
+  drafts.forEach(draft => {
     let promptLines = trimBlock(draft.promptLines.map(line => line.text));
     let answerLines = trimBlock(draft.answerLines.map(line => line.text));
     // A question with no "📝 Answer" marker: everything below the question is the answer.
@@ -468,7 +495,11 @@ function buildEntries(sourcePath: string, content: string, lookups: Lookups): Qu
     }
 
     let id = `${sourcePath}#${slugify(draft.title)}`;
-    for (let suffix = 2; usedIds.has(id); suffix++) id = `${sourcePath}#${slugify(draft.title)}-${suffix}`;
+    let suffix = 2;
+    while (usedIds.has(id)) {
+      id = `${sourcePath}#${slugify(draft.title)}-${suffix}`;
+      suffix++;
+    }
     usedIds.add(id);
     idsByDraft.push(id);
 
@@ -515,11 +546,7 @@ export function buildQuestionIndex(generatedAt = new Date().toISOString()): Ques
   for (const path of listSourceFiles()) {
     const content = readText(path);
     fingerprint.update(`${path}\n${hash(content, 64)}\n`);
-    const fileEntries = path === ATLAS_PATH
-      ? buildAtlasEntries(path, content, lookups)
-      : isGeneratedRoadmap(path, content)
-        ? [buildRoadmapEntry(path, content, lookups)]
-        : buildEntries(path, content, lookups);
+    const fileEntries = entriesForFile(path, content, lookups);
     entries.push(...fileEntries);
     files.push({
       path,

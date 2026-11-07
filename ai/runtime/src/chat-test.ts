@@ -55,11 +55,24 @@ const sampleEvidence = (n: number): Evidence => ({
 });
 
 await check("request validation", () => {
-  assert.equal(validateChatRequest(null), "Request body must be a JSON object.");
-  assert.equal(validateChatRequest({ message: " " }), "message is required.");
-  assert.equal(validateChatRequest({ message: "x".repeat(2001) }), "message must be 2000 characters or fewer.");
-  assert.match(String(validateChatRequest({ message: "hi", history: [{ role: "system", content: "x" }] })), /history turn/);
-  assert.deepEqual(validateChatRequest({ message: " hi ", history: [{ role: "user", content: "a", extra: 1 }] }), { message: "hi", history: [{ role: "user", content: "a" }], topic: undefined });
+  const errorOf = (value: unknown) => {
+    const result = validateChatRequest(value);
+    return result.ok ? "" : result.error;
+  };
+  const requestOf = (value: unknown) => {
+    const result = validateChatRequest(value);
+    assert.ok(result.ok, result.ok ? "" : result.error);
+    return result.value;
+  };
+  assert.equal(errorOf(null), "Request body must be a JSON object.");
+  assert.equal(errorOf({ message: " " }), "message is required.");
+  assert.equal(errorOf({ message: "x".repeat(2001) }), "message must be 2000 characters or fewer.");
+  assert.match(errorOf({ message: "hi", history: [{ role: "system", content: "x" }] }), /history turn/);
+  assert.deepEqual(requestOf({ message: " hi ", history: [{ role: "user", content: "a", extra: 1 }] }), { message: "hi", history: [{ role: "user", content: "a" }], topic: undefined, plan: undefined, overview: undefined });
+  assert.match(errorOf({ message: "plan", plan: { title: "x", items: [] } }), /1-60 items/);
+  assert.match(errorOf({ message: "plan", plan: { title: "x", items: [{ label: "" }] } }), /plan item/);
+  assert.deepEqual(requestOf({ message: "plan", plan: { title: " Roadmap: X ", items: [{ label: " React ", topic: "react", junk: 1 }] } }).plan, { title: "Roadmap: X", items: [{ label: "React", topic: "react" }] });
+  assert.match(errorOf({ message: "x", overview: 5 }), /overview/);
 });
 
 await check("model selection from the environment", () => {
@@ -109,16 +122,96 @@ await check("notes-only answer: nothing found gives suggestions, not invented co
   assert.equal(done?.grounding.uncited, false);
 });
 
-await check("notes-only answer: interview prep opens the study path, then cites related entries", async () => {
+await check("notes-only answer: interview prep opens the study path, without an internal 'related' list", async () => {
   const { answer, done } = await collect({ message: "Prepare me for a Java backend interview" }, null);
   assert.match(answer, /^\*\*Java study path\*\* \[1\]/);
   assert.match(answer, /- \[ \] \[/, "the study path is a checklist");
-  assert.ok((done?.grounding.cited.length ?? 0) >= 5);
+  assert.ok(done?.grounding.cited.includes(1));
+  assert.doesNotMatch(answer, /Related in your notes/);
 });
 
-await check("notes-only answer: a topic overview without a roadmap lists cited entries", async () => {
-  const { answer } = await collect({ message: "Explore Angular", topic: "angular" }, null);
-  assert.ok(/overview of \*\*angular\*\*/.test(answer) || /^\*\*Angular study path\*\*/.test(answer));
+await check("overview: main sections first, details collapsed until opened", async () => {
+  const { answer, done } = await collect({ message: "Explore Java" }, null);
+  assert.equal(done?.view, "overview");
+  assert.match(answer, /^\*\*Java\*\* — /, "starts by saying what the topic covers");
+  assert.match(answer, /It has \d+ sections: /);
+  assert.match(answer, /<details class="outline"><summary>Collections Framework <small>\d+<\/small><\/summary>/);
+  assert.ok(!/<details[^>]* open/.test(answer), "sections start collapsed");
+  assert.match(answer, /\(#ask:What%20is%20the%20Collections%20Framework%3F\)/, "items ask their question");
+  const glossary = await collect({ message: "Explore Glossary", overview: "it-terminology" }, null);
+  assert.match(glossary.answer, /^\*\*Glossary\*\* — Short definitions/, "the glossary explains itself before listing terms");
+  const domain = await collect({ message: "Explore frontend" }, null);
+  assert.equal(domain.done?.view, "overview");
+  assert.match(domain.answer, /\[React\]\(#ask:Explore%20React\)/);
+});
+
+await check("weak matches say so and point to outside resources instead of answering", async () => {
+  const { answer, meta, done } = await collect({ message: "how does quantum entanglement work" }, null);
+  assert.equal(meta?.confidence, "low");
+  assert.match(answer, /^Your notes don't answer this directly/);
+  assert.doesNotMatch(answer, /Also called:/, "the unrelated role entry is not shown as the answer");
+  assert.match(answer, /https:\/\/www\.youtube\.com\/results\?search_query=/);
+  assert.match(answer, /https:\/\/www\.udemy\.com\/courses\/search\/\?q=/);
+  assert.equal(done?.view, "answer");
+  const none = await collect({ message: "xyz-nonexistent-topic" }, null);
+  assert.match(none.answer, /won't guess/);
+  assert.match(none.answer, /Learn more elsewhere/);
+});
+
+await check("FDE roadmap: only the six sections, no internal references, India salary follow-up", async () => {
+  const { answer, done } = await collect({ message: "Roadmap to become a Forward Deployed Engineer" }, null);
+  const headings = [...answer.matchAll(/^## (.+)$/gm)].map(match => match[1]);
+  assert.deepEqual(headings, ["Role overview", "Prerequisites", "Learning stages", "Also useful", "Also needed", "Where it leads"]);
+  assert.doesNotMatch(answer, /not in your notes|Related in your notes|Interview preparation/i);
+  assert.ok(done?.followUps.includes("Forward Deployed Engineer salary in India (LPA)"), `follow-ups: ${done?.followUps}`);
+  const salary = await collect({ message: "Forward Deployed Engineer salary in India (LPA)" }, null);
+  assert.match(salary.answer, /18–35 LPA/, "the salary follow-up is answered from the notes");
+});
+
+await check("learning plan: picked topics in prerequisite order, missing prerequisites added", async () => {
+  const plan = { title: "Roadmap: Forward Deployed Engineer", items: [{ label: "React", topic: "react" }, { label: "TypeScript", topic: "typescript" }] };
+  const { answer, done } = await collect({ message: "Build my learning plan: React, TypeScript", plan }, null);
+  assert.equal(done?.view, "plan");
+  const order = [...answer.matchAll(/^\d+\. \*\*(.+?)\*\*/gm)].map(match => match[1]);
+  assert.deepEqual(order.slice(0, 2), ["HTML", "JavaScript"], "prerequisites come first");
+  assert.ok(order.indexOf("React") > order.indexOf("JavaScript") && order.indexOf("TypeScript") > order.indexOf("JavaScript"));
+  assert.match(answer, /Prerequisite for .*skip it if you already know it/);
+  assert.ok(done?.followUps.includes("Forward Deployed Engineer salary in India (LPA)"));
+});
+
+await check("follow-ups: only what is new, never the previous explanation again", async () => {
+  const first = await collect({ message: "What is a Closure?" }, null);
+  const history = [{ role: "user" as const, content: "What is a Closure?" }, { role: "assistant" as const, content: first.answer }];
+  const explanation = first.answer.split("\n").find(line => /remembers variables/.test(line)) ?? "";
+  assert.ok(explanation, "the first answer explains closures");
+
+  const code = await collect({ message: "Give me an example with code.", history }, null);
+  assert.match(code.answer, /^\*\*Code example\*\*/);
+  assert.match(code.answer, /```js/);
+  assert.ok(!code.answer.includes(explanation), "the explanation is not repeated");
+  assert.ok(code.answer.length < first.answer.length);
+
+  const why = await collect({ message: "why is it useful?", history }, null);
+  assert.doesNotMatch(why.answer, /REPL/, "'it' refers to closures, not whatever matches 'useful'");
+  assert.ok(!why.answer.includes(explanation), "the explanation is not repeated");
+  assert.match(why.answer, /Closure/);
+
+  // New questions after a previous one are answered normally, not as follow-ups.
+  const other = [{ role: "user" as const, content: "Build my learning plan: React" }, { role: "assistant" as const, content: "plan" }];
+  const quantum = await collect({ message: "how does quantum entanglement work", history: other }, null);
+  assert.doesNotMatch(quantum.answer, /beyond the previous answer/);
+  const explore = await collect({ message: "Explore Java", history: [{ role: "user" as const, content: "how does quantum entanglement work" }, { role: "assistant" as const, content: quantum.answer }] }, null);
+  assert.equal(explore.done?.view, "overview", "a topic name is its own subject, not a follow-up");
+
+  // Claude is told the question builds on the previous answer.
+  const model = new FakeModel(async function* () {
+    yield { type: "text", text: "```js\nconst add = a => b => a + b;\n```" };
+    yield final();
+  });
+  await collect({ message: "Give me an example with code.", history }, model);
+  const lastTurn = model.inputs[0].messages.at(-1)?.content;
+  assert.ok(typeof lastTurn === "string" && lastTurn.includes("follow-up to: What is a Closure?"));
+  assert.match(SYSTEM_PROMPT, /Never repeat the earlier explanation/);
 });
 
 await check("Claude path: streams text, sends evidence, reports grounding and usage", async () => {
@@ -147,6 +240,7 @@ await check("Claude path: streams text, sends evidence, reports grounding and us
 
 await check("Claude path: model error falls back to the notes", async () => {
   const model = new FakeModel(async function* () {
+    yield* []; // The stream fails before it produces anything.
     throw new Error("boom");
   });
   const { events, done, answer } = await collect({ message: "closures" }, model);
@@ -248,18 +342,26 @@ await check("security: host check, no open CORS, rate limit, history caps", asyn
   assert.equal(hostAllowed("127.0.0.1:8787"), true);
   assert.equal(hostAllowed("localhost"), true);
   assert.equal(hostAllowed("evil.example:8787"), false, "DNS-rebinding hosts are refused");
-  const proxied = { headers: { "x-forwarded-for": "203.0.113.7, 10.0.0.1" }, socket: { remoteAddress: "10.0.0.1" } } as unknown as Parameters<typeof clientAddress>[0];
-  assert.equal(clientAddress(proxied, true), "203.0.113.7", "behind a proxy, limits apply per visitor");
-  assert.equal(clientAddress(proxied, false), "10.0.0.1", "without TUTOR_TRUST_PROXY the header is ignored (it can be forged)");
+  // The visitor forged "198.51.100.9"; the one proxy in front appended the address it actually saw.
+  const proxied = { headers: { "x-forwarded-for": "198.51.100.9, 203.0.113.7" }, socket: { remoteAddress: "192.0.2.1" } } as unknown as Parameters<typeof clientAddress>[0];
+  assert.equal(clientAddress(proxied, 1, []), "203.0.113.7", "behind one proxy, the entry it appended identifies the visitor");
+  assert.equal(clientAddress(proxied, 2, []), "198.51.100.9", "each trusted hop moves one entry left");
+  assert.equal(clientAddress(proxied, 0, []), "192.0.2.1", "without TUTOR_TRUST_PROXY the header is ignored (it can be forged)");
+  const edge = { headers: { "true-client-ip": "203.0.113.50", "x-forwarded-for": "198.51.100.9" }, socket: { remoteAddress: "192.0.2.1" } } as unknown as Parameters<typeof clientAddress>[0];
+  assert.equal(clientAddress(edge, 1, ["true-client-ip", "cf-connecting-ip"]), "203.0.113.50", "an edge proxy's own header wins");
   const now = 1_000_000;
-  const client = `test-${Math.random()}`;
+  const client = "test-client-rate-limit";
   let allowed = 0;
   for (let i = 0; i < 25; i++) if (chatAllowed(client, now)) allowed++;
   assert.equal(allowed, 20, "20 chats per minute per client");
   assert.equal(chatAllowed(client, now + 61_000), true, "the window resets after a minute");
-  assert.match(String(validateChatRequest({ message: "hi", history: [{ role: "user", content: "x".repeat(12001) }] })), /12000/);
+  const errorOf = (value: unknown) => {
+    const result = validateChatRequest(value);
+    return result.ok ? "" : result.error;
+  };
+  assert.match(errorOf({ message: "hi", history: [{ role: "user", content: "x".repeat(12001) }] }), /12000/);
   const many = Array.from({ length: 6 }, () => ({ role: "user", content: "x".repeat(11000) }));
-  assert.match(String(validateChatRequest({ message: "hi", history: many })), /60000/);
+  assert.match(errorOf({ message: "hi", history: many }), /60000/);
 
   const server = createTutorApiServer();
   await new Promise<void>(done => server.listen(0, "127.0.0.1", () => done()));

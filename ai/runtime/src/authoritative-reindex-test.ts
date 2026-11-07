@@ -1,6 +1,7 @@
 ﻿import {
   validateCurrentIndex,
-  executeAuthoritativeReindex
+  executeAuthoritativeReindex,
+  previewReindex
 } from "./authoritative-reindex.js";
 
 const validation = await validateCurrentIndex();
@@ -9,6 +10,16 @@ if (!validation.valid) {
   throw new Error(
     "CURRENT INDEX VALIDATION FAILED: " +
       validation.findings.join(" | ")
+  );
+}
+
+// A rebuild keeps every indexed document that still exists and passes validation.
+const preview = await previewReindex();
+
+if (!preview.valid || preview.documentCount < validation.documentCount) {
+  throw new Error(
+    `REBUILT INDEX INVALID: ${preview.documentCount} of ${validation.documentCount} documents. ` +
+      preview.findings.join(" | ")
   );
 }
 

@@ -25,7 +25,7 @@ export interface ContributionPipelineResult {
 export async function evaluateContributionPipeline(
   request: ContributionRequest
 ): Promise<ContributionPipelineResult> {
-  const gateway = await evaluateContribution(request);
+  const gateway = evaluateContribution(request);
 
   if (!gateway.allowed) {
     return {

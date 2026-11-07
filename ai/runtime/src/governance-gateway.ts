@@ -25,11 +25,8 @@ export function assessGovernance(request: ContributionRequest): GovernanceAssess
   }
   const authorizedApproverConfigured = request.hasHumanApproval;
   const requiresHumanApproval = risk === "protected-configuration" || !request.hasHumanApproval;
-  const decision = request.actor !== "ai"
-    ? "require-approval"
-    : requiresHumanApproval
-      ? "require-approval"
-      : "allow";
+  // People always go through approval; AI changes only skip it when already approved and low-risk.
+  const decision = request.actor !== "ai" || requiresHumanApproval ? "require-approval" : "allow";
   if (request.actor === "ai" && !request.hasHumanApproval) {
     findings.push("AI-originated contributions require human approval before mutation.");
   }

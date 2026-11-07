@@ -20,7 +20,7 @@ export async function processVerifiedGitHubMerge(
   >[0]
 ): Promise<GitHubPostMergeReindexResult> {
   const trigger =
-    await createAuthoritativeReindexTrigger(merge);
+    createAuthoritativeReindexTrigger(merge);
 
   const reindex =
     await executePostMergeReindex(merge);
