@@ -195,6 +195,28 @@
 5. [How do Auto Scaling and Load Balancing work?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)
 6. [How are Secrets and Environment Configurations managed?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)
 
+## 30. Storage Hardware and File Systems
+
+1. [How do HDD, SSD and RAM store and retrieve data differently?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)
+2. [How does a File System organize files and directories on disk?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)
+
+## 31. Redis and Caching Patterns
+
+1. [How does Redis store and retrieve data internally?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)
+2. [How do Cache-Aside, Write-Through and Write-Behind work?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)
+
+## 32. Kafka and RabbitMQ
+
+1. [How does Kafka store messages and achieve high throughput?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)
+2. [How do Kafka Partitions, Offsets and Consumer Groups work?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)
+3. [How does RabbitMQ route messages using Exchanges, Queues and Bindings?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)
+4. [How do Message Acknowledgements, Retries and Dead Letter Queues work?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)
+
+## 33. Ordering and Reliability
+
+1. [How does message ordering work?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)
+2. [How does a distributed application achieve reliable message processing?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)
+
 ## Diagrams
 
 - [Frontend programming languages: source to machine code](../../knowledge/visual-notes/01_frontend_programming_languages.png)

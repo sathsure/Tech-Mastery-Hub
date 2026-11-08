@@ -1,18 +1,18 @@
 {
   "schema_version": "1.0.0",
   "repository": "Tech-Mastery-Hub",
-  "generated_at": "2026-11-08T17:03:15.010Z",
-  "source_fingerprint": "8100fc3f9903a6ae38872133fc904b5faa023357e78afb31bc2f8c221663e097",
+  "generated_at": "2026-11-08T17:05:37.307Z",
+  "source_fingerprint": "decb310915406aef889931e023ed91e9b504b29e196d10eda6eed90fba3299ad",
   "stats": {
-    "files": 150,
-    "entries": 2129,
-    "questions": 1202,
+    "files": 151,
+    "entries": 2139,
+    "questions": 1212,
     "followUps": 311,
     "notes": 84,
     "roles": 74,
     "terms": 378,
     "roadmaps": 80,
-    "codeBlocks": 1517,
+    "codeBlocks": 1533,
     "visuals": 86,
     "missingVisuals": 0
   },
@@ -592,6 +592,17 @@
     {
       "path": "interview/under-the-hood/08-Cloud-Virtualization-Deployment.md",
       "questions": 11,
+      "followUps": 0,
+      "notes": 0,
+      "roles": 0,
+      "terms": 0,
+      "roadmaps": 0,
+      "withoutAnswer": 0,
+      "missingVisuals": 0
+    },
+    {
+      "path": "interview/under-the-hood/09-Storage-Caching-Messaging.md",
+      "questions": 10,
       "followUps": 0,
       "notes": 0,
       "roles": 0,
@@ -56957,6 +56968,474 @@
       "contentHash": "a71094d9af1e8a85"
     },
     {
+      "id": "interview/under-the-hood/09-Storage-Caching-Messaging.md#how-do-hdd-ssd-and-ram-store-and-retrieve-data-differently",
+      "kind": "question",
+      "parentId": null,
+      "question": "How do HDD, SSD and RAM store and retrieve data differently?",
+      "prompt": null,
+      "answer": "**1. What is it?**\n\n| | RAM (DRAM) | SSD (NAND flash) | HDD (magnetic disk) |\n|---|---|---|---|\n| Stores bits as | Charge in tiny capacitors | Charge trapped in flash cells | Magnetised regions on spinning platters |\n| Keeps data without power? | **No** (volatile) | Yes | Yes |\n| Random read latency | ~0.1 µs (100 ns) | ~50–100 µs | ~5–10 ms |\n| Moving parts | None | None | Spinning platters + moving arm |\n\n**2. How does it work internally?**\n\n- **RAM**: the memory controller selects a row and column; capacitors leak, so every row is **refreshed** every few ms. Accessed in 64-byte cache lines.\n- **SSD**: data is written in **pages** (4–16 KB) but erased only in large **blocks** (MBs). A **Flash Translation Layer** (FTL) maps logical addresses to physical pages, writes new data to fresh pages, and garbage-collects old blocks.\n- **HDD**: the arm **seeks** to the right track, waits for the sector to rotate under the head (**rotational latency**), then reads. Sequential reads are fast; random reads are very slow.\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  CPU[CPU] <-- \"~100 ns\" --> RAM[\"RAM<br/>volatile, byte-addressable\"]\n  RAM <-- \"NVMe ~50-100 µs\" --> SSD[\"SSD<br/>pages + erase blocks, FTL\"]\n  RAM <-- \"~5-10 ms random\" --> HDD[\"HDD<br/>seek + rotate + read\"]\n```\n\n**4. Internal implementation**\n\n- SSD **wear levelling** spreads writes across cells (each cell survives a limited number of erase cycles); **write amplification** happens when the drive must move valid data to erase a block. `TRIM` tells the SSD which pages are free.\n- NVMe SSDs connect over PCIe with many parallel queues; SATA SSDs are limited by the older AHCI interface.\n- OSes and databases cache disk data in RAM (page cache, buffer pool) to hide disk latency.\n\n**5. Why is it designed this way?**\nRAM is fast but expensive and volatile; SSDs give persistence with no moving parts; HDDs give the cheapest capacity per GB. Systems layer them: hot data in RAM, working data on SSD, archives on HDD/object storage.\n\n**6. Language differences**\nPrograms don't see the device type: Java `FileChannel`, Node `fs`, Python `open()` all go through the OS. But access **patterns** matter: sequential I/O (logs, Kafka) performs well even on HDDs; random small reads need SSDs or caching.\n\n**7. Practical example**\nA database with 1,000 random reads per request: from RAM ~0.1 ms total, from NVMe SSD ~50–100 ms, from HDD ~5–10 seconds.\n\n**8. How can I observe it?**\nWindows Task Manager → Performance → Disk (active time, response time); `winsat disk` or **CrystalDiskMark** for sequential vs random speeds. Linux: `iostat -x 1` (`await`, `%util`), `fio` benchmarks.",
+      "summary": "How does it work internally?",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  CPU[CPU] <-- \"~100 ns\" --> RAM[\"RAM<br/>volatile, byte-addressable\"]\n  RAM <-- \"NVMe ~50-100 µs\" --> SSD[\"SSD<br/>pages + erase blocks, FTL\"]\n  RAM <-- \"~5-10 ms random\" --> HDD[\"HDD<br/>seek + rotate + read\"]"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Storage Hardware and File Systems"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "hdd",
+        "ssd",
+        "ram",
+        "store",
+        "retrieve",
+        "data",
+        "differently",
+        "no",
+        "refreshed",
+        "pages",
+        "blocks",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/09-Storage-Caching-Messaging.md",
+        "startLine": 7,
+        "endLine": 51
+      },
+      "contentHash": "aa6652dc31d8e89d"
+    },
+    {
+      "id": "interview/under-the-hood/09-Storage-Caching-Messaging.md#how-does-a-file-system-organize-files-and-directories-on-disk",
+      "kind": "question",
+      "parentId": null,
+      "question": "How does a File System organize files and directories on disk?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nA **file system** (NTFS, ext4, APFS, XFS) turns a disk — just a long array of blocks — into named **files** inside **directories**, with sizes, permissions and timestamps.\n\n**2. How does it work internally?**\n\n1. The disk is divided into fixed-size **blocks** (usually 4 KB).\n2. Each file has a **metadata record**: ext4 **inode** / NTFS **MFT entry** — size, owner, permissions, timestamps and **where its data blocks are** (extents: \"blocks 5000–5099\").\n3. A **directory** is a special file mapping **names → inode numbers**.\n4. Opening `/var/log/app.log`: read the root directory → find `var` → its inode → its directory data → find `log` → … → `app.log` inode → data blocks.\n5. Free space is tracked with **bitmaps** or B-trees.\n6. A **journal** records metadata changes first, so a crash can't leave the file system inconsistent.\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  P[\"/var/log/app.log\"] --> R[\"Root dir: var → inode 12\"]\n  R --> V[\"dir 'var': log → inode 340\"]\n  V --> L[\"dir 'log': app.log → inode 9081\"]\n  L --> I[\"Inode 9081<br/>size, perms, times<br/>extent: blocks 5000-5099\"]\n  I --> D[(\"Data blocks on disk\")]\n```\n\n**4. Internal implementation**\n\n- `write()` normally copies into the OS **page cache** and returns; data reaches the disk later. `fsync()` forces it to disk — databases call it at commit.\n- Deleting a file removes the directory entry and frees blocks when no references remain (hard links, open handles).\n- NTFS stores tiny files **inside** the MFT record; ext4 uses extents and delayed allocation to reduce fragmentation.\n\n**5. Why is it designed this way?**\nSeparating names (directories) from file metadata (inodes) allows hard links, cheap renames and fast lookups. Journaling avoids long disk checks after crashes. Page caching makes repeated reads and small writes fast.\n\n**6. Language differences**\n`Files.write` (Java), `fs.writeFile` (Node), `open().write` (Python) all end in the same system calls (`open`, `write`, `fsync`). Java's `FileChannel.force(true)` = `fsync`. Windows file names are case-insensitive by default; Linux ext4 is case-sensitive — a common cause of \"works on my machine\" bugs.\n\n**7. Practical example**\nA log file of 10 MB on ext4: one inode + a few extents pointing to ~2,560 blocks of 4 KB. `mv app.log old.log` in the same directory only changes the directory entry — instant, no data copied.\n\n**8. How can I observe it?**\nLinux: `stat file` (inode, blocks), `ls -i`, `df -i` (inode usage), `filefrag -v file` (extents). Windows: `fsutil file queryextents C:\\path\\file`, `fsutil fsinfo ntfsinfo C:`.",
+      "summary": "What is it? A file system (NTFS, ext4, APFS, XFS) turns a disk — just a long array of blocks — into named files inside directories, with sizes, permissions and timestamps.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  P[\"/var/log/app.log\"] --> R[\"Root dir: var → inode 12\"]\n  R --> V[\"dir 'var': log → inode 340\"]\n  V --> L[\"dir 'log': app.log → inode 9081\"]\n  L --> I[\"Inode 9081<br/>size, perms, times<br/>extent: blocks 5000-5099\"]\n  I --> D[(\"Data blocks on disk\")]"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Storage Hardware and File Systems"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "file",
+        "system",
+        "organize",
+        "files",
+        "directories",
+        "disk",
+        "file system",
+        "blocks",
+        "metadata record",
+        "inode",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/09-Storage-Caching-Messaging.md",
+        "startLine": 55,
+        "endLine": 98
+      },
+      "contentHash": "b96cf858bcf9c5f6"
+    },
+    {
+      "id": "interview/under-the-hood/09-Storage-Caching-Messaging.md#how-does-redis-store-and-retrieve-data-internally",
+      "kind": "question",
+      "parentId": null,
+      "question": "How does Redis store and retrieve data internally?",
+      "prompt": null,
+      "answer": "**1. What is it?**\n**Redis** is an **in-memory** data store: all data lives in RAM, organised as keys pointing to data structures (strings, hashes, lists, sets, sorted sets, streams). That's why typical operations take microseconds.\n\n**2. How does it work internally?**\n\n1. Clients send commands over TCP using the simple **RESP** protocol (`SET user:42 \"Asha\"`).\n2. One main thread runs an **event loop** (epoll/kqueue): read ready sockets → parse command → execute → queue reply.\n3. The keyspace is a big **hash table** (`dict`): key → value object.\n4. Each value uses a compact **encoding** when small (e.g. a small hash as a **listpack**) and switches to a full structure when large (hash table, **skiplist** for sorted sets).\n5. Persistence happens alongside: **RDB** snapshots and/or **AOF** (append-only log of write commands).\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  C1[Client 1] --> EL\n  C2[Client 2] --> EL\n  EL[\"Single-threaded event loop<br/>(epoll): one command at a time\"] --> KS[(\"Keyspace: hash table<br/>user:42 → hash<br/>leaderboard → sorted set (skiplist)\")]\n  KS --> AOF[\"AOF: append write commands\"]\n  KS -. \"fork + copy-on-write\" .-> RDB[\"RDB snapshot file\"]\n```\n\n**4. Internal implementation**\n\n- **Incremental rehashing**: when the hash table grows, Redis keeps two tables and moves a few buckets per operation — no long pause.\n- **Single-threaded execution** means each command is **atomic** and needs no locks; Redis 6+ can use extra **I/O threads** for socket reads/writes, but commands still run one at a time.\n- **Expiry**: keys with TTL are removed lazily (when accessed) plus by a periodic sampling job.\n- **Eviction** when `maxmemory` is reached: policies like `allkeys-lru` / `allkeys-lfu`, using **approximate** LRU by sampling a few keys.\n- RDB uses `fork()`: the child writes a snapshot while the OS shares memory pages copy-on-write.\n\n**5. Why is it designed this way?**\nRAM + simple single-threaded execution avoids locking overhead and disk latency → 100k+ operations/second per core with predictable latency. Trade-offs: dataset limited by RAM; one slow command (e.g. `KEYS *`) blocks everyone.\n\n**6. Language differences**\nClients: Java (Lettuce — Spring Boot default, Jedis), Node (`ioredis`, `node-redis`), Python (`redis-py`), Go (`go-redis`). Spring: `RedisTemplate`, `@Cacheable` with `RedisCacheManager`. Alternatives: Valkey (open-source fork), Memcached (simpler, multi-threaded, strings only), KeyDB/Dragonfly (multi-threaded).\n\n**7. Practical example**\n\n```bash\nSET product:42 '{\"name\":\"Pen\",\"price\":10}' EX 300   # string with 5-minute TTL\nZADD leaderboard 980 \"asha\" 870 \"ravi\"              # sorted set (skiplist)\nZREVRANGE leaderboard 0 9 WITHSCORES                 # top 10 in O(log n + 10)\n```\n\n**8. How can I observe it?**\n`redis-cli`: `INFO memory`, `INFO stats` (hits/misses), `OBJECT ENCODING key`, `MEMORY USAGE key`, `SLOWLOG GET`, `MONITOR` (every command, dev only), `--latency`.",
+      "summary": "What is it? Redis is an in-memory data store: all data lives in RAM, organised as keys pointing to data structures (strings, hashes, lists, sets, sorted sets, streams). That's why typical operations take microseconds.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  C1[Client 1] --> EL\n  C2[Client 2] --> EL\n  EL[\"Single-threaded event loop<br/>(epoll): one command at a time\"] --> KS[(\"Keyspace: hash table<br/>user:42 → hash<br/>leaderboard → sorted set (skiplist)\")]\n  KS --> AOF[\"AOF: append write commands\"]\n  KS -. \"fork + copy-on-write\" .-> RDB[\"RDB snapshot file\"]"
+        },
+        {
+          "language": "bash",
+          "code": "SET product:42 '{\"name\":\"Pen\",\"price\":10}' EX 300   # string with 5-minute TTL\nZADD leaderboard 980 \"asha\" 870 \"ravi\"              # sorted set (skiplist)\nZREVRANGE leaderboard 0 9 WITHSCORES                 # top 10 in O(log n + 10)"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood",
+        "caching"
+      ],
+      "section": [
+        "Redis and Caching Patterns"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "redis",
+        "store",
+        "retrieve",
+        "data",
+        "internally",
+        "in-memory",
+        "resp",
+        "event loop",
+        "hash table",
+        "encoding",
+        "under-the-hood",
+        "caching"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/09-Storage-Caching-Messaging.md",
+        "startLine": 104,
+        "endLine": 153
+      },
+      "contentHash": "1f6a6bd9516e1ed0"
+    },
+    {
+      "id": "interview/under-the-hood/09-Storage-Caching-Messaging.md#how-do-cache-aside-write-through-and-write-behind-work",
+      "kind": "question",
+      "parentId": null,
+      "question": "How do Cache-Aside, Write-Through and Write-Behind work?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nThree patterns for keeping a cache (Redis, in-memory) and a database in step:\n\n| Pattern | Read | Write | Risk |\n|---|---|---|---|\n| **Cache-aside** (lazy loading) | App checks cache → miss → reads DB → fills cache | App writes DB, then **deletes** the cache entry | Brief stale data; first read after a miss is slow |\n| **Write-through** | Read from cache | Write to cache **and** DB together (synchronously) | Slower writes; caches data that may never be read |\n| **Write-behind** (write-back) | Read from cache | Write to cache; DB updated **later** in batches | Data loss if the cache dies before flushing |\n\n**2. How does it work internally?**\nCache-aside read:\n\n1. `GET product:42` from Redis.\n2. Hit → return. Miss → `SELECT` from DB → `SET product:42 ... EX 300` → return.\n\nCache-aside write: `UPDATE` the DB → `DEL product:42` (next read reloads fresh data).\n\nWrite-behind: writes go to a cache layer that queues them and flushes to the DB asynchronously (coalescing many updates into one).\n\n**3. Visual**\n\n```mermaid\nflowchart TB\n  subgraph CA[\"Cache-aside\"]\n    R1[Read] --> C1{\"In Redis?\"}\n    C1 -- hit --> OK1[Return]\n    C1 -- miss --> DB1[(DB)] --> F1[Store in Redis with TTL] --> OK1\n    W1[Write] --> DB1b[(DB)] --> D1[Delete cache key]\n  end\n  subgraph WT[\"Write-through\"]\n    W2[Write] --> C2[Cache] --> DB2[(DB) same request]\n  end\n  subgraph WB[\"Write-behind\"]\n    W3[Write] --> C3[Cache] -. \"later, batched\" .-> DB3[(DB)]\n  end\n```\n\n**4. Internal implementation**\n\n- **Delete, don't update**, on write in cache-aside: updating the cache can race with a concurrent read and store an old value.\n- Always set a **TTL** so mistakes heal themselves.\n- **Cache stampede** (many requests miss at once after expiry): use a lock/single-flight per key, random TTL jitter, or refresh-ahead.\n- Write-through/behind need a cache that knows the DB (e.g. Hazelcast/Ehcache with loaders and writers) — Redis alone usually means cache-aside.\n\n**5. Why is it designed this way?**\nCache-aside is simple, resilient (cache down → app still works from DB) and caches only what is read, so it's the default. Write-behind maximises write throughput when some data-loss risk is acceptable (counters, analytics).\n\n**6. Framework differences**\nSpring: `@Cacheable` (cache-aside read), `@CacheEvict` (delete on write), `@CachePut` (update). .NET: `IDistributedCache`. Hibernate second-level cache can work read-through/write-through. Node: manual with `ioredis`.\n\n**7. Practical example**\n\n```java\n@Cacheable(cacheNames = \"products\", key = \"#id\")\npublic Product find(long id) { return repo.findById(id).orElseThrow(); }\n\n@CacheEvict(cacheNames = \"products\", key = \"#p.id\")\npublic Product update(Product p) { return repo.save(p); }\n```\n\n**8. How can I observe it?**\nRedis `INFO stats` → `keyspace_hits` / `keyspace_misses` (hit ratio); `redis-cli MONITOR` while calling the API shows GET → (miss) SET. Spring Boot Actuator `/actuator/caches` and cache metrics.",
+      "summary": "What is it? Three patterns for keeping a cache (Redis, in-memory) and a database in step:",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart TB\n  subgraph CA[\"Cache-aside\"]\n    R1[Read] --> C1{\"In Redis?\"}\n    C1 -- hit --> OK1[Return]\n    C1 -- miss --> DB1[(DB)] --> F1[Store in Redis with TTL] --> OK1\n    W1[Write] --> DB1b[(DB)] --> D1[Delete cache key]\n  end\n  subgraph WT[\"Write-through\"]\n    W2[Write] --> C2[Cache] --> DB2[(DB) same request]\n  end\n  subgraph WB[\"Write-behind\"]\n    W3[Write] --> C3[Cache] -. \"later, batched\" .-> DB3[(DB)]\n  end"
+        },
+        {
+          "language": "java",
+          "code": "@Cacheable(cacheNames = \"products\", key = \"#id\")\npublic Product find(long id) { return repo.findById(id).orElseThrow(); }\n\n@CacheEvict(cacheNames = \"products\", key = \"#p.id\")\npublic Product update(Product p) { return repo.save(p); }"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood",
+        "caching"
+      ],
+      "section": [
+        "Redis and Caching Patterns"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "cache-aside",
+        "write-through",
+        "write-behind",
+        "deletes",
+        "later",
+        "under-the-hood",
+        "caching"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/09-Storage-Caching-Messaging.md",
+        "startLine": 157,
+        "endLine": 222
+      },
+      "contentHash": "7ef4ae9c0a023d22"
+    },
+    {
+      "id": "interview/under-the-hood/09-Storage-Caching-Messaging.md#how-does-kafka-store-messages-and-achieve-high-throughput",
+      "kind": "question",
+      "parentId": null,
+      "question": "How does Kafka store messages and achieve high throughput?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nKafka stores messages in an **append-only log** on disk, split into **partitions** spread across brokers. It reaches millions of messages per second by writing and reading **sequentially**, in **batches**, and letting the OS cache do most of the work.\n\n**2. How does it work internally?**\n\n1. A producer **batches** records per partition (and compresses them: lz4, zstd, snappy).\n2. The partition **leader** broker **appends** the batch to the end of the active **segment file** (sequential write).\n3. **Followers** fetch the batch to replicate it; once in-sync replicas have it, it's **committed**.\n4. Consumers **fetch** from an offset; the broker sends file data straight to the socket with **zero-copy** (`sendfile`), usually from the OS **page cache** (recent data is still in RAM).\n5. Old segments are deleted (or compacted) by **retention** time/size — reading doesn't delete anything.\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  P[\"Producer<br/>batch + compress\"] --> L[\"Leader: partition 0\"]\n  subgraph Disk[\"Partition 0 directory\"]\n    S1[\"00000000.log (old segment)\"]\n    S2[\"00004500.log (active, append-only)\"]\n    IX[\"00004500.index<br/>offset → file position\"]\n  end\n  L --> S2\n  L -- replicate --> F1[\"Follower broker\"]\n  S2 -- \"page cache + sendfile (zero-copy)\" --> C[\"Consumer fetch from offset 4520\"]\n```\n\n**4. Internal implementation**\n\n- Each segment has a `.log` (record batches), a sparse `.index` (offset → byte position) and a `.timeindex` (timestamp → offset) for fast seeks.\n- Producer `acks=all` + `min.insync.replicas=2` → a write survives one broker failure.\n- Modern Kafka uses **KRaft** (its own Raft-based metadata quorum) instead of ZooKeeper.\n- Kafka avoids its own big cache on the JVM heap and relies on the OS page cache (less GC, survives broker restarts).\n\n**5. Why is it designed this way?**\nSequential disk I/O is fast (even on HDDs), batching amortises network and disk costs, zero-copy avoids moving data through user space. Keeping data after reading enables **replay** and many independent consumers. Trade-off: no per-message routing or priorities like a traditional broker.\n\n**6. Language differences**\nOfficial Java client; librdkafka-based clients for C/C++, Python (`confluent-kafka`), Go, .NET; Node (`kafkajs`, librdkafka bindings). Spring: `KafkaTemplate`, `@KafkaListener`.\n\n**7. Practical example**\n\n```properties\nspring.kafka.producer.acks=all\nspring.kafka.producer.properties.linger.ms=10        # wait up to 10 ms to fill a batch\nspring.kafka.producer.compression-type=zstd\n```\n\n**8. How can I observe it?**\nLook at the broker's `log.dirs`: `orders-0/00000000000000000000.log`. `kafka-dump-log.sh --files <segment>.log` prints batches. `kafka-console-consumer.sh --from-beginning` shows replay. Metrics: `BytesInPerSec`, consumer lag.",
+      "summary": "What is it? Kafka stores messages in an append-only log on disk, split into partitions spread across brokers. It reaches millions of messages per second by writing and reading sequentially, in batches, and letting the OS cache do most of the work.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  P[\"Producer<br/>batch + compress\"] --> L[\"Leader: partition 0\"]\n  subgraph Disk[\"Partition 0 directory\"]\n    S1[\"00000000.log (old segment)\"]\n    S2[\"00004500.log (active, append-only)\"]\n    IX[\"00004500.index<br/>offset → file position\"]\n  end\n  L --> S2\n  L -- replicate --> F1[\"Follower broker\"]\n  S2 -- \"page cache + sendfile (zero-copy)\" --> C[\"Consumer fetch from offset 4520\"]"
+        },
+        {
+          "language": "properties",
+          "code": "spring.kafka.producer.acks=all\nspring.kafka.producer.properties.linger.ms=10        # wait up to 10 ms to fill a batch\nspring.kafka.producer.compression-type=zstd"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Kafka and RabbitMQ"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "kafka",
+        "store",
+        "messages",
+        "achieve",
+        "high",
+        "throughput",
+        "append-only log",
+        "partitions",
+        "sequentially",
+        "batches",
+        "leader",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/09-Storage-Caching-Messaging.md",
+        "startLine": 228,
+        "endLine": 280
+      },
+      "contentHash": "0e42df3559199922"
+    },
+    {
+      "id": "interview/under-the-hood/09-Storage-Caching-Messaging.md#how-do-kafka-partitions-offsets-and-consumer-groups-work",
+      "kind": "question",
+      "parentId": null,
+      "question": "How do Kafka Partitions, Offsets and Consumer Groups work?",
+      "prompt": null,
+      "answer": "**1. What is it?**\n\n- **Partition** — a topic is split into ordered logs; each partition is the unit of parallelism and ordering.\n- **Offset** — a message's position number inside a partition (0, 1, 2…).\n- **Consumer group** — consumers sharing work: each partition is read by **exactly one** consumer in the group; different groups each get **all** messages.\n\n**2. How does it work internally?**\n\n1. The producer chooses a partition: with a **key**, `hash(key) % partitions` (murmur2) → same key always goes to the same partition (ordering per key); without a key, batches are spread across partitions.\n2. A **group coordinator** broker manages each consumer group: members join, one partition **assignment** is computed.\n3. Each consumer polls its partitions from its current offset.\n4. After processing, it **commits** offsets to the internal topic `__consumer_offsets`.\n5. A consumer joins, leaves or crashes → **rebalance**: partitions are reassigned; the new owner resumes from the last committed offset.\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  subgraph T[\"Topic: orders (3 partitions)\"]\n    P0[\"P0: 0 1 2 3 4\"]\n    P1[\"P1: 0 1 2\"]\n    P2[\"P2: 0 1 2 3\"]\n  end\n  subgraph GA[\"Group: billing\"]\n    A1[consumer A1]\n    A2[consumer A2]\n  end\n  subgraph GB[\"Group: analytics\"]\n    B1[consumer B1]\n  end\n  P0 --> A1\n  P1 --> A1\n  P2 --> A2\n  P0 --> B1\n  P1 --> B1\n  P2 --> B1\n```\n\n**4. Internal implementation**\n\n- More consumers than partitions → extra consumers sit idle. Max parallelism per group = number of partitions.\n- **Cooperative sticky** assignment rebalances incrementally (only moved partitions pause).\n- Committing **before** processing → possible loss (at-most-once); **after** → possible duplicates on crash (at-least-once).\n- **Consumer lag** = latest offset − committed offset.\n\n**5. Why is it designed this way?**\nPartitions let Kafka scale writes and reads across brokers and consumers, while still guaranteeing order where it matters (per key). Offsets owned by consumers make replay trivial and the broker simple.\n\n**6. Framework differences**\nSpring Kafka: `@KafkaListener(groupId = \"billing\", concurrency = \"3\")` creates 3 consumers; `AckMode` controls commits. Kafka Streams and Flink build stateful processing on the same partition model.\n\n**7. Practical example**\nKey = `orderId`: all events for order 42 (`CREATED`, `PAID`, `SHIPPED`) land in one partition and are processed in order, while other orders are processed in parallel.\n\n**8. How can I observe it?**\n`kafka-consumer-groups.sh --describe --group billing` shows partition, current offset, log-end offset, **LAG** and the owning consumer. Kafka UI / Conduktor / AKHQ show the same visually.",
+      "summary": "Partition — a topic is split into ordered logs; each partition is the unit of parallelism and ordering. Offset — a message's position number inside a partition (0, 1, 2…). Consumer group — consumers sharing work: each partition is read by exactly one consumer in the group; different groups each get all messages.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  subgraph T[\"Topic: orders (3 partitions)\"]\n    P0[\"P0: 0 1 2 3 4\"]\n    P1[\"P1: 0 1 2\"]\n    P2[\"P2: 0 1 2 3\"]\n  end\n  subgraph GA[\"Group: billing\"]\n    A1[consumer A1]\n    A2[consumer A2]\n  end\n  subgraph GB[\"Group: analytics\"]\n    B1[consumer B1]\n  end\n  P0 --> A1\n  P1 --> A1\n  P2 --> A2\n  P0 --> B1\n  P1 --> B1\n  P2 --> B1"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Kafka and RabbitMQ"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "kafka",
+        "partitions",
+        "offsets",
+        "consumer",
+        "groups",
+        "partition",
+        "offset",
+        "consumer group",
+        "exactly one",
+        "all",
+        "key",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/09-Storage-Caching-Messaging.md",
+        "startLine": 284,
+        "endLine": 343
+      },
+      "contentHash": "dd773ac8894cd395"
+    },
+    {
+      "id": "interview/under-the-hood/09-Storage-Caching-Messaging.md#how-does-rabbitmq-route-messages-using-exchanges-queues-and",
+      "kind": "question",
+      "parentId": null,
+      "question": "How does RabbitMQ route messages using Exchanges, Queues and Bindings?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nIn RabbitMQ (AMQP 0-9-1), producers never send to a queue directly. They publish to an **exchange** with a **routing key**; **bindings** (rules) connect exchanges to **queues**; consumers read from queues.\n\n**2. How does it work internally?**\n\n1. Producer publishes `{exchange: \"orders\", routingKey: \"order.created.in\", body}`.\n2. The exchange looks at its **type** and bindings:\n   - **direct** — routing key must equal the binding key.\n   - **topic** — pattern match with `*` (one word) and `#` (zero or more words).\n   - **fanout** — copy to every bound queue, ignore the key.\n   - **headers** — match on message headers.\n3. A copy is placed in each matching queue (no match → dropped, or returned if `mandatory`).\n4. Consumers subscribed to a queue receive messages **pushed** to them, limited by **prefetch**.\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  P[Producer] -- \"routing key: order.created.in\" --> X{{\"Topic exchange: orders\"}}\n  X -- \"binding: order.created.*\" --> Q1[(queue: email)]\n  X -- \"binding: order.#\" --> Q2[(queue: audit)]\n  X -. \"binding: payment.*\" .-> Q3[(queue: billing)]\n  Q1 --> C1[Email service]\n  Q2 --> C2[Audit service]\n```\n\n**4. Internal implementation**\n\n- Routing tables are kept in each node; topic matching uses a trie of binding patterns.\n- **Classic queues** live on one node; **quorum queues** are replicated with the **Raft** protocol (recommended for durability); **streams** offer a Kafka-like append-only log.\n- Messages are delivered with a delivery tag; they stay in the queue until **acknowledged**.\n- The **default exchange** routes by queue name, which is why \"send to a queue\" seems to work directly.\n\n**5. Why is it designed this way?**\nDecoupling producers from queues lets you add new consumers (a new queue + binding) without changing producers, and route by message type. Trade-off vs Kafka: messages are removed once consumed — no replay (except with streams).\n\n**6. Framework differences**\nSpring AMQP: `RabbitTemplate.convertAndSend(\"orders\", \"order.created.in\", event)`, `@RabbitListener(queues = \"email\")`, declare `TopicExchange`, `Queue`, `Binding` beans. Node: `amqplib`. .NET: `RabbitMQ.Client`, MassTransit. Python: `pika`.\n\n**7. Practical example**\n\n```java\n@Bean Binding emailBinding(Queue email, TopicExchange orders) {\n    return BindingBuilder.bind(email).to(orders).with(\"order.created.*\");\n}\n```\n\n**8. How can I observe it?**\nRabbitMQ **Management UI** (port 15672): Exchanges → Bindings tab, Queues → message rates, \"Get messages\" to peek. `rabbitmqctl list_bindings`.",
+      "summary": "What is it? In RabbitMQ (AMQP 0-9-1), producers never send to a queue directly. They publish to an exchange with a routing key; bindings (rules) connect exchanges to queues; consumers read from queues.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  P[Producer] -- \"routing key: order.created.in\" --> X{{\"Topic exchange: orders\"}}\n  X -- \"binding: order.created.*\" --> Q1[(queue: email)]\n  X -- \"binding: order.#\" --> Q2[(queue: audit)]\n  X -. \"binding: payment.*\" .-> Q3[(queue: billing)]\n  Q1 --> C1[Email service]\n  Q2 --> C2[Audit service]"
+        },
+        {
+          "language": "java",
+          "code": "@Bean Binding emailBinding(Queue email, TopicExchange orders) {\n    return BindingBuilder.bind(email).to(orders).with(\"order.created.*\");\n}"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Kafka and RabbitMQ"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "rabbitmq",
+        "route",
+        "messages",
+        "exchanges",
+        "queues",
+        "bindings",
+        "exchange",
+        "routing key",
+        "type",
+        "direct",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/09-Storage-Caching-Messaging.md",
+        "startLine": 347,
+        "endLine": 399
+      },
+      "contentHash": "cf1b585b744ffc61"
+    },
+    {
+      "id": "interview/under-the-hood/09-Storage-Caching-Messaging.md#how-do-message-acknowledgements-retries-and-dead-letter-queues",
+      "kind": "question",
+      "parentId": null,
+      "question": "How do Message Acknowledgements, Retries and Dead Letter Queues work?",
+      "prompt": null,
+      "answer": "**1. What is it?**\n\n- **Acknowledgement (ack)** — the consumer tells the broker \"I processed this; you can forget it\".\n- **Retry** — a failed message is tried again (immediately or after a delay).\n- **Dead Letter Queue (DLQ)** — where messages go after repeated failure, so they don't block others and can be inspected.\n\n**2. How does it work internally?**\nRabbitMQ:\n\n1. A delivered message is **unacked** until the consumer acks.\n2. `ack` → removed. `nack/reject` with `requeue=true` → back in the queue; `requeue=false` → sent to the queue's **dead-letter exchange** (`x-dead-letter-exchange`).\n3. Consumer crashes / channel closes → unacked messages are **redelivered** (flag `redelivered=true`).\n4. Delayed retries: dead-letter into a \"wait\" queue with a TTL that dead-letters back to the main queue.\n\nKafka:\n\n1. No per-message ack: the consumer **commits offsets**.\n2. Retries are done by the client (Spring Kafka `DefaultErrorHandler` with backoff) or by **retry topics** (`orders-retry-1`, `-retry-2`).\n3. After the last attempt the record is published to a **dead-letter topic** (`orders-dlt`) and the offset moves on.\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  Q[(orders queue)] --> C{\"Consumer<br/>process ok?\"}\n  C -- yes --> ACK[\"ack → removed\"]\n  C -- \"fail (attempt < 3)\" --> RT[\"retry with backoff<br/>(delay queue / retry topic)\"] --> Q\n  C -- \"fail (attempt 3)\" --> DLQ[(\"Dead letter queue / topic\")]\n  DLQ --> OPS[\"Alert + inspect + replay later\"]\n```\n\n**4. Internal implementation**\n\n- **Prefetch** (RabbitMQ `basic.qos`) limits unacked messages per consumer — too high starves others, too low hurts throughput.\n- Quorum queues support a **delivery limit**: after N redeliveries the message is dead-lettered automatically.\n- Retries make delivery **at-least-once** → consumers must be **idempotent**.\n- Non-retryable errors (bad JSON, validation) should go straight to the DLQ — retrying won't help.\n\n**5. Why is it designed this way?**\nAcks make \"processed\" explicit, so crashes don't lose messages. Backoff gives temporary failures time to recover. DLQs isolate **poison messages** that would otherwise block a queue or partition forever.\n\n**6. Framework differences**\nSpring AMQP: `AcknowledgeMode.AUTO` (ack on success, reject on exception) + `RetryInterceptorBuilder` + `RejectAndDontRequeueRecoverer`. Spring Kafka: `@RetryableTopic(attempts = \"3\", backoff = @Backoff(delay = 1000, multiplier = 2))` creates retry and DLT topics. AWS SQS: visibility timeout + redrive policy (`maxReceiveCount`) to a DLQ.\n\n**7. Practical example**\n\n```java\n@RetryableTopic(attempts = \"3\", backoff = @Backoff(delay = 1000, multiplier = 2.0))\n@KafkaListener(topics = \"orders\")\nvoid onOrder(OrderEvent e) { billing.charge(e); }    // throws → retried at 1 s, 2 s → then orders-dlt\n\n@DltHandler\nvoid onDlt(OrderEvent e) { alerts.notify(e); }\n```\n\n**8. How can I observe it?**\nRabbitMQ UI: \"Unacked\" count per queue, DLQ message count, \"redelivered\" flag. Kafka: consume `orders-dlt` with headers (`kafka_dlt-exception-message`). Spring logs each retry attempt.",
+      "summary": "Acknowledgement (ack) — the consumer tells the broker \"I processed this; you can forget it\". Retry — a failed message is tried again (immediately or after a delay). Dead Letter Queue (DLQ) — where messages go after repeated failure, so they don't block others and can be inspected.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  Q[(orders queue)] --> C{\"Consumer<br/>process ok?\"}\n  C -- yes --> ACK[\"ack → removed\"]\n  C -- \"fail (attempt < 3)\" --> RT[\"retry with backoff<br/>(delay queue / retry topic)\"] --> Q\n  C -- \"fail (attempt 3)\" --> DLQ[(\"Dead letter queue / topic\")]\n  DLQ --> OPS[\"Alert + inspect + replay later\"]"
+        },
+        {
+          "language": "java",
+          "code": "@RetryableTopic(attempts = \"3\", backoff = @Backoff(delay = 1000, multiplier = 2.0))\n@KafkaListener(topics = \"orders\")\nvoid onOrder(OrderEvent e) { billing.charge(e); }    // throws → retried at 1 s, 2 s → then orders-dlt\n\n@DltHandler\nvoid onDlt(OrderEvent e) { alerts.notify(e); }"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Kafka and RabbitMQ"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "message",
+        "acknowledgements",
+        "retries",
+        "dead",
+        "letter",
+        "queues",
+        "acknowledgement (ack)",
+        "retry",
+        "dead letter queue (dlq)",
+        "unacked",
+        "dead-letter exchange",
+        "redelivered",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/09-Storage-Caching-Messaging.md",
+        "startLine": 403,
+        "endLine": 463
+      },
+      "contentHash": "3ce21ab801199d6c"
+    },
+    {
+      "id": "interview/under-the-hood/09-Storage-Caching-Messaging.md#how-does-message-ordering-work",
+      "kind": "question",
+      "parentId": null,
+      "question": "How does message ordering work?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nOrdering means consumers see messages in the order they were produced. Brokers only guarantee it **within one unit**: a Kafka **partition** or a RabbitMQ **queue** with a single consumer — never across a whole topic or multiple consumers.\n\n**2. How does it work internally?**\nKafka:\n\n1. Messages with the same **key** go to the same partition → appended in order → read in offset order by one consumer of the group.\n2. Producer retries could reorder batches; the **idempotent producer** (default since Kafka 3.0) adds sequence numbers so the broker rejects duplicates and keeps order (with ≤ 5 in-flight requests).\n\nRabbitMQ:\n\n1. A queue is FIFO, but with **several consumers** or **requeued** messages, processing order is no longer guaranteed.\n2. **Single active consumer** queues or one consumer per queue restore strict order.\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  E1[\"order 42: CREATED\"] --> P0\n  E2[\"order 42: PAID\"] --> P0\n  E3[\"order 77: CREATED\"] --> P1\n  subgraph Topic[\"Kafka topic, key = orderId\"]\n    P0[\"Partition 0: 42-CREATED, 42-PAID (in order)\"]\n    P1[\"Partition 1: 77-CREATED\"]\n  end\n  P0 --> C1[\"Consumer 1: processes order 42 in order\"]\n  P1 --> C2[\"Consumer 2: parallel\"]\n```\n\n**4. Internal implementation**\n\n- Adding partitions **changes** `hash(key) % n` → keys move to new partitions → ordering for existing keys can break around the change.\n- Retry topics and DLQs **break ordering** (a failed message is processed later than newer ones). If strict order matters, retry in place (block the partition) instead.\n- Multi-threaded processing inside one consumer must keep per-key order (e.g. thread per key hash).\n\n**5. Why is it designed this way?**\nGlobal ordering would force all messages through one sequence — no parallelism. Per-key ordering keeps the guarantee where business logic needs it (one order, one account) while scaling everything else.\n\n**6. Platform differences**\nAWS SQS FIFO queues: ordering per **message group ID** (similar to Kafka keys). Azure Service Bus: sessions. Google Pub/Sub: ordering keys. All follow the same \"order per key\" idea.\n\n**7. Practical example**\nAccount events `DEPOSIT 100`, `WITHDRAW 80`: processed out of order, the withdrawal could be rejected for insufficient funds. Using `accountId` as the key keeps them in order.\n\n**8. How can I observe it?**\nProduce numbered messages with the same key and log partition + offset in the consumer. `kafka-console-consumer.sh --property print.key=true --property print.partition=true` shows key → partition mapping.",
+      "summary": "What is it? Ordering means consumers see messages in the order they were produced. Brokers only guarantee it within one unit: a Kafka partition or a RabbitMQ queue with a single consumer — never across a whole topic or multiple consumers.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  E1[\"order 42: CREATED\"] --> P0\n  E2[\"order 42: PAID\"] --> P0\n  E3[\"order 77: CREATED\"] --> P1\n  subgraph Topic[\"Kafka topic, key = orderId\"]\n    P0[\"Partition 0: 42-CREATED, 42-PAID (in order)\"]\n    P1[\"Partition 1: 77-CREATED\"]\n  end\n  P0 --> C1[\"Consumer 1: processes order 42 in order\"]\n  P1 --> C2[\"Consumer 2: parallel\"]"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Ordering and Reliability"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "message",
+        "ordering",
+        "within one unit",
+        "partition",
+        "queue",
+        "key",
+        "idempotent producer",
+        "several consumers",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/09-Storage-Caching-Messaging.md",
+        "startLine": 469,
+        "endLine": 518
+      },
+      "contentHash": "cf874d034d33940b"
+    },
+    {
+      "id": "interview/under-the-hood/09-Storage-Caching-Messaging.md#how-does-a-distributed-application-achieve-reliable-message",
+      "kind": "question",
+      "parentId": null,
+      "question": "How does a distributed application achieve reliable message processing?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nMaking sure every important message is processed **effectively once**, even when producers, brokers or consumers crash at any moment. Networks give you at-most-once or at-least-once delivery; \"exactly-once **effect**\" is built on top with **idempotency** and **transactions**.\n\n**2. How does it work internally?**\n\n1. **Don't lose on send**: write the business change and the event in **one DB transaction** using the **transactional outbox** table; a relay (poller or CDC like Debezium) publishes outbox rows to the broker.\n2. **Don't lose in the broker**: persistent messages, replication (`acks=all`, quorum queues).\n3. **Don't lose on receive**: ack/commit only **after** successful processing → at-least-once.\n4. **Don't double-apply**: consumers are **idempotent** — store processed message IDs (or use natural keys/upserts) and skip duplicates.\n5. **Handle failures**: retries with backoff, DLQ for poison messages, monitoring of lag and DLQ size.\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  subgraph Producer[\"Order service\"]\n    TX[\"One DB transaction:<br/>INSERT order + INSERT outbox row\"]\n  end\n  TX --> RL[\"Outbox relay / Debezium CDC\"]\n  RL --> BR[(\"Kafka / RabbitMQ<br/>replicated, persistent\")]\n  BR --> CS[\"Payment service consumer\"]\n  CS --> DD{\"Message ID already processed?\"}\n  DD -- yes --> SK[\"Skip, ack\"]\n  DD -- no --> PR[\"Process + record ID<br/>(same DB transaction)\"] --> AK[\"ack / commit offset\"]\n```\n\n**4. Internal implementation**\n\n| Guarantee | How | Risk |\n|---|---|---|\n| At-most-once | Ack/commit before processing | Lost messages |\n| At-least-once | Ack/commit after processing | Duplicates → need idempotency |\n| Exactly-once (Kafka → Kafka) | Idempotent producer + **Kafka transactions** (`read_committed`) | Only inside Kafka; external side effects still need idempotency |\n\n- \"Dual write\" (save to DB, then publish) is unsafe: a crash between the two loses or invents events — the outbox fixes it.\n- Idempotency keys can be stored with a **unique constraint** so a duplicate insert simply fails.\n\n**5. Why is it designed this way?**\nDistributed transactions across DB + broker (2PC) are slow and fragile. Outbox + at-least-once + idempotent consumers achieve the same business result with simple, local transactions.\n\n**6. Framework differences**\nSpring: Spring Modulith event publication registry, Debezium outbox router, Spring Kafka transactions (`KafkaTransactionManager`). .NET: MassTransit/NServiceBus outbox. Node: manual outbox tables or libraries. AWS: SQS FIFO deduplication ID (5-minute window).\n\n**7. Practical example**\n\n```sql\nCREATE TABLE processed_messages (message_id VARCHAR(64) PRIMARY KEY);\n-- In the consumer's transaction:\nINSERT INTO processed_messages VALUES (:messageId);   -- duplicate → unique violation → skip\nUPDATE accounts SET balance = balance - :amount WHERE id = :id;\n```\n\n**8. How can I observe it?**\nChaos test: kill the consumer (`docker kill`) mid-processing and restart — the message is redelivered and the idempotency check prevents a double charge. Monitor consumer lag, DLQ size and the outbox table's unpublished row count.",
+      "summary": "What is it? Making sure every important message is processed effectively once, even when producers, brokers or consumers crash at any moment. Networks give you at-most-once or at-least-once delivery; \"exactly-once effect\" is built on top with idempotency and transactions.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  subgraph Producer[\"Order service\"]\n    TX[\"One DB transaction:<br/>INSERT order + INSERT outbox row\"]\n  end\n  TX --> RL[\"Outbox relay / Debezium CDC\"]\n  RL --> BR[(\"Kafka / RabbitMQ<br/>replicated, persistent\")]\n  BR --> CS[\"Payment service consumer\"]\n  CS --> DD{\"Message ID already processed?\"}\n  DD -- yes --> SK[\"Skip, ack\"]\n  DD -- no --> PR[\"Process + record ID<br/>(same DB transaction)\"] --> AK[\"ack / commit offset\"]"
+        },
+        {
+          "language": "sql",
+          "code": "CREATE TABLE processed_messages (message_id VARCHAR(64) PRIMARY KEY);\n-- In the consumer's transaction:\nINSERT INTO processed_messages VALUES (:messageId);   -- duplicate → unique violation → skip\nUPDATE accounts SET balance = balance - :amount WHERE id = :id;"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Ordering and Reliability"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "distributed",
+        "application",
+        "achieve",
+        "reliable",
+        "message",
+        "processing",
+        "effectively once",
+        "effect",
+        "idempotency",
+        "transactions",
+        "don't lose on send",
+        "one db transaction",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/09-Storage-Caching-Messaging.md",
+        "startLine": 522,
+        "endLine": 579
+      },
+      "contentHash": "709908d72d5acfe4"
+    },
+    {
       "id": "practice/coding/01-javascript-coding.md#move-all-0s-to-the-end-without-changing-the-order-of-other",
       "kind": "question",
       "parentId": null,
@@ -65578,7 +66057,7 @@
       "parentId": null,
       "question": "Caching & Redis study path",
       "prompt": null,
-      "answer": "## Prerequisites\n\n- [System Design](../topics/system-design.md)\n- Overview: [Caching & Redis concepts](../../knowledge/concepts/caching/README.md)\n\n## 1. Caching Basics\n\n1. [What is caching and why use it?](../../interview/architecture/06-Caching-Redis.md)\n2. [What are cache hit, cache miss and hit ratio?](../../interview/architecture/06-Caching-Redis.md)\n3. [What are the caching strategies (cache-aside, write-through, write-behind)?](../../interview/architecture/06-Caching-Redis.md)\n   - [On update, should you update the cache or delete the key?](../../interview/architecture/06-Caching-Redis.md)\n4. [What are cache eviction policies?](../../interview/architecture/06-Caching-Redis.md)\n5. [What is cache invalidation and why is it hard?](../../interview/architecture/06-Caching-Redis.md)\n\n## 2. Cache Problems\n\n1. [What are cache stampede, cache penetration and cache avalanche?](../../interview/architecture/06-Caching-Redis.md)\n2. [Local (in-memory) cache vs distributed cache?](../../interview/architecture/06-Caching-Redis.md)\n\n## 3. Redis\n\n1. [What is Redis and why is it so fast?](../../interview/architecture/06-Caching-Redis.md)\n2. [What data types does Redis support, with examples?](../../interview/architecture/06-Caching-Redis.md)\n3. [How does Redis persistence work (RDB vs AOF)?](../../interview/architecture/06-Caching-Redis.md)\n4. [What are TTL and key expiry in Redis?](../../interview/architecture/06-Caching-Redis.md)\n5. [Is Redis single-threaded?](../../interview/architecture/06-Caching-Redis.md)\n6. [How do Redis replication, Sentinel and Cluster differ?](../../interview/architecture/06-Caching-Redis.md)\n7. [How do you use Redis with Spring Boot?](../../interview/architecture/06-Caching-Redis.md)\n\n## 4. Tricky Questions\n\n1. [Tricky: How do you store user sessions when you have many app servers?](../../interview/architecture/06-Caching-Redis.md)\n2. [Tricky: How do you build a leaderboard for millions of players?](../../interview/architecture/06-Caching-Redis.md)\n3. [Tricky: Redis vs Memcached?](../../interview/architecture/06-Caching-Redis.md)\n4. [Tricky: Can Redis lose data?](../../interview/architecture/06-Caching-Redis.md)\n\n## 5. State, Caching & Data Freshness\n\n1. [Cached data improves performance but users see outdated data. How would you balance this?](../../interview/backend/java/08-Architecture.md)\n2. [When should data be cached on frontend vs backend?](../../interview/backend/java/08-Architecture.md)\n\n## 6. Part 7 — Scalable APIs & Caching\n\n1. [How do you design scalable APIs?](../../interview/frontend/09-Web_Architecture.md)\n2. [How would you explain API idempotency, and can you give an example of where it could go wrong if ignored?](../../interview/frontend/09-Web_Architecture.md)\n3. [How do you implement caching effectively?](../../interview/frontend/09-Web_Architecture.md)\n\n## 7. Caching and Scaling\n\n1. [How does Database Caching work?](../../interview/under-the-hood/05-Database-Internals.md)\n2. [How do Replication, Partitioning and Sharding work?](../../interview/under-the-hood/05-Database-Internals.md)\n\n## Practice\n\n1. [You are building a search autocomplete. You must debounce user input, avoid multiple API calls, cache results for 5 minutes, and cancel stale requests. How would you design this in Angular using RxJS?](../../practice/coding/03-angular-coding.md)\n\n## Related roles\n\n[AI Infrastructure / LLMOps Engineer](../roles/ai-infrastructure-llmops-engineer.md) · [Backend Developer](../roles/backend-developer.md)",
+      "answer": "## Prerequisites\n\n- [System Design](../topics/system-design.md)\n- Overview: [Caching & Redis concepts](../../knowledge/concepts/caching/README.md)\n\n## 1. Caching Basics\n\n1. [What is caching and why use it?](../../interview/architecture/06-Caching-Redis.md)\n2. [What are cache hit, cache miss and hit ratio?](../../interview/architecture/06-Caching-Redis.md)\n3. [What are the caching strategies (cache-aside, write-through, write-behind)?](../../interview/architecture/06-Caching-Redis.md)\n   - [On update, should you update the cache or delete the key?](../../interview/architecture/06-Caching-Redis.md)\n4. [What are cache eviction policies?](../../interview/architecture/06-Caching-Redis.md)\n5. [What is cache invalidation and why is it hard?](../../interview/architecture/06-Caching-Redis.md)\n\n## 2. Cache Problems\n\n1. [What are cache stampede, cache penetration and cache avalanche?](../../interview/architecture/06-Caching-Redis.md)\n2. [Local (in-memory) cache vs distributed cache?](../../interview/architecture/06-Caching-Redis.md)\n\n## 3. Redis\n\n1. [What is Redis and why is it so fast?](../../interview/architecture/06-Caching-Redis.md)\n2. [What data types does Redis support, with examples?](../../interview/architecture/06-Caching-Redis.md)\n3. [How does Redis persistence work (RDB vs AOF)?](../../interview/architecture/06-Caching-Redis.md)\n4. [What are TTL and key expiry in Redis?](../../interview/architecture/06-Caching-Redis.md)\n5. [Is Redis single-threaded?](../../interview/architecture/06-Caching-Redis.md)\n6. [How do Redis replication, Sentinel and Cluster differ?](../../interview/architecture/06-Caching-Redis.md)\n7. [How do you use Redis with Spring Boot?](../../interview/architecture/06-Caching-Redis.md)\n\n## 4. Tricky Questions\n\n1. [Tricky: How do you store user sessions when you have many app servers?](../../interview/architecture/06-Caching-Redis.md)\n2. [Tricky: How do you build a leaderboard for millions of players?](../../interview/architecture/06-Caching-Redis.md)\n3. [Tricky: Redis vs Memcached?](../../interview/architecture/06-Caching-Redis.md)\n4. [Tricky: Can Redis lose data?](../../interview/architecture/06-Caching-Redis.md)\n\n## 5. State, Caching & Data Freshness\n\n1. [Cached data improves performance but users see outdated data. How would you balance this?](../../interview/backend/java/08-Architecture.md)\n2. [When should data be cached on frontend vs backend?](../../interview/backend/java/08-Architecture.md)\n\n## 6. Part 7 — Scalable APIs & Caching\n\n1. [How do you design scalable APIs?](../../interview/frontend/09-Web_Architecture.md)\n2. [How would you explain API idempotency, and can you give an example of where it could go wrong if ignored?](../../interview/frontend/09-Web_Architecture.md)\n3. [How do you implement caching effectively?](../../interview/frontend/09-Web_Architecture.md)\n\n## 7. Caching and Scaling\n\n1. [How does Database Caching work?](../../interview/under-the-hood/05-Database-Internals.md)\n2. [How do Replication, Partitioning and Sharding work?](../../interview/under-the-hood/05-Database-Internals.md)\n\n## 8. Redis and Caching Patterns\n\n1. [How does Redis store and retrieve data internally?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)\n2. [How do Cache-Aside, Write-Through and Write-Behind work?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)\n\n## Practice\n\n1. [You are building a search autocomplete. You must debounce user input, avoid multiple API calls, cache results for 5 minutes, and cancel stale requests. How would you design this in Angular using RxJS?](../../practice/coding/03-angular-coding.md)\n\n## Related roles\n\n[AI Infrastructure / LLMOps Engineer](../roles/ai-infrastructure-llmops-engineer.md) · [Backend Developer](../roles/backend-developer.md)",
       "summary": "",
       "codeBlocks": [],
       "visuals": [],
@@ -65614,9 +66093,9 @@
       "source": {
         "path": "roadmap/topics/caching.md",
         "startLine": 2,
-        "endLine": 63
+        "endLine": 68
       },
-      "contentHash": "8d9f7252190559e4"
+      "contentHash": "77e9ff4131086fe8"
     },
     {
       "id": "roadmap/topics/css.md#roadmap",
@@ -66679,7 +67158,7 @@
       "parentId": null,
       "question": "Under the Hood study path",
       "prompt": null,
-      "answer": "## Prerequisites\n\n- None. This is a starting point.\n- Overview: [Under the Hood concepts](../../knowledge/concepts/under-the-hood/README.md)\n\n## 1. Source Code to Machine Code\n\n1. [How does human-readable source code eventually become machine instructions?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n2. [What are the differences between Compiler, Interpreter, Assembler, Linker and Runtime?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n3. [What are Bytecode, Intermediate Representation (IR), Assembly Language and Machine Code?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n4. [What are AOT, JIT and interpretation? How do they differ?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n5. [How do JVM, CLR and JavaScript engines execute programs internally?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n6. [How do programming languages interact with the CPU and memory?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n7. [How does frontend code (JavaScript, TypeScript, Dart, WebAssembly) become machine code in the browser?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n8. [How do frontend frameworks (Angular, React, Vue, Svelte, Next.js) get from source code to running in the browser?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n9. [How do different programming languages implement compilation, execution and memory management?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n10. [Do backend frameworks (Spring Boot, Django, Express, ASP.NET Core) compile code themselves?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n\n## 2. CPU and Memory Hierarchy\n\n1. [How does a CPU execute instructions?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n2. [How do CPU registers, L1/L2/L3 cache, RAM and disk interact?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n3. [What exactly is stored in Stack and Heap memory?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n4. [Can the CPU directly access heap memory? How does a program access objects in RAM?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n5. [How does memory allocation and deallocation work?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n6. [How does Garbage Collection identify unused objects?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n\n## 3. Processes, Threads and Scheduling\n\n1. [How do Processes and Threads work internally?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n2. [How does Context Switching happen?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n3. [How does an operating system execute multiple applications simultaneously?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n\n## 4. Virtual Memory\n\n1. [How do Virtual Memory, Paging and Memory Protection work?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n\n## 5. Loading and Rendering a Page\n\n1. [What happens internally when we enter a URL and open a website?](../../interview/under-the-hood/03a-Browser-Internals.md)\n2. [How does a browser convert HTML, CSS and JavaScript into a rendered webpage?](../../interview/under-the-hood/03a-Browser-Internals.md)\n3. [How do DOM, CSSOM, Render Tree, Layout and Paint work together?](../../interview/under-the-hood/03a-Browser-Internals.md)\n\n## 6. JavaScript in the Browser\n\n1. [How does JavaScript execute inside a browser?](../../interview/under-the-hood/03a-Browser-Internals.md)\n2. [How do Call Stack, Event Loop, Microtask Queue and Task Queue work?](../../interview/under-the-hood/03a-Browser-Internals.md)\n3. [How does asynchronous JavaScript execute without blocking the UI?](../../interview/under-the-hood/03a-Browser-Internals.md)\n4. [How does a browser determine which UI elements need updating?](../../interview/under-the-hood/03a-Browser-Internals.md)\n5. [How do Angular, React and Vue detect changes and update the DOM?](../../interview/under-the-hood/03a-Browser-Internals.md)\n\n## 7. Network, Build and Storage\n\n1. [How does a frontend application communicate with a backend?](../../interview/under-the-hood/03a-Browser-Internals.md)\n2. [How do bundlers, Tree Shaking and Code Splitting work?](../../interview/under-the-hood/03a-Browser-Internals.md)\n3. [How do Browser Cache, Cookies, LocalStorage, SessionStorage and IndexedDB work?](../../interview/under-the-hood/03a-Browser-Internals.md)\n4. [How do Browser Tabs and Web Workers work internally?](../../interview/under-the-hood/03a-Browser-Internals.md)\n\n## 8. Angular Internals\n\n1. [How do Angular application bootstrap and compilation work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n2. [How does Angular Dependency Injection work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n3. [How does the Angular component lifecycle work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n4. [How do Angular Change Detection and Signals work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n5. [How do the Angular Router and lazy loading work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n6. [How do Angular HttpClient and HTTP Interceptors work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n\n## 9. React Internals\n\n1. [How do React's Virtual DOM and Reconciliation work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n2. [How does React's Fiber architecture work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n3. [How do React Hooks and component rendering work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n\n## 10. Vue Internals\n\n1. [How does Vue's reactivity system work internally (dependency tracking and Proxies)?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n2. [How do Vue's template compiler and Virtual DOM work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n\n## 11. Servers, Localhost and Ports\n\n1. [What exactly is a Server? Is it hardware, software, a process or a computer?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n2. [What is Localhost? How is it different from a physical server or virtual machine?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n3. [How does a server listen for incoming requests using IP addresses and ports?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n4. [What is the difference between Web Server, Application Server and Reverse Proxy?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n\n## 12. Tomcat and Spring Boot\n\n1. [How does Tomcat work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n2. [How is Tomcat different from the computer's localhost?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n3. [How does Spring Boot start its embedded Tomcat server?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n4. [What happens internally when an HTTP request reaches Spring Boot?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n\n## 13. Spring Container and Request Processing\n\n1. [How does Spring Dependency Injection create and manage objects?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n2. [How do Spring AOP, Proxies and @Transactional work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n3. [How does a backend application manage concurrent requests and threads?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n4. [How does Connection Pooling work?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n5. [How do Authentication and Authorization work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n6. [How do Exception Handling, Retries and Timeouts work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n\n## 14. Storage on Disk\n\n1. [How does a database physically store records on disk?](../../interview/under-the-hood/05-Database-Internals.md)\n2. [What are Database Pages, Blocks and Rows?](../../interview/under-the-hood/05-Database-Internals.md)\n\n## 15. Indexes\n\n1. [How does Database Indexing work internally?](../../interview/under-the-hood/05-Database-Internals.md)\n2. [How do B-Tree and B+ Tree work? Why are B+ Trees commonly used?](../../interview/under-the-hood/05-Database-Internals.md)\n3. [How do Clustered, Non-Clustered and Composite Indexes work?](../../interview/under-the-hood/05-Database-Internals.md)\n4. [How does a database decide between Index Seek and Table Scan?](../../interview/under-the-hood/05-Database-Internals.md)\n\n## 16. Query Processing\n\n1. [How does the SQL Query Optimizer select an execution plan?](../../interview/under-the-hood/05-Database-Internals.md)\n2. [How do JOIN operations work internally?](../../interview/under-the-hood/05-Database-Internals.md)\n3. [How do Nested Loop, Hash Join and Merge Join differ?](../../interview/under-the-hood/05-Database-Internals.md)\n\n## 17. Transactions, Logging and Recovery\n\n1. [How does a database manage concurrent transactions?](../../interview/under-the-hood/05-Database-Internals.md)\n2. [How do ACID, Locks and MVCC work internally?](../../interview/under-the-hood/05-Database-Internals.md)\n3. [How does Write-Ahead Logging (WAL) work?](../../interview/under-the-hood/05-Database-Internals.md)\n4. [How does a database recover after a crash?](../../interview/under-the-hood/05-Database-Internals.md)\n\n## 18. Caching and Scaling\n\n1. [How does Database Caching work?](../../interview/under-the-hood/05-Database-Internals.md)\n2. [How do Replication, Partitioning and Sharding work?](../../interview/under-the-hood/05-Database-Internals.md)\n\n## 19. Hashing\n\n1. [How does HashMap work internally, including hashing, buckets and collision handling?](../../interview/under-the-hood/06-Data-Structures-Internals.md)\n2. [Why is HashMap not reversible? Why can't the original key be reconstructed from its hash?](../../interview/under-the-hood/06-Data-Structures-Internals.md)\n\n## 20. Lists, Stacks, Queues and Heaps\n\n1. [How do ArrayList, LinkedList and Arrays store and retrieve elements differently?](../../interview/under-the-hood/06-Data-Structures-Internals.md)\n2. [How do Stack, Queue, Heap and Priority Queue work?](../../interview/under-the-hood/06-Data-Structures-Internals.md)\n\n## 21. Trees and Sets\n\n1. [How do Binary Search Trees, AVL Trees, Red-Black Trees and B+ Trees differ?](../../interview/under-the-hood/06-Data-Structures-Internals.md)\n2. [How does HashSet ensure uniqueness?](../../interview/under-the-hood/06-Data-Structures-Internals.md)\n\n## 22. Algorithms and Performance\n\n1. [How do searching and sorting algorithms work internally?](../../interview/under-the-hood/06-Data-Structures-Internals.md)\n2. [How do time and space complexities affect actual application performance?](../../interview/under-the-hood/06-Data-Structures-Internals.md)\n\n## 23. How Data Travels\n\n1. [How does data travel from one computer to another?](../../interview/under-the-hood/07-Networking-Internals.md)\n2. [How do IP Addresses, MAC Addresses, DNS, Ports and Routing work together?](../../interview/under-the-hood/07-Networking-Internals.md)\n\n## 24. TCP, UDP and HTTP\n\n1. [How do TCP and UDP work internally?](../../interview/under-the-hood/07-Networking-Internals.md)\n2. [How does TCP establish and maintain connections?](../../interview/under-the-hood/07-Networking-Internals.md)\n3. [How do HTTP/1.1, HTTP/2 and HTTP/3 differ internally?](../../interview/under-the-hood/07-Networking-Internals.md)\n\n## 25. Security: TLS, Keys and Certificates\n\n1. [How does HTTPS and the TLS Handshake work?](../../interview/under-the-hood/07-Networking-Internals.md)\n2. [How do Public-Key and Private-Key cryptography work?](../../interview/under-the-hood/07-Networking-Internals.md)\n3. [How does a receiver verify that the sender possesses the legitimate private key?](../../interview/under-the-hood/07-Networking-Internals.md)\n4. [How do Digital Certificates and Certificate Authorities establish trust?](../../interview/under-the-hood/07-Networking-Internals.md)\n\n## 26. Persistent Connections and Traffic Routing\n\n1. [How do WebSockets establish persistent connections?](../../interview/under-the-hood/07-Networking-Internals.md)\n2. [How do Load Balancers, Reverse Proxies and API Gateways work?](../../interview/under-the-hood/07-Networking-Internals.md)\n\n## 27. Virtual Machines\n\n1. [What is a Virtual Machine? How can one physical computer run multiple VMs?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)\n2. [How does a Hypervisor allocate CPU, Memory and Storage?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)\n\n## 28. Containers\n\n1. [How does Docker work internally?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)\n2. [How are Containers different from Virtual Machines?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)\n3. [How do Docker Images and Containers work?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)\n\n## 29. Orchestration and Delivery\n\n1. [How does Kubernetes schedule and manage containers?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)\n2. [How does an application move from source code to a running production environment?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)\n3. [How do CI/CD pipelines build, test and deploy applications?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)\n4. [How do cloud platforms allocate computing resources?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)\n5. [How do Auto Scaling and Load Balancing work?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)\n6. [How are Secrets and Environment Configurations managed?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)\n\n## Diagrams\n\n- [Frontend programming languages: source to machine code](../../knowledge/visual-notes/01_frontend_programming_languages.png)\n- [Frontend frameworks and libraries: build and execution path](../../knowledge/visual-notes/02_frontend_frameworks.png)\n- [Backend programming languages: source, artifact, runtime and execution](../../knowledge/visual-notes/03_backend_programming_languages.png)\n- [Backend frameworks and platforms: source, compiler and runtime](../../knowledge/visual-notes/04_backend_frameworks.png)\n\n## Related roles\n\n[Platform Engineer](../roles/platform-engineer.md)",
+      "answer": "## Prerequisites\n\n- None. This is a starting point.\n- Overview: [Under the Hood concepts](../../knowledge/concepts/under-the-hood/README.md)\n\n## 1. Source Code to Machine Code\n\n1. [How does human-readable source code eventually become machine instructions?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n2. [What are the differences between Compiler, Interpreter, Assembler, Linker and Runtime?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n3. [What are Bytecode, Intermediate Representation (IR), Assembly Language and Machine Code?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n4. [What are AOT, JIT and interpretation? How do they differ?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n5. [How do JVM, CLR and JavaScript engines execute programs internally?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n6. [How do programming languages interact with the CPU and memory?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n7. [How does frontend code (JavaScript, TypeScript, Dart, WebAssembly) become machine code in the browser?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n8. [How do frontend frameworks (Angular, React, Vue, Svelte, Next.js) get from source code to running in the browser?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n9. [How do different programming languages implement compilation, execution and memory management?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n10. [Do backend frameworks (Spring Boot, Django, Express, ASP.NET Core) compile code themselves?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n\n## 2. CPU and Memory Hierarchy\n\n1. [How does a CPU execute instructions?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n2. [How do CPU registers, L1/L2/L3 cache, RAM and disk interact?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n3. [What exactly is stored in Stack and Heap memory?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n4. [Can the CPU directly access heap memory? How does a program access objects in RAM?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n5. [How does memory allocation and deallocation work?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n6. [How does Garbage Collection identify unused objects?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n\n## 3. Processes, Threads and Scheduling\n\n1. [How do Processes and Threads work internally?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n2. [How does Context Switching happen?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n3. [How does an operating system execute multiple applications simultaneously?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n\n## 4. Virtual Memory\n\n1. [How do Virtual Memory, Paging and Memory Protection work?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n\n## 5. Loading and Rendering a Page\n\n1. [What happens internally when we enter a URL and open a website?](../../interview/under-the-hood/03a-Browser-Internals.md)\n2. [How does a browser convert HTML, CSS and JavaScript into a rendered webpage?](../../interview/under-the-hood/03a-Browser-Internals.md)\n3. [How do DOM, CSSOM, Render Tree, Layout and Paint work together?](../../interview/under-the-hood/03a-Browser-Internals.md)\n\n## 6. JavaScript in the Browser\n\n1. [How does JavaScript execute inside a browser?](../../interview/under-the-hood/03a-Browser-Internals.md)\n2. [How do Call Stack, Event Loop, Microtask Queue and Task Queue work?](../../interview/under-the-hood/03a-Browser-Internals.md)\n3. [How does asynchronous JavaScript execute without blocking the UI?](../../interview/under-the-hood/03a-Browser-Internals.md)\n4. [How does a browser determine which UI elements need updating?](../../interview/under-the-hood/03a-Browser-Internals.md)\n5. [How do Angular, React and Vue detect changes and update the DOM?](../../interview/under-the-hood/03a-Browser-Internals.md)\n\n## 7. Network, Build and Storage\n\n1. [How does a frontend application communicate with a backend?](../../interview/under-the-hood/03a-Browser-Internals.md)\n2. [How do bundlers, Tree Shaking and Code Splitting work?](../../interview/under-the-hood/03a-Browser-Internals.md)\n3. [How do Browser Cache, Cookies, LocalStorage, SessionStorage and IndexedDB work?](../../interview/under-the-hood/03a-Browser-Internals.md)\n4. [How do Browser Tabs and Web Workers work internally?](../../interview/under-the-hood/03a-Browser-Internals.md)\n\n## 8. Angular Internals\n\n1. [How do Angular application bootstrap and compilation work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n2. [How does Angular Dependency Injection work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n3. [How does the Angular component lifecycle work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n4. [How do Angular Change Detection and Signals work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n5. [How do the Angular Router and lazy loading work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n6. [How do Angular HttpClient and HTTP Interceptors work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n\n## 9. React Internals\n\n1. [How do React's Virtual DOM and Reconciliation work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n2. [How does React's Fiber architecture work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n3. [How do React Hooks and component rendering work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n\n## 10. Vue Internals\n\n1. [How does Vue's reactivity system work internally (dependency tracking and Proxies)?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n2. [How do Vue's template compiler and Virtual DOM work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n\n## 11. Servers, Localhost and Ports\n\n1. [What exactly is a Server? Is it hardware, software, a process or a computer?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n2. [What is Localhost? How is it different from a physical server or virtual machine?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n3. [How does a server listen for incoming requests using IP addresses and ports?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n4. [What is the difference between Web Server, Application Server and Reverse Proxy?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n\n## 12. Tomcat and Spring Boot\n\n1. [How does Tomcat work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n2. [How is Tomcat different from the computer's localhost?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n3. [How does Spring Boot start its embedded Tomcat server?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n4. [What happens internally when an HTTP request reaches Spring Boot?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n\n## 13. Spring Container and Request Processing\n\n1. [How does Spring Dependency Injection create and manage objects?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n2. [How do Spring AOP, Proxies and @Transactional work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n3. [How does a backend application manage concurrent requests and threads?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n4. [How does Connection Pooling work?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n5. [How do Authentication and Authorization work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n6. [How do Exception Handling, Retries and Timeouts work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n\n## 14. Storage on Disk\n\n1. [How does a database physically store records on disk?](../../interview/under-the-hood/05-Database-Internals.md)\n2. [What are Database Pages, Blocks and Rows?](../../interview/under-the-hood/05-Database-Internals.md)\n\n## 15. Indexes\n\n1. [How does Database Indexing work internally?](../../interview/under-the-hood/05-Database-Internals.md)\n2. [How do B-Tree and B+ Tree work? Why are B+ Trees commonly used?](../../interview/under-the-hood/05-Database-Internals.md)\n3. [How do Clustered, Non-Clustered and Composite Indexes work?](../../interview/under-the-hood/05-Database-Internals.md)\n4. [How does a database decide between Index Seek and Table Scan?](../../interview/under-the-hood/05-Database-Internals.md)\n\n## 16. Query Processing\n\n1. [How does the SQL Query Optimizer select an execution plan?](../../interview/under-the-hood/05-Database-Internals.md)\n2. [How do JOIN operations work internally?](../../interview/under-the-hood/05-Database-Internals.md)\n3. [How do Nested Loop, Hash Join and Merge Join differ?](../../interview/under-the-hood/05-Database-Internals.md)\n\n## 17. Transactions, Logging and Recovery\n\n1. [How does a database manage concurrent transactions?](../../interview/under-the-hood/05-Database-Internals.md)\n2. [How do ACID, Locks and MVCC work internally?](../../interview/under-the-hood/05-Database-Internals.md)\n3. [How does Write-Ahead Logging (WAL) work?](../../interview/under-the-hood/05-Database-Internals.md)\n4. [How does a database recover after a crash?](../../interview/under-the-hood/05-Database-Internals.md)\n\n## 18. Caching and Scaling\n\n1. [How does Database Caching work?](../../interview/under-the-hood/05-Database-Internals.md)\n2. [How do Replication, Partitioning and Sharding work?](../../interview/under-the-hood/05-Database-Internals.md)\n\n## 19. Hashing\n\n1. [How does HashMap work internally, including hashing, buckets and collision handling?](../../interview/under-the-hood/06-Data-Structures-Internals.md)\n2. [Why is HashMap not reversible? Why can't the original key be reconstructed from its hash?](../../interview/under-the-hood/06-Data-Structures-Internals.md)\n\n## 20. Lists, Stacks, Queues and Heaps\n\n1. [How do ArrayList, LinkedList and Arrays store and retrieve elements differently?](../../interview/under-the-hood/06-Data-Structures-Internals.md)\n2. [How do Stack, Queue, Heap and Priority Queue work?](../../interview/under-the-hood/06-Data-Structures-Internals.md)\n\n## 21. Trees and Sets\n\n1. [How do Binary Search Trees, AVL Trees, Red-Black Trees and B+ Trees differ?](../../interview/under-the-hood/06-Data-Structures-Internals.md)\n2. [How does HashSet ensure uniqueness?](../../interview/under-the-hood/06-Data-Structures-Internals.md)\n\n## 22. Algorithms and Performance\n\n1. [How do searching and sorting algorithms work internally?](../../interview/under-the-hood/06-Data-Structures-Internals.md)\n2. [How do time and space complexities affect actual application performance?](../../interview/under-the-hood/06-Data-Structures-Internals.md)\n\n## 23. How Data Travels\n\n1. [How does data travel from one computer to another?](../../interview/under-the-hood/07-Networking-Internals.md)\n2. [How do IP Addresses, MAC Addresses, DNS, Ports and Routing work together?](../../interview/under-the-hood/07-Networking-Internals.md)\n\n## 24. TCP, UDP and HTTP\n\n1. [How do TCP and UDP work internally?](../../interview/under-the-hood/07-Networking-Internals.md)\n2. [How does TCP establish and maintain connections?](../../interview/under-the-hood/07-Networking-Internals.md)\n3. [How do HTTP/1.1, HTTP/2 and HTTP/3 differ internally?](../../interview/under-the-hood/07-Networking-Internals.md)\n\n## 25. Security: TLS, Keys and Certificates\n\n1. [How does HTTPS and the TLS Handshake work?](../../interview/under-the-hood/07-Networking-Internals.md)\n2. [How do Public-Key and Private-Key cryptography work?](../../interview/under-the-hood/07-Networking-Internals.md)\n3. [How does a receiver verify that the sender possesses the legitimate private key?](../../interview/under-the-hood/07-Networking-Internals.md)\n4. [How do Digital Certificates and Certificate Authorities establish trust?](../../interview/under-the-hood/07-Networking-Internals.md)\n\n## 26. Persistent Connections and Traffic Routing\n\n1. [How do WebSockets establish persistent connections?](../../interview/under-the-hood/07-Networking-Internals.md)\n2. [How do Load Balancers, Reverse Proxies and API Gateways work?](../../interview/under-the-hood/07-Networking-Internals.md)\n\n## 27. Virtual Machines\n\n1. [What is a Virtual Machine? How can one physical computer run multiple VMs?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)\n2. [How does a Hypervisor allocate CPU, Memory and Storage?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)\n\n## 28. Containers\n\n1. [How does Docker work internally?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)\n2. [How are Containers different from Virtual Machines?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)\n3. [How do Docker Images and Containers work?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)\n\n## 29. Orchestration and Delivery\n\n1. [How does Kubernetes schedule and manage containers?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)\n2. [How does an application move from source code to a running production environment?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)\n3. [How do CI/CD pipelines build, test and deploy applications?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)\n4. [How do cloud platforms allocate computing resources?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)\n5. [How do Auto Scaling and Load Balancing work?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)\n6. [How are Secrets and Environment Configurations managed?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)\n\n## 30. Storage Hardware and File Systems\n\n1. [How do HDD, SSD and RAM store and retrieve data differently?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)\n2. [How does a File System organize files and directories on disk?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)\n\n## 31. Redis and Caching Patterns\n\n1. [How does Redis store and retrieve data internally?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)\n2. [How do Cache-Aside, Write-Through and Write-Behind work?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)\n\n## 32. Kafka and RabbitMQ\n\n1. [How does Kafka store messages and achieve high throughput?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)\n2. [How do Kafka Partitions, Offsets and Consumer Groups work?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)\n3. [How does RabbitMQ route messages using Exchanges, Queues and Bindings?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)\n4. [How do Message Acknowledgements, Retries and Dead Letter Queues work?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)\n\n## 33. Ordering and Reliability\n\n1. [How does message ordering work?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)\n2. [How does a distributed application achieve reliable message processing?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)\n\n## Diagrams\n\n- [Frontend programming languages: source to machine code](../../knowledge/visual-notes/01_frontend_programming_languages.png)\n- [Frontend frameworks and libraries: build and execution path](../../knowledge/visual-notes/02_frontend_frameworks.png)\n- [Backend programming languages: source, artifact, runtime and execution](../../knowledge/visual-notes/03_backend_programming_languages.png)\n- [Backend frameworks and platforms: source, compiler and runtime](../../knowledge/visual-notes/04_backend_frameworks.png)\n\n## Related roles\n\n[Platform Engineer](../roles/platform-engineer.md)",
       "summary": "",
       "codeBlocks": [],
       "visuals": [],
@@ -66713,9 +67192,9 @@
       "source": {
         "path": "roadmap/topics/under-the-hood.md",
         "startLine": 2,
-        "endLine": 208
+        "endLine": 230
       },
-      "contentHash": "abbce2d79a5fa62c"
+      "contentHash": "85d51a8e1724d7a9"
     },
     {
       "id": "roadmap/topics/web-architecture.md#roadmap",

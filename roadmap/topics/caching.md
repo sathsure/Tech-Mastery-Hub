@@ -53,6 +53,11 @@
 1. [How does Database Caching work?](../../interview/under-the-hood/05-Database-Internals.md)
 2. [How do Replication, Partitioning and Sharding work?](../../interview/under-the-hood/05-Database-Internals.md)
 
+## 8. Redis and Caching Patterns
+
+1. [How does Redis store and retrieve data internally?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)
+2. [How do Cache-Aside, Write-Through and Write-Behind work?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)
+
 ## Practice
 
 1. [You are building a search autocomplete. You must debounce user input, avoid multiple API calls, cache results for 5 minutes, and cancel stale requests. How would you design this in Angular using RxJS?](../../practice/coding/03-angular-coding.md)

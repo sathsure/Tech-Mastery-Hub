@@ -2044,6 +2044,19 @@
                                                ]
                       },
                       {
+                          "id":  "interview.under-the-hood.09-storage-caching-messaging.md",
+                          "path":  "interview/under-the-hood/09-Storage-Caching-Messaging.md",
+                          "content_type":  "interview",
+                          "domain":  "under-the-hood",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  29358,
+                          "source_of_truth":  false,
+                          "related_concepts":  [
+                                                   "under-the-hood"
+                                               ]
+                      },
+                      {
                           "id":  "interview.coding.02-dsa-patterns.md",
                           "path":  "interview/coding/02-DSA-Patterns.md",
                           "content_type":  "interview",
