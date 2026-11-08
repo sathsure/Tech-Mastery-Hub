@@ -103,6 +103,13 @@ Three options, from most to least common:
 
 Controllers then just return the happy-path result; errors are handled centrally.
 
+```mermaid
+flowchart LR
+  C[Controller] -- "throws UserNotFoundException" --> A["@RestControllerAdvice"]
+  A --> H["@ExceptionHandler<br/>maps exception → status"]
+  H --> R["404 + JSON error body"]
+```
+
 ---
 
 ## HTTP & REST

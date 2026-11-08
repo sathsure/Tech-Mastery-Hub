@@ -71,6 +71,15 @@ LLM pre-training is **self-supervised**: the "label" is simply the next token in
 4. The model outputs a probability for every possible next token.
 5. One token is chosen (influenced by **temperature**), appended, and the process repeats until the answer is complete.
 
+```mermaid
+flowchart LR
+  T["Text: The cat sat"] --> K["Tokens"] --> E["Embeddings<br/>(vectors)"]
+  E --> L["Transformer layers<br/>(attention over context)"]
+  L --> P["Next-token probabilities<br/>on: 62%, down: 21%, ..."]
+  P --> C["Pick one token<br/>(temperature)"]
+  C -- append and repeat --> K
+```
+
 The model doesn't look facts up; it predicts likely text — which is why grounding (RAG) matters.
 
 ---
@@ -197,6 +206,16 @@ Several specialised agents (planner, researcher, coder, reviewer) cooperate on a
 
 A workflow in which the AI decides and executes the next steps itself (plan → act → check → adjust) rather than following a fixed sequence — typically with guardrails, limits and human approval for risky actions.
 
+```mermaid
+flowchart LR
+  G[Goal] --> P[Plan next step]
+  P --> A["Act: call a tool / API"]
+  A --> C{Check result: done?}
+  C -- no, adjust --> P
+  C -- yes --> D[Answer]
+  A -. risky action .-> H[Human approval]
+```
+
 ## AI Integration in Spring Boot
 
 ### ❓ How would you integrate an LLM API (OpenAI, Claude…) into Spring Boot?
@@ -242,6 +261,20 @@ Alternatively call the provider's REST API with `RestClient`/`WebClient` or its 
 
 **Ingestion (offline):** read documents → split into chunks → create embeddings → store in a vector store.
 **Query time:** retrieve the top-k chunks for the question → build a prompt with them → ask the LLM to answer only from them and cite sources.
+
+```mermaid
+flowchart LR
+  subgraph Ingest["Ingestion (offline)"]
+    direction LR
+    D[Documents] --> S[Split into chunks] --> E1[Embed] --> V[(Vector store)]
+  end
+  subgraph Ask["Query time"]
+    direction LR
+    Q[Question] --> E2[Embed] --> R["Find top-k similar chunks"]
+    R --> P["Prompt = question + chunks"] --> L[LLM] --> A[Answer with sources]
+  end
+  V --> R
+```
 
 ```java
 // Ingestion
@@ -328,6 +361,15 @@ Set timeouts, use a circuit breaker (Resilience4j), and on failure fall back to 
 ### ❓ Your company has 10,000 PDF documents. Employees want answers based only on those documents. How would you design it?
 
 Document ingestion (PDF parsing, OCR if needed) → chunking with metadata (title, page, permissions) → embeddings → vector database → at query time: retrieval with access control → LLM prompt restricted to the retrieved chunks → answer **with citations**. Add re-indexing when documents change, an evaluation set, and monitoring.
+
+```mermaid
+flowchart LR
+  PDF[10,000 PDFs] --> X["Parse text<br/>(OCR for scans)"] --> CH["Chunks + metadata<br/>title, page, permissions"]
+  CH --> EM[Embeddings] --> VDB[(Vector database)]
+  U[Employee question] --> RET["Retrieve chunks<br/>only ones the user may see"]
+  VDB --> RET
+  RET --> LLM["LLM: answer only from these chunks"] --> ANS["Answer + citations<br/>(file, page)"]
+```
 
 ---
 

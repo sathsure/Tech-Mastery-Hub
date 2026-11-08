@@ -30,11 +30,16 @@ Actual speed also depends on data distribution, caching and the execution plan t
 
 MySQL InnoDB uses a **B+ Tree** for standard indexes.
 
-```text
-                 [30 | 60]               ← root
-               /     |     \
-        [10,20]  [30,40,50]  [60,70,80]  ← leaves (linked)
+```mermaid
+flowchart TB
+  R["Root: 30 | 60"] --> A["Leaf: 10, 20"]
+  R --> B["Leaf: 30, 40, 50"]
+  R --> C["Leaf: 60, 70, 80"]
+  A -. linked .-> B -. linked .-> C
+  style B fill:#d4efdf
 ```
+
+Searching for 50 follows the root to the green leaf.
 
 - Internal nodes: sorted keys + pointers to child nodes.
 - Leaf nodes: keys + row data (clustered index) or primary keys (secondary index).
@@ -114,9 +119,15 @@ Index metadata and index data are different things: the dictionary says the inde
 
 You don't tell a query which index to use — the **query optimizer** decides:
 
-```text
-SQL query → parser → optimizer (checks available indexes and statistics, estimates costs)
-          → execution plan (index scan or table scan) → storage engine → result
+```mermaid
+flowchart LR
+  Q[SQL query] --> P[Parser]
+  P --> O["Optimizer<br/>checks indexes + statistics,<br/>estimates cost"]
+  O --> E{Cheapest plan?}
+  E -- index --> I[Index scan]
+  E -- whole table --> T[Full table scan]
+  I --> S[Storage engine] --> R[Result]
+  T --> S
 ```
 
 Verify:

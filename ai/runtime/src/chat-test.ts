@@ -240,6 +240,21 @@ await check("follow-ups: only what is new, never the previous explanation again"
   const explore = await collect({ message: "Explore Java", history: [{ role: "user" as const, content: "how does quantum entanglement work" }, { role: "assistant" as const, content: quantum.answer }] }, null);
   assert.equal(explore.done?.view, "overview", "a topic name is its own subject, not a follow-up");
 
+  // A question from a study path ("…using these tools?") is answered in full, even though the path listed it.
+  const path = await collect({ message: "DevOps study path", history: [] }, null);
+  const cicd = await collect(
+    { message: "Typical CI/CD flow using these tools?", history: [{ role: "user" as const, content: "DevOps study path" }, { role: "assistant" as const, content: path.answer }] },
+    null,
+  );
+  assert.doesNotMatch(cicd.answer, /beyond the previous answer/);
+  assert.match(cicd.answer, /```mermaid/, "the note's diagram is shown");
+
+  // "Show me a diagram" finds Mermaid diagrams written in the notes, not just image files.
+  const dns = await collect({ message: "How does DNS work?", history: [] }, null);
+  const dnsDiagram = await collect({ message: "show me a diagram", history: [{ role: "user" as const, content: "How does DNS work?" }, { role: "assistant" as const, content: dns.answer }] }, null);
+  assert.match(dnsDiagram.answer, /^\*\*Diagram\*\*/);
+  assert.match(dnsDiagram.answer, /```mermaid/);
+
   // Claude is told the question builds on the previous answer.
   const model = new FakeModel(async function* () {
     yield { type: "text", text: "```js\nconst add = a => b => a + b;\n```" };

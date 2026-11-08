@@ -452,6 +452,22 @@ public class ReportGenerator {}
 
 ### 📝 Answer
 
+**Bean lifecycle at a glance** (where you can step in is in brackets):
+
+```mermaid
+flowchart TD
+  A[1. Create object: constructor] --> B["2. Inject dependencies<br/>(@Autowired fields / setters)"]
+  B --> C["3. Aware callbacks<br/>(BeanNameAware, ApplicationContextAware)"]
+  C --> D["4. BeanPostProcessor: before init"]
+  D --> E["5. Init<br/>(@PostConstruct, afterPropertiesSet, initMethod)"]
+  E --> F["6. BeanPostProcessor: after init<br/>(proxies for @Transactional, AOP)"]
+  F --> G[7. Bean ready to use]
+  G --> H["8. Context closes: destroy<br/>(@PreDestroy, destroy, destroyMethod)"]
+```
+
+The rest of this answer shows how Spring Boot gets to step 1: what happens from `main()` until beans are created.
+
+
 🔹 JVM STARTS → `main()` METHOD
 
 ```java

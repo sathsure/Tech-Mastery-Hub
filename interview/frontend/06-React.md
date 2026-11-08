@@ -67,6 +67,17 @@ The `eslint-plugin-react-hooks` rule catches these mistakes.
 
 - For lists, `key` helps React match items and avoid unnecessary re-renders.
 
+```mermaid
+flowchart TD
+  S[State changes] --> N[Render: build new virtual DOM tree]
+  N --> D{"Diff with old tree,<br/>node by node"}
+  D -- different element type --> R[Replace the whole subtree]
+  D -- same type --> U[Keep node, update changed props]
+  U --> K[Diff children; match list items by key]
+  R --> C[Commit: apply only these changes to the real DOM]
+  K --> C
+```
+
 💻 **Code Example**
 
 ```jsx

@@ -1183,6 +1183,17 @@ interface Command {
 
 ### 📝 Answer
 
+```mermaid
+flowchart TD
+  T[Throwable] --> E[Exception]
+  T --> ER["Error<br/>OutOfMemoryError, StackOverflowError<br/>(do not catch)"]
+  E --> C["Checked<br/>IOException, SQLException<br/>(must catch or declare)"]
+  E --> R[RuntimeException]
+  R --> U["Unchecked<br/>NullPointerException,<br/>IllegalArgumentException"]
+  style C fill:#fff3cd
+  style U fill:#d4efdf
+```
+
 ✔ **Checked Exceptions**
 
 - Checked at **compile time**
@@ -1363,6 +1374,21 @@ System.out.println(list); // [1, 2, 3]
 
 ### 📝 Answer
 
+```mermaid
+flowchart TD
+  CO[Collection] --> LI["List<br/>ordered, duplicates OK, index"]
+  CO --> SE["Set<br/>no duplicates"]
+  CO --> QU[Queue / Deque]
+  LI --> AL[ArrayList]
+  LI --> LL[LinkedList]
+  SE --> HS[HashSet]
+  SE --> LHS[LinkedHashSet]
+  SE --> TS["TreeSet (sorted)"]
+  MA["Map<br/>key → value, unique keys<br/>(not a Collection)"] --> HM[HashMap]
+  MA --> LHM[LinkedHashMap]
+  MA --> TM["TreeMap (sorted)"]
+```
+
 | **Feature**    | **List**                                                                                               | **Set**                                                                                                                 | **Map**                                                                                                                            |
 | -------------- | ------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
 | **Duplicates** | Allows duplicate elements. The same value can appear multiple times at different indexes.              | Does **not** allow duplicates. If you try to add a duplicate, it is ignored.                                            | Duplicate **keys** are not allowed (new value replaces old), but **values** can be duplicated.                                     |
@@ -1537,6 +1563,18 @@ Node {
   Value value;
   Node next;
 }
+```
+
+```mermaid
+flowchart LR
+  K["put(apple, 10)"] --> H["hashCode() → spread hash"]
+  H --> I["index = hash & (16 - 1) = 5"]
+  I --> B5
+  subgraph Table[Bucket array, size 16]
+    B4[4: empty]
+    B5["5: apple=10 → kiwi=3<br/>(list; tree if more than 8)"]
+    B6[6: empty]
+  end
 ```
 
 🔍 Step-by-Step:

@@ -39,6 +39,23 @@ sequenceDiagram
 
 DNS is the internet's **phone book**: it turns `www.shop.com` into an IP address.
 
+```mermaid
+sequenceDiagram
+  participant B as Browser
+  participant R as Recursive resolver
+  participant Root as Root server
+  participant TLD as .com TLD server
+  participant A as shop.com name server
+  B->>R: IP of www.shop.com?
+  R->>Root: www.shop.com?
+  Root-->>R: Ask the .com servers
+  R->>TLD: www.shop.com?
+  TLD-->>R: Ask shop.com's name servers
+  R->>A: www.shop.com?
+  A-->>R: 93.184.216.34
+  R-->>B: 93.184.216.34 (cached for its TTL)
+```
+
 Lookup order: browser cache → OS cache → your **recursive resolver** (ISP / 8.8.8.8), which asks:
 
 1. A **root** server → "ask the `.com` servers"
@@ -176,6 +193,18 @@ HTTPS = HTTP inside an encrypted **TLS** connection. It gives **privacy** (nobod
 
 Simplified TLS 1.3 handshake:
 
+```mermaid
+sequenceDiagram
+  participant B as Browser
+  participant S as Server
+  B->>S: Hello: supported ciphers + key share
+  S-->>B: Key share + certificate (signed by a CA)
+  Note over B: Check certificate: trusted CA, right domain, not expired
+  Note over B,S: Both compute the same session key
+  B->>S: Encrypted HTTP request (symmetric key)
+  S-->>B: Encrypted HTTP response
+```
+
 1. Browser says hello with supported ciphers and a key share.
 2. Server replies with its key share and its **certificate** (signed by a trusted Certificate Authority).
 3. Browser **checks the certificate** (trusted CA, right domain, not expired).
@@ -237,6 +266,16 @@ For non-simple requests (PUT, JSON body, custom headers) the browser first sends
 | `Last-Modified` + `If-Modified-Since` | Same idea using dates |
 
 Typical setup: fingerprinted static files (`app.3f9a.js`) → `max-age=31536000, immutable`; HTML → `no-cache`.
+
+```mermaid
+flowchart TD
+  A[Browser needs a file] --> B{In cache and still fresh<br/>max-age not passed?}
+  B -- Yes --> C[Use cached copy<br/>no request sent]
+  B -- No --> D[Ask server with If-None-Match: ETag]
+  D --> E{Changed on server?}
+  E -- No --> F[304 Not Modified<br/>reuse cached copy]
+  E -- Yes --> G[200 OK + new file<br/>store it in cache]
+```
 
 ---
 

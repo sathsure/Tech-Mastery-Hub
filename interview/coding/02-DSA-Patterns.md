@@ -23,9 +23,18 @@ Use an array by default. Use a linked list when you insert/remove in the middle 
 
 A hash table stores key → value pairs. A **hash function** turns the key into an index in an array of buckets, so lookup is **O(1) on average**.
 
-```text
-hash("apple") % 8 = 3  →  bucket 3: ("apple", 5)
+```mermaid
+flowchart LR
+  K["key: apple"] --> H["hash(apple) % 8 = 3"]
+  H --> B3
+  subgraph Buckets[Array of 8 buckets]
+    B0[0: empty]
+    B3["3: (apple, 5) → (grape, 2)"]
+    B7[7: empty]
+  end
 ```
+
+If `grape` also hashes to 3, that is a **collision**: both live in bucket 3 (chaining).
 
 - **Collision:** two keys land in the same bucket → keep a small list there (chaining) or try the next slot (open addressing).
 - **Resize:** when it gets too full, it doubles and re-places every key.

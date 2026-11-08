@@ -22,16 +22,10 @@ CSS (**Cascading Style Sheets**) describes **how elements should look** — colo
 
 CSS follows a **cascade** — a priority system that resolves conflicts:
 
-```text
-Browser default
-↓
-External CSS
-↓
-Internal CSS (<style>)
-↓
-Inline styles (style="...")
-↓
-!important
+```mermaid
+flowchart TD
+  A[Browser default styles] --> B[Your CSS files and style tags] --> C[Inline style attribute] --> D["!important"]
+  D --> W["Lower in this list wins a conflict"]
 ```
 
 The browser resolves conflicts using these rules **in order**:

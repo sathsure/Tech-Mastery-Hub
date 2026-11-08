@@ -29,22 +29,14 @@ The Angular runtime uses **zone.js** — a library that monkey-patches all async
 
 **The flow looks like this:**
 
-```
-User clicks button
-   ↓
-zone.js intercepts the event
-   ↓
-NgZone is notified — "Something async happened, run CD"
-   ↓
-Angular starts from the root component
-   ↓
-Traverses the entire component tree (top → down)
-   ↓
-Compares current binding values vs previous
-   ↓
-Updates only the bindings that changed
-   ↓
-DOM reflects the changes
+```mermaid
+flowchart TD
+  A[User clicks a button] --> B[zone.js intercepts the event]
+  B --> C["NgZone: something async happened, run change detection"]
+  C --> D[Start at the root component]
+  D --> E[Walk the component tree top to bottom]
+  E --> F[Compare each binding with its previous value]
+  F --> G[Update only the changed bindings in the DOM]
 ```
 
 > 💡 **Mental model:** Zone.js is like a tap on Angular's shoulder saying _"hey, something might have changed."_ Angular then verifies by walking the tree.

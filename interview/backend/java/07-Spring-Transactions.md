@@ -10,6 +10,23 @@
 
 `@Transactional` makes Spring run the method inside **one database transaction**:
 
+```mermaid
+sequenceDiagram
+  participant C as Caller
+  participant P as Spring proxy
+  participant S as TransferService (real bean)
+  participant DB as Database
+  C->>P: transfer(...)
+  P->>DB: BEGIN transaction
+  P->>S: transfer(...)
+  S->>DB: debit + credit (same connection)
+  alt returns normally
+    P->>DB: COMMIT
+  else RuntimeException / Error
+    P->>DB: ROLLBACK
+  end
+```
+
 1. Spring wraps the bean in a **proxy**.
 2. When the method is called **through the proxy**, the proxy starts (or joins) a transaction.
 3. All repository calls in the method use the same connection and transaction.
@@ -106,6 +123,13 @@ Consequences: `private` and `final` methods can't be intercepted, and calls **in
 ### 📝 Answer
 
 **No, not with Spring's default proxy-based transactions.** The call `this.methodB()` goes straight to the real object; the proxy never sees it. `methodB()` simply runs inside whatever transaction `methodA()` already has, and its own settings are ignored.
+
+```mermaid
+flowchart LR
+  C[Caller] --> P[Proxy: starts transaction] --> A["methodA()"]
+  A -- "this.methodB(): skips the proxy" --> B["methodB()<br/>REQUIRES_NEW ignored"]
+  O[Other bean] --> P2[Proxy: new transaction] --> B2["methodB() in another bean<br/>REQUIRES_NEW works"]
+```
 
 ```java
 @Service

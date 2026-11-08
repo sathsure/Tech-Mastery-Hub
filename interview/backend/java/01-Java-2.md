@@ -506,6 +506,16 @@ For a deadlock to happen, all four of these conditions must be met simultaneousl
 3. No preemption - Resources cannot be forcibly taken (preempted) from a process; they must be released voluntarily.
 4. Circular wait - A chain of processes forms where each process waits for a resource held by the next process in the chain, creating a loop.
 
+```mermaid
+flowchart LR
+  T1[Task-1] -- holds --> A[(lockA)]
+  T1 -. waits for .-> B[(lockB)]
+  T2[Task-2] -- holds --> B
+  T2 -. waits for .-> A
+```
+
+Each task waits for the other forever: that loop is the deadlock.
+
 ```java
 ExecutorService executor = Executors.newFixedThreadPool(2);
 Object lockA = new Object();
@@ -938,6 +948,16 @@ The garbage collector frees objects that **nothing can reach** any more.
 3. **Compact** — live objects are moved together so free memory isn't fragmented.
 
 **Generations:** most objects die young, so the heap is split:
+
+```mermaid
+flowchart LR
+  N[new Object] --> E[Eden]
+  E -- survives minor GC --> S[Survivor spaces]
+  S -- survives several GCs --> O[Old generation]
+  E -- unreachable --> X[Freed]
+  S -- unreachable --> X
+  O -- unreachable: major GC --> X
+```
 
 | Area | Holds | Collected |
 |---|---|---|

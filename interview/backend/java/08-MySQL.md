@@ -1166,10 +1166,14 @@ In Spring:
 
 When multiple users hit your Spring Boot app:
 
-```
-User 1 → Thread 1 → DB
-User 2 → Thread 2 → DB
-User 3 → Thread 3 → DB
+```mermaid
+flowchart LR
+  U1[User 1] --> T1[Thread 1]
+  U2[User 2] --> T2[Thread 2]
+  U3[User 3] --> T3[Thread 3]
+  T1 --> DB[("Database<br/>locks + MVCC + isolation level<br/>decide who sees what")]
+  T2 --> DB
+  T3 --> DB
 ```
 
 Each request runs in its own thread,

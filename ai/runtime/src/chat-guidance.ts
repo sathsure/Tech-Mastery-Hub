@@ -164,12 +164,20 @@ const DOCS: Record<string, { name: string; url: string }> = {
 
 export const LEARN_MORE_HEADING = "**Learn more elsewhere**";
 
-/** "Can you explain how Kafka works?" → "how Kafka works" */
+/** Question openers that carry no subject: "can you explain", "how does", "what is the"… */
+const QUESTION_OPENER =
+  /^(can you|could you|would you|please|explain|tell me about|show me|show|teach me|describe|what is|what are|what was|what's|whats|how does|how do i|how do|how is|how are|how can i|how can|how to|how|why does|why do|why is|why are|why|when should i|when should|when to|when|where does|where is|the|a|an)\s+/i;
+
+/** "How does gRPC streaming work?" → "gRPC streaming"; "Can you explain how Kafka works?" → "Kafka". */
 export function resourceQuery(message: string): string {
-  const cleaned = message
-    .replace(/^\s*(can you |could you |please )?(explain|what is|what are|what's|tell me about|show me|show|teach me|describe|how do i|how to)\s+/i, "")
-    .trim();
-  return trimEndChars(cleaned, "?.! \t").trim().slice(0, 120);
+  let cleaned = trimEndChars(message.trim(), "?.! \t").trim();
+  // Openers can stack ("can you explain how the…"), so strip until none is left.
+  for (let previous = ""; previous !== cleaned; ) {
+    previous = cleaned;
+    cleaned = cleaned.replace(QUESTION_OPENER, "").trim();
+  }
+  cleaned = cleaned.replace(/\s+(work|works|working|internally|under the hood|in detail|in simple terms)$/i, "").trim();
+  return cleaned.slice(0, 120);
 }
 
 /** Search links on trusted learning sites; never a guessed page. */

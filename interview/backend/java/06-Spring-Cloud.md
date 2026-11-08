@@ -588,6 +588,16 @@ spring:
 - `lb://` → load-balanced via service discovery
 - Gateway never uses hardcoded IPs
 
+```mermaid
+flowchart LR
+  C[Client] --> G[Spring Cloud Gateway]
+  G --> P{"Predicate:<br/>Path=/orders/**?"}
+  P -- yes --> F[Filters: auth, headers, rate limit]
+  F --> R[Service registry: lb://order-service]
+  R --> O1[order-service #1]
+  R --> O2[order-service #2]
+```
+
 #### ↳ Follow-up: What annotations are commonly used in API Gateway?
 
 ✔️ Important Note (Senior Insight)
@@ -775,15 +785,11 @@ traceId → service → service → service
 
 Example Flow
 
-```
-Client
-  |
-  | traceId=abc
-Order Service (span1)
-  |
-Inventory Service (span2)
-  |
-Payment Service (span3)
+```mermaid
+flowchart LR
+  C[Client] -->|traceId=abc| O["Order Service<br/>span1"]
+  O -->|traceId=abc| I["Inventory Service<br/>span2"]
+  I -->|traceId=abc| P["Payment Service<br/>span3"]
 ```
 
 🧠 RULES
@@ -1082,6 +1088,15 @@ spring:
 
 Without protection → Thread exhaustion → System down
 
+```mermaid
+flowchart LR
+  U[Users] --> O[Order service]
+  O -- "waits, threads pile up" --> I["Inventory service<br/>(slow)"]
+  O2[Order service + circuit breaker] -- "timeout / breaker open" --> FB["Fallback: in-stock = false<br/>answer fast"]
+  style I fill:#fde2e1
+  style FB fill:#d4efdf
+```
+
 ```java
 @CircuitBreaker(name = "inventory", fallbackMethod = "fallback")
 public InventoryResponse check(Long productId) {
@@ -1194,6 +1209,21 @@ Undo actions are called: **Compensating Transactions**
 | 2    | Take Payment | Refund Payment |
 | 3    | Update Stock | (End)          |
 
+```mermaid
+sequenceDiagram
+  participant O as Order Service
+  participant P as Payment Service
+  participant I as Inventory Service
+  O->>O: 1. Create order
+  O->>P: 2. Take payment
+  P-->>O: Paid
+  O->>I: 3. Update stock
+  I-->>O: Failed (out of stock)
+  Note over O,I: Compensating transactions, in reverse order
+  O->>P: Refund payment
+  O->>O: Cancel order
+```
+
 ---
 
 ## Observability (Production Reality)
@@ -1285,6 +1315,16 @@ Example registries:
 2. Client asks for `USER-SERVICE`
 3. LoadBalancer picks **one healthy instance**
 4. Request is forwarded
+
+```mermaid
+flowchart LR
+  U1[user-service #1] -. registers .-> REG[(Service registry<br/>Eureka / Consul)]
+  U2[user-service #2] -. registers .-> REG
+  C[Caller service] -- "http://USER-SERVICE" --> LB[Spring Cloud LoadBalancer]
+  LB -- asks for instances --> REG
+  LB -- round robin --> U1
+  LB -- round robin --> U2
+```
 
 🔹 **Simple Code Example (Client-Side Load Balancing)**
 
@@ -1384,8 +1424,12 @@ If running on Kubernetes:
 
 🚀 Traffic Flow
 
-```
-Client → Ingress → Service → Pod
+```mermaid
+flowchart LR
+  C[Client] --> I["Ingress<br/>routing by host/path"] --> S["Service<br/>load balancing"]
+  S --> P1[Pod 1]
+  S --> P2[Pod 2]
+  S --> P3[Pod 3]
 ```
 
 - **Ingress** → Routing
@@ -1448,11 +1492,21 @@ Avoid a synchronous call when the caller **doesn't need the answer right now**, 
 
 Use **events or a queue** instead (Kafka / RabbitMQ):
 
-```text
-Sync:  Order → (wait) Payment → (wait) Email → reply   ← slow, fragile
-Async: Order → publish OrderPlaced → reply immediately
-                 ├── Payment service consumes it
-                 └── Email service consumes it
+**Sync (slow, fragile):**
+
+```mermaid
+flowchart LR
+  O[Order] -- wait --> P[Payment] -- wait --> E[Email] --> R[Reply to user]
+```
+
+**Async (fast, independent):**
+
+```mermaid
+flowchart LR
+  O[Order] -- "publish OrderPlaced" --> K[(Kafka / RabbitMQ)]
+  O --> R[Reply to user immediately]
+  K --> P[Payment service]
+  K --> E[Email service]
 ```
 
 Keep REST for **queries that need an immediate answer** ("is this item in stock?"), with timeouts and a circuit breaker.

@@ -14,6 +14,14 @@ A cache keeps a **copy of frequently used data in fast storage** (memory) so you
 
 **Where caches live:** browser → CDN → API gateway → application (in-memory or Redis) → database buffer pool.
 
+```mermaid
+flowchart LR
+  App[Application] --> Q{Data in cache?}
+  Q -- Hit --> R[Return it fast<br/>~0.5 ms]
+  Q -- Miss --> DB[(Database<br/>~5-50 ms)]
+  DB --> S[Save copy in cache] --> R
+```
+
 ---
 
 ### ❓ What are cache hit, cache miss and hit ratio?
@@ -219,6 +227,20 @@ Consequence: a **slow command blocks everyone** — avoid `KEYS *` on large data
 - **Cluster** — **splits data across many primaries** (16,384 hash slots) for more memory and throughput, each with replicas.
 
 Rule: one machine's memory is enough → replication + Sentinel. Too much data → Cluster.
+
+```mermaid
+flowchart LR
+  subgraph RS[Replication + Sentinel: one data set]
+    P[Primary] --> R1[Replica]
+    P --> R2[Replica]
+    SN[Sentinel] -. watches, promotes a replica if primary fails .-> P
+  end
+  subgraph CL[Cluster: data split by hash slot]
+    P1[Primary A<br/>slots 0-5460] --> A1[Replica]
+    P2[Primary B<br/>slots 5461-10922] --> B1[Replica]
+    P3[Primary C<br/>slots 10923-16383] --> C1[Replica]
+  end
+```
 
 ---
 

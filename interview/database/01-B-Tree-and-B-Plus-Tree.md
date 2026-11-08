@@ -77,6 +77,17 @@ A variant of the B-Tree designed for database indexes:
 5. **Leaves are linked** to each other, in key order.
 6. Splits and merges keep the tree balanced.
 
+```mermaid
+flowchart TB
+  R["Root (keys only): 30 | 60"] --> I1["10 | 20"]
+  R --> I2["40 | 50"]
+  R --> I3["70 | 80"]
+  I1 --> A["Leaf: 10, 20 + rows"]
+  I2 --> B["Leaf: 40, 50 + rows"]
+  I3 --> C["Leaf: 70, 80 + rows"]
+  A -. linked .-> B -. linked .-> C
+```
+
 ---
 
 ### ❓ Why must all leaf nodes be at the same level?
@@ -111,10 +122,19 @@ For fast **range scans** and sequential reads:
 SELECT * FROM employees WHERE employee_id BETWEEN 100 AND 200;
 ```
 
-```text
-Leaf 1        Leaf 2        Leaf 3        Leaf 4
-90, 95   →   100, 120  →   150, 180  →   200, 230
+```mermaid
+flowchart TB
+  R["Root: 100 | 200"] --> L1["90, 95"]
+  R --> L2["100, 120"]
+  R --> L3["150, 180"]
+  R --> L4["200, 230"]
+  L1 -. next leaf .-> L2 -. next leaf .-> L3 -. next leaf .-> L4
+  style L2 fill:#d4efdf
+  style L3 fill:#d4efdf
+  style L4 fill:#d4efdf
 ```
+
+Green leaves are read for `BETWEEN 100 AND 200`: go down once to 100, then follow the leaf links.
 
 1. Search from the root down to the leaf containing 100.
 2. Read the matching entries.

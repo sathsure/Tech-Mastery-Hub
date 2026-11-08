@@ -42,6 +42,9 @@ export function searchWithContext(request: ChatRequest): { search: SearchResult;
   const previous = previousTurn(request)?.question;
   const own = { search: direct, searchedFor: request.message, followUp: false };
   if (!previous) return own;
+  // A question copied from the notes (a clicked chip or study-path link) stands on its own,
+  // even when it says "these tools": answer that entry, not the previous one.
+  if (isNotesQuestion(request.message, direct)) return own;
   const followUp = looksLikeFollowUp(request.message, direct);
   if (!followUp && CONFIDENCE_RANK[direct.confidence] >= CONFIDENCE_RANK.medium) return own;
   const combinedQuery = `${previous} ${request.message}`;
@@ -55,6 +58,14 @@ export function searchWithContext(request: ChatRequest): { search: SearchResult;
     return { search: combined, searchedFor: combinedQuery, followUp: false };
   }
   return own;
+}
+
+const questionKey = (text: string) => text.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+
+/** True when the message is, word for word, one of the questions in the notes. */
+function isNotesQuestion(message: string, search: SearchResult): boolean {
+  const key = questionKey(message);
+  return key.length > 0 && search.hits.slice(0, 3).some(hit => questionKey(hit.question) === key);
 }
 
 function buildMessages(request: ChatRequest, search: SearchResult, evidence: Evidence[], followUp: boolean): Anthropic.Beta.BetaMessageParam[] {

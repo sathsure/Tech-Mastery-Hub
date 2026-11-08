@@ -30,6 +30,15 @@ Spring Security solves this using **filters**, **contexts**, and **standard secu
 
 👉 Authentication happens **before** authorization.
 
+```mermaid
+flowchart LR
+  R[Request] --> A{"Authentication:<br/>who are you?"}
+  A -- bad credentials --> E401[401 Unauthorized]
+  A -- ok --> Z{"Authorization:<br/>allowed to do this?"}
+  Z -- no --> E403[403 Forbidden]
+  Z -- yes --> OK[Controller runs]
+```
+
 #### ↳ Follow-up: Can authorization happen without authentication?
 
 **Not really — it always knows "who" first.** If no one logged in, Spring Security treats the caller as an **anonymous user** (`AnonymousAuthenticationToken`). Authorization rules then decide what that anonymous user may do: `permitAll()` lets them in; `authenticated()` sends a 401.
@@ -60,6 +69,15 @@ Spring Security works using a **Filter Chain**.
 5. Request allowed or rejected
 
 Each filter has **one responsibility**.
+
+```mermaid
+flowchart LR
+  R[HTTP request] --> F1[CorsFilter] --> F2["Authentication filter<br/>(JWT / form login)"]
+  F2 --> SC[(SecurityContext:<br/>who is the user)]
+  F2 --> F3["AuthorizationFilter<br/>(roles, rules)"]
+  F3 -- allowed --> D[DispatcherServlet → Controller]
+  F3 -- denied --> X[401 / 403]
+```
 
 #### ↳ Follow-up: What is SecurityFilterChain?
 

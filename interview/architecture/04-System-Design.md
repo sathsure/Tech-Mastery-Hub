@@ -183,6 +183,15 @@ Sharding splits **one big table across several databases**. Each database (shard
 - **Range sharding:** users A–M on shard 1, N–Z on shard 2 → easy ranges, but can create hot spots.
 - **Shard key** choice is the most important decision: pick one that spreads load and is in most queries (e.g. `userId`).
 
+```mermaid
+flowchart LR
+  A[App] --> R{"shard = hash(userId) % 4"}
+  R --> S0[(Shard 0)]
+  R --> S1[(Shard 1)]
+  R --> S2[(Shard 2)]
+  R --> S3[(Shard 3)]
+```
+
 **Downsides:** joins across shards are hard, and adding shards means moving data (consistent hashing helps).
 
 #### ↳ Follow-up: Replication vs sharding?

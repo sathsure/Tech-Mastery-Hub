@@ -31,6 +31,14 @@
 
 Angular has **four primary types of binding**, plus a custom two-way pattern.
 
+```mermaid
+flowchart LR
+  C[Component class] -- "{{ value }} interpolation" --> V[Template / DOM]
+  C -- "[prop] property binding" --> V
+  V -- "(event) event binding" --> C
+  C <-- "[(ngModel)] two-way" --> V
+```
+
 #### 1️⃣ Interpolation `{{ }}` — Component → View
 
 Display a value as text.
@@ -874,6 +882,14 @@ Angular has **hierarchical DI**:
 - `providedIn: 'root'` → one application-wide singleton
 - A **lazy-loaded module** has its **own injector**
 - If the same service is also provided in that lazy module → Angular creates **another instance** scoped to that module
+
+```mermaid
+flowchart TD
+  R["Root injector<br/>LoggerService #1"] --> E[Eager components]
+  R --> L["Lazy module injector<br/>LoggerService #2"]
+  L --> LC[Lazy module components<br/>get #2, not #1]
+  E -.-> E1[get #1]
+```
 
 ❌ **Example: Two instances**
 

@@ -8,6 +8,14 @@
 
 Docker packages an application **with everything it needs** (runtime, libraries, config) into a **container** that runs the same way on any machine.
 
+```mermaid
+flowchart LR
+  D[Dockerfile] -- docker build --> I[Image<br/>app + Java + libraries]
+  I --> L[Laptop container]
+  I --> T[Test container]
+  I --> P[Production container]
+```
+
 - **Problem it solves:** "It works on my machine" — different Java versions, missing libraries, different OS settings between laptops, test and production.
 - **Why teams prefer it:** the same image goes from laptop → test → production, starts in seconds, and many containers share one server.
 
@@ -389,6 +397,15 @@ You declare **what** you need; Maven fetches it, plus everything **it** needs (*
 
 How it downloads: checks the local repository (`~/.m2`) → if missing, downloads from **Maven Central** (or your company's repository) → caches it locally.
 
+```mermaid
+flowchart LR
+  P["pom.xml: needs spring-web"] --> L{"In ~/.m2 local repo?"}
+  L -- yes --> CP[Put on classpath]
+  L -- no --> R["Download from Maven Central<br/>or company Nexus"]
+  R --> S[Save in ~/.m2] --> CP
+  P -. "also pulls its dependencies<br/>(transitive)" .-> T["spring-core, jackson, ..."]
+```
+
 - **Scopes:** `compile` (default), `test` (only for tests), `provided` (server supplies it), `runtime`.
 - **Version conflicts:** the "nearest" declaration wins; inspect with `mvn dependency:tree`, fix with `<dependencyManagement>` or `<exclusions>`.
 
@@ -421,6 +438,12 @@ An ordered list of **phases**. Running a phase runs **all phases before it**.
 | `verify` | Runs integration checks |
 | `install` | Copies the artifact to your **local** repository |
 | `deploy` | Uploads it to a **remote** repository |
+
+```mermaid
+flowchart LR
+  V[validate] --> C[compile] --> T[test] --> P[package] --> VE[verify] --> I[install] --> D[deploy]
+  style P fill:#d4efdf
+```
 
 `mvn clean package` = delete `target/`, then validate → compile → test → package.
 

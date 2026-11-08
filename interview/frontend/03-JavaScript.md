@@ -945,10 +945,20 @@ NaN === NaN;        // false — NaN equals nothing; use Number.isNaN(x)
 
 When you click an element, the event travels in **three phases**:
 
-```text
-1. Capturing:  window → document → … → parent   (top down)
-2. Target:     the clicked element
-3. Bubbling:   parent → … → document → window   (bottom up)  ← listeners run here by default
+```mermaid
+flowchart LR
+  subgraph Capture["1. Capturing: top down"]
+    direction TB
+    W1[window] --> D1[document] --> P1[parent]
+  end
+  subgraph Target["2. Target"]
+    T[clicked element]
+  end
+  subgraph Bubble["3. Bubbling: bottom up (default)"]
+    direction TB
+    P2[parent] --> D2[document] --> W2[window]
+  end
+  Capture --> Target --> Bubble
 ```
 
 ```js

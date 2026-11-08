@@ -15,8 +15,12 @@ RabbitMQ is a **message broker** that typically **pushes** messages to consumers
 
 If the consumer crashes before acknowledging, RabbitMQ **redelivers** the message to another consumer. A message is not deleted just because it was sent — it stays until it is acknowledged (or expires, or is dead-lettered by a configured rule). Queues and messages can be persisted to disk.
 
-```text
-Producer → Exchange → Queue → (push) → Consumer → ack → message removed
+```mermaid
+flowchart LR
+  P[Producer] --> E[Exchange] --> Q[(Queue)]
+  Q -- push --> C[Consumer]
+  C -- ack --> Q
+  Q -. no ack: redeliver .-> C2[Another consumer]
 ```
 
 ---
@@ -33,9 +37,11 @@ Kafka is a **distributed event log**; consumers **pull** events:
 4. Each consumer group tracks its position with an **offset**.
 5. Events stay in Kafka for the configured **retention** period or size — even after they've been read.
 
-```text
-Producer → Topic (partitioned log) ← (poll) ← Consumer group A (offset 42)
-                                    ← (poll) ← Consumer group B (offset 17)
+```mermaid
+flowchart LR
+  P[Producer] -- append --> T[(Topic: partitioned log<br/>events kept for retention period)]
+  A[Consumer group A<br/>offset 42] -- poll --> T
+  B[Consumer group B<br/>offset 17] -- poll --> T
 ```
 
 Because events aren't removed on read, consumers can **replay** them by moving their offset back.

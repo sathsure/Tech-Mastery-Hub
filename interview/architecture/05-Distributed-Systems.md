@@ -28,6 +28,13 @@ You can't have both during a partition. Since partitions **will** happen, the re
 
 ↪ An extension of CAP: if Partition → choose A or C; Else (normal times) → choose lower Latency or Consistency.
 
+```mermaid
+flowchart TD
+  Q{Network partition?}
+  Q -- "Yes (P)" --> PA["Choose Availability (A)<br/>or Consistency (C)"]
+  Q -- "No: Else (E)" --> EL["Choose low Latency (L)<br/>or Consistency (C)"]
+```
+
 ---
 
 ### ❓ What is eventual consistency?

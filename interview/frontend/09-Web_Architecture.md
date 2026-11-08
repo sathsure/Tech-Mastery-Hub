@@ -727,6 +727,16 @@ The **resilience toolkit:**
 
 > 💡 **Pattern:** Circuit breaker opens after N failures → all subsequent calls fail immediately for a cool-down period → after that, allow a trial request to check if the service recovered.
 
+```mermaid
+stateDiagram-v2
+  [*] --> Closed
+  Closed --> Open: N failures
+  Open --> HalfOpen: cool-down ends
+  HalfOpen --> Closed: trial call succeeds
+  HalfOpen --> Open: trial call fails
+  note right of Open: calls fail fast, no load on the broken service
+```
+
 ---
 
 ### ❓ What happens if MongoDB goes down?
@@ -834,14 +844,15 @@ logger.info({
 
 **Modern CI/CD pipeline:**
 
-```
-[Git push] → [Build & Test] → [Build artifact/image] → [Deploy to staging]
-                ↓                       ↓                    ↓
-           [Lint, type-check]      [Tag with SHA]       [Smoke tests]
-                                                             ↓
-                                                  [Deploy to prod (canary)]
-                                                             ↓
-                                                  [Monitor → Promote or Rollback]
+```mermaid
+flowchart LR
+  G[Git push] --> B["Build + test<br/>lint, type-check"]
+  B --> A["Build image<br/>tag with commit SHA"]
+  A --> S["Deploy to staging<br/>smoke tests"]
+  S --> C["Prod canary<br/>1% of users"]
+  C --> M{Metrics healthy?}
+  M -- yes --> F[Promote to 100%]
+  M -- no --> R[Roll back]
 ```
 
 **Deployment strategies:**
@@ -865,6 +876,24 @@ logger.info({
 - ✅ **Redundancy across availability zones** → survive a data-center failure
 - ✅ **Database replication** → primary + replicas
 - ✅ **No single point of failure** in the critical path
+
+```mermaid
+flowchart TB
+  U[Users] --> LB["Load balancer<br/>health checks"]
+  subgraph AZ1[Availability zone A]
+    A1[App node]
+    DB1[(DB primary)]
+  end
+  subgraph AZ2[Availability zone B]
+    A2[App node]
+    DB2[(DB replica)]
+  end
+  LB --> A1
+  LB --> A2
+  A1 --> DB1
+  A2 --> DB1
+  DB1 -. replicates .-> DB2
+```
 
 > 💡 **Mental check:** "What's the *one thing* that takes down everything if it dies?" — find it, then add redundancy.
 

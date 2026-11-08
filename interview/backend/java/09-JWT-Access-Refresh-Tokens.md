@@ -75,6 +75,19 @@ Example: login at 10:00, access token expires at 10:15, refresh token valid for 
 
 The user stays logged in and notices nothing.
 
+```mermaid
+sequenceDiagram
+  participant A as Angular (interceptor)
+  participant API as Spring API
+  participant Auth as /api/auth/refresh
+  A->>API: GET /dashboard (expired access token)
+  API-->>A: 401 Unauthorized
+  A->>Auth: POST refresh (refresh-token cookie)
+  Auth-->>A: New access token
+  A->>API: Retry GET /dashboard (new token)
+  API-->>A: 200 OK
+```
+
 If several requests fail at the same moment, only **one** refresh call should be made; the others wait for it:
 
 ```ts
@@ -115,6 +128,14 @@ Example: the user comes back after 8 days; the 7-day refresh token has expired.
 3. The backend finds the refresh token expired and returns `401 Unauthorized`.
 4. Angular clears its authentication state and redirects to the login page.
 5. The user must enter credentials again.
+
+```mermaid
+flowchart LR
+  A[API call fails: 401] --> R[POST /api/auth/refresh]
+  R --> Q{Refresh token valid?}
+  Q -- Yes --> N[New access token, retry request]
+  Q -- "No (expired)" --> L[Clear auth state, go to login page]
+```
 
 | Scenario | Access token | Refresh token | Can refresh? | Must log in? |
 |---|---|---|---|---|
