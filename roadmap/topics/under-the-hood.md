@@ -79,6 +79,29 @@
 1. [How does Vue's reactivity system work internally (dependency tracking and Proxies)?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)
 2. [How do Vue's template compiler and Virtual DOM work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)
 
+## 11. Servers, Localhost and Ports
+
+1. [What exactly is a Server? Is it hardware, software, a process or a computer?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
+2. [What is Localhost? How is it different from a physical server or virtual machine?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
+3. [How does a server listen for incoming requests using IP addresses and ports?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
+4. [What is the difference between Web Server, Application Server and Reverse Proxy?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
+
+## 12. Tomcat and Spring Boot
+
+1. [How does Tomcat work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
+2. [How is Tomcat different from the computer's localhost?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
+3. [How does Spring Boot start its embedded Tomcat server?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
+4. [What happens internally when an HTTP request reaches Spring Boot?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
+
+## 13. Spring Container and Request Processing
+
+1. [How does Spring Dependency Injection create and manage objects?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
+2. [How do Spring AOP, Proxies and @Transactional work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
+3. [How does a backend application manage concurrent requests and threads?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
+4. [How does Connection Pooling work?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
+5. [How do Authentication and Authorization work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
+6. [How do Exception Handling, Retries and Timeouts work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
+
 ## Diagrams
 
 - [Frontend programming languages: source to machine code](../../knowledge/visual-notes/01_frontend_programming_languages.png)

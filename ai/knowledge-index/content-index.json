@@ -1979,6 +1979,19 @@
                                                ]
                       },
                       {
+                          "id":  "interview.under-the-hood.04-backend-server-internals.md",
+                          "path":  "interview/under-the-hood/04-Backend-Server-Internals.md",
+                          "content_type":  "interview",
+                          "domain":  "under-the-hood",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  37756,
+                          "source_of_truth":  false,
+                          "related_concepts":  [
+                                                   "under-the-hood"
+                                               ]
+                      },
+                      {
                           "id":  "interview.coding.02-dsa-patterns.md",
                           "path":  "interview/coding/02-DSA-Patterns.md",
                           "content_type":  "interview",

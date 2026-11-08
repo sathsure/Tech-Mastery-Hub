@@ -171,6 +171,22 @@
    - [`@Mock` vs `@MockBean`/`@MockitoBean`?](../../interview/testing/01-Testing.md)
 2. [What is Testcontainers?](../../interview/testing/01-Testing.md)
 
+## 13. Tomcat and Spring Boot
+
+1. [How does Tomcat work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
+2. [How is Tomcat different from the computer's localhost?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
+3. [How does Spring Boot start its embedded Tomcat server?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
+4. [What happens internally when an HTTP request reaches Spring Boot?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
+
+## 14. Spring Container and Request Processing
+
+1. [How does Spring Dependency Injection create and manage objects?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
+2. [How do Spring AOP, Proxies and @Transactional work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
+3. [How does a backend application manage concurrent requests and threads?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
+4. [How does Connection Pooling work?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
+5. [How do Authentication and Authorization work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
+6. [How do Exception Handling, Retries and Timeouts work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
+
 ## Diagrams
 
 - [SpringBeanLifeCycle](../../knowledge/visual-notes/backend/spring-bean-life-cycle.png)

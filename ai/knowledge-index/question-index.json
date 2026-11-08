@@ -1,18 +1,18 @@
 {
   "schema_version": "1.0.0",
   "repository": "Tech-Mastery-Hub",
-  "generated_at": "2026-11-08T16:50:26.789Z",
-  "source_fingerprint": "6333fe01ba07dd3c92d32a22a0fbd750cb54df968a8481db2040984c406b1d77",
+  "generated_at": "2026-11-08T16:53:22.752Z",
+  "source_fingerprint": "f3a48fb44da886f7f0802b8ef6794b6644f3137318acb827e36fcc0fe729b686",
   "stats": {
-    "files": 145,
-    "entries": 2070,
-    "questions": 1143,
+    "files": 146,
+    "entries": 2084,
+    "questions": 1157,
     "followUps": 311,
     "notes": 84,
     "roles": 74,
     "terms": 378,
     "roadmaps": 80,
-    "codeBlocks": 1423,
+    "codeBlocks": 1447,
     "visuals": 86,
     "missingVisuals": 0
   },
@@ -537,6 +537,17 @@
     {
       "path": "interview/under-the-hood/03b-Frontend-Framework-Internals.md",
       "questions": 11,
+      "followUps": 0,
+      "notes": 0,
+      "roles": 0,
+      "terms": 0,
+      "roadmaps": 0,
+      "withoutAnswer": 0,
+      "missingVisuals": 0
+    },
+    {
+      "path": "interview/under-the-hood/04-Backend-Server-Internals.md",
+      "questions": 14,
       "followUps": 0,
       "notes": 0,
       "roles": 0,
@@ -54148,6 +54159,676 @@
       "contentHash": "96e18b0b9c4d8526"
     },
     {
+      "id": "interview/under-the-hood/04-Backend-Server-Internals.md#what-exactly-is-a-server-is-it-hardware-software-a-process-or-a",
+      "kind": "question",
+      "parentId": null,
+      "question": "What exactly is a Server? Is it hardware, software, a process or a computer?",
+      "prompt": null,
+      "answer": "**1. What is it?**\n\"Server\" means **a role**, and the word is used for three things:\n\n- **Server software** — a program that waits for requests and answers them (Tomcat, Nginx, PostgreSQL).\n- **Server process** — that program while it runs: a process with threads, memory and an open **listening socket**.\n- **Server machine** — the computer (physical, virtual or a container) that runs it.\n\nA laptop running Spring Boot **is** a server machine while the app runs.\n\n**2. How does it work internally?**\n\n1. The OS starts the server program as a **process**.\n2. The process opens a **socket**, binds it to an IP + port, and starts listening.\n3. The OS network stack delivers incoming connections for that port to the process.\n4. The process reads the request, runs code, writes a response, and keeps listening.\n\n**3. Visual**\n\n```mermaid\nflowchart TB\n  subgraph M[\"Machine (physical / VM / container)\"]\n    OS[\"Operating system<br/>network stack\"]\n    subgraph P[\"Process: java -jar app.jar\"]\n      S[\"Listening socket :8080\"]\n      T[\"Worker threads\"]\n    end\n    OS -- \"connections for port 8080\" --> S\n    S --> T\n  end\n  C[Client: browser / mobile app] -- \"TCP to IP:8080\" --> OS\n```\n\n**4. Internal implementation**\nThe core is a **socket**: a kernel object identified by a file descriptor (Linux) or handle (Windows). The server loops: accept connection → read bytes → parse protocol (HTTP) → handle → write bytes.\n\n**5. Why is it designed this way?**\nSeparating the role (software) from the hardware lets one machine run many servers (web, DB, cache) and one service run on many machines behind a load balancer.\n\n**6. Language / framework differences**\nEvery server stack ends at the same OS sockets: Java (Tomcat, Netty), Node.js (libuv), Python (Gunicorn, Uvicorn), Go (`net/http`), .NET (Kestrel). They differ in **threading model** (thread per request vs event loop).\n\n**7. Practical example**\n`java -jar shop.jar` → one JVM **process** → Tomcat inside it opens port 8080 → your laptop is now acting as a web server.\n\n**8. How can I observe it?**\nWindows: `netstat -ano | findstr :8080` shows the process ID listening; Task Manager → Details finds that PID. Linux/macOS: `ss -ltnp` or `lsof -i :8080`.",
+      "summary": "What is it? \"Server\" means a role, and the word is used for three things:",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart TB\n  subgraph M[\"Machine (physical / VM / container)\"]\n    OS[\"Operating system<br/>network stack\"]\n    subgraph P[\"Process: java -jar app.jar\"]\n      S[\"Listening socket :8080\"]\n      T[\"Worker threads\"]\n    end\n    OS -- \"connections for port 8080\" --> S\n    S --> T\n  end\n  C[Client: browser / mobile app] -- \"TCP to IP:8080\" --> OS"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Servers, Localhost and Ports"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "exactly",
+        "server",
+        "hardware",
+        "software",
+        "process",
+        "computer",
+        "a role",
+        "server software",
+        "server process",
+        "listening socket",
+        "server machine",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/04-Backend-Server-Internals.md",
+        "startLine": 7,
+        "endLine": 56
+      },
+      "contentHash": "693958eedaf69f7b"
+    },
+    {
+      "id": "interview/under-the-hood/04-Backend-Server-Internals.md#what-is-localhost-how-is-it-different-from-a-physical-server-or",
+      "kind": "question",
+      "parentId": null,
+      "question": "What is Localhost? How is it different from a physical server or virtual machine?",
+      "prompt": null,
+      "answer": "**1. What is it?**\n**localhost** is a hostname that means \"**this same computer**\". It resolves to the **loopback address** `127.0.0.1` (IPv4) or `::1` (IPv6). Traffic to it never leaves the machine.\n\n**2. How does it work internally?**\n\n1. `http://localhost:8080` → name lookup (hosts file) gives `127.0.0.1`.\n2. The OS sends packets to the **loopback interface** — a virtual network card in the kernel.\n3. The kernel hands them straight back to the receiving socket on the same machine; no network card, cable or router involved.\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  subgraph PC[\"Your computer\"]\n    B[\"Browser\"] -- \"localhost:8080\" --> LO[\"Loopback interface<br/>127.0.0.1 (in kernel)\"]\n    LO --> A[\"Spring Boot :8080\"]\n  end\n  subgraph Cloud[\"Physical server or VM\"]\n    S[\"Spring Boot :8080<br/>public IP 52.x.x.x\"]\n  end\n  PH[\"Phone on the internet\"] -- \"through network\" --> S\n  PH -. \"cannot reach your localhost\" .-> A\n```\n\n**4. Internal implementation**\n\n- The whole `127.0.0.0/8` range is loopback on Linux.\n- A server bound to `127.0.0.1` accepts only local connections; bound to `0.0.0.0` it accepts on **all** interfaces (LAN, Wi-Fi, public).\n- Inside a **Docker container**, `localhost` means the **container itself**, not your laptop.\n\n**5. Why is it designed this way?**\nLoopback makes local development and inter-process communication fast and safe — nothing is exposed to the network unless you bind to an external interface.\n\n**6. Differences**\n\n| | localhost | Physical server | Virtual machine |\n|---|---|---|---|\n| What is it? | An **address** on your machine | Real hardware | Software computer on a hypervisor |\n| Reachable from others? | No | Yes, by its IP | Yes, by its IP |\n| Has its own OS? | — (yours) | Yes | Yes (guest OS) |\n\n**7. Practical example**\nAngular dev server on `localhost:4200` calls Spring Boot on `localhost:8080`: two processes on one machine, talking through loopback. Different **ports** → different origins → CORS applies.\n\n**8. How can I observe it?**\n`ping localhost` (shows `::1` or `127.0.0.1`); `ipconfig` / `ip addr` lists the loopback adapter; Windows hosts file: `C:\\Windows\\System32\\drivers\\etc\\hosts`.",
+      "summary": "What is it? localhost is a hostname that means \"this same computer\". It resolves to the loopback address 127.0.0.1 (IPv4) or ::1 (IPv6). Traffic to it never leaves the machine.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  subgraph PC[\"Your computer\"]\n    B[\"Browser\"] -- \"localhost:8080\" --> LO[\"Loopback interface<br/>127.0.0.1 (in kernel)\"]\n    LO --> A[\"Spring Boot :8080\"]\n  end\n  subgraph Cloud[\"Physical server or VM\"]\n    S[\"Spring Boot :8080<br/>public IP 52.x.x.x\"]\n  end\n  PH[\"Phone on the internet\"] -- \"through network\" --> S\n  PH -. \"cannot reach your localhost\" .-> A"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Servers, Localhost and Ports"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "localhost",
+        "physical",
+        "server",
+        "virtual",
+        "machine",
+        "this same computer",
+        "loopback address",
+        "loopback interface",
+        "visual",
+        "internal implementation",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/04-Backend-Server-Internals.md",
+        "startLine": 60,
+        "endLine": 109
+      },
+      "contentHash": "0f193125f8311541"
+    },
+    {
+      "id": "interview/under-the-hood/04-Backend-Server-Internals.md#how-does-a-server-listen-for-incoming-requests-using-ip",
+      "kind": "question",
+      "parentId": null,
+      "question": "How does a server listen for incoming requests using IP addresses and ports?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nAn **IP address** identifies a machine (network interface); a **port** (0–65535) identifies a program on it. A server **binds** a socket to an IP + port and **listens**; the OS delivers matching connections to it.\n\n**2. How does it work internally?**\n\n1. `socket()` — create a TCP socket.\n2. `bind(0.0.0.0:8080)` — claim the port (fails with \"Address already in use\" if taken).\n3. `listen(backlog)` — mark it as a listening socket; the kernel completes TCP handshakes and keeps them in an **accept queue**.\n4. `accept()` — the server takes one connection and gets a **new socket** for it.\n5. Each connection is identified by the **4-tuple**: client IP, client port, server IP, server port.\n\n**3. Visual**\n\n```mermaid\nsequenceDiagram\n  participant C as Client 10.0.0.5:51234\n  participant K as Server OS kernel\n  participant S as Server process (listening :8080)\n  S->>K: socket() + bind(:8080) + listen()\n  C->>K: SYN to :8080\n  K-->>C: SYN-ACK\n  C->>K: ACK (handshake done, queued)\n  S->>K: accept()\n  K-->>S: new socket for 10.0.0.5:51234\n  C->>S: HTTP request bytes\n  S-->>C: HTTP response bytes\n```\n\n**4. Internal implementation**\n\n- The kernel demultiplexes packets to sockets by the 4-tuple → thousands of clients share port 8080.\n- Clients use random **ephemeral ports** (e.g. 49152–65535 on Windows).\n- Ports below 1024 need admin/root on Linux. Many accept-queue overflows → connection refused/timeouts under load.\n\n**5. Why is it designed this way?**\nPorts let many services share one IP; the listening-socket / connected-socket split lets one server handle many clients at once.\n\n**6. Language / framework differences**\nSame system calls underneath. Tomcat NIO, Netty, Node.js (libuv), Go and .NET Kestrel use **non-blocking sockets + epoll (Linux) / IOCP (Windows)** to watch thousands of connections with few threads.\n\n**7. Practical example**\n\n```properties\nserver.port=8080\nserver.address=127.0.0.1   # only local clients can connect\n```\n\n**8. How can I observe it?**\n`netstat -ano` (Windows) / `ss -tan` (Linux): `LISTENING` vs `ESTABLISHED` rows with both IP:port pairs. **Wireshark** on the loopback adapter shows SYN, SYN-ACK, ACK.",
+      "summary": "What is it? An IP address identifies a machine (network interface); a port (0–65535) identifies a program on it. A server binds a socket to an IP + port and listens; the OS delivers matching connections to it.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "sequenceDiagram\n  participant C as Client 10.0.0.5:51234\n  participant K as Server OS kernel\n  participant S as Server process (listening :8080)\n  S->>K: socket() + bind(:8080) + listen()\n  C->>K: SYN to :8080\n  K-->>C: SYN-ACK\n  C->>K: ACK (handshake done, queued)\n  S->>K: accept()\n  K-->>S: new socket for 10.0.0.5:51234\n  C->>S: HTTP request bytes\n  S-->>C: HTTP response bytes"
+        },
+        {
+          "language": "properties",
+          "code": "server.port=8080\nserver.address=127.0.0.1   # only local clients can connect"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Servers, Localhost and Ports"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "server",
+        "listen",
+        "incoming",
+        "requests",
+        "ip",
+        "addresses",
+        "ports",
+        "ip address",
+        "port",
+        "binds",
+        "listens",
+        "accept queue",
+        "new socket",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/04-Backend-Server-Internals.md",
+        "startLine": 113,
+        "endLine": 165
+      },
+      "contentHash": "5f7fe39792060a05"
+    },
+    {
+      "id": "interview/under-the-hood/04-Backend-Server-Internals.md#what-is-the-difference-between-web-server-application-server",
+      "kind": "question",
+      "parentId": null,
+      "question": "What is the difference between Web Server, Application Server and Reverse Proxy?",
+      "prompt": null,
+      "answer": "**1. What is it?**\n\n- **Web server** — serves HTTP, mainly **static files** (HTML, JS, images); fast and simple. Nginx, Apache httpd.\n- **Application server** — runs **your code** to build dynamic responses. Tomcat/Jetty (servlet containers), WildFly/WebLogic (full Jakarta EE), Gunicorn, Kestrel.\n- **Reverse proxy** — sits **in front** of servers, receives client requests and forwards them; handles TLS, load balancing, caching, compression. Nginx, HAProxy, Envoy, cloud load balancers.\n\n**2. How does it work internally?**\n\n1. Client connects to the reverse proxy (`https://shop.com`).\n2. The proxy terminates TLS, picks a backend by rules (path, host, health), and forwards the request (adding `X-Forwarded-For`).\n3. Static paths may be served directly by the web server; API paths go to the application server.\n4. The response returns through the proxy to the client.\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  U[Browser] -- HTTPS --> RP[\"Reverse proxy<br/>Nginx: TLS, routing, gzip\"]\n  RP -- \"/static/*\" --> WS[\"Web server role<br/>static files\"]\n  RP -- \"/api/*\" --> A1[\"App server 1<br/>Spring Boot + Tomcat\"]\n  RP -- \"/api/*\" --> A2[\"App server 2\"]\n  A1 --> DB[(Database)]\n  A2 --> DB\n```\n\n**4. Internal implementation**\n\n- Nginx uses an **event-driven** model: a few worker processes, each handling thousands of connections with `epoll`.\n- Tomcat uses a connector + **thread pool**; each request runs your Java code on a worker thread.\n- Proxies keep **connection pools** to backends and use health checks to remove dead ones.\n\n**5. Why is it designed this way?**\nEach piece does what it's best at: the proxy handles the internet edge (TLS, slow clients, DDoS protection), app servers focus on business logic and can scale horizontally.\n\n**6. Framework differences**\nSpring Boot **embeds** Tomcat, so your app *is* an application server. Node.js/Express, Go and ASP.NET Core (Kestrel) also embed their HTTP server; in production all are commonly placed behind a reverse proxy or cloud load balancer.\n\n**7. Practical example**\n\n```nginx\nlocation /api/ { proxy_pass http://localhost:8080; }\nlocation /     { root /var/www/angular-app; try_files $uri /index.html; }\n```\n\n**8. How can I observe it?**\nResponse headers often show `Server: nginx`. In Spring Boot, enable `server.forward-headers-strategy=framework` and log `request.getRemoteAddr()` to see proxy vs real client IP.",
+      "summary": "Web server — serves HTTP, mainly static files (HTML, JS, images); fast and simple. Nginx, Apache httpd. Application server — runs your code to build dynamic responses. Tomcat/Jetty (servlet containers), WildFly/WebLogic (full Jakarta EE), Gunicorn, Kestrel. Reverse proxy — sits in front of servers, receives client…",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  U[Browser] -- HTTPS --> RP[\"Reverse proxy<br/>Nginx: TLS, routing, gzip\"]\n  RP -- \"/static/*\" --> WS[\"Web server role<br/>static files\"]\n  RP -- \"/api/*\" --> A1[\"App server 1<br/>Spring Boot + Tomcat\"]\n  RP -- \"/api/*\" --> A2[\"App server 2\"]\n  A1 --> DB[(Database)]\n  A2 --> DB"
+        },
+        {
+          "language": "nginx",
+          "code": "location /api/ { proxy_pass http://localhost:8080; }\nlocation /     { root /var/www/angular-app; try_files $uri /index.html; }"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Servers, Localhost and Ports"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "web",
+        "server",
+        "application",
+        "reverse",
+        "proxy",
+        "web server",
+        "static files",
+        "application server",
+        "your code",
+        "reverse proxy",
+        "in front",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/04-Backend-Server-Internals.md",
+        "startLine": 169,
+        "endLine": 218
+      },
+      "contentHash": "3eb840a5b8c9d890"
+    },
+    {
+      "id": "interview/under-the-hood/04-Backend-Server-Internals.md#how-does-tomcat-work-internally",
+      "kind": "question",
+      "parentId": null,
+      "question": "How does Tomcat work internally?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nTomcat is a **servlet container**: it accepts HTTP connections, turns raw bytes into `HttpServletRequest` objects, and calls the right **servlet** (in Spring: `DispatcherServlet`).\n\n**2. How does it work internally?**\n\n1. **Connector (Coyote, NIO)**: an **Acceptor** thread accepts TCP connections; a **Poller** thread watches sockets with a selector until data is ready.\n2. Ready sockets are handed to a **worker thread** from the executor pool (default max **200** threads).\n3. `Http11Processor` parses the HTTP request line and headers.\n4. The **CoyoteAdapter** passes it to the **Catalina** container: Engine → Host (virtual host) → Context (web app) → Wrapper (servlet).\n5. The request runs the **filter chain**, then `servlet.service()`; the response is written back to the socket.\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  subgraph Connector[\"Connector (Coyote NIO)\"]\n    AC[Acceptor thread] --> PO[\"Poller<br/>selector / epoll\"] --> EX[\"Worker thread pool<br/>maxThreads=200\"]\n  end\n  EX --> HP[Http11Processor: parse] --> AD[CoyoteAdapter]\n  subgraph Catalina[\"Container (Catalina)\"]\n    EN[Engine] --> HO[\"Host: localhost\"] --> CT[\"Context: /\"] --> WR[\"Wrapper:<br/>DispatcherServlet\"]\n  end\n  AD --> EN\n  WR --> FC[\"Filter chain → servlet.service()\"]\n```\n\n**4. Internal implementation**\n\n- Key settings: `maxThreads` (200), `maxConnections` (8192 for NIO), `acceptCount` (100: OS queue when all connections are busy), `connectionTimeout`.\n- Keep-alive connections wait in the Poller **without holding a worker thread**, so 8192 open connections can share 200 threads.\n- Each container level has a **pipeline of valves** (e.g. access log valve) before reaching the servlet.\n\n**5. Why is it designed this way?**\nNIO + thread pool decouples **connections** (many, mostly idle) from **work** (needs a thread). Thread-per-request keeps your code simple and blocking. Limit: 200 slow requests (e.g. waiting on a DB) exhaust the pool — virtual threads or async help.\n\n**6. Framework differences**\nJetty and Undertow are alternative servlet containers. **Netty** (Spring WebFlux) is event-loop based: few threads, non-blocking code. Node.js is event-loop based; Go uses a goroutine per connection.\n\n**7. Practical example**\n\n```properties\nserver.tomcat.threads.max=200\nserver.tomcat.accept-count=100\nserver.tomcat.max-connections=8192\n```\n\n**8. How can I observe it?**\nThread dump (`jcmd <pid> Thread.print`): threads named `http-nio-8080-Acceptor`, `-Poller`, `-exec-N`. Actuator metrics `tomcat.threads.busy` and `tomcat.threads.config.max`.",
+      "summary": "What is it? Tomcat is a servlet container: it accepts HTTP connections, turns raw bytes into HttpServletRequest objects, and calls the right servlet (in Spring: DispatcherServlet).",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  subgraph Connector[\"Connector (Coyote NIO)\"]\n    AC[Acceptor thread] --> PO[\"Poller<br/>selector / epoll\"] --> EX[\"Worker thread pool<br/>maxThreads=200\"]\n  end\n  EX --> HP[Http11Processor: parse] --> AD[CoyoteAdapter]\n  subgraph Catalina[\"Container (Catalina)\"]\n    EN[Engine] --> HO[\"Host: localhost\"] --> CT[\"Context: /\"] --> WR[\"Wrapper:<br/>DispatcherServlet\"]\n  end\n  AD --> EN\n  WR --> FC[\"Filter chain → servlet.service()\"]"
+        },
+        {
+          "language": "properties",
+          "code": "server.tomcat.threads.max=200\nserver.tomcat.accept-count=100\nserver.tomcat.max-connections=8192"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood",
+        "spring"
+      ],
+      "section": [
+        "Tomcat and Spring Boot"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "tomcat",
+        "internally",
+        "servlet container",
+        "servlet",
+        "connector (coyote, nio)",
+        "acceptor",
+        "poller",
+        "worker thread",
+        "under-the-hood",
+        "spring"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/04-Backend-Server-Internals.md",
+        "startLine": 224,
+        "endLine": 275
+      },
+      "contentHash": "6cdb97c3bb1f7cac"
+    },
+    {
+      "id": "interview/under-the-hood/04-Backend-Server-Internals.md#how-is-tomcat-different-from-the-computer-s-localhost",
+      "kind": "question",
+      "parentId": null,
+      "question": "How is Tomcat different from the computer's localhost?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nThey are different kinds of things:\n\n- **localhost** is an **address** (`127.0.0.1`) — \"this machine\".\n- **Tomcat** is a **program** (a Java process, or a library inside your Spring Boot process) that **listens** on a port.\n\n`http://localhost:8080` means: \"connect to a program listening on port 8080 **on this machine**\" — which happens to be Tomcat.\n\n**2. How does it work internally?**\n\n1. Tomcat starts and binds port 8080 (on all interfaces or only loopback).\n2. The browser resolves `localhost` → `127.0.0.1` and connects to port 8080.\n3. The OS loopback interface delivers the connection to Tomcat's socket.\n4. Stop Tomcat → `localhost` still exists, but `localhost:8080` gives \"connection refused\" (nobody listening).\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  B[Browser] -- \"localhost:8080\" --> L[\"localhost = 127.0.0.1<br/>(an address, OS loopback)\"]\n  L -- \"port 8080\" --> T[\"Tomcat process<br/>(a program, listening)\"]\n  L -- \"port 5432\" --> PG[\"PostgreSQL process\"]\n  L -- \"port 4200\" --> NG[\"Angular dev server\"]\n```\n\n**4. Internal implementation**\nThe OS keeps a table: port → listening socket → owning process. `localhost` just picks the loopback interface; the **port** picks the program.\n\n**5. Why is it designed this way?**\nAddresses and programs are independent so the same Tomcat can be reached as `localhost:8080`, `192.168.1.20:8080` or `shop.com` (behind a proxy) without changes.\n\n**6. Framework differences**\nAny server works the same: `localhost:3000` (Express), `localhost:8000` (Django), `localhost:5000` (ASP.NET Core) — the address is always the machine, the port is the program.\n\n**7. Practical example**\nRunning two Spring Boot apps both on port 8080 fails: the second gets `Port 8080 was already in use`. Same machine (localhost), but only one program can own a port.\n\n**8. How can I observe it?**\n`netstat -ano | findstr :8080` → note the PID → Task Manager shows it is `java.exe`. Stop the app and run again: the line disappears, localhost does not.",
+      "summary": "What is it? They are different kinds of things:",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  B[Browser] -- \"localhost:8080\" --> L[\"localhost = 127.0.0.1<br/>(an address, OS loopback)\"]\n  L -- \"port 8080\" --> T[\"Tomcat process<br/>(a program, listening)\"]\n  L -- \"port 5432\" --> PG[\"PostgreSQL process\"]\n  L -- \"port 4200\" --> NG[\"Angular dev server\"]"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood",
+        "spring"
+      ],
+      "section": [
+        "Tomcat and Spring Boot"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "tomcat",
+        "computer",
+        "localhost",
+        "address",
+        "program",
+        "listens",
+        "on this machine",
+        "under-the-hood",
+        "spring"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/04-Backend-Server-Internals.md",
+        "startLine": 279,
+        "endLine": 321
+      },
+      "contentHash": "4f577225289fb43b"
+    },
+    {
+      "id": "interview/under-the-hood/04-Backend-Server-Internals.md#how-does-spring-boot-start-its-embedded-tomcat-server",
+      "kind": "question",
+      "parentId": null,
+      "question": "How does Spring Boot start its embedded Tomcat server?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nSpring Boot includes Tomcat **as a library** (`tomcat-embed-core`) and starts it from Java code during application start-up — no separate Tomcat installation or WAR deployment.\n\n**2. How does it work internally?**\n\n1. `SpringApplication.run()` detects a **servlet** web app (Spring MVC + Tomcat on the classpath).\n2. It creates a `ServletWebServerApplicationContext`.\n3. During `refresh()`, `onRefresh()` calls `createWebServer()`.\n4. Auto-configuration provides a `TomcatServletWebServerFactory` (port, threads, SSL from `server.*` properties).\n5. The factory does `new Tomcat()`, configures connector + context, and registers `DispatcherServlet` and filters through `ServletContextInitializer` beans.\n6. After all singleton beans are created, the web server **starts** and logs `Tomcat started on port 8080`.\n\n**3. Visual**\n\n```mermaid\nflowchart TD\n  M[\"main(): SpringApplication.run()\"] --> D[\"Detect app type: SERVLET\"]\n  D --> CX[\"Create ServletWebServerApplicationContext\"]\n  CX --> RF[\"refresh()\"]\n  RF --> OR[\"onRefresh() → createWebServer()\"]\n  OR --> FA[\"TomcatServletWebServerFactory<br/>(from auto-configuration)\"]\n  FA --> TC[\"new Tomcat(): connector :8080,<br/>register DispatcherServlet + filters\"]\n  RF --> BE[\"Create all singleton beans\"]\n  BE --> ST[\"Start web server<br/>'Tomcat started on port 8080'\"]\n  TC --> ST\n```\n\n**4. Internal implementation**\n\n- `ServletWebServerFactoryAutoConfiguration` picks Tomcat, Jetty or Undertow based on which is on the classpath (`@ConditionalOnClass`).\n- `WebServerFactoryCustomizer` beans apply `server.port`, `server.tomcat.*` etc.\n- Starting the server late (after beans are ready) avoids accepting requests before the app can handle them.\n\n**5. Why is it designed this way?**\nOne self-contained executable JAR (\"just run `java -jar`\") fits containers and the cloud. The app controls its server version and config. Trade-off: one app per server process instead of many WARs in one shared Tomcat.\n\n**6. Framework differences**\nASP.NET Core starts **Kestrel** in `Program.cs`; Express calls `app.listen(3000)`; Django needs an external WSGI/ASGI server (Gunicorn/Uvicorn). Quarkus/Micronaut embed Vert.x/Netty.\n\n**7. Practical example**\nSwap Tomcat for Jetty: exclude `spring-boot-starter-tomcat` and add `spring-boot-starter-jetty` — no code changes; the auto-configuration picks the other factory.\n\n**8. How can I observe it?**\nStart with `--debug` → condition report shows `ServletWebServerFactoryConfiguration.EmbeddedTomcat matched`. Logs show `Tomcat initialized with port 8080` then `Tomcat started on port 8080`.",
+      "summary": "What is it? Spring Boot includes Tomcat as a library (tomcat-embed-core) and starts it from Java code during application start-up — no separate Tomcat installation or WAR deployment.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart TD\n  M[\"main(): SpringApplication.run()\"] --> D[\"Detect app type: SERVLET\"]\n  D --> CX[\"Create ServletWebServerApplicationContext\"]\n  CX --> RF[\"refresh()\"]\n  RF --> OR[\"onRefresh() → createWebServer()\"]\n  OR --> FA[\"TomcatServletWebServerFactory<br/>(from auto-configuration)\"]\n  FA --> TC[\"new Tomcat(): connector :8080,<br/>register DispatcherServlet + filters\"]\n  RF --> BE[\"Create all singleton beans\"]\n  BE --> ST[\"Start web server<br/>'Tomcat started on port 8080'\"]\n  TC --> ST"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood",
+        "spring"
+      ],
+      "section": [
+        "Tomcat and Spring Boot"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "spring",
+        "boot",
+        "start",
+        "embedded",
+        "tomcat",
+        "server",
+        "as a library",
+        "servlet",
+        "starts",
+        "visual",
+        "internal implementation",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/04-Backend-Server-Internals.md",
+        "startLine": 325,
+        "endLine": 372
+      },
+      "contentHash": "6aa6bb9ba8485e7b"
+    },
+    {
+      "id": "interview/under-the-hood/04-Backend-Server-Internals.md#what-happens-internally-when-an-http-request-reaches-spring-boot",
+      "kind": "question",
+      "parentId": null,
+      "question": "What happens internally when an HTTP request reaches Spring Boot?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nThe path a request takes from the network socket to your `@RestController` method and back as a JSON response.\n\n**2. How does it work internally?**\n\n1. **Tomcat** accepts the connection, a worker thread parses HTTP into `HttpServletRequest`.\n2. **Filter chain**: encoding, CORS, **Spring Security** (`FilterChainProxy`: authentication, authorization).\n3. **DispatcherServlet** receives it.\n4. **HandlerMapping** finds the controller method for `GET /orders/42` (`RequestMappingHandlerMapping`).\n5. **HandlerAdapter** resolves arguments: `@PathVariable`, `@RequestParam`, `@RequestBody` (JSON → object via **Jackson** `HttpMessageConverter`), runs `@Valid`.\n6. **Interceptors** (`preHandle`), then your controller method runs (service → repository → DB).\n7. The return value is converted to JSON by Jackson and written to the response; exceptions go to `@ControllerAdvice`.\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  REQ[\"GET /orders/42\"] --> TC[\"Tomcat worker thread<br/>parse HTTP\"]\n  TC --> FI[\"Filters<br/>CORS, Spring Security\"]\n  FI --> DS[DispatcherServlet]\n  DS --> HM[\"HandlerMapping<br/>find method\"]\n  HM --> HA[\"HandlerAdapter<br/>resolve args, JSON → object\"]\n  HA --> CT[\"OrderController.get(42)\"]\n  CT --> SV[Service → Repository → DB]\n  SV --> CT\n  CT --> JS[\"Jackson: object → JSON\"]\n  JS --> RES[\"200 OK + JSON\"]\n  CT -. exception .-> CA[\"@ControllerAdvice → error JSON\"]\n```\n\n**4. Internal implementation**\n\n- At start-up, `RequestMappingHandlerMapping` scans `@RequestMapping` methods into a lookup map (path patterns + HTTP method + headers).\n- `HandlerMethodArgumentResolver` and `HandlerMethodReturnValueHandler` lists decide how each parameter and return value is handled.\n- The **same worker thread** runs the whole request (unless async/WebFlux), so `ThreadLocal`s like `SecurityContextHolder` work.\n\n**5. Why is it designed this way?**\nThe **front controller** pattern (one DispatcherServlet) centralises routing, conversion, validation and error handling, so controllers stay small and testable.\n\n**6. Framework differences**\n\n| Framework | Pipeline |\n|---|---|\n| ASP.NET Core | Kestrel → middleware pipeline → routing → controller / minimal API |\n| Express / NestJS | Node `http` → middleware chain → route handler (Nest adds guards, pipes, interceptors) |\n| Django | WSGI/ASGI → middleware → URL resolver → view |\n| FastAPI | ASGI (Uvicorn) → Starlette middleware → route → Pydantic validation |\n\n**7. Practical example**\n\n```java\n@GetMapping(\"/orders/{id}\")\nOrderDto get(@PathVariable long id) { return service.find(id); }   // returned object → JSON\n```\n\n**8. How can I observe it?**\n`logging.level.org.springframework.web=DEBUG` logs \"Mapped to OrderController#get\". Put a breakpoint in the controller and look at the **call stack**: you can see Tomcat, filters, DispatcherServlet and the adapter frames.",
+      "summary": "What is it? The path a request takes from the network socket to your @RestController method and back as a JSON response.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  REQ[\"GET /orders/42\"] --> TC[\"Tomcat worker thread<br/>parse HTTP\"]\n  TC --> FI[\"Filters<br/>CORS, Spring Security\"]\n  FI --> DS[DispatcherServlet]\n  DS --> HM[\"HandlerMapping<br/>find method\"]\n  HM --> HA[\"HandlerAdapter<br/>resolve args, JSON → object\"]\n  HA --> CT[\"OrderController.get(42)\"]\n  CT --> SV[Service → Repository → DB]\n  SV --> CT\n  CT --> JS[\"Jackson: object → JSON\"]\n  JS --> RES[\"200 OK + JSON\"]\n  CT -. exception .-> CA[\"@ControllerAdvice → error JSON\"]"
+        },
+        {
+          "language": "java",
+          "code": "@GetMapping(\"/orders/{id}\")\nOrderDto get(@PathVariable long id) { return service.find(id); }   // returned object → JSON"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood",
+        "spring"
+      ],
+      "section": [
+        "Tomcat and Spring Boot"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "happens",
+        "internally",
+        "http",
+        "request",
+        "reaches",
+        "spring",
+        "boot",
+        "tomcat",
+        "filter chain",
+        "spring security",
+        "dispatcherservlet",
+        "handlermapping",
+        "handleradapter",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/04-Backend-Server-Internals.md",
+        "startLine": 376,
+        "endLine": 436
+      },
+      "contentHash": "2a7bd47a307f35fe"
+    },
+    {
+      "id": "interview/under-the-hood/04-Backend-Server-Internals.md#how-does-spring-dependency-injection-create-and-manage-objects",
+      "kind": "question",
+      "parentId": null,
+      "question": "How does Spring Dependency Injection create and manage objects?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nThe **Spring container** (ApplicationContext) creates your objects (**beans**), wires their dependencies, and manages their lifetime. You declare what you need; Spring builds the object graph.\n\n**2. How does it work internally?**\n\n1. **Find definitions**: component scanning (`@Component`, `@Service`…), `@Bean` methods and auto-configuration → **BeanDefinitions** (class, scope, dependencies).\n2. **BeanFactoryPostProcessors** can modify definitions (e.g. resolve `${...}` placeholders).\n3. **Instantiate** singletons: choose a constructor; resolve each parameter **by type** (then `@Qualifier` / `@Primary` / parameter name).\n4. Dependencies are created first, recursively.\n5. **BeanPostProcessors** run (e.g. wrap in AOP proxies), init callbacks (`@PostConstruct`).\n6. The finished bean is stored in the **singleton cache** and reused.\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  SC[\"Component scan<br/>+ @Bean + auto-config\"] --> BD[\"BeanDefinitions<br/>(recipes)\"]\n  BD --> BFPP[\"BeanFactoryPostProcessors\"]\n  BFPP --> CR[\"Create bean: OrderService\"]\n  CR --> DEP{\"Needs OrderRepository?\"}\n  DEP -- \"create it first\" --> CR2[\"Create OrderRepository\"]\n  CR2 --> CR\n  CR --> BPP[\"BeanPostProcessors<br/>@PostConstruct, proxies\"]\n  BPP --> CACHE[(\"Singleton cache\")]\n```\n\n**4. Internal implementation**\n\n- `DefaultListableBeanFactory` holds a map `beanName → BeanDefinition` and the singleton cache.\n- Circular dependencies with **constructor injection** fail fast; with field/setter injection Spring could resolve them using **early references** (three-level cache), but since Boot 2.6 circular references are **disallowed by default**.\n- Scopes: singleton (default), prototype (new each time), request/session (web).\n\n**5. Why is it designed this way?**\nInversion of Control decouples classes from how their dependencies are built → easy testing (pass mocks) and easy swapping of implementations. Cost: start-up time and \"magic\" that's harder to trace.\n\n**6. Framework differences**\n\n- **Spring** — reflection-based at runtime (Spring AOT can precompute for native images).\n- **Quarkus / Micronaut / Dagger** — DI resolved at **build time** (generated code) → faster start-up.\n- **ASP.NET Core** — built-in container with singleton / scoped / transient lifetimes.\n- **Angular** — hierarchical injectors (per component tree). **NestJS** — module-based DI similar to Angular.\n\n**7. Practical example**\n\n```java\n@Service\nclass OrderService {\n    private final OrderRepository repo;\n    OrderService(OrderRepository repo) { this.repo = repo; }   // Spring passes the repository bean\n}\n```\n\n**8. How can I observe it?**\nActuator `/actuator/beans` lists every bean and its dependencies. `logging.level.org.springframework.beans.factory=DEBUG` logs bean creation. Startup errors like \"No qualifying bean of type…\" show resolution failures.",
+      "summary": "What is it? The Spring container (ApplicationContext) creates your objects (beans), wires their dependencies, and manages their lifetime. You declare what you need; Spring builds the object graph.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  SC[\"Component scan<br/>+ @Bean + auto-config\"] --> BD[\"BeanDefinitions<br/>(recipes)\"]\n  BD --> BFPP[\"BeanFactoryPostProcessors\"]\n  BFPP --> CR[\"Create bean: OrderService\"]\n  CR --> DEP{\"Needs OrderRepository?\"}\n  DEP -- \"create it first\" --> CR2[\"Create OrderRepository\"]\n  CR2 --> CR\n  CR --> BPP[\"BeanPostProcessors<br/>@PostConstruct, proxies\"]\n  BPP --> CACHE[(\"Singleton cache\")]"
+        },
+        {
+          "language": "java",
+          "code": "@Service\nclass OrderService {\n    private final OrderRepository repo;\n    OrderService(OrderRepository repo) { this.repo = repo; }   // Spring passes the repository bean\n}"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood",
+        "spring"
+      ],
+      "section": [
+        "Spring Container and Request Processing"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "spring",
+        "dependency",
+        "injection",
+        "create",
+        "manage",
+        "objects",
+        "spring container",
+        "beans",
+        "find definitions",
+        "beandefinitions",
+        "beanfactorypostprocessors",
+        "instantiate",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/04-Backend-Server-Internals.md",
+        "startLine": 442,
+        "endLine": 499
+      },
+      "contentHash": "a710b99b448cbe90"
+    },
+    {
+      "id": "interview/under-the-hood/04-Backend-Server-Internals.md#how-do-spring-aop-proxies-and-transactional-work-internally",
+      "kind": "question",
+      "parentId": null,
+      "question": "How do Spring AOP, Proxies and @Transactional work internally?",
+      "prompt": null,
+      "answer": "**1. What is it?**\n**AOP** (Aspect-Oriented Programming) adds behaviour (transactions, security, logging, caching) **around** your methods without changing them. Spring does it by giving other beans a **proxy** instead of your real object. `@Transactional` is one such aspect.\n\n**2. How does it work internally?**\n\n1. At start-up a `BeanPostProcessor` checks each bean for advised annotations (`@Transactional`, `@Cacheable`, `@PreAuthorize`, custom `@Aspect`s).\n2. If found, it creates a **proxy**: a **JDK dynamic proxy** (if proxying by interface) or a **CGLIB subclass** (Spring Boot's default).\n3. Other beans receive the proxy. A call goes: proxy → **interceptor chain** → real method.\n4. For `@Transactional`, `TransactionInterceptor` asks the **PlatformTransactionManager** to begin a transaction, binds the JDBC connection to the **current thread**, calls the method, then commits or rolls back.\n\n**3. Visual**\n\n```mermaid\nsequenceDiagram\n  participant C as OrderController\n  participant P as Proxy (CGLIB subclass)\n  participant TI as TransactionInterceptor\n  participant TM as TransactionManager\n  participant S as Real OrderService\n  C->>P: placeOrder()\n  P->>TI: invoke\n  TI->>TM: getTransaction() → BEGIN, bind connection to thread\n  TI->>S: placeOrder()\n  S-->>TI: return / throw RuntimeException\n  TI->>TM: commit() or rollback()\n  TI-->>C: result\n```\n\n**4. Internal implementation**\n\n- The connection is stored in `TransactionSynchronizationManager` (**ThreadLocal** maps), so repositories on the same thread reuse it.\n- Rollback by default only for **unchecked** exceptions (`RuntimeException`, `Error`); configure `rollbackFor` for checked ones.\n- **Self-invocation** (`this.otherMethod()`) bypasses the proxy → annotations on the inner method are ignored. CGLIB can't proxy `final` classes/methods; `private` methods are never intercepted.\n\n**5. Why is it designed this way?**\nProxies need no special compiler and work with plain classes. AspectJ **weaving** (compile- or load-time bytecode changes) is more powerful (self-calls, private methods) but adds build complexity.\n\n**6. Framework differences**\n\n- **.NET** — middleware and filters for cross-cutting web concerns; `TransactionScope` for transactions.\n- **NestJS** — interceptors and decorators.\n- **Python (Django)** — `@transaction.atomic` decorator / context manager.\n- **Quarkus** — interceptors generated at build time (no runtime proxy reflection).\n\n**7. Practical example**\n\n```java\n@Transactional\npublic void placeOrder(Order o) {\n    orders.save(o);\n    stock.decrease(o.items());   // throws → BOTH changes rolled back\n}\n```\n\n**8. How can I observe it?**\n`System.out.println(orderService.getClass())` → `OrderService$$SpringCGLIB$$0`. `logging.level.org.springframework.transaction.interceptor=TRACE` logs \"Getting transaction for…\" and \"Completing transaction for…\".",
+      "summary": "What is it? AOP (Aspect-Oriented Programming) adds behaviour (transactions, security, logging, caching) around your methods without changing them. Spring does it by giving other beans a proxy instead of your real object. @Transactional is one such aspect.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "sequenceDiagram\n  participant C as OrderController\n  participant P as Proxy (CGLIB subclass)\n  participant TI as TransactionInterceptor\n  participant TM as TransactionManager\n  participant S as Real OrderService\n  C->>P: placeOrder()\n  P->>TI: invoke\n  TI->>TM: getTransaction() → BEGIN, bind connection to thread\n  TI->>S: placeOrder()\n  S-->>TI: return / throw RuntimeException\n  TI->>TM: commit() or rollback()\n  TI-->>C: result"
+        },
+        {
+          "language": "java",
+          "code": "@Transactional\npublic void placeOrder(Order o) {\n    orders.save(o);\n    stock.decrease(o.items());   // throws → BOTH changes rolled back\n}"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood",
+        "spring"
+      ],
+      "section": [
+        "Spring Container and Request Processing"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "spring",
+        "aop",
+        "proxies",
+        "@transactional",
+        "internally",
+        "around",
+        "proxy",
+        "jdk dynamic proxy",
+        "cglib subclass",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/04-Backend-Server-Internals.md",
+        "startLine": 503,
+        "endLine": 562
+      },
+      "contentHash": "e793032ae5bd2464"
+    },
+    {
+      "id": "interview/under-the-hood/04-Backend-Server-Internals.md#how-does-a-backend-application-manage-concurrent-requests-and",
+      "kind": "question",
+      "parentId": null,
+      "question": "How does a backend application manage concurrent requests and threads?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nMany users send requests at the same time. A backend handles them **concurrently** — usually one thread (or lightweight task) per request — while sharing objects like services and caches safely.\n\n**2. How does it work internally?**\n\n1. Tomcat takes a worker thread from its pool for each request (max 200 by default).\n2. That thread runs the whole request: filters → controller → service → DB call (thread **blocks** while waiting).\n3. When the response is written, the thread returns to the pool.\n4. All threads share the same **singleton beans**, so those beans must be **stateless** or thread-safe.\n5. Per-request data lives on each thread's **stack** or in `ThreadLocal`s (security context, transaction).\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  R1[Request A] --> T1[\"exec-1\"]\n  R2[Request B] --> T2[\"exec-2\"]\n  R3[Request C] --> T3[\"exec-3\"]\n  R4[\"Request 201\"] --> Q[\"Waits: all 200 busy<br/>(accept queue)\"]\n  T1 --> S[\"Shared singleton<br/>OrderService (stateless)\"]\n  T2 --> S\n  T3 --> S\n  S --> POOL[\"DB connection pool<br/>(10 connections)\"]\n```\n\n**4. Internal implementation**\n\n- Thread pool = `ThreadPoolExecutor`: core/max threads + a task queue.\n- **Java 21 virtual threads** (`spring.threads.virtual.enabled=true`): each request gets a cheap virtual thread; when it blocks on I/O, the JVM unmounts it and reuses the OS thread → thousands of concurrent blocking requests.\n- The **real** limit is often downstream: e.g. 200 threads but only 10 DB connections → threads wait for connections.\n\n**5. Why is it designed this way?**\nThread-per-request keeps code simple (normal blocking calls). Costs: each platform thread uses ~1 MB stack and context switches; virtual threads or reactive (WebFlux) remove that limit in different ways.\n\n**6. Language differences**\n\n| Stack | Model |\n|---|---|\n| Spring MVC | Thread per request (platform or virtual threads) |\n| Spring WebFlux / Netty | Event loop + non-blocking I/O, few threads |\n| Node.js / Express | Single event loop; async I/O; CPU work blocks everyone |\n| Go | Goroutine per request (M:N scheduler) |\n| ASP.NET Core | Thread pool + `async/await` (threads freed while awaiting) |\n| Python | Gunicorn **processes** (GIL) or async (Uvicorn/FastAPI) |\n\n**7. Practical example**\n\n```java\n@Service\nclass CounterService {\n    private int count;                                   // ❌ shared by all threads: race condition\n    private final AtomicInteger safe = new AtomicInteger(); // ✅ thread-safe\n}\n```\n\n**8. How can I observe it?**\nLoad test with **JMeter** or **k6**; watch Actuator `tomcat.threads.busy` and HikariCP `hikaricp.connections.pending`. A thread dump during load shows how many threads are `WAITING` on the pool or DB.",
+      "summary": "What is it? Many users send requests at the same time. A backend handles them concurrently — usually one thread (or lightweight task) per request — while sharing objects like services and caches safely.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  R1[Request A] --> T1[\"exec-1\"]\n  R2[Request B] --> T2[\"exec-2\"]\n  R3[Request C] --> T3[\"exec-3\"]\n  R4[\"Request 201\"] --> Q[\"Waits: all 200 busy<br/>(accept queue)\"]\n  T1 --> S[\"Shared singleton<br/>OrderService (stateless)\"]\n  T2 --> S\n  T3 --> S\n  S --> POOL[\"DB connection pool<br/>(10 connections)\"]"
+        },
+        {
+          "language": "java",
+          "code": "@Service\nclass CounterService {\n    private int count;                                   // ❌ shared by all threads: race condition\n    private final AtomicInteger safe = new AtomicInteger(); // ✅ thread-safe\n}"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood",
+        "spring"
+      ],
+      "section": [
+        "Spring Container and Request Processing"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "backend",
+        "application",
+        "manage",
+        "concurrent",
+        "requests",
+        "threads",
+        "concurrently",
+        "blocks",
+        "singleton beans",
+        "stateless",
+        "stack",
+        "visual",
+        "under-the-hood",
+        "spring"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/04-Backend-Server-Internals.md",
+        "startLine": 566,
+        "endLine": 626
+      },
+      "contentHash": "dc8a71b266f75326"
+    },
+    {
+      "id": "interview/under-the-hood/04-Backend-Server-Internals.md#how-does-connection-pooling-work",
+      "kind": "question",
+      "parentId": null,
+      "question": "How does Connection Pooling work?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nOpening a database connection is slow (TCP + TLS + authentication, often 10–100 ms). A **connection pool** opens a set of connections once and **lends** them to requests, then takes them back for reuse.\n\n**2. How does it work internally?**\n\n1. At start-up the pool (HikariCP in Spring Boot) opens `minimumIdle` connections.\n2. A request calls `dataSource.getConnection()` → gets an **idle** connection (or waits up to `connectionTimeout`, default 30 s, then fails).\n3. The app gets a **proxy** connection; calling `close()` doesn't close the socket — it **returns** the connection to the pool.\n4. The pool validates connections, retires them after `maxLifetime` (default 30 min), and keeps at most `maximumPoolSize` (default **10**).\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  T1[Thread 1] -- borrow --> P\n  T2[Thread 2] -- borrow --> P\n  T3[\"Thread 3\"] -. \"waits (pool empty)\" .-> P\n  subgraph P[\"HikariCP pool (max 10)\"]\n    C1[(conn 1: in use)]\n    C2[(conn 2: in use)]\n    C3[(conn 3: idle)]\n  end\n  P == \"open TCP connections\" ==> DB[(PostgreSQL / MySQL)]\n  T1 -- \"close() = return\" --> P\n```\n\n**4. Internal implementation**\n\n- HikariCP uses a lock-free **ConcurrentBag** with thread-local lists so a thread often gets back the same connection it used last.\n- Leak detection (`leakDetectionThreshold`) logs a stack trace if a connection is held too long.\n- `@Transactional` holds one connection for the whole transaction; long transactions starve the pool.\n\n**5. Why is it designed this way?**\nReusing connections removes connection set-up from every request and **caps** the load on the database (the DB can only handle so many sessions). A small pool is often faster than a big one: the DB has limited CPU cores and disks.\n\n**6. Language differences**\nJava: HikariCP, Tomcat JDBC. .NET: pooling built into ADO.NET providers (by connection string). Node.js: `pg.Pool`, mysql2 pool. Python: SQLAlchemy pool. Go: `database/sql` has a built-in pool. Large deployments add a server-side pooler like **PgBouncer**.\n\n**7. Practical example**\n\n```properties\nspring.datasource.hikari.maximum-pool-size=10\nspring.datasource.hikari.connection-timeout=3000\nspring.datasource.hikari.leak-detection-threshold=20000\n```\n\n**8. How can I observe it?**\nActuator metrics `hikaricp.connections.active`, `.idle`, `.pending`. Database side: `SELECT * FROM pg_stat_activity;` (PostgreSQL) or `SHOW PROCESSLIST;` (MySQL) shows the pool's open sessions.",
+      "summary": "What is it? Opening a database connection is slow (TCP + TLS + authentication, often 10–100 ms). A connection pool opens a set of connections once and lends them to requests, then takes them back for reuse.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  T1[Thread 1] -- borrow --> P\n  T2[Thread 2] -- borrow --> P\n  T3[\"Thread 3\"] -. \"waits (pool empty)\" .-> P\n  subgraph P[\"HikariCP pool (max 10)\"]\n    C1[(conn 1: in use)]\n    C2[(conn 2: in use)]\n    C3[(conn 3: idle)]\n  end\n  P == \"open TCP connections\" ==> DB[(PostgreSQL / MySQL)]\n  T1 -- \"close() = return\" --> P"
+        },
+        {
+          "language": "properties",
+          "code": "spring.datasource.hikari.maximum-pool-size=10\nspring.datasource.hikari.connection-timeout=3000\nspring.datasource.hikari.leak-detection-threshold=20000"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood",
+        "spring"
+      ],
+      "section": [
+        "Spring Container and Request Processing"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "connection",
+        "pooling",
+        "connection pool",
+        "lends",
+        "idle",
+        "proxy",
+        "returns",
+        "under-the-hood",
+        "spring"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/04-Backend-Server-Internals.md",
+        "startLine": 630,
+        "endLine": 681
+      },
+      "contentHash": "3e5fae329786d649"
+    },
+    {
+      "id": "interview/under-the-hood/04-Backend-Server-Internals.md#how-do-authentication-and-authorization-work-internally",
+      "kind": "question",
+      "parentId": null,
+      "question": "How do Authentication and Authorization work internally?",
+      "prompt": null,
+      "answer": "**1. What is it?**\n\n- **Authentication** — proving **who** the caller is (password, token, certificate).\n- **Authorization** — deciding **what** they may do (roles, permissions, ownership).\n\nIn Spring Boot both are done by **Spring Security filters** before your controller runs.\n\n**2. How does it work internally?**\n\n1. `FilterChainProxy` picks the matching `SecurityFilterChain` for the URL.\n2. An **authentication filter** extracts credentials: form login (`UsernamePasswordAuthenticationFilter`) or a JWT (`BearerTokenAuthenticationFilter`).\n3. `AuthenticationManager` → `AuthenticationProvider`:\n   - Password: load the user (`UserDetailsService`) and check the hash (`PasswordEncoder`, e.g. BCrypt).\n   - JWT: verify the **signature** with the issuer's key and check `exp`, `iss`, `aud`.\n4. On success, an `Authentication` (user + authorities) is put in the **SecurityContext** (ThreadLocal).\n5. `AuthorizationFilter` checks URL rules; `@PreAuthorize` checks method rules (via an AOP proxy).\n6. Failure → `401 Unauthorized` (not authenticated) or `403 Forbidden` (not allowed).\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  R[\"Request + Bearer JWT\"] --> FCP[FilterChainProxy]\n  FCP --> AF[\"BearerTokenAuthenticationFilter\"]\n  AF --> AM[\"AuthenticationManager<br/>verify signature, exp\"]\n  AM -- ok --> SC[(\"SecurityContext<br/>user + roles (ThreadLocal)\")]\n  AM -- bad --> E1[401]\n  SC --> AZ[\"AuthorizationFilter<br/>/admin/** needs ROLE_ADMIN\"]\n  AZ -- denied --> E2[403]\n  AZ -- allowed --> C[Controller]\n```\n\n**4. Internal implementation**\n\n- Passwords are never stored; **BCrypt** stores salt + hash and is deliberately slow (cost factor) to resist brute force.\n- JWT verification: `base64(header).base64(payload)` is signed with HMAC (shared secret) or RSA/ECDSA (private key); the server recomputes/verifies the signature with the key — no DB lookup needed.\n- Sessions (stateful): `JSESSIONID` cookie → server-side session holds the SecurityContext.\n\n**5. Why is it designed this way?**\nA filter chain keeps security out of business code and ensures nothing reaches a controller unchecked. Stateless JWTs scale across many servers; sessions are easier to revoke.\n\n**6. Framework differences**\nASP.NET Core: authentication + authorization **middleware** with policies. NestJS: Passport strategies + **guards**. Django: `AuthenticationMiddleware` + permission decorators. Express: Passport.js or custom middleware.\n\n**7. Practical example**\n\n```java\nhttp.authorizeHttpRequests(a -> a\n        .requestMatchers(\"/admin/**\").hasRole(\"ADMIN\")\n        .anyRequest().authenticated())\n    .oauth2ResourceServer(o -> o.jwt(Customizer.withDefaults()));\n```\n\n**8. How can I observe it?**\n`logging.level.org.springframework.security=TRACE` prints every filter and the decision. Paste a token into **jwt.io** to see its claims. Browser DevTools → Network shows 401 vs 403.",
+      "summary": "Authentication — proving who the caller is (password, token, certificate). Authorization — deciding what they may do (roles, permissions, ownership).",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  R[\"Request + Bearer JWT\"] --> FCP[FilterChainProxy]\n  FCP --> AF[\"BearerTokenAuthenticationFilter\"]\n  AF --> AM[\"AuthenticationManager<br/>verify signature, exp\"]\n  AM -- ok --> SC[(\"SecurityContext<br/>user + roles (ThreadLocal)\")]\n  AM -- bad --> E1[401]\n  SC --> AZ[\"AuthorizationFilter<br/>/admin/** needs ROLE_ADMIN\"]\n  AZ -- denied --> E2[403]\n  AZ -- allowed --> C[Controller]"
+        },
+        {
+          "language": "java",
+          "code": "http.authorizeHttpRequests(a -> a\n        .requestMatchers(\"/admin/**\").hasRole(\"ADMIN\")\n        .anyRequest().authenticated())\n    .oauth2ResourceServer(o -> o.jwt(Customizer.withDefaults()));"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood",
+        "spring"
+      ],
+      "section": [
+        "Spring Container and Request Processing"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "authentication",
+        "authorization",
+        "internally",
+        "spring security filters",
+        "authentication filter",
+        "under-the-hood",
+        "spring"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/04-Backend-Server-Internals.md",
+        "startLine": 685,
+        "endLine": 743
+      },
+      "contentHash": "214b521ce14376a7"
+    },
+    {
+      "id": "interview/under-the-hood/04-Backend-Server-Internals.md#how-do-exception-handling-retries-and-timeouts-work-internally",
+      "kind": "question",
+      "parentId": null,
+      "question": "How do Exception Handling, Retries and Timeouts work internally?",
+      "prompt": null,
+      "answer": "**1. What is it?**\n\n- **Exception handling** — when something fails, an exception object travels **up the call stack** until code catches it.\n- **Retries** — repeat a failed call that might succeed next time (temporary network or service errors).\n- **Timeouts** — stop waiting after a limit, so one slow dependency can't hold threads forever.\n\n**2. How does it work internally?**\nExceptions (Java):\n\n1. `throw` creates an exception object (capturing the **stack trace**).\n2. The JVM looks in the current method's **exception table** for a matching `catch` range; if none, the frame is popped (**stack unwinding**) and it checks the caller, and so on.\n3. In Spring MVC, an uncaught exception reaches `DispatcherServlet` → `HandlerExceptionResolver`s → your `@ControllerAdvice` → error response.\n\nRetries and timeouts:\n\n4. A client sets **connect** and **read** timeouts on the socket; the OS/runtime aborts the wait and throws (`SocketTimeoutException`).\n5. A retry policy catches retryable errors and tries again after a **backoff** delay (exponential + random jitter), up to N attempts.\n\n**3. Visual**\n\n```mermaid\nflowchart TD\n  C[\"Controller\"] --> S[\"Service\"] --> CL[\"HTTP client call<br/>read timeout 2 s\"]\n  CL -- \"timeout / 503\" --> RT{\"Retryable and<br/>attempts left?\"}\n  RT -- yes --> BO[\"Wait: 200 ms → 400 ms → 800 ms<br/>(+ jitter)\"] --> CL\n  RT -- no --> EX[\"throw exception\"]\n  EX -- \"unwinds stack\" --> S --> C\n  C -- \"uncaught\" --> CA[\"@ControllerAdvice → 503 JSON\"]\n```\n\n**4. Internal implementation**\n\n- `try` costs almost nothing in Java; **throwing** is expensive mainly because of filling the stack trace.\n- Spring Retry / **Resilience4j** wrap calls (often with AOP: `@Retry`, `@TimeLimiter`, `@CircuitBreaker`).\n- Only retry **idempotent** operations (or use idempotency keys) — retrying a non-idempotent `POST /payments` can charge twice.\n\n**5. Why is it designed this way?**\nExceptions separate error handling from normal flow. Timeouts + limited retries with backoff recover from brief failures without overloading a struggling service (retry storms).\n\n**6. Language differences**\n\n| Language | Errors |\n|---|---|\n| Java | Checked + unchecked exceptions |\n| C# / Python / JavaScript | Unchecked exceptions only (`try/catch`, `try/except`); JS async errors = rejected promises |\n| C++ | Exceptions (zero-cost tables) or error codes |\n| Go | No exceptions: errors are **return values** (`if err != nil`); `panic` for fatal cases |\n| Rust | `Result<T, E>` + `?` operator; `panic!` for bugs |\n\n**7. Practical example**\n\n```java\nRestClient client = RestClient.builder()\n    .requestFactory(new JdkClientHttpRequestFactory(\n        HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(1)).build()))\n    .build();\n\n@Retry(name = \"inventory\")    // Resilience4j: maxAttempts + exponential backoff in config\npublic Stock check(long id) { return client.get().uri(\"/stock/{id}\", id).retrieve().body(Stock.class); }\n```\n\n**8. How can I observe it?**\nSimulate a slow dependency with **WireMock** (fixed delay) or **Toxiproxy**; watch logs for retry attempts and Resilience4j metrics in Actuator (`resilience4j.retry.calls`). IntelliJ \"Exception breakpoints\" stop where an exception is thrown.",
+      "summary": "Exception handling — when something fails, an exception object travels up the call stack until code catches it. Retries — repeat a failed call that might succeed next time (temporary network or service errors). Timeouts — stop waiting after a limit, so one slow dependency can't hold threads forever.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart TD\n  C[\"Controller\"] --> S[\"Service\"] --> CL[\"HTTP client call<br/>read timeout 2 s\"]\n  CL -- \"timeout / 503\" --> RT{\"Retryable and<br/>attempts left?\"}\n  RT -- yes --> BO[\"Wait: 200 ms → 400 ms → 800 ms<br/>(+ jitter)\"] --> CL\n  RT -- no --> EX[\"throw exception\"]\n  EX -- \"unwinds stack\" --> S --> C\n  C -- \"uncaught\" --> CA[\"@ControllerAdvice → 503 JSON\"]"
+        },
+        {
+          "language": "java",
+          "code": "RestClient client = RestClient.builder()\n    .requestFactory(new JdkClientHttpRequestFactory(\n        HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(1)).build()))\n    .build();\n\n@Retry(name = \"inventory\")    // Resilience4j: maxAttempts + exponential backoff in config\npublic Stock check(long id) { return client.get().uri(\"/stock/{id}\", id).retrieve().body(Stock.class); }"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood",
+        "spring"
+      ],
+      "section": [
+        "Spring Container and Request Processing"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "exception",
+        "handling",
+        "retries",
+        "timeouts",
+        "internally",
+        "exception handling",
+        "up the call stack",
+        "stack trace",
+        "exception table",
+        "under-the-hood",
+        "spring"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/04-Backend-Server-Internals.md",
+        "startLine": 747,
+        "endLine": 813
+      },
+      "contentHash": "8c36aab2bf64640e"
+    },
+    {
       "id": "practice/coding/01-javascript-coding.md#move-all-0s-to-the-end-without-changing-the-order-of-other",
       "kind": "question",
       "parentId": null,
@@ -63689,7 +64370,7 @@
       "parentId": null,
       "question": "Spring Boot study path",
       "prompt": null,
-      "answer": "## Prerequisites\n\n- [Java](../topics/java.md)\n- Overview: [Spring Boot concepts](../../knowledge/concepts/spring/README.md)\n\n## 1. AI Integration in Spring Boot\n\n1. [How would you integrate an LLM API (OpenAI, Claude…) into Spring Boot?](../../interview/ai/01-AI-LLM-RAG-Agents.md)\n2. [How would you build an AI chatbot with Spring Boot and Angular?](../../interview/ai/01-AI-LLM-RAG-Agents.md)\n3. [How would you implement RAG using company documents in Spring Boot?](../../interview/ai/01-AI-LLM-RAG-Agents.md)\n4. [How would you secure sensitive data sent to an external LLM?](../../interview/ai/01-AI-LLM-RAG-Agents.md)\n5. [How would you handle LLM API rate limits and token costs?](../../interview/ai/01-AI-LLM-RAG-Agents.md)\n6. [How would you implement streaming AI responses?](../../interview/ai/01-AI-LLM-RAG-Agents.md)\n7. [How would you reduce hallucinations?](../../interview/ai/01-AI-LLM-RAG-Agents.md)\n8. [How would you evaluate the accuracy of AI-generated answers?](../../interview/ai/01-AI-LLM-RAG-Agents.md)\n9. [How would you implement AI response caching?](../../interview/ai/01-AI-LLM-RAG-Agents.md)\n10. [How would you design fallbacks if the LLM provider is unavailable?](../../interview/ai/01-AI-LLM-RAG-Agents.md)\n\n## 2. Spring Core & Fundamentals\n\n1. [What is Spring, Why it was introduced?](../../interview/backend/java/03-Spring-1.md)\n2. [What is Spring IoC and how is it implemented internally?](../../interview/backend/java/03-Spring-1.md)\n3. [What are the different bean configuration approaches used to implement IoC in Spring?](../../interview/backend/java/03-Spring-1.md)\n4. [Common Spring Dependency Injection Errors – Why Do They Happen?](../../interview/backend/java/03-Spring-1.md)\n   - [My class is not getting injected. Spring says `NoSuchBeanDefinitionException`. Why?](../../interview/backend/java/03-Spring-1.md)\n   - [I am getting `NullPointerException` when using a dependency. Why?](../../interview/backend/java/03-Spring-1.md)\n   - [Spring throws `NoUniqueBeanDefinitionException`. Why?](../../interview/backend/java/03-Spring-1.md)\n   - [What happens if both `@Primary` and `@Qualifier` are used?](../../interview/backend/java/03-Spring-1.md)\n   - [Does `@Autowired` inject by type or name?](../../interview/backend/java/03-Spring-1.md)\n   - [@Component vs @Bean](../../interview/backend/java/03-Spring-1.md)\n   - [What is the Return type of `@Bean`?](../../interview/backend/java/03-Spring-1.md)\n   - [Can we have Multiple `@Bean`?](../../interview/backend/java/03-Spring-1.md)\n   - [I cannot add `@Component` to a library class. Third-party classes cannot be annotated.. How to create object?](../../interview/backend/java/03-Spring-1.md)\n   - [My application startup is slow because a specific bean is being initialized at launch. How to fix it?](../../interview/backend/java/03-Spring-1.md)\n   - [I need to run some logic right after a bean is created. How can I do it?](../../interview/backend/java/03-Spring-1.md)\n   - [DB connections and threads aren't closing on shutdown. How can I fix it?](../../interview/backend/java/03-Spring-1.md)\n   - [My DB changes aren't rolling back on exceptions. How can I fix this?](../../interview/backend/java/03-Spring-1.md)\n5. [Can you explain the different bean scopes in Spring?](../../interview/backend/java/03-Spring-1.md)\n6. [Explain the lifecycle of a Spring bean and how you can intervene at different stages of its initialization and destruction.](../../interview/backend/java/03-Spring-1.md)\n   - [Is `@PostConstruct` called once or after all beans?](../../interview/backend/java/03-Spring-1.md)\n   - [What about @Lazy beans?](../../interview/backend/java/03-Spring-1.md)\n   - [What about prototype beans?](../../interview/backend/java/03-Spring-1.md)\n7. [What is Spring Profile?](../../interview/backend/java/03-Spring-1.md)\n   - [Can multiple profiles be active at the same time?](../../interview/backend/java/03-Spring-1.md)\n   - [What happens if two profiles define the same bean?](../../interview/backend/java/03-Spring-1.md)\n   - [Difference between `@Profile` and `@Conditional`?](../../interview/backend/java/03-Spring-1.md)\n   - [Are profiles evaluated at runtime?](../../interview/backend/java/03-Spring-1.md)\n   - [Why `@Conditional` Is Used?](../../interview/backend/java/03-Spring-1.md)\n8. [What is Spring Boot Actuator?](../../interview/backend/java/03-Spring-1.md)\n   - [Is Spring Boot Actuator enabled by default in a Spring Boot application?](../../interview/backend/java/03-Spring-1.md)\n   - [Difference between Actuator and Logging?](../../interview/backend/java/03-Spring-1.md)\n   - [Difference between Actuator and Swagger?](../../interview/backend/java/03-Spring-1.md)\n   - [How do you enable only /health and /info endpoints in Spring Boot Actuator?](../../interview/backend/java/03-Spring-1.md)\n9. [What is Spring AOP, Why it was introduced?](../../interview/backend/java/03-Spring-1.md)\n   - [How Spring AOP Works Internally](../../interview/backend/java/03-Spring-1.md)\n   - [Can Spring AOP intercept private methods?](../../interview/backend/java/03-Spring-1.md)\n   - [Spring AOP vs AspectJ](../../interview/backend/java/03-Spring-1.md)\n10. [What is Spring Modular Design?](../../interview/backend/java/03-Spring-1.md)\n\n## 3. Other Spring Concepts\n\n1. [Spring HATEOAS](../../interview/backend/java/03-Spring-1.md)\n2. [Thymeleaf](../../interview/backend/java/03-Spring-1.md)\n3. [application.properties vs application.yml?](../../interview/backend/java/03-Spring-1.md)\n4. [What Unit Testing technique you used in Java and Spring?](../../interview/backend/java/03-Spring-1.md)\n\n## 4. Database\n\n1. [What is DataSource?](../../interview/backend/java/03-Spring-2.md)\n2. [What is connection pooling?](../../interview/backend/java/03-Spring-2.md)\n   - [What does an application server do?](../../interview/backend/java/03-Spring-2.md)\n3. [How do I allow only certain threads to use certain DB connections?](../../interview/backend/java/03-Spring-2.md)\n\n## 5. Spring Data JPA\n\n1. [What is Declarative Transactions, Spring Transactions & Spring Data JPA?](../../interview/backend/java/03-Spring-2.md)\n   - [What is Rollback and Commit?](../../interview/backend/java/03-Spring-2.md)\n   - [What happens if `@Transactional` is NOT used?](../../interview/backend/java/03-Spring-2.md)\n   - [What happens if a Checked Exception is added?](../../interview/backend/java/03-Spring-2.md)\n   - [How to rollback for Checked Exception?](../../interview/backend/java/03-Spring-2.md)\n   - [Do we need `@Transactional` with Spring Data JPA?](../../interview/backend/java/03-Spring-2.md)\n2. [What is a JPA Entity class, and how do you map relationships between entities?](../../interview/backend/java/03-Spring-2.md)\n3. [How do Pagination and Sorting work in Spring Data JPA?](../../interview/backend/java/03-Spring-2.md)\n   - [Difference between `CrudRepository`, `PagingAndSortingRepository`, `JpaRepository`](../../interview/backend/java/03-Spring-2.md)\n   - [What is EntityManager](../../interview/backend/java/03-Spring-2.md)\n   - [Difference between @Embeddable and @Embedded](../../interview/backend/java/03-Spring-2.md)\n   - [When Should You Use DTO?](../../interview/backend/java/03-Spring-2.md)\n4. [What is the N+1 Problem? How to solve it?](../../interview/backend/java/03-Spring-2.md)\n   - [What happens in DB?](../../interview/backend/java/03-Spring-2.md)\n5. [JPA vs Hibernate](../../interview/backend/java/03-Spring-2.md)\n6. [Is @JoinColumn mandatory? If not, what happens if we don’t use it?](../../interview/backend/java/03-Spring-2.md)\n7. [JPQL vs Native Query](../../interview/backend/java/03-Spring-2.md)\n8. [First-Level vs Second-Level Cache](../../interview/backend/java/03-Spring-2.md)\n9. [Spring JPA Inheritance](../../interview/backend/java/03-Spring-2.md)\n\n## 6. 04-Spring-annotation\n\n1. [What are some commonly used Spring annotations and what are they used for?](../../interview/backend/java/04-Spring-annotation.md)\n\n## 7. Spring Security\n\n1. [What is Spring Security and why do we need it?](../../interview/backend/java/05-Spring-Security.md)\n2. [Explain authentication vs authorization with a real example.](../../interview/backend/java/05-Spring-Security.md)\n   - [Can authorization happen without authentication?](../../interview/backend/java/05-Spring-Security.md)\n   - [What happens when we add `spring-boot-starter-security`?](../../interview/backend/java/05-Spring-Security.md)\n3. [Explain Spring Security architecture.](../../interview/backend/java/05-Spring-Security.md)\n   - [What is SecurityFilterChain?](../../interview/backend/java/05-Spring-Security.md)\n   - [Why do we need PasswordEncoder?](../../interview/backend/java/05-Spring-Security.md)\n4. [Difference between Roles and Authorities in Spring Security?](../../interview/backend/java/05-Spring-Security.md)\n   - [Can a user have authorities without roles?](../../interview/backend/java/05-Spring-Security.md)\n5. [Explain JWT authentication flow.](../../interview/backend/java/05-Spring-Security.md)\n   - [Structure of JWT](../../interview/backend/java/05-Spring-Security.md)\n   - [How to Generate Access Token?](../../interview/backend/java/05-Spring-Security.md)\n   - [How to Generate Refresh Token?](../../interview/backend/java/05-Spring-Security.md)\n   - [What happens when Access Token expires?](../../interview/backend/java/05-Spring-Security.md)\n   - [What if Refresh Token expires?](../../interview/backend/java/05-Spring-Security.md)\n   - [Where should tokens be stored?](../../interview/backend/java/05-Spring-Security.md)\n   - [Why store refresh token in HttpOnly cookie and Access Token in Memory? Why not in localstorage or sessionstorage?](../../interview/backend/java/05-Spring-Security.md)\n   - [Why NOT store both in cookies?](../../interview/backend/java/05-Spring-Security.md)\n   - [What is CSRF?](../../interview/backend/java/05-Spring-Security.md)\n   - [When Can We Disable CSRF in Spring?](../../interview/backend/java/05-Spring-Security.md)\n6. [CORS vs CSRF vs OAuth2 vs JWT?](../../interview/backend/java/05-Spring-Security.md)\n   - [Why `@Order` matters?](../../interview/backend/java/05-Spring-Security.md)\n   - [What happens when we call `.cors(cors -> {})`?](../../interview/backend/java/05-Spring-Security.md)\n   - [Does Spring MVC CORS config also work here?](../../interview/backend/java/05-Spring-Security.md)\n   - [Is CSRF protection enabled by default in Spring Security?](../../interview/backend/java/05-Spring-Security.md)\n   - [Why CSRF is not needed for JWT?](../../interview/backend/java/05-Spring-Security.md)\n   - [Even JWT refresh token might need help from cookie and CSRF to protect, correct?](../../interview/backend/java/05-Spring-Security.md)\n   - [Why Access Token in Header and Refresh Token in Cookie?](../../interview/backend/java/05-Spring-Security.md)\n   - [What SessionCreationPolicy Actually Controls?](../../interview/backend/java/05-Spring-Security.md)\n   - [Is OAuth2 authentication or authorization?](../../interview/backend/java/05-Spring-Security.md)\n7. [Filters vs Interceptors](../../interview/backend/java/05-Spring-Security.md)\n8. [How Role-Based Access is Implemented in Spring Security](../../interview/backend/java/05-Spring-Security.md)\n9. [What is SAML?](../../interview/backend/java/05-Spring-Security.md)\n10. [SAML vs JWT](../../interview/backend/java/05-Spring-Security.md)\n11. [SAML vs OAuth vs OIDC](../../interview/backend/java/05-Spring-Security.md)\n\n## 8. Transaction Basics\n\n1. [What does @Transactional actually do?](../../interview/backend/java/07-Spring-Transactions.md)\n2. [What is a Spring proxy?](../../interview/backend/java/07-Spring-Transactions.md)\n3. [In a Spring service, what can go wrong when using @Transactional?](../../interview/backend/java/07-Spring-Transactions.md)\n4. [A method calls another transactional method on the same instance. Is the second transaction boundary applied?](../../interview/backend/java/07-Spring-Transactions.md)\n\n## 9. Rollback Rules and Propagation\n\n1. [Which exceptions make @Transactional roll back?](../../interview/backend/java/07-Spring-Transactions.md)\n2. [What are REQUIRED and REQUIRES_NEW propagation?](../../interview/backend/java/07-Spring-Transactions.md)\n3. [What happens when both methods are in the same service and one uses REQUIRES_NEW?](../../interview/backend/java/07-Spring-Transactions.md)\n4. [How does Spring know when to commit or roll back?](../../interview/backend/java/07-Spring-Transactions.md)\n5. [What is the difference between save and commit?](../../interview/backend/java/07-Spring-Transactions.md)\n\n## 10. Spring Boot Configuration & Production Readiness\n\n1. [Our application behaves differently in local and production environments. How would you manage this?](../../interview/backend/java/08-Architecture.md)\n2. [How would you make sure debug logs don’t affect production performance?](../../interview/backend/java/08-Architecture.md)\n3. [The app startup time increased after adding new modules. How would you improve it?](../../interview/backend/java/08-Architecture.md)\n\n## 11. Database Design & Access (Spring Boot + MySQL)\n\n1. [Our database tables are growing very fast and queries are getting slow. What would you check first?](../../interview/backend/java/08-Architecture.md)\n2. [A single API call is hitting the database multiple times. How would you optimize this?](../../interview/backend/java/08-Architecture.md)\n3. [The same data is being read again and again from MySQL. How would you reduce DB load?](../../interview/backend/java/08-Architecture.md)\n\n## 12. Part 3 — Spring Boot Testing\n\n1. [`@SpringBootTest` vs `@WebMvcTest` vs `@DataJpaTest`?](../../interview/testing/01-Testing.md)\n   - [`@Mock` vs `@MockBean`/`@MockitoBean`?](../../interview/testing/01-Testing.md)\n2. [What is Testcontainers?](../../interview/testing/01-Testing.md)\n\n## Diagrams\n\n- [SpringBeanLifeCycle](../../knowledge/visual-notes/backend/spring-bean-life-cycle.png)\n- [SpringActuator](../../knowledge/visual-notes/backend/spring-actuator.png)\n- [ModularDesign](../../knowledge/visual-notes/backend/spring-modular-design.png)\n- [SpringAnnotations](../../knowledge/visual-notes/backend/spring-annotations.png)\n\n## Related roles\n\n[AI / LLM Engineer](../roles/ai-llm-engineer.md) · [AI Agent Engineer](../roles/ai-agent-engineer.md) · [Backend Developer](../roles/backend-developer.md) · [Full Stack Developer](../roles/full-stack-developer.md)",
+      "answer": "## Prerequisites\n\n- [Java](../topics/java.md)\n- Overview: [Spring Boot concepts](../../knowledge/concepts/spring/README.md)\n\n## 1. AI Integration in Spring Boot\n\n1. [How would you integrate an LLM API (OpenAI, Claude…) into Spring Boot?](../../interview/ai/01-AI-LLM-RAG-Agents.md)\n2. [How would you build an AI chatbot with Spring Boot and Angular?](../../interview/ai/01-AI-LLM-RAG-Agents.md)\n3. [How would you implement RAG using company documents in Spring Boot?](../../interview/ai/01-AI-LLM-RAG-Agents.md)\n4. [How would you secure sensitive data sent to an external LLM?](../../interview/ai/01-AI-LLM-RAG-Agents.md)\n5. [How would you handle LLM API rate limits and token costs?](../../interview/ai/01-AI-LLM-RAG-Agents.md)\n6. [How would you implement streaming AI responses?](../../interview/ai/01-AI-LLM-RAG-Agents.md)\n7. [How would you reduce hallucinations?](../../interview/ai/01-AI-LLM-RAG-Agents.md)\n8. [How would you evaluate the accuracy of AI-generated answers?](../../interview/ai/01-AI-LLM-RAG-Agents.md)\n9. [How would you implement AI response caching?](../../interview/ai/01-AI-LLM-RAG-Agents.md)\n10. [How would you design fallbacks if the LLM provider is unavailable?](../../interview/ai/01-AI-LLM-RAG-Agents.md)\n\n## 2. Spring Core & Fundamentals\n\n1. [What is Spring, Why it was introduced?](../../interview/backend/java/03-Spring-1.md)\n2. [What is Spring IoC and how is it implemented internally?](../../interview/backend/java/03-Spring-1.md)\n3. [What are the different bean configuration approaches used to implement IoC in Spring?](../../interview/backend/java/03-Spring-1.md)\n4. [Common Spring Dependency Injection Errors – Why Do They Happen?](../../interview/backend/java/03-Spring-1.md)\n   - [My class is not getting injected. Spring says `NoSuchBeanDefinitionException`. Why?](../../interview/backend/java/03-Spring-1.md)\n   - [I am getting `NullPointerException` when using a dependency. Why?](../../interview/backend/java/03-Spring-1.md)\n   - [Spring throws `NoUniqueBeanDefinitionException`. Why?](../../interview/backend/java/03-Spring-1.md)\n   - [What happens if both `@Primary` and `@Qualifier` are used?](../../interview/backend/java/03-Spring-1.md)\n   - [Does `@Autowired` inject by type or name?](../../interview/backend/java/03-Spring-1.md)\n   - [@Component vs @Bean](../../interview/backend/java/03-Spring-1.md)\n   - [What is the Return type of `@Bean`?](../../interview/backend/java/03-Spring-1.md)\n   - [Can we have Multiple `@Bean`?](../../interview/backend/java/03-Spring-1.md)\n   - [I cannot add `@Component` to a library class. Third-party classes cannot be annotated.. How to create object?](../../interview/backend/java/03-Spring-1.md)\n   - [My application startup is slow because a specific bean is being initialized at launch. How to fix it?](../../interview/backend/java/03-Spring-1.md)\n   - [I need to run some logic right after a bean is created. How can I do it?](../../interview/backend/java/03-Spring-1.md)\n   - [DB connections and threads aren't closing on shutdown. How can I fix it?](../../interview/backend/java/03-Spring-1.md)\n   - [My DB changes aren't rolling back on exceptions. How can I fix this?](../../interview/backend/java/03-Spring-1.md)\n5. [Can you explain the different bean scopes in Spring?](../../interview/backend/java/03-Spring-1.md)\n6. [Explain the lifecycle of a Spring bean and how you can intervene at different stages of its initialization and destruction.](../../interview/backend/java/03-Spring-1.md)\n   - [Is `@PostConstruct` called once or after all beans?](../../interview/backend/java/03-Spring-1.md)\n   - [What about @Lazy beans?](../../interview/backend/java/03-Spring-1.md)\n   - [What about prototype beans?](../../interview/backend/java/03-Spring-1.md)\n7. [What is Spring Profile?](../../interview/backend/java/03-Spring-1.md)\n   - [Can multiple profiles be active at the same time?](../../interview/backend/java/03-Spring-1.md)\n   - [What happens if two profiles define the same bean?](../../interview/backend/java/03-Spring-1.md)\n   - [Difference between `@Profile` and `@Conditional`?](../../interview/backend/java/03-Spring-1.md)\n   - [Are profiles evaluated at runtime?](../../interview/backend/java/03-Spring-1.md)\n   - [Why `@Conditional` Is Used?](../../interview/backend/java/03-Spring-1.md)\n8. [What is Spring Boot Actuator?](../../interview/backend/java/03-Spring-1.md)\n   - [Is Spring Boot Actuator enabled by default in a Spring Boot application?](../../interview/backend/java/03-Spring-1.md)\n   - [Difference between Actuator and Logging?](../../interview/backend/java/03-Spring-1.md)\n   - [Difference between Actuator and Swagger?](../../interview/backend/java/03-Spring-1.md)\n   - [How do you enable only /health and /info endpoints in Spring Boot Actuator?](../../interview/backend/java/03-Spring-1.md)\n9. [What is Spring AOP, Why it was introduced?](../../interview/backend/java/03-Spring-1.md)\n   - [How Spring AOP Works Internally](../../interview/backend/java/03-Spring-1.md)\n   - [Can Spring AOP intercept private methods?](../../interview/backend/java/03-Spring-1.md)\n   - [Spring AOP vs AspectJ](../../interview/backend/java/03-Spring-1.md)\n10. [What is Spring Modular Design?](../../interview/backend/java/03-Spring-1.md)\n\n## 3. Other Spring Concepts\n\n1. [Spring HATEOAS](../../interview/backend/java/03-Spring-1.md)\n2. [Thymeleaf](../../interview/backend/java/03-Spring-1.md)\n3. [application.properties vs application.yml?](../../interview/backend/java/03-Spring-1.md)\n4. [What Unit Testing technique you used in Java and Spring?](../../interview/backend/java/03-Spring-1.md)\n\n## 4. Database\n\n1. [What is DataSource?](../../interview/backend/java/03-Spring-2.md)\n2. [What is connection pooling?](../../interview/backend/java/03-Spring-2.md)\n   - [What does an application server do?](../../interview/backend/java/03-Spring-2.md)\n3. [How do I allow only certain threads to use certain DB connections?](../../interview/backend/java/03-Spring-2.md)\n\n## 5. Spring Data JPA\n\n1. [What is Declarative Transactions, Spring Transactions & Spring Data JPA?](../../interview/backend/java/03-Spring-2.md)\n   - [What is Rollback and Commit?](../../interview/backend/java/03-Spring-2.md)\n   - [What happens if `@Transactional` is NOT used?](../../interview/backend/java/03-Spring-2.md)\n   - [What happens if a Checked Exception is added?](../../interview/backend/java/03-Spring-2.md)\n   - [How to rollback for Checked Exception?](../../interview/backend/java/03-Spring-2.md)\n   - [Do we need `@Transactional` with Spring Data JPA?](../../interview/backend/java/03-Spring-2.md)\n2. [What is a JPA Entity class, and how do you map relationships between entities?](../../interview/backend/java/03-Spring-2.md)\n3. [How do Pagination and Sorting work in Spring Data JPA?](../../interview/backend/java/03-Spring-2.md)\n   - [Difference between `CrudRepository`, `PagingAndSortingRepository`, `JpaRepository`](../../interview/backend/java/03-Spring-2.md)\n   - [What is EntityManager](../../interview/backend/java/03-Spring-2.md)\n   - [Difference between @Embeddable and @Embedded](../../interview/backend/java/03-Spring-2.md)\n   - [When Should You Use DTO?](../../interview/backend/java/03-Spring-2.md)\n4. [What is the N+1 Problem? How to solve it?](../../interview/backend/java/03-Spring-2.md)\n   - [What happens in DB?](../../interview/backend/java/03-Spring-2.md)\n5. [JPA vs Hibernate](../../interview/backend/java/03-Spring-2.md)\n6. [Is @JoinColumn mandatory? If not, what happens if we don’t use it?](../../interview/backend/java/03-Spring-2.md)\n7. [JPQL vs Native Query](../../interview/backend/java/03-Spring-2.md)\n8. [First-Level vs Second-Level Cache](../../interview/backend/java/03-Spring-2.md)\n9. [Spring JPA Inheritance](../../interview/backend/java/03-Spring-2.md)\n\n## 6. 04-Spring-annotation\n\n1. [What are some commonly used Spring annotations and what are they used for?](../../interview/backend/java/04-Spring-annotation.md)\n\n## 7. Spring Security\n\n1. [What is Spring Security and why do we need it?](../../interview/backend/java/05-Spring-Security.md)\n2. [Explain authentication vs authorization with a real example.](../../interview/backend/java/05-Spring-Security.md)\n   - [Can authorization happen without authentication?](../../interview/backend/java/05-Spring-Security.md)\n   - [What happens when we add `spring-boot-starter-security`?](../../interview/backend/java/05-Spring-Security.md)\n3. [Explain Spring Security architecture.](../../interview/backend/java/05-Spring-Security.md)\n   - [What is SecurityFilterChain?](../../interview/backend/java/05-Spring-Security.md)\n   - [Why do we need PasswordEncoder?](../../interview/backend/java/05-Spring-Security.md)\n4. [Difference between Roles and Authorities in Spring Security?](../../interview/backend/java/05-Spring-Security.md)\n   - [Can a user have authorities without roles?](../../interview/backend/java/05-Spring-Security.md)\n5. [Explain JWT authentication flow.](../../interview/backend/java/05-Spring-Security.md)\n   - [Structure of JWT](../../interview/backend/java/05-Spring-Security.md)\n   - [How to Generate Access Token?](../../interview/backend/java/05-Spring-Security.md)\n   - [How to Generate Refresh Token?](../../interview/backend/java/05-Spring-Security.md)\n   - [What happens when Access Token expires?](../../interview/backend/java/05-Spring-Security.md)\n   - [What if Refresh Token expires?](../../interview/backend/java/05-Spring-Security.md)\n   - [Where should tokens be stored?](../../interview/backend/java/05-Spring-Security.md)\n   - [Why store refresh token in HttpOnly cookie and Access Token in Memory? Why not in localstorage or sessionstorage?](../../interview/backend/java/05-Spring-Security.md)\n   - [Why NOT store both in cookies?](../../interview/backend/java/05-Spring-Security.md)\n   - [What is CSRF?](../../interview/backend/java/05-Spring-Security.md)\n   - [When Can We Disable CSRF in Spring?](../../interview/backend/java/05-Spring-Security.md)\n6. [CORS vs CSRF vs OAuth2 vs JWT?](../../interview/backend/java/05-Spring-Security.md)\n   - [Why `@Order` matters?](../../interview/backend/java/05-Spring-Security.md)\n   - [What happens when we call `.cors(cors -> {})`?](../../interview/backend/java/05-Spring-Security.md)\n   - [Does Spring MVC CORS config also work here?](../../interview/backend/java/05-Spring-Security.md)\n   - [Is CSRF protection enabled by default in Spring Security?](../../interview/backend/java/05-Spring-Security.md)\n   - [Why CSRF is not needed for JWT?](../../interview/backend/java/05-Spring-Security.md)\n   - [Even JWT refresh token might need help from cookie and CSRF to protect, correct?](../../interview/backend/java/05-Spring-Security.md)\n   - [Why Access Token in Header and Refresh Token in Cookie?](../../interview/backend/java/05-Spring-Security.md)\n   - [What SessionCreationPolicy Actually Controls?](../../interview/backend/java/05-Spring-Security.md)\n   - [Is OAuth2 authentication or authorization?](../../interview/backend/java/05-Spring-Security.md)\n7. [Filters vs Interceptors](../../interview/backend/java/05-Spring-Security.md)\n8. [How Role-Based Access is Implemented in Spring Security](../../interview/backend/java/05-Spring-Security.md)\n9. [What is SAML?](../../interview/backend/java/05-Spring-Security.md)\n10. [SAML vs JWT](../../interview/backend/java/05-Spring-Security.md)\n11. [SAML vs OAuth vs OIDC](../../interview/backend/java/05-Spring-Security.md)\n\n## 8. Transaction Basics\n\n1. [What does @Transactional actually do?](../../interview/backend/java/07-Spring-Transactions.md)\n2. [What is a Spring proxy?](../../interview/backend/java/07-Spring-Transactions.md)\n3. [In a Spring service, what can go wrong when using @Transactional?](../../interview/backend/java/07-Spring-Transactions.md)\n4. [A method calls another transactional method on the same instance. Is the second transaction boundary applied?](../../interview/backend/java/07-Spring-Transactions.md)\n\n## 9. Rollback Rules and Propagation\n\n1. [Which exceptions make @Transactional roll back?](../../interview/backend/java/07-Spring-Transactions.md)\n2. [What are REQUIRED and REQUIRES_NEW propagation?](../../interview/backend/java/07-Spring-Transactions.md)\n3. [What happens when both methods are in the same service and one uses REQUIRES_NEW?](../../interview/backend/java/07-Spring-Transactions.md)\n4. [How does Spring know when to commit or roll back?](../../interview/backend/java/07-Spring-Transactions.md)\n5. [What is the difference between save and commit?](../../interview/backend/java/07-Spring-Transactions.md)\n\n## 10. Spring Boot Configuration & Production Readiness\n\n1. [Our application behaves differently in local and production environments. How would you manage this?](../../interview/backend/java/08-Architecture.md)\n2. [How would you make sure debug logs don’t affect production performance?](../../interview/backend/java/08-Architecture.md)\n3. [The app startup time increased after adding new modules. How would you improve it?](../../interview/backend/java/08-Architecture.md)\n\n## 11. Database Design & Access (Spring Boot + MySQL)\n\n1. [Our database tables are growing very fast and queries are getting slow. What would you check first?](../../interview/backend/java/08-Architecture.md)\n2. [A single API call is hitting the database multiple times. How would you optimize this?](../../interview/backend/java/08-Architecture.md)\n3. [The same data is being read again and again from MySQL. How would you reduce DB load?](../../interview/backend/java/08-Architecture.md)\n\n## 12. Part 3 — Spring Boot Testing\n\n1. [`@SpringBootTest` vs `@WebMvcTest` vs `@DataJpaTest`?](../../interview/testing/01-Testing.md)\n   - [`@Mock` vs `@MockBean`/`@MockitoBean`?](../../interview/testing/01-Testing.md)\n2. [What is Testcontainers?](../../interview/testing/01-Testing.md)\n\n## 13. Tomcat and Spring Boot\n\n1. [How does Tomcat work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n2. [How is Tomcat different from the computer's localhost?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n3. [How does Spring Boot start its embedded Tomcat server?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n4. [What happens internally when an HTTP request reaches Spring Boot?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n\n## 14. Spring Container and Request Processing\n\n1. [How does Spring Dependency Injection create and manage objects?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n2. [How do Spring AOP, Proxies and @Transactional work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n3. [How does a backend application manage concurrent requests and threads?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n4. [How does Connection Pooling work?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n5. [How do Authentication and Authorization work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n6. [How do Exception Handling, Retries and Timeouts work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n\n## Diagrams\n\n- [SpringBeanLifeCycle](../../knowledge/visual-notes/backend/spring-bean-life-cycle.png)\n- [SpringActuator](../../knowledge/visual-notes/backend/spring-actuator.png)\n- [ModularDesign](../../knowledge/visual-notes/backend/spring-modular-design.png)\n- [SpringAnnotations](../../knowledge/visual-notes/backend/spring-annotations.png)\n\n## Related roles\n\n[AI / LLM Engineer](../roles/ai-llm-engineer.md) · [AI Agent Engineer](../roles/ai-agent-engineer.md) · [Backend Developer](../roles/backend-developer.md) · [Full Stack Developer](../roles/full-stack-developer.md)",
       "summary": "",
       "codeBlocks": [],
       "visuals": [],
@@ -63725,9 +64406,9 @@
       "source": {
         "path": "roadmap/topics/spring.md",
         "startLine": 2,
-        "endLine": 184
+        "endLine": 200
       },
-      "contentHash": "6acbc51b0d1017e3"
+      "contentHash": "d0110016d47a46af"
     },
     {
       "id": "roadmap/topics/system-design.md#roadmap",
@@ -63870,7 +64551,7 @@
       "parentId": null,
       "question": "Under the Hood study path",
       "prompt": null,
-      "answer": "## Prerequisites\n\n- None. This is a starting point.\n- Overview: [Under the Hood concepts](../../knowledge/concepts/under-the-hood/README.md)\n\n## 1. Source Code to Machine Code\n\n1. [How does human-readable source code eventually become machine instructions?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n2. [What are the differences between Compiler, Interpreter, Assembler, Linker and Runtime?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n3. [What are Bytecode, Intermediate Representation (IR), Assembly Language and Machine Code?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n4. [What are AOT, JIT and interpretation? How do they differ?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n5. [How do JVM, CLR and JavaScript engines execute programs internally?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n6. [How do programming languages interact with the CPU and memory?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n7. [How does frontend code (JavaScript, TypeScript, Dart, WebAssembly) become machine code in the browser?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n8. [How do frontend frameworks (Angular, React, Vue, Svelte, Next.js) get from source code to running in the browser?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n9. [How do different programming languages implement compilation, execution and memory management?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n10. [Do backend frameworks (Spring Boot, Django, Express, ASP.NET Core) compile code themselves?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n\n## 2. CPU and Memory Hierarchy\n\n1. [How does a CPU execute instructions?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n2. [How do CPU registers, L1/L2/L3 cache, RAM and disk interact?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n3. [What exactly is stored in Stack and Heap memory?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n4. [Can the CPU directly access heap memory? How does a program access objects in RAM?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n5. [How does memory allocation and deallocation work?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n6. [How does Garbage Collection identify unused objects?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n\n## 3. Processes, Threads and Scheduling\n\n1. [How do Processes and Threads work internally?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n2. [How does Context Switching happen?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n3. [How does an operating system execute multiple applications simultaneously?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n\n## 4. Virtual Memory\n\n1. [How do Virtual Memory, Paging and Memory Protection work?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n\n## 5. Loading and Rendering a Page\n\n1. [What happens internally when we enter a URL and open a website?](../../interview/under-the-hood/03a-Browser-Internals.md)\n2. [How does a browser convert HTML, CSS and JavaScript into a rendered webpage?](../../interview/under-the-hood/03a-Browser-Internals.md)\n3. [How do DOM, CSSOM, Render Tree, Layout and Paint work together?](../../interview/under-the-hood/03a-Browser-Internals.md)\n\n## 6. JavaScript in the Browser\n\n1. [How does JavaScript execute inside a browser?](../../interview/under-the-hood/03a-Browser-Internals.md)\n2. [How do Call Stack, Event Loop, Microtask Queue and Task Queue work?](../../interview/under-the-hood/03a-Browser-Internals.md)\n3. [How does asynchronous JavaScript execute without blocking the UI?](../../interview/under-the-hood/03a-Browser-Internals.md)\n4. [How does a browser determine which UI elements need updating?](../../interview/under-the-hood/03a-Browser-Internals.md)\n5. [How do Angular, React and Vue detect changes and update the DOM?](../../interview/under-the-hood/03a-Browser-Internals.md)\n\n## 7. Network, Build and Storage\n\n1. [How does a frontend application communicate with a backend?](../../interview/under-the-hood/03a-Browser-Internals.md)\n2. [How do bundlers, Tree Shaking and Code Splitting work?](../../interview/under-the-hood/03a-Browser-Internals.md)\n3. [How do Browser Cache, Cookies, LocalStorage, SessionStorage and IndexedDB work?](../../interview/under-the-hood/03a-Browser-Internals.md)\n4. [How do Browser Tabs and Web Workers work internally?](../../interview/under-the-hood/03a-Browser-Internals.md)\n\n## 8. Angular Internals\n\n1. [How do Angular application bootstrap and compilation work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n2. [How does Angular Dependency Injection work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n3. [How does the Angular component lifecycle work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n4. [How do Angular Change Detection and Signals work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n5. [How do the Angular Router and lazy loading work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n6. [How do Angular HttpClient and HTTP Interceptors work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n\n## 9. React Internals\n\n1. [How do React's Virtual DOM and Reconciliation work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n2. [How does React's Fiber architecture work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n3. [How do React Hooks and component rendering work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n\n## 10. Vue Internals\n\n1. [How does Vue's reactivity system work internally (dependency tracking and Proxies)?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n2. [How do Vue's template compiler and Virtual DOM work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n\n## Diagrams\n\n- [Frontend programming languages: source to machine code](../../knowledge/visual-notes/01_frontend_programming_languages.png)\n- [Frontend frameworks and libraries: build and execution path](../../knowledge/visual-notes/02_frontend_frameworks.png)\n- [Backend programming languages: source, artifact, runtime and execution](../../knowledge/visual-notes/03_backend_programming_languages.png)\n- [Backend frameworks and platforms: source, compiler and runtime](../../knowledge/visual-notes/04_backend_frameworks.png)\n\n## Related roles\n\n[Platform Engineer](../roles/platform-engineer.md)",
+      "answer": "## Prerequisites\n\n- None. This is a starting point.\n- Overview: [Under the Hood concepts](../../knowledge/concepts/under-the-hood/README.md)\n\n## 1. Source Code to Machine Code\n\n1. [How does human-readable source code eventually become machine instructions?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n2. [What are the differences between Compiler, Interpreter, Assembler, Linker and Runtime?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n3. [What are Bytecode, Intermediate Representation (IR), Assembly Language and Machine Code?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n4. [What are AOT, JIT and interpretation? How do they differ?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n5. [How do JVM, CLR and JavaScript engines execute programs internally?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n6. [How do programming languages interact with the CPU and memory?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n7. [How does frontend code (JavaScript, TypeScript, Dart, WebAssembly) become machine code in the browser?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n8. [How do frontend frameworks (Angular, React, Vue, Svelte, Next.js) get from source code to running in the browser?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n9. [How do different programming languages implement compilation, execution and memory management?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n10. [Do backend frameworks (Spring Boot, Django, Express, ASP.NET Core) compile code themselves?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n\n## 2. CPU and Memory Hierarchy\n\n1. [How does a CPU execute instructions?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n2. [How do CPU registers, L1/L2/L3 cache, RAM and disk interact?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n3. [What exactly is stored in Stack and Heap memory?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n4. [Can the CPU directly access heap memory? How does a program access objects in RAM?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n5. [How does memory allocation and deallocation work?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n6. [How does Garbage Collection identify unused objects?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n\n## 3. Processes, Threads and Scheduling\n\n1. [How do Processes and Threads work internally?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n2. [How does Context Switching happen?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n3. [How does an operating system execute multiple applications simultaneously?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n\n## 4. Virtual Memory\n\n1. [How do Virtual Memory, Paging and Memory Protection work?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n\n## 5. Loading and Rendering a Page\n\n1. [What happens internally when we enter a URL and open a website?](../../interview/under-the-hood/03a-Browser-Internals.md)\n2. [How does a browser convert HTML, CSS and JavaScript into a rendered webpage?](../../interview/under-the-hood/03a-Browser-Internals.md)\n3. [How do DOM, CSSOM, Render Tree, Layout and Paint work together?](../../interview/under-the-hood/03a-Browser-Internals.md)\n\n## 6. JavaScript in the Browser\n\n1. [How does JavaScript execute inside a browser?](../../interview/under-the-hood/03a-Browser-Internals.md)\n2. [How do Call Stack, Event Loop, Microtask Queue and Task Queue work?](../../interview/under-the-hood/03a-Browser-Internals.md)\n3. [How does asynchronous JavaScript execute without blocking the UI?](../../interview/under-the-hood/03a-Browser-Internals.md)\n4. [How does a browser determine which UI elements need updating?](../../interview/under-the-hood/03a-Browser-Internals.md)\n5. [How do Angular, React and Vue detect changes and update the DOM?](../../interview/under-the-hood/03a-Browser-Internals.md)\n\n## 7. Network, Build and Storage\n\n1. [How does a frontend application communicate with a backend?](../../interview/under-the-hood/03a-Browser-Internals.md)\n2. [How do bundlers, Tree Shaking and Code Splitting work?](../../interview/under-the-hood/03a-Browser-Internals.md)\n3. [How do Browser Cache, Cookies, LocalStorage, SessionStorage and IndexedDB work?](../../interview/under-the-hood/03a-Browser-Internals.md)\n4. [How do Browser Tabs and Web Workers work internally?](../../interview/under-the-hood/03a-Browser-Internals.md)\n\n## 8. Angular Internals\n\n1. [How do Angular application bootstrap and compilation work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n2. [How does Angular Dependency Injection work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n3. [How does the Angular component lifecycle work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n4. [How do Angular Change Detection and Signals work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n5. [How do the Angular Router and lazy loading work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n6. [How do Angular HttpClient and HTTP Interceptors work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n\n## 9. React Internals\n\n1. [How do React's Virtual DOM and Reconciliation work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n2. [How does React's Fiber architecture work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n3. [How do React Hooks and component rendering work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n\n## 10. Vue Internals\n\n1. [How does Vue's reactivity system work internally (dependency tracking and Proxies)?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n2. [How do Vue's template compiler and Virtual DOM work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n\n## 11. Servers, Localhost and Ports\n\n1. [What exactly is a Server? Is it hardware, software, a process or a computer?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n2. [What is Localhost? How is it different from a physical server or virtual machine?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n3. [How does a server listen for incoming requests using IP addresses and ports?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n4. [What is the difference between Web Server, Application Server and Reverse Proxy?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n\n## 12. Tomcat and Spring Boot\n\n1. [How does Tomcat work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n2. [How is Tomcat different from the computer's localhost?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n3. [How does Spring Boot start its embedded Tomcat server?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n4. [What happens internally when an HTTP request reaches Spring Boot?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n\n## 13. Spring Container and Request Processing\n\n1. [How does Spring Dependency Injection create and manage objects?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n2. [How do Spring AOP, Proxies and @Transactional work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n3. [How does a backend application manage concurrent requests and threads?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n4. [How does Connection Pooling work?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n5. [How do Authentication and Authorization work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n6. [How do Exception Handling, Retries and Timeouts work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n\n## Diagrams\n\n- [Frontend programming languages: source to machine code](../../knowledge/visual-notes/01_frontend_programming_languages.png)\n- [Frontend frameworks and libraries: build and execution path](../../knowledge/visual-notes/02_frontend_frameworks.png)\n- [Backend programming languages: source, artifact, runtime and execution](../../knowledge/visual-notes/03_backend_programming_languages.png)\n- [Backend frameworks and platforms: source, compiler and runtime](../../knowledge/visual-notes/04_backend_frameworks.png)\n\n## Related roles\n\n[Platform Engineer](../roles/platform-engineer.md)",
       "summary": "",
       "codeBlocks": [],
       "visuals": [],
@@ -63904,9 +64585,9 @@
       "source": {
         "path": "roadmap/topics/under-the-hood.md",
         "startLine": 2,
-        "endLine": 92
+        "endLine": 115
       },
-      "contentHash": "41a10171ee2462d0"
+      "contentHash": "87e3f2fa347d26d0"
     },
     {
       "id": "roadmap/topics/web-architecture.md#roadmap",
