@@ -272,7 +272,9 @@ function checkPlan(plan: unknown): Checked<ChatRequest["plan"]> {
       return invalid("each plan item needs a label of up to 200 characters and an optional topic.");
     checked.push({ label: label.trim(), topic: topic as string | undefined });
   }
-  return { ok: true, value: { title: input.title.trim(), items: checked } };
+  const kind = input.kind;
+  if (kind !== undefined && kind !== "learning" && kind !== "interview") return invalid("plan kind must be learning or interview.");
+  return { ok: true, value: { title: input.title.trim(), items: checked, ...(kind ? { kind } : {}) } };
 }
 
 const optionalString = (value: unknown, max: number) =>

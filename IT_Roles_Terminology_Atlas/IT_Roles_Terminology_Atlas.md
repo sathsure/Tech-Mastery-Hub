@@ -62,7 +62,7 @@ New roles created by GenAI, agents and new tech.
 
 Engineer embedded with a customer to build and deploy the company's product (often AI) into the customer's real systems.
 
-- **Also called:** Forward Deployed Software Engineer, Deployment Strategist, Solutions Engineer (AI), Field Engineer
+- **Also called:** Forward Deployed Software Engineer, Deployment Strategist, Solutions Engineer (AI), Customer-embedded AI Engineer
 - **At IT services firms (TCS, Infosys, Wipro, Accenture):** AI Solutions Consultant / Implementation Lead
 - **At product / Big Tech companies:** FDE (Palantir, OpenAI, Anthropic, Scale AI)
 - **At startups:** Founding / Customer Engineer
@@ -190,7 +190,7 @@ Designs end-to-end AI systems — models, data, RAG, agents, security and cost.
 
 Runs and scales model serving, GPUs and AI pipelines in production.
 
-- **Also called:** LLMOps Engineer, ML Platform Engineer, Inference Engineer, GPU Infrastructure Engineer
+- **Also called:** LLMOps Engineer, LLM Platform Engineer, Inference Engineer, GPU Infrastructure Engineer
 - **At IT services firms (TCS, Infosys, Wipro, Accenture):** MLOps / LLMOps Engineer
 - **At product / Big Tech companies:** Software Engineer, ML Infrastructure / Inference
 - **At startups:** Infra Engineer (AI)
@@ -300,7 +300,7 @@ Builds AI that controls robots, drones and autonomous machines.
 
 Builds augmented and virtual reality apps for headsets and phones.
 
-- **Also called:** AR/VR Developer, Unity / Unreal Developer, Spatial Computing Engineer
+- **Also called:** AR/VR Developer, Unity / Unreal XR Developer, Spatial Computing Engineer
 - **At IT services firms (TCS, Infosys, Wipro, Accenture):** XR Developer / Metaverse Consultant
 - **At product / Big Tech companies:** Software Engineer, AR/VR
 - **At startups:** Unity Developer
@@ -552,7 +552,7 @@ Turns data into reports, dashboards and business answers.
 
 Builds clean, tested data models that analysts and BI tools use.
 
-- **Also called:** dbt Developer, Data Modeler (analytics), BI Engineer
+- **Also called:** dbt Developer, Data Modeler (analytics), Analytics Data Engineer
 - **At IT services firms (TCS, Infosys, Wipro, Accenture):** Data Engineer (analytics)
 - **At product / Big Tech companies:** Analytics Engineer
 - **At startups:** Data Engineer (dbt)
@@ -588,7 +588,7 @@ Builds pipelines that move and transform data into warehouses and lakes.
 
 Uses statistics and ML to find patterns and make predictions.
 
-- **Also called:** Applied Scientist, Decision Scientist, Statistician, Quant Analyst
+- **Also called:** Applied Scientist, Decision Scientist, Statistician, Research Data Scientist
 - **At IT services firms (TCS, Infosys, Wipro, Accenture):** Data Scientist / AI Consultant
 - **At product / Big Tech companies:** Data Scientist / Applied Scientist (Amazon)
 - **At startups:** Data Scientist (often also ML Engineer)
@@ -606,7 +606,7 @@ Uses statistics and ML to find patterns and make predictions.
 
 Puts ML models into production and keeps them working.
 
-- **Also called:** ML Engineer, Applied ML Engineer, AI Engineer
+- **Also called:** ML Engineer, Applied ML Engineer, Deep Learning Engineer
 - **At IT services firms (TCS, Infosys, Wipro, Accenture):** ML Engineer / AI Developer
 - **At product / Big Tech companies:** Machine Learning Engineer / SDE (ML)
 - **At startups:** ML Engineer
@@ -623,7 +623,7 @@ Puts ML models into production and keeps them working.
 
 Builds apps on top of large language models — chatbots, agents, RAG.
 
-- **Also called:** GenAI Engineer, LLM Engineer, Applied AI Engineer
+- **Also called:** AI Engineer, GenAI Engineer, LLM Engineer, Applied AI Engineer
 - **At IT services firms (TCS, Infosys, Wipro, Accenture):** GenAI Developer / GenAI Engineer
 - **At product / Big Tech companies:** Software Engineer, Applied AI
 - **At startups:** AI Engineer
@@ -696,7 +696,7 @@ Run, ship and scale systems.
 
 Automates building, testing and deploying software.
 
-- **Also called:** Build & Release Engineer, CI/CD Engineer, DevOps Consultant
+- **Also called:** CI/CD Engineer, DevOps Consultant, Infrastructure Automation Engineer
 - **At IT services firms (TCS, Infosys, Wipro, Accenture):** DevOps Engineer / DevOps Consultant
 - **At product / Big Tech companies:** Software Engineer, Infrastructure / DevOps
 - **At startups:** DevOps / Infra Engineer
@@ -1176,7 +1176,7 @@ Manages engineers — hiring, growth and delivery.
 
 Top technology executive (CTO: product tech; CIO: internal IT).
 
-- **Also called:** Chief Technology Officer, Chief Information Officer, Head of Technology, VP Engineering
+- **Also called:** Chief Technology Officer, Chief Information Officer, Head of Technology, Chief Digital Officer
 - **At IT services firms (TCS, Infosys, Wipro, Accenture):** CTO / Chief Digital Officer
 - **At product / Big Tech companies:** CTO / SVP Engineering
 - **At startups:** Co-founder & CTO
@@ -1323,7 +1323,7 @@ Oversees several projects and client delivery commitments.
 
 Technical expert who supports sales with demos and proofs of concept.
 
-- **Also called:** Sales Engineer, Solutions Engineer, Technical Account Manager
+- **Also called:** Sales Engineer, Solutions Engineer, Pre-Sales Engineer
 - **At IT services firms (TCS, Infosys, Wipro, Accenture):** Pre-Sales Solution Architect
 - **At product / Big Tech companies:** Solutions / Sales Engineer
 - **At startups:** Founding Solutions Engineer
@@ -1859,7 +1859,7 @@ Role multipliers vs a generic software engineer: Full Stack Developer ×1, Front
 | Technology | Used for |
 |---|---|
 | JUnit / TestNG / Mockito | Java unit testing & mocks |
-| Jest / Jasmine / Karma / Vitest | JavaScript unit testing |
+| Jest / Vitest / Jasmine / Karma (deprecated) | JavaScript unit testing (Angular now defaults to Vitest) |
 | pytest | Python testing |
 | Selenium / Playwright / Cypress | Browser automation & E2E |
 | Appium | Mobile automation |
@@ -1936,7 +1936,7 @@ Role multipliers vs a generic software engineer: Full Stack Developer ×1, Front
 
 ## Skills vs Salary — India (LPA)
 
-> Rough estimates, not offers. Ranges are total CTC in LPA for Indian metros, built from published 2026 salary guides (checked Oct 2026) plus general market knowledge — not live data. Company type and interview performance move your pay more than anything here. Check AmbitionBox, Levels.fyi, Glassdoor or Naukri before negotiating.
+> Rough estimates, not offers. Ranges are total CTC in LPA for Indian metros, built from published 2026 salary guides and surveys (checked 8 Nov 2026) plus general market knowledge — not live data. Company type and interview performance move your pay more than anything here. Check AmbitionBox, Levels.fyi, Glassdoor or Naukri before negotiating.
 
 ### Full Stack Developer
 
@@ -2226,7 +2226,7 @@ Focus limits (under 8 yrs / 8+ yrs): Backend Language 2/3; Frontend Framework 2/
 
 ### Biggest Salary Boosters
 
-- **Switching companies:** Typically 30–60% hike vs ~5–8% appraisal at IT services in 2026 — the single biggest lever.
+- **Switching companies:** Typically 30–60% hike vs ~6–7% appraisal at IT services (Aon: 6.6% in 2026 and 2027) — the single biggest lever.
 - **DSA + System Design:** Unlocks product / Big Tech interviews — often 1.5–2.5× pay.
 - **GenAI / Agents / RAG / MCP skills:** Strongest premium in 2026: ~25–40% above peers at the same level.
 - **Cloud certification (AWS/Azure/GCP):** Associate helps shortlisting; Professional + real experience helps pay.
@@ -2237,16 +2237,17 @@ Focus limits (under 8 yrs / 8+ yrs): Backend Language 2/3; Frontend Framework 2/
 - **Domain expertise (BFSI, healthcare, payments):** GCCs pay more for domain + tech combination.
 - **Public proof of work:** GitHub projects, blogs, talks — help get interviews at better-paying companies.
 
-### Market Reality (Oct 2026)
+### Market Reality (Nov 2026)
 
 - Company type beats years. Same experience, product/Big Tech pays 3–5× IT services. ([source](https://resources.instahyre.com/blog/software-engineer-salary-in-india/))
-- IT services hikes stayed lean in 2026: ~5–8% for most staff, below the ~9% all-India average. Specialist tracks got 14–22%. ([source](https://www.ownyourcareer.in/blog/india-it-salary-hike-2026-tcs-infosys-wipro-accenture-cognizant))
+- Aon (Oct 2026): India-wide raises averaged 9% in 2026 and are projected at 9.1% for 2027. IT services/consulting is lowest at 6.6% (both years); tech product companies 9.5%. Attrition is back up to ~18%. ([source](https://www.aon.com/apac/in-the-press/asia-newsroom/2026/aon-study-finds-salaries-in-india-projected-to-fise-9-1-in-2027-employers-balance-growth-and-cost-pressures))
+- Naukri JobSpeak (Oct 2026): white-collar hiring up 14% year on year (helped by a low Diwali-hit base), AI/ML roles up 32%, IT services up only 5%. ([source](https://www.naukri.com/blog/naukri-jobspeak-october-2026-white-collar-hiring-ai-ml-growth/))
 - Standard services fresher pay is still ~₹3.4–9 LPA (most land at 4–6). Specialist AI/cloud/data fresher roles go up to ~₹21 LPA. ([source](https://www.bwpeople.in/article/infosys-to-offer-freshers-salaries-up-to-rs-21-lakh-585056))
 - GenAI/LLM engineers earn ~25–40% more than generalist ML engineers at the same level. ([source](https://resources.instahyre.com/blog/ai-engineer-salary-in-india/))
 
-## Working Abroad from India (checked 11 Oct 2026)
+## Working Abroad from India (checked 8 Nov 2026)
 
-> Visa rules and news below were checked on 11 Oct 2026 and change often. The official link on each country is the source of truth. Pay ranges are typical market estimates. Not legal advice.
+> Visa rules and news below were checked on 8 Nov 2026 and change often. The official link on each country is the source of truth. Pay ranges are typical market estimates. Not legal advice.
 
 Ordered from most realistic to hardest for Indian IT professionals.
 
@@ -2266,7 +2267,7 @@ Ordered from most realistic to hardest for Indian IT professionals.
 
 ### Germany — Realistic
 
-**Latest (11 Oct 2026):** Oct 2026: IT specialists without a degree confirmed eligible for the Blue Card with 3+ yrs experience. 2026 threshold €45,934 for IT. No sponsor licence needed — any German employer can hire you.
+**Latest (8 Nov 2026):** 2026 Blue Card floors: €50,700 standard, €45,934.20 for IT and shortage jobs — including IT specialists without a degree who have 3+ yrs relevant experience. No sponsor licence needed: any German employer can hire you.
 
 **Blunt take:** The best odds in the West for Indian engineers. English-only jobs exist, but German B1+ roughly triples your options.
 
@@ -2285,7 +2286,7 @@ Ordered from most realistic to hardest for Indian IT professionals.
 
 ### UAE (Dubai/Abu Dhabi) — Realistic
 
-**Latest (11 Oct 2026):** 2026: Golden Visa widened with an AI-specialist route (no local contract needed if income is high enough). Strong demand in AI and cloud.
+**Latest (8 Nov 2026):** 2026: a 3-year AI Specialist visa (announced Mar 2026; reported AED 30,000/month basic salary + STEM degree) can fast-track to the 10-year Golden Visa. Strong demand in AI and cloud.
 
 **Blunt take:** The easiest move for Indians. Good tax-free pay, but no citizenship path, and packages vary wildly.
 
@@ -2303,7 +2304,7 @@ Ordered from most realistic to hardest for Indian IT professionals.
 
 ### Netherlands — Moderate
 
-**Latest (11 Oct 2026):** 2026: salary floors up ~4.5%; sponsor rules tightened (firms with repeated fines can lose sponsor status).
+**Latest (8 Nov 2026):** 2026: salary floors up ~4.5% (€5,688 → €5,942 for 30+). The IND applies the threshold in force on the day the application is filed, and only fixed, guaranteed pay counts.
 
 **Blunt take:** A fast visa once you have an offer, and English works at work. Housing is the real pain.
 
@@ -2321,7 +2322,7 @@ Ordered from most realistic to hardest for Indian IT professionals.
 
 ### Ireland — Moderate
 
-**Latest (11 Oct 2026):** 1 Mar 2026: permit salary floors raised (€40,904 for listed ICT roles); more increases planned to 2030.
+**Latest (8 Nov 2026):** 1 Mar 2026: permit salary floors raised (€40,904 for listed ICT roles, from €38,000); the government roadmap plans further rises up to 2030.
 
 **Blunt take:** EU HQs of big tech, all in English. Fewer openings than Germany, and Dublin rents are brutal.
 
@@ -2338,7 +2339,7 @@ Ordered from most realistic to hardest for Indian IT professionals.
 
 ### Remote for global companies — Moderate
 
-**Latest (11 Oct 2026):** 2026: fewer 'worldwide' roles than in 2021–22; most now require US/EU time-zone overlap.
+**Latest (8 Nov 2026):** 2026: fewer 'worldwide' roles than in 2021–22; most now require US/EU time-zone overlap.
 
 **Blunt take:** No visa risk, but you compete with the whole world. Public proof of work matters more than your CV.
 
@@ -2356,7 +2357,7 @@ Ordered from most realistic to hardest for Indian IT professionals.
 
 ### Japan — Moderate
 
-**Latest (11 Oct 2026):** India–Japan HR partnership (Aug 2025) targets 50,000 skilled Indians over 5 years. Large IT shortage persists.
+**Latest (8 Nov 2026):** India–Japan action plan (Aug 2025): an aspirational target of 50,000 skilled Indians moving to Japan over 5 years, mainly IT. Large IT shortage persists.
 
 **Blunt take:** Big demand, lower pay than the West. Most jobs expect Japanese (JLPT N2).
 
@@ -2373,7 +2374,7 @@ Ordered from most realistic to hardest for Indian IT professionals.
 
 ### Australia — Hard
 
-**Latest (11 Oct 2026):** Oct 2026: next 189 invitation round by 31 Oct. 185,000 PR places for 2026–27. ICT roles (software, BA, security, PM) on the long-term list. Sponsor threshold AUD 79,423 from 1 Jul 2026.
+**Latest (8 Nov 2026):** 15 Oct 2026 round: about 20,000 subclass 189 invitations, with ICT cut-offs up to 100 points (ICT Security Specialist). No date announced for the next round. Sponsor threshold (CSIT) AUD 79,423 from 1 Jul 2026.
 
 **Blunt take:** PR without a job is possible from India, but only with high points (age, PTE 79+, experience).
 
@@ -2391,7 +2392,7 @@ Ordered from most realistic to hardest for Indian IT professionals.
 
 ### United Kingdom — Hard
 
-**Latest (11 Oct 2026):** Oct 2026 rule changes: no change to salary thresholds; new protections for sponsored workers. Market remains tight for mid-level.
+**Latest (8 Nov 2026):** Oct 2026 rule changes (HC 584) left salary thresholds unchanged. Since Jan 2026 most new Skilled Worker applicants need B2 English. Market remains tight for mid-level.
 
 **Blunt take:** Sponsors exist, but mid-level is crowded. Senior and niche skills get callbacks.
 
@@ -2409,7 +2410,7 @@ Ordered from most realistic to hardest for Indian IT professionals.
 
 ### Singapore — Hard
 
-**Latest (11 Oct 2026):** EP minimum S$5,600/month in 2026, rising to S$6,000 from Jan 2027. Shortage roles (AI, cloud, security, data) earn bonus COMPASS points.
+**Latest (8 Nov 2026):** EP minimum S$5,600/month in 2026, rising to S$6,000 from 1 Jan 2027 (S$6,600 in financial services). Shortage roles (AI, cloud, security, data) earn bonus COMPASS points.
 
 **Blunt take:** Getting harder. COMPASS gives fewer points when a firm already has many staff of your nationality.
 
@@ -2426,7 +2427,7 @@ Ordered from most realistic to hardest for Indian IT professionals.
 
 ### Canada — Hard
 
-**Latest (11 Oct 2026):** 2026 levels plan: temporary foreign worker intake cut 37% (to 230,000). Software developers and data scientists are no longer on the Express Entry STEM list. Points for job offers are planned to return.
+**Latest (8 Nov 2026):** 5 Nov 2026 levels plan (2027–29): 380,000 PR a year, temporary workers capped at 220,000 a year, Express Entry cut to 100,000. Since the Feb 2026 overhaul, software developers and data scientists are not on the Express Entry STEM list.
 
 **Blunt take:** Much harder than in 2019–22. PR without a job needs a very high CRS, and the tech job market there is tight for newcomers.
 
@@ -2444,7 +2445,7 @@ Ordered from most realistic to hardest for Indian IT professionals.
 
 ### United States — Very hard
 
-**Latest (11 Oct 2026):** H-1B is NOT stopped (no blanket suspension as of 9 Oct 2026). But: a Sept 18 executive order makes an employer's layoffs count against its H-1B petitions. On Oct 8, Microsoft, Adobe, TCS, Infosys, Wipro, HCL, Cognizant and Capgemini were suspended from green card sponsorship (PERM). The $100k H-1B fee is blocked in court. The lottery is now wage-weighted.
+**Latest (8 Nov 2026):** H-1B is NOT stopped (no blanket suspension as of 8 Nov 2026). But: a Sept 18 executive order makes an employer's layoffs count against its H-1B petitions. On Oct 8, Microsoft, Adobe, TCS, Infosys, Wipro, HCL, Cognizant and Capgemini were suspended from green card sponsorship (PERM). The $100k H-1B fee was extended on paper to Sept 2027 but remains blocked in court. The lottery is now wage-weighted.
 
 **Blunt take:** The hardest route right now. The classic Indian IT services path (TCS/Infosys/Wipro → H-1B → green card) just got much worse.
 
