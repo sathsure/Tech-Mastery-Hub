@@ -65,6 +65,14 @@
 7. [Tricky: What do these print?](../../interview/frontend/03-JavaScript.md)
 8. [Tricky: What does this closure-in-a-loop print, and how do you fix it?](../../interview/frontend/03-JavaScript.md)
 
+## 9. JavaScript in the Browser
+
+1. [How does JavaScript execute inside a browser?](../../interview/under-the-hood/03a-Browser-Internals.md)
+2. [How do Call Stack, Event Loop, Microtask Queue and Task Queue work?](../../interview/under-the-hood/03a-Browser-Internals.md)
+3. [How does asynchronous JavaScript execute without blocking the UI?](../../interview/under-the-hood/03a-Browser-Internals.md)
+4. [How does a browser determine which UI elements need updating?](../../interview/under-the-hood/03a-Browser-Internals.md)
+5. [How do Angular, React and Vue detect changes and update the DOM?](../../interview/under-the-hood/03a-Browser-Internals.md)
+
 ## Practice
 
 1. [Move all `0`s to the end without changing the order of other elements](../../practice/coding/01-javascript-coding.md)

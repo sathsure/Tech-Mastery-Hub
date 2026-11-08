@@ -38,6 +38,27 @@
 
 1. [How do Virtual Memory, Paging and Memory Protection work?](../../interview/under-the-hood/02-OS-CPU-Memory.md)
 
+## 5. Loading and Rendering a Page
+
+1. [What happens internally when we enter a URL and open a website?](../../interview/under-the-hood/03a-Browser-Internals.md)
+2. [How does a browser convert HTML, CSS and JavaScript into a rendered webpage?](../../interview/under-the-hood/03a-Browser-Internals.md)
+3. [How do DOM, CSSOM, Render Tree, Layout and Paint work together?](../../interview/under-the-hood/03a-Browser-Internals.md)
+
+## 6. JavaScript in the Browser
+
+1. [How does JavaScript execute inside a browser?](../../interview/under-the-hood/03a-Browser-Internals.md)
+2. [How do Call Stack, Event Loop, Microtask Queue and Task Queue work?](../../interview/under-the-hood/03a-Browser-Internals.md)
+3. [How does asynchronous JavaScript execute without blocking the UI?](../../interview/under-the-hood/03a-Browser-Internals.md)
+4. [How does a browser determine which UI elements need updating?](../../interview/under-the-hood/03a-Browser-Internals.md)
+5. [How do Angular, React and Vue detect changes and update the DOM?](../../interview/under-the-hood/03a-Browser-Internals.md)
+
+## 7. Network, Build and Storage
+
+1. [How does a frontend application communicate with a backend?](../../interview/under-the-hood/03a-Browser-Internals.md)
+2. [How do bundlers, Tree Shaking and Code Splitting work?](../../interview/under-the-hood/03a-Browser-Internals.md)
+3. [How do Browser Cache, Cookies, LocalStorage, SessionStorage and IndexedDB work?](../../interview/under-the-hood/03a-Browser-Internals.md)
+4. [How do Browser Tabs and Web Workers work internally?](../../interview/under-the-hood/03a-Browser-Internals.md)
+
 ## Diagrams
 
 - [Frontend programming languages: source to machine code](../../knowledge/visual-notes/01_frontend_programming_languages.png)

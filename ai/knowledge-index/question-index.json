@@ -1,18 +1,18 @@
 {
   "schema_version": "1.0.0",
   "repository": "Tech-Mastery-Hub",
-  "generated_at": "2026-11-08T16:00:14.567Z",
-  "source_fingerprint": "03c178da87eff88bb08b11e976c4dc8f42a2bcf9829a15152a715f86cb03e8ef",
+  "generated_at": "2026-11-08T16:03:01.314Z",
+  "source_fingerprint": "c3625f1025b3de746f6be6f6f1906ef10e75ef0bf5b869e1c64dc6e9e79431eb",
   "stats": {
-    "files": 143,
-    "entries": 2047,
-    "questions": 1120,
+    "files": 144,
+    "entries": 2059,
+    "questions": 1132,
     "followUps": 311,
     "notes": 84,
     "roles": 74,
     "terms": 378,
     "roadmaps": 80,
-    "codeBlocks": 1380,
+    "codeBlocks": 1400,
     "visuals": 86,
     "missingVisuals": 0
   },
@@ -515,6 +515,17 @@
     {
       "path": "interview/under-the-hood/02-OS-CPU-Memory.md",
       "questions": 10,
+      "followUps": 0,
+      "notes": 0,
+      "roles": 0,
+      "terms": 0,
+      "roadmaps": 0,
+      "withoutAnswer": 0,
+      "missingVisuals": 0
+    },
+    {
+      "path": "interview/under-the-hood/03a-Browser-Internals.md",
+      "questions": 12,
       "followUps": 0,
       "notes": 0,
       "roles": 0,
@@ -53006,6 +53017,588 @@
       "contentHash": "d29d50f2faf6ac4b"
     },
     {
+      "id": "interview/under-the-hood/03a-Browser-Internals.md#what-happens-internally-when-we-enter-a-url-and-open-a-website",
+      "kind": "question",
+      "parentId": null,
+      "question": "What happens internally when we enter a URL and open a website?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nThe browser turns a URL into a running page: find the server, connect securely, download HTML, then download and process everything the HTML needs.\n\n**2. How does it work internally?**\n\n1. **Parse the URL** — scheme, host, path. Check **HSTS** (force HTTPS) and the **HTTP cache**.\n2. **DNS** — resolve `shop.com` to an IP (browser cache → OS → resolver).\n3. **Connect** — TCP handshake + **TLS** handshake (or **QUIC** for HTTP/3, which combines both).\n4. **Request** — `GET /` with headers and cookies.\n5. **Response** — status, headers, HTML bytes (often compressed with gzip/brotli).\n6. **Render** — the renderer parses HTML, finds CSS/JS/images and fetches them, builds the page and paints it.\n\n**3. Visual**\n\n```mermaid\nsequenceDiagram\n  participant U as You\n  participant B as Browser process\n  participant D as DNS resolver\n  participant S as shop.com server\n  participant R as Renderer process\n  U->>B: types shop.com + Enter\n  B->>B: HSTS + cache check\n  B->>D: IP of shop.com?\n  D-->>B: 93.184.216.34\n  B->>S: TCP + TLS handshake\n  B->>S: GET / (cookies)\n  S-->>B: 200 OK + HTML\n  B->>R: hand HTML to a renderer\n  R->>S: GET app.css, main.js, logo.png\n  R-->>U: pixels on screen\n```\n\n**4. Internal implementation**\n\n- Chrome is **multi-process**: a **browser process** (UI, navigation), a **network service** (all HTTP), **renderer processes** (one per site, sandboxed), and a **GPU process**.\n- The **preload scanner** reads ahead in the HTML to start downloading CSS/JS/images early, even while the main parser is blocked.\n- Connections are reused (HTTP keep-alive, HTTP/2 multiplexing) so later requests skip the handshakes.\n\n**5. Why is it designed this way?**\nSeparate processes isolate sites from each other (security) and keep one crashing tab from taking down the browser. Caching at every step (DNS, HTTP, connections) avoids repeating slow network round-trips.\n\n**6. Framework differences**\nA **server-rendered** page (Next.js, Spring MVC + Thymeleaf) arrives as ready HTML → fast first paint. A **single-page app** (Angular, React SPA) arrives as an almost empty HTML shell → content appears only after JavaScript downloads and runs.\n\n**7. Practical example**\nOpening an Angular app: `index.html` (~1 KB) → `main-HASH.js`, `polyfills-HASH.js`, `styles-HASH.css` → Angular bootstraps → calls `GET /api/products` → renders the product list.\n\n**8. How can I observe it?**\nChrome DevTools → **Network** tab: click a request → **Timing** shows DNS, connect, SSL, waiting (TTFB) and download. `chrome://net-internals/#dns` shows the DNS cache.",
+      "summary": "What is it? The browser turns a URL into a running page: find the server, connect securely, download HTML, then download and process everything the HTML needs.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "sequenceDiagram\n  participant U as You\n  participant B as Browser process\n  participant D as DNS resolver\n  participant S as shop.com server\n  participant R as Renderer process\n  U->>B: types shop.com + Enter\n  B->>B: HSTS + cache check\n  B->>D: IP of shop.com?\n  D-->>B: 93.184.216.34\n  B->>S: TCP + TLS handshake\n  B->>S: GET / (cookies)\n  S-->>B: 200 OK + HTML\n  B->>R: hand HTML to a renderer\n  R->>S: GET app.css, main.js, logo.png\n  R-->>U: pixels on screen"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Loading and Rendering a Page"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "happens",
+        "internally",
+        "enter",
+        "url",
+        "open",
+        "website",
+        "parse the url",
+        "hsts",
+        "http cache",
+        "dns",
+        "connect",
+        "tls",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/03a-Browser-Internals.md",
+        "startLine": 7,
+        "endLine": 60
+      },
+      "contentHash": "ae5215e7b024f6ef"
+    },
+    {
+      "id": "interview/under-the-hood/03a-Browser-Internals.md#how-does-a-browser-convert-html-css-and-javascript-into-a",
+      "kind": "question",
+      "parentId": null,
+      "question": "How does a browser convert HTML, CSS and JavaScript into a rendered webpage?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nThe **critical rendering path**: bytes → structured trees → layout → pixels. HTML and CSS are **parsed**, JavaScript is **executed**, and the results are combined into what you see.\n\n**2. How does it work internally?**\n\n1. **HTML** bytes → characters → **tokens** → **DOM** tree (Document Object Model).\n2. **CSS** → **CSSOM** (CSS Object Model): rules with selectors.\n3. A `<script>` without `async`/`defer` **pauses HTML parsing** until it downloads and runs (it might change the DOM).\n4. Scripts also wait for pending CSS (they might read styles), so CSS indirectly blocks too.\n5. DOM + CSSOM → **style** → **layout** → **paint** → **composite** (see the next question).\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  H[HTML bytes] --> T[Tokenizer] --> DOM[DOM tree]\n  C[CSS files] --> CP[CSS parser] --> CSSOM[CSSOM]\n  J[\"script (no defer)\"] -. \"pauses parser\" .-> T\n  J --> V8[\"JS engine runs it<br/>may change DOM / CSSOM\"]\n  DOM --> ST[\"Style: computed<br/>style per element\"]\n  CSSOM --> ST\n  ST --> L[Layout] --> P[Paint] --> CO[Composite → screen]\n```\n\n**4. Internal implementation**\n\n- The HTML parser is a **state machine** defined by the HTML standard; it is very forgiving (fixes unclosed tags).\n- `defer` scripts run in order **after** parsing; `async` scripts run **as soon as they download**, in any order; `type=\"module\"` is deferred by default.\n- CSS is **render-blocking**: the browser won't paint until the CSSOM is ready, to avoid showing unstyled content.\n\n**5. Why is it designed this way?**\nJavaScript can call `document.write` or change the DOM, so the parser must stop for classic scripts to stay correct. This is why scripts go at the end of `<body>` or use `defer`.\n\n**6. Framework differences**\nSPAs (Angular, React, Vue) put almost everything in JavaScript, so the critical path is mostly \"download + run JS\". **SSR** frameworks (Next.js, Nuxt, Angular SSR) send ready HTML, then **hydrate** (attach event handlers) when the JS arrives.\n\n**7. Practical example**\n\n```html\n<head>\n  <link rel=\"stylesheet\" href=\"app.css\">     <!-- render-blocking -->\n  <script src=\"analytics.js\"></script>      <!-- parser-blocking: avoid -->\n  <script src=\"main.js\" defer></script>     <!-- runs after parsing: good -->\n</head>\n```\n\n**8. How can I observe it?**\nDevTools → **Performance** → record a reload: see \"Parse HTML\", \"Evaluate Script\", \"Recalculate Style\", \"Layout\", \"Paint\". **Lighthouse** lists render-blocking resources.",
+      "summary": "What is it? The critical rendering path: bytes → structured trees → layout → pixels. HTML and CSS are parsed, JavaScript is executed, and the results are combined into what you see.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  H[HTML bytes] --> T[Tokenizer] --> DOM[DOM tree]\n  C[CSS files] --> CP[CSS parser] --> CSSOM[CSSOM]\n  J[\"script (no defer)\"] -. \"pauses parser\" .-> T\n  J --> V8[\"JS engine runs it<br/>may change DOM / CSSOM\"]\n  DOM --> ST[\"Style: computed<br/>style per element\"]\n  CSSOM --> ST\n  ST --> L[Layout] --> P[Paint] --> CO[Composite → screen]"
+        },
+        {
+          "language": "html",
+          "code": "<head>\n  <link rel=\"stylesheet\" href=\"app.css\">     <!-- render-blocking -->\n  <script src=\"analytics.js\"></script>      <!-- parser-blocking: avoid -->\n  <script src=\"main.js\" defer></script>     <!-- runs after parsing: good -->\n</head>"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Loading and Rendering a Page"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "browser",
+        "convert",
+        "html",
+        "css",
+        "javascript",
+        "rendered",
+        "webpage",
+        "critical rendering path",
+        "parsed",
+        "executed",
+        "tokens",
+        "dom",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/03a-Browser-Internals.md",
+        "startLine": 64,
+        "endLine": 115
+      },
+      "contentHash": "12dde7ed10c62649"
+    },
+    {
+      "id": "interview/under-the-hood/03a-Browser-Internals.md#how-do-dom-cssom-render-tree-layout-and-paint-work-together",
+      "kind": "question",
+      "parentId": null,
+      "question": "How do DOM, CSSOM, Render Tree, Layout and Paint work together?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nThe stages that turn parsed content into pixels:\n\n- **DOM** — what elements exist. **CSSOM** — which styles apply.\n- **Render tree / layout tree** — only the **visible** elements, each with its computed style.\n- **Layout** (reflow) — exact position and size of each box.\n- **Paint** — draw commands (text, colours, borders, images).\n- **Composite** — combine painted **layers** on the GPU into the final frame.\n\n**2. How does it work internally?**\n\n1. **Style**: match CSS selectors to each DOM node → computed style.\n2. **Layout tree**: skip `display: none` nodes and `<head>`; add pseudo-elements like `::before`.\n3. **Layout**: compute geometry top-down (a parent's width decides children's widths; children's heights decide the parent's height).\n4. **Paint**: record display lists per layer.\n5. **Raster + composite**: turn display lists into pixels (often on the GPU) and stack the layers.\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  DOM[DOM] --> S[Style]\n  CSSOM[CSSOM] --> S\n  S --> LT[\"Layout tree<br/>(visible nodes only)\"]\n  LT --> L[\"Layout<br/>x, y, width, height\"]\n  L --> P[\"Paint<br/>display lists\"]\n  P --> R[\"Raster<br/>tiles on GPU\"]\n  R --> C[\"Composite layers<br/>→ frame\"]\n```\n\n**4. Internal implementation**\n\n- Changing **geometry** (`width`, `top`, adding nodes) → layout + paint + composite (expensive).\n- Changing **only colours** (`color`, `background`) → paint + composite.\n- Changing **`transform` or `opacity`** on its own layer → **composite only** (cheap, runs on the compositor thread even when the main thread is busy).\n- **Layout thrashing**: reading `offsetHeight` right after writing styles forces a synchronous layout; doing it in a loop is very slow.\n\n**5. Why is it designed this way?**\nSeparating stages lets the browser redo only the stages a change affects. Layers + a separate compositor thread keep scrolling and animations smooth at 60–120 fps.\n\n**6. Framework differences**\nFrameworks only change the **DOM**; the browser pipeline after that is identical. Good frameworks **batch** DOM writes to avoid repeated layouts.\n\n**7. Practical example**\n\n```js\n// Slow: forces layout on every iteration\nitems.forEach(el => { el.style.width = box.offsetWidth + \"px\"; });\n// Fast: read once, then write\nconst w = box.offsetWidth;\nitems.forEach(el => { el.style.width = w + \"px\"; });\n```\n\n**8. How can I observe it?**\nDevTools → **Performance**: purple = style/layout, green = paint. **Rendering** panel → \"Paint flashing\" (green flashes show repainted areas) and \"Layer borders\". **Layers** panel shows compositor layers.",
+      "summary": "What is it? The stages that turn parsed content into pixels:",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  DOM[DOM] --> S[Style]\n  CSSOM[CSSOM] --> S\n  S --> LT[\"Layout tree<br/>(visible nodes only)\"]\n  LT --> L[\"Layout<br/>x, y, width, height\"]\n  L --> P[\"Paint<br/>display lists\"]\n  P --> R[\"Raster<br/>tiles on GPU\"]\n  R --> C[\"Composite layers<br/>→ frame\"]"
+        },
+        {
+          "language": "js",
+          "code": "// Slow: forces layout on every iteration\nitems.forEach(el => { el.style.width = box.offsetWidth + \"px\"; });\n// Fast: read once, then write\nconst w = box.offsetWidth;\nitems.forEach(el => { el.style.width = w + \"px\"; });"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Loading and Rendering a Page"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "dom",
+        "cssom",
+        "render",
+        "tree",
+        "layout",
+        "paint",
+        "together",
+        "render tree / layout tree",
+        "visible",
+        "composite",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/03a-Browser-Internals.md",
+        "startLine": 119,
+        "endLine": 177
+      },
+      "contentHash": "886b1a467daae7a7"
+    },
+    {
+      "id": "interview/under-the-hood/03a-Browser-Internals.md#how-does-javascript-execute-inside-a-browser",
+      "kind": "question",
+      "parentId": null,
+      "question": "How does JavaScript execute inside a browser?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nEach page runs its JavaScript on **one main thread** inside the renderer process, using the JS engine (V8, SpiderMonkey, JavaScriptCore). The same thread also does style, layout and paint, so long JavaScript blocks the page.\n\n**2. How does it work internally?**\n\n1. The engine compiles the script (parse → bytecode; JIT for hot code).\n2. It creates a **global execution context** (global object `window`, global scope).\n3. Each function call creates an **execution context** pushed on the **call stack**: its scope, `this`, and arguments.\n4. Before running a scope, the engine sets up its declarations: `function` declarations and `var` are **hoisted**; `let`/`const` exist but are in the **temporal dead zone** until their line runs.\n5. Browser features (`setTimeout`, `fetch`, DOM events) are **Web APIs** provided by the browser, not the engine.\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  subgraph Renderer[\"Renderer process: main thread\"]\n    ENG[\"JS engine<br/>call stack + heap\"]\n    REN[\"Rendering<br/>style, layout, paint\"]\n  end\n  API[\"Web APIs<br/>timers, fetch, DOM events\"]\n  Q[\"Task + microtask queues\"]\n  ENG -- \"calls\" --> API\n  API -- \"callback when ready\" --> Q\n  Q -- \"event loop\" --> ENG\n  ENG <-- \"same thread, takes turns\" --> REN\n```\n\n**4. Internal implementation**\n\n- **Scopes** are stored as context objects; closures keep a reference to the outer context, which is why captured variables stay alive.\n- DOM objects are C++ objects in the browser; JS gets **wrapper objects** that call into C++ (bindings).\n- Each tab/iframe origin has its own **realm** (separate globals) and the engine **isolate** owns the heap.\n\n**5. Why is it designed this way?**\nA single thread for DOM access means no locks or race conditions on the page. The cost: CPU-heavy JS freezes the UI, so heavy work belongs in Web Workers.\n\n**6. Language differences**\nTypeScript runs exactly like the JavaScript it compiles to. WebAssembly runs on the same main thread (unless in a worker) but can't touch the DOM directly — it calls JS for that.\n\n**7. Practical example**\n\n```js\nconsole.log(typeof greet);   // \"function\" (hoisted)\nconsole.log(x);              // undefined (var hoisted, value not yet assigned)\nconsole.log(y);              // ReferenceError (let: temporal dead zone)\nvar x = 1; let y = 2;\nfunction greet() {}\n```\n\n**8. How can I observe it?**\nDevTools → **Sources**: breakpoints, **Call Stack** and **Scope** panels show execution contexts and closures. **Performance** → long yellow \"Task\" bars over 50 ms = UI-blocking JavaScript.",
+      "summary": "What is it? Each page runs its JavaScript on one main thread inside the renderer process, using the JS engine (V8, SpiderMonkey, JavaScriptCore). The same thread also does style, layout and paint, so long JavaScript blocks the page.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  subgraph Renderer[\"Renderer process: main thread\"]\n    ENG[\"JS engine<br/>call stack + heap\"]\n    REN[\"Rendering<br/>style, layout, paint\"]\n  end\n  API[\"Web APIs<br/>timers, fetch, DOM events\"]\n  Q[\"Task + microtask queues\"]\n  ENG -- \"calls\" --> API\n  API -- \"callback when ready\" --> Q\n  Q -- \"event loop\" --> ENG\n  ENG <-- \"same thread, takes turns\" --> REN"
+        },
+        {
+          "language": "js",
+          "code": "console.log(typeof greet);   // \"function\" (hoisted)\nconsole.log(x);              // undefined (var hoisted, value not yet assigned)\nconsole.log(y);              // ReferenceError (let: temporal dead zone)\nvar x = 1; let y = 2;\nfunction greet() {}"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood",
+        "javascript"
+      ],
+      "section": [
+        "JavaScript in the Browser"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "javascript",
+        "execute",
+        "inside",
+        "browser",
+        "one main thread",
+        "global execution context",
+        "execution context",
+        "call stack",
+        "hoisted",
+        "temporal dead zone",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/03a-Browser-Internals.md",
+        "startLine": 183,
+        "endLine": 237
+      },
+      "contentHash": "b71158c1cc700d2f"
+    },
+    {
+      "id": "interview/under-the-hood/03a-Browser-Internals.md#how-do-call-stack-event-loop-microtask-queue-and-task-queue-work",
+      "kind": "question",
+      "parentId": null,
+      "question": "How do Call Stack, Event Loop, Microtask Queue and Task Queue work?",
+      "prompt": null,
+      "answer": "**1. What is it?**\n\n- **Call stack** — the functions currently running.\n- **Task queue** (macrotasks) — callbacks from timers, events, network, `MessageChannel`.\n- **Microtask queue** — promise callbacks (`.then`, code after `await`), `queueMicrotask`, `MutationObserver`.\n- **Event loop** — the rule that decides what runs next.\n\n**2. How does it work internally?**\nOne turn of the event loop:\n\n1. Take the **oldest task** from a task queue and run it until the call stack is empty.\n2. Run **all microtasks** — including ones added while running microtasks — until the queue is empty.\n3. If it's time for a new frame (~16.7 ms at 60 Hz): run `requestAnimationFrame` callbacks, then style → layout → paint.\n4. Repeat.\n\n**3. Visual**\n\n```mermaid\nflowchart TD\n  T[\"Run ONE task<br/>(timer, click, network)\"] --> M{\"Microtasks<br/>waiting?\"}\n  M -- yes --> RM[\"Run a microtask<br/>(promise .then, await)\"] --> M\n  M -- no --> F{\"Time to render<br/>a frame?\"}\n  F -- yes --> R[\"rAF callbacks →<br/>style → layout → paint\"] --> T\n  F -- no --> T\n```\n\n**4. Internal implementation**\n\n- Browsers have **several task queues** (input events, timers, networking) and may prioritise user input.\n- `setTimeout(fn, 0)` has a minimum delay (clamped to ≥4 ms after deep nesting) and runs as a **task**.\n- Microtasks run **before** rendering, so an endless chain of microtasks freezes the page just like an infinite loop.\n- Node.js has the same idea with phases (timers, poll, check) plus `process.nextTick`, which runs before promise microtasks.\n\n**5. Why is it designed this way?**\nMicrotasks let promise chains finish **consistently** before anything else (no rendering half-way through an update). Tasks give other work (input, rendering) a chance between chunks.\n\n**6. Language differences**\nPython's `asyncio`, C#'s `async/await` and Java's `CompletableFuture` also use event loops or thread pools, but usually **multiple threads** exist. JavaScript's model is single-threaded per realm, so ordering is predictable.\n\n**7. Practical example**\n\n```js\nconsole.log(\"1\");\nsetTimeout(() => console.log(\"4\"), 0);          // task\nPromise.resolve().then(() => console.log(\"3\")); // microtask\nconsole.log(\"2\");\n// Output: 1 2 3 4\n```\n\n**8. How can I observe it?**\nDevTools → **Performance** → each \"Task\" block, with \"Run Microtasks\" inside it. **loupe** (latentflip.com/loupe) visualises the stack and queues step by step.",
+      "summary": "Call stack — the functions currently running. Task queue (macrotasks) — callbacks from timers, events, network, MessageChannel. Microtask queue — promise callbacks (.then, code after await), queueMicrotask, MutationObserver. Event loop — the rule that decides what runs next.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart TD\n  T[\"Run ONE task<br/>(timer, click, network)\"] --> M{\"Microtasks<br/>waiting?\"}\n  M -- yes --> RM[\"Run a microtask<br/>(promise .then, await)\"] --> M\n  M -- no --> F{\"Time to render<br/>a frame?\"}\n  F -- yes --> R[\"rAF callbacks →<br/>style → layout → paint\"] --> T\n  F -- no --> T"
+        },
+        {
+          "language": "js",
+          "code": "console.log(\"1\");\nsetTimeout(() => console.log(\"4\"), 0);          // task\nPromise.resolve().then(() => console.log(\"3\")); // microtask\nconsole.log(\"2\");\n// Output: 1 2 3 4"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood",
+        "javascript"
+      ],
+      "section": [
+        "JavaScript in the Browser"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "call",
+        "stack",
+        "event",
+        "loop",
+        "microtask",
+        "queue",
+        "task",
+        "call stack",
+        "task queue",
+        "microtask queue",
+        "event loop",
+        "oldest task",
+        "all microtasks",
+        "under-the-hood",
+        "javascript"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/03a-Browser-Internals.md",
+        "startLine": 241,
+        "endLine": 295
+      },
+      "contentHash": "8483482bcfb042bd"
+    },
+    {
+      "id": "interview/under-the-hood/03a-Browser-Internals.md#how-does-asynchronous-javascript-execute-without-blocking-the-ui",
+      "kind": "question",
+      "parentId": null,
+      "question": "How does asynchronous JavaScript execute without blocking the UI?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nJavaScript starts slow work (network, timers, file reads) and **doesn't wait** for it. The browser does that work on **other threads**; when it finishes, a callback is queued and runs later on the main thread.\n\n**2. How does it work internally?**\n\n1. `fetch(url)` hands the request to the browser's **network service** (another process/thread) and immediately returns a **pending Promise**.\n2. The main thread continues: handles clicks, renders frames.\n3. When the response arrives, the network service queues a task that **resolves the promise**.\n4. The promise's `.then` callbacks (or the code after `await`) run as **microtasks**.\n\n**3. Visual**\n\n```mermaid\nsequenceDiagram\n  participant M as Main thread (JS)\n  participant N as Network thread\n  participant Q as Queues\n  M->>N: fetch(\"/api/orders\")\n  N-->>M: pending Promise (instantly)\n  M->>M: keeps handling clicks + painting\n  N->>Q: response ready → resolve promise\n  Q->>M: microtask: code after await runs\n```\n\n**4. Internal implementation**\n\n- `async` functions are compiled into **state machines**: each `await` saves local state, returns, and resumes in a microtask when the awaited promise settles.\n- A Promise stores its state (pending/fulfilled/rejected), value, and a list of reactions to queue when it settles.\n- **CPU-heavy** code is not made async by `async` — a long loop still blocks. Use **Web Workers** or split the work into chunks.\n\n**5. Why is it designed this way?**\nMost frontend work is waiting for I/O. Doing the waiting outside the main thread keeps one simple, lock-free thread for the UI.\n\n**6. Language differences**\n\n- **Java**: blocking I/O on a thread (or virtual threads); `CompletableFuture` for async.\n- **C#**: `async/await` compiled to state machines too, continuations on a thread pool.\n- **Python**: `asyncio` event loop, one thread, `await` like JS.\n- **Go**: write blocking code; the runtime parks the goroutine and runs others.\n\n**7. Practical example**\n\n```js\nasync function load() {\n  spinner.show();\n  const res = await fetch(\"/api/orders\");   // main thread is free while waiting\n  render(await res.json());\n  spinner.hide();\n}\n```\n\n**8. How can I observe it?**\nDevTools → **Network** (request timing) together with **Performance** (main thread idle while the request is in flight). Throttle the network to \"Slow 3G\" and confirm the page still scrolls.",
+      "summary": "What is it? JavaScript starts slow work (network, timers, file reads) and doesn't wait for it. The browser does that work on other threads; when it finishes, a callback is queued and runs later on the main thread.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "sequenceDiagram\n  participant M as Main thread (JS)\n  participant N as Network thread\n  participant Q as Queues\n  M->>N: fetch(\"/api/orders\")\n  N-->>M: pending Promise (instantly)\n  M->>M: keeps handling clicks + painting\n  N->>Q: response ready → resolve promise\n  Q->>M: microtask: code after await runs"
+        },
+        {
+          "language": "js",
+          "code": "async function load() {\n  spinner.show();\n  const res = await fetch(\"/api/orders\");   // main thread is free while waiting\n  render(await res.json());\n  spinner.hide();\n}"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood",
+        "javascript"
+      ],
+      "section": [
+        "JavaScript in the Browser"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "asynchronous",
+        "javascript",
+        "execute",
+        "without",
+        "blocking",
+        "ui",
+        "doesn't wait",
+        "other threads",
+        "network service",
+        "pending promise",
+        "resolves the promise",
+        "microtasks",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/03a-Browser-Internals.md",
+        "startLine": 299,
+        "endLine": 355
+      },
+      "contentHash": "4676bb02af5fa0f2"
+    },
+    {
+      "id": "interview/under-the-hood/03a-Browser-Internals.md#how-does-a-browser-determine-which-ui-elements-need-updating",
+      "kind": "question",
+      "parentId": null,
+      "question": "How does a browser determine which UI elements need updating?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nThe browser tracks **what changed** and redoes only the necessary work for those parts, instead of re-rendering the whole page every frame.\n\n**2. How does it work internally?**\n\n1. A DOM or style change marks the affected nodes **dirty** (e.g. \"style needs recalc\", \"needs layout\").\n2. At the next frame, **style recalc** runs only for dirty nodes (and descendants affected by inheritance or selectors).\n3. **Layout** runs for dirty subtrees; containment can stop it spreading.\n4. **Paint invalidation** marks changed rectangles; only those are repainted.\n5. The **compositor** re-combines layers; transform/opacity changes skip steps 2–4.\n\n**3. Visual**\n\n```mermaid\nflowchart TD\n  CH[\"JS changes the page\"] --> K{What changed?}\n  K -- \"transform / opacity\" --> CO[Composite only]\n  K -- \"color / background\" --> PA[\"Paint dirty area → composite\"]\n  K -- \"size / position / DOM nodes\" --> LA[\"Layout dirty subtree → paint → composite\"]\n  K -- \"class names\" --> ST[\"Style recalc for matching nodes → ...\"]\n```\n\n**4. Internal implementation**\n\n- Dirty **bits/flags** on nodes; Blink's \"invalidation sets\" track which selectors a class change can affect.\n- CSS `contain: layout paint` and `content-visibility: auto` tell the browser a subtree is independent, so changes inside don't relayout the rest.\n- Raster **tiles**: only tiles covering changed areas are re-rasterised.\n\n**5. Why is it designed this way?**\nRedoing everything 60+ times a second is impossible on big pages. Incremental invalidation keeps cost proportional to the size of the change.\n\n**6. Framework differences**\nFrameworks decide **which DOM nodes to touch** (next question); the browser then decides **which rendering work** those touches require. Both layers try to do the minimum.\n\n**7. Practical example**\nAnimating `left: 0 → 300px` relayouts every frame. Animating `transform: translateX(300px)` is composite-only → smooth even if JavaScript is busy.\n\n**8. How can I observe it?**\nDevTools → **Rendering** → \"Paint flashing\" and \"Layout Shift Regions\"; **Performance** → \"Recalculate Style\" shows how many elements were affected.",
+      "summary": "What is it? The browser tracks what changed and redoes only the necessary work for those parts, instead of re-rendering the whole page every frame.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart TD\n  CH[\"JS changes the page\"] --> K{What changed?}\n  K -- \"transform / opacity\" --> CO[Composite only]\n  K -- \"color / background\" --> PA[\"Paint dirty area → composite\"]\n  K -- \"size / position / DOM nodes\" --> LA[\"Layout dirty subtree → paint → composite\"]\n  K -- \"class names\" --> ST[\"Style recalc for matching nodes → ...\"]"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood",
+        "javascript"
+      ],
+      "section": [
+        "JavaScript in the Browser"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "browser",
+        "determine",
+        "ui",
+        "elements",
+        "need",
+        "updating",
+        "what changed",
+        "dirty",
+        "style recalc",
+        "layout",
+        "paint invalidation",
+        "compositor",
+        "under-the-hood",
+        "javascript"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/03a-Browser-Internals.md",
+        "startLine": 359,
+        "endLine": 401
+      },
+      "contentHash": "7612b0379b616c69"
+    },
+    {
+      "id": "interview/under-the-hood/03a-Browser-Internals.md#how-do-angular-react-and-vue-detect-changes-and-update-the-dom",
+      "kind": "question",
+      "parentId": null,
+      "question": "How do Angular, React and Vue detect changes and update the DOM?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nEach framework must answer: \"the data changed — which DOM nodes must change?\" They use three different strategies.\n\n**2. How does it work internally?**\n\n- **Angular (zone.js default)** — after any async event, walk the component tree **top-down** and compare each template binding's current value with the previous one; update the DOM where they differ. With **Signals**, only views that read a changed signal are marked for checking.\n- **React** — calling `setState` re-runs the component function → new **virtual DOM** → **diff** against the previous one → apply the minimal DOM changes.\n- **Vue** — data is wrapped in **Proxies** that record which component reads which property; a change re-renders only those components (then a virtual DOM diff inside them).\n\n**3. Visual**\n\n```mermaid\nflowchart TB\n  subgraph Angular\n    A1[\"Event (zone.js) or signal change\"] --> A2[\"Check bindings top-down<br/>(skip OnPush/clean views)\"] --> A3[Update changed DOM bindings]\n  end\n  subgraph React\n    R1[\"setState\"] --> R2[\"Re-render component + children<br/>→ new virtual DOM\"] --> R3[\"Diff old vs new\"] --> R4[Commit DOM changes]\n  end\n  subgraph Vue\n    V1[\"state.count++ (Proxy set)\"] --> V2[\"Find components that read 'count'\"] --> V3[\"Re-render those → diff\"] --> V4[Patch DOM]\n  end\n```\n\n**4. Internal implementation**\n\n| | Angular | React | Vue |\n|---|---|---|---|\n| Knows **what** changed? | No (zone) / Yes (Signals) | No — re-renders and diffs | Yes — Proxy tracking |\n| Unit of re-check | Template bindings | Component subtree | Component |\n| DOM update | Direct binding updates (no virtual DOM) | Virtual DOM diff | Virtual DOM diff with compiler hints |\n\n**5. Why is it designed this way?**\nAngular's dirty checking is simple and works with plain objects; React's \"re-render everything + diff\" gives a simple mental model (UI = f(state)); Vue's tracking avoids unnecessary re-renders automatically. All three are moving toward **fine-grained reactivity** (Angular Signals, Vue Vapor mode, React Compiler auto-memoisation).\n\n**6. Framework differences**\nSvelte and SolidJS skip the virtual DOM: their compiler or signals update exact DOM nodes. See the framework internals notes for each framework in depth.\n\n**7. Practical example**\nA counter increments: Angular checks the bindings in the counter's view (and others in the checked path); React re-runs `Counter()` and diffs; Vue re-runs only `Counter`'s render because only it read `count`.\n\n**8. How can I observe it?**\n**Angular DevTools** → Profiler (change detection cycles), **React DevTools** → Profiler + \"Highlight updates\", **Vue DevTools** → Timeline / component re-render events.",
+      "summary": "What is it? Each framework must answer: \"the data changed — which DOM nodes must change?\" They use three different strategies.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart TB\n  subgraph Angular\n    A1[\"Event (zone.js) or signal change\"] --> A2[\"Check bindings top-down<br/>(skip OnPush/clean views)\"] --> A3[Update changed DOM bindings]\n  end\n  subgraph React\n    R1[\"setState\"] --> R2[\"Re-render component + children<br/>→ new virtual DOM\"] --> R3[\"Diff old vs new\"] --> R4[Commit DOM changes]\n  end\n  subgraph Vue\n    V1[\"state.count++ (Proxy set)\"] --> V2[\"Find components that read 'count'\"] --> V3[\"Re-render those → diff\"] --> V4[Patch DOM]\n  end"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood",
+        "javascript"
+      ],
+      "section": [
+        "JavaScript in the Browser"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "angular",
+        "react",
+        "vue",
+        "detect",
+        "changes",
+        "update",
+        "dom",
+        "angular (zone.js default)",
+        "top-down",
+        "signals",
+        "virtual dom",
+        "diff",
+        "under-the-hood",
+        "javascript"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/03a-Browser-Internals.md",
+        "startLine": 405,
+        "endLine": 451
+      },
+      "contentHash": "a75f514da5a3acce"
+    },
+    {
+      "id": "interview/under-the-hood/03a-Browser-Internals.md#how-does-a-frontend-application-communicate-with-a-backend",
+      "kind": "question",
+      "parentId": null,
+      "question": "How does a frontend application communicate with a backend?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nThe frontend sends **HTTP requests** (usually JSON over HTTPS) to backend APIs and updates the UI with the responses. For live updates it can keep a connection open (WebSocket, Server-Sent Events).\n\n**2. How does it work internally?**\n\n1. Code calls `fetch` / `HttpClient` / `axios` → the browser builds an HTTP request.\n2. If the API is on another **origin**, the browser applies **CORS**: non-simple requests first send an `OPTIONS` **preflight**; the server must answer with `Access-Control-Allow-*` headers.\n3. Cookies for that site are attached automatically (if allowed); tokens go in the `Authorization` header by your code.\n4. The request travels over a reused HTTPS connection (HTTP/2 or HTTP/3).\n5. The backend responds; JS parses the body (`res.json()`), updates state, the framework updates the DOM.\n\n**3. Visual**\n\n```mermaid\nsequenceDiagram\n  participant UI as Angular app (app.shop.com)\n  participant BR as Browser\n  participant API as api.shop.com\n  UI->>BR: http.post('/orders', body)\n  BR->>API: OPTIONS /orders (CORS preflight)\n  API-->>BR: 204 Access-Control-Allow-Origin: app.shop.com\n  BR->>API: POST /orders + Authorization: Bearer ...\n  API-->>BR: 201 Created + JSON\n  BR-->>UI: Observable emits the order\n```\n\n**4. Internal implementation**\n\n- `fetch` and `XMLHttpRequest` are Web APIs; the network service does DNS, connection pooling, TLS, HTTP framing and caching.\n- JSON is serialised with `JSON.stringify` and parsed with `JSON.parse` — structured data becomes UTF-8 text on the wire.\n- CORS is enforced **by the browser**, not the server: the server only sends permission headers.\n\n**5. Why is it designed this way?**\nHTTP + JSON is universal, cacheable and easy to debug. The same-origin policy + CORS stops a malicious site from reading your bank's API with your cookies.\n\n**6. Framework differences**\nAngular `HttpClient` returns cold **Observables** (nothing is sent until you subscribe) with interceptors; React/Vue usually use `fetch`/axios with Promises (plus libraries like TanStack Query for caching). All use the same browser networking underneath.\n\n**7. Practical example**\n\n```ts\nthis.http.get<Order[]>('/api/orders').subscribe(orders => this.orders = orders);\n```\n\n**8. How can I observe it?**\nDevTools → **Network** → Fetch/XHR filter: headers, preflight requests, payload, response, timing. CORS errors appear in the **Console**.",
+      "summary": "What is it? The frontend sends HTTP requests (usually JSON over HTTPS) to backend APIs and updates the UI with the responses. For live updates it can keep a connection open (WebSocket, Server-Sent Events).",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "sequenceDiagram\n  participant UI as Angular app (app.shop.com)\n  participant BR as Browser\n  participant API as api.shop.com\n  UI->>BR: http.post('/orders', body)\n  BR->>API: OPTIONS /orders (CORS preflight)\n  API-->>BR: 204 Access-Control-Allow-Origin: app.shop.com\n  BR->>API: POST /orders + Authorization: Bearer ...\n  API-->>BR: 201 Created + JSON\n  BR-->>UI: Observable emits the order"
+        },
+        {
+          "language": "ts",
+          "code": "this.http.get<Order[]>('/api/orders').subscribe(orders => this.orders = orders);"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Network, Build and Storage"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "frontend",
+        "application",
+        "communicate",
+        "backend",
+        "http requests",
+        "origin",
+        "cors",
+        "preflight",
+        "visual",
+        "internal implementation",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/03a-Browser-Internals.md",
+        "startLine": 457,
+        "endLine": 506
+      },
+      "contentHash": "d301966effd541ea"
+    },
+    {
+      "id": "interview/under-the-hood/03a-Browser-Internals.md#how-do-bundlers-tree-shaking-and-code-splitting-work",
+      "kind": "question",
+      "parentId": null,
+      "question": "How do bundlers, Tree Shaking and Code Splitting work?",
+      "prompt": null,
+      "answer": "**1. What is it?**\n\n- **Bundler** (Vite/Rollup, esbuild, webpack, Angular CLI) — follows `import` statements from your entry file and combines modules into a few optimised files.\n- **Tree shaking** — removes exports nobody imports.\n- **Code splitting** — splits the bundle into **chunks** loaded only when needed.\n\n**2. How does it work internally?**\n\n1. Start at the entry (`main.ts`), parse it, find `import`s, and build a **module graph**.\n2. Transform each module (TypeScript → JS, JSX → JS, CSS imports).\n3. **Tree shake**: mark which exports are used; unused ones are dropped (if the module has no side effects).\n4. **Split**: each dynamic `import()` starts a new chunk; shared code goes into common chunks.\n5. **Minify** (rename variables, remove whitespace and dead code) and add **content hashes** to file names (`main-3f9a.js`) for caching.\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  E[main.ts] --> A[app.component.ts]\n  E --> U[\"utils.ts<br/>format() used, parse() unused\"]\n  A -. \"import() dynamic\" .-> AD[\"admin.module.ts\"]\n  subgraph Output[\"dist/\"]\n    M[\"main-3f9a.js<br/>app + format()\"]\n    C[\"chunk-admin-91bc.js<br/>loaded on /admin\"]\n  end\n  E --> M\n  AD --> C\n  U -. \"parse() removed\" .-> X[tree-shaken]\n```\n\n**4. Internal implementation**\n\n- Tree shaking needs **static ES module syntax** (`import`/`export`): imports are known at build time. CommonJS `require()` is dynamic and harder to shake.\n- `\"sideEffects\": false` in a library's `package.json` tells the bundler unused files are safe to drop.\n- Dynamic `import()` compiles to code that fetches the chunk file and returns a Promise of the module.\n\n**5. Why is it designed this way?**\nLess JavaScript = faster download, parse and execution, especially on mobile. Hashed file names allow \"cache forever\" headers because any change produces a new name.\n\n**6. Framework differences**\nAngular CLI (esbuild-based application builder) splits per lazy route automatically; Vite uses esbuild in dev and Rollup for production builds (newer versions move to Rolldown); Next.js splits per page automatically.\n\n**7. Practical example**\n\n```ts\n{ path: 'admin', loadComponent: () => import('./admin/admin.component').then(m => m.AdminComponent) }\n```\n\nThe admin code is a separate chunk downloaded only when the user opens `/admin`.\n\n**8. How can I observe it?**\n`ng build --stats-json` or `npx vite build`, then **source-map-explorer** or **esbuild Bundle Analyzer** / `rollup-plugin-visualizer`. DevTools → **Network**: navigate to `/admin` and watch the new chunk load. **Coverage** tab shows unused bytes.",
+      "summary": "Bundler (Vite/Rollup, esbuild, webpack, Angular CLI) — follows import statements from your entry file and combines modules into a few optimised files. Tree shaking — removes exports nobody imports. Code splitting — splits the bundle into chunks loaded only when needed.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  E[main.ts] --> A[app.component.ts]\n  E --> U[\"utils.ts<br/>format() used, parse() unused\"]\n  A -. \"import() dynamic\" .-> AD[\"admin.module.ts\"]\n  subgraph Output[\"dist/\"]\n    M[\"main-3f9a.js<br/>app + format()\"]\n    C[\"chunk-admin-91bc.js<br/>loaded on /admin\"]\n  end\n  E --> M\n  AD --> C\n  U -. \"parse() removed\" .-> X[tree-shaken]"
+        },
+        {
+          "language": "ts",
+          "code": "{ path: 'admin', loadComponent: () => import('./admin/admin.component').then(m => m.AdminComponent) }"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Network, Build and Storage"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "bundlers",
+        "tree",
+        "shaking",
+        "code",
+        "splitting",
+        "bundler",
+        "tree shaking",
+        "code splitting",
+        "chunks",
+        "module graph",
+        "tree shake",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/03a-Browser-Internals.md",
+        "startLine": 510,
+        "endLine": 565
+      },
+      "contentHash": "d81baf4832eacb35"
+    },
+    {
+      "id": "interview/under-the-hood/03a-Browser-Internals.md#how-do-browser-cache-cookies-localstorage-sessionstorage-and",
+      "kind": "question",
+      "parentId": null,
+      "question": "How do Browser Cache, Cookies, LocalStorage, SessionStorage and IndexedDB work?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nFive ways a browser keeps data, all **separated per origin** (scheme + host + port):\n\n| Storage | Holds | Size (approx.) | Sent to server? | Lifetime |\n|---|---|---|---|---|\n| **HTTP cache** | Responses (JS, CSS, images, API) | Hundreds of MB | No (it replaces requests) | By `Cache-Control` / eviction |\n| **Cookies** | Small key=value strings | ~4 KB each | **Yes, with every matching request** | Session or `Expires` |\n| **LocalStorage** | Strings | ~5–10 MB | No | Until cleared |\n| **SessionStorage** | Strings | ~5 MB | No | Until the **tab** closes |\n| **IndexedDB** | Structured data, files, blobs | Large (% of disk) | No | Until cleared / evicted |\n\n**2. How does it work internally?**\n\n- **HTTP cache**: keyed by URL (+ some headers); fresh → used without a request; stale → revalidated with `ETag`/`If-None-Match` (304).\n- **Cookies**: stored by the browser; `Set-Cookie` creates them; attributes `HttpOnly` (no JS access), `Secure` (HTTPS only), `SameSite` (cross-site rules).\n- **LocalStorage/SessionStorage**: simple **synchronous** key-value maps on disk/memory; reads block the main thread.\n- **IndexedDB**: an **asynchronous**, transactional database of object stores with indexes; values copied with the structured clone algorithm.\n\n**3. Visual**\n\n```mermaid\nflowchart TB\n  subgraph Origin[\"Origin: https://shop.com\"]\n    HC[(HTTP cache)]\n    CK[(Cookies)]\n    LS[(LocalStorage)]\n    SS[(\"SessionStorage<br/>per tab\")]\n    IDB[(IndexedDB)]\n  end\n  REQ[Every request to shop.com] -- \"auto-attached\" --> CK\n  JS[JavaScript] --> LS\n  JS --> SS\n  JS -- \"async transactions\" --> IDB\n  NET[Network fetch] -- \"check first\" --> HC\n```\n\n**4. Internal implementation**\n\n- Chrome stores the HTTP cache in disk cache files + an in-memory cache; LocalStorage and IndexedDB live in per-origin storage (LevelDB/SQLite depending on browser).\n- Storage is **partitioned**: third-party iframes get separate storage per top-level site (privacy).\n- Under storage pressure, browsers evict \"best-effort\" origins unless `navigator.storage.persist()` was granted.\n\n**5. Why is it designed this way?**\nCookies exist for server sessions (sent automatically). Web Storage gives simple client-side persistence. IndexedDB handles large offline data without blocking the UI. Separation by origin prevents sites reading each other's data.\n\n**6. Framework differences**\nSame browser APIs for all frameworks. Security note: storing JWTs in LocalStorage exposes them to XSS; `HttpOnly` cookies can't be read by JS.\n\n**7. Practical example**\nAngular app: refresh token in an `HttpOnly; Secure; SameSite=Strict` cookie, UI theme in LocalStorage, form draft in SessionStorage, offline product catalogue in IndexedDB.\n\n**8. How can I observe it?**\nDevTools → **Application** tab: Cookies, Local/Session Storage, IndexedDB, Cache Storage, and \"Storage\" usage per origin. **Network** → \"Size\" column shows \"(disk cache)\" / \"(memory cache)\".",
+      "summary": "What is it? Five ways a browser keeps data, all separated per origin (scheme + host + port):",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart TB\n  subgraph Origin[\"Origin: https://shop.com\"]\n    HC[(HTTP cache)]\n    CK[(Cookies)]\n    LS[(LocalStorage)]\n    SS[(\"SessionStorage<br/>per tab\")]\n    IDB[(IndexedDB)]\n  end\n  REQ[Every request to shop.com] -- \"auto-attached\" --> CK\n  JS[JavaScript] --> LS\n  JS --> SS\n  JS -- \"async transactions\" --> IDB\n  NET[Network fetch] -- \"check first\" --> HC"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Network, Build and Storage"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "browser",
+        "cache",
+        "cookies",
+        "localstorage",
+        "sessionstorage",
+        "indexeddb",
+        "separated per origin",
+        "http cache",
+        "yes, with every matching request",
+        "tab",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/03a-Browser-Internals.md",
+        "startLine": 569,
+        "endLine": 625
+      },
+      "contentHash": "6b27aacf6267cf3a"
+    },
+    {
+      "id": "interview/under-the-hood/03a-Browser-Internals.md#how-do-browser-tabs-and-web-workers-work-internally",
+      "kind": "question",
+      "parentId": null,
+      "question": "How do Browser Tabs and Web Workers work internally?",
+      "prompt": null,
+      "answer": "**1. What is it?**\n\n- **Tabs** — modern browsers run sites in separate **renderer processes**, each with its own main thread, JS heap and event loop.\n- **Web Workers** — extra **threads** inside a page that run JavaScript in the background, with their own event loop and no DOM access.\n\n**2. How does it work internally?**\n\n1. Opening a tab: the browser process assigns a sandboxed renderer process (**site isolation**: different sites → different processes).\n2. `new Worker('worker.js')` starts an OS thread with a separate JS **isolate** (own heap, own globals).\n3. Page and worker talk only by **`postMessage`**; data is copied with **structured clone** (or moved with **transferables** like `ArrayBuffer`, without copying).\n4. **SharedArrayBuffer** + `Atomics` allow real shared memory (requires cross-origin isolation headers).\n\n**3. Visual**\n\n```mermaid\nflowchart TB\n  BP[\"Browser process<br/>tabs UI, navigation\"] --> R1[\"Renderer: shop.com<br/>main thread + JS heap\"]\n  BP --> R2[\"Renderer: bank.com<br/>main thread + JS heap\"]\n  BP --> GPU[GPU process]\n  BP --> NET[Network service]\n  R1 --> W1[\"Web Worker thread<br/>own heap + event loop\"]\n  R1 <-- \"postMessage (copy / transfer)\" --> W1\n  SW[\"Service Worker<br/>proxy between page and network\"] --- R1\n```\n\n**4. Internal implementation**\n\n- Renderer processes are **sandboxed**: they can't open files or sockets directly; they ask the browser process via IPC.\n- Worker types: **Dedicated** (one page), **Shared** (several pages of the same origin), **Service Worker** (intercepts network requests, enables offline and push notifications).\n- Background tabs get **timer throttling** and may be frozen to save battery.\n\n**5. Why is it designed this way?**\nProcess isolation stops a malicious page reading another site's memory (important after Spectre) and contains crashes. Workers give parallelism without the dangers of shared-memory threads on the DOM.\n\n**6. Language differences**\nJavaScript workers are like threads that share **nothing** by default (actor-style), unlike Java/C#/C++ threads that share the whole heap. Node.js has the same model with `worker_threads`.\n\n**7. Practical example**\n\n```js\n// main.js\nconst w = new Worker('resize.js');\nw.postMessage(imageBuffer, [imageBuffer]);   // transfer, no copy\nw.onmessage = e => show(e.data);\n// resize.js\nonmessage = e => postMessage(resize(e.data)); // heavy work off the main thread\n```\n\n**8. How can I observe it?**\nChrome **Task Manager** (Shift+Esc) shows processes per tab/site; `chrome://process-internals`. DevTools → **Sources** → Threads panel lists workers; **Application** → Service Workers.",
+      "summary": "Tabs — modern browsers run sites in separate renderer processes, each with its own main thread, JS heap and event loop. Web Workers — extra threads inside a page that run JavaScript in the background, with their own event loop and no DOM access.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart TB\n  BP[\"Browser process<br/>tabs UI, navigation\"] --> R1[\"Renderer: shop.com<br/>main thread + JS heap\"]\n  BP --> R2[\"Renderer: bank.com<br/>main thread + JS heap\"]\n  BP --> GPU[GPU process]\n  BP --> NET[Network service]\n  R1 --> W1[\"Web Worker thread<br/>own heap + event loop\"]\n  R1 <-- \"postMessage (copy / transfer)\" --> W1\n  SW[\"Service Worker<br/>proxy between page and network\"] --- R1"
+        },
+        {
+          "language": "js",
+          "code": "// main.js\nconst w = new Worker('resize.js');\nw.postMessage(imageBuffer, [imageBuffer]);   // transfer, no copy\nw.onmessage = e => show(e.data);\n// resize.js\nonmessage = e => postMessage(resize(e.data)); // heavy work off the main thread"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Network, Build and Storage"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "browser",
+        "tabs",
+        "web",
+        "workers",
+        "internally",
+        "renderer processes",
+        "web workers",
+        "threads",
+        "site isolation",
+        "isolate",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/03a-Browser-Internals.md",
+        "startLine": 629,
+        "endLine": 682
+      },
+      "contentHash": "874e370772f7568c"
+    },
+    {
       "id": "practice/coding/01-javascript-coding.md#move-all-0s-to-the-end-without-changing-the-order-of-other",
       "kind": "question",
       "parentId": null,
@@ -62019,7 +62612,7 @@
       "parentId": null,
       "question": "JavaScript study path",
       "prompt": null,
-      "answer": "## Prerequisites\n\n- [HTML](../topics/html.md)\n- Overview: [JavaScript concepts](../../knowledge/concepts/javascript/README.md)\n\n## 1. Part 1 — Functions & Scope\n\n1. [Can you walk me through `call()`, `apply()`, and `bind()` — how they differ and when you'd use each?](../../interview/frontend/03-JavaScript.md)\n2. [How would you explain closures to someone new to JavaScript, and can you give a real-world use case?](../../interview/frontend/03-JavaScript.md)\n3. [Can you explain currying and walk through how you'd implement it?](../../interview/frontend/03-JavaScript.md)\n4. [What are higher-order functions?](../../interview/frontend/03-JavaScript.md)\n\n## 2. Part 2 — `this` and Prototypes\n\n1. [How does JavaScript prototype inheritance work?](../../interview/frontend/03-JavaScript.md)\n2. [Why does `this` behave differently in arrow vs normal functions?](../../interview/frontend/03-JavaScript.md)\n\n## 3. Part 3 — Hoisting & TDZ\n\n1. [Can you walk me through how hoisting works in JavaScript and where it can catch developers off guard?](../../interview/frontend/03-JavaScript.md)\n   - [Can you explain the Temporal Dead Zone and how variable shadowing interacts with it?](../../interview/frontend/03-JavaScript.md)\n\n## 4. Part 4 — Type Coercion & Equality\n\n1. [Explain why ` == !` is `true`](../../interview/frontend/03-JavaScript.md)\n2. [Why does `typeof null === \"object\"`?](../../interview/frontend/03-JavaScript.md)\n\n## 5. Part 5 — Event Loop & Async\n\n1. [How does the JavaScript Event Loop work?](../../interview/frontend/03-JavaScript.md)\n2. [What will this code output, and why?](../../interview/frontend/03-JavaScript.md)\n3. [Difference between `Promise.all`, `allSettled`, `race`, and `any`?](../../interview/frontend/03-JavaScript.md)\n   - [You're calling three backend APIs in parallel. One critical, two optional. Which do you use?](../../interview/frontend/03-JavaScript.md)\n   - [Implement an API timeout using Promises.](../../interview/frontend/03-JavaScript.md)\n   - [You have 3 CDN URLs for the same resource. Use the fastest. Which?](../../interview/frontend/03-JavaScript.md)\n\n## 6. Part 6 — Implementing Built-in Methods\n\n1. [If `Array.prototype.map` is removed, how do you recreate it?](../../interview/frontend/03-JavaScript.md)\n   - [How would you implement `Array.prototype.filter` from scratch?](../../interview/frontend/03-JavaScript.md)\n   - [How would you implement `Array.prototype.reduce` from scratch?](../../interview/frontend/03-JavaScript.md)\n2. [How would you implement a debounce function?](../../interview/frontend/03-JavaScript.md)\n   - [How would you implement a throttle function?](../../interview/frontend/03-JavaScript.md)\n\n## 7. Part 7 — Modern JS Features\n\n1. [How does optional chaining work and when would you reach for it over a manual null check?](../../interview/frontend/03-JavaScript.md)\n   - [How does nullish coalescing differ from the OR operator, and when does that distinction matter?](../../interview/frontend/03-JavaScript.md)\n2. [Difference between `Map` and `Object`?](../../interview/frontend/03-JavaScript.md)\n3. [What are Generators (`function*`)?](../../interview/frontend/03-JavaScript.md)\n4. [Can you explain the difference between shallow and deep copies — and what pitfalls come with each?](../../interview/frontend/03-JavaScript.md)\n5. [What's the difference between `for...in` and `for...of`?](../../interview/frontend/03-JavaScript.md)\n\n## 8. Part 8 — Must-Know Basics\n\n1. [What is the difference between `var`, `let` and `const`?](../../interview/frontend/03-JavaScript.md)\n2. [What is the difference between `==` and `===`?](../../interview/frontend/03-JavaScript.md)\n3. [What are event bubbling, capturing and delegation?](../../interview/frontend/03-JavaScript.md)\n4. [How is the value of `this` decided?](../../interview/frontend/03-JavaScript.md)\n5. [How do you handle errors with Promises and async/await?](../../interview/frontend/03-JavaScript.md)\n6. [What is the difference between ES Modules and CommonJS?](../../interview/frontend/03-JavaScript.md)\n7. [Tricky: What do these print?](../../interview/frontend/03-JavaScript.md)\n8. [Tricky: What does this closure-in-a-loop print, and how do you fix it?](../../interview/frontend/03-JavaScript.md)\n\n## Practice\n\n1. [Move all `0`s to the end without changing the order of other elements](../../practice/coding/01-javascript-coding.md)\n2. [Write a function that checks whether two arrays are equal — same elements in the same order. How would you handle edge cases like different lengths or nested arrays?](../../practice/coding/01-javascript-coding.md)\n3. [Split an array into chunks](../../practice/coding/01-javascript-coding.md)\n4. [Flatten a nested array](../../practice/coding/01-javascript-coding.md)\n5. [Find max and min values in an array](../../practice/coding/01-javascript-coding.md)\n6. [Remove duplicates from an array](../../practice/coding/01-javascript-coding.md)\n7. [Find the second largest number in an array](../../practice/coding/01-javascript-coding.md)\n8. [Check if two strings are anagrams](../../practice/coding/01-javascript-coding.md)\n9. [Find the first non-repeating character in a string](../../practice/coding/01-javascript-coding.md)\n10. [Find the frequency of each character in a string](../../practice/coding/01-javascript-coding.md)\n11. [Find the length of a string without using built-in methods](../../practice/coding/01-javascript-coding.md)\n12. [Reverse a string](../../practice/coding/01-javascript-coding.md)\n13. [Reverse a string while preserving word order](../../practice/coding/01-javascript-coding.md)\n14. [Difference between `substring()` and `slice()`?](../../practice/coding/01-javascript-coding.md)\n15. [Generate the Fibonacci series](../../practice/coding/01-javascript-coding.md)\n16. [Implement FizzBuzz](../../practice/coding/01-javascript-coding.md)\n17. [Implement memoization](../../practice/coding/01-javascript-coding.md)\n18. [Implement debounce](../../practice/coding/01-javascript-coding.md)\n19. [Implement throttle](../../practice/coding/01-javascript-coding.md)\n20. [Implement a deep clone function](../../practice/coding/01-javascript-coding.md)\n21. [Implement a Promise.all from scratch](../../practice/coding/01-javascript-coding.md)\n\n## Diagrams\n\n- [EventLoop](../../knowledge/visual-notes/event-loop.png)\n\n## Related roles\n\n[AI / LLM Engineer](../roles/ai-llm-engineer.md) · [AI Agent Engineer](../roles/ai-agent-engineer.md) · [AI Automation Engineer](../roles/ai-automation-engineer.md) · [AI Solutions Architect](../roles/ai-solutions-architect.md) · [Automation Test Engineer](../roles/automation-test-engineer.md) · [Backend Developer](../roles/backend-developer.md) · [Blockchain Developer](../roles/blockchain-developer.md) · [Developer Advocate](../roles/developer-advocate.md) · [ERP / CRM Developer](../roles/erp-crm-developer.md) · [Forward Deployed Engineer](../roles/forward-deployed-engineer.md) · [Frontend Developer](../roles/frontend-developer.md) · [Full Stack Developer](../roles/full-stack-developer.md) · [Mobile Developer](../roles/mobile-developer.md) · [Performance Test Engineer](../roles/performance-test-engineer.md) · [Platform Engineer](../roles/platform-engineer.md) · [Solutions / Sales Engineer](../roles/solutions-sales-engineer.md)",
+      "answer": "## Prerequisites\n\n- [HTML](../topics/html.md)\n- Overview: [JavaScript concepts](../../knowledge/concepts/javascript/README.md)\n\n## 1. Part 1 — Functions & Scope\n\n1. [Can you walk me through `call()`, `apply()`, and `bind()` — how they differ and when you'd use each?](../../interview/frontend/03-JavaScript.md)\n2. [How would you explain closures to someone new to JavaScript, and can you give a real-world use case?](../../interview/frontend/03-JavaScript.md)\n3. [Can you explain currying and walk through how you'd implement it?](../../interview/frontend/03-JavaScript.md)\n4. [What are higher-order functions?](../../interview/frontend/03-JavaScript.md)\n\n## 2. Part 2 — `this` and Prototypes\n\n1. [How does JavaScript prototype inheritance work?](../../interview/frontend/03-JavaScript.md)\n2. [Why does `this` behave differently in arrow vs normal functions?](../../interview/frontend/03-JavaScript.md)\n\n## 3. Part 3 — Hoisting & TDZ\n\n1. [Can you walk me through how hoisting works in JavaScript and where it can catch developers off guard?](../../interview/frontend/03-JavaScript.md)\n   - [Can you explain the Temporal Dead Zone and how variable shadowing interacts with it?](../../interview/frontend/03-JavaScript.md)\n\n## 4. Part 4 — Type Coercion & Equality\n\n1. [Explain why ` == !` is `true`](../../interview/frontend/03-JavaScript.md)\n2. [Why does `typeof null === \"object\"`?](../../interview/frontend/03-JavaScript.md)\n\n## 5. Part 5 — Event Loop & Async\n\n1. [How does the JavaScript Event Loop work?](../../interview/frontend/03-JavaScript.md)\n2. [What will this code output, and why?](../../interview/frontend/03-JavaScript.md)\n3. [Difference between `Promise.all`, `allSettled`, `race`, and `any`?](../../interview/frontend/03-JavaScript.md)\n   - [You're calling three backend APIs in parallel. One critical, two optional. Which do you use?](../../interview/frontend/03-JavaScript.md)\n   - [Implement an API timeout using Promises.](../../interview/frontend/03-JavaScript.md)\n   - [You have 3 CDN URLs for the same resource. Use the fastest. Which?](../../interview/frontend/03-JavaScript.md)\n\n## 6. Part 6 — Implementing Built-in Methods\n\n1. [If `Array.prototype.map` is removed, how do you recreate it?](../../interview/frontend/03-JavaScript.md)\n   - [How would you implement `Array.prototype.filter` from scratch?](../../interview/frontend/03-JavaScript.md)\n   - [How would you implement `Array.prototype.reduce` from scratch?](../../interview/frontend/03-JavaScript.md)\n2. [How would you implement a debounce function?](../../interview/frontend/03-JavaScript.md)\n   - [How would you implement a throttle function?](../../interview/frontend/03-JavaScript.md)\n\n## 7. Part 7 — Modern JS Features\n\n1. [How does optional chaining work and when would you reach for it over a manual null check?](../../interview/frontend/03-JavaScript.md)\n   - [How does nullish coalescing differ from the OR operator, and when does that distinction matter?](../../interview/frontend/03-JavaScript.md)\n2. [Difference between `Map` and `Object`?](../../interview/frontend/03-JavaScript.md)\n3. [What are Generators (`function*`)?](../../interview/frontend/03-JavaScript.md)\n4. [Can you explain the difference between shallow and deep copies — and what pitfalls come with each?](../../interview/frontend/03-JavaScript.md)\n5. [What's the difference between `for...in` and `for...of`?](../../interview/frontend/03-JavaScript.md)\n\n## 8. Part 8 — Must-Know Basics\n\n1. [What is the difference between `var`, `let` and `const`?](../../interview/frontend/03-JavaScript.md)\n2. [What is the difference between `==` and `===`?](../../interview/frontend/03-JavaScript.md)\n3. [What are event bubbling, capturing and delegation?](../../interview/frontend/03-JavaScript.md)\n4. [How is the value of `this` decided?](../../interview/frontend/03-JavaScript.md)\n5. [How do you handle errors with Promises and async/await?](../../interview/frontend/03-JavaScript.md)\n6. [What is the difference between ES Modules and CommonJS?](../../interview/frontend/03-JavaScript.md)\n7. [Tricky: What do these print?](../../interview/frontend/03-JavaScript.md)\n8. [Tricky: What does this closure-in-a-loop print, and how do you fix it?](../../interview/frontend/03-JavaScript.md)\n\n## 9. JavaScript in the Browser\n\n1. [How does JavaScript execute inside a browser?](../../interview/under-the-hood/03a-Browser-Internals.md)\n2. [How do Call Stack, Event Loop, Microtask Queue and Task Queue work?](../../interview/under-the-hood/03a-Browser-Internals.md)\n3. [How does asynchronous JavaScript execute without blocking the UI?](../../interview/under-the-hood/03a-Browser-Internals.md)\n4. [How does a browser determine which UI elements need updating?](../../interview/under-the-hood/03a-Browser-Internals.md)\n5. [How do Angular, React and Vue detect changes and update the DOM?](../../interview/under-the-hood/03a-Browser-Internals.md)\n\n## Practice\n\n1. [Move all `0`s to the end without changing the order of other elements](../../practice/coding/01-javascript-coding.md)\n2. [Write a function that checks whether two arrays are equal — same elements in the same order. How would you handle edge cases like different lengths or nested arrays?](../../practice/coding/01-javascript-coding.md)\n3. [Split an array into chunks](../../practice/coding/01-javascript-coding.md)\n4. [Flatten a nested array](../../practice/coding/01-javascript-coding.md)\n5. [Find max and min values in an array](../../practice/coding/01-javascript-coding.md)\n6. [Remove duplicates from an array](../../practice/coding/01-javascript-coding.md)\n7. [Find the second largest number in an array](../../practice/coding/01-javascript-coding.md)\n8. [Check if two strings are anagrams](../../practice/coding/01-javascript-coding.md)\n9. [Find the first non-repeating character in a string](../../practice/coding/01-javascript-coding.md)\n10. [Find the frequency of each character in a string](../../practice/coding/01-javascript-coding.md)\n11. [Find the length of a string without using built-in methods](../../practice/coding/01-javascript-coding.md)\n12. [Reverse a string](../../practice/coding/01-javascript-coding.md)\n13. [Reverse a string while preserving word order](../../practice/coding/01-javascript-coding.md)\n14. [Difference between `substring()` and `slice()`?](../../practice/coding/01-javascript-coding.md)\n15. [Generate the Fibonacci series](../../practice/coding/01-javascript-coding.md)\n16. [Implement FizzBuzz](../../practice/coding/01-javascript-coding.md)\n17. [Implement memoization](../../practice/coding/01-javascript-coding.md)\n18. [Implement debounce](../../practice/coding/01-javascript-coding.md)\n19. [Implement throttle](../../practice/coding/01-javascript-coding.md)\n20. [Implement a deep clone function](../../practice/coding/01-javascript-coding.md)\n21. [Implement a Promise.all from scratch](../../practice/coding/01-javascript-coding.md)\n\n## Diagrams\n\n- [EventLoop](../../knowledge/visual-notes/event-loop.png)\n\n## Related roles\n\n[AI / LLM Engineer](../roles/ai-llm-engineer.md) · [AI Agent Engineer](../roles/ai-agent-engineer.md) · [AI Automation Engineer](../roles/ai-automation-engineer.md) · [AI Solutions Architect](../roles/ai-solutions-architect.md) · [Automation Test Engineer](../roles/automation-test-engineer.md) · [Backend Developer](../roles/backend-developer.md) · [Blockchain Developer](../roles/blockchain-developer.md) · [Developer Advocate](../roles/developer-advocate.md) · [ERP / CRM Developer](../roles/erp-crm-developer.md) · [Forward Deployed Engineer](../roles/forward-deployed-engineer.md) · [Frontend Developer](../roles/frontend-developer.md) · [Full Stack Developer](../roles/full-stack-developer.md) · [Mobile Developer](../roles/mobile-developer.md) · [Performance Test Engineer](../roles/performance-test-engineer.md) · [Platform Engineer](../roles/platform-engineer.md) · [Solutions / Sales Engineer](../roles/solutions-sales-engineer.md)",
       "summary": "",
       "codeBlocks": [],
       "visuals": [],
@@ -62054,9 +62647,9 @@
       "source": {
         "path": "roadmap/topics/javascript.md",
         "startLine": 2,
-        "endLine": 99
+        "endLine": 107
       },
-      "contentHash": "c365b1b25c4b857c"
+      "contentHash": "6b3397899b5bba1a"
     },
     {
       "id": "roadmap/topics/messaging.md#roadmap",
@@ -62728,7 +63321,7 @@
       "parentId": null,
       "question": "Under the Hood study path",
       "prompt": null,
-      "answer": "## Prerequisites\n\n- None. This is a starting point.\n- Overview: [Under the Hood concepts](../../knowledge/concepts/under-the-hood/README.md)\n\n## 1. Source Code to Machine Code\n\n1. [How does human-readable source code eventually become machine instructions?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n2. [What are the differences between Compiler, Interpreter, Assembler, Linker and Runtime?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n3. [What are Bytecode, Intermediate Representation (IR), Assembly Language and Machine Code?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n4. [What are AOT, JIT and interpretation? How do they differ?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n5. [How do JVM, CLR and JavaScript engines execute programs internally?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n6. [How do programming languages interact with the CPU and memory?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n7. [How does frontend code (JavaScript, TypeScript, Dart, WebAssembly) become machine code in the browser?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n8. [How do frontend frameworks (Angular, React, Vue, Svelte, Next.js) get from source code to running in the browser?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n9. [How do different programming languages implement compilation, execution and memory management?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n10. [Do backend frameworks (Spring Boot, Django, Express, ASP.NET Core) compile code themselves?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n\n## 2. CPU and Memory Hierarchy\n\n1. [How does a CPU execute instructions?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n2. [How do CPU registers, L1/L2/L3 cache, RAM and disk interact?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n3. [What exactly is stored in Stack and Heap memory?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n4. [Can the CPU directly access heap memory? How does a program access objects in RAM?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n5. [How does memory allocation and deallocation work?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n6. [How does Garbage Collection identify unused objects?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n\n## 3. Processes, Threads and Scheduling\n\n1. [How do Processes and Threads work internally?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n2. [How does Context Switching happen?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n3. [How does an operating system execute multiple applications simultaneously?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n\n## 4. Virtual Memory\n\n1. [How do Virtual Memory, Paging and Memory Protection work?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n\n## Diagrams\n\n- [Frontend programming languages: source to machine code](../../knowledge/visual-notes/01_frontend_programming_languages.png)\n- [Frontend frameworks and libraries: build and execution path](../../knowledge/visual-notes/02_frontend_frameworks.png)\n- [Backend programming languages: source, artifact, runtime and execution](../../knowledge/visual-notes/03_backend_programming_languages.png)\n- [Backend frameworks and platforms: source, compiler and runtime](../../knowledge/visual-notes/04_backend_frameworks.png)\n\n## Related roles\n\n[Platform Engineer](../roles/platform-engineer.md)",
+      "answer": "## Prerequisites\n\n- None. This is a starting point.\n- Overview: [Under the Hood concepts](../../knowledge/concepts/under-the-hood/README.md)\n\n## 1. Source Code to Machine Code\n\n1. [How does human-readable source code eventually become machine instructions?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n2. [What are the differences between Compiler, Interpreter, Assembler, Linker and Runtime?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n3. [What are Bytecode, Intermediate Representation (IR), Assembly Language and Machine Code?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n4. [What are AOT, JIT and interpretation? How do they differ?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n5. [How do JVM, CLR and JavaScript engines execute programs internally?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n6. [How do programming languages interact with the CPU and memory?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n7. [How does frontend code (JavaScript, TypeScript, Dart, WebAssembly) become machine code in the browser?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n8. [How do frontend frameworks (Angular, React, Vue, Svelte, Next.js) get from source code to running in the browser?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n9. [How do different programming languages implement compilation, execution and memory management?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n10. [Do backend frameworks (Spring Boot, Django, Express, ASP.NET Core) compile code themselves?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n\n## 2. CPU and Memory Hierarchy\n\n1. [How does a CPU execute instructions?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n2. [How do CPU registers, L1/L2/L3 cache, RAM and disk interact?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n3. [What exactly is stored in Stack and Heap memory?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n4. [Can the CPU directly access heap memory? How does a program access objects in RAM?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n5. [How does memory allocation and deallocation work?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n6. [How does Garbage Collection identify unused objects?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n\n## 3. Processes, Threads and Scheduling\n\n1. [How do Processes and Threads work internally?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n2. [How does Context Switching happen?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n3. [How does an operating system execute multiple applications simultaneously?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n\n## 4. Virtual Memory\n\n1. [How do Virtual Memory, Paging and Memory Protection work?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n\n## 5. Loading and Rendering a Page\n\n1. [What happens internally when we enter a URL and open a website?](../../interview/under-the-hood/03a-Browser-Internals.md)\n2. [How does a browser convert HTML, CSS and JavaScript into a rendered webpage?](../../interview/under-the-hood/03a-Browser-Internals.md)\n3. [How do DOM, CSSOM, Render Tree, Layout and Paint work together?](../../interview/under-the-hood/03a-Browser-Internals.md)\n\n## 6. JavaScript in the Browser\n\n1. [How does JavaScript execute inside a browser?](../../interview/under-the-hood/03a-Browser-Internals.md)\n2. [How do Call Stack, Event Loop, Microtask Queue and Task Queue work?](../../interview/under-the-hood/03a-Browser-Internals.md)\n3. [How does asynchronous JavaScript execute without blocking the UI?](../../interview/under-the-hood/03a-Browser-Internals.md)\n4. [How does a browser determine which UI elements need updating?](../../interview/under-the-hood/03a-Browser-Internals.md)\n5. [How do Angular, React and Vue detect changes and update the DOM?](../../interview/under-the-hood/03a-Browser-Internals.md)\n\n## 7. Network, Build and Storage\n\n1. [How does a frontend application communicate with a backend?](../../interview/under-the-hood/03a-Browser-Internals.md)\n2. [How do bundlers, Tree Shaking and Code Splitting work?](../../interview/under-the-hood/03a-Browser-Internals.md)\n3. [How do Browser Cache, Cookies, LocalStorage, SessionStorage and IndexedDB work?](../../interview/under-the-hood/03a-Browser-Internals.md)\n4. [How do Browser Tabs and Web Workers work internally?](../../interview/under-the-hood/03a-Browser-Internals.md)\n\n## Diagrams\n\n- [Frontend programming languages: source to machine code](../../knowledge/visual-notes/01_frontend_programming_languages.png)\n- [Frontend frameworks and libraries: build and execution path](../../knowledge/visual-notes/02_frontend_frameworks.png)\n- [Backend programming languages: source, artifact, runtime and execution](../../knowledge/visual-notes/03_backend_programming_languages.png)\n- [Backend frameworks and platforms: source, compiler and runtime](../../knowledge/visual-notes/04_backend_frameworks.png)\n\n## Related roles\n\n[Platform Engineer](../roles/platform-engineer.md)",
       "summary": "",
       "codeBlocks": [],
       "visuals": [],
@@ -62762,9 +63355,9 @@
       "source": {
         "path": "roadmap/topics/under-the-hood.md",
         "startLine": 2,
-        "endLine": 51
+        "endLine": 72
       },
-      "contentHash": "3ab1946705015264"
+      "contentHash": "f9ddb019262848ea"
     },
     {
       "id": "roadmap/topics/web-architecture.md#roadmap",
