@@ -483,8 +483,14 @@ Non-Blocking Execution - Tasks run on separate threads (by default, the common F
 
 **ConcurrentHashMap**
 
-Usage - [Internal Implementation](#L1540)
-Coding - [Coding Example](#L1574)
+A thread-safe map without one big lock: reads don't lock, writes lock only the affected bucket, and `merge` / `compute` / `putIfAbsent` update atomically.
+
+```java
+ConcurrentHashMap<String, Integer> hits = new ConcurrentHashMap<>();
+hits.merge("home", 1, Integer::sum);   // atomic "increment or start at 1"
+```
+
+See "How does ConcurrentHashMap work internally?" in the Java Collections notes for the internals.
 
 ---
 
@@ -526,7 +532,7 @@ executor.submit(() -> {
 });
 ```
 
-✅ Prevention (Use `ReentrantLock` - Both tasks must follow the exact order.)
+✅ Prevention: **take the locks in the same order everywhere** (A, then B). This breaks the circular wait — it works the same with `synchronized`. `ReentrantLock` adds an extra safety net: `tryLock(timeout)` lets a thread give up instead of waiting forever.
 
 ```java
 ExecutorService executor = Executors.newFixedThreadPool(2);
@@ -570,9 +576,6 @@ executor.submit(() -> {
 > Deadlock happens because of inconsistent lock ordering.
 > The fix is to enforce a global lock order across all threads.
 
-Below are **Java 8 interview questions with crisp, simple explanations** and **easy code examples** 👇
-(Perfect for quick revision before interviews)
-
 ---
 
 ### ❓ Process vs Thread?
@@ -598,7 +601,7 @@ Below are **Java 8 interview questions with crisp, simple explanations** and **e
 | Memory        | Separate memory | Shared memory           |
 | Communication | Expensive (IPC) | Easy (shared variables) |
 | Creation      | Slow            | Fast                    |
-| Example       | Running Chrome  | Chrome tabs             |
+| Example       | A running IntelliJ and a running Spring Boot app are two processes | Inside the Spring Boot app: request-handling threads, GC threads, a scheduler thread |
 
 **Simple Example**
 
@@ -777,17 +780,16 @@ Serialization is commonly used for:
 A marker interface is an **interface with no methods** that tells the JVM to treat a class differently.
 
 ```java
-// Marker Interface
+// Marker interface: no methods, it just "tags" the class
 public interface Serializable { }
 
 class User implements Serializable {}
 
-// Annotation
-@Serializable
-class User {}
+// The code that needs the tag checks it with instanceof:
+// ObjectOutputStream throws NotSerializableException if !(obj instanceof Serializable)
 ```
 
-> **Before annotations existed, marker interfaces were the only way.**
+> **Before annotations (Java 5), marker interfaces were the only way to tag a class.** Today annotations (e.g. `@FunctionalInterface`, `@Entity`) are often used instead — but a marker interface also gives you a **type** the compiler can check.
 
 | Marker Interface                   | Purpose                     |
 | ---------------------------------- | --------------------------- |
@@ -796,7 +798,15 @@ class User {}
 | `RandomAccess`                     | Optimizes list access       |
 | `SingleThreadModel` _(deprecated)_ | Thread safety hint          |
 
-Example: [Serialization Example](/src/questions/backend/java/02-Java-1.md#L3202)
+```java
+// Write an object to a file, then read it back
+try (var out = new ObjectOutputStream(new FileOutputStream("user.bin"))) {
+    out.writeObject(new User(1, "Asha"));
+}
+try (var in = new ObjectInputStream(new FileInputStream("user.bin"))) {
+    User copy = (User) in.readObject();
+}
+```
 
 🔹 `serialVersionUID`
 
@@ -845,33 +855,32 @@ class User implements Serializable {
 | Complexity  | Simple       | Complex                         |
 | Performance | Slower       | Faster (custom)                 |
 
-🤔❓ Where is Serializable used in real applications?
+#### ↳ Follow-up: Where is Serializable used in real applications?
 
 Common places:
 
-- HTTP Sessions (Spring Boot)
-- File storage
-- Messaging (Kafka / RabbitMQ)
+- **HTTP sessions** — objects stored in a session must be `Serializable` if the server saves sessions to disk or shares them (Spring Session with Redis using JDK serialization).
+- **Caching** — some caches store objects with Java serialization by default.
+- Older RMI / EJB systems.
 
 ```java
-User user = session.getAttribute("user");
+session.setAttribute("user", user);   // User should implement Serializable
 ```
 
-> Internally → Serializable is required
+> ⚠️ For **messages** (Kafka, RabbitMQ) and **APIs**, use JSON, Avro or Protobuf instead — not Java serialization.
 
-🤔❓ Serializable vs JSON
+#### ↳ Follow-up: Serializable vs JSON
 
 | Serializable                      | JSON                        |
 | --------------------------------- | --------------------------- |
 | Java-specific                     | Language-independent        |
 | Binary (bytes)                    | Text (readable)             |
-| JVM handles it                    | Library handles it          |
-| Faster, smaller                   | Slower, bigger              |
+| JVM handles it                    | Library handles it (Jackson) |
+| Not necessarily smaller or faster (stores class metadata) | Simple and fast enough for most uses |
 | Breaks easily on class change     | Tolerant to changes         |
-| Used internally (sessions, cache) | Used externally (REST APIs) |
+| **Security risk**: deserializing untrusted bytes can run attacker-chosen code | Safe to parse untrusted input |
 
-> `Serializable` is for **Java-to-Java internal object storage**.
-> `JSON` is for **sharing data between systems**.
+> `Serializable` is legacy, **Java-to-Java only**. For anything crossing a network or stored long-term, use JSON (or Avro/Protobuf for compact binary). Never deserialize Java objects from untrusted sources.
 
 ---
 
@@ -887,9 +896,9 @@ User user = session.getAttribute("user");
 | **Code Cache** | JIT compiled code             |
 
 ```java
-public class MemoryDemo { // Metaspace (class metadata)
+public class MemoryDemo { // Metaspace (class metadata: methods, field layout)
 
-    static int staticCount = 100; // Metaspace (static field)
+    static int staticCount = 100; // Heap (static fields live with the Class object on the heap since Java 8)
 
     public static void main(String[] args) { // Stack (method call)
 
@@ -922,7 +931,22 @@ public class MemoryDemo { // Metaspace (class metadata)
 
 ### 📝 Answer
 
-It works by identifying **"dead"** objects (those with no references) through marking reachable ones from **"roots"** (like the stack), sweeping away the unmarked ones, and sometimes compacting live objects to prevent fragmentation, making memory efficient
+The garbage collector frees objects that **nothing can reach** any more.
+
+1. **Mark** — start from **GC roots** (local variables on thread stacks, static fields, active threads) and follow every reference; everything reached is alive.
+2. **Sweep** — memory of unmarked (unreachable) objects is reclaimed.
+3. **Compact** — live objects are moved together so free memory isn't fragmented.
+
+**Generations:** most objects die young, so the heap is split:
+
+| Area | Holds | Collected |
+|---|---|---|
+| **Young generation** (Eden + 2 Survivor spaces) | New objects | Often and fast (minor GC) |
+| **Old generation** | Objects that survived several minor GCs | Less often, slower (major GC) |
+
+**Collectors:** **G1** (default since Java 9 — balanced), **ZGC** / Shenandoah (pauses of a few milliseconds even on huge heaps), Parallel (max throughput), Serial (small apps).
+
+> 💡 Unreachable **cycles** (A → B → A with nothing pointing at them) are collected too — Java doesn't use reference counting. `System.gc()` is only a hint.
 
 ---
 
@@ -975,7 +999,17 @@ public static void clearCache() {
 }
 ```
 
-**Improper equals() and hashCode() implementations** : without correctly implementing equals() and hashCode() methods can lead to duplicate objects being added
+**Improper equals() and hashCode() implementations** — objects used as `HashMap`/`HashSet` keys without them are never found again, so each `put` adds a **new** entry and the map keeps growing:
+
+```java
+class Key { String id; Key(String id) { this.id = id; } }   // no equals/hashCode
+Map<Key, String> map = new HashMap<>();
+for (int i = 0; i < 1_000_000; i++) map.put(new Key("same"), "x");   // 1,000,000 entries, not 1
+```
+
+**Other classic causes:** listeners/callbacks registered and never removed, `ThreadLocal` values not removed in thread pools, and inner (non-static) classes holding a hidden reference to their outer object.
+
+**Find leaks:** watch heap usage grow in a monitoring tool, take a **heap dump** (`jmap -dump` or `-XX:+HeapDumpOnOutOfMemoryError`) and open it in Eclipse MAT or VisualVM to see what holds the memory.
 
 ---
 
@@ -1048,7 +1082,7 @@ Contains:
 ✔ JDK needed for development
 ✔ Java is platform-independent (Same **.class** file runs on any platform as long as the correct JVM exists)
 
-🤔❓ **Java Compilation and Runtime Execution**
+#### ↳ Follow-up: **Java Compilation and Runtime Execution**
 
 - JDK’s `javac` compiles all `.java` files into `.class` files (written in **bytecode**)
 - Tomcat Startup
@@ -1058,7 +1092,7 @@ Contains:
     - Only Frequently executed methods / loops are detected
     - **JIT** compiles them into native machine code
 
-🤔❓ **Why Java is Platform Independent?**
+#### ↳ Follow-up: **Why Java is Platform Independent?**
 
 - Java code is compiled into bytecode (.class)
 - Bytecode runs on JVM, not directly on OS

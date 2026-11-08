@@ -121,7 +121,7 @@ console.log("Max:", Math.max(...arr));   // 88
 console.log("Min:", Math.min(...arr));   // 1
 ```
 
-> ⚠️ **Trap**: Spread fails for very large arrays (~100k+ elements) due to call stack limits.
+> ⚠️ **Trap**: spread passes every element as a separate argument, so very large arrays (around 100k+ elements in Node/Chrome) throw `RangeError: Maximum call stack size exceeded`.
 
 **Manual approach (works for any size):**
 
@@ -155,7 +155,7 @@ const unique = [...new Set(arr)];        // [1, 2, 3, 4, 5]
 const unique = arr.filter((val, idx) => arr.indexOf(val) === idx);
 ```
 
-**Method 3: Manual with hash map (best for large arrays):**
+**Method 3: Manual with a lookup object:**
 
 ```js
 function unique(arr) {
@@ -171,6 +171,14 @@ function unique(arr) {
 }
 ```
 
+> ⚠️ **Trap:** object keys are always strings, so `1` and `"1"` count as the same value (`[1, "1", 2]` → `[1, 2]`). `Set` doesn't have this problem and is also O(n).
+
+| Method | Time | Note |
+|---|---|---|
+| `Set` | O(n) | Best default |
+| `filter` + `indexOf` | O(n²) | Fine for small arrays only |
+| Lookup object | O(n) | Mixes up `1` and `"1"` |
+
 ---
 
 ### ❓ Find the second largest number in an array
@@ -185,7 +193,7 @@ const sorted = [...arr].sort((a, b) => b - a);   // descending
 console.log(sorted[1]);                          // 9
 ```
 
-> ⚠️ Original sort approach in your file mutated the array — using a copy with `[...arr]` is safer.
+> ⚠️ `sort()` changes the original array — sorting a copy (`[...arr]`) keeps the input safe. Also, with duplicates like `[10, 10, 9]` this returns 10, not 9.
 
 **Single-pass approach (O(n), preferred):**
 
@@ -206,7 +214,7 @@ function secondLargest(arr) {
 console.log(secondLargest([1, 3, 5, 7, 9, 10]));   // 9
 ```
 
-> 💡 The single-pass version handles duplicates and is faster on large inputs.
+> 💡 The single-pass version handles duplicates and is faster on large inputs. It returns `-Infinity` when there is no second distinct value (e.g. `[5, 5]`).
 
 ---
 
@@ -603,13 +611,13 @@ window.addEventListener("scroll", throttle(() => {
 
 ### 📝 Answer
 
-**Modern, native (ES2022+):**
+**Built-in (browsers since 2022, Node 17+):**
 
 ```js
 const cloned = structuredClone(original);
 ```
 
-Handles dates, maps, sets, arrays, typed arrays, regex, **but NOT functions or DOM nodes**.
+Handles dates, maps, sets, arrays, typed arrays, regex and circular references, **but NOT functions or DOM nodes** (it throws), and class instances come back as **plain objects** (`clone instanceof MyClass` is `false`).
 
 **Manual recursive (works on plain objects/arrays):**
 

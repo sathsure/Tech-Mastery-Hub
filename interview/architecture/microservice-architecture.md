@@ -1,201 +1,110 @@
-## DESIGN STRUCTURE (REST Orchestration)
+# 🧱 Microservice Design Walkthrough: Payment Dashboard
 
-### Repo 1 → dashboard-service
+### ❓ Design a payment dashboard with microservices: a task has subtasks paid by credit card or UPI, and the task closes when every subtask is paid. How do you structure the services and databases?
 
+### 📝 Answer
+
+**Idea:** one service per payment type, each with **its own database**, and a **dashboard service** that orchestrates them and tracks the overall task.
+
+```mermaid
+flowchart LR
+  UI --> D[dashboard-service]
+  D -- Feign / REST --> C[credit-card-service]
+  D -- Feign / REST --> U[upi-service]
+  D --> DDB[(dashboard_db)]
+  C --> CDB[(credit_db)]
+  U --> UDB[(upi_db)]
 ```
-DashboardController
-    ↓
-DashboardService
-    ↓
-FeignClient → CreditCardService
-    ↓
-FeignClient → UpiService
-    ↓
-DashboardRepository (dashboard_db)
+
+**Each service, same layers:**
+
+```text
+dashboard-service:     DashboardController → DashboardService (orchestrator) → Feign clients + DashboardRepository
+credit-card-service:   CreditCardController → CreditCardService → CreditCardRepository (credit_db)
+upi-service:           UpiController → UpiService → UpiRepository (upi_db)
 ```
 
-DashboardService is the orchestrator.
+**Why separate databases?** Each service can change its schema, scale and deploy independently. No service reads another service's tables — it asks through an API.
 
 ---
 
-### Repo 2 → credit-card-service
+### ❓ What tables does each service own in the payment dashboard design?
 
-```
-CreditCardController
-    ↓
-CreditCardService
-    ↓
-CreditCardRepository (credit_db)
-```
+### 📝 Answer
 
----
+**dashboard_db** — the task and its subtasks
 
-### Repo 3 → upi-service
+| Table | Key columns |
+|---|---|
+| `dashboard_task` | `id` (PK), `task_name`, `overall_status` (OPEN / CLOSED), `created_at`, `updated_at` |
+| `dashboard_subtask` | `id` (PK), `task_id` (FK → dashboard_task), `subtask_type` (CREDIT / UPI / WALLET), `status` (OPEN / CLOSED), `amount`, `external_ref`, `updated_at` |
 
-```
-UpiController
-    ↓
-UpiService
-    ↓
-UpiRepository (upi_db)
-```
+**credit_db**
 
----
+| Table | Key columns |
+|---|---|
+| `credit_payment` | `id` (PK), `dashboard_subtask_id` (**logical** reference), `card_token`, `card_last4`, `amount`, `transaction_ref`, `status` (SUCCESS / FAILED), `processed_at` |
 
-## 🔷 DATA FLOW
+**upi_db**
 
-### User closes Credit Subtask
+| Table | Key columns |
+|---|---|
+| `upi_payment` | `id` (PK), `dashboard_subtask_id` (logical reference), `upi_id`, `amount DECIMAL(15,2)`, `transaction_ref`, `status`, `processed_at` |
 
-```
-UI
-  ↓
-DashboardController
-  ↓
-DashboardService
-  ↓
-Feign → CreditCardService (PUT /credit/close)
-  ↓
-CreditCardService saves to credit_db
-  ↓
-Returns Response DTO
-  ↓
-DashboardService updates dashboard_db
-```
+> ⚠️ **Never store the full card number.** Card data falls under **PCI-DSS** rules; store a **token** from the payment gateway and the last 4 digits for display.
 
-> Same for UpiService.
+**Logical reference** = the column holds the dashboard subtask's ID, but there is **no database foreign key**, because the tables live in different databases. Consistency is kept by the services, not by the database.
 
 ---
 
-## 🔷 DATABASE DESIGN
+### ❓ What happens step by step when a user closes a credit-card subtask?
 
-### 🟢 DATABASE 1 → dashboard_db
+### 📝 Answer
 
-This DB holds task summary + subtask status.
+```mermaid
+sequenceDiagram
+  participant UI
+  participant D as dashboard-service
+  participant C as credit-card-service
+  UI->>D: Close subtask 10
+  D->>C: PUT /credit/close (subtaskId 10, amount)
+  C->>C: charge card, save credit_payment
+  C-->>D: { subtaskId: 10, status: CLOSED, transactionRef: TXN8899, amount: 1000 }
+  D->>D: dashboard_subtask.status = CLOSED, external_ref = TXN8899
+  D->>D: all subtasks CLOSED? → dashboard_task.overall_status = CLOSED
+  D-->>UI: updated task
+```
 
-**Table 1: dashboard_task**
-
-| Column             | Type      | Key   | Description       |
-| ------------------ | --------- | ----- | ----------------- |
-| id                 | BIGINT    | ✅ PK | Unique Task ID    |
-| task_name          | VARCHAR   |       | Name of task      |
-| **overall_status** | VARCHAR   |       | **OPEN / CLOSED** |
-| created_at         | TIMESTAMP |       | Created time      |
-| updated_at         | TIMESTAMP |       | Last update       |
-
-**Table 2: dashboard_subtask**
-
-| Column           | Type      | Key       | Description                    |
-| ---------------- | --------- | --------- | ------------------------------ |
-| id               | BIGINT    | ✅ PK     | Subtask ID                     |
-| **task_id**      | BIGINT    | 🔗 **FK** | **Links to dashboard_task.id** |
-| **subtask_type** | VARCHAR   |           | **CREDIT / UPI / WALLET**      |
-| **status**       | VARCHAR   |           | **OPEN / CLOSED**              |
-| amount           | DECIMAL   |           | Payment amount                 |
-| external_ref     | VARCHAR   |           | Transaction reference          |
-| updated_at       | TIMESTAMP |           | Last update                    |
-
-👉 Total tables in dashboard_db = **2**
-
-### 🟢 DATABASE 2 → credit_db
-
-**Table 1: credit_payment**
-
-| Column                   | Type      | Key             | Description                        |
-| ------------------------ | --------- | --------------- | ---------------------------------- |
-| id                       | BIGINT    | ✅ PK           | Payment ID                         |
-| **dashboard_subtask_id** | BIGINT    | **Logical Ref** | **Reference to dashboard_subtask** |
-| card_number              | VARCHAR   |                 | Card                               |
-| amount                   | DECIMAL   |                 | Amount                             |
-| transaction_ref          | VARCHAR   |                 | Bank reference                     |
-| status                   | VARCHAR   |                 | SUCCESS / FAILED                   |
-| processed_at             | TIMESTAMP |                 | Processed time                     |
-
-👉 Total tables in credit_db = **1**
-
-### 🟢 DATABASE 3 → upi_db
-
-**Table 1: upi_payment**
-
-| Column                   | Type          | Key             | Description                        |
-| ------------------------ | ------------- | --------------- | ---------------------------------- |
-| id                       | BIGINT        | ✅ PK           | Unique Payment ID                  |
-| **dashboard_subtask_id** | BIGINT        | **Logical Ref** | **Reference to dashboard_subtask** |
-| upi_id                   | VARCHAR(100)  |                 | UPI ID (example: user@bank)        |
-| amount                   | DECIMAL(15,2) |                 | Payment amount                     |
-| transaction_ref          | VARCHAR(100)  |                 | Bank reference number              |
-| status                   | VARCHAR(20)   |                 | SUCCESS / FAILED                   |
-| processed_at             | TIMESTAMP     |                 | Processing timestamp               |
-
-👉 Total tables in upi_db = **1**
-
-### 🔷 TOTAL TABLE COUNT (Current System)
-
-| DB           | Tables |
-| ------------ | ------ |
-| dashboard_db | 2      |
-| credit_db    | 1      |
-| upi_db       | 1      |
-
-✅ Total = **4 tables**
+UPI works the same way through `upi-service`.
 
 ---
 
-## 🔷 HOW DATA IS PASSED
+### ❓ How do you add a Wallet payment type to the payment dashboard later?
 
-When CreditCardService closes subtask:
+### 📝 Answer
 
-It returns:
+Add a new **wallet-service** with its own `wallet_db` — **no changes** to the credit or UPI services:
 
-```json
-{
-  "subtaskId": 10,
-  "status": "CLOSED",
-  "transactionRef": "TXN8899",
-  "amount": 1000
-}
-```
+| Table | Key columns |
+|---|---|
+| `wallet_payment` | `id` (PK), `dashboard_subtask_id`, `wallet_id`, `amount`, `balance_before`, `balance_after`, `transaction_ref`, `status`, `processed_at` |
 
-DashboardService updates:
-
-dashboard_subtask table:
-
-```
-status = CLOSED
-external_ref = TXN8899
-```
-
-Then checks:
-
-If all subtasks CLOSED → update dashboard_task.overall_status = CLOSED
+In the dashboard service, add `WALLET` as a `subtask_type` and a new client. Using a **Strategy** (one `PaymentClient` interface, one implementation per type) means adding a type is a new class, not a bigger `if/else`.
 
 ---
 
-## 🔷 FUTURE: ADD WalletService
+### ❓ What are the weak points of the payment dashboard design and how would you improve them?
 
-Repo 4:
+### 📝 Answer
 
-```
-WalletController
-WalletService
-WalletRepository
-```
+| Risk | Improvement |
+|---|---|
+| Payment succeeds, but the dashboard update fails → states disagree | Make the call **idempotent** (send the subtask ID as an idempotency key), retry safely, and run a reconciliation job; or use a **Saga** with events |
+| A slow payment service blocks the dashboard | **Timeouts**, **circuit breaker** (Resilience4j), and return "PENDING" instead of waiting |
+| Dashboard knows about every payment type | Publish `PaymentCompleted` events (Kafka); the dashboard listens — **choreography** instead of orchestration |
+| Two clicks charge twice | Idempotency key + unique constraint on `dashboard_subtask_id` in each payment table |
+| `amount` as a floating type | Use `DECIMAL` in the database and `BigDecimal` in Java — never `double` for money |
 
-New DB: wallet_db
+#### ↳ Follow-up: Orchestration or choreography here?
 
-### 🟢 DATABASE 4 → wallet_db
-
-**Table 1: wallet_payment**
-
-| Column                   | Type        |
-| ------------------------ | ----------- |
-| id                       | BIGINT (PK) |
-| **dashboard_subtask_id** | BIGINT      |
-| wallet_id                | VARCHAR     |
-| amount                   | DECIMAL     |
-| balance_before           | DECIMAL     |
-| balance_after            | DECIMAL     |
-| transaction_ref          | VARCHAR     |
-| status                   | VARCHAR     |
-| processed_at             | TIMESTAMP   |
-
----
+↪ Orchestration (the dashboard calls each service) is simple and easy to follow for 2–3 services. As payment types grow, events (choreography) reduce coupling.

@@ -16,9 +16,13 @@ Builds clean, tested data models that analysts and BI tools use.
 
 - [ ] [SQL](../topics/database-sql.md)
 
+## Also useful
+
+[Git](../topics/git.md)
+
 ## Also needed
 
-Python, Jinja, dbt, Dimensional modelling, Snowflake, BigQuery, Databricks, Looker, Git
+Python, Jinja, dbt, Dimensional modelling, Snowflake, BigQuery, Databricks, Looker
 
 ## Where it leads
 

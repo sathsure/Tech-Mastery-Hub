@@ -27,6 +27,8 @@ spring.datasource.hikari.maximum-pool-size=20
 
 ### ❓ What is connection pooling?
 
+### 📝 Answer
+
 Connection pooling means reusing database connections instead of creating a new one every time.
 
 🔹 Why do we need it?
@@ -79,22 +81,21 @@ SpringBoot uses auto-configuration and automatically creates these beans for you
 - JdbcTemplate (if JDBC starter is present)
 - EntityManagerFactory & TransactionManager (if JPA starter is present)
 
-🤔❓ What does an application server do?
+#### ↳ Follow-up: What does an application server do?
 
 - Runs Servlets & REST APIs
 - Manages thread pool
 - Manages connection pool
 - Handles security & transactions
 
-Common Application Servers are:
+Common servers:
 
-- Application Server
-- JBoss / WildFly
-- WebLogic
+- **Apache Tomcat** / Jetty — servlet containers (Spring Boot embeds Tomcat by default)
+- **JBoss / WildFly**, **WebLogic**, **WebSphere** — full Jakarta EE application servers
 
 ---
 
-### ❓How do I allow only certain threads to use certain DB connections?
+### ❓ How do I allow only certain threads to use certain DB connections?
 
 ### 📝 Answer
 
@@ -146,7 +147,7 @@ spring:
       jdbc-url: jdbc:postgresql://db2-host:5432/reportdb
       username: report_user
       password: report_pwd
-      driver-class-name: com.mysql.cj.jdbc.Driver
+      driver-class-name: org.postgresql.Driver   # must match the database in the URL
       hikari:
         maximum-pool-size: 5
         minimum-idle: 2
@@ -332,12 +333,12 @@ public interface OrderRepository extends JpaRepository<Order, Long> {}
   public void exportData() { }
   ```
 
-🤔❓ What is Rollback and Commit?
+#### ↳ Follow-up: What is Rollback and Commit?
 
 **Rollback** - Reverts all DB changes made in the transaction
 **Commit** - Makes all DB changes save permanently
 
-🤔❓ What happens if `@Transactional` is NOT used?
+#### ↳ Follow-up: What happens if `@Transactional` is NOT used?
 
 - Each DB operation runs independently
 - Partial data may be saved
@@ -349,7 +350,7 @@ repo.save(payment); // fails
 
 > Result: Inconsistent data
 
-🤔❓ What happens if a Checked Exception is added?
+#### ↳ Follow-up: What happens if a Checked Exception is added?
 
 By default in Spring:
 
@@ -365,7 +366,7 @@ public void save() throws Exception {
 
 > ✔ Data is still saved
 
-🤔❓ How to rollback for Checked Exception?
+#### ↳ Follow-up: How to rollback for Checked Exception?
 
 Use `rollbackFor = Exception.class` to explicitly roll back for checked exceptions.
 
@@ -373,14 +374,14 @@ Use `rollbackFor = Exception.class` to explicitly roll back for checked exceptio
 @Transactional(rollbackFor = Exception.class)
 ```
 
-🤔❓ Do we need `@Transactional` with Spring Data JPA?
+#### ↳ Follow-up: Do we need `@Transactional` with Spring Data JPA?
 
 - Simple CRUD → often **not needed**
 - Multiple DB operations / service logic → **needed**
 
 ---
 
-### ❓ Explain what is JPA Entity class, How pagination works in Spring Data JPA?
+### ❓ What is a JPA Entity class, and how do you map relationships between entities?
 
 ### 📝 Answer
 
@@ -405,7 +406,7 @@ public class Order {
     @Column(nullable = false)
     private String productName;
 
-    private double price;
+    private BigDecimal price;   // money: BigDecimal, never double (0.1 + 0.2 != 0.3)
 
     // getters & setters
 }
@@ -424,7 +425,7 @@ public class Order {
 | `@GeneratedValue` | Automatically generates primary key values (AUTO, IDENTITY, SEQUENCE, TABLE)                     |
 | `@Column`         | Maps a class field to a table column and allows constraints like `nullable`, `unique`, `length`  |
 | `@Transient`      | Excludes the field from persistence (not saved in the database)                                  |
-| `@Enumerated`     | Defines how an enum is stored in the database (ORDINAL or STRING)                                |
+| `@Enumerated`     | Defines how an enum is stored: `STRING` (recommended) or `ORDINAL` (default — a number that breaks if you reorder the enum) |
 | `@OneToMany`      | Defines a one-to-many relationship between two entities                                          |
 | `@ManyToOne`      | Defines a many-to-one relationship and creates a foreign key                                     |
 
@@ -689,7 +690,7 @@ What SQL Generates from the above code is:
 
 ```sql
 SELECT * FROM users ORDER BY created_at DESC
-LIMIT 5 OFFSET 0;
+LIMIT 10 OFFSET 0;      -- page=0, size=10
 ```
 
 👉 OFFSET = Skip rows
@@ -754,62 +755,62 @@ stream…
 
 🔹 Use Page when Data size is large / UI needs page numbers
 
-    ```java
-    /* ------REPOSITORY ----- */
-    public interface UserRepository extends JpaRepository<User, Long> {
-    Page<User> findAll(Pageable pageable);
-    }
+```java
+/* ------REPOSITORY ----- */
+public interface UserRepository extends JpaRepository<User, Long> {
+Page<User> findAll(Pageable pageable);
+}
 
-    /*-------SERVICE ------*/
-    Pageable pageable = PageRequest.of(0, 10);
-    Page<User> page = userRepository.findAll(pageable);
-    ```
-    ➡️ Spring Data JPA executes TWO SQL queries:
-    ```sql
-    <!-- ✅ Query 1 – Fetch page data -->
-    SELECT * FROM users LIMIT 10 OFFSET 0;
+/*-------SERVICE ------*/
+Pageable pageable = PageRequest.of(0, 10);
+Page<User> page = userRepository.findAll(pageable);
+```
+➡️ Spring Data JPA executes TWO SQL queries:
+```sql
+-- Query 1: fetch the page
+SELECT * FROM users LIMIT 10 OFFSET 0;
 
-    <!-- ✅ Query 2 – Count total rows -->
-    SELECT COUNT(*) FROM users;
-    ```
+-- Query 2: count all rows (for total pages)
+SELECT COUNT(*) FROM users;
+```
 
 🔹 Use Slice when Data is large and need to know is there a next page?
 
-    ```java
-    /* ------REPOSITORY ----- */
-    public interface UserRepository extends JpaRepository<User, Long> {
-        Slice<User> findByStatus(String status, Pageable pageable);
-    }
+```java
+/* ------REPOSITORY ----- */
+public interface UserRepository extends JpaRepository<User, Long> {
+    Slice<User> findByStatus(String status, Pageable pageable);
+}
 
-    /*-------SERVICE ------*/
-    Pageable pageable = PageRequest.of(0, 10);
-    Slice<User> users = userRepository.findByStatus("ACTIVE", pageable);
+/*-------SERVICE ------*/
+Pageable pageable = PageRequest.of(0, 10);
+Slice<User> users = userRepository.findByStatus("ACTIVE", pageable);
 
-    boolean hasNext = users.hasNext();
-    ```
+boolean hasNext = users.hasNext();
+```
 
-    ➡️ Spring Data JPA executes ONE SQL query:
-    ```sql
-    SELECT * FROM users WHERE status='ACTIVE'
-    LIMIT 10 OFFSET 0;
-    ```
-    > ❌ No COUNT(*) query → faster.
-    > Used for **Infinite scrolling**
+➡️ Spring Data JPA executes ONE SQL query:
+```sql
+SELECT * FROM users WHERE status='ACTIVE'
+LIMIT 10 OFFSET 0;
+```
+> ❌ No COUNT(*) query → faster.
+> Used for **Infinite scrolling**
 
 🔹 Use List when Data size is small / want all records at once
 
-    ```java
-    public interface RoleRepository extends JpaRepository<Role, Long> {
-        List<Role> findAll();
-    }
-    ```
+```java
+public interface RoleRepository extends JpaRepository<Role, Long> {
+    List<Role> findAll();
+}
+```
 
-🤔❓ Difference between `CrudRepository`, `PagingAndSortingRepository`, `JpaRepository`
+#### ↳ Follow-up: Difference between `CrudRepository`, `PagingAndSortingRepository`, `JpaRepository`
 
 | Repository                   | What it Provides                                                                                                             |
 | ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
 | `CrudRepository`             | Basic **Create, Read, Update, Delete** operations like `save()`, `findById()`, `deleteById()`                                |
-| `PagingAndSortingRepository` | All CRUD features **plus pagination and sorting** using `Pageable` and `Sort`                                                |
+| `PagingAndSortingRepository` | `findAll(Pageable)` and `findAll(Sort)`. Since Spring Data 3 it **no longer extends** `CrudRepository` — extend both if you need both |
 | `JpaRepository`              | Everything from above **plus JPA-specific features** like `flush()`, batch operations, and better integration with Hibernate |
 
 ```java
@@ -829,7 +830,7 @@ public interface UserRepo extends PagingAndSortingRepository<User, Long> {}
 public interface UserRepo extends JpaRepository<User, Long> {}
 
 // Adds
-// flush(), saveAndFlush(), deleteInBatch()
+// flush(), saveAndFlush(), deleteAllInBatch(), findAll() returning List
 ```
 
 🔹 flush()
@@ -871,22 +872,22 @@ flush() → DB (temporary)
 commit  → DB (permanent)
 ```
 
-🔹 deleteInBatch()
+🔹 deleteAllInBatch() (formerly `deleteInBatch`, now deprecated)
 
 - Deletes multiple records in one SQL query
 - Much faster than deleting one by one
 
 ```java
-userRepository.deleteInBatch(users);
+userRepository.deleteAllInBatch(users);   // or deleteAllByIdInBatch(List.of(1L, 2L, 3L))
 ```
 
 ```sql
-DELETE FROM users WHERE id IN (1,2,3);
+DELETE FROM users WHERE id = 1 OR id = 2 OR id = 3;   -- one statement
 ```
 
-> deleteInBatch improves performance by executing a single delete query.
+> One SQL statement instead of loading and deleting each entity — much faster. But it **skips JPA cascades and `@PreRemove` callbacks**, and the loaded entities in memory aren't updated.
 
-🤔❓ What is EntityManager
+#### ↳ Follow-up: What is EntityManager
 
 **EntityManager** is the core JPA interface that:
 
@@ -896,7 +897,7 @@ DELETE FROM users WHERE id IN (1,2,3);
 
 > Spring Data JPA internally uses EntityManager.
 
-🤔❓ Difference between @Embeddable and @Embedded
+#### ↳ Follow-up: Difference between @Embeddable and @Embedded
 
 They help you group related fields into a reusable value object
 ➡️ without creating a separate table
@@ -938,6 +939,7 @@ public class User {
 
 ❌ No separate address table
 ✅ Columns are flattened into the entity table
+
 | id | name | street | city | pincode |
 | -- | ---- | ------ | ---- | ------- |
 | 1 | Dev | MG Rd | BLR | 560001 |
@@ -947,7 +949,7 @@ INSERT INTO user (id, name, street, city, pincode)
 VALUES (1, 'Dev', 'MG Rd', 'BLR', '560001');
 ```
 
-🤔❓ When Should You Use DTO?
+#### ↳ Follow-up: When Should You Use DTO?
 
 Use DTO when:
 
@@ -957,12 +959,18 @@ Use DTO when:
 
 🔹 Why we should NOT expose entity directly?
 
-    Exposing entity causes:
+Exposing entity causes:
 
-    ❌ Security risk (sensitive fields exposed)
-    ❌ Lazy loading issues (LazyInitializationException)
-    ❌ Tight coupling between DB & API
-    ❌ Accidental updates to DB fields
+- ❌ Security risk (sensitive fields like `passwordHash` exposed)
+- ❌ Lazy loading issues (`LazyInitializationException`, or N+1 queries while serializing)
+- ❌ Tight coupling between DB & API — renaming a column breaks clients
+- ❌ Accidental updates to DB fields (mass assignment)
+
+```java
+public record UserDto(Long id, String name, String email) {
+    static UserDto from(User u) { return new UserDto(u.getId(), u.getName(), u.getEmail()); }
+}
+```
 
 ---
 
@@ -981,7 +989,7 @@ for (Order o : orders) {
 }
 ```
 
-🤔❓ What happens in DB?
+#### ↳ Follow-up: What happens in DB?
 
 ```sql
 1 query → fetch orders
@@ -1006,11 +1014,13 @@ List<Order> findAllWithItems();
 List<Order> findAll();
 ```
 
-3. Batch Fetching
+3. Batch Fetching — load children for many parents in one `IN (...)` query
 
 ```properties
-hibernate.default_batch_fetch_size=10
+spring.jpa.properties.hibernate.default_batch_fetch_size=50
 ```
+
+> ⚠️ `JOIN FETCH` on a collection **plus** `Pageable` makes Hibernate load everything and paginate **in memory** (warning HHH90003004). For paged lists, page the parents first, then use batch fetching or a second query for the children.
 
 > _N+1 occurs due to lazy loading. I solve it using fetch joins or EntityGraph._
 
@@ -1036,18 +1046,15 @@ JPA is a contract. Hibernate is an implementation.
 
 ### 📝 Answer
 
-Because relationship must map to a **foreign key column** in DB.
+**No.** Without it, JPA uses a default foreign-key column name: `<field name>_<referenced primary key>` — for `private Order order;` that's `order_id`.
 
 ```java
 @ManyToOne
-@JoinColumn(name="order_id")
+@JoinColumn(name = "order_ref", nullable = false)   // custom name + NOT NULL
 private Order order;
 ```
 
-Without `@JoinColumn`:
-
-- Hibernate auto-generates column
-- But you lose control over column name & FK behavior
+Add `@JoinColumn` when the column name differs from the default (existing databases), or to set constraints:
 
 It tells:
 
@@ -1079,7 +1086,7 @@ List<Employee> findHighPaid(@Param("salary") double salary);
 **Native Query Example**
 
 ```java
-@Query(value = "SELECT * FROM employee WHERE salary > ?", nativeQuery = true)
+@Query(value = "SELECT * FROM employee WHERE salary > ?1", nativeQuery = true)   // ?1 = first parameter
 List<Employee> findHighPaid(double salary);
 ```
 
@@ -1114,7 +1121,17 @@ Employee e2 = em.find(Employee.class, 1);
 
 ```properties
 spring.jpa.properties.hibernate.cache.use_second_level_cache=true
+spring.jpa.properties.hibernate.cache.region.factory_class=jcache   # plus a JCache provider such as Ehcache 3
 ```
+
+```java
+@Entity
+@Cacheable                                         // opt this entity in
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+public class Country { ... }
+```
+
+Good for data that is read often and changes rarely (countries, product categories).
 
 **Comparison**
 

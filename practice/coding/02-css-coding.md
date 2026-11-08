@@ -279,7 +279,12 @@ For **single-line truncation**:
   width: 50px;
   height: 26px;
 }
-.switch input { display: none; }
+.switch input {                 /* hidden visually, still focusable and read by screen readers */
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
 
 .slider {
   position: absolute;
@@ -306,9 +311,15 @@ For **single-line truncation**:
 .switch input:checked + .slider::before {
   transform: translateX(24px);
 }
+.switch input:focus-visible + .slider {
+  outline: 2px solid #007bff;     /* keyboard users can see where they are */
+  outline-offset: 2px;
+}
 ```
 
-> 💡 Hides native checkbox, uses `:checked + .slider` to react to state.
+> 💡 The real checkbox is still there (just invisible), so clicking the label, pressing Space and screen readers all work; `:checked + .slider` styles the visible part.
+>
+> ⚠️ **Trap:** `display: none` on the input would remove it from keyboard navigation and screen readers — the switch would only work with a mouse.
 
 ---
 
@@ -353,7 +364,7 @@ For **single-line truncation**:
 <div class="card">
   <span class="badge">PRO</span>
 
-  <img src="https://via.placeholder.com/400x200" alt="profile" />
+  <img src="https://placehold.co/400x200" alt="John Doe" />
 
   <div class="card-body">
     <h2>John Doe</h2>
@@ -425,6 +436,9 @@ body {
 .card-body h2 {
   margin: 0 0 8px;
   font-size: 18px;
+  white-space: nowrap;         /* name stays on one line */
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .bio {

@@ -50,14 +50,23 @@ export const PREREQUISITES: Record<string, string[]> = {
   dsa: [],
   messaging: ["microservices"],
   ai: ["rest-api"],
+  "system-design": ["database/sql", "rest-api"],
+  "design-patterns": ["java"],
+  testing: [],
+  git: [],
+  caching: ["system-design"],
+  networking: [],
+  behavioral: [],
 };
 
 export const TRACKS: Array<{ name: string; description: string; topics: string[] }> = [
   { name: "Frontend", description: "Build user interfaces for the browser.", topics: ["html", "css", "javascript", "typescript", "web-vitals", "react", "angular", "rxjs"] },
   { name: "Backend with Java", description: "Build services with Java and Spring.", topics: ["java", "database/sql", "rest-api", "spring", "spring-security", "microservices", "spring-cloud"] },
   { name: "Backend with Node.js", description: "Build services with JavaScript on the server.", topics: ["javascript", "nodejs", "rest-api", "database/sql", "web-architecture"] },
-  { name: "DevOps and cloud", description: "Ship, run and scale applications.", topics: ["devops", "aws", "microservices", "messaging"] },
-  { name: "Coding interviews and AI", description: "Crack coding rounds and build with AI.", topics: ["dsa", "ai"] },
+  { name: "DevOps and cloud", description: "Ship, run and scale applications.", topics: ["git", "devops", "aws", "microservices", "messaging"] },
+  { name: "System design", description: "Design systems that scale and stay up.", topics: ["networking", "database/sql", "rest-api", "system-design", "caching", "microservices", "messaging"] },
+  { name: "Coding interviews and AI", description: "Crack coding rounds and build with AI.", topics: ["dsa", "design-patterns", "testing", "ai"] },
+  { name: "Interview day", description: "Prepare for the non-technical rounds.", topics: ["behavioral"] },
 ];
 
 const STAGE_NAMES = ["Foundations", "Core skills", "Frameworks and depth", "Specialisation", "Architecture"];
@@ -220,7 +229,8 @@ function splitSkills(text: string): string[] {
 function uncovered(text: string | null, aliases: Record<string, string[]>): string[] {
   if (!text) return [];
   const words = Object.values(aliases).flat();
-  return splitSkills(text).filter(part => !words.some(word => ` ${entityKey(part)} `.includes(` ${entityKey(word)} `)));
+  // "—" means the role has none; it is not a skill.
+  return splitSkills(text).filter(part => part !== "—" && !words.some(word => ` ${entityKey(part)} `.includes(` ${entityKey(word)} `)));
 }
 
 interface RolePlan {
@@ -232,6 +242,9 @@ interface RolePlan {
   missing: string[];
 }
 
+/** Topics every developer needs; on their own they say nothing about a particular role. */
+const GENERIC_TOPICS = new Set(["git", "behavioral"]);
+
 function planRole(role: QuestionEntry, aliases: Record<string, string[]>, covered: Set<string>): RolePlan | null {
   const name = roleName(role);
   const coreText = ["Languages", "Frameworks / Standards", "Technical skills"].map(field => roleField(role, field) ?? "").join(", ");
@@ -239,6 +252,8 @@ function planRole(role: QuestionEntry, aliases: Record<string, string[]>, covere
   const viaTools = topicsIn(roleField(role, "Tools") ?? "", aliases, covered).filter(topic => !direct.includes(topic));
   if (!direct.length && !viaTools.length) return null;
   const core = withPrerequisites(direct.length ? direct : viaTools, covered);
+  // Git or interview skills alone don't make a learning path for a role.
+  if (core.every(topic => GENERIC_TOPICS.has(topic))) return null;
   const missing = ["Languages", "Frameworks / Standards", "Tools"].flatMap(field => uncovered(roleField(role, field), aliases));
   return { role, name, slug: roleSlug(name), core, extra: viaTools.filter(topic => !core.includes(topic)), missing: [...new Set(missing)] };
 }

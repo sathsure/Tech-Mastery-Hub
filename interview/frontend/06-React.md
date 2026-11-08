@@ -31,14 +31,27 @@ function Counter() {
 
 💻 **Code Example**
 
+React doesn't know hooks by name — it remembers them **by call order** (1st `useState`, 2nd `useState`…). A condition can change that order.
+
 ```jsx
-// ✅ Correct
+// ❌ Wrong: when `show` changes, the 2nd hook becomes the 1st
 function MyComponent({ show }) {
-  const [value, setValue] = React.useState(0); // always first hook
-  const [text, setText] = React.useState(""); // always second hook
+  if (show) {
+    const [value, setValue] = React.useState(0);
+  }
+  const [text, setText] = React.useState("");   // reads the wrong slot after show flips
+}
+
+// ✅ Correct: same hooks, same order, every render — put the condition inside
+function MyComponent({ show }) {
+  const [value, setValue] = React.useState(0);
+  const [text, setText] = React.useState("");
+  if (!show) return null;
   // ...
 }
 ```
+
+The `eslint-plugin-react-hooks` rule catches these mistakes.
 
 ---
 
@@ -68,9 +81,11 @@ function MyComponent({ show }) {
 
 ### 📝 Answer
 
-- Keys identify elements between renders to keep state correctly.
-- Bad keys: array index, random values (because they change or don’t reflect item identity).
-- Good keys: stable ID from data.
+- Keys tell React **which item is which** between renders, so each item keeps its own state and DOM node.
+- **Bad keys:**
+  - **Random values** (`Math.random()`) — a new key every render, so every item is destroyed and re-created.
+  - **Array index** when items can be **added, removed or reordered** — after deleting item 0, item 1 gets key 0 and inherits item 0's state (e.g. a typed input value appears in the wrong row).
+- **Good keys:** a stable ID from the data. (Index is acceptable only for static lists that never change order.)
 
 💻 **Code Example**
 
@@ -154,9 +169,9 @@ const handleClick = useCallback(() => {
 
 ### 📝 Answer
 
-- `<React.StrictMode>` helps find side-effect issues.
-- In React 18 dev, React intentionally mounts, unmounts, and re-mounts components to detect unsafe effects.
-- This makes `useEffect` run twice in dev (but not in production).
+- `<React.StrictMode>` helps find side-effect bugs early.
+- In development (React 18+), React intentionally **renders components twice** and **mounts → unmounts → re-mounts** them, so effects without proper cleanup show their bugs (e.g. a subscription opened twice).
+- So `useEffect` runs twice in dev — **never in production**. The fix is a correct cleanup function, not removing StrictMode.
 
 💻 **Code Example**
 
@@ -202,8 +217,8 @@ function onChange(e) {
 
 ### 📝 Answer
 
-- `Suspense` lets you show a fallback while some child “waits” (lazy-loaded component, or data with React 18 libs).
-- The component throws a promise; React shows fallback until it resolves.
+- `Suspense` shows a **fallback** (spinner, skeleton) while something inside it isn't ready yet: a lazy-loaded component, or data loaded with a Suspense-aware tool (React 19 `use(promise)`, React Query, Next.js).
+- When a child isn't ready it "suspends"; React shows the nearest `<Suspense>` fallback and renders the child again once its data/code has arrived.
 
 💻 **Code Example**
 
@@ -499,12 +514,18 @@ function Parent() {
 💻 **Code Example**
 
 ```jsx
+// React 18 and earlier
 const TextInput = React.forwardRef(function TextInput(props, ref) {
   return <input ref={ref} {...props} />;
 });
 
-const ref = useRef();
-<TextInput ref={ref} />;
+// React 19+: ref is a normal prop — forwardRef is no longer needed
+function TextInput({ ref, ...props }) {
+  return <input ref={ref} {...props} />;
+}
+
+const ref = useRef(null);
+<TextInput ref={ref} />;      // parent can now call ref.current.focus()
 ```
 
 ---
@@ -539,8 +560,11 @@ function handleClick() {
 
 ### 📝 Answer
 
-- Use windowing/virtualization (only render visible rows) with libraries like `react-window`, `react-virtualized`.
-- Avoid heavy DOM for off-screen items.
+- Use **windowing/virtualization**: render only the rows on screen (plus a few extra), and swap them as the user scrolls. 10,000 items → ~20 DOM rows.
+- Libraries: `react-window`, `@tanstack/react-virtual`, `react-virtuoso`.
+- Also: paginate or "load more", and memoize row components.
+
+(The example uses the `react-window` v1 API.)
 
 💻 **Code Example**
 
@@ -599,8 +623,9 @@ const onClick = useCallback(() => {
 
 ### 📝 Answer
 
-- `ReactDOM.render` is legacy (React 17).
-- `createRoot` (React 18+) enables concurrent features and strict mode behaviors.
+- `ReactDOM.render` is the old API (React 17). It was deprecated in 18 and **removed in React 19**.
+- `createRoot` (React 18+) enables concurrent features (transitions, Suspense streaming) and automatic batching of all updates.
+- For server-rendered HTML, use `hydrateRoot` instead of the old `ReactDOM.hydrate`.
 
 💻 **Code Example**
 
@@ -736,21 +761,31 @@ const memoItems = useMemo(() => [], []);
 
 ### 📝 Answer
 
-- Use `React.FC` or explicit props type.
-- Type hooks’ return and params.
-- Use generics when needed.
+- Type the **props parameter** directly (the common style today; `React.FC` is optional and no longer adds `children` automatically).
+- Let hooks infer types; give a type only when the start value doesn't say enough (`useState<User | null>(null)`).
+- Use generics for reusable components (a `List<T>`).
 
 💻 **Code Example**
 
 ```tsx
 type ButtonProps = {
-  onClick: () => void;
   label: string;
+  onClick: () => void;
+  variant?: "primary" | "secondary";      // optional prop
+  children?: React.ReactNode;             // declare children explicitly when you accept them
 };
 
-const Button: React.FC<ButtonProps> = ({ onClick, label }) => (
-  <button onClick={onClick}>{label}</button>
-);
+function Button({ label, onClick, variant = "primary" }: ButtonProps) {
+  return <button className={variant} onClick={onClick}>{label}</button>;
+}
+
+const [user, setUser] = useState<User | null>(null);
+const inputRef = useRef<HTMLInputElement>(null);
+
+// Generic component
+function List<T>({ items, render }: { items: T[]; render: (item: T) => React.ReactNode }) {
+  return <ul>{items.map(render)}</ul>;
+}
 ```
 
 ---
@@ -778,23 +813,26 @@ const Settings = React.lazy(() => import("./Settings"));
 
 ### 📝 Answer
 
-- Wrap handler with debounce/throttle (e.g., lodash).
-- Use `useCallback` to keep stable reference.
+- Create the debounced function **once** (with `useMemo`), otherwise every render makes a new one with its own timer and debouncing never happens.
+- **Cancel** it on unmount so a late call doesn't update an unmounted component.
 
 💻 **Code Example**
 
 ```jsx
 import { debounce } from "lodash-es";
 
-const handleSearch = useCallback(
-  debounce((term) => {
-    // API call
-  }, 300),
-  []
-);
+function Search() {
+  const search = useMemo(
+    () => debounce((term) => fetch(`/api/search?q=${encodeURIComponent(term)}`), 300),
+    []
+  );
+  useEffect(() => () => search.cancel(), [search]);   // cleanup
 
-<input onChange={(e) => handleSearch(e.target.value)} />;
+  return <input onChange={(e) => search(e.target.value)} />;
+}
 ```
+
+Alternative without a library: keep the input in state and debounce the **value** with a small `useDebouncedValue(value, 300)` hook (a `setTimeout` in `useEffect` with cleanup).
 
 ---
 
@@ -891,6 +929,43 @@ function Upload() {
 // Dangerous: ensure `sanitizedHtml` is sanitized
 <div dangerouslySetInnerHTML={{ __html: sanitizedHtml }} />;
 ```
+
+---
+
+### ❓ What's new in React 19?
+
+### 📝 Answer
+
+| Feature | What it does |
+|---|---|
+| **Actions** | Pass an `async` function to `<form action={...}>` or `startTransition`; React tracks pending state, errors and resets for you |
+| `useActionState` | State + pending flag for a form action (replaces hand-written `isLoading` flags) |
+| `useOptimistic` | Show the expected result immediately, roll back if the request fails |
+| `use(promise / context)` | Read a promise (with Suspense) or context — and it can be called conditionally |
+| `ref` as a prop | No more `forwardRef` |
+| Document metadata | `<title>` and `<meta>` inside components are moved to `<head>` |
+| Removed APIs | `ReactDOM.render`, `hydrate`, string refs, `propTypes` checks |
+
+```jsx
+function AddTodo() {
+  const [error, submit, isPending] = useActionState(async (prev, formData) => {
+    const res = await fetch("/api/todos", { method: "POST", body: formData });
+    return res.ok ? null : "Could not save";
+  }, null);
+
+  return (
+    <form action={submit}>
+      <input name="title" />
+      <button disabled={isPending}>{isPending ? "Saving…" : "Add"}</button>
+      {error && <p>{error}</p>}
+    </form>
+  );
+}
+```
+
+#### ↳ Follow-up: What is the React Compiler?
+
+↪ A build-time tool (stable since late 2025) that **memoizes components and values automatically**, so most manual `useMemo`, `useCallback` and `React.memo` become unnecessary.
 
 ---
 

@@ -4,7 +4,11 @@
 
 ## 💻 COMPUTE SERVICES
 
-### Core Compute Services (VERY IMPORTANT)
+### ❓ What are the main AWS Compute services (EC2, Lambda, Auto Scaling, Elastic Beanstalk, ECS, EKS, Fargate)?
+
+### 📝 Answer
+
+**Core Compute Services (VERY IMPORTANT)**
 
 | Service                          | Explanation                                                                                                        |
 | -------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
@@ -15,7 +19,7 @@
 | **AWS Elastic Beanstalk**        | Platform as a Service (PaaS) for deploying applications without managing infrastructure.                           |
 | **Amazon Lightsail**             | Simplified compute for small apps, websites, or beginners with predictable pricing.                                |
 
-### Container & Modern Compute (High-Level Awareness)
+**Container & Modern Compute (High-Level Awareness)**
 
 | Service            | Explanation                                                                            |
 | ------------------ | -------------------------------------------------------------------------------------- |
@@ -24,14 +28,14 @@
 | **AWS Fargate**    | Serverless compute engine for containers (used with ECS/EKS).                          |
 | **AWS App Runner** | Fully managed service to run containerized web apps without infrastructure management. |
 
-### Batch & Specialized Compute (Basic Recognition Only)
+**Batch & Specialized Compute (Basic Recognition Only)**
 
 | Service               | Explanation                                                      |
 | --------------------- | ---------------------------------------------------------------- |
 | **AWS Batch**         | Runs batch computing jobs at any scale without managing servers. |
 | **EC2 Image Builder** | Automates creation of secure VM images (AMI).                    |
 
-### Hybrid & Edge Compute (Conceptual Awareness)
+**Hybrid & Edge Compute (Conceptual Awareness)**
 
 | Service                 | Explanation                                          |
 | ----------------------- | ---------------------------------------------------- |
@@ -43,7 +47,9 @@
 
 ---
 
-### Trick Questions
+### ❓ AWS Compute: which service fits each scenario?
+
+### 📝 Answer
 
 1️⃣ A company needs virtual servers in the cloud with full control over OS and software → **Amazon EC2**
 
@@ -89,6 +95,10 @@
 
 ## 🗄️ STORAGE SERVICES
 
+### ❓ What are the main AWS Storage services (S3, Glacier, EBS, EFS, FSx)?
+
+### 📝 Answer
+
 | **Service**                          | **Storage Type**        | **Explanation**                                                                                                                                                                  |
 | ------------------------------------ | ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Amazon S3**                        | Object Storage          | Scalable object storage used to store files such as images, videos, backups, logs, and static website content. Data is stored as objects in buckets and accessed via HTTP/HTTPS. |
@@ -102,7 +112,9 @@
 
 ![AWS_Storage Image](/src/assets/aws-storage.png)
 
-### Trick Questions
+### ❓ AWS Storage: which service fits each scenario?
+
+### 📝 Answer
 
 1️⃣ A company needs highly durable object storage to store images and videos → **Amazon S3**
 
@@ -124,11 +136,11 @@
 
 🔟. A high-performance workload needs shared file storage with millisecond latency → **Amazon EFS**
 
-1️⃣1️⃣ A company wants storage that provides 11 nines (99999999999%) durability → **Amazon S3**
+1️⃣1️⃣ A company wants storage that provides 11 nines (99.999999999%) durability → **Amazon S3**
 
 1️⃣2️⃣ Temporary storage is required only while an EC2 instance is running → **Instance Store**
 
-1️⃣3️⃣ A workload needs persistent storage that survives EC2 termination → **Amazon EBS**
+1️⃣3️⃣ A workload needs persistent storage that survives EC2 termination → **Amazon EBS** (a data volume; the **root** volume is deleted on termination by default — `DeleteOnTermination`)
 
 1️⃣4️⃣ Data must be stored for regulatory compliance for 7–10 years → **Amazon S3 Glacier Deep Archive**
 
@@ -147,6 +159,10 @@
 ---
 
 ## 🗄️ AWS DATABASE SERVICES
+
+### ❓ What are the main AWS Database services (RDS, Aurora, DynamoDB, ElastiCache, Redshift)?
+
+### 📝 Answer
 
 1. Relational Databases (SQL)
 
@@ -195,7 +211,9 @@
 
 ![AWS_Database Image](/src/assets/aws-database.png)
 
-### Trick Questions
+### ❓ AWS Database: which service fits each scenario?
+
+### 📝 Answer
 
 1️⃣ A business needs a fully managed relational database with automated backups and patching → **Amazon RDS**
 
@@ -241,6 +259,10 @@
 
 ## 🌐 NETWORKING & CONTENT DELIVERY
 
+### ❓ What are the main AWS Networking & Content Delivery services (VPC, Route 53, CloudFront, API Gateway)?
+
+### 📝 Answer
+
 ![AWS_DNS Image](/src/assets/aws-dns.png)
 
 | **Service**                      | **Explanation**                                                                                                                                     |
@@ -262,7 +284,9 @@
 
 ![AWS_Network Image](/src/assets/aws-network.png)
 
-### Trick Questions
+### ❓ AWS Networking & Content Delivery: which service fits each scenario?
+
+### 📝 Answer
 
 1️⃣ A company needs a DNS service to route users to applications globally → **Amazon Route 53**
 
@@ -308,6 +332,10 @@
 
 ## 🔐 SECURITY, IDENTITY & COMPLIANCE
 
+### ❓ What are the main AWS Security, Identity & Compliance services (IAM, KMS, Shield, WAF, GuardDuty)?
+
+### 📝 Answer
+
 | **Service**                                  | **Explanation**                                                                                                                  |
 | -------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
 | **AWS Identity and Access Management (IAM)** | Core AWS service to **manage users, groups, roles, and permissions**. Uses policies written in JSON to define _who can do what_. |
@@ -328,7 +356,9 @@
 
 ![AWS_Compliance Image](/src/assets/aws-compliance.png)
 
-### Trick Questions
+### ❓ AWS Security, Identity & Compliance: which service fits each scenario?
+
+### 📝 Answer
 
 1️⃣ A company needs to control who can access AWS resources → **IAM**
 
@@ -374,6 +404,10 @@
 
 ## 🛠️ MANAGEMENT & MONITORING
 
+### ❓ What are the main AWS Management & Monitoring services (CloudWatch, CloudTrail, Config, Systems Manager)?
+
+### 📝 Answer
+
 | **Service**                   | **Explanation**                                                                                                                                                                                   |
 | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Amazon CloudWatch**         | Collects **metrics, logs, and alarms** from AWS resources like EC2, Lambda, RDS, etc. Used to **monitor performance and health** of AWS resources and trigger alerts when thresholds are crossed. |
@@ -388,7 +422,9 @@
 | **AWS Well-Architected Tool** | Reviews workloads against AWS **best-practice pillars**. Helps identify **architectural risks** in cost, security, reliability, etc.                                                              |
 | **AWS Auto Scaling**          | Automatically adjusts capacity across services (EC2, ECS, DynamoDB). Ensures **availability and cost efficiency** during demand changes.                                                          |
 
-### Trick Questions
+### ❓ AWS Management & Monitoring: which service fits each scenario?
+
+### 📝 Answer
 
 1️⃣ A company needs to monitor CPU, memory, and create alarms for AWS resources → **Amazon CloudWatch**
 
@@ -432,7 +468,11 @@
 
 ---
 
-### 💰 PRICING & COST MANAGEMENT
+## 💰 PRICING & COST MANAGEMENT
+
+### ❓ What are the main AWS Pricing & Cost Management services (Cost Explorer, Budgets, Pricing Calculator, Savings Plans)?
+
+### 📝 Answer
 
 | **Service**                          | **Explanation**                                                                                                                                                                                                                             |
 | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -445,7 +485,9 @@
 
 ![AWS_Pricing Image](/src/assets/aws-pricing.png)
 
-### Trick Questions
+### ❓ AWS Pricing & Cost Management: which service fits each scenario?
+
+### 📝 Answer
 
 1️⃣ A company wants to estimate monthly AWS costs before deploying resources → **AWS Pricing Calculator**
 
@@ -491,7 +533,11 @@
 
 ## 🚀 DEPLOYMENT & MIGRATION
 
-### 📦 DEPLOYMENT SERVICES (Application & Infrastructure Deployment)
+### ❓ What are the main AWS Deployment & Migration services?
+
+### 📝 Answer
+
+**📦 DEPLOYMENT SERVICES (Application & Infrastructure Deployment)**
 
 | **Service**               | **Explanation**                                                                                                      |
 | ------------------------- | -------------------------------------------------------------------------------------------------------------------- |
@@ -501,7 +547,11 @@
 | **AWS CodePipeline**      | Continuous Integration and Continuous Delivery (CI/CD) service to automate build, test, and deploy workflows.        |
 | **AWS CodeBuild**         | Fully managed build service to compile source code, run tests, and produce deployable artifacts.                     |
 
-### 🧭 MIGRATION PLANNING & DISCOVERY
+## 🧭 MIGRATION PLANNING & DISCOVERY
+
+### ❓ What are the main AWS Migration Planning & Discovery services?
+
+### 📝 Answer
 
 | **Service**                           | **Explanation**                                                                                  |
 | ------------------------------------- | ------------------------------------------------------------------------------------------------ |
@@ -509,20 +559,32 @@
 | **AWS Application Discovery Service** | Collects on-premises server and application data to assist with migration planning.              |
 | **AWS Migration Evaluator**           | Analyzes on-premises environments to estimate migration costs and right-size AWS resources.      |
 
-### 🖥️ APPLICATION & SERVER MIGRATION
+## 🖥️ APPLICATION & SERVER MIGRATION
+
+### ❓ What are the main AWS Application & Server Migration services?
+
+### 📝 Answer
 
 | **Service**                                 | **Explanation**                                                                             |
 | ------------------------------------------- | ------------------------------------------------------------------------------------------- |
 | **AWS Application Migration Service (MGN)** | Lift-and-shift service to migrate physical or virtual servers to AWS with minimal downtime. |
 | **AWS Elastic Disaster Recovery**           | Provides continuous replication for fast recovery and disaster recovery migrations to AWS.  |
 
-### 🗄️ DATABASE MIGRATION
+## 🗄️ DATABASE MIGRATION
+
+### ❓ What are the main AWS Database Migration services?
+
+### 📝 Answer
 
 | **Service**                              | **Explanation**                                                                                       |
 | ---------------------------------------- | ----------------------------------------------------------------------------------------------------- |
 | **AWS Database Migration Service (DMS)** | Migrates databases to AWS with minimal downtime, supporting homogeneous and heterogeneous migrations. |
 
-### 📦 DATA TRANSFER (ONLINE & HYBRID)
+## 📦 DATA TRANSFER (ONLINE & HYBRID)
+
+### ❓ What are the main AWS Data Transfer services?
+
+### 📝 Answer
 
 | **Service**             | **Explanation**                                                                              |
 | ----------------------- | -------------------------------------------------------------------------------------------- |
@@ -534,7 +596,9 @@
 
 ![AWS_Migration Image](/src/assets/aws-migration.png)
 
-### Trick Questions
+### ❓ AWS Deployment & Migration: which service fits each scenario?
+
+### 📝 Answer
 
 1️⃣ A company wants to automatically deploy code to EC2 and on-prem servers → **AWS CodeDeploy**
 
@@ -568,7 +632,11 @@
 
 ---
 
-### 📦 APPLICATION INTEGRATION
+## 📦 APPLICATION INTEGRATION
+
+### ❓ What are the main AWS Application Integration services (SQS, SNS, EventBridge, Step Functions)?
+
+### 📝 Answer
 
 | **Service**                                  | **Explanation**                                                                                                                                                                                                                                                            |
 | -------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -581,7 +649,9 @@
 
 ![AWS_Integration Image](/src/assets/aws-integration.png)
 
-### Trick Questions
+### ❓ AWS Application Integration: which service fits each scenario?
+
+### 📝 Answer
 
 1️⃣ An application needs to decouple microservices using a fully managed message queue → **Amazon SQS**
 
@@ -611,7 +681,11 @@
 
 ---
 
-### 📊 ANALYTICS (FOUNDATION LEVEL)
+## 📊 ANALYTICS (FOUNDATION LEVEL)
+
+### ❓ What are the main AWS Analytics services (Athena, Kinesis, Glue, QuickSight)?
+
+### 📝 Answer
 
 | **Service**                      | **Explanation**                                                                                                                                                                                                                           |
 | -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -627,7 +701,9 @@
 
 ![AWS_Analytics Image](/src/assets/aws-analytics.png)
 
-### Trick Questions
+### ❓ AWS Analytics: which service fits each scenario?
+
+### 📝 Answer
 
 1️⃣ A business needs to visualize data using interactive dashboards without managing infrastructure → **Amazon QuickSight**
 
@@ -661,7 +737,11 @@
 
 ---
 
-### 🤖 AI & MACHINE LEARNING
+## 🤖 AI & MACHINE LEARNING
+
+### ❓ What are the main AWS AI & Machine Learning services (SageMaker, Bedrock, Rekognition, Comprehend)?
+
+### 📝 Answer
 
 | **Service**               | **Explanation**                                                                                                            |
 | ------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
@@ -681,7 +761,9 @@
 
 ![AWS_AI_ML Image](/src/assets/aws-ai-ml.png)
 
-### Trick Questions
+### ❓ AWS AI & Machine Learning: which service fits each scenario?
+
+### 📝 Answer
 
 1️⃣ A company wants to build, train, and deploy ML models without managing servers → **Amazon SageMaker**
 

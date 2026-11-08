@@ -1,59 +1,53 @@
-## 5️⃣ Exception Handling – Senior Strategy
+# 🌐 REST API & Exception Handling (Spring Boot)
+
+## Exception Handling
 
 ### ❓ How do you design exception handling in large Java applications?
 
 ### 📝 Answer
 
-1️⃣ **Layered Exceptions (Don’t leak low-level errors)**
+Three simple rules:
 
-Wrap technical exceptions into meaningful domain exceptions.
+1. **Throw meaningful exceptions** — wrap low-level errors (SQL, IO) in business exceptions so callers don't see database details.
+2. **Handle them in one place** — a global `@RestControllerAdvice`, not try/catch in every controller.
+3. **Return a consistent error shape** with the right HTTP status; **log** the details, never send stack traces to clients.
 
 ```java
+// 1. Business exception
+public class ResourceNotFoundException extends RuntimeException {
+    public ResourceNotFoundException(String message) { super(message); }
+}
+
+// Wrapping a technical error
 try {
     orderRepository.save(order);
 } catch (DataAccessException e) {
-    throw new OrderPersistenceException("Unable to save order", e);
+    throw new OrderPersistenceException("Unable to save order", e);   // keep the cause for logs
 }
-```
 
-✔ Keeps DB details hidden
-✔ Improves readability
-
-2️⃣ **Custom Exceptions**
-
-Create clear business exceptions.
-
-```java
-public class ResourceNotFoundException extends RuntimeException {
-    public ResourceNotFoundException(String message) {
-        super(message);
-    }
-}
-```
-
-3️⃣ **Global Exception Handling (Centralized)**
-
-Use `@RestControllerAdvice` to handle everything in one place.
-
-```java
+// 2 + 3. One global handler
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<String> handleNotFound(ResourceNotFoundException ex) {
-        return ResponseEntity.status(404).body(ex.getMessage());
+    public ProblemDetail notFound(ResourceNotFoundException ex) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handleGeneric(Exception ex) {
-        return ResponseEntity.status(500).body("Internal Server Error");
+    public ProblemDetail unexpected(Exception ex) {
+        log.error("Unexpected error", ex);                       // full details in the logs
+        return ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, "Something went wrong");
     }
 }
 ```
 
-✔ Map proper HTTP status codes
-✔ Never expose stack trace
-✔ Log internally
+`ProblemDetail` (Spring 6 / Boot 3) produces the standard RFC 9457 JSON error format:
+
+```json
+{ "type": "about:blank", "title": "Not Found", "status": 404, "detail": "User 42 not found", "instance": "/users/42" }
+```
 
 ---
 
@@ -61,166 +55,32 @@ public class GlobalExceptionHandler {
 
 ### 📝 Answer
 
-**Checked exceptions**
-Exceptions that the Java compiler checks at **compile time**.
-If a method throws a checked exception, the programmer must either handle it using a **try-catch block** or declare it in the method signature using the `throws` keyword; otherwise, the code will not compile.
+**The difference:** the compiler **forces** you to handle or declare a **checked** exception; it doesn't for an **unchecked** one. Both happen at runtime.
 
-Examples: IOException, SQLException, FileNotFoundException, ClassNotFoundException.
+| Checked | Unchecked |
+|---|---|
+| Extends `Exception` (not `RuntimeException`) | Extends `RuntimeException` |
+| Must `catch` it or declare `throws` | No compiler check |
+| `IOException`, `SQLException`, `ClassNotFoundException` | `NullPointerException`, `IllegalArgumentException`, `ArithmeticException` |
+| For problems a caller can **reasonably recover** from | For **programming errors** and business rule violations |
 
 ```java
-try {
-    throw new Exception("Checked exception");
-} catch (Exception e) {
-    // must be handled
-}
+void readFile() throws IOException { ... }        // checked: callers must deal with it
 
-// or
-
-void checkedMethod() throws Exception { // must be declared using throws
-    throw new Exception("Checked exception");
+void setAge(int age) {
+    if (age < 0) throw new IllegalArgumentException("age must be >= 0");   // unchecked
 }
 ```
 
-**Unchecked exceptions**
-Exceptions that occurs at **runtime**.
-Examples: NullPointerException, ArrayIndexOutOfBoundsException, ArithmeticException (e.g., division by zero), and IllegalArgumentException
+**Strategy in a Spring app:**
 
-```java
-void uncheckedMethod() {
-    throw new RuntimeException("Unchecked exception");
-    // any code here is NEVER executed
-}
-```
+- Use **unchecked custom exceptions** for business errors (`OrderNotFoundException`) — they don't clutter every method signature, and a global handler turns them into HTTP responses.
+- **Wrap checked exceptions** from libraries at the boundary into unchecked ones, keeping the cause.
+- Catch an exception only where you can **do something** (retry, fallback, add context) — never catch and ignore.
 
----
+#### ↳ Follow-up: Why does `@Transactional` matter here?
 
-### ❓ Important HTTP Status Codes to Know
-
-### 📝 Answer
-
-**1xx – Informational**
-
-- `100` Continue
-
-**2xx – Success**
-
-- `200` OK
-- `201` Created
-- `204` No Content
-
-**3xx – Redirection**
-
-- `301` Moved Permanently
-- `302` Found
-- `304` Not Modified
-
-**4xx – Client Errors**
-
-- `400` Bad Request
-- `401` Unauthorized
-- `403` Forbidden
-- `404` Not Found
-- `409` Conflict
-- `429` Too Many Requests
-
-**5xx – Server Errors**
-
-- `500` Internal Server Error
-- `502` Bad Gateway
-- `503` Service Unavailable
-- `504` Gateway Timeout
-
----
-
-### ❓ If I replace GET with PUT, can I still fetch records?
-
-### 📝 Answer
-
-Technically yes — but **architecturally wrong**.
-
-- `GET` → Used to **fetch** data (safe, idempotent)
-- `PUT` → Used to **update/replace** data (idempotent but not safe)
-
-If you replace:
-
-```java
-@GetMapping("/users")
-```
-
-with
-
-```java
-@PutMapping("/users")
-```
-
-You can still return data — but:
-
-- Violates REST standards
-- Caching won’t work correctly
-- Proxies/CDN may block it
-- Semantically incorrect
-
----
-
-### ❓ Can we get Request Body in GET?
-
-### 📝 Answer
-
-🚫 Officially → GET should NOT have body.
-
-HTTP spec doesn’t forbid it completely, but:
-
-- Most servers ignore it
-- Spring does not bind it by default
-- Many proxies drop it
-
-If you try:
-
-```java
-@GetMapping("/test")
-public String test(@RequestBody User user)
-```
-
-You may get:
-
-```
-HttpMessageNotReadableException
-```
-
-👉 Proper way: Use query params:
-
-```java
-@GetMapping("/test")
-public String test(@RequestParam String name)
-```
-
----
-
-### ❓ Without @Controller, can we receive API?
-
-### 📝 Answer
-
-Yes ✅
-
-1.  Use `@RestController`
-
-(Combination of `@Controller + @ResponseBody`)
-
-2.  Functional Routing (Spring WebFlux)
-
-```java
-@Bean
-RouterFunction<ServerResponse> route() {
-   return RouterFunctions.route(GET("/hello"),
-       req -> ServerResponse.ok().bodyValue("Hi"));
-}
-```
-
-3.  Servlet (low level)
-
-Implement `HttpServlet`.
-
-👉 So yes — Controller is common way, but not only way.
+↪ By default Spring rolls back only on **unchecked** exceptions. A checked exception commits the transaction unless you set `rollbackFor = Exception.class`.
 
 ---
 
@@ -228,29 +88,101 @@ Implement `HttpServlet`.
 
 ### 📝 Answer
 
-Use:
+Three options, from most to least common:
 
-👉 `@ControllerAdvice`
+1. **`@RestControllerAdvice` + `@ExceptionHandler`** — one class maps each exception to a status (see above).
+2. **`@ResponseStatus` on the exception class** — simplest for fixed cases:
+   ```java
+   @ResponseStatus(HttpStatus.NOT_FOUND)
+   public class UserNotFoundException extends RuntimeException { ... }
+   ```
+3. **`ResponseStatusException`** — throw a status directly in rare one-off cases:
+   ```java
+   throw new ResponseStatusException(HttpStatus.CONFLICT, "Email already used");
+   ```
+
+Controllers then just return the happy-path result; errors are handled centrally.
+
+---
+
+## HTTP & REST
+
+### ❓ Important HTTP Status Codes to Know
+
+### 📝 Answer
+
+| Code | Meaning | Typical use |
+|---|---|---|
+| **200** OK | Success with a body | GET, PUT |
+| **201** Created | New resource created | POST (add a `Location` header) |
+| **204** No Content | Success, no body | DELETE |
+| **301** Moved Permanently | URL changed for good | Old URLs |
+| **302** Found | Temporary redirect | Login redirects |
+| **304** Not Modified | Use your cached copy | ETag / If-None-Match |
+| **400** Bad Request | Invalid input | Validation errors |
+| **401** Unauthorized | Not logged in / bad token | Missing or expired JWT |
+| **403** Forbidden | Logged in, but not allowed | User calling an admin API |
+| **404** Not Found | Resource doesn't exist | Unknown ID |
+| **409** Conflict | Clashes with current state | Duplicate email, version conflict |
+| **422** Unprocessable Content | Well-formed but breaks a business rule | Some teams use it for validation |
+| **429** Too Many Requests | Rate limit hit | API throttling |
+| **500** Internal Server Error | Unexpected server bug | Unhandled exception |
+| **502** Bad Gateway | Proxy got a bad answer from upstream | Backend crashed behind a gateway |
+| **503** Service Unavailable | Temporarily down/overloaded | Maintenance, no healthy instances |
+| **504** Gateway Timeout | Upstream didn't answer in time | Slow backend behind a gateway |
+
+**Remember:** 4xx = the **client** must change something; 5xx = the **server** failed.
+
+---
+
+### ❓ If I replace GET with PUT, can I still fetch records?
+
+### 📝 Answer
+
+Technically **yes** — the method just returns data. But it's **wrong for REST**:
+
+- `GET` is **safe** (changes nothing) and **cacheable**; browsers, CDNs and proxies rely on that.
+- `PUT` means "**replace** this resource" — clients, caches and API tools treat it as a write.
+
+Using PUT to read loses caching, confuses API consumers and documentation (OpenAPI), and may trigger CSRF protection meant for writes. Use the method that matches the action.
+
+---
+
+### ❓ Can we get Request Body in GET?
+
+### 📝 Answer
+
+**Avoid it.** The HTTP spec (RFC 9110) says a body on GET has **no defined meaning**, so different tools treat it differently:
+
+- Browsers' `fetch()` / `XMLHttpRequest` **can't send** a GET body at all.
+- Some proxies, CDNs and HTTP clients **drop** it; caches ignore it (so results may be cached wrongly).
+- Spring MVC will actually bind `@RequestBody` on a GET **if a body arrives**, but if it's missing you get `HttpMessageNotReadableException: Required request body is missing`.
+
+✅ **Use query parameters** for filters:
 
 ```java
-@RestControllerAdvice
-public class GlobalExceptionHandler {
-
-   @ExceptionHandler(Exception.class)
-   public ResponseEntity<String> handle(Exception ex) {
-       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-               .body("Error occurred");
-   }
-}
+@GetMapping("/users")
+public List<User> search(@RequestParam String name, @RequestParam(defaultValue = "0") int page) { ... }
 ```
 
-This avoids writing status in every controller.
+For very complex searches, use `POST /users/search` with a JSON body.
 
 ---
 
----
+### ❓ Without @Controller, can we receive API?
 
-# 🟢 ANGULAR ROUND
+### 📝 Answer
 
----
+Yes. `@Controller` is the most common way, but not the only one:
 
+1. **`@RestController`** — `@Controller` + `@ResponseBody`: return values are written as JSON. (Still a controller, just the REST flavour.)
+2. **Functional endpoints** — routes defined as beans, available in both **WebFlux** and **Spring MVC** (`RouterFunctions`):
+   ```java
+   @Bean
+   RouterFunction<ServerResponse> routes() {
+       return RouterFunctions.route()
+           .GET("/hello", req -> ServerResponse.ok().body("Hi"))
+           .build();
+   }
+   ```
+3. **A plain servlet** — extend `HttpServlet` and register it (low level, rarely needed).

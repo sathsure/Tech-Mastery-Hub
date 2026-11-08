@@ -102,18 +102,32 @@ The file read happens in the background, and Node.js continues executing other r
 
 ⚠️ Microtasks vs Macrotasks
 
-- Promise callbacks (`then`, `catch`) are executed as **microtasks**.
-- Microtasks always run **before** the event loop proceeds to the next phase.
-- Timers and I/O callbacks are **macrotasks**.
+- `process.nextTick` callbacks run **first**, then Promise callbacks (`then`, `catch`, code after `await`) — both are **microtasks**.
+- Microtasks run **as soon as the current code finishes**, before the event loop moves to its next callback or phase.
+- Timers, I/O callbacks and `setImmediate` are **macrotasks** (one callback per turn, from their phase).
 
 ```js
 setTimeout(() => console.log("timeout"), 0);
+setImmediate(() => console.log("immediate"));
 Promise.resolve().then(() => console.log("promise"));
+process.nextTick(() => console.log("nextTick"));
+console.log("sync");
 ```
 
-**Output explanation:**
+**Output:**
 
-- `promise` executes first because microtasks have higher priority.
+```text
+sync
+nextTick
+promise
+timeout      ← these two can swap when run from the main script
+immediate
+```
+
+- Synchronous code runs first, then **all** microtasks (`nextTick` before promises), then the event loop phases.
+- `setTimeout(…, 0)` vs `setImmediate`: from the main script the order depends on process timing. **Inside an I/O callback**, `setImmediate` always runs first, because the check phase comes right after the poll phase.
+
+> ⚠️ A recursive `process.nextTick` (or endless promise chain) **starves** the event loop — I/O never gets a turn.
 
 ---
 
@@ -121,9 +135,18 @@ Promise.resolve().then(() => console.log("promise"));
 
 ### 📝 Answer
 
-- JavaScript execution in Node.js runs on a single main thread.
-- Internally, Node.js uses a **thread pool** for CPU-intensive or blocking operations.
-- This hybrid model allows high concurrency without blocking the event loop.
+**Your JavaScript runs on one main thread — but Node.js itself uses more threads.**
+
+- **Network I/O** (HTTP, sockets, database drivers) uses the operating system's async features (epoll, kqueue, IOCP) — **no extra threads** needed.
+- **libuv's thread pool** (4 threads by default, `UV_THREADPOOL_SIZE` up to 1024) runs work the OS can't do asynchronously: **file system**, `dns.lookup`, **crypto** (`pbkdf2`, `scrypt`), **zlib** compression.
+- V8 also uses background threads for garbage collection and compiling.
+- **Worker threads** let you run your own JavaScript in parallel when you need it.
+
+So one slow CPU loop in your code blocks every request, while thousands of waiting network calls don't.
+
+#### ↳ Follow-up: Why can many `bcrypt.hash` calls slow down file reads?
+
+↪ Both use the same small libuv thread pool (4 threads by default). Heavy crypto fills it, and file system work waits in line.
 
 ---
 
@@ -216,7 +239,7 @@ Node.js provides four main types of streams:
 
 **Follow-up questions:**
 
-1️⃣ Why Are Streams Important in Node.js?
+#### ↳ Follow-up: Why Are Streams Important in Node.js?
 
 📌 Memory Efficiency
 
@@ -288,6 +311,10 @@ const readStream = fs.createReadStream("largeFile.txt");
 const writeStream = fs.createWriteStream("copy.txt");
 
 readStream.pipe(writeStream);
+
+// Better in production: pipeline() forwards errors and closes every stream
+import { pipeline } from "stream/promises";
+await pipeline(fs.createReadStream("largeFile.txt"), fs.createWriteStream("copy.txt"));
 ```
 
 Benefits:
@@ -296,7 +323,7 @@ Benefits:
 - Low memory usage
 - Highly scalable
 
-2️⃣ What Is a Buffer in Node.js?
+#### ↳ Follow-up: What Is a Buffer in Node.js?
 
 A `Buffer` is a temporary memory allocation used to store **binary data entirely in memory**.
 
@@ -329,7 +356,7 @@ console.log(buffer.toString());
 
 This works well because the data is small and controlled.
 
-3️⃣ Difference Between Streams and Buffer
+**Difference Between Streams and Buffer**
 
 | Aspect        | Streams                   | Buffer              |
 | ------------- | ------------------------- | ------------------- |
@@ -339,7 +366,7 @@ This works well because the data is small and controlled.
 | Use Case      | Large files, network data | Small binary data   |
 | Blocking Risk | Non-blocking              | Can block           |
 
-6️⃣ When to Use Streams vs Buffer
+**When to Use Streams vs Buffer**
 
 ✅ Use Streams When:
 
@@ -354,7 +381,7 @@ This works well because the data is small and controlled.
 - Entire payload is required at once
 - Processing is quick and controlled
 
-7️⃣ How does backpressure work in Node.js streams?
+#### ↳ Follow-up: How does backpressure work in Node.js streams?
 
 Streams handle **backpressure**, which means they automatically regulate the flow of data based on the consumer’s ability to process it.
 
@@ -383,9 +410,24 @@ In contrast, `Buffer` is just a memory container and provides **no built-in flow
 - **Parsing Middleware:** `express.json()`, `express.urlencoded()`
 - **Static Files:** `express.static()`
 
+A middleware is a function `(req, res, next)`. It can read or change the request, end the response, or call `next()` to pass control on. **Order matters** — they run in the order you register them.
+
 ```js
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json());                          // parse JSON bodies
+app.use(express.urlencoded({ extended: true }));  // parse form bodies
+
+// custom middleware: log every request and its duration
+app.use((req, res, next) => {
+  const start = Date.now();
+  res.on("finish", () => console.log(req.method, req.url, res.statusCode, `${Date.now() - start}ms`));
+  next();                                         // forget this and the request hangs
+});
+
+// error-handling middleware has 4 parameters and goes last
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(500).json({ message: "Something went wrong" });
+});
 ```
 
 ---
@@ -394,9 +436,22 @@ app.use(express.urlencoded({ extended: true }));
 
 ### 📝 Answer
 
-- Environment variables separate configuration from code.
-- This allows different values for development, staging, and production.
-- Tools like `dotenv` are commonly used.
+Keep settings that change per environment (URLs, ports, keys) **outside the code** in environment variables, so the same build runs in dev, staging and production.
+
+```js
+// .env (local only — never commit it)
+// PORT=3000
+// DB_URL=postgres://localhost/shop
+
+// Node 20.6+ can load it without a library: node --env-file=.env app.js
+// or with the dotenv package: import "dotenv/config";
+
+const port = Number(process.env.PORT ?? 3000);
+if (!process.env.DB_URL) throw new Error("DB_URL is required");   // fail fast on missing config
+```
+
+- Validate config at startup (e.g. with `zod`) so a typo fails immediately, not at the first request.
+- In production, real **secrets** come from a secret manager (AWS Secrets Manager, Vault) or the platform's secret store, not from a `.env` file in the image.
 
 ---
 
@@ -404,9 +459,14 @@ app.use(express.urlencoded({ extended: true }));
 
 ### 📝 Answer
 
-- Load balancing distributes incoming requests across multiple application instances.
-- This improves availability, scalability, and fault tolerance.
-- Tools include NGINX, PM2 cluster mode, and cloud load balancers.
+One Node.js process uses **one CPU core** for JavaScript. To use all cores and survive crashes, run **several instances** and spread requests across them.
+
+| Level | How |
+|---|---|
+| One machine | **PM2 cluster mode** (`pm2 start app.js -i max`) or Node's `cluster` module — one worker per core sharing the same port |
+| Many machines / containers | **NGINX**, a cloud load balancer (AWS ALB) or Kubernetes Services in front of the instances |
+
+Because any instance can get the next request, keep the app **stateless**: sessions in Redis or JWTs, files in S3 — not in process memory.
 
 ---
 
@@ -414,16 +474,22 @@ app.use(express.urlencoded({ extended: true }));
 
 ### 📝 Answer
 
-- Routing maps HTTP requests to handlers.
-- Route parameters identify specific resources.
-- Query parameters modify request behavior.
+- **Routing** maps a method + path to a handler.
+- **Route params** are part of the path and **identify** a resource: `/users/42` → `req.params.id === "42"`.
+- **Query params** come after `?` and **filter, sort or paginate**: `/users?page=2&role=admin`.
 
 ```js
-app.get("/users/:id", (req, res) => {
-  req.params.id;
-  req.query.page;
+// GET /users/42/orders?status=paid&page=2
+app.get("/users/:id/orders", (req, res) => {
+  const userId = req.params.id;          // "42"
+  const { status, page = "1" } = req.query;   // "paid", "2" — always strings
+  res.json({ userId, status, page: Number(page) });
 });
 ```
+
+> ⚠️ Both arrive as **strings** — convert and validate them (`Number(...)`, a schema validator) before use.
+
+Group routes with `express.Router()` (e.g. `app.use("/users", usersRouter)`).
 
 ---
 
@@ -431,8 +497,12 @@ app.get("/users/:id", (req, res) => {
 
 ### 📝 Answer
 
-- Profiling identifies CPU bottlenecks and memory leaks.
-- Tools include Chrome DevTools, Clinic.js, and Node’s inspector.
+Profiling finds **where time and memory go**.
+
+- **CPU:** `node --cpu-prof app.js` writes a profile you open in Chrome DevTools, or `node --inspect app.js` and record live in `chrome://inspect`. Look for wide "flame" bars — functions that take the most time.
+- **Memory leaks:** take two **heap snapshots** a few minutes apart (DevTools → Memory) and compare which objects keep growing.
+- **Event loop delay:** `perf_hooks.monitorEventLoopDelay()` — high delay means something blocks the main thread.
+- **Tools:** Clinic.js (`clinic doctor`, `clinic flame`), `0x` flame graphs, and APM tools (Datadog, New Relic) in production.
 
 ---
 
@@ -440,9 +510,20 @@ app.get("/users/:id", (req, res) => {
 
 ### 📝 Answer
 
-- Logging captures application behavior over time.
-- Libraries like Winston and Pino support log levels and persistence.
-- Logging is critical for debugging and monitoring.
+In production, logs must be **structured, levelled and collected centrally**.
+
+- Use a logger (**Pino** — very fast — or Winston), not `console.log`.
+- Write **JSON** lines to stdout; a collector (CloudWatch, ELK, Loki, Datadog) ships and indexes them.
+- Use **levels** (`error`, `warn`, `info`, `debug`) and set the level per environment.
+- Add a **request/correlation ID** to every line, so one request can be traced across services.
+- **Never log** passwords, tokens or card numbers (use redaction).
+
+```js
+import pino from "pino";
+const log = pino({ level: process.env.LOG_LEVEL ?? "info", redact: ["req.headers.authorization"] });
+log.info({ orderId: 42, ms: 120 }, "order created");
+// {"level":30,"time":...,"orderId":42,"ms":120,"msg":"order created"}
+```
 
 ---
 
@@ -450,9 +531,21 @@ app.get("/users/:id", (req, res) => {
 
 ### 📝 Answer
 
-- Node.js uses V8’s garbage collector.
-- Unused memory is reclaimed automatically.
-- Memory leaks occur due to global variables, closures, or unremoved listeners.
+V8 frees memory **automatically** when nothing references an object any more.
+
+- The heap has a **young generation** (new, short-lived objects — collected often and quickly) and an **old generation** (objects that survived — collected less often).
+- A **memory leak** is memory that's still **referenced** but no longer needed, so it can never be freed.
+
+**Common leaks:**
+
+| Cause | Example |
+|---|---|
+| Growing global/module-level caches | `const cache = {}` that only ever adds keys → use an LRU with a size limit |
+| Event listeners never removed | `emitter.on(...)` on every request without `off` |
+| Timers never cleared | `setInterval` holding references forever |
+| Closures holding large objects | A callback that keeps a whole request/response alive |
+
+Find them with heap snapshots (see profiling). Raise the old-space limit only when you truly need more: `node --max-old-space-size=4096 app.js`.
 
 ---
 
@@ -460,10 +553,14 @@ app.get("/users/:id", (req, res) => {
 
 ### 📝 Answer
 
-- `npm` is the default and widely supported.
-- `yarn` improves install speed and consistency.
-- `pnpm` is disk-efficient and recommended for large monorepos.
-- `npx` runs packages without installing them globally.
+| Tool | What it is | Key point |
+|---|---|---|
+| `npm` | Default package manager, ships with Node | `package-lock.json`; `npm ci` for exact, clean CI installs |
+| `yarn` | Alternative package manager | `yarn.lock`; Yarn 2+ adds Plug'n'Play (no `node_modules`) |
+| `pnpm` | Fast, disk-efficient package manager | One global store, linked into projects; strict about undeclared dependencies; great for monorepos |
+| `npx` | **Runs** a package's command, downloading it temporarily if needed | `npx create-react-app my-app`, `npx prisma migrate` |
+
+All three managers read the same `package.json`; commit **one** lock file so everyone gets identical versions.
 
 ---
 
@@ -471,8 +568,20 @@ app.get("/users/:id", (req, res) => {
 
 ### 📝 Answer
 
-- REPL allows interactive execution of JavaScript.
-- It is useful for debugging and experimentation.
+**REPL** = **R**ead, **E**valuate, **P**rint, **L**oop — an interactive Node.js prompt. Run `node` with no file and type JavaScript; each line runs immediately and shows the result.
+
+```text
+$ node
+> 2 + 3
+5
+> [1, 2, 3].map(x => x * 2)
+[ 2, 4, 6 ]
+> _            // the last result
+[ 2, 4, 6 ]
+> .exit
+```
+
+Useful for trying out an API quickly, testing a regex, or inspecting a library. Commands: `.help`, `.editor` (multi-line), `.load file.js`.
 
 ---
 
@@ -480,8 +589,20 @@ app.get("/users/:id", (req, res) => {
 
 ### 📝 Answer
 
-- The File System module provides APIs to interact with files.
-- Asynchronous methods are preferred to avoid blocking the event loop.
+The `fs` module reads, writes and watches files. It has three styles:
+
+```js
+import fs from "fs";
+import { readFile, writeFile } from "fs/promises";
+
+fs.readFileSync("a.txt", "utf8");              // 1. sync — blocks the event loop (OK at startup only)
+fs.readFile("a.txt", "utf8", (err, text) => {}); // 2. callback
+const text = await readFile("a.txt", "utf8");   // 3. promises — preferred in modern code
+await writeFile("b.txt", text.toUpperCase());
+```
+
+- Async versions run on the **libuv thread pool**, so the main thread stays free.
+- For **large files**, use streams (`fs.createReadStream`) instead of reading everything into memory.
 
 ---
 
@@ -489,9 +610,23 @@ app.get("/users/:id", (req, res) => {
 
 ### 📝 Answer
 
-- Caching stores frequently accessed data for faster retrieval.
-- It reduces database load and improves response time.
-- Tools like **Redis** are commonly used.
+Caching keeps a copy of frequently read data somewhere faster, so you don't hit the database (or a slow API) every time.
+
+```js
+// Cache-aside with Redis (node-redis v4)
+async function getProduct(id) {
+  const cached = await redis.get(`product:${id}`);
+  if (cached) return JSON.parse(cached);                       // hit
+
+  const product = await db.products.findById(id);              // miss
+  await redis.set(`product:${id}`, JSON.stringify(product), { EX: 600 });  // keep 10 minutes
+  return product;
+}
+```
+
+- **In-process** (a `Map` or `lru-cache`): fastest, but each instance has its own copy.
+- **Redis**: shared by all instances, survives restarts.
+- Always set an **expiry (TTL)** and delete the key when the data changes. See the Caching & Redis notes for strategies and pitfalls.
 
 ---
 
@@ -507,7 +642,7 @@ app.get("/users/:id", (req, res) => {
 - Once the awaited Promise is resolved or rejected, the remaining part of the function is placed in the **microtask queue**.
 - The event loop then executes this continuation when it reaches the microtask processing step.
 
-#Code Example### 💡 
+💡 **Code Example**
 
 ```js
 async function fetchData() {

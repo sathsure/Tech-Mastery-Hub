@@ -34,7 +34,7 @@
 13. [Where is Groovy mostly used in Jenkins?](../../interview/architecture/03-devops-build-tools.md)
 14. [What are common problems seen in Jenkins pipelines?](../../interview/architecture/03-devops-build-tools.md)
 
-## 3. Tomcat – Application Server Basics
+## 3. Apache Tomcat
 
 1. [What is Apache Tomcat?](../../interview/architecture/03-devops-build-tools.md)
 2. [What kind of applications run on Tomcat?](../../interview/architecture/03-devops-build-tools.md)
@@ -44,7 +44,7 @@
 6. [What are common issues seen in Tomcat?](../../interview/architecture/03-devops-build-tools.md)
 7. [How do you restart or redeploy applications in Tomcat?](../../interview/architecture/03-devops-build-tools.md)
 
-## 4. Maven – Build Tool Fundamentals
+## 4. Maven
 
 1. [What is Maven and why is it used?](../../interview/architecture/03-devops-build-tools.md)
 2. [What is a `pom.xml` file?](../../interview/architecture/03-devops-build-tools.md)
@@ -55,14 +55,51 @@
 7. [What is a multi-module Maven project?](../../interview/architecture/03-devops-build-tools.md)
 8. [How does Maven help maintain consistency across environments?](../../interview/architecture/03-devops-build-tools.md)
 
-## 5. How These Tools Work Together (Very Common)
+## 5. How the Tools Work Together
 
 1. [Typical CI/CD flow using these tools?](../../interview/architecture/03-devops-build-tools.md)
 2. [How do Maven, Jenkins, and Docker work together?](../../interview/architecture/03-devops-build-tools.md)
 3. [Where does Tomcat fit in this flow?](../../interview/architecture/03-devops-build-tools.md)
 4. [What problems do these tools solve together?](../../interview/architecture/03-devops-build-tools.md)
 
+## 6. Docker — Beyond the Basics
+
+1. [What does a good Dockerfile for a Spring Boot app look like?](../../interview/architecture/07-Docker-Kubernetes.md)
+2. [What are Docker image layers and why does instruction order matter?](../../interview/architecture/07-Docker-Kubernetes.md)
+3. [CMD vs ENTRYPOINT?](../../interview/architecture/07-Docker-Kubernetes.md)
+4. [What are Docker volumes?](../../interview/architecture/07-Docker-Kubernetes.md)
+5. [What is Docker Compose?](../../interview/architecture/07-Docker-Kubernetes.md)
+6. [How do you make a Docker image smaller and safer?](../../interview/architecture/07-Docker-Kubernetes.md)
+
+## 7. Kubernetes Basics
+
+1. [What is Kubernetes and why do we need it?](../../interview/architecture/07-Docker-Kubernetes.md)
+2. [What is the Kubernetes architecture?](../../interview/architecture/07-Docker-Kubernetes.md)
+3. [What is a Pod?](../../interview/architecture/07-Docker-Kubernetes.md)
+4. [Deployment vs ReplicaSet vs StatefulSet vs DaemonSet?](../../interview/architecture/07-Docker-Kubernetes.md)
+5. [What is a Service, and what are its types?](../../interview/architecture/07-Docker-Kubernetes.md)
+6. [What is an Ingress?](../../interview/architecture/07-Docker-Kubernetes.md)
+7. [ConfigMap vs Secret?](../../interview/architecture/07-Docker-Kubernetes.md)
+8. [Liveness vs readiness vs startup probes?](../../interview/architecture/07-Docker-Kubernetes.md)
+9. [What are resource requests and limits?](../../interview/architecture/07-Docker-Kubernetes.md)
+10. [How does a rolling update work, and how do you roll back?](../../interview/architecture/07-Docker-Kubernetes.md)
+   - [Blue-green vs canary deployment?](../../interview/architecture/07-Docker-Kubernetes.md)
+11. [How does autoscaling work in Kubernetes?](../../interview/architecture/07-Docker-Kubernetes.md)
+12. [What is a Namespace?](../../interview/architecture/07-Docker-Kubernetes.md)
+13. [What is Helm?](../../interview/architecture/07-Docker-Kubernetes.md)
+
+## 8. Troubleshooting
+
+1. [Which kubectl commands do you use every day?](../../interview/architecture/07-Docker-Kubernetes.md)
+2. [What do CrashLoopBackOff, ImagePullBackOff, Pending and OOMKilled mean?](../../interview/architecture/07-Docker-Kubernetes.md)
+
+## 9. Tricky Questions
+
+1. [Tricky: Docker vs Kubernetes — do you need both?](../../interview/architecture/07-Docker-Kubernetes.md)
+2. [Tricky: Why does my Java app get OOMKilled although the heap is smaller than the limit?](../../interview/architecture/07-Docker-Kubernetes.md)
+3. [Tricky: A Pod is running but users get 503 errors. Why?](../../interview/architecture/07-Docker-Kubernetes.md)
+
 ## Related roles
 
-[AI Infrastructure / LLMOps Engineer](../roles/ai-infrastructure-llmops-engineer.md) · [AI Solutions Architect](../roles/ai-solutions-architect.md) · [Application Security / DevSecOps Engineer](../roles/application-security-devsecops-engineer.md) · [Cloud Architect](../roles/cloud-architect.md) · [Cloud Engineer](../roles/cloud-engineer.md) · [Cloud Security Engineer](../roles/cloud-security-engineer.md) · [Data Engineer](../roles/data-engineer.md) · [Database Administrator](../roles/database-administrator.md) · [DevOps Engineer](../roles/devops-engineer.md) · [Full Stack Developer](../roles/full-stack-developer.md) · [MLOps Engineer](../roles/mlops-engineer.md) · [Platform Engineer](../roles/platform-engineer.md) · [Release / Build Engineer](../roles/release-build-engineer.md) · [Site Reliability Engineer](../roles/site-reliability-engineer.md)
+[AI Infrastructure / LLMOps Engineer](../roles/ai-infrastructure-llmops-engineer.md) · [AI Solutions Architect](../roles/ai-solutions-architect.md) · [Application Security / DevSecOps Engineer](../roles/application-security-devsecops-engineer.md) · [Cloud Architect](../roles/cloud-architect.md) · [Cloud Engineer](../roles/cloud-engineer.md) · [Cloud Security Engineer](../roles/cloud-security-engineer.md) · [DevOps Engineer](../roles/devops-engineer.md) · [Full Stack Developer](../roles/full-stack-developer.md) · [MLOps Engineer](../roles/mlops-engineer.md) · [Platform Engineer](../roles/platform-engineer.md) · [Release / Build Engineer](../roles/release-build-engineer.md) · [Site Reliability Engineer](../roles/site-reliability-engineer.md)
 

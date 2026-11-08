@@ -7,6 +7,7 @@ Designs the technical solution for a specific business problem or project.
 
 ## Prerequisites
 
+- [SQL](../topics/database-sql.md)
 - [Java](../topics/java.md)
 - [REST API](../topics/rest-api.md)
 - Usually 8+ years of experience when hired
@@ -16,6 +17,7 @@ Designs the technical solution for a specific business problem or project.
 ### Stage 1: Core skills
 
 - [ ] [Microservices](../topics/microservices.md)
+- [ ] [System Design](../topics/system-design.md)
 
 ## Also needed
 

@@ -10,6 +10,7 @@ Writes code that tests software automatically.
 - [HTML](../topics/html.md)
 - [Java](../topics/java.md)
 - [REST API](../topics/rest-api.md)
+- [Testing](../topics/testing.md)
 - Usually 1+ years of experience when hired
 
 ## Learning stages
@@ -28,7 +29,7 @@ Writes code that tests software automatically.
 
 ## Also needed
 
-Python, Selenium, Playwright, Cypress, TestNG, JUnit, Cucumber (BDD), Appium, BrowserStack
+Python, Selenium, Playwright, Cypress, TestNG, Cucumber (BDD), Appium, BrowserStack
 
 ## Where it leads
 

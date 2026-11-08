@@ -54,6 +54,17 @@
 4. [Can you explain the difference between shallow and deep copies — and what pitfalls come with each?](../../interview/frontend/03-JavaScript.md)
 5. [What's the difference between `for...in` and `for...of`?](../../interview/frontend/03-JavaScript.md)
 
+## 8. Part 8 — Must-Know Basics
+
+1. [What is the difference between `var`, `let` and `const`?](../../interview/frontend/03-JavaScript.md)
+2. [What is the difference between `==` and `===`?](../../interview/frontend/03-JavaScript.md)
+3. [What are event bubbling, capturing and delegation?](../../interview/frontend/03-JavaScript.md)
+4. [How is the value of `this` decided?](../../interview/frontend/03-JavaScript.md)
+5. [How do you handle errors with Promises and async/await?](../../interview/frontend/03-JavaScript.md)
+6. [What is the difference between ES Modules and CommonJS?](../../interview/frontend/03-JavaScript.md)
+7. [Tricky: What do these print?](../../interview/frontend/03-JavaScript.md)
+8. [Tricky: What does this closure-in-a-loop print, and how do you fix it?](../../interview/frontend/03-JavaScript.md)
+
 ## Practice
 
 1. [Move all `0`s to the end without changing the order of other elements](../../practice/coding/01-javascript-coding.md)

@@ -16,9 +16,13 @@ Manages versions, builds and release schedules.
 
 - [ ] [DevOps](../topics/devops.md)
 
+## Also useful
+
+[Git](../topics/git.md)
+
 ## Also needed
 
-Bash, Groovy, Python, Bazel, Artifactory, Nexus, Git
+Bash, Groovy, Python, Bazel, Artifactory, Nexus
 
 ## Where it leads
 

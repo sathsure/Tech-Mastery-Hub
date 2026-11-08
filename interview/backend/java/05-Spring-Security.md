@@ -1,6 +1,6 @@
 ## Spring Security
 
-### ❓ What is Spring Security and why do we need it??
+### ❓ What is Spring Security and why do we need it?
 
 ### 📝 Answer
 
@@ -30,14 +30,11 @@ Spring Security solves this using **filters**, **contexts**, and **standard secu
 
 👉 Authentication happens **before** authorization.
 
-🤔❓ Can authorization happen without authentication?
+#### ↳ Follow-up: Can authorization happen without authentication?
 
-❌ **No.**
-Authorization **always depends on authentication**.
+**Not really — it always knows "who" first.** If no one logged in, Spring Security treats the caller as an **anonymous user** (`AnonymousAuthenticationToken`). Authorization rules then decide what that anonymous user may do: `permitAll()` lets them in; `authenticated()` sends a 401.
 
-Spring Security **never checks permissions for an anonymous user unless explicitly allowed** (`permitAll()`).
-
-🤔❓ What happens when we add `spring-boot-starter-security`?
+#### ↳ Follow-up: What happens when we add `spring-boot-starter-security`?
 
 Spring Security automatically:
 
@@ -64,7 +61,7 @@ Spring Security works using a **Filter Chain**.
 
 Each filter has **one responsibility**.
 
-🤔❓ What is SecurityFilterChain?
+#### ↳ Follow-up: What is SecurityFilterChain?
 
 It defines **how requests are secured**:
 
@@ -76,12 +73,12 @@ It defines **how requests are secured**:
 @Bean
 SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http.authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
-        .formLogin();
+        .formLogin(Customizer.withDefaults());   // the no-argument formLogin() was removed in Spring Security 7
     return http.build();
 }
 ```
 
-🤔❓ Why do we need PasswordEncoder?
+#### ↳ Follow-up: Why do we need PasswordEncoder?
 
 Because:
 
@@ -108,7 +105,7 @@ hasRole("ADMIN")        // Automatically becomes ROLE_ADMIN
 hasAuthority("DELETE_USER")
 ```
 
-🤔❓ Can a user have authorities without roles?
+#### ↳ Follow-up: Can a user have authorities without roles?
 
 ✅ **Yes**
 Spring Security doesn’t require roles at all.
@@ -178,7 +175,7 @@ Backend sends new access token
 }
 ```
 
-🤔❓ Structure of JWT
+#### ↳ Follow-up: Structure of JWT
 
 JWT = **JSON Web Token**
 
@@ -192,7 +189,9 @@ PAYLOAD (user data)
 SIGNATURE (security)
 ```
 
-Each part is Base64 encoded.
+Each part is **Base64URL-encoded** and joined with dots: `xxxxx.yyyyy.zzzzz`.
+
+> ⚠️ Encoded is **not encrypted** — anyone can decode the payload (try jwt.io). Never put passwords or secrets in it. The signature only proves it **wasn't changed**.
 
 1️⃣ Header
 
@@ -224,34 +223,50 @@ HMACSHA256(
 )
 ```
 
-🤔❓ How to Generate Access Token?
+#### ↳ Follow-up: How to Generate Access Token?
+
+With JJWT 0.12+:
 
 ```java
+// Key from at least 32 random bytes (256 bits), loaded from config/vault — never hard-coded
+private final SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretFromConfig));
+
 public String generateAccessToken(String username) {
+    Instant now = Instant.now();
     return Jwts.builder()
-            .setSubject(username)
+            .subject(username)
             .claim("role", "USER")
-            .setIssuedAt(new Date())
-            .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 10)) // 10 mins
-            .signWith(SignatureAlgorithm.HS256, "mySecretKey")
+            .issuedAt(Date.from(now))
+            .expiration(Date.from(now.plus(10, ChronoUnit.MINUTES)))   // short-lived
+            .signWith(key)                                              // picks HS256 for a 256-bit key
             .compact();
+}
+
+public Claims validate(String token) {        // throws if the signature is wrong or it has expired
+    return Jwts.parser().verifyWith(key).build().parseSignedClaims(token).getPayload();
 }
 ```
 
-🤔❓ How to Generate Refresh Token?
+> The old `signWith(SignatureAlgorithm.HS256, "mySecretKey")` style was removed in JJWT 0.12, and a short string like `"mySecretKey"` is far too weak for HS256.
+
+#### ↳ Follow-up: How to Generate Refresh Token?
 
 ```java
 public String generateRefreshToken(String username) {
+    Instant now = Instant.now();
     return Jwts.builder()
-            .setSubject(username)
-            .setIssuedAt(new Date())
-            .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 7)) // 7 days
-            .signWith(SignatureAlgorithm.HS256, "mySecretKey")
+            .subject(username)
+            .id(UUID.randomUUID().toString())                       // jti: lets the server revoke this exact token
+            .issuedAt(Date.from(now))
+            .expiration(Date.from(now.plus(7, ChronoUnit.DAYS)))
+            .signWith(refreshKey)                                    // use a different key from access tokens
             .compact();
 }
 ```
 
-🤔❓ What happens when Access Token expires?
+Store the refresh token's ID (or a hash of it) in the database, so logout and rotation can revoke it.
+
+#### ↳ Follow-up: What happens when Access Token expires?
 
 Backend will return:
 
@@ -268,21 +283,23 @@ Frontend then:
 
 User does NOT see logout.
 
-🤔❓ What if Refresh Token expires?
+#### ↳ Follow-up: What if Refresh Token expires?
 
 Then user must login again.
 
 Backend returns:
 
 ```
-403 Forbidden
+401 Unauthorized
 ```
+
+(401 = "we don't know who you are any more". 403 is for a **known** user who isn't allowed to do something.)
 
 Frontend:
 👉 Clears tokens
 👉 Redirects to Login page
 
-🤔❓ Where should tokens be stored?
+#### ↳ Follow-up: Where should tokens be stored?
 
 ✅ Access Token
 
@@ -297,7 +314,7 @@ Not recommended:
 
 - Store in **HttpOnly Secure Cookie**
 
-🤔❓ Why store refresh token in HttpOnly cookie and Access Token in Memory? Why not in localstorage or sessionstorage?
+#### ↳ Follow-up: Why store refresh token in HttpOnly cookie and Access Token in Memory? Why not in localstorage or sessionstorage?
 
 🔐 First Understand the Risk: XSS
 
@@ -330,14 +347,14 @@ Limited exposure.
 - Automatically sent by browser
 - Secure + SameSite options available
 
-🤔❓ Why NOT store both in cookies?
+#### ↳ Follow-up: Why NOT store both in cookies?
 
 If Access Token is also in cookie:
 
 - It is auto-sent with every request
 - **Increases CSRF attack**
 
-🤔❓ What is CSRF?
+#### ↳ Follow-up: What is CSRF?
 
 **CSRF (Cross-Site Request Forgery)** is an attack where a malicious website tricks a logged-in user’s browser into sending an unwanted request to another site.
 
@@ -351,7 +368,7 @@ Because **cookies are automatically sent by the browser**, even if the request w
 
 **Authorization headers (Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9)** are not automatically sent, so they reduce CSRF risk.
 
-🤔❓ When Can We Disable CSRF in Spring?
+#### ↳ Follow-up: When Can We Disable CSRF in Spring?
 
 If your API is:
 
@@ -378,8 +395,8 @@ http.csrf(csrf -> csrf.disable());
 A **browser-enforced rule** that prevents JavaScript on one origin from calling another origin **unless explicitly allowed**.
 
 **Key point:**
-👉 CORS is **not a Spring Security feature**
-👉 It is enforced by the **browser**, not the backend
+👉 The **browser** enforces CORS; the backend only **declares** which origins are allowed (with `Access-Control-Allow-*` headers).
+👉 Spring (MVC or Security) just sends those headers — CORS does **not** protect your API from Postman, curl or other servers.
 
 **Example:**
 
@@ -444,7 +461,7 @@ public class SecurityConfig {
             )
 
             // JWT validation
-            .oauth2ResourceServer(oauth2 -> oauth2.jwt());
+            .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
 
         return http.build();
     }
@@ -460,8 +477,9 @@ public class SecurityConfig {
             // CORS often still needed
             .cors(cors -> {})
 
-            // Cookie-based refresh → CSRF REQUIRED
-            .csrf(csrf -> csrf.enable())
+            // Cookie-based refresh → CSRF REQUIRED (it's on by default; this sends the token
+            // in an XSRF-TOKEN cookie that Angular/axios read and echo back in a header)
+            .csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
 
             // Usually no session, but IF_REQUIRED is ok
             .sessionManagement(session ->
@@ -474,7 +492,7 @@ public class SecurityConfig {
             )
 
             // Optional: OAuth2 login (Google, GitHub, etc.)
-            .oauth2Login();
+            .oauth2Login(Customizer.withDefaults());
 
         return http.build();
     }
@@ -495,32 +513,32 @@ public class SecurityConfig {
 }
 ```
 
-🤔❓ _Why `@Order` matters?_
+#### ↳ Follow-up: Why `@Order` matters?
 
 - Spring Security checks filter chains in order.
 - More specific (`/api/**`) must come first.
 
-🤔❓ What happens when we call `.cors(cors -> {})`?
+#### ↳ Follow-up: What happens when we call `.cors(cors -> {})`?
 
 Spring Security automatically looks for a `CorsConfigurationSource` bean in the application context and wires it into the `CorsFilter`
 
-🤔❓ _Does Spring MVC CORS config also work here?_
+#### ↳ Follow-up: Does Spring MVC CORS config also work here?
 
 Spring Security **runs before MVC**, so:
 
 - Security CORS config takes precedence
 - **MVC `@CrossOrigin` may be ignored**
 
-🤔❓ _Is `csrf(csrf -> csrf.disable())` enabled by default?_
+#### ↳ Follow-up: Is CSRF protection enabled by default in Spring Security?
 
-Yes. **CSRF protection is enabled by default** in Spring Security for web applications.
+Yes. **CSRF protection is enabled by default** in Spring Security for web applications — that's why REST APIs using JWT headers usually call `csrf(csrf -> csrf.disable())`.
 When you add Spring Security:
 
 - CSRF protection is **ON by default**
 - Applies to **state-changing HTTP methods** (POST, PUT, DELETE, PATCH)
 - Uses a CSRF token **stored in session or cookie**
 
-🤔❓ _Why CSRF is not needed for JWT?_
+#### ↳ Follow-up: Why CSRF is not needed for JWT?
 
 CSRF protection is not needed for JWT because **JWT is not automatically sent by the browser**.
 
@@ -538,7 +556,7 @@ With JWT authentication:
 - Not stored in cookies
 - Explicitly sent in headers
 
-🤔❓ _Even JWT refresh token might need help from cookie and CSRF to protect, correct?_
+#### ↳ Follow-up: Even JWT refresh token might need help from cookie and CSRF to protect, correct?
 
 ✅ Correct
 
@@ -550,7 +568,7 @@ With JWT authentication:
 Access Token - Sent via `Authorization` header, Not automatically sent by the browser, **No CSRF Protection**
 Refresh Token - Automatically sent by the browser, **CSRF protection IS needed**
 
-🤔❓ _Why Access Token in Header and Refresh Token in Cookie?_
+#### ↳ Follow-up: Why Access Token in Header and Refresh Token in Cookie?
 
 You must balance two threats:
 
@@ -564,7 +582,7 @@ You must balance two threats:
 
 > You **cannot eliminate both completely** — you minimize damage.
 
-🤔❓ _What SessionCreationPolicy Actually Controls?_
+#### ↳ Follow-up: What SessionCreationPolicy Actually Controls?
 
 **SessionCreationPolicy** tells Spring Security:
 
@@ -573,7 +591,7 @@ You must balance two threats:
 - `IF_REQUIRED` allows Spring Security to **create and use an HTTP session**, which is typical for stateful authentication.
 - `STATELESS` disables server-side session storage, which is commonly used with **JWT-based authentication**.
 
-🤔❓ _Is OAuth2 authentication or authorization?_
+#### ↳ Follow-up: Is OAuth2 authentication or authorization?
 
 👉 **Authorization framework**
 
@@ -597,10 +615,10 @@ You must balance two threats:
 
 🔹 Spring MVC **Interceptors**
 
-- Part of **Spring MVC**
-- Execute **after filter, before controller method**
-- Used for **logging, auditing, request modification**
-- **NOT** used for security
+- Part of **Spring MVC** (`HandlerInterceptor`)
+- Execute **after filters, around the controller method**: `preHandle` (before), `postHandle` (after, before the view), `afterCompletion` (at the end)
+- Know **which controller method** will run, so they suit logging, auditing, locale, timing
+- Not the place for security: requests that never reach a controller (static files, other servlets) skip them
 
 🔁 Execution Flow
 
@@ -614,7 +632,8 @@ Client → Filters → Interceptors → Controller
 | ---------------------- | ------- | ----------- |
 | Layer                  | Servlet | Spring MVC  |
 | Runs before Controller | ✅      | ✅          |
-| Can block request      | ✅      | ❌ (mostly) |
+| Can block request      | ✅ (don't call `chain.doFilter`) | ✅ (`preHandle` returns `false`) |
+| Sees every request     | ✅      | ❌ only those mapped to a controller |
 | Used for Security      | ✅      | ❌          |
 | Spring Security uses   | Filters | ❌          |
 
@@ -639,12 +658,22 @@ Client → Filters → Interceptors → Controller
 ✅ Method-Level Security (Most Asked)
 
 ```java
+@Configuration
+@EnableMethodSecurity            // required, or @PreAuthorize is silently ignored
+class MethodSecurityConfig { }
+
 @PreAuthorize("hasRole('ADMIN')")
 @GetMapping("/admin")
 public String adminOnly() {
     return "Admin Access";
 }
+
+// Expressions can use method arguments: a user may only read their own orders
+@PreAuthorize("hasRole('ADMIN') or #userId == authentication.name")
+public List<Order> ordersOf(String userId) { ... }
 ```
+
+> Like `@Transactional`, method security works through a **proxy** — a call from another method in the same class skips the check.
 
 ✅ URL-Based Security
 
@@ -657,7 +686,7 @@ SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
             .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
             .anyRequest().authenticated()
         )
-        .httpBasic();
+        .httpBasic(Customizer.withDefaults());
     return http.build();
 }
 ```

@@ -11,6 +11,47 @@
 
 1. [Why did your team choose microservices over monolith?](../../interview/backend/java/06-Spring-Cloud.md)
 2. [What problems does a microservices architecture introduce, and how does Spring Cloud address those problems?](../../interview/backend/java/06-Spring-Cloud.md)
+   - [What is @FeignClient?](../../interview/backend/java/06-Spring-Cloud.md)
+   - [Explain Spring Cloud Config Server. Don’t define it — explain how it works.](../../interview/backend/java/06-Spring-Cloud.md)
+   - [What annotations are required to create a Config Server?](../../interview/backend/java/06-Spring-Cloud.md)
+   - [How does a microservice connect to Config Server?](../../interview/backend/java/06-Spring-Cloud.md)
+   - [How does Config Server know which config file to load?](../../interview/backend/java/06-Spring-Cloud.md)
+   - [What happens if Config Server is down?](../../interview/backend/java/06-Spring-Cloud.md)
+   - [Can configuration be refreshed without restarting the service?](../../interview/backend/java/06-Spring-Cloud.md)
+   - [Where should secrets be stored? In Git?](../../interview/backend/java/06-Spring-Cloud.md)
+   - [What is the difference between bootstrap.yml and application.yml?](../../interview/backend/java/06-Spring-Cloud.md)
+   - [How to externalize application properties?](../../interview/backend/java/06-Spring-Cloud.md)
+   - [What do you mean by resilience in a microservices system?](../../interview/backend/java/06-Spring-Cloud.md)
+   - [Why do we need resilience patterns in microservices but not in monoliths?](../../interview/backend/java/06-Spring-Cloud.md)
+   - [Which resilience patterns do you commonly use?](../../interview/backend/java/06-Spring-Cloud.md)
+   - [Explain Circuit Breaker using a real scenario.](../../interview/backend/java/06-Spring-Cloud.md)
+   - [Which annotation is used to define a fallback method in a microservices architecture when a service call fails?](../../interview/backend/java/06-Spring-Cloud.md)
+   - [What is the difference between Retry and Circuit Breaker?](../../interview/backend/java/06-Spring-Cloud.md)
+   - [What happens if you configure retries incorrectly?](../../interview/backend/java/06-Spring-Cloud.md)
+   - [What is `Bulkhead` pattern and why is it important?](../../interview/backend/java/06-Spring-Cloud.md)
+   - [How do you configure resilience without annotations?](../../interview/backend/java/06-Spring-Cloud.md)
+   - [Where should resilience be applied?](../../interview/backend/java/06-Spring-Cloud.md)
+   - [What are common mistakes teams make with resilience?](../../interview/backend/java/06-Spring-Cloud.md)
+   - [Why do we need an API Gateway in a microservices architecture?](../../interview/backend/java/06-Spring-Cloud.md)
+   - [What are the responsibilities of an API Gateway?](../../interview/backend/java/06-Spring-Cloud.md)
+   - [How does Spring Cloud Gateway route requests?](../../interview/backend/java/06-Spring-Cloud.md)
+   - [What annotations are commonly used in API Gateway?](../../interview/backend/java/06-Spring-Cloud.md)
+   - [How do services connect through API Gateway?](../../interview/backend/java/06-Spring-Cloud.md)
+   - [Where should authentication and authorization happen?](../../interview/backend/java/06-Spring-Cloud.md)
+   - [Can API Gateway aggregate responses from multiple services?](../../interview/backend/java/06-Spring-Cloud.md)
+   - [How do you implement rate limiting in API Gateway?](../../interview/backend/java/06-Spring-Cloud.md)
+   - [What happens if API Gateway goes down?](../../interview/backend/java/06-Spring-Cloud.md)
+   - [What are common mistakes teams make with API Gateway?](../../interview/backend/java/06-Spring-Cloud.md)
+   - [Why do we need distributed tracing in microservices?](../../interview/backend/java/06-Spring-Cloud.md)
+   - [Explain traceId and spanId.](../../interview/backend/java/06-Spring-Cloud.md)
+   - [How is trace context propagated between services?](../../interview/backend/java/06-Spring-Cloud.md)
+   - [What annotations are used in Spring for tracing?](../../interview/backend/java/06-Spring-Cloud.md)
+   - [How do you enable distributed tracing in Spring Boot?](../../interview/backend/java/06-Spring-Cloud.md)
+   - [How do you connect Spring Boot with Zipkin or Jaeger?](../../interview/backend/java/06-Spring-Cloud.md)
+   - [How do logs relate to distributed tracing?](../../interview/backend/java/06-Spring-Cloud.md)
+   - [What happens if one service is not instrumented?](../../interview/backend/java/06-Spring-Cloud.md)
+   - [How is distributed tracing different from logging and metrics?](../../interview/backend/java/06-Spring-Cloud.md)
+   - [What are common mistakes teams make with distributed tracing?](../../interview/backend/java/06-Spring-Cloud.md)
 
 ## 2. Service Boundaries (DDD)
 
@@ -53,6 +94,7 @@
 ## 11. Fundamentals (Architecture Thinking)
 
 1. [You are asked to split a monolith into microservices. What criteria do you use to identify service boundaries?](../../interview/backend/java/06-Spring-Cloud.md)
+   - [Can two microservices share the same database?](../../interview/backend/java/06-Spring-Cloud.md)
 2. [How does Spring Boot help microservices compared to plain Spring?](../../interview/backend/java/06-Spring-Cloud.md)
 3. [How Load Balancing Works in Spring Boot?](../../interview/backend/java/06-Spring-Cloud.md)
 4. [How Router Traffic Is Handled (API Gateway)](../../interview/backend/java/06-Spring-Cloud.md)
@@ -66,6 +108,7 @@
 ## 13. Configuration Management
 
 1. [How do you manage configuration across environments for 20+ microservices?](../../interview/backend/java/06-Spring-Cloud.md)
+   - [Why not use application.yml inside the jar?](../../interview/backend/java/06-Spring-Cloud.md)
 
 ## 14. Fault Tolerance & Resilience
 
@@ -75,6 +118,7 @@
 ## 15. API Gateway
 
 1. [Why do we need an API Gateway in microservices?](../../interview/backend/java/06-Spring-Cloud.md)
+   - [Should business logic be in Gateway?](../../interview/backend/java/06-Spring-Cloud.md)
 
 ## 16. Security
 

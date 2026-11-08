@@ -32,11 +32,11 @@ Works on both frontend and backend of an application.
 
 ## Also useful
 
-[AWS](../topics/aws.md)
+[AWS](../topics/aws.md), [Git](../topics/git.md)
 
 ## Also needed
 
-MEAN/MERN stacks, Git, Postman
+MEAN/MERN stacks, Postman
 
 ## Where it leads
 

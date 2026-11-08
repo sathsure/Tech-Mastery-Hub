@@ -153,6 +153,13 @@ const DOCS: Record<string, { name: string; url: string }> = {
   messaging: { name: "Apache Kafka docs", url: "https://kafka.apache.org/documentation/" },
   dsa: { name: "Python Time Complexity (wiki)", url: "https://wiki.python.org/moin/TimeComplexity" },
   ai: { name: "Spring AI reference", url: "https://docs.spring.io/spring-ai/reference/" },
+  "system-design": { name: "System Design Primer", url: "https://github.com/donnemartin/system-design-primer" },
+  "design-patterns": { name: "Refactoring.Guru design patterns", url: "https://refactoring.guru/design-patterns" },
+  testing: { name: "JUnit 5 user guide", url: "https://junit.org/junit5/docs/current/user-guide/" },
+  git: { name: "Pro Git book", url: "https://git-scm.com/book/en/v2" },
+  caching: { name: "Redis docs", url: "https://redis.io/docs/latest/" },
+  networking: { name: "MDN: How the web works", url: "https://developer.mozilla.org/en-US/docs/Learn_web_development/Getting_started/Web_standards/How_the_web_works" },
+  behavioral: { name: "The STAR method (Indeed)", url: "https://www.indeed.com/career-advice/interviewing/how-to-use-the-star-interview-response-technique" },
 };
 
 export const LEARN_MORE_HEADING = "**Learn more elsewhere**";

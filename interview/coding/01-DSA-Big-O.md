@@ -52,7 +52,7 @@ def count_down(n):        # O(n) extra space: n frames on the call stack
 |---|---|---|
 | Big O | Upper bound — at most this growth | `O(n)` |
 | Big Omega (Ω) | Lower bound — at least this growth | `Ω(1)` (found at first position) |
-| Big Theta (Θ) | Tight bound — upper and lower bounds match | — |
+| Big Theta (Θ) | Tight bound — upper and lower bounds match | `Θ(n)` for the worst case (item missing: every element is checked) |
 
 In interviews, "complexity" normally means the **worst-case Big O**.
 

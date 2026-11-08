@@ -161,15 +161,24 @@ Security is **multi-layered** — defense in depth:
 | Threat | Defense |
 |--------|---------|
 | **XSS** | Angular auto-escapes HTML in templates (`{{ }}`); avoid `innerHTML` and `bypassSecurityTrust*` unless absolutely needed |
-| **NoSQL injection** | Use parameterized queries (Mongoose validates types); validate inputs against schema |
+| **NoSQL injection** | Validate that inputs are the **expected type** (a string, not an object); enable Mongoose `sanitizeFilter`; never use `$where` |
 | **SQL injection** | Always parameterize; never concatenate user input into queries |
 | **Command injection** | Avoid `eval`, `child_process.exec` with user input |
 
 ```js
-// ✅ Safe — Mongoose parameterizes
-User.findOne({ email: req.body.email });
+// ❌ Looks safe, but isn't: a JSON body can send an OBJECT instead of a string
+//    { "email": { "$ne": null }, "password": { "$ne": null } }  → matches the first user!
+User.findOne({ email: req.body.email, password: req.body.password });
 
-// ❌ Dangerous — direct user input in query
+// ✅ Check the type (or validate the whole body with Zod/Joi) before querying
+const email = req.body.email;
+if (typeof email !== "string") return res.status(400).send("Invalid email");
+User.findOne({ email });
+
+// ✅ Mongoose can also strip $-operators from user-supplied filters
+mongoose.set("sanitizeFilter", true);
+
+// ❌ Never build $where / JavaScript queries from user input
 User.findOne({ $where: `this.email === '${req.body.email}'` });
 ```
 
@@ -411,7 +420,7 @@ Node.js uses a **single-threaded event loop with non-blocking I/O**. It efficien
 
 **Why this matters:**
 - No thread-per-request overhead (vs traditional servers)
-- I/O happens asynchronously via libuv's thread pool
+- Network I/O uses the operating system's async APIs (epoll/kqueue/IOCP) — no thread per connection; libuv's small thread pool is only used for file system, DNS lookup, crypto and compression
 - One thread can multiplex thousands of sockets
 
 > ⚠️ **The trade-off:** Node.js is **bad** for CPU-bound work — heavy computation blocks the entire event loop.
@@ -630,15 +639,18 @@ Production-grade file upload checklist:
 - ✅ Strip metadata from images (EXIF can leak GPS)
 
 ```js
-// Pre-signed URL pattern — direct browser → S3 upload
-const uploadUrl = s3.getSignedUrl('putObject', {
-  Bucket: 'uploads',
-  Key: `user-${userId}/${uuid()}.jpg`,
-  Expires: 60,
-  ContentType: 'image/jpeg'
-});
+// Pre-signed URL pattern — direct browser → S3 upload (AWS SDK v3)
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
-res.json({ uploadUrl });
+const s3 = new S3Client({ region: "ap-south-1" });
+const uploadUrl = await getSignedUrl(
+  s3,
+  new PutObjectCommand({ Bucket: "uploads", Key: `user-${userId}/${randomUUID()}.jpg`, ContentType: "image/jpeg" }),
+  { expiresIn: 60 }            // seconds
+);
+
+res.json({ uploadUrl });       // the browser PUTs the file straight to this URL
 ```
 
 > 💡 **Pre-signed URLs** keep large files off your application servers entirely — better performance, lower cost, simpler scaling.
@@ -941,7 +953,7 @@ A blueprint for 1M users:
 |-----------|----------------|
 | **Stateless services** | JWT auth, no server sessions |
 | **Horizontal scaling** | Containers behind load balancer; auto-scale on CPU/RPS |
-| **Database scaling** | Replica sets for reads; consider sharding past 100GB |
+| **Database scaling** | Replica sets for reads; shard only when one replica set can't hold the data or the write load |
 | **Caching** | CDN for static; Redis for hot reads, sessions, rate limits |
 | **Async processing** | Queues for emails, reports, exports, notifications |
 | **Observability** | Centralized logs, metrics, tracing, alerts |
@@ -956,7 +968,7 @@ A blueprint for 1M users:
 
 #### 📈 Capacity Reasoning
 
-- 1M users → ~50K daily active (5%) → ~5K concurrent (1%) → ~500 RPS at peak
+- 1M registered users → ~50K daily active (5%) → ~5K online at the busiest moment (10% of daily actives) → if each makes a request every ~10 s, that's **~500 requests/second** at peak
 - Modern Node.js can handle ~5K RPS per instance for I/O-bound work
 - With caching, a small cluster (3-5 instances) handles this easily
 - Bottleneck moves to: **DB connections, network egress, downstream services**

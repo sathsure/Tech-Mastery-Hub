@@ -166,7 +166,11 @@ p::after        { content: " ←"; }
 
 Specificity is the rule the browser uses to decide which CSS rule wins when **multiple rules target the same element**.
 
-It is **not** random, **not** based on order, and **not** about selector length. It is a **priority system**.
+It is **not** about selector length — it's a **priority system**. The browser decides in this order:
+
+1. `!important` declarations beat normal ones.
+2. Higher **specificity** wins.
+3. If specificity is **equal**, the rule that comes **later** in the CSS wins (source order).
 
 **Specificity score: `(inline, ID, class, element)`**
 
@@ -181,7 +185,9 @@ It is **not** random, **not** based on order, and **not** about selector length.
 | `style="color:red"` | (1, 0, 0, 0) |
 | `!important`        | overrides all |
 
-The browser compares from **left to right**. The first higher value wins.
+The browser compares from **left to right**. The first higher value wins — one ID beats any number of classes.
+
+> 💡 `:where(...)` has **zero** specificity (handy for easy-to-override defaults); `:is(...)` and `:not(...)` take the specificity of their most specific argument.
 
 **Example**
 
@@ -340,9 +346,9 @@ Percentage heights work **only if the parent has an explicit height**. Without i
 | Unit  | Based On         | What It Means                  |
 | ----- | ---------------- | ------------------------------ |
 | `px`  | Fixed            | Absolute pixel, doesn't scale  |
-| `em`  | Parent font-size | Relative to parent text        |
-| `rem` | Root font-size   | Relative to `<html>`           |
-| `%`   | Parent           | Percentage of parent dimension |
+| `em`  | Font size | For `font-size`: the **parent's** font size. For anything else (padding, width): the element's **own** font size. Nested `em` font sizes compound |
+| `rem` | Root font-size   | Relative to `<html>` (usually 16px) — no compounding |
+| `%`   | Parent           | Percentage of the parent (⚠️ `padding`/`margin` percentages, even top/bottom, use the parent's **width**) |
 | `vw`  | Viewport width   | 1vw = 1% of viewport width     |
 | `vh`  | Viewport height  | 1vh = 1% of viewport height    |
 | `svh`/`dvh`/`lvh` | Viewport (smallest/dynamic/largest) | Mobile-safe heights |
@@ -416,7 +422,7 @@ relative parent
  └── absolute child   ← positioned relative to parent
 ```
 
-> 📌 **Common trap**: `absolute` looks for the nearest **positioned** ancestor (`relative`, `absolute`, `fixed`, `sticky`). If none exists, it positions relative to the `<html>` element.
+> 📌 **Common trap**: `absolute` looks for the nearest **positioned** ancestor (`relative`, `absolute`, `fixed`, `sticky`). If none exists, it positions relative to the **initial containing block** (a viewport-sized box at the top of the page), so it scrolls away with the page.
 
 ---
 
@@ -505,12 +511,12 @@ These three together decide **how items share available space**.
 
 ### 📝 Answer
 
-❓ **`width` doesn't work?** — `flex-basis` is taking priority. Use `flex: 0 0 <width>`.
+- **`width` doesn't work?** — `flex-basis` is taking priority. Use `flex: 0 0 <width>`.
 
-❓ **Items overflow?** — Default `min-width: auto` prevents shrinking below content size.
+- **Items overflow?** — Default `min-width: auto` prevents shrinking below content size.
 ✅ Fix: `.item { min-width: 0; }`
 
-❓ **Vertical centering fails?** — Confused main vs cross axis.
+- **Vertical centering fails?** — Confused main vs cross axis.
 ✅ For `flex-direction: row`: `align-items: center` (vertical), `justify-content: center` (horizontal).
 
 ---
@@ -940,18 +946,24 @@ span { display: inline-block; }   /* respects dimensions, stays inline */
 ### 📝 Answer
 
 ```css
-p { color: red !important; }
+p       { color: red   !important; }
+#card p { color: green !important; }
 ```
 
 ```html
-<p style="color: blue">Text</p>   <!-- Stays blue -->
+<p style="color: blue">A</p>                       <!-- red   -->
+<div id="card"><p style="color: blue">B</p></div>  <!-- green -->
+<p style="color: orange !important">C</p>          <!-- orange -->
 ```
 
-**Inline styles have higher specificity than external styles**, even with `!important`.
+`!important` usually "doesn't work" because **another `!important` is beating it**:
 
-✅ **Override with**: `!important` on inline (rare), or use a more specific selector with `!important`, or remove the inline style.
+1. A stylesheet `!important` **beats a normal inline style** (A is red, not blue).
+2. When **both** are `!important`, normal rules apply again: **higher specificity**, then **later order** wins (B is green).
+3. An inline `!important` beats stylesheet `!important` (C is orange).
+4. Also check: the rules are in different **`@layer`s** (layer order decides before specificity — and for `!important` that order is reversed), the selector doesn't actually match, or a **CSS transition** is overriding the value.
 
-> 💡 Order of importance: **author `!important`** > inline > author normal > user > user-agent.
+> 💡 Find the winner in DevTools → Elements → **Computed**, which shows the applied rule and crosses out the losers.
 
 ---
 

@@ -9,17 +9,36 @@
 ## 1. 08-MySQL
 
 1. [What is an RDBMS?](../../interview/backend/java/08-MySQL.md)
+   - [How is RDBMS different from DBMS?](../../interview/backend/java/08-MySQL.md)
+   - [Can RDBMS scale?](../../interview/backend/java/08-MySQL.md)
 2. [Primary Key vs Unique Key vs Foreign Key?](../../interview/backend/java/08-MySQL.md)
+   - [Can a foreign key be NULL?](../../interview/backend/java/08-MySQL.md)
+   - [What Is a Composite Primary Key?](../../interview/backend/java/08-MySQL.md)
 3. [What is Normalization?](../../interview/backend/java/08-MySQL.md)
 4. [What is Index?](../../interview/backend/java/08-MySQL.md)
+   - [How Many Indexes Can Be Used in a Query?](../../interview/backend/java/08-MySQL.md)
 5. [Which performs better, `JOIN` or `SUBQUERY`?](../../interview/backend/java/08-MySQL.md)
 6. [What is a View?](../../interview/backend/java/08-MySQL.md)
 7. [What is a Stored Procedure?](../../interview/backend/java/08-MySQL.md)
+   - [Stored Procedure vs Function?](../../interview/backend/java/08-MySQL.md)
+   - [Cursor in Stored Procedure](../../interview/backend/java/08-MySQL.md)
+   - [What is `REPLACE` in a Stored Procedure?](../../interview/backend/java/08-MySQL.md)
+   - [What is `DISTINCT`?](../../interview/backend/java/08-MySQL.md)
+   - [`WHERE` vs `HAVING`](../../interview/backend/java/08-MySQL.md)
+   - [Order of SQL execution (VERY COMMON)](../../interview/backend/java/08-MySQL.md)
+   - [`DELETE` vs `TRUNCATE`](../../interview/backend/java/08-MySQL.md)
+   - [`BETWEEN` is inclusive](../../interview/backend/java/08-MySQL.md)
+   - [`LIKE` performance issue with `Index`](../../interview/backend/java/08-MySQL.md)
+   - [`UNION` vs `UNION ALL`](../../interview/backend/java/08-MySQL.md)
+   - [`COALESCE` vs `NVL`](../../interview/backend/java/08-MySQL.md)
+   - [Difference between `CHAR` and `VARCHAR`](../../interview/backend/java/08-MySQL.md)
 8. [I see there is a performance issue with the DB. How will you identify the issue? Is there any log you can check?](../../interview/backend/java/08-MySQL.md)
 9. [EXPLAIN / ANALYZE Query](../../interview/backend/java/08-MySQL.md)
 10. [JOIN Types (INNER, LEFT, RIGHT)](../../interview/backend/java/08-MySQL.md)
 11. [Database Sharing](../../interview/backend/java/08-MySQL.md)
 12. [Database Replication](../../interview/backend/java/08-MySQL.md)
+   - [How they stay synced?](../../interview/backend/java/08-MySQL.md)
+   - [How to check Sync Status](../../interview/backend/java/08-MySQL.md)
 13. [Production Bug / SQL Issue – Root Cause Analysis](../../interview/backend/java/08-MySQL.md)
 14. [What happens internally when a transaction fails midway in a Spring Boot application?](../../interview/backend/java/08-MySQL.md)
 15. [How do you handle if multiple users / threads access same DB data at the same time?](../../interview/backend/java/08-MySQL.md)
@@ -84,16 +103,61 @@
 
 1. [What are the key SQL indexing and GROUP BY interview answers?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
 
+## 11. Joins
+
+1. [What are the types of SQL joins? Explain with an example.](../../interview/database/03-SQL-Interview-Queries.md)
+   - [Why did my LEFT JOIN behave like an INNER JOIN?](../../interview/database/03-SQL-Interview-Queries.md)
+2. [Find customers who have never placed an order.](../../interview/database/03-SQL-Interview-Queries.md)
+3. [Find employees who earn more than their manager.](../../interview/database/03-SQL-Interview-Queries.md)
+
+## 12. Window Functions
+
+1. [What are window functions, and how do they differ from GROUP BY?](../../interview/database/03-SQL-Interview-Queries.md)
+2. [ROW_NUMBER vs RANK vs DENSE_RANK?](../../interview/database/03-SQL-Interview-Queries.md)
+3. [Find the Nth highest salary (e.g. the 3rd).](../../interview/database/03-SQL-Interview-Queries.md)
+4. [Find the highest-paid employee in each department.](../../interview/database/03-SQL-Interview-Queries.md)
+5. [How do you calculate a running total?](../../interview/database/03-SQL-Interview-Queries.md)
+6. [What do LAG and LEAD do?](../../interview/database/03-SQL-Interview-Queries.md)
+
+## 13. Duplicates & Data Cleanup
+
+1. [Find duplicate rows.](../../interview/database/03-SQL-Interview-Queries.md)
+2. [Delete duplicate rows but keep one.](../../interview/database/03-SQL-Interview-Queries.md)
+3. [DELETE vs TRUNCATE vs DROP?](../../interview/database/03-SQL-Interview-Queries.md)
+
+## 14. Aggregation Tricks
+
+1. [What is the difference between COUNT(*), COUNT(column) and COUNT(DISTINCT column)?](../../interview/database/03-SQL-Interview-Queries.md)
+2. [How do you turn rows into columns (pivot)?](../../interview/database/03-SQL-Interview-Queries.md)
+3. [UNION vs UNION ALL?](../../interview/database/03-SQL-Interview-Queries.md)
+
+## 15. CTEs & Recursion
+
+1. [What is a CTE (WITH clause)?](../../interview/database/03-SQL-Interview-Queries.md)
+2. [How do you query a hierarchy (org chart) with a recursive CTE?](../../interview/database/03-SQL-Interview-Queries.md)
+
+## 16. Transactions & Isolation
+
+1. [What are transaction isolation levels and which problems do they prevent?](../../interview/database/03-SQL-Interview-Queries.md)
+2. [What is a deadlock in a database?](../../interview/database/03-SQL-Interview-Queries.md)
+
+## 17. Performance
+
+1. [OFFSET pagination vs keyset (cursor) pagination?](../../interview/database/03-SQL-Interview-Queries.md)
+2. [Tricky: Why does `WHERE YEAR(order_date) = 2026` ignore the index on order_date?](../../interview/database/03-SQL-Interview-Queries.md)
+3. [Tricky: What does `SELECT NULL = NULL` return?](../../interview/database/03-SQL-Interview-Queries.md)
+4. [Tricky: Can you use a column alias in WHERE?](../../interview/database/03-SQL-Interview-Queries.md)
+
 ## Practice
 
-1. [Questions](../../practice/coding/sql/02-MySQL-coding.md)
-2. [What is the output of the following query?](../../practice/coding/sql/02-MySQL-coding.md)
-3. [COUNT(*), COUNT(col)](../../practice/coding/sql/02-MySQL-coding.md)
-4. [Second Highest Salary](../../practice/coding/sql/02-MySQL-coding.md)
-5. [Duplicate Records](../../practice/coding/sql/02-MySQL-coding.md)
-6. [EXISTS vs IN](../../practice/coding/sql/02-MySQL-coding.md)
+1. [Write a country-wise order analytics query (orders, highest/lowest/average amount, unique customers, orders between 1000 and 5000)](../../practice/coding/sql/02-MySQL-coding.md)
+2. [What is the output of `WHERE salary = NULL`?](../../practice/coding/sql/02-MySQL-coding.md)
+3. [What is the difference between COUNT(*) and COUNT(column)?](../../practice/coding/sql/02-MySQL-coding.md)
+4. [How do you find the second highest salary?](../../practice/coding/sql/02-MySQL-coding.md)
+5. [How do you find duplicate records?](../../practice/coding/sql/02-MySQL-coding.md)
+6. [EXISTS vs IN — what's the difference?](../../practice/coding/sql/02-MySQL-coding.md)
 
 ## Related roles
 
-[AI Evaluation Engineer](../roles/ai-evaluation-engineer.md) · [AI Product Manager](../roles/ai-product-manager.md) · [Analytics Engineer](../roles/analytics-engineer.md) · [Backend Developer](../roles/backend-developer.md) · [BI Developer](../roles/bi-developer.md) · [Business Analyst](../roles/business-analyst.md) · [Customer Success Engineer](../roles/customer-success-engineer.md) · [Data Analyst](../roles/data-analyst.md) · [Data Architect](../roles/data-architect.md) · [Data Engineer](../roles/data-engineer.md) · [Data Scientist](../roles/data-scientist.md) · [Database Administrator](../roles/database-administrator.md) · [FinOps Engineer / Analyst](../roles/finops-engineer-analyst.md) · [Forward Deployed Engineer](../roles/forward-deployed-engineer.md) · [Full Stack Developer](../roles/full-stack-developer.md) · [Mainframe Developer](../roles/mainframe-developer.md) · [Manual QA / Test Engineer](../roles/manual-qa-test-engineer.md) · [Product Manager](../roles/product-manager.md) · [Production / Application Support](../roles/production-application-support.md) · [Solutions / Sales Engineer](../roles/solutions-sales-engineer.md)
+[AI Evaluation Engineer](../roles/ai-evaluation-engineer.md) · [AI Infrastructure / LLMOps Engineer](../roles/ai-infrastructure-llmops-engineer.md) · [AI Product Manager](../roles/ai-product-manager.md) · [AI Solutions Architect](../roles/ai-solutions-architect.md) · [Analytics Engineer](../roles/analytics-engineer.md) · [Backend Developer](../roles/backend-developer.md) · [BI Developer](../roles/bi-developer.md) · [Business Analyst](../roles/business-analyst.md) · [Customer Success Engineer](../roles/customer-success-engineer.md) · [Data Analyst](../roles/data-analyst.md) · [Data Architect](../roles/data-architect.md) · [Data Engineer](../roles/data-engineer.md) · [Data Scientist](../roles/data-scientist.md) · [Database Administrator](../roles/database-administrator.md) · [FinOps Engineer / Analyst](../roles/finops-engineer-analyst.md) · [Forward Deployed Engineer](../roles/forward-deployed-engineer.md) · [Full Stack Developer](../roles/full-stack-developer.md) · [Mainframe Developer](../roles/mainframe-developer.md) · [Manual QA / Test Engineer](../roles/manual-qa-test-engineer.md) · [Product Manager](../roles/product-manager.md) · [Production / Application Support](../roles/production-application-support.md) · [Solution Architect](../roles/solution-architect.md) · [Solutions / Sales Engineer](../roles/solutions-sales-engineer.md)
 

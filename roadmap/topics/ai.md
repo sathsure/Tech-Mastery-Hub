@@ -67,13 +67,10 @@
 4. [How would you prevent prompt injection attacks?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
 5. [How would you build a secure enterprise AI chatbot?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
 
-## 7. AWS Cloud Practitioner › DEPLOYMENT & MIGRATION › Trick Questions
+## 7. AI & MACHINE LEARNING
 
-1. [AI & MACHINE LEARNING](../../interview/architecture/02-aws-cloud.md)
-
-## 8. AWS Cloud Practitioner › DEPLOYMENT & MIGRATION › AI & MACHINE LEARNING
-
-1. [Trick Questions](../../interview/architecture/02-aws-cloud.md)
+1. [What are the main AWS AI & Machine Learning services (SageMaker, Bedrock, Rekognition, Comprehend)?](../../interview/architecture/02-aws-cloud.md)
+2. [AWS AI & Machine Learning: which service fits each scenario?](../../interview/architecture/02-aws-cloud.md)
 
 ## Diagrams
 

@@ -24,9 +24,13 @@ Builds autonomous AI agents that plan, call tools and complete multi-step tasks.
 
 - [ ] [TypeScript](../topics/typescript.md)
 
+## Also useful
+
+[Caching & Redis](../topics/caching.md)
+
 ## Also needed
 
-Python, LangGraph, Claude Agent SDK, OpenAI Agents SDK, CrewAI, AutoGen, A2A protocol, Claude / GPT / Gemini APIs, Langfuse / LangSmith, Temporal, Redis
+Python, LangGraph, Claude Agent SDK, OpenAI Agents SDK, CrewAI, AutoGen, A2A protocol, Claude / GPT / Gemini APIs, Langfuse / LangSmith, Temporal
 
 ## Where it leads
 

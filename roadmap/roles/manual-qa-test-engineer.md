@@ -14,6 +14,7 @@ Tests software by hand to find bugs before users do.
 ### Stage 1: Core skills
 
 - [ ] [SQL](../topics/database-sql.md)
+- [ ] [Testing](../topics/testing.md)
 
 ## Also needed
 

@@ -30,6 +30,49 @@
 2. [What is amortized time complexity?](../../interview/coding/01-DSA-Big-O.md)
 3. [What is the time complexity of common Python operations?](../../interview/coding/01-DSA-Big-O.md)
 
+## 4. Data Structures
+
+1. [Array vs linked list — when do you use which?](../../interview/coding/02-DSA-Patterns.md)
+2. [How does a hash table work?](../../interview/coding/02-DSA-Patterns.md)
+3. [Stack vs queue vs deque?](../../interview/coding/02-DSA-Patterns.md)
+4. [What is a heap (priority queue)?](../../interview/coding/02-DSA-Patterns.md)
+5. [What are a binary tree and a binary search tree (BST)?](../../interview/coding/02-DSA-Patterns.md)
+   - [What is a balanced tree?](../../interview/coding/02-DSA-Patterns.md)
+6. [How do you represent a graph?](../../interview/coding/02-DSA-Patterns.md)
+7. [What is a trie?](../../interview/coding/02-DSA-Patterns.md)
+
+## 5. Patterns with Templates
+
+1. [What is the sliding window pattern? Give a template.](../../interview/coding/02-DSA-Patterns.md)
+2. [What is the two pointers pattern?](../../interview/coding/02-DSA-Patterns.md)
+3. [What is the fast and slow pointer pattern?](../../interview/coding/02-DSA-Patterns.md)
+4. [What is the prefix sum pattern?](../../interview/coding/02-DSA-Patterns.md)
+5. [What is a binary search template that avoids off-by-one bugs?](../../interview/coding/02-DSA-Patterns.md)
+6. [What is the monotonic stack pattern?](../../interview/coding/02-DSA-Patterns.md)
+7. [How do BFS and DFS work, and when do you use each?](../../interview/coding/02-DSA-Patterns.md)
+8. [Binary Tree Level Order Traversal (LeetCode 102)](../../interview/coding/02-DSA-Patterns.md)
+9. [Validate Binary Search Tree (LeetCode 98)](../../interview/coding/02-DSA-Patterns.md)
+10. [Lowest Common Ancestor of a Binary Tree (LeetCode 236)](../../interview/coding/02-DSA-Patterns.md)
+11. [What is topological sort? (Course Schedule, LeetCode 207)](../../interview/coding/02-DSA-Patterns.md)
+12. [What is Dijkstra's algorithm?](../../interview/coding/02-DSA-Patterns.md)
+13. [What is backtracking? (Subsets and Permutations)](../../interview/coding/02-DSA-Patterns.md)
+14. [How do you approach a dynamic programming problem?](../../interview/coding/02-DSA-Patterns.md)
+   - [Memoization vs tabulation?](../../interview/coding/02-DSA-Patterns.md)
+15. [Longest Common Subsequence (LeetCode 1143)](../../interview/coding/02-DSA-Patterns.md)
+16. [LRU Cache (LeetCode 146)](../../interview/coding/02-DSA-Patterns.md)
+17. [Merge K Sorted Lists (LeetCode 23)](../../interview/coding/02-DSA-Patterns.md)
+
+## 6. Sorting
+
+1. [How do the main sorting algorithms compare?](../../interview/coding/02-DSA-Patterns.md)
+   - [Why is quick sort fast in practice despite the O(n²) worst case?](../../interview/coding/02-DSA-Patterns.md)
+   - [Explain merge sort in one line.](../../interview/coding/02-DSA-Patterns.md)
+
+## 7. Interview Tricks
+
+1. [How do you approach a coding problem you haven't seen before?](../../interview/coding/02-DSA-Patterns.md)
+2. [Tricky: What is the time complexity of `x in my_list` vs `x in my_set`?](../../interview/coding/02-DSA-Patterns.md)
+
 ## Practice
 
 1. [Two Sum (LeetCode 1)](../../practice/coding/python/01-LeetCode-Python.md)

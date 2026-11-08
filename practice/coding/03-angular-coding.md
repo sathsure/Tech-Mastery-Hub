@@ -52,13 +52,14 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   loadUsers() {
-    if (this.apiLoaded) return;                         // ✅ Skip if already loaded
+    if (this.apiLoaded) return;                         // ✅ Skip if already loaded / loading
+    this.apiLoaded = true;                              // set BEFORE the call: a second quick call won't fetch again
 
     this.http
       .get<User[]>("https://jsonplaceholder.typicode.com/users")
-      .subscribe((users) => {
-        this.usersSubject.next(users);
-        this.apiLoaded = true;
+      .subscribe({
+        next: (users) => this.usersSubject.next(users),
+        error: () => (this.apiLoaded = false),          // allow a retry if it failed
       });
   }
 
@@ -91,7 +92,7 @@ export class UserService {
 | `asObservable()` exposed | Prevents components from calling `.next()` and bypassing the service |
 | `apiLoaded` flag | Avoids re-fetching when user navigates back to the list |
 | `providedIn: 'root'` | Singleton across the app — state survives route changes |
-| Optimistic updates (CUD) | Instant UI response; ideally rolled back on API failure |
+| Local updates (add/edit/delete) | The demo API is read-only, so changes live in the `BehaviorSubject`. With a real API, update the list after the call succeeds — or update first (optimistic) and roll back on error |
 
 > 📌 **Senior signal:** Explicitly call out **"the service is a singleton, so state survives navigation"** — interviewers love to hear this.
 
@@ -401,14 +402,20 @@ export class PhonePostalPipe implements PipeTransform {
 
 ## 8️⃣ Custom Directive (Invalid Highlight)
 
+Highlight a field in red **only when it is invalid and the user has touched it**:
+
 ```ts
 @Directive({
   selector: "[appInvalidHighlight]",
+  standalone: true,
 })
 export class InvalidHighlightDirective {
+  private control = inject(NgControl);               // the form control on this element
+
   @HostBinding("style.border")
   get border() {
-    return "1px solid red";
+    const c = this.control.control;
+    return c?.invalid && c?.touched ? "1px solid red" : null;   // null = no inline style
   }
 }
 ```
@@ -419,7 +426,7 @@ Usage:
 <input formControlName="email" appInvalidHighlight />
 ```
 
-> 🔧 **Better version:** Inject `NgControl` and only highlight when the control is `invalid && touched`. Mention this enhancement to the interviewer to score bonus points.
+> 💡 `NgControl` gives the directive access to the same `FormControl` that `formControlName` created, so it reacts to validation without any extra inputs. `@HostBinding` re-evaluates on every change detection run.
 
 ---
 
@@ -433,7 +440,7 @@ const routes: Routes = [
 
   {
     path: "admin",
-    canMatch: [AdminCanMatchGuard],                  // ✅ Modern guard
+    canMatch: [adminCanMatch],                       // ✅ functional guard (defined below)
     loadComponent: () =>
       import("./admin/admin.component").then((c) => c.AdminComponent),
   },
@@ -442,7 +449,7 @@ const routes: Routes = [
 ];
 ```
 
-> 💡 **`canMatch` vs `canActivate`:** `canMatch` is checked **before** the route is even matched. If it returns false, Angular pretends the route doesn't exist — **the lazy chunk is never downloaded**. That's a perf + security win over the old `canLoad` and `canActivate`.
+> 💡 **`canMatch` vs `canActivate`:** `canMatch` runs **while Angular is choosing a route**. If it returns false, Angular acts as if the route doesn't exist — **the lazy chunk is never downloaded** — and can try the next matching route. `canActivate` runs **after** the route is chosen (for lazy routes, after the code is loaded). `canMatch` replaces the deprecated `canLoad`.
 
 ---
 
@@ -473,23 +480,21 @@ export class AuthService {
 
 ## 1️⃣1️⃣ `CanMatch` Guard
 
+Modern Angular (15+) uses **functional guards** — a plain function instead of a class:
+
 ```ts
 // admin-can-match.guard.ts
-@Injectable({ providedIn: "root" })
-export class AdminCanMatchGuard implements CanMatch {
-  constructor(
-    private auth: AuthService,
-    private router: Router,
-  ) {}
+export const adminCanMatch: CanMatchFn = () => {
+  const auth = inject(AuthService);
+  const router = inject(Router);
+  return auth.isAdmin() ? true : router.parseUrl("/users");   // 🔁 redirect non-admins
+};
 
-  canMatch(): boolean | UrlTree {
-    if (this.auth.isAdmin()) {
-      return true;
-    }
-    return this.router.parseUrl("/users");          // 🔁 Redirect non-admins
-  }
-}
+// in the routes
+{ path: "admin", canMatch: [adminCanMatch], loadComponent: () => import("./admin/admin.component").then(c => c.AdminComponent) }
 ```
+
+> Class-based guards (`implements CanMatch`) still work but are deprecated; they need `@Injectable` and constructor injection for the same result.
 
 | Benefit | Why |
 |---------|-----|

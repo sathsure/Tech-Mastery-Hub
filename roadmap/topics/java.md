@@ -9,10 +9,20 @@
 ## 1. OOP & Design Thinking
 
 1. [Why OOP was introduced?](../../interview/backend/java/01-Java-1.md)
+   - [What is a Pointer?](../../interview/backend/java/01-Java-1.md)
+   - [Why Java Does NOT use Pointers?](../../interview/backend/java/01-Java-1.md)
 2. [How do you design a system where the same operation behaves differently based on the object type, without changing the calling code?](../../interview/backend/java/01-Java-1.md)
+   - [What is a method signature?](../../interview/backend/java/01-Java-1.md)
+   - [Which method gets called when the reference type and object type are different?](../../interview/backend/java/01-Java-1.md)
+   - [Why is using `instanceof` considered a design smell?](../../interview/backend/java/01-Java-1.md)
+   - [Why doesn’t Java support polymorphism for static methods?](../../interview/backend/java/01-Java-1.md)
+   - [Why doesn’t polymorphism work for variables?](../../interview/backend/java/01-Java-1.md)
 3. [How do you apply OOP principles in real-world systems?](../../interview/backend/java/01-Java-1.md)
 4. [Have you ever violated OOP principles intentionally?](../../interview/backend/java/01-Java-1.md)
 5. [What design principles do you follow while writing Java code?](../../interview/backend/java/01-Java-1.md)
+   - [What is the SOLID principle?](../../interview/backend/java/01-Java-1.md)
+   - [How do SOLID principles help in large systems?](../../interview/backend/java/01-Java-1.md)
+   - [Which SOLID principle is most commonly violated?](../../interview/backend/java/01-Java-1.md)
 
 ## 2. Core Java
 
@@ -21,6 +31,7 @@
 3. [final vs finally vs finalize?](../../interview/backend/java/01-Java-1.md)
 4. [What are the design patterns that you used in Java?](../../interview/backend/java/01-Java-1.md)
 5. [Checked Exception vs Unchecked Exception](../../interview/backend/java/01-Java-1.md)
+   - [`throw` vs `throws`](../../interview/backend/java/01-Java-1.md)
 6. [What is JNA?](../../interview/backend/java/01-Java-1.md)
 
 ## 3. Collections Framework
@@ -30,14 +41,23 @@
 3. [Difference between `List`, `Set`, and `Map`](../../interview/backend/java/01-Java-1.md)
 4. [Why does `Map` not extend `Collection`?](../../interview/backend/java/01-Java-1.md)
 5. [Difference Between `ArrayList` and `LinkedList`](../../interview/backend/java/01-Java-1.md)
+   - [Why `LinkedList` supports Queue and Deque?](../../interview/backend/java/01-Java-1.md)
 6. [How does `HashMap` work internally?](../../interview/backend/java/01-Java-1.md)
 7. [How does ConcurrentHashMap work internally?](../../interview/backend/java/01-Java-1.md)
 8. [Difference between `HashMap`, `LinkedHashMap`, `TreeMap`](../../interview/backend/java/01-Java-1.md)
 9. [What is fail-fast vs fail-safe iterator?](../../interview/backend/java/01-Java-1.md)
 10. [Difference between `Iterator` and `ListIterator`](../../interview/backend/java/01-Java-1.md)
 11. [Difference between `Comparable` and `Comparator`](../../interview/backend/java/01-Java-1.md)
+   - [Can a class implement multiple Comparables?](../../interview/backend/java/01-Java-1.md)
+   - [Can a class have multiple Comparators?](../../interview/backend/java/01-Java-1.md)
+   - [Will `Collections.sort()` work without Comparable?](../../interview/backend/java/01-Java-1.md)
+   - [Will `Collections.sort(list, comparator)` work without Comparable?](../../interview/backend/java/01-Java-1.md)
+   - [Is `Comparator` a functional interface?](../../interview/backend/java/01-Java-1.md)
+   - [Which has higher priority: Comparable or Comparator?](../../interview/backend/java/01-Java-1.md)
+   - [Does `Comparator` allow sorting in reverse order easily?](../../interview/backend/java/01-Java-1.md)
 12. [What is `WeakHashMap`?](../../interview/backend/java/01-Java-1.md)
 13. [When would you prefer immutable collections?](../../interview/backend/java/01-Java-1.md)
+   - [When is this useful?](../../interview/backend/java/01-Java-1.md)
 
 ## 4. Equals and Hashcode
 
@@ -67,6 +87,7 @@
 2. [How do you design immutable classes?](../../interview/backend/java/01-Java-1.md)
 3. [How Do You Design a Singleton Class?](../../interview/backend/java/01-Java-1.md)
 4. [AutoBoxing & AutoUnboxing](../../interview/backend/java/01-Java-1.md)
+   - [Why does Java allow `byte → double` but not `double → byte`?](../../interview/backend/java/01-Java-1.md)
 5. [JVM Internal Question](../../interview/backend/java/01-Java-1.md)
 
 ## 8. Major Java Features (9 → 21)
@@ -85,6 +106,8 @@
 ## 10. JVM Deep Dive
 
 1. [What does Serializable mean?](../../interview/backend/java/01-Java-2.md)
+   - [Where is Serializable used in real applications?](../../interview/backend/java/01-Java-2.md)
+   - [Serializable vs JSON](../../interview/backend/java/01-Java-2.md)
 2. [Explain JVM memory structure. Heap vs Stack vs Metaspace](../../interview/backend/java/01-Java-2.md)
 3. [How does Garbage Collection work?](../../interview/backend/java/01-Java-2.md)
 4. [What causes memory leaks in Java?](../../interview/backend/java/01-Java-2.md)
@@ -92,30 +115,165 @@
 ## 11. JVM vs JRE vs JDK
 
 1. [JVM Internals](../../interview/backend/java/01-Java-2.md)
+   - [Java Compilation and Runtime Execution](../../interview/backend/java/01-Java-2.md)
+   - [Why Java is Platform Independent?](../../interview/backend/java/01-Java-2.md)
 2. [How Do You Build a Java Application?](../../interview/backend/java/01-Java-2.md)
+
+## 12. Part 1 — SOLID Principles
+
+1. [What are the SOLID principles?](../../interview/backend/java/10-Design-Patterns-SOLID.md)
+   - [Which one do you use most in Spring?](../../interview/backend/java/10-Design-Patterns-SOLID.md)
+2. [Explain the Single Responsibility Principle with an example.](../../interview/backend/java/10-Design-Patterns-SOLID.md)
+3. [Explain the Open/Closed Principle with an example.](../../interview/backend/java/10-Design-Patterns-SOLID.md)
+4. [Explain the Liskov Substitution Principle with an example.](../../interview/backend/java/10-Design-Patterns-SOLID.md)
+5. [Explain the Interface Segregation Principle with an example.](../../interview/backend/java/10-Design-Patterns-SOLID.md)
+6. [Explain the Dependency Inversion Principle with an example.](../../interview/backend/java/10-Design-Patterns-SOLID.md)
+   - [Dependency Inversion vs Dependency Injection?](../../interview/backend/java/10-Design-Patterns-SOLID.md)
+
+## 13. Part 2 — Creational Patterns
+
+1. [What are design patterns and what are the three types?](../../interview/backend/java/10-Design-Patterns-SOLID.md)
+2. [What is the Singleton pattern and how do you write a thread-safe one?](../../interview/backend/java/10-Design-Patterns-SOLID.md)
+   - [How can a Singleton be broken?](../../interview/backend/java/10-Design-Patterns-SOLID.md)
+   - [Is a Spring bean a Singleton pattern?](../../interview/backend/java/10-Design-Patterns-SOLID.md)
+   - [Why is double-checked locking written with `volatile`?](../../interview/backend/java/10-Design-Patterns-SOLID.md)
+3. [What is the Factory pattern?](../../interview/backend/java/10-Design-Patterns-SOLID.md)
+   - [Factory Method vs Abstract Factory?](../../interview/backend/java/10-Design-Patterns-SOLID.md)
+4. [What is the Builder pattern?](../../interview/backend/java/10-Design-Patterns-SOLID.md)
+5. [What is the Prototype pattern?](../../interview/backend/java/10-Design-Patterns-SOLID.md)
+
+## 14. Part 3 — Structural Patterns
+
+1. [What is the Adapter pattern?](../../interview/backend/java/10-Design-Patterns-SOLID.md)
+2. [What is the Decorator pattern?](../../interview/backend/java/10-Design-Patterns-SOLID.md)
+   - [Decorator vs inheritance?](../../interview/backend/java/10-Design-Patterns-SOLID.md)
+3. [What is the Proxy pattern?](../../interview/backend/java/10-Design-Patterns-SOLID.md)
+   - [Why doesn't `@Transactional` work when a method calls another method in the same class?](../../interview/backend/java/10-Design-Patterns-SOLID.md)
+   - [Proxy vs Decorator?](../../interview/backend/java/10-Design-Patterns-SOLID.md)
+4. [What is the Facade pattern?](../../interview/backend/java/10-Design-Patterns-SOLID.md)
+
+## 15. Part 4 — Behavioral Patterns
+
+1. [What is the Strategy pattern?](../../interview/backend/java/10-Design-Patterns-SOLID.md)
+   - [Strategy vs Factory?](../../interview/backend/java/10-Design-Patterns-SOLID.md)
+2. [What is the Observer pattern?](../../interview/backend/java/10-Design-Patterns-SOLID.md)
+3. [What is the Template Method pattern?](../../interview/backend/java/10-Design-Patterns-SOLID.md)
+4. [What is the Chain of Responsibility pattern?](../../interview/backend/java/10-Design-Patterns-SOLID.md)
+5. [What is the Command pattern?](../../interview/backend/java/10-Design-Patterns-SOLID.md)
+
+## 16. Part 5 — Tricky Questions
+
+1. [Tricky: Which design patterns does Spring use?](../../interview/backend/java/10-Design-Patterns-SOLID.md)
+2. [Tricky: Is Singleton an anti-pattern?](../../interview/backend/java/10-Design-Patterns-SOLID.md)
+3. [Tricky: What is composition over inheritance?](../../interview/backend/java/10-Design-Patterns-SOLID.md)
+4. [Tricky: What are DRY, KISS and YAGNI?](../../interview/backend/java/10-Design-Patterns-SOLID.md)
+
+## 17. Part 1 — Threads Basics
+
+1. [What are the ways to create a thread in Java?](../../interview/backend/java/11-Java-Concurrency.md)
+   - [What is the difference between `start()` and `run()`?](../../interview/backend/java/11-Java-Concurrency.md)
+   - [Can you call `start()` twice on the same thread?](../../interview/backend/java/11-Java-Concurrency.md)
+2. [What are the thread states (lifecycle)?](../../interview/backend/java/11-Java-Concurrency.md)
+3. [What is a race condition? Show an example.](../../interview/backend/java/11-Java-Concurrency.md)
+4. [What does `synchronized` do?](../../interview/backend/java/11-Java-Concurrency.md)
+   - [Can two threads call two different `synchronized` methods of the same object at the same time?](../../interview/backend/java/11-Java-Concurrency.md)
+5. [What does `volatile` do? Is it enough for a counter?](../../interview/backend/java/11-Java-Concurrency.md)
+6. [`synchronized` vs `ReentrantLock` — what's the difference?](../../interview/backend/java/11-Java-Concurrency.md)
+   - [What does "reentrant" mean?](../../interview/backend/java/11-Java-Concurrency.md)
+7. [`wait()` vs `sleep()`?](../../interview/backend/java/11-Java-Concurrency.md)
+
+## 18. Part 2 — Deadlock & Friends
+
+1. [What is a deadlock? Show an example and how to prevent it.](../../interview/backend/java/11-Java-Concurrency.md)
+   - [How do you find a deadlock in a running app?](../../interview/backend/java/11-Java-Concurrency.md)
+   - [What are livelock and starvation?](../../interview/backend/java/11-Java-Concurrency.md)
+
+## 19. Part 3 — Executors & Thread Pools
+
+1. [Why use a thread pool instead of creating threads?](../../interview/backend/java/11-Java-Concurrency.md)
+2. [What are the types of thread pools in `Executors`?](../../interview/backend/java/11-Java-Concurrency.md)
+   - [How many threads should a pool have?](../../interview/backend/java/11-Java-Concurrency.md)
+3. [`Runnable` vs `Callable`?](../../interview/backend/java/11-Java-Concurrency.md)
+4. [What is `Future` and what is its limitation?](../../interview/backend/java/11-Java-Concurrency.md)
+5. [What is `CompletableFuture`? Show an example.](../../interview/backend/java/11-Java-Concurrency.md)
+   - [Which thread pool does `supplyAsync` use by default?](../../interview/backend/java/11-Java-Concurrency.md)
+6. [What are virtual threads (Java 21)?](../../interview/backend/java/11-Java-Concurrency.md)
+   - [What is "pinning"?](../../interview/backend/java/11-Java-Concurrency.md)
+
+## 20. Part 4 — Concurrent Collections & Utilities
+
+1. [Why is `HashMap` not thread-safe, and what should you use instead?](../../interview/backend/java/11-Java-Concurrency.md)
+2. [What are `CountDownLatch`, `CyclicBarrier` and `Semaphore`?](../../interview/backend/java/11-Java-Concurrency.md)
+3. [What is `ThreadLocal` and what is the risk?](../../interview/backend/java/11-Java-Concurrency.md)
+
+## 21. Part 5 — Tricky Questions
+
+1. [Tricky: Is `i++` thread-safe if `i` is `volatile`?](../../interview/backend/java/11-Java-Concurrency.md)
+2. [Tricky: What is printed?](../../interview/backend/java/11-Java-Concurrency.md)
+3. [Tricky: What happens if you forget `shutdown()` on an `ExecutorService`?](../../interview/backend/java/11-Java-Concurrency.md)
+4. [Tricky: Why is `ConcurrentModificationException` thrown in a single-threaded loop?](../../interview/backend/java/11-Java-Concurrency.md)
+5. [Tricky: Concurrency vs parallelism?](../../interview/backend/java/11-Java-Concurrency.md)
 
 ## Practice
 
-1. [What will be the output?](../../practice/coding/java/01-core-java-coding.md)
-2. [What will be the output?](../../practice/coding/java/01-core-java-coding.md)
-3. [What will be the output?](../../practice/coding/java/01-core-java-coding.md)
-4. [What will be the output?](../../practice/coding/java/01-core-java-coding.md)
-5. [What will be the output?](../../practice/coding/java/01-core-java-coding.md)
-6. [What will be the output?](../../practice/coding/java/01-core-java-coding.md)
-7. [Merge Two Arrays Alternately](../../practice/coding/java/01-Java-coding.md)
-8. [Reverse an Array](../../practice/coding/java/01-Java-coding.md)
-9. [Find First Non-Repeating Character](../../practice/coding/java/01-Java-coding.md)
-10. [Remove Duplicates from a List (Preserve Order)](../../practice/coding/java/01-Java-coding.md)
-11. [Count Word Occurrences](../../practice/coding/java/01-Java-coding.md)
-12. [Check if String is Palindrome (Ignore Case & Spaces)](../../practice/coding/java/01-Java-coding.md)
-13. [Find Second Highest Number in Array](../../practice/coding/java/01-Java-coding.md)
-14. [Thread-Safe Counter](../../practice/coding/java/01-Java-coding.md)
-15. [Reverse Words in a Sentence](../../practice/coding/java/01-Java-coding.md)
-16. [Reverse a LinkedList](../../practice/coding/java/01-Java-coding.md)
-17. [Employee–Department Related Questions](../../practice/coding/java/01-Java-coding.md)
-18. [Perfect Numbers](../../practice/coding/java/01-Java-coding.md)
-19. [Two Sum Problem](../../practice/coding/java/01-Java-coding.md)
-20. [Count Segments in a String](../../practice/coding/java/01-Java-coding.md)
+1. [What will be the output? (return in try and in finally)](../../practice/coding/java/01-core-java-coding.md)
+2. [What will be the output? (return in catch and in finally)](../../practice/coding/java/01-core-java-coding.md)
+3. [What will be the output? (changing a primitive in finally)](../../practice/coding/java/01-core-java-coding.md)
+4. [What will be the output? (changing an object in finally)](../../practice/coding/java/01-core-java-coding.md)
+5. [What will be the output? (System.exit in try)](../../practice/coding/java/01-core-java-coding.md)
+6. [What will be the output? (return in finally swallows an exception)](../../practice/coding/java/01-core-java-coding.md)
+7. [What will be the output? (try-with-resources closing order)](../../practice/coding/java/01-core-java-coding.md)
+8. [What will be the output? (overloaded main method)](../../practice/coding/java/01-core-java-coding.md)
+9. [What will be the output? (static blocks and main)](../../practice/coding/java/01-core-java-coding.md)
+10. [What will be the output? (instance block and constructor)](../../practice/coding/java/01-core-java-coding.md)
+11. [What will be the output? (static, instance block and constructor)](../../practice/coding/java/01-core-java-coding.md)
+12. [What will be the output? (static blocks in parent and child)](../../practice/coding/java/01-core-java-coding.md)
+13. [What will be the output? (parent and child constructors)](../../practice/coding/java/01-core-java-coding.md)
+14. [What will be the output? (== on string literals)](../../practice/coding/java/01-core-java-coding.md)
+15. [What will be the output? (== on new String objects)](../../practice/coding/java/01-core-java-coding.md)
+16. [What will be the output? (String intern)](../../practice/coding/java/01-core-java-coding.md)
+17. [What will be the output? (String concat is immutable)](../../practice/coding/java/01-core-java-coding.md)
+18. [What will be the output? (final StringBuilder)](../../practice/coding/java/01-core-java-coding.md)
+19. [What will be the output? (StringBuilder passed to a method)](../../practice/coding/java/01-core-java-coding.md)
+20. [What will be the output? (Integer == with 127)](../../practice/coding/java/01-core-java-coding.md)
+21. [What will be the output? (Integer == with 128)](../../practice/coding/java/01-core-java-coding.md)
+22. [What will be the output? (unboxing null)](../../practice/coding/java/01-core-java-coding.md)
+23. [What will be the output? (null with Object and String overloads)](../../practice/coding/java/01-core-java-coding.md)
+24. [What will be the output? (null with Integer and Long overloads)](../../practice/coding/java/01-core-java-coding.md)
+25. [What will be the output? (overloading: widening vs boxing)](../../practice/coding/java/01-core-java-coding.md)
+26. [What will be the output? (overloading: exact match vs varargs)](../../practice/coding/java/01-core-java-coding.md)
+27. [What will be the output? (static method "overriding")](../../practice/coding/java/01-core-java-coding.md)
+28. [What will be the output? (instance method overriding)](../../practice/coding/java/01-core-java-coding.md)
+29. [What will be the output? (Collections.sort on a Collection)](../../practice/coding/java/01-core-java-coding.md)
+30. [What will be the output? (List remove by index vs by value)](../../practice/coding/java/01-core-java-coding.md)
+31. [What will be the output? (removing from a list inside a for-each loop)](../../practice/coding/java/01-core-java-coding.md)
+32. [What will be the output? (HashSet with duplicates)](../../practice/coding/java/01-core-java-coding.md)
+33. [What will be the output? (HashSet without equals and hashCode)](../../practice/coding/java/01-core-java-coding.md)
+34. [What will be the output? (HashMap with null keys)](../../practice/coding/java/01-core-java-coding.md)
+35. [What will be the output? (changing a key after putting it in a HashMap)](../../practice/coding/java/01-core-java-coding.md)
+36. [What will be the output? (adding to a HashMap while looping over it)](../../practice/coding/java/01-core-java-coding.md)
+37. [What will be the output? (orElse vs orElseGet)](../../practice/coding/java/01-core-java-coding.md)
+38. [What will be the output? (Optional.get on empty)](../../practice/coding/java/01-core-java-coding.md)
+39. [What will be the output? (finalize and System.gc)](../../practice/coding/java/01-core-java-coding.md)
+40. [What will be the output? (a++ + ++a + a++)](../../practice/coding/java/01-core-java-coding.md)
+41. [What will be the output? (Thread run instead of start)](../../practice/coding/java/01-core-java-coding.md)
+42. [What will be the output? (if (true) else)](../../practice/coding/java/01-core-java-coding.md)
+43. [What will be the output? (casting an Integer to String)](../../practice/coding/java/01-core-java-coding.md)
+44. [What will be the output? (volatile flag between threads)](../../practice/coding/java/01-core-java-coding.md)
+45. [Merge Two Arrays Alternately](../../practice/coding/java/01-Java-coding.md)
+46. [Reverse an Array](../../practice/coding/java/01-Java-coding.md)
+47. [Find First Non-Repeating Character](../../practice/coding/java/01-Java-coding.md)
+48. [Remove Duplicates from a List (Preserve Order)](../../practice/coding/java/01-Java-coding.md)
+49. [Count Word Occurrences](../../practice/coding/java/01-Java-coding.md)
+50. [Check if String is Palindrome (Ignore Case & Spaces)](../../practice/coding/java/01-Java-coding.md)
+51. [Find Second Highest Number in Array](../../practice/coding/java/01-Java-coding.md)
+52. [Thread-Safe Counter](../../practice/coding/java/01-Java-coding.md)
+53. [Reverse Words in a Sentence](../../practice/coding/java/01-Java-coding.md)
+54. [Reverse a LinkedList](../../practice/coding/java/01-Java-coding.md)
+55. [Employee–Department Related Questions](../../practice/coding/java/01-Java-coding.md)
+56. [Perfect Numbers](../../practice/coding/java/01-Java-coding.md)
+57. [Two Sum Problem](../../practice/coding/java/01-Java-coding.md)
+58. [Count Segments in a String](../../practice/coding/java/01-Java-coding.md)
 
 ## Diagrams
 

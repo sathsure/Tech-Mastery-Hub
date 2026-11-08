@@ -186,29 +186,34 @@ Through **multicasting** — sharing one execution across multiple subscribers:
 
 ### 📝 Answer
 
-#### 🔹 `share()`
+Both make **one** shared subscription to the source for many subscribers. The difference is what a **late** subscriber gets.
+
+#### 🔹 `share()` — late subscribers only get future values
 
 ```ts
-const src$ = of(0, 1, 2).pipe(share());
+const src$ = interval(1000).pipe(take(5), share());   // emits 0..4, one per second
 
 src$.subscribe(v => console.log("A:", v));
 
 setTimeout(() => {
-  src$.subscribe(v => console.log("B:", v));   // ❌ Misses 0,1,2
-}, 1000);
+  src$.subscribe(v => console.log("B:", v));   // joins while the source is still running
+}, 2500);
 ```
 
 **Output:**
 ```
 A: 0
 A: 1
-A: 2
+A: 2  B: 2     👈 B missed 0 and 1
+A: 3  B: 3
+A: 4  B: 4
 ```
-B subscribes too late and gets nothing.
+
+> ⚠️ **Trap (RxJS 7):** once the source **completes**, `share()` resets. A subscriber arriving after that starts a **brand-new** subscription — so with `of(0, 1, 2).pipe(share())`, a late subscriber gets `0, 1, 2` again (and an HTTP call would be repeated).
 
 ---
 
-#### 🔹 `shareReplay(1)`
+#### 🔹 `shareReplay(1)` — late subscribers also get the last value(s)
 
 ```ts
 const src$ = of(0, 1, 2).pipe(shareReplay(1));
@@ -319,7 +324,7 @@ Yes — it can. But those values are **lost** (no replay). Future subscribers wi
 
 ### 📝 Answer
 
-**Nothing happens.** Subscribers receive nothing after completion. The Subject is sealed.
+**Nothing happens.** Subscribers receive nothing after completion — the Subject is sealed. A **new** subscriber to a completed `Subject` immediately receives just the `complete` notification.
 
 ---
 

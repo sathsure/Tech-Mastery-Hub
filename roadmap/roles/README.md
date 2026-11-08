@@ -65,6 +65,7 @@
 - [Cloud Engineer](../roles/cloud-engineer.md)
 - [DevOps Engineer](../roles/devops-engineer.md)
 - [FinOps Engineer / Analyst](../roles/finops-engineer-analyst.md)
+- [Network Engineer](../roles/network-engineer.md)
 - [Platform Engineer](../roles/platform-engineer.md)
 - [Release / Build Engineer](../roles/release-build-engineer.md)
 - [Site Reliability Engineer](../roles/site-reliability-engineer.md)
