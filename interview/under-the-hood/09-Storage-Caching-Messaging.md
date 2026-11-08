@@ -188,7 +188,7 @@ flowchart TB
     W1[Write] --> DB1b[(DB)] --> D1[Delete cache key]
   end
   subgraph WT["Write-through"]
-    W2[Write] --> C2[Cache] --> DB2[(DB) same request]
+    W2[Write] --> C2[Cache] --> DB2[("DB, same request")]
   end
   subgraph WB["Write-behind"]
     W3[Write] --> C3[Cache] -. "later, batched" .-> DB3[(DB)]
