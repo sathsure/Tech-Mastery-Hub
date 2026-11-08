@@ -175,6 +175,26 @@
 1. [How do WebSockets establish persistent connections?](../../interview/under-the-hood/07-Networking-Internals.md)
 2. [How do Load Balancers, Reverse Proxies and API Gateways work?](../../interview/under-the-hood/07-Networking-Internals.md)
 
+## 27. Virtual Machines
+
+1. [What is a Virtual Machine? How can one physical computer run multiple VMs?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)
+2. [How does a Hypervisor allocate CPU, Memory and Storage?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)
+
+## 28. Containers
+
+1. [How does Docker work internally?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)
+2. [How are Containers different from Virtual Machines?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)
+3. [How do Docker Images and Containers work?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)
+
+## 29. Orchestration and Delivery
+
+1. [How does Kubernetes schedule and manage containers?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)
+2. [How does an application move from source code to a running production environment?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)
+3. [How do CI/CD pipelines build, test and deploy applications?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)
+4. [How do cloud platforms allocate computing resources?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)
+5. [How do Auto Scaling and Load Balancing work?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)
+6. [How are Secrets and Environment Configurations managed?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)
+
 ## Diagrams
 
 - [Frontend programming languages: source to machine code](../../knowledge/visual-notes/01_frontend_programming_languages.png)

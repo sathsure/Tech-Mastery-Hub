@@ -1,18 +1,18 @@
 {
   "schema_version": "1.0.0",
   "repository": "Tech-Mastery-Hub",
-  "generated_at": "2026-11-08T17:00:42.708Z",
-  "source_fingerprint": "4c8e699378bc7a5ece5ec472411f7192037a7b6b7cade7446b2e3cf46368ed38",
+  "generated_at": "2026-11-08T17:03:15.010Z",
+  "source_fingerprint": "8100fc3f9903a6ae38872133fc904b5faa023357e78afb31bc2f8c221663e097",
   "stats": {
-    "files": 149,
-    "entries": 2118,
-    "questions": 1191,
+    "files": 150,
+    "entries": 2129,
+    "questions": 1202,
     "followUps": 311,
     "notes": 84,
     "roles": 74,
     "terms": 378,
     "roadmaps": 80,
-    "codeBlocks": 1500,
+    "codeBlocks": 1517,
     "visuals": 86,
     "missingVisuals": 0
   },
@@ -580,6 +580,17 @@
     },
     {
       "path": "interview/under-the-hood/07-Networking-Internals.md",
+      "questions": 11,
+      "followUps": 0,
+      "notes": 0,
+      "roles": 0,
+      "terms": 0,
+      "roadmaps": 0,
+      "withoutAnswer": 0,
+      "missingVisuals": 0
+    },
+    {
+      "path": "interview/under-the-hood/08-Cloud-Virtualization-Deployment.md",
       "questions": 11,
       "followUps": 0,
       "notes": 0,
@@ -56434,6 +56445,518 @@
       "contentHash": "8df74e89bec11b5e"
     },
     {
+      "id": "interview/under-the-hood/08-Cloud-Virtualization-Deployment.md#what-is-a-virtual-machine-how-can-one-physical-computer-run",
+      "kind": "question",
+      "parentId": null,
+      "question": "What is a Virtual Machine? How can one physical computer run multiple VMs?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nA **virtual machine (VM)** is a complete computer made of software: virtual CPUs, memory, disks and network cards, running its **own operating system** (the **guest**). A **hypervisor** lets one physical machine (the **host**) run many VMs, each isolated from the others.\n\n**2. How does it work internally?**\n\n1. The hypervisor starts and owns the real hardware.\n2. Each VM gets virtual hardware: e.g. 4 vCPUs, 8 GB RAM, a virtual disk file, a virtual NIC.\n3. Guest code runs **directly on the real CPU** most of the time (hardware virtualization: Intel VT-x / AMD-V).\n4. When the guest does something privileged (touch hardware, change page tables), the CPU **traps** to the hypervisor (\"VM exit\"), which handles it and resumes the guest.\n5. Disk and network I/O go through virtual devices that the hypervisor maps to real disks and NICs.\n\n**3. Visual**\n\n```mermaid\nflowchart TB\n  subgraph Host[\"Physical server: 64 cores, 512 GB RAM\"]\n    HV[\"Hypervisor (KVM / Hyper-V / ESXi / AWS Nitro)\"]\n    subgraph VM1[\"VM 1: Ubuntu\"]\n      A1[Spring Boot app]\n    end\n    subgraph VM2[\"VM 2: Windows Server\"]\n      A2[.NET app]\n    end\n    subgraph VM3[\"VM 3: Ubuntu\"]\n      A3[PostgreSQL]\n    end\n    VM1 --> HV\n    VM2 --> HV\n    VM3 --> HV\n    HV --> HW[\"Real CPU, RAM, disks, NICs\"]\n  end\n```\n\n**4. Internal implementation**\n\n- **Type 1** hypervisors run on bare metal (ESXi, Hyper-V, KVM inside Linux, Xen, AWS Nitro). **Type 2** run as an app on a normal OS (VirtualBox, VMware Workstation).\n- CPU support: VT-x/AMD-V for trapping privileged instructions; **EPT/NPT** for memory translation (next question).\n- **Paravirtual drivers** (virtio, VMware Tools) make guest I/O efficient by cooperating with the hypervisor instead of emulating real hardware.\n\n**5. Why is it designed this way?**\nServers sat mostly idle running one app each. VMs consolidate many workloads per machine, isolate them strongly (separate kernels), allow different OSes, and can be moved, snapshotted and created in minutes. Cost: each VM carries a full OS (GBs of disk, hundreds of MB of RAM, slower boot).\n\n**6. Platform differences**\nEvery cloud \"instance\" is a VM: AWS EC2 (Nitro), Azure VMs (Hyper-V), Google Compute Engine (KVM). Docker Desktop on Windows and macOS runs a small Linux **VM** to host containers.\n\n**7. Practical example**\nAn AWS `m7i.large` (2 vCPUs, 8 GB) is a slice of a much larger physical server shared with other customers' VMs, isolated by the Nitro hypervisor.\n\n**8. How can I observe it?**\nWindows: Task Manager → Performance → CPU shows \"Virtualization: Enabled\". Inside a VM: `systemd-detect-virt` (Linux) or `systeminfo` (Windows \"System Model\"). Create a VM in Hyper-V or VirtualBox and watch its process on the host.",
+      "summary": "What is it? A virtual machine (VM) is a complete computer made of software: virtual CPUs, memory, disks and network cards, running its own operating system (the guest). A hypervisor lets one physical machine (the host) run many VMs, each isolated from the others.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart TB\n  subgraph Host[\"Physical server: 64 cores, 512 GB RAM\"]\n    HV[\"Hypervisor (KVM / Hyper-V / ESXi / AWS Nitro)\"]\n    subgraph VM1[\"VM 1: Ubuntu\"]\n      A1[Spring Boot app]\n    end\n    subgraph VM2[\"VM 2: Windows Server\"]\n      A2[.NET app]\n    end\n    subgraph VM3[\"VM 3: Ubuntu\"]\n      A3[PostgreSQL]\n    end\n    VM1 --> HV\n    VM2 --> HV\n    VM3 --> HV\n    HV --> HW[\"Real CPU, RAM, disks, NICs\"]\n  end"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Virtual Machines"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "virtual",
+        "machine",
+        "one",
+        "physical",
+        "computer",
+        "run",
+        "multiple",
+        "vms",
+        "virtual machine (vm)",
+        "own operating system",
+        "guest",
+        "hypervisor",
+        "host",
+        "directly on the real cpu",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/08-Cloud-Virtualization-Deployment.md",
+        "startLine": 7,
+        "endLine": 60
+      },
+      "contentHash": "896d5edfb5d2988c"
+    },
+    {
+      "id": "interview/under-the-hood/08-Cloud-Virtualization-Deployment.md#how-does-a-hypervisor-allocate-cpu-memory-and-storage",
+      "kind": "question",
+      "parentId": null,
+      "question": "How does a Hypervisor allocate CPU, Memory and Storage?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nThe hypervisor divides real hardware between VMs: CPU **time**, physical **memory pages**, and **disk** space/IO — usually promising more than it has (**overcommit**), because VMs rarely use everything at once.\n\n**2. How does it work internally?**\n\n- **CPU**: each vCPU is a schedulable thread on the host. The hypervisor's scheduler runs vCPUs on physical cores in time slices, like an OS schedules threads.\n- **Memory**: guests think they own contiguous \"physical\" memory. The CPU's **second-level page tables** (Intel EPT / AMD NPT) translate guest-physical → host-physical addresses in hardware.\n- **Storage**: a virtual disk is a file or volume (VMDK, VHDX, qcow2, EBS volume); guest block reads/writes become reads/writes to that backing storage, often over the network in clouds.\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  subgraph CPU[\"CPU\"]\n    V1[\"VM1 vCPU0\"] --> SCH[\"Hypervisor scheduler\"]\n    V2[\"VM2 vCPU0\"] --> SCH\n    SCH --> C0[Core 0]\n    SCH --> C1[Core 1]\n  end\n  subgraph MEM[\"Memory\"]\n    GV[\"Guest virtual\"] -- \"guest page tables\" --> GP[\"Guest physical\"] -- \"EPT / NPT\" --> HP[\"Host physical RAM\"]\n  end\n  subgraph DISK[\"Storage\"]\n    VD[\"Guest disk /dev/sda\"] --> VF[\"vm1.vhdx / EBS volume\"] --> SAN[(Physical disks / SAN)]\n  end\n```\n\n**4. Internal implementation**\n\n- **CPU steal time**: time a vCPU wanted to run but the host gave the core to someone else — visible inside the guest.\n- Memory tricks: **ballooning** (a guest driver gives back unused RAM), **page sharing/deduplication**, **swapping** at host level (slow), **huge pages** for fewer TLB misses.\n- Storage: **thin provisioning** (allocate on write), snapshots via copy-on-write, IOPS limits per volume.\n- Cloud providers mostly **avoid** CPU and memory overcommit on standard instances for predictable performance; \"burstable\" types (AWS T-family) use CPU credits.\n\n**5. Why is it designed this way?**\nHardware-assisted translation keeps VMs near native speed. Overcommit raises utilisation (cheaper), at the risk of contention (\"noisy neighbours\").\n\n**6. Platform differences**\nKVM: each vCPU is a Linux thread scheduled by the Linux kernel. VMware ESXi: its own scheduler (co-scheduling for multi-vCPU VMs). AWS Nitro: offloads networking and storage to dedicated Nitro cards, leaving almost all host CPU for guests.\n\n**7. Practical example**\nA Java app in a VM shows high latency with low CPU usage inside the guest; `top` shows `st` (steal) at 30% → the host is oversubscribed.\n\n**8. How can I observe it?**\nInside Linux guests: `top` / `vmstat` → `st` column (steal time). Hyper-V Manager / vSphere show per-VM CPU ready time and memory demand. Cloud: CloudWatch `CPUCreditBalance` for burstable instances.",
+      "summary": "What is it? The hypervisor divides real hardware between VMs: CPU time, physical memory pages, and disk space/IO — usually promising more than it has (overcommit), because VMs rarely use everything at once.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  subgraph CPU[\"CPU\"]\n    V1[\"VM1 vCPU0\"] --> SCH[\"Hypervisor scheduler\"]\n    V2[\"VM2 vCPU0\"] --> SCH\n    SCH --> C0[Core 0]\n    SCH --> C1[Core 1]\n  end\n  subgraph MEM[\"Memory\"]\n    GV[\"Guest virtual\"] -- \"guest page tables\" --> GP[\"Guest physical\"] -- \"EPT / NPT\" --> HP[\"Host physical RAM\"]\n  end\n  subgraph DISK[\"Storage\"]\n    VD[\"Guest disk /dev/sda\"] --> VF[\"vm1.vhdx / EBS volume\"] --> SAN[(Physical disks / SAN)]\n  end"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Virtual Machines"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "hypervisor",
+        "allocate",
+        "cpu",
+        "memory",
+        "storage",
+        "time",
+        "memory pages",
+        "disk",
+        "overcommit",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/08-Cloud-Virtualization-Deployment.md",
+        "startLine": 64,
+        "endLine": 112
+      },
+      "contentHash": "728c5b4e3647b0d9"
+    },
+    {
+      "id": "interview/under-the-hood/08-Cloud-Virtualization-Deployment.md#how-does-docker-work-internally",
+      "kind": "question",
+      "parentId": null,
+      "question": "How does Docker work internally?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nDocker runs applications in **containers**: normal Linux processes that the kernel **isolates** (they see their own filesystem, network, process list) and **limits** (CPU, memory). There is no separate OS kernel per container.\n\n**2. How does it work internally?**\n\n1. `docker run nginx` → the **Docker CLI** calls the **Docker daemon** (`dockerd`) API.\n2. The daemon ensures the **image** is present (pulls layers from a registry).\n3. It asks **containerd**, which uses **runc** (the OCI runtime) to create the container.\n4. runc creates **namespaces** for isolation and **cgroups** for limits, mounts the image layers with **OverlayFS** plus a writable layer, then starts the process (`nginx`) as PID 1 inside.\n5. Docker networking connects it to a virtual bridge (`docker0`) with NAT and port mappings (`-p 8080:80`).\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  CLI[\"docker run\"] --> D[\"dockerd\"] --> CD[\"containerd\"] --> RC[\"runc (OCI)\"]\n  RC --> NS[\"Namespaces<br/>pid, net, mnt, uts, ipc, user\"]\n  RC --> CG[\"cgroups<br/>CPU, memory, pids limits\"]\n  RC --> FS[\"OverlayFS<br/>image layers + writable layer\"]\n  NS --> P[\"Process: nginx<br/>(sees itself as PID 1)\"]\n  CG --> P\n  FS --> P\n  K[\"Shared host Linux kernel\"] --- P\n```\n\n**4. Internal implementation**\n\n| Kernel feature | Gives the container |\n|---|---|\n| PID namespace | Own process tree (PID 1 inside) |\n| Network namespace | Own interfaces, IP, ports |\n| Mount namespace | Own filesystem view (the image) |\n| UTS / IPC / user namespaces | Own hostname, IPC objects, user ID mapping |\n| cgroups v2 | Memory limit (OOM-kill beyond it), CPU quota, PID limits |\n| seccomp, capabilities | Restricted system calls and privileges |\n\nOn Windows/macOS, Docker Desktop runs these inside a lightweight **Linux VM** (WSL 2 on Windows).\n\n**5. Why is it designed this way?**\nUsing kernel features instead of a full VM gives near-native performance, millisecond start-up and tiny overhead. Trade-off: weaker isolation than VMs (shared kernel), so untrusted multi-tenant workloads often add gVisor, Kata Containers or Firecracker micro-VMs.\n\n**6. Language differences**\nAny language works. JVMs since Java 10 read **cgroup limits** to size the heap and thread pools (`-XX:MaxRAMPercentage`); older JVMs saw the host's full RAM and got OOM-killed. Node's heap and Go's `GOMAXPROCS` (container-aware since Go 1.25) have similar settings.\n\n**7. Practical example**\n\n```bash\ndocker run -d -p 8080:8080 --memory=512m --cpus=1 shop-api:1.4\n```\n\nInside: one Java process with its own filesystem and network; outside: just another process on the host, limited to 512 MB and 1 CPU.\n\n**8. How can I observe it?**\n`docker inspect <id>` (namespaces, mounts, limits), `docker stats` (live CPU/memory vs limit), `docker top <id>` (the process on the host). On Linux: `ps -ef` on the host shows the container's process; `ls -l /proc/<pid>/ns` shows its namespaces.",
+      "summary": "What is it? Docker runs applications in containers: normal Linux processes that the kernel isolates (they see their own filesystem, network, process list) and limits (CPU, memory). There is no separate OS kernel per container.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  CLI[\"docker run\"] --> D[\"dockerd\"] --> CD[\"containerd\"] --> RC[\"runc (OCI)\"]\n  RC --> NS[\"Namespaces<br/>pid, net, mnt, uts, ipc, user\"]\n  RC --> CG[\"cgroups<br/>CPU, memory, pids limits\"]\n  RC --> FS[\"OverlayFS<br/>image layers + writable layer\"]\n  NS --> P[\"Process: nginx<br/>(sees itself as PID 1)\"]\n  CG --> P\n  FS --> P\n  K[\"Shared host Linux kernel\"] --- P"
+        },
+        {
+          "language": "bash",
+          "code": "docker run -d -p 8080:8080 --memory=512m --cpus=1 shop-api:1.4"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Containers"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "docker",
+        "internally",
+        "containers",
+        "isolates",
+        "limits",
+        "docker cli",
+        "docker daemon",
+        "image",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/08-Cloud-Virtualization-Deployment.md",
+        "startLine": 118,
+        "endLine": 175
+      },
+      "contentHash": "4e98fafe24bdc287"
+    },
+    {
+      "id": "interview/under-the-hood/08-Cloud-Virtualization-Deployment.md#how-are-containers-different-from-virtual-machines",
+      "kind": "question",
+      "parentId": null,
+      "question": "How are Containers different from Virtual Machines?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nBoth isolate workloads, at different levels:\n\n- **VM** — virtualises **hardware**; each VM runs its **own OS kernel**.\n- **Container** — virtualises the **operating system**; all containers share the **host kernel** and are isolated processes.\n\n**2. How does it work internally?**\n\n- VM: hypervisor → guest kernel → guest OS services → your app. Isolation enforced by CPU virtualization hardware.\n- Container: host kernel → namespaces + cgroups → your app process. Isolation enforced by the kernel.\n\n**3. Visual**\n\n```mermaid\nflowchart TB\n  subgraph VMs[\"Virtual machines\"]\n    direction TB\n    VA[\"App A\"] --> GA[\"Guest OS + kernel\"]\n    VB[\"App B\"] --> GB[\"Guest OS + kernel\"]\n    GA --> HV[Hypervisor]\n    GB --> HV\n    HV --> H1[Hardware]\n  end\n  subgraph CTs[\"Containers\"]\n    direction TB\n    CA[\"App A + libs\"] --> RT[\"Container runtime\"]\n    CB[\"App B + libs\"] --> RT\n    RT --> HK[\"Shared host kernel\"] --> H2[Hardware]\n  end\n```\n\n**4. Internal implementation**\n\n| | Virtual machine | Container |\n|---|---|---|\n| Boot time | Seconds to minutes | Milliseconds to seconds |\n| Size | GBs (full OS) | MBs (app + libraries) |\n| Kernel | Own kernel per VM | Shared host kernel |\n| Isolation | Strong (hardware) | Good (kernel), weaker than VM |\n| OS mix | Any OS on any host | Linux containers need a Linux kernel |\n| Density | Tens per host | Hundreds per host |\n\n**5. Why is it designed this way?**\nVMs maximise isolation and flexibility; containers maximise density, speed and portability of the **app**. In the cloud they are usually **combined**: containers run inside VMs (EKS/AKS/GKE nodes are VMs).\n\n**6. Platform differences**\n**Micro-VMs** (AWS Firecracker for Lambda/Fargate, Kata Containers) blend both: VM-level isolation with container-like start-up. Windows containers exist but need a Windows host kernel.\n\n**7. Practical example**\nRunning 20 Spring Boot microservices: 20 VMs would each need an OS (~20 × 1 GB overhead); 20 containers on one VM share its kernel and start in seconds.\n\n**8. How can I observe it?**\n`uname -r` inside a container prints the **host's** kernel version; inside a VM it prints the guest's own. Compare `docker run` start time with booting a VM.",
+      "summary": "What is it? Both isolate workloads, at different levels:",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart TB\n  subgraph VMs[\"Virtual machines\"]\n    direction TB\n    VA[\"App A\"] --> GA[\"Guest OS + kernel\"]\n    VB[\"App B\"] --> GB[\"Guest OS + kernel\"]\n    GA --> HV[Hypervisor]\n    GB --> HV\n    HV --> H1[Hardware]\n  end\n  subgraph CTs[\"Containers\"]\n    direction TB\n    CA[\"App A + libs\"] --> RT[\"Container runtime\"]\n    CB[\"App B + libs\"] --> RT\n    RT --> HK[\"Shared host kernel\"] --> H2[Hardware]\n  end"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Containers"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "containers",
+        "virtual",
+        "machines",
+        "vm",
+        "hardware",
+        "own os kernel",
+        "container",
+        "operating system",
+        "host kernel",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/08-Cloud-Virtualization-Deployment.md",
+        "startLine": 179,
+        "endLine": 235
+      },
+      "contentHash": "4d355a3e18f2e273"
+    },
+    {
+      "id": "interview/under-the-hood/08-Cloud-Virtualization-Deployment.md#how-do-docker-images-and-containers-work",
+      "kind": "question",
+      "parentId": null,
+      "question": "How do Docker Images and Containers work?",
+      "prompt": null,
+      "answer": "**1. What is it?**\n\n- **Image** — a **read-only template**: a stack of filesystem **layers** plus metadata (default command, env vars, exposed ports).\n- **Container** — a **running instance** of an image: the image layers + one thin **writable layer** + an isolated process.\n\nImage = class, container = object.\n\n**2. How does it work internally?**\n\n1. Each Dockerfile instruction that changes files (`FROM`, `COPY`, `RUN`) creates a **layer**: a tar of the changed files.\n2. Layers are identified by a **SHA-256 digest** of their content; an image **manifest** lists the layers + config.\n3. `docker push` uploads only layers the registry doesn't have; `docker pull` downloads only missing ones.\n4. `docker run`: OverlayFS stacks the layers (lower, read-only) and adds a writable **upper** layer.\n5. Writing to an existing file **copies it up** into the writable layer (copy-on-write); deleting creates a \"whiteout\" marker. Removing the container discards the writable layer.\n\n**3. Visual**\n\n```mermaid\nflowchart BT\n  L1[\"Layer 1: eclipse-temurin:21-jre base\"] --> L2[\"Layer 2: COPY dependencies\"]\n  L2 --> L3[\"Layer 3: COPY app.jar\"]\n  L3 --> W1[\"Container A: writable layer\"]\n  L3 --> W2[\"Container B: writable layer\"]\n  REG[(\"Registry: layers by digest<br/>sha256:4f2a...\")] -. pull missing layers .-> L1\n```\n\n**4. Internal implementation**\n\n- Image format follows the **OCI** specification (manifest, config JSON, layer tarballs).\n- Layers are **shared** between images and containers on the same host: ten containers from one image use the image's disk space once.\n- Build cache: if a layer's instruction and inputs are unchanged, Docker reuses it — so copy dependency files **before** source code.\n- Tags (`shop-api:1.4`) are movable names; **digests** are immutable.\n\n**5. Why is it designed this way?**\nLayering makes builds, pushes and pulls incremental and saves disk. Immutable images guarantee the same artifact in test and production. Container data must live in **volumes**, because the writable layer is temporary.\n\n**6. Language differences**\nJava: multi-stage build (JDK to build, small JRE image to run), or `spring-boot:build-image` (Cloud Native Buildpacks) with layered JARs. Go and Rust: static binaries on tiny `distroless`/`scratch` images (~10–20 MB). Node/Python: copy `package.json`/`requirements.txt` first for caching.\n\n**7. Practical example**\n\n```dockerfile\nFROM eclipse-temurin:21-jre\nWORKDIR /app\nCOPY target/app.jar app.jar          # only this layer changes on each release\nENTRYPOINT [\"java\", \"-jar\", \"app.jar\"]\n```\n\n**8. How can I observe it?**\n`docker history shop-api:1.4` (layers and sizes), `docker image inspect` (digests, config), **dive** tool (browse each layer's files), `docker diff <container>` (files changed in the writable layer).",
+      "summary": "Image — a read-only template: a stack of filesystem layers plus metadata (default command, env vars, exposed ports). Container — a running instance of an image: the image layers + one thin writable layer + an isolated process.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart BT\n  L1[\"Layer 1: eclipse-temurin:21-jre base\"] --> L2[\"Layer 2: COPY dependencies\"]\n  L2 --> L3[\"Layer 3: COPY app.jar\"]\n  L3 --> W1[\"Container A: writable layer\"]\n  L3 --> W2[\"Container B: writable layer\"]\n  REG[(\"Registry: layers by digest<br/>sha256:4f2a...\")] -. pull missing layers .-> L1"
+        },
+        {
+          "language": "dockerfile",
+          "code": "FROM eclipse-temurin:21-jre\nWORKDIR /app\nCOPY target/app.jar app.jar          # only this layer changes on each release\nENTRYPOINT [\"java\", \"-jar\", \"app.jar\"]"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Containers"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "docker",
+        "images",
+        "containers",
+        "image",
+        "read-only template",
+        "layers",
+        "container",
+        "running instance",
+        "writable layer",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/08-Cloud-Virtualization-Deployment.md",
+        "startLine": 239,
+        "endLine": 292
+      },
+      "contentHash": "a4ce1c53a9b2496e"
+    },
+    {
+      "id": "interview/under-the-hood/08-Cloud-Virtualization-Deployment.md#how-does-kubernetes-schedule-and-manage-containers",
+      "kind": "question",
+      "parentId": null,
+      "question": "How does Kubernetes schedule and manage containers?",
+      "prompt": null,
+      "answer": "**1. What is it?**\n**Kubernetes** runs containers across a cluster of machines. You declare the **desired state** (\"3 replicas of orders:1.4, each 500m CPU, 512Mi memory\"); Kubernetes continuously works to make reality match it.\n\n**2. How does it work internally?**\n\n1. `kubectl apply -f deployment.yaml` sends the object to the **API server**, which stores it in **etcd**.\n2. The **Deployment controller** creates a **ReplicaSet**, which creates 3 **Pod** objects (not yet placed).\n3. The **scheduler** picks a node for each Pod: **filter** nodes that fit (enough CPU/memory requests, taints, affinity), then **score** the rest and pick the best.\n4. The **kubelet** on that node sees the Pod assigned to it, asks the container runtime (containerd) to pull the image and start containers.\n5. kubelet runs **probes**; failed liveness → restart; not ready → removed from Service endpoints.\n6. Controllers keep reconciling: a node dies → its Pods are recreated elsewhere.\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  U[\"kubectl apply\"] --> API[\"API server\"]\n  API <--> ETCD[(\"etcd<br/>desired + current state\")]\n  CM[\"Controllers<br/>Deployment → ReplicaSet → Pods\"] <--> API\n  SCH[\"Scheduler<br/>filter + score nodes\"] <--> API\n  API --> K1[\"kubelet (node 1)\"] --> P1[\"Pod: orders\"]\n  API --> K2[\"kubelet (node 2)\"] --> P2[\"Pod: orders\"]\n  K1 --> CR[\"containerd → runc\"]\n```\n\n**4. Internal implementation**\n\n- Everything is a **control loop**: watch state via the API server, compare with desired, act, repeat (level-triggered, so missed events are recovered).\n- Scheduling uses **requests** (reserved), while **limits** are enforced by cgroups at runtime (CPU throttled, memory over limit → OOMKilled).\n- **Services** get a stable virtual IP; kube-proxy (iptables/IPVS) or eBPF (Cilium) load-balances to ready Pods; CoreDNS gives names like `orders.default.svc.cluster.local`.\n\n**5. Why is it designed this way?**\nDeclarative desired state + reconciliation makes the system **self-healing** and lets many independent controllers cooperate through one API. Cost: significant complexity and many moving parts.\n\n**6. Platform differences**\nManaged Kubernetes: EKS, AKS, GKE (they run the control plane). Simpler alternatives: AWS ECS, Google Cloud Run, Azure Container Apps, Docker Swarm, Nomad.\n\n**7. Practical example**\n\n```yaml\nspec:\n  replicas: 3\n  template:\n    spec:\n      containers:\n        - name: orders\n          image: myrepo/orders:1.4\n          resources: { requests: { cpu: 500m, memory: 512Mi }, limits: { memory: 768Mi } }\n          readinessProbe: { httpGet: { path: /actuator/health/readiness, port: 8080 } }\n```\n\n**8. How can I observe it?**\n`kubectl get pods -o wide` (which node), `kubectl describe pod <name>` → **Events** (Scheduled, Pulling, Started, probe failures), `kubectl get events --sort-by=.lastTimestamp`, `kubectl top pods`.",
+      "summary": "What is it? Kubernetes runs containers across a cluster of machines. You declare the desired state (\"3 replicas of orders:1.4, each 500m CPU, 512Mi memory\"); Kubernetes continuously works to make reality match it.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  U[\"kubectl apply\"] --> API[\"API server\"]\n  API <--> ETCD[(\"etcd<br/>desired + current state\")]\n  CM[\"Controllers<br/>Deployment → ReplicaSet → Pods\"] <--> API\n  SCH[\"Scheduler<br/>filter + score nodes\"] <--> API\n  API --> K1[\"kubelet (node 1)\"] --> P1[\"Pod: orders\"]\n  API --> K2[\"kubelet (node 2)\"] --> P2[\"Pod: orders\"]\n  K1 --> CR[\"containerd → runc\"]"
+        },
+        {
+          "language": "yaml",
+          "code": "spec:\n  replicas: 3\n  template:\n    spec:\n      containers:\n        - name: orders\n          image: myrepo/orders:1.4\n          resources: { requests: { cpu: 500m, memory: 512Mi }, limits: { memory: 768Mi } }\n          readinessProbe: { httpGet: { path: /actuator/health/readiness, port: 8080 } }"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Orchestration and Delivery"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "kubernetes",
+        "schedule",
+        "manage",
+        "containers",
+        "desired state",
+        "api server",
+        "etcd",
+        "deployment controller",
+        "replicaset",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/08-Cloud-Virtualization-Deployment.md",
+        "startLine": 298,
+        "endLine": 354
+      },
+      "contentHash": "9c4ed9d087470674"
+    },
+    {
+      "id": "interview/under-the-hood/08-Cloud-Virtualization-Deployment.md#how-does-an-application-move-from-source-code-to-a-running",
+      "kind": "question",
+      "parentId": null,
+      "question": "How does an application move from source code to a running production environment?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nThe **delivery path**: code is committed, built into an **artifact**, tested, packaged into an **image**, deployed through environments, configured, and finally serves real traffic — ideally fully automated and repeatable.\n\n**2. How does it work internally?**\n\n1. **Commit & review** — push to Git, open a pull request, review.\n2. **Build** — compile and run unit tests (`mvn verify`, `ng build`) → artifact (`app.jar`, `dist/`).\n3. **Package** — build a Docker image tagged with the commit SHA; push to a registry.\n4. **Deploy to test/staging** — run integration/E2E tests against real dependencies.\n5. **Promote to production** — the **same image** is deployed (rolling, blue/green or canary), with production config and secrets injected at runtime.\n6. **Run & observe** — health checks, logs, metrics, traces; roll back by redeploying the previous image.\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  G[\"git push<br/>(feature branch)\"] --> PR[\"Pull request<br/>review + CI checks\"]\n  PR --> M[Merge to main]\n  M --> B[\"Build + unit tests<br/>app.jar\"]\n  B --> I[\"Docker image<br/>orders:3f9a1c2\"]\n  I --> R[(\"Registry\")]\n  R --> ST[\"Staging<br/>integration / E2E tests\"]\n  ST --> PRD[\"Production<br/>rolling / canary\"]\n  PRD --> OBS[\"Monitoring<br/>logs, metrics, alerts\"]\n  OBS -. \"problem → redeploy previous image\" .-> PRD\n```\n\n**4. Internal implementation**\n\n- **Build once, deploy many**: environments differ only in configuration, never in the artifact.\n- Infrastructure is described as code (Terraform, Helm charts, Kubernetes YAML) and versioned in Git; **GitOps** tools (Argo CD, Flux) sync clusters from Git.\n- Database schema changes are versioned migrations (Flyway, Liquibase) applied during deployment, written to be backward compatible with the previous app version.\n\n**5. Why is it designed this way?**\nAutomation removes manual, error-prone steps; immutable artifacts make \"it worked in staging\" meaningful; small, frequent releases are easier to test and roll back.\n\n**6. Stack differences**\nJava: Maven/Gradle → JAR → JRE image. Angular: `ng build` → static files → Nginx image or CDN/object storage. Node: `npm ci && npm run build` → image. Go: single binary → `distroless` image. Serverless (AWS Lambda) skips container management — you deploy a ZIP or image to the platform.\n\n**7. Practical example**\nFixing a bug in `OrderService`: PR → CI tests pass → merge → image `orders:9b2e4d1` → staging tests → canary to 5% of traffic → metrics healthy → 100%.\n\n**8. How can I observe it?**\nCI dashboard (GitHub Actions / Jenkins / GitLab) for each stage; registry tags; `kubectl rollout history deployment/orders`; deployment markers in Grafana/Datadog show which release changed error rates.",
+      "summary": "What is it? The delivery path: code is committed, built into an artifact, tested, packaged into an image, deployed through environments, configured, and finally serves real traffic — ideally fully automated and repeatable.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  G[\"git push<br/>(feature branch)\"] --> PR[\"Pull request<br/>review + CI checks\"]\n  PR --> M[Merge to main]\n  M --> B[\"Build + unit tests<br/>app.jar\"]\n  B --> I[\"Docker image<br/>orders:3f9a1c2\"]\n  I --> R[(\"Registry\")]\n  R --> ST[\"Staging<br/>integration / E2E tests\"]\n  ST --> PRD[\"Production<br/>rolling / canary\"]\n  PRD --> OBS[\"Monitoring<br/>logs, metrics, alerts\"]\n  OBS -. \"problem → redeploy previous image\" .-> PRD"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Orchestration and Delivery"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "application",
+        "move",
+        "source",
+        "code",
+        "running",
+        "production",
+        "environment",
+        "delivery path",
+        "artifact",
+        "image",
+        "commit & review",
+        "build",
+        "package",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/08-Cloud-Virtualization-Deployment.md",
+        "startLine": 358,
+        "endLine": 405
+      },
+      "contentHash": "7d484e1413314584"
+    },
+    {
+      "id": "interview/under-the-hood/08-Cloud-Virtualization-Deployment.md#how-do-ci-cd-pipelines-build-test-and-deploy-applications",
+      "kind": "question",
+      "parentId": null,
+      "question": "How do CI/CD pipelines build, test and deploy applications?",
+      "prompt": null,
+      "answer": "**1. What is it?**\n\n- **CI (Continuous Integration)** — every push is automatically built and tested.\n- **CD (Continuous Delivery/Deployment)** — tested builds are automatically deployed to environments (production either after an approval or fully automatic).\n\nA **pipeline** is a defined sequence of **stages** and **jobs** run by a CI server.\n\n**2. How does it work internally?**\n\n1. A Git event (push, PR) hits the CI server via a **webhook**.\n2. The server reads the pipeline file (`.github/workflows/ci.yml`, `Jenkinsfile`, `.gitlab-ci.yml`).\n3. A **runner/agent** (a VM or container) is assigned; it checks out the exact commit.\n4. Jobs run commands: restore **caches** (Maven `~/.m2`, `node_modules`), build, test, scan (SAST, dependency CVEs), build the image.\n5. Outputs are stored as **artifacts** (JARs, test reports, images).\n6. Deploy jobs use stored **credentials/secrets** to push to a registry and update the environment; **environment protection rules** require approvals.\n7. Any failing step stops the pipeline and reports back to the PR.\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  WH[\"Webhook: push / PR\"] --> CI[\"CI server reads pipeline file\"]\n  CI --> RN[\"Runner: fresh VM/container,<br/>checkout commit\"]\n  RN --> B[\"Build<br/>(cached deps)\"] --> T[\"Test<br/>unit + integration\"] --> S[\"Scan<br/>CVEs, code quality\"]\n  S --> IMG[\"Build + push image\"] --> DS[\"Deploy staging\"]\n  DS --> AP{\"Approval /<br/>checks pass?\"}\n  AP -- yes --> DP[\"Deploy production\"]\n  T -- fail --> X[\"Stop + report on PR\"]\n```\n\n**4. Internal implementation**\n\n- Jobs can run in **parallel** (matrix builds across Java versions) or depend on each other (`needs:`).\n- Runners are ephemeral → reproducible builds; caches are keyed by lock-file hashes (`pom.xml`, `package-lock.json`).\n- Deployment strategies: **rolling** (replace a few at a time), **blue/green** (switch traffic between two full environments), **canary** (small % first, watch metrics).\n\n**5. Why is it designed this way?**\nCatching problems minutes after a commit is far cheaper than at release time. Pipelines as code are reviewed and versioned like application code.\n\n**6. Tool differences**\nGitHub Actions (YAML workflows, marketplace actions), GitLab CI (built into GitLab), Jenkins (self-hosted, Groovy `Jenkinsfile`, plugins), Azure DevOps Pipelines, CircleCI. Deployment-only tools: Argo CD (GitOps pull), Spinnaker.\n\n**7. Practical example**\n\n```yaml\non: [push]\njobs:\n  build:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/setup-java@v4\n        with: { distribution: temurin, java-version: 21, cache: maven }\n      - run: mvn -B verify\n      - run: docker build -t ghcr.io/me/orders:${{ github.sha }} .\n```\n\n**8. How can I observe it?**\nThe pipeline UI shows each step's logs, duration and artifacts; failed tests appear as annotations on the PR. Re-run with debug logging (`ACTIONS_STEP_DEBUG=true` in GitHub Actions).",
+      "summary": "CI (Continuous Integration) — every push is automatically built and tested. CD (Continuous Delivery/Deployment) — tested builds are automatically deployed to environments (production either after an approval or fully automatic).",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  WH[\"Webhook: push / PR\"] --> CI[\"CI server reads pipeline file\"]\n  CI --> RN[\"Runner: fresh VM/container,<br/>checkout commit\"]\n  RN --> B[\"Build<br/>(cached deps)\"] --> T[\"Test<br/>unit + integration\"] --> S[\"Scan<br/>CVEs, code quality\"]\n  S --> IMG[\"Build + push image\"] --> DS[\"Deploy staging\"]\n  DS --> AP{\"Approval /<br/>checks pass?\"}\n  AP -- yes --> DP[\"Deploy production\"]\n  T -- fail --> X[\"Stop + report on PR\"]"
+        },
+        {
+          "language": "yaml",
+          "code": "on: [push]\njobs:\n  build:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/setup-java@v4\n        with: { distribution: temurin, java-version: 21, cache: maven }\n      - run: mvn -B verify\n      - run: docker build -t ghcr.io/me/orders:${{ github.sha }} ."
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Orchestration and Delivery"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "ci",
+        "cd",
+        "pipelines",
+        "build",
+        "test",
+        "deploy",
+        "applications",
+        "ci (continuous integration)",
+        "cd (continuous delivery/deployment)",
+        "pipeline",
+        "stages",
+        "jobs",
+        "webhook",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/08-Cloud-Virtualization-Deployment.md",
+        "startLine": 409,
+        "endLine": 471
+      },
+      "contentHash": "c719cc4a6026daeb"
+    },
+    {
+      "id": "interview/under-the-hood/08-Cloud-Virtualization-Deployment.md#how-do-cloud-platforms-allocate-computing-resources",
+      "kind": "question",
+      "parentId": null,
+      "question": "How do cloud platforms allocate computing resources?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nWhen you request a VM, container or function, the cloud's **control plane** finds physical capacity in a chosen **region** and **availability zone**, carves out the requested CPU, memory, disk and network, and attaches it to your account — in seconds, through an API.\n\n**2. How does it work internally?**\n\n1. You call an API (console, CLI, Terraform): \"1 × m7i.large in ap-south-1a, 50 GB gp3 disk\".\n2. The control plane checks **quotas** and permissions (IAM).\n3. A **placement service** picks a physical host with free capacity that matches the instance family, honouring placement rules (spread across racks, etc.).\n4. The host's hypervisor creates the VM; storage service creates a **network-attached** volume (EBS) and attaches it; the virtual network (VPC) assigns a private IP and security groups.\n5. Metering starts: you pay per second/hour of allocation.\n\n**3. Visual**\n\n```mermaid\nflowchart TB\n  API[\"API: RunInstances\"] --> IAM[\"Auth + quota check\"]\n  IAM --> PL[\"Placement service<br/>region → AZ → rack → host\"]\n  PL --> HOST[\"Physical host<br/>hypervisor creates VM\"]\n  PL --> EBS[\"Block storage service<br/>create + attach volume\"]\n  PL --> VPC[\"Virtual network<br/>private IP, security groups\"]\n  HOST --> RUN[\"Instance running<br/>billing starts\"]\n  EBS --> RUN\n  VPC --> RUN\n```\n\n**4. Internal implementation**\n\n- **Region** = a geographic area; **AZ** = one or more separate data centres with independent power/network inside it.\n- Instance types map to hardware generations and fixed CPU:memory ratios (general, compute-, memory-optimised).\n- Serverless (Lambda, Cloud Run, Fargate) uses the same pools with micro-VMs (e.g. **Firecracker**) allocated per request/container, scaled to zero when idle.\n- Spot/preemptible capacity sells unused hosts cheaply but can be reclaimed with short notice.\n\n**5. Why is it designed this way?**\nPooling huge amounts of hardware and allocating it on demand lets providers keep utilisation high and customers pay only for what they use. AZs let you survive a data-centre failure by spreading instances.\n\n**6. Platform differences**\nAWS (EC2, Nitro), Azure (VMs on Hyper-V, Scale Sets), Google Cloud (Compute Engine on KVM, live migration during host maintenance). Kubernetes adds a second level of allocation: Pods packed onto those VMs by requests.\n\n**7. Practical example**\nAn Auto Scaling group requests 2 more instances during a sale; they appear in different AZs within a minute and register with the load balancer.\n\n**8. How can I observe it?**\nAWS console/CLI: `aws ec2 describe-instances` (AZ, instance type, state transitions pending → running), **Service Quotas** page, **Cost Explorer** for metering. Instance metadata from inside: `curl http://169.254.169.254/latest/meta-data/placement/availability-zone` (IMDSv2 needs a token).",
+      "summary": "What is it? When you request a VM, container or function, the cloud's control plane finds physical capacity in a chosen region and availability zone, carves out the requested CPU, memory, disk and network, and attaches it to your account — in seconds, through an API.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart TB\n  API[\"API: RunInstances\"] --> IAM[\"Auth + quota check\"]\n  IAM --> PL[\"Placement service<br/>region → AZ → rack → host\"]\n  PL --> HOST[\"Physical host<br/>hypervisor creates VM\"]\n  PL --> EBS[\"Block storage service<br/>create + attach volume\"]\n  PL --> VPC[\"Virtual network<br/>private IP, security groups\"]\n  HOST --> RUN[\"Instance running<br/>billing starts\"]\n  EBS --> RUN\n  VPC --> RUN"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Orchestration and Delivery"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "cloud",
+        "platforms",
+        "allocate",
+        "computing",
+        "resources",
+        "control plane",
+        "region",
+        "availability zone",
+        "quotas",
+        "placement service",
+        "network-attached",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/08-Cloud-Virtualization-Deployment.md",
+        "startLine": 475,
+        "endLine": 521
+      },
+      "contentHash": "27d4d35f9b1f14ba"
+    },
+    {
+      "id": "interview/under-the-hood/08-Cloud-Virtualization-Deployment.md#how-do-auto-scaling-and-load-balancing-work",
+      "kind": "question",
+      "parentId": null,
+      "question": "How do Auto Scaling and Load Balancing work?",
+      "prompt": null,
+      "answer": "**1. What is it?**\n\n- **Load balancing** — spread incoming requests across healthy instances.\n- **Auto scaling** — automatically **add or remove** instances based on load (metrics or schedules).\n\nTogether: more traffic → more instances → the load balancer starts sending them traffic.\n\n**2. How does it work internally?**\n\n1. Instances/Pods report **metrics** (CPU, requests per target, queue length, custom metrics).\n2. A scaling policy compares them with a **target** (e.g. CPU 60%).\n3. Kubernetes HPA formula: `desired = ceil(current × currentMetric / target)` — e.g. 4 Pods at 90% CPU with target 60% → 6 Pods.\n4. New instances start, pass **health checks**, and are **registered** with the load balancer.\n5. On scale-in, instances are **drained** (finish in-flight requests, stop receiving new ones), then removed.\n6. **Cooldown / stabilisation windows** prevent flapping up and down.\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  T[Traffic spike] --> LB[Load balancer]\n  LB --> I1[Instance 1]\n  LB --> I2[Instance 2]\n  I1 --> MET[\"Metrics: CPU 85%\"]\n  I2 --> MET\n  MET --> AS{\"Above target 60%?\"}\n  AS -- yes --> NEW[\"Launch instance 3 + 4\"]\n  NEW --> HC[\"Health check passes\"] --> REG[Register with LB]\n  REG --> LB\n```\n\n**4. Internal implementation**\n\n- AWS: CloudWatch alarms / target tracking → Auto Scaling Group adjusts desired capacity → ALB target group registration.\n- Kubernetes: **HPA** (Pods, every ~15 s), **Cluster Autoscaler / Karpenter** (adds nodes when Pods can't be scheduled), **KEDA** (scale on queue length, including to zero).\n- New Java instances need **warm-up** (JIT, caches): slow-start settings on the load balancer ramp traffic gradually.\n\n**5. Why is it designed this way?**\nPaying for peak capacity all the time is expensive; scaling with demand keeps cost and performance balanced. Health checks + draining keep scaling invisible to users. Limits: scaling takes time (minutes for VMs), so sudden spikes need headroom or pre-scaling.\n\n**6. Platform differences**\nAWS ASG + ALB/NLB, Azure VM Scale Sets + Load Balancer/App Gateway, GCP Managed Instance Groups + Cloud Load Balancing, Kubernetes HPA + Services/Ingress, serverless platforms scale per request automatically.\n\n**7. Practical example**\n\n```yaml\napiVersion: autoscaling/v2\nkind: HorizontalPodAutoscaler\nspec:\n  scaleTargetRef: { kind: Deployment, name: orders }\n  minReplicas: 2\n  maxReplicas: 10\n  metrics:\n    - type: Resource\n      resource: { name: cpu, target: { type: Utilization, averageUtilization: 60 } }\n```\n\n**8. How can I observe it?**\n`kubectl get hpa -w` (current vs target, replica count changing during a load test with k6/JMeter), `kubectl describe hpa` (scaling events). AWS: ASG \"Activity\" tab and ALB target health.",
+      "summary": "Load balancing — spread incoming requests across healthy instances. Auto scaling — automatically add or remove instances based on load (metrics or schedules).",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  T[Traffic spike] --> LB[Load balancer]\n  LB --> I1[Instance 1]\n  LB --> I2[Instance 2]\n  I1 --> MET[\"Metrics: CPU 85%\"]\n  I2 --> MET\n  MET --> AS{\"Above target 60%?\"}\n  AS -- yes --> NEW[\"Launch instance 3 + 4\"]\n  NEW --> HC[\"Health check passes\"] --> REG[Register with LB]\n  REG --> LB"
+        },
+        {
+          "language": "yaml",
+          "code": "apiVersion: autoscaling/v2\nkind: HorizontalPodAutoscaler\nspec:\n  scaleTargetRef: { kind: Deployment, name: orders }\n  minReplicas: 2\n  maxReplicas: 10\n  metrics:\n    - type: Resource\n      resource: { name: cpu, target: { type: Utilization, averageUtilization: 60 } }"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Orchestration and Delivery"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "auto",
+        "scaling",
+        "load",
+        "balancing",
+        "load balancing",
+        "auto scaling",
+        "add or remove",
+        "metrics",
+        "target",
+        "health checks",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/08-Cloud-Virtualization-Deployment.md",
+        "startLine": 525,
+        "endLine": 587
+      },
+      "contentHash": "d714a8a01367f875"
+    },
+    {
+      "id": "interview/under-the-hood/08-Cloud-Virtualization-Deployment.md#how-are-secrets-and-environment-configurations-managed",
+      "kind": "question",
+      "parentId": null,
+      "question": "How are Secrets and Environment Configurations managed?",
+      "prompt": null,
+      "answer": "**1. What is it?**\n\n- **Configuration** — settings that differ per environment: URLs, feature flags, pool sizes, log levels.\n- **Secrets** — sensitive config: passwords, API keys, private keys, tokens.\n\nRule (**12-factor app**): keep both **out of the code and the image**; inject them at runtime, so the same artifact runs everywhere.\n\n**2. How does it work internally?**\n\n1. Non-secret config lives in versioned files (`application-prod.yml`, Helm `values-prod.yaml`, ConfigMaps).\n2. Secrets live in a **secret store**: HashiCorp Vault, AWS Secrets Manager / SSM Parameter Store, Azure Key Vault, GCP Secret Manager, or Kubernetes Secrets.\n3. At deploy/start time, the platform injects them as **environment variables** or **mounted files**, or the app fetches them via an SDK using its **workload identity** (IAM role) — no password needed to get the passwords.\n4. The app reads them (Spring Boot: env vars override properties, e.g. `SPRING_DATASOURCE_PASSWORD`).\n5. Rotation: the store changes the secret; the app reloads or restarts to pick it up.\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  subgraph Git[\"Git (no secrets)\"]\n    CFG[\"application.yml<br/>values-prod.yaml\"]\n  end\n  subgraph Store[\"Secret store\"]\n    SEC[(\"Vault / AWS Secrets Manager<br/>db password, API keys\")]\n  end\n  IMG[\"Same image orders:1.4\"] --> POD[\"Running Pod / instance\"]\n  CFG -- \"ConfigMap / env\" --> POD\n  SEC -- \"injected at runtime<br/>(env var or file, via IAM identity)\" --> POD\n```\n\n**4. Internal implementation**\n\n- Kubernetes Secrets are only **base64-encoded** in their YAML; protection comes from RBAC and enabling **encryption at rest** in etcd. Tools like External Secrets Operator or Sealed Secrets sync/encrypt them.\n- Vault can issue **dynamic secrets** (short-lived DB credentials created per app instance).\n- Environment variables are visible to anyone who can inspect the process or container; mounted files with tight permissions are slightly safer.\n\n**5. Why is it designed this way?**\nSecrets in Git or images leak through history, forks and registries. Central stores give access control, audit logs and rotation. Separating config from code means no rebuild to change a URL.\n\n**6. Framework differences**\nSpring Boot: profiles, `@ConfigurationProperties`, env var relaxed binding, `spring.config.import=vault://` or `aws-secretsmanager:`. ASP.NET Core: `appsettings.{Env}.json` + environment variables + Key Vault provider; **User Secrets** for local dev. Node: `process.env` (+ `dotenv` locally). Angular: build-time `environment.ts` files — **never** put secrets in frontend code, it ships to every browser.\n\n**7. Practical example**\n\n```yaml\n# application.yml\nspring.datasource.url: ${DB_URL}\nspring.datasource.password: ${DB_PASSWORD}   # injected from the secret store at runtime\n```\n\n**8. How can I observe it?**\nSpring Boot Actuator `/actuator/env` shows where each property came from (values masked). `kubectl describe pod` shows env sources (not values). Scan repositories for leaked secrets with **gitleaks** or GitHub secret scanning.",
+      "summary": "Configuration — settings that differ per environment: URLs, feature flags, pool sizes, log levels. Secrets — sensitive config: passwords, API keys, private keys, tokens.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  subgraph Git[\"Git (no secrets)\"]\n    CFG[\"application.yml<br/>values-prod.yaml\"]\n  end\n  subgraph Store[\"Secret store\"]\n    SEC[(\"Vault / AWS Secrets Manager<br/>db password, API keys\")]\n  end\n  IMG[\"Same image orders:1.4\"] --> POD[\"Running Pod / instance\"]\n  CFG -- \"ConfigMap / env\" --> POD\n  SEC -- \"injected at runtime<br/>(env var or file, via IAM identity)\" --> POD"
+        },
+        {
+          "language": "yaml",
+          "code": "# application.yml\nspring.datasource.url: ${DB_URL}\nspring.datasource.password: ${DB_PASSWORD}   # injected from the secret store at runtime"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Orchestration and Delivery"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "secrets",
+        "environment",
+        "configurations",
+        "managed",
+        "configuration",
+        "12-factor app",
+        "out of the code and the image",
+        "secret store",
+        "environment variables",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/08-Cloud-Virtualization-Deployment.md",
+        "startLine": 591,
+        "endLine": 646
+      },
+      "contentHash": "a71094d9af1e8a85"
+    },
+    {
       "id": "practice/coding/01-javascript-coding.md#move-all-0s-to-the-end-without-changing-the-order-of-other",
       "kind": "question",
       "parentId": null,
@@ -66156,7 +66679,7 @@
       "parentId": null,
       "question": "Under the Hood study path",
       "prompt": null,
-      "answer": "## Prerequisites\n\n- None. This is a starting point.\n- Overview: [Under the Hood concepts](../../knowledge/concepts/under-the-hood/README.md)\n\n## 1. Source Code to Machine Code\n\n1. [How does human-readable source code eventually become machine instructions?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n2. [What are the differences between Compiler, Interpreter, Assembler, Linker and Runtime?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n3. [What are Bytecode, Intermediate Representation (IR), Assembly Language and Machine Code?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n4. [What are AOT, JIT and interpretation? How do they differ?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n5. [How do JVM, CLR and JavaScript engines execute programs internally?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n6. [How do programming languages interact with the CPU and memory?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n7. [How does frontend code (JavaScript, TypeScript, Dart, WebAssembly) become machine code in the browser?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n8. [How do frontend frameworks (Angular, React, Vue, Svelte, Next.js) get from source code to running in the browser?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n9. [How do different programming languages implement compilation, execution and memory management?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n10. [Do backend frameworks (Spring Boot, Django, Express, ASP.NET Core) compile code themselves?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n\n## 2. CPU and Memory Hierarchy\n\n1. [How does a CPU execute instructions?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n2. [How do CPU registers, L1/L2/L3 cache, RAM and disk interact?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n3. [What exactly is stored in Stack and Heap memory?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n4. [Can the CPU directly access heap memory? How does a program access objects in RAM?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n5. [How does memory allocation and deallocation work?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n6. [How does Garbage Collection identify unused objects?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n\n## 3. Processes, Threads and Scheduling\n\n1. [How do Processes and Threads work internally?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n2. [How does Context Switching happen?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n3. [How does an operating system execute multiple applications simultaneously?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n\n## 4. Virtual Memory\n\n1. [How do Virtual Memory, Paging and Memory Protection work?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n\n## 5. Loading and Rendering a Page\n\n1. [What happens internally when we enter a URL and open a website?](../../interview/under-the-hood/03a-Browser-Internals.md)\n2. [How does a browser convert HTML, CSS and JavaScript into a rendered webpage?](../../interview/under-the-hood/03a-Browser-Internals.md)\n3. [How do DOM, CSSOM, Render Tree, Layout and Paint work together?](../../interview/under-the-hood/03a-Browser-Internals.md)\n\n## 6. JavaScript in the Browser\n\n1. [How does JavaScript execute inside a browser?](../../interview/under-the-hood/03a-Browser-Internals.md)\n2. [How do Call Stack, Event Loop, Microtask Queue and Task Queue work?](../../interview/under-the-hood/03a-Browser-Internals.md)\n3. [How does asynchronous JavaScript execute without blocking the UI?](../../interview/under-the-hood/03a-Browser-Internals.md)\n4. [How does a browser determine which UI elements need updating?](../../interview/under-the-hood/03a-Browser-Internals.md)\n5. [How do Angular, React and Vue detect changes and update the DOM?](../../interview/under-the-hood/03a-Browser-Internals.md)\n\n## 7. Network, Build and Storage\n\n1. [How does a frontend application communicate with a backend?](../../interview/under-the-hood/03a-Browser-Internals.md)\n2. [How do bundlers, Tree Shaking and Code Splitting work?](../../interview/under-the-hood/03a-Browser-Internals.md)\n3. [How do Browser Cache, Cookies, LocalStorage, SessionStorage and IndexedDB work?](../../interview/under-the-hood/03a-Browser-Internals.md)\n4. [How do Browser Tabs and Web Workers work internally?](../../interview/under-the-hood/03a-Browser-Internals.md)\n\n## 8. Angular Internals\n\n1. [How do Angular application bootstrap and compilation work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n2. [How does Angular Dependency Injection work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n3. [How does the Angular component lifecycle work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n4. [How do Angular Change Detection and Signals work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n5. [How do the Angular Router and lazy loading work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n6. [How do Angular HttpClient and HTTP Interceptors work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n\n## 9. React Internals\n\n1. [How do React's Virtual DOM and Reconciliation work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n2. [How does React's Fiber architecture work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n3. [How do React Hooks and component rendering work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n\n## 10. Vue Internals\n\n1. [How does Vue's reactivity system work internally (dependency tracking and Proxies)?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n2. [How do Vue's template compiler and Virtual DOM work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n\n## 11. Servers, Localhost and Ports\n\n1. [What exactly is a Server? Is it hardware, software, a process or a computer?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n2. [What is Localhost? How is it different from a physical server or virtual machine?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n3. [How does a server listen for incoming requests using IP addresses and ports?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n4. [What is the difference between Web Server, Application Server and Reverse Proxy?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n\n## 12. Tomcat and Spring Boot\n\n1. [How does Tomcat work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n2. [How is Tomcat different from the computer's localhost?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n3. [How does Spring Boot start its embedded Tomcat server?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n4. [What happens internally when an HTTP request reaches Spring Boot?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n\n## 13. Spring Container and Request Processing\n\n1. [How does Spring Dependency Injection create and manage objects?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n2. [How do Spring AOP, Proxies and @Transactional work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n3. [How does a backend application manage concurrent requests and threads?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n4. [How does Connection Pooling work?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n5. [How do Authentication and Authorization work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n6. [How do Exception Handling, Retries and Timeouts work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n\n## 14. Storage on Disk\n\n1. [How does a database physically store records on disk?](../../interview/under-the-hood/05-Database-Internals.md)\n2. [What are Database Pages, Blocks and Rows?](../../interview/under-the-hood/05-Database-Internals.md)\n\n## 15. Indexes\n\n1. [How does Database Indexing work internally?](../../interview/under-the-hood/05-Database-Internals.md)\n2. [How do B-Tree and B+ Tree work? Why are B+ Trees commonly used?](../../interview/under-the-hood/05-Database-Internals.md)\n3. [How do Clustered, Non-Clustered and Composite Indexes work?](../../interview/under-the-hood/05-Database-Internals.md)\n4. [How does a database decide between Index Seek and Table Scan?](../../interview/under-the-hood/05-Database-Internals.md)\n\n## 16. Query Processing\n\n1. [How does the SQL Query Optimizer select an execution plan?](../../interview/under-the-hood/05-Database-Internals.md)\n2. [How do JOIN operations work internally?](../../interview/under-the-hood/05-Database-Internals.md)\n3. [How do Nested Loop, Hash Join and Merge Join differ?](../../interview/under-the-hood/05-Database-Internals.md)\n\n## 17. Transactions, Logging and Recovery\n\n1. [How does a database manage concurrent transactions?](../../interview/under-the-hood/05-Database-Internals.md)\n2. [How do ACID, Locks and MVCC work internally?](../../interview/under-the-hood/05-Database-Internals.md)\n3. [How does Write-Ahead Logging (WAL) work?](../../interview/under-the-hood/05-Database-Internals.md)\n4. [How does a database recover after a crash?](../../interview/under-the-hood/05-Database-Internals.md)\n\n## 18. Caching and Scaling\n\n1. [How does Database Caching work?](../../interview/under-the-hood/05-Database-Internals.md)\n2. [How do Replication, Partitioning and Sharding work?](../../interview/under-the-hood/05-Database-Internals.md)\n\n## 19. Hashing\n\n1. [How does HashMap work internally, including hashing, buckets and collision handling?](../../interview/under-the-hood/06-Data-Structures-Internals.md)\n2. [Why is HashMap not reversible? Why can't the original key be reconstructed from its hash?](../../interview/under-the-hood/06-Data-Structures-Internals.md)\n\n## 20. Lists, Stacks, Queues and Heaps\n\n1. [How do ArrayList, LinkedList and Arrays store and retrieve elements differently?](../../interview/under-the-hood/06-Data-Structures-Internals.md)\n2. [How do Stack, Queue, Heap and Priority Queue work?](../../interview/under-the-hood/06-Data-Structures-Internals.md)\n\n## 21. Trees and Sets\n\n1. [How do Binary Search Trees, AVL Trees, Red-Black Trees and B+ Trees differ?](../../interview/under-the-hood/06-Data-Structures-Internals.md)\n2. [How does HashSet ensure uniqueness?](../../interview/under-the-hood/06-Data-Structures-Internals.md)\n\n## 22. Algorithms and Performance\n\n1. [How do searching and sorting algorithms work internally?](../../interview/under-the-hood/06-Data-Structures-Internals.md)\n2. [How do time and space complexities affect actual application performance?](../../interview/under-the-hood/06-Data-Structures-Internals.md)\n\n## 23. How Data Travels\n\n1. [How does data travel from one computer to another?](../../interview/under-the-hood/07-Networking-Internals.md)\n2. [How do IP Addresses, MAC Addresses, DNS, Ports and Routing work together?](../../interview/under-the-hood/07-Networking-Internals.md)\n\n## 24. TCP, UDP and HTTP\n\n1. [How do TCP and UDP work internally?](../../interview/under-the-hood/07-Networking-Internals.md)\n2. [How does TCP establish and maintain connections?](../../interview/under-the-hood/07-Networking-Internals.md)\n3. [How do HTTP/1.1, HTTP/2 and HTTP/3 differ internally?](../../interview/under-the-hood/07-Networking-Internals.md)\n\n## 25. Security: TLS, Keys and Certificates\n\n1. [How does HTTPS and the TLS Handshake work?](../../interview/under-the-hood/07-Networking-Internals.md)\n2. [How do Public-Key and Private-Key cryptography work?](../../interview/under-the-hood/07-Networking-Internals.md)\n3. [How does a receiver verify that the sender possesses the legitimate private key?](../../interview/under-the-hood/07-Networking-Internals.md)\n4. [How do Digital Certificates and Certificate Authorities establish trust?](../../interview/under-the-hood/07-Networking-Internals.md)\n\n## 26. Persistent Connections and Traffic Routing\n\n1. [How do WebSockets establish persistent connections?](../../interview/under-the-hood/07-Networking-Internals.md)\n2. [How do Load Balancers, Reverse Proxies and API Gateways work?](../../interview/under-the-hood/07-Networking-Internals.md)\n\n## Diagrams\n\n- [Frontend programming languages: source to machine code](../../knowledge/visual-notes/01_frontend_programming_languages.png)\n- [Frontend frameworks and libraries: build and execution path](../../knowledge/visual-notes/02_frontend_frameworks.png)\n- [Backend programming languages: source, artifact, runtime and execution](../../knowledge/visual-notes/03_backend_programming_languages.png)\n- [Backend frameworks and platforms: source, compiler and runtime](../../knowledge/visual-notes/04_backend_frameworks.png)\n\n## Related roles\n\n[Platform Engineer](../roles/platform-engineer.md)",
+      "answer": "## Prerequisites\n\n- None. This is a starting point.\n- Overview: [Under the Hood concepts](../../knowledge/concepts/under-the-hood/README.md)\n\n## 1. Source Code to Machine Code\n\n1. [How does human-readable source code eventually become machine instructions?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n2. [What are the differences between Compiler, Interpreter, Assembler, Linker and Runtime?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n3. [What are Bytecode, Intermediate Representation (IR), Assembly Language and Machine Code?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n4. [What are AOT, JIT and interpretation? How do they differ?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n5. [How do JVM, CLR and JavaScript engines execute programs internally?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n6. [How do programming languages interact with the CPU and memory?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n7. [How does frontend code (JavaScript, TypeScript, Dart, WebAssembly) become machine code in the browser?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n8. [How do frontend frameworks (Angular, React, Vue, Svelte, Next.js) get from source code to running in the browser?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n9. [How do different programming languages implement compilation, execution and memory management?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n10. [Do backend frameworks (Spring Boot, Django, Express, ASP.NET Core) compile code themselves?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n\n## 2. CPU and Memory Hierarchy\n\n1. [How does a CPU execute instructions?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n2. [How do CPU registers, L1/L2/L3 cache, RAM and disk interact?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n3. [What exactly is stored in Stack and Heap memory?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n4. [Can the CPU directly access heap memory? How does a program access objects in RAM?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n5. [How does memory allocation and deallocation work?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n6. [How does Garbage Collection identify unused objects?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n\n## 3. Processes, Threads and Scheduling\n\n1. [How do Processes and Threads work internally?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n2. [How does Context Switching happen?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n3. [How does an operating system execute multiple applications simultaneously?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n\n## 4. Virtual Memory\n\n1. [How do Virtual Memory, Paging and Memory Protection work?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n\n## 5. Loading and Rendering a Page\n\n1. [What happens internally when we enter a URL and open a website?](../../interview/under-the-hood/03a-Browser-Internals.md)\n2. [How does a browser convert HTML, CSS and JavaScript into a rendered webpage?](../../interview/under-the-hood/03a-Browser-Internals.md)\n3. [How do DOM, CSSOM, Render Tree, Layout and Paint work together?](../../interview/under-the-hood/03a-Browser-Internals.md)\n\n## 6. JavaScript in the Browser\n\n1. [How does JavaScript execute inside a browser?](../../interview/under-the-hood/03a-Browser-Internals.md)\n2. [How do Call Stack, Event Loop, Microtask Queue and Task Queue work?](../../interview/under-the-hood/03a-Browser-Internals.md)\n3. [How does asynchronous JavaScript execute without blocking the UI?](../../interview/under-the-hood/03a-Browser-Internals.md)\n4. [How does a browser determine which UI elements need updating?](../../interview/under-the-hood/03a-Browser-Internals.md)\n5. [How do Angular, React and Vue detect changes and update the DOM?](../../interview/under-the-hood/03a-Browser-Internals.md)\n\n## 7. Network, Build and Storage\n\n1. [How does a frontend application communicate with a backend?](../../interview/under-the-hood/03a-Browser-Internals.md)\n2. [How do bundlers, Tree Shaking and Code Splitting work?](../../interview/under-the-hood/03a-Browser-Internals.md)\n3. [How do Browser Cache, Cookies, LocalStorage, SessionStorage and IndexedDB work?](../../interview/under-the-hood/03a-Browser-Internals.md)\n4. [How do Browser Tabs and Web Workers work internally?](../../interview/under-the-hood/03a-Browser-Internals.md)\n\n## 8. Angular Internals\n\n1. [How do Angular application bootstrap and compilation work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n2. [How does Angular Dependency Injection work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n3. [How does the Angular component lifecycle work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n4. [How do Angular Change Detection and Signals work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n5. [How do the Angular Router and lazy loading work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n6. [How do Angular HttpClient and HTTP Interceptors work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n\n## 9. React Internals\n\n1. [How do React's Virtual DOM and Reconciliation work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n2. [How does React's Fiber architecture work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n3. [How do React Hooks and component rendering work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n\n## 10. Vue Internals\n\n1. [How does Vue's reactivity system work internally (dependency tracking and Proxies)?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n2. [How do Vue's template compiler and Virtual DOM work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n\n## 11. Servers, Localhost and Ports\n\n1. [What exactly is a Server? Is it hardware, software, a process or a computer?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n2. [What is Localhost? How is it different from a physical server or virtual machine?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n3. [How does a server listen for incoming requests using IP addresses and ports?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n4. [What is the difference between Web Server, Application Server and Reverse Proxy?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n\n## 12. Tomcat and Spring Boot\n\n1. [How does Tomcat work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n2. [How is Tomcat different from the computer's localhost?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n3. [How does Spring Boot start its embedded Tomcat server?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n4. [What happens internally when an HTTP request reaches Spring Boot?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n\n## 13. Spring Container and Request Processing\n\n1. [How does Spring Dependency Injection create and manage objects?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n2. [How do Spring AOP, Proxies and @Transactional work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n3. [How does a backend application manage concurrent requests and threads?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n4. [How does Connection Pooling work?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n5. [How do Authentication and Authorization work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n6. [How do Exception Handling, Retries and Timeouts work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n\n## 14. Storage on Disk\n\n1. [How does a database physically store records on disk?](../../interview/under-the-hood/05-Database-Internals.md)\n2. [What are Database Pages, Blocks and Rows?](../../interview/under-the-hood/05-Database-Internals.md)\n\n## 15. Indexes\n\n1. [How does Database Indexing work internally?](../../interview/under-the-hood/05-Database-Internals.md)\n2. [How do B-Tree and B+ Tree work? Why are B+ Trees commonly used?](../../interview/under-the-hood/05-Database-Internals.md)\n3. [How do Clustered, Non-Clustered and Composite Indexes work?](../../interview/under-the-hood/05-Database-Internals.md)\n4. [How does a database decide between Index Seek and Table Scan?](../../interview/under-the-hood/05-Database-Internals.md)\n\n## 16. Query Processing\n\n1. [How does the SQL Query Optimizer select an execution plan?](../../interview/under-the-hood/05-Database-Internals.md)\n2. [How do JOIN operations work internally?](../../interview/under-the-hood/05-Database-Internals.md)\n3. [How do Nested Loop, Hash Join and Merge Join differ?](../../interview/under-the-hood/05-Database-Internals.md)\n\n## 17. Transactions, Logging and Recovery\n\n1. [How does a database manage concurrent transactions?](../../interview/under-the-hood/05-Database-Internals.md)\n2. [How do ACID, Locks and MVCC work internally?](../../interview/under-the-hood/05-Database-Internals.md)\n3. [How does Write-Ahead Logging (WAL) work?](../../interview/under-the-hood/05-Database-Internals.md)\n4. [How does a database recover after a crash?](../../interview/under-the-hood/05-Database-Internals.md)\n\n## 18. Caching and Scaling\n\n1. [How does Database Caching work?](../../interview/under-the-hood/05-Database-Internals.md)\n2. [How do Replication, Partitioning and Sharding work?](../../interview/under-the-hood/05-Database-Internals.md)\n\n## 19. Hashing\n\n1. [How does HashMap work internally, including hashing, buckets and collision handling?](../../interview/under-the-hood/06-Data-Structures-Internals.md)\n2. [Why is HashMap not reversible? Why can't the original key be reconstructed from its hash?](../../interview/under-the-hood/06-Data-Structures-Internals.md)\n\n## 20. Lists, Stacks, Queues and Heaps\n\n1. [How do ArrayList, LinkedList and Arrays store and retrieve elements differently?](../../interview/under-the-hood/06-Data-Structures-Internals.md)\n2. [How do Stack, Queue, Heap and Priority Queue work?](../../interview/under-the-hood/06-Data-Structures-Internals.md)\n\n## 21. Trees and Sets\n\n1. [How do Binary Search Trees, AVL Trees, Red-Black Trees and B+ Trees differ?](../../interview/under-the-hood/06-Data-Structures-Internals.md)\n2. [How does HashSet ensure uniqueness?](../../interview/under-the-hood/06-Data-Structures-Internals.md)\n\n## 22. Algorithms and Performance\n\n1. [How do searching and sorting algorithms work internally?](../../interview/under-the-hood/06-Data-Structures-Internals.md)\n2. [How do time and space complexities affect actual application performance?](../../interview/under-the-hood/06-Data-Structures-Internals.md)\n\n## 23. How Data Travels\n\n1. [How does data travel from one computer to another?](../../interview/under-the-hood/07-Networking-Internals.md)\n2. [How do IP Addresses, MAC Addresses, DNS, Ports and Routing work together?](../../interview/under-the-hood/07-Networking-Internals.md)\n\n## 24. TCP, UDP and HTTP\n\n1. [How do TCP and UDP work internally?](../../interview/under-the-hood/07-Networking-Internals.md)\n2. [How does TCP establish and maintain connections?](../../interview/under-the-hood/07-Networking-Internals.md)\n3. [How do HTTP/1.1, HTTP/2 and HTTP/3 differ internally?](../../interview/under-the-hood/07-Networking-Internals.md)\n\n## 25. Security: TLS, Keys and Certificates\n\n1. [How does HTTPS and the TLS Handshake work?](../../interview/under-the-hood/07-Networking-Internals.md)\n2. [How do Public-Key and Private-Key cryptography work?](../../interview/under-the-hood/07-Networking-Internals.md)\n3. [How does a receiver verify that the sender possesses the legitimate private key?](../../interview/under-the-hood/07-Networking-Internals.md)\n4. [How do Digital Certificates and Certificate Authorities establish trust?](../../interview/under-the-hood/07-Networking-Internals.md)\n\n## 26. Persistent Connections and Traffic Routing\n\n1. [How do WebSockets establish persistent connections?](../../interview/under-the-hood/07-Networking-Internals.md)\n2. [How do Load Balancers, Reverse Proxies and API Gateways work?](../../interview/under-the-hood/07-Networking-Internals.md)\n\n## 27. Virtual Machines\n\n1. [What is a Virtual Machine? How can one physical computer run multiple VMs?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)\n2. [How does a Hypervisor allocate CPU, Memory and Storage?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)\n\n## 28. Containers\n\n1. [How does Docker work internally?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)\n2. [How are Containers different from Virtual Machines?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)\n3. [How do Docker Images and Containers work?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)\n\n## 29. Orchestration and Delivery\n\n1. [How does Kubernetes schedule and manage containers?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)\n2. [How does an application move from source code to a running production environment?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)\n3. [How do CI/CD pipelines build, test and deploy applications?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)\n4. [How do cloud platforms allocate computing resources?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)\n5. [How do Auto Scaling and Load Balancing work?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)\n6. [How are Secrets and Environment Configurations managed?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)\n\n## Diagrams\n\n- [Frontend programming languages: source to machine code](../../knowledge/visual-notes/01_frontend_programming_languages.png)\n- [Frontend frameworks and libraries: build and execution path](../../knowledge/visual-notes/02_frontend_frameworks.png)\n- [Backend programming languages: source, artifact, runtime and execution](../../knowledge/visual-notes/03_backend_programming_languages.png)\n- [Backend frameworks and platforms: source, compiler and runtime](../../knowledge/visual-notes/04_backend_frameworks.png)\n\n## Related roles\n\n[Platform Engineer](../roles/platform-engineer.md)",
       "summary": "",
       "codeBlocks": [],
       "visuals": [],
@@ -66190,9 +66713,9 @@
       "source": {
         "path": "roadmap/topics/under-the-hood.md",
         "startLine": 2,
-        "endLine": 188
+        "endLine": 208
       },
-      "contentHash": "9ca04c4cc822db68"
+      "contentHash": "abbce2d79a5fa62c"
     },
     {
       "id": "roadmap/topics/web-architecture.md#roadmap",

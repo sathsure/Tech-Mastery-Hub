@@ -2031,6 +2031,19 @@
                                                ]
                       },
                       {
+                          "id":  "interview.under-the-hood.08-cloud-virtualization-deployment.md",
+                          "path":  "interview/under-the-hood/08-Cloud-Virtualization-Deployment.md",
+                          "content_type":  "interview",
+                          "domain":  "under-the-hood",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  31857,
+                          "source_of_truth":  false,
+                          "related_concepts":  [
+                                                   "under-the-hood"
+                                               ]
+                      },
+                      {
                           "id":  "interview.coding.02-dsa-patterns.md",
                           "path":  "interview/coding/02-DSA-Patterns.md",
                           "content_type":  "interview",
