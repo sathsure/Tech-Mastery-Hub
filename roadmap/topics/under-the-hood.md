@@ -152,6 +152,29 @@
 1. [How do searching and sorting algorithms work internally?](../../interview/under-the-hood/06-Data-Structures-Internals.md)
 2. [How do time and space complexities affect actual application performance?](../../interview/under-the-hood/06-Data-Structures-Internals.md)
 
+## 23. How Data Travels
+
+1. [How does data travel from one computer to another?](../../interview/under-the-hood/07-Networking-Internals.md)
+2. [How do IP Addresses, MAC Addresses, DNS, Ports and Routing work together?](../../interview/under-the-hood/07-Networking-Internals.md)
+
+## 24. TCP, UDP and HTTP
+
+1. [How do TCP and UDP work internally?](../../interview/under-the-hood/07-Networking-Internals.md)
+2. [How does TCP establish and maintain connections?](../../interview/under-the-hood/07-Networking-Internals.md)
+3. [How do HTTP/1.1, HTTP/2 and HTTP/3 differ internally?](../../interview/under-the-hood/07-Networking-Internals.md)
+
+## 25. Security: TLS, Keys and Certificates
+
+1. [How does HTTPS and the TLS Handshake work?](../../interview/under-the-hood/07-Networking-Internals.md)
+2. [How do Public-Key and Private-Key cryptography work?](../../interview/under-the-hood/07-Networking-Internals.md)
+3. [How does a receiver verify that the sender possesses the legitimate private key?](../../interview/under-the-hood/07-Networking-Internals.md)
+4. [How do Digital Certificates and Certificate Authorities establish trust?](../../interview/under-the-hood/07-Networking-Internals.md)
+
+## 26. Persistent Connections and Traffic Routing
+
+1. [How do WebSockets establish persistent connections?](../../interview/under-the-hood/07-Networking-Internals.md)
+2. [How do Load Balancers, Reverse Proxies and API Gateways work?](../../interview/under-the-hood/07-Networking-Internals.md)
+
 ## Diagrams
 
 - [Frontend programming languages: source to machine code](../../knowledge/visual-notes/01_frontend_programming_languages.png)
