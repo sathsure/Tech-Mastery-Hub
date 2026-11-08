@@ -142,8 +142,8 @@ function withoutNewTag(name: string): string {
 export interface RoleCardContext {
   /** Question that opens the role's roadmap, when one exists. */
   roadmap: string | null;
-  /** Learning topic to practise for interviews, as a label ("Java"). */
-  interviewTopic: string | null;
+  /** Question that opens the interview-prep stack picker for this role. */
+  interviewPrep: string | null;
 }
 
 export function roleCard(entry: QuestionEntry, context: RoleCardContext): RoleCard {
@@ -159,7 +159,7 @@ export function roleCard(entry: QuestionEntry, context: RoleCardContext): RoleCa
     .filter(item => item.value);
   const actions: CardAction[] = [];
   if (context.roadmap) actions.push({ label: "Explore Roadmap", ask: context.roadmap });
-  if (context.interviewTopic) actions.push({ label: "Interview Prep", ask: `Prepare me for a ${context.interviewTopic} interview` });
+  if (context.interviewPrep) actions.push({ label: "Interview Prep", ask: context.interviewPrep });
   return {
     type: "role",
     title,

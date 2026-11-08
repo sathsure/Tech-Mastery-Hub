@@ -1,8 +1,8 @@
 {
   "schema_version": "1.0.0",
   "repository": "Tech-Mastery-Hub",
-  "generated_at": "2026-11-08T17:26:59.652Z",
-  "source_fingerprint": "6d801432ee0416686720600b0510ae0e0002ab54b58c1e928a53587e32e5d422",
+  "generated_at": "2026-11-08T17:49:18.458Z",
+  "source_fingerprint": "9b6617fc2c29260707881c82126feb766d7f5f9e51b2eb71b610d906d542390f",
   "stats": {
     "files": 153,
     "entries": 2091,
@@ -62254,7 +62254,7 @@
         "AI Infrastructure / LLMOps Engineer",
         "AI Infrastructure",
         "LLMOps Engineer",
-        "ML Platform Engineer",
+        "LLM Platform Engineer",
         "Inference Engineer",
         "GPU Infrastructure Engineer"
       ],
@@ -62304,6 +62304,7 @@
       "names": [
         "AI / LLM Engineer roadmap",
         "AI / LLM Engineer",
+        "AI Engineer",
         "GenAI Engineer",
         "LLM Engineer",
         "Applied AI Engineer"
@@ -62505,7 +62506,7 @@
         "Analytics Engineer",
         "dbt Developer",
         "Data Modeler (analytics)",
-        "BI Engineer"
+        "Analytics Data Engineer"
       ],
       "relatedTopics": [
         "database/sql",
@@ -63211,7 +63212,7 @@
         "Applied Scientist",
         "Decision Scientist",
         "Statistician",
-        "Quant Analyst"
+        "Research Data Scientist"
       ],
       "relatedTopics": [
         "database/sql"
@@ -63347,9 +63348,9 @@
       "names": [
         "DevOps Engineer roadmap",
         "DevOps Engineer",
-        "Build & Release Engineer",
         "CI/CD Engineer",
-        "DevOps Consultant"
+        "DevOps Consultant",
+        "Infrastructure Automation Engineer"
       ],
       "relatedTopics": [
         "devops",
@@ -63491,7 +63492,7 @@
         "Forward Deployed Software Engineer",
         "Deployment Strategist",
         "Solutions Engineer (AI)",
-        "Field Engineer"
+        "Customer-embedded AI Engineer"
       ],
       "relatedTopics": [
         "database/sql",
@@ -63657,7 +63658,7 @@
         "Machine Learning Engineer",
         "ML Engineer",
         "Applied ML Engineer",
-        "AI Engineer"
+        "Deep Learning Engineer"
       ],
       "relatedTopics": [
         "java",
@@ -64298,7 +64299,7 @@
         "Solutions / Sales Engineer",
         "Sales Engineer",
         "Solutions Engineer",
-        "Technical Account Manager"
+        "Pre-Sales Engineer"
       ],
       "relatedTopics": [
         "database/sql",
@@ -65937,7 +65938,7 @@
       "parentId": null,
       "question": "What does a Forward Deployed Engineer do?",
       "prompt": null,
-      "answer": "Engineer embedded with a customer to build and deploy the company's product (often AI) into the customer's real systems.\n\n- **Also called:** Forward Deployed Software Engineer, Deployment Strategist, Solutions Engineer (AI), Field Engineer\n- **At IT services firms (TCS, Infosys, Wipro, Accenture):** AI Solutions Consultant / Implementation Lead\n- **At product / Big Tech companies:** FDE (Palantir, OpenAI, Anthropic, Scale AI)\n- **At startups:** Founding / Customer Engineer\n- **Typical experience to be hired:** 3+ yrs\n- **Next moves — grow:** AI Solutions Architect, Tech Lead · **lead:** Engineering Manager · **pivot:** AI Product Manager, Solutions / Sales Engineer\n- **Why it exists now:** Popularised by Palantir; now hired by OpenAI, Anthropic, Scale AI and AI startups because enterprise AI only creates value once wired into messy real-world data and workflows.\n- **Languages:** Python, TypeScript, SQL, Java/Go (varies)\n- **Frameworks / Standards:** LLM SDKs (Claude, OpenAI), FastAPI, React/Next.js, MCP, LangGraph, Palantir Foundry/AIP\n- **Tools:** AWS/Azure/GCP, Docker, Git, Jupyter, Postman, Customer data platforms\n- **Technical skills:** Rapid prototyping, Full-stack development, Data integration & ETL, API integration with legacy systems, RAG & agent building, Debugging in customer environments, Solution scoping, Deployment & security reviews\n- **Soft skills:** Customer discovery, Executive communication, Ownership, Comfort with ambiguity, Travel / on-site work\n- **AI impact:** Core of AI go-to-market — turns a model into a working customer solution.",
+      "answer": "Engineer embedded with a customer to build and deploy the company's product (often AI) into the customer's real systems.\n\n- **Also called:** Forward Deployed Software Engineer, Deployment Strategist, Solutions Engineer (AI), Customer-embedded AI Engineer\n- **At IT services firms (TCS, Infosys, Wipro, Accenture):** AI Solutions Consultant / Implementation Lead\n- **At product / Big Tech companies:** FDE (Palantir, OpenAI, Anthropic, Scale AI)\n- **At startups:** Founding / Customer Engineer\n- **Typical experience to be hired:** 3+ yrs\n- **Next moves — grow:** AI Solutions Architect, Tech Lead · **lead:** Engineering Manager · **pivot:** AI Product Manager, Solutions / Sales Engineer\n- **Why it exists now:** Popularised by Palantir; now hired by OpenAI, Anthropic, Scale AI and AI startups because enterprise AI only creates value once wired into messy real-world data and workflows.\n- **Languages:** Python, TypeScript, SQL, Java/Go (varies)\n- **Frameworks / Standards:** LLM SDKs (Claude, OpenAI), FastAPI, React/Next.js, MCP, LangGraph, Palantir Foundry/AIP\n- **Tools:** AWS/Azure/GCP, Docker, Git, Jupyter, Postman, Customer data platforms\n- **Technical skills:** Rapid prototyping, Full-stack development, Data integration & ETL, API integration with legacy systems, RAG & agent building, Debugging in customer environments, Solution scoping, Deployment & security reviews\n- **Soft skills:** Customer discovery, Executive communication, Ownership, Comfort with ambiguity, Travel / on-site work\n- **AI impact:** Core of AI go-to-market — turns a model into a working customer solution.",
       "summary": "Engineer embedded with a customer to build and deploy the company's product (often AI) into the customer's real systems.",
       "codeBlocks": [],
       "visuals": [],
@@ -65958,7 +65959,7 @@
         "forward deployed software engineer",
         "deployment strategist",
         "solutions engineer (ai)",
-        "field engineer",
+        "customer-embedded ai engineer",
         "forward",
         "deployed",
         "engineer",
@@ -65971,7 +65972,7 @@
         "Forward Deployed Software Engineer",
         "Deployment Strategist",
         "Solutions Engineer (AI)",
-        "Field Engineer"
+        "Customer-embedded AI Engineer"
       ],
       "relatedTopics": [
         "ai",
@@ -65989,7 +65990,7 @@
         "startLine": 61,
         "endLine": 77
       },
-      "contentHash": "6136c077e5b5d405"
+      "contentHash": "a133c278ac06e35e"
     },
     {
       "id": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md#role-ai-agent-engineer",
@@ -66293,7 +66294,7 @@
       "parentId": null,
       "question": "What does an AI Infrastructure / LLMOps Engineer do?",
       "prompt": null,
-      "answer": "Runs and scales model serving, GPUs and AI pipelines in production.\n\n- **Also called:** LLMOps Engineer, ML Platform Engineer, Inference Engineer, GPU Infrastructure Engineer\n- **At IT services firms (TCS, Infosys, Wipro, Accenture):** MLOps / LLMOps Engineer\n- **At product / Big Tech companies:** Software Engineer, ML Infrastructure / Inference\n- **At startups:** Infra Engineer (AI)\n- **Typical experience to be hired:** 3+ yrs\n- **Next moves — grow:** Platform Engineer, AI Solutions Architect · **lead:** Engineering Manager · **pivot:** Machine Learning Engineer, Site Reliability Engineer (SRE)\n- **Why it exists now:** Self-hosting and serving LLMs needs GPU clusters, fast inference and cost control.\n- **Languages:** Python, Go, C++/CUDA (advanced), Bash\n- **Frameworks / Standards:** vLLM, TensorRT-LLM, Text Generation Inference, Ray, Kubernetes\n- **Tools:** NVIDIA GPUs, Ollama, Triton Inference Server, Prometheus, LiteLLM gateway\n- **Technical skills:** Model serving & batching, Quantization, GPU scheduling, Autoscaling inference, Semantic caching, Model routing, Monitoring latency & cost, Fine-tuning pipelines\n- **Soft skills:** Problem solving, Cost awareness\n- **AI impact:** AI-native infra role; evolved from MLOps / DevOps.",
+      "answer": "Runs and scales model serving, GPUs and AI pipelines in production.\n\n- **Also called:** LLMOps Engineer, LLM Platform Engineer, Inference Engineer, GPU Infrastructure Engineer\n- **At IT services firms (TCS, Infosys, Wipro, Accenture):** MLOps / LLMOps Engineer\n- **At product / Big Tech companies:** Software Engineer, ML Infrastructure / Inference\n- **At startups:** Infra Engineer (AI)\n- **Typical experience to be hired:** 3+ yrs\n- **Next moves — grow:** Platform Engineer, AI Solutions Architect · **lead:** Engineering Manager · **pivot:** Machine Learning Engineer, Site Reliability Engineer (SRE)\n- **Why it exists now:** Self-hosting and serving LLMs needs GPU clusters, fast inference and cost control.\n- **Languages:** Python, Go, C++/CUDA (advanced), Bash\n- **Frameworks / Standards:** vLLM, TensorRT-LLM, Text Generation Inference, Ray, Kubernetes\n- **Tools:** NVIDIA GPUs, Ollama, Triton Inference Server, Prometheus, LiteLLM gateway\n- **Technical skills:** Model serving & batching, Quantization, GPU scheduling, Autoscaling inference, Semantic caching, Model routing, Monitoring latency & cost, Fine-tuning pipelines\n- **Soft skills:** Problem solving, Cost awareness\n- **AI impact:** AI-native infra role; evolved from MLOps / DevOps.",
       "summary": "Runs and scales model serving, GPUs and AI pipelines in production.",
       "codeBlocks": [],
       "visuals": [],
@@ -66311,7 +66312,7 @@
         "ai infrastructure / llmops engineer",
         "ai infrastructure",
         "llmops engineer",
-        "ml platform engineer",
+        "llm platform engineer",
         "inference engineer",
         "gpu infrastructure engineer",
         "ai",
@@ -66324,7 +66325,7 @@
         "AI Infrastructure / LLMOps Engineer",
         "AI Infrastructure",
         "LLMOps Engineer",
-        "ML Platform Engineer",
+        "LLM Platform Engineer",
         "Inference Engineer",
         "GPU Infrastructure Engineer"
       ],
@@ -66338,7 +66339,7 @@
         "startLine": 189,
         "endLine": 205
       },
-      "contentHash": "4a7a3c983a05cf16"
+      "contentHash": "f0f8d895fdc6d7e2"
     },
     {
       "id": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md#role-ai-automation-engineer",
@@ -66589,7 +66590,7 @@
       "parentId": null,
       "question": "What does an XR Developer do?",
       "prompt": null,
-      "answer": "Builds augmented and virtual reality apps for headsets and phones.\n\n- **Also called:** AR/VR Developer, Unity / Unreal Developer, Spatial Computing Engineer\n- **At IT services firms (TCS, Infosys, Wipro, Accenture):** XR Developer / Metaverse Consultant\n- **At product / Big Tech companies:** Software Engineer, AR/VR\n- **At startups:** Unity Developer\n- **Typical experience to be hired:** 1+ yrs\n- **Next moves — grow:** Tech Lead · **lead:** Engineering Manager · **pivot:** Game Developer, Mobile Developer, Physical AI / Robotics Engineer\n- **Why it exists now:** Spatial computing devices (Apple Vision Pro, Meta Quest) opened new app platforms.\n- **Languages:** C#, C++, Swift\n- **Frameworks / Standards:** Unity, Unreal Engine, visionOS / RealityKit, OpenXR, WebXR\n- **Tools:** Meta Quest, Apple Vision Pro, Blender\n- **Technical skills:** 3D interaction design, Spatial UI, Performance optimisation, 3D math\n- **Soft skills:** Creativity, User empathy\n- **AI impact:** AI generates 3D assets and scenes faster.",
+      "answer": "Builds augmented and virtual reality apps for headsets and phones.\n\n- **Also called:** AR/VR Developer, Unity / Unreal XR Developer, Spatial Computing Engineer\n- **At IT services firms (TCS, Infosys, Wipro, Accenture):** XR Developer / Metaverse Consultant\n- **At product / Big Tech companies:** Software Engineer, AR/VR\n- **At startups:** Unity Developer\n- **Typical experience to be hired:** 1+ yrs\n- **Next moves — grow:** Tech Lead · **lead:** Engineering Manager · **pivot:** Game Developer, Mobile Developer, Physical AI / Robotics Engineer\n- **Why it exists now:** Spatial computing devices (Apple Vision Pro, Meta Quest) opened new app platforms.\n- **Languages:** C#, C++, Swift\n- **Frameworks / Standards:** Unity, Unreal Engine, visionOS / RealityKit, OpenXR, WebXR\n- **Tools:** Meta Quest, Apple Vision Pro, Blender\n- **Technical skills:** 3D interaction design, Spatial UI, Performance optimisation, 3D math\n- **Soft skills:** Creativity, User empathy\n- **AI impact:** AI generates 3D assets and scenes faster.",
       "summary": "Builds augmented and virtual reality apps for headsets and phones.",
       "codeBlocks": [],
       "visuals": [],
@@ -66607,7 +66608,7 @@
         "xr (ar/vr) developer",
         "xr developer",
         "ar/vr developer",
-        "unity / unreal developer",
+        "unity / unreal xr developer",
         "spatial computing engineer",
         "xr",
         "developer",
@@ -66617,7 +66618,7 @@
         "XR (AR/VR) Developer",
         "XR Developer",
         "AR/VR Developer",
-        "Unity / Unreal Developer",
+        "Unity / Unreal XR Developer",
         "Spatial Computing Engineer"
       ],
       "source": {
@@ -66625,7 +66626,7 @@
         "startLine": 299,
         "endLine": 315
       },
-      "contentHash": "dda41a93139dc6c7"
+      "contentHash": "54777d0d7cfa9134"
     },
     {
       "id": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md#role-quantum-software-engineer",
@@ -67269,7 +67270,7 @@
       "parentId": null,
       "question": "What does an Analytics Engineer do?",
       "prompt": null,
-      "answer": "Builds clean, tested data models that analysts and BI tools use.\n\n- **Also called:** dbt Developer, Data Modeler (analytics), BI Engineer\n- **At IT services firms (TCS, Infosys, Wipro, Accenture):** Data Engineer (analytics)\n- **At product / Big Tech companies:** Analytics Engineer\n- **At startups:** Data Engineer (dbt)\n- **Typical experience to be hired:** 2+ yrs\n- **Next moves — grow:** Data Engineer, Data Architect · **lead:** Engineering Manager · **pivot:** Data Scientist, AI / LLM Engineer\n- **Narrower (sideways) roles:** BI Developer\n- **Languages:** SQL, Python, Jinja\n- **Frameworks / Standards:** dbt, Dimensional modelling\n- **Tools:** Snowflake, BigQuery, Databricks, Looker, Git\n- **Technical skills:** Data modelling, Data testing, Version-controlled SQL, Metrics layer, Documentation\n- **Soft skills:** Bridging analysts and engineers\n- **AI impact:** Semantic layers feed AI assistants that answer data questions.",
+      "answer": "Builds clean, tested data models that analysts and BI tools use.\n\n- **Also called:** dbt Developer, Data Modeler (analytics), Analytics Data Engineer\n- **At IT services firms (TCS, Infosys, Wipro, Accenture):** Data Engineer (analytics)\n- **At product / Big Tech companies:** Analytics Engineer\n- **At startups:** Data Engineer (dbt)\n- **Typical experience to be hired:** 2+ yrs\n- **Next moves — grow:** Data Engineer, Data Architect · **lead:** Engineering Manager · **pivot:** Data Scientist, AI / LLM Engineer\n- **Narrower (sideways) roles:** BI Developer\n- **Languages:** SQL, Python, Jinja\n- **Frameworks / Standards:** dbt, Dimensional modelling\n- **Tools:** Snowflake, BigQuery, Databricks, Looker, Git\n- **Technical skills:** Data modelling, Data testing, Version-controlled SQL, Metrics layer, Documentation\n- **Soft skills:** Bridging analysts and engineers\n- **AI impact:** Semantic layers feed AI assistants that answer data questions.",
       "summary": "Builds clean, tested data models that analysts and BI tools use.",
       "codeBlocks": [],
       "visuals": [],
@@ -67287,7 +67288,7 @@
         "analytics engineer",
         "dbt developer",
         "data modeler (analytics)",
-        "bi engineer",
+        "analytics data engineer",
         "analytics",
         "engineer",
         "it-roles"
@@ -67296,7 +67297,7 @@
         "Analytics Engineer",
         "dbt Developer",
         "Data Modeler (analytics)",
-        "BI Engineer"
+        "Analytics Data Engineer"
       ],
       "relatedTopics": [
         "ai",
@@ -67308,7 +67309,7 @@
         "startLine": 551,
         "endLine": 567
       },
-      "contentHash": "dd091182d7ba1dfe"
+      "contentHash": "6ddf6ab708ca8798"
     },
     {
       "id": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md#role-data-engineer",
@@ -67366,7 +67367,7 @@
       "parentId": null,
       "question": "What does a Data Scientist do?",
       "prompt": null,
-      "answer": "Uses statistics and ML to find patterns and make predictions.\n\n- **Also called:** Applied Scientist, Decision Scientist, Statistician, Quant Analyst\n- **At IT services firms (TCS, Infosys, Wipro, Accenture):** Data Scientist / AI Consultant\n- **At product / Big Tech companies:** Data Scientist / Applied Scientist (Amazon)\n- **At startups:** Data Scientist (often also ML Engineer)\n- **Typical experience to be hired:** 1+ yrs\n- **Next moves — grow:** Machine Learning Engineer, AI / LLM Engineer · **lead:** AI Product Manager, Engineering Manager · **pivot:** AI Evaluation (Evals) Engineer, Forward Deployed Engineer (FDE)\n- **Narrower (sideways) roles:** Data Analyst\n- **Languages:** Python, R, SQL\n- **Frameworks / Standards:** scikit-learn, pandas, NumPy, XGBoost, TensorFlow/PyTorch\n- **Tools:** Jupyter, Databricks, MLflow\n- **Technical skills:** Statistics & probability, Feature engineering, Experimentation (A/B tests), Model evaluation, Time-series forecasting, Data visualisation, Causal inference\n- **Soft skills:** Curiosity, Business storytelling\n- **AI impact:** Shifts from building models to using and evaluating foundation models.",
+      "answer": "Uses statistics and ML to find patterns and make predictions.\n\n- **Also called:** Applied Scientist, Decision Scientist, Statistician, Research Data Scientist\n- **At IT services firms (TCS, Infosys, Wipro, Accenture):** Data Scientist / AI Consultant\n- **At product / Big Tech companies:** Data Scientist / Applied Scientist (Amazon)\n- **At startups:** Data Scientist (often also ML Engineer)\n- **Typical experience to be hired:** 1+ yrs\n- **Next moves — grow:** Machine Learning Engineer, AI / LLM Engineer · **lead:** AI Product Manager, Engineering Manager · **pivot:** AI Evaluation (Evals) Engineer, Forward Deployed Engineer (FDE)\n- **Narrower (sideways) roles:** Data Analyst\n- **Languages:** Python, R, SQL\n- **Frameworks / Standards:** scikit-learn, pandas, NumPy, XGBoost, TensorFlow/PyTorch\n- **Tools:** Jupyter, Databricks, MLflow\n- **Technical skills:** Statistics & probability, Feature engineering, Experimentation (A/B tests), Model evaluation, Time-series forecasting, Data visualisation, Causal inference\n- **Soft skills:** Curiosity, Business storytelling\n- **AI impact:** Shifts from building models to using and evaluating foundation models.",
       "summary": "Uses statistics and ML to find patterns and make predictions.",
       "codeBlocks": [],
       "visuals": [],
@@ -67385,7 +67386,7 @@
         "applied scientist",
         "decision scientist",
         "statistician",
-        "quant analyst",
+        "research data scientist",
         "data",
         "scientist",
         "it-roles"
@@ -67395,7 +67396,7 @@
         "Applied Scientist",
         "Decision Scientist",
         "Statistician",
-        "Quant Analyst"
+        "Research Data Scientist"
       ],
       "relatedTopics": [
         "ai",
@@ -67406,7 +67407,7 @@
         "startLine": 587,
         "endLine": 603
       },
-      "contentHash": "46a9bf20a5b1bca4"
+      "contentHash": "c59adecaa3bfa593"
     },
     {
       "id": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md#role-machine-learning-engineer",
@@ -67414,7 +67415,7 @@
       "parentId": null,
       "question": "What does a Machine Learning Engineer do?",
       "prompt": null,
-      "answer": "Puts ML models into production and keeps them working.\n\n- **Also called:** ML Engineer, Applied ML Engineer, AI Engineer\n- **At IT services firms (TCS, Infosys, Wipro, Accenture):** ML Engineer / AI Developer\n- **At product / Big Tech companies:** Machine Learning Engineer / SDE (ML)\n- **At startups:** ML Engineer\n- **Typical experience to be hired:** 2+ yrs\n- **Next moves — grow:** AI / LLM Engineer, AI Solutions Architect, Tech Lead · **lead:** Engineering Manager · **pivot:** AI Infrastructure / LLMOps Engineer, Forward Deployed Engineer (FDE), AI Agent Engineer\n- **Languages:** Python, Java, C++\n- **Frameworks / Standards:** PyTorch, TensorFlow, Hugging Face, ONNX\n- **Tools:** MLflow, Kubeflow, SageMaker, Vertex AI, Docker\n- **Technical skills:** Model serving, MLOps, Monitoring drift, Scaling inference, Feature pipelines, Fine-tuning, Software engineering best practices\n- **Soft skills:** Collaboration with scientists\n- **AI impact:** Overlaps strongly with AI Engineer for LLM workloads.",
+      "answer": "Puts ML models into production and keeps them working.\n\n- **Also called:** ML Engineer, Applied ML Engineer, Deep Learning Engineer\n- **At IT services firms (TCS, Infosys, Wipro, Accenture):** ML Engineer / AI Developer\n- **At product / Big Tech companies:** Machine Learning Engineer / SDE (ML)\n- **At startups:** ML Engineer\n- **Typical experience to be hired:** 2+ yrs\n- **Next moves — grow:** AI / LLM Engineer, AI Solutions Architect, Tech Lead · **lead:** Engineering Manager · **pivot:** AI Infrastructure / LLMOps Engineer, Forward Deployed Engineer (FDE), AI Agent Engineer\n- **Languages:** Python, Java, C++\n- **Frameworks / Standards:** PyTorch, TensorFlow, Hugging Face, ONNX\n- **Tools:** MLflow, Kubeflow, SageMaker, Vertex AI, Docker\n- **Technical skills:** Model serving, MLOps, Monitoring drift, Scaling inference, Feature pipelines, Fine-tuning, Software engineering best practices\n- **Soft skills:** Collaboration with scientists\n- **AI impact:** Overlaps strongly with AI Engineer for LLM workloads.",
       "summary": "Puts ML models into production and keeps them working.",
       "codeBlocks": [],
       "visuals": [],
@@ -67432,7 +67433,7 @@
         "machine learning engineer",
         "ml engineer",
         "applied ml engineer",
-        "ai engineer",
+        "deep learning engineer",
         "machine",
         "learning",
         "engineer",
@@ -67442,7 +67443,7 @@
         "Machine Learning Engineer",
         "ML Engineer",
         "Applied ML Engineer",
-        "AI Engineer"
+        "Deep Learning Engineer"
       ],
       "relatedTopics": [
         "ai",
@@ -67454,7 +67455,7 @@
         "startLine": 605,
         "endLine": 620
       },
-      "contentHash": "42b5c2af2bdba27e"
+      "contentHash": "673b51b0a1fd7a74"
     },
     {
       "id": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md#role-ai-llm-engineer",
@@ -67462,7 +67463,7 @@
       "parentId": null,
       "question": "What does an AI / LLM Engineer do?",
       "prompt": null,
-      "answer": "Builds apps on top of large language models — chatbots, agents, RAG.\n\n- **Also called:** GenAI Engineer, LLM Engineer, Applied AI Engineer\n- **At IT services firms (TCS, Infosys, Wipro, Accenture):** GenAI Developer / GenAI Engineer\n- **At product / Big Tech companies:** Software Engineer, Applied AI\n- **At startups:** AI Engineer\n- **Typical experience to be hired:** 2+ yrs\n- **Next moves — grow:** AI Solutions Architect, Tech Lead · **lead:** AI Product Manager, Engineering Manager · **pivot:** Forward Deployed Engineer (FDE), AI Agent Engineer, AI Infrastructure / LLMOps Engineer\n- **Narrower (sideways) roles:** Context / Prompt Engineer\n- **Languages:** Python, TypeScript, Java\n- **Frameworks / Standards:** LangChain, LlamaIndex, Semantic Kernel, Spring AI, MCP SDKs, Vercel AI SDK\n- **Tools:** Claude / OpenAI / Gemini APIs, Vector DBs (pgvector, Pinecone), Langfuse / LangSmith\n- **Technical skills:** Prompt & context engineering, RAG, Tool calling, Agents, Structured outputs, AI evaluation & safety, Embeddings & vector search, Cost & latency optimisation, Fine-tuning basics\n- **Soft skills:** Experimentation, Product sense\n- **AI impact:** One of the fastest-growing engineering roles.",
+      "answer": "Builds apps on top of large language models — chatbots, agents, RAG.\n\n- **Also called:** AI Engineer, GenAI Engineer, LLM Engineer, Applied AI Engineer\n- **At IT services firms (TCS, Infosys, Wipro, Accenture):** GenAI Developer / GenAI Engineer\n- **At product / Big Tech companies:** Software Engineer, Applied AI\n- **At startups:** AI Engineer\n- **Typical experience to be hired:** 2+ yrs\n- **Next moves — grow:** AI Solutions Architect, Tech Lead · **lead:** AI Product Manager, Engineering Manager · **pivot:** Forward Deployed Engineer (FDE), AI Agent Engineer, AI Infrastructure / LLMOps Engineer\n- **Narrower (sideways) roles:** Context / Prompt Engineer\n- **Languages:** Python, TypeScript, Java\n- **Frameworks / Standards:** LangChain, LlamaIndex, Semantic Kernel, Spring AI, MCP SDKs, Vercel AI SDK\n- **Tools:** Claude / OpenAI / Gemini APIs, Vector DBs (pgvector, Pinecone), Langfuse / LangSmith\n- **Technical skills:** Prompt & context engineering, RAG, Tool calling, Agents, Structured outputs, AI evaluation & safety, Embeddings & vector search, Cost & latency optimisation, Fine-tuning basics\n- **Soft skills:** Experimentation, Product sense\n- **AI impact:** One of the fastest-growing engineering roles.",
       "summary": "Builds apps on top of large language models — chatbots, agents, RAG.",
       "codeBlocks": [],
       "visuals": [],
@@ -67478,6 +67479,7 @@
       "difficulty": null,
       "keywords": [
         "ai / llm engineer",
+        "ai engineer",
         "genai engineer",
         "llm engineer",
         "applied ai engineer",
@@ -67488,6 +67490,7 @@
       ],
       "names": [
         "AI / LLM Engineer",
+        "AI Engineer",
         "GenAI Engineer",
         "LLM Engineer",
         "Applied AI Engineer"
@@ -67503,7 +67506,7 @@
         "startLine": 622,
         "endLine": 638
       },
-      "contentHash": "5439bf5c7988099c"
+      "contentHash": "a8516650ca665f30"
     },
     {
       "id": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md#role-mlops-engineer",
@@ -67652,7 +67655,7 @@
       "parentId": null,
       "question": "What does a DevOps Engineer do?",
       "prompt": null,
-      "answer": "Automates building, testing and deploying software.\n\n- **Also called:** Build & Release Engineer, CI/CD Engineer, DevOps Consultant\n- **At IT services firms (TCS, Infosys, Wipro, Accenture):** DevOps Engineer / DevOps Consultant\n- **At product / Big Tech companies:** Software Engineer, Infrastructure / DevOps\n- **At startups:** DevOps / Infra Engineer\n- **Typical experience to be hired:** 1+ yrs\n- **Next moves — grow:** Platform Engineer, Site Reliability Engineer (SRE), Cloud Architect · **lead:** Engineering Manager · **pivot:** AI Infrastructure / LLMOps Engineer, MLOps Engineer, Application Security (AppSec) / DevSecOps Engineer, Cloud Security Engineer\n- **Narrower (sideways) roles:** Release / Build Engineer\n- **Languages:** Bash, Python, YAML, Groovy, HCL\n- **Frameworks / Standards:** Docker, Kubernetes, Terraform, Ansible\n- **Tools:** Jenkins, GitHub Actions, GitLab CI, Argo CD, Helm, SonarQube\n- **Technical skills:** CI/CD pipelines, Infrastructure as Code, Containers, Monitoring, Linux administration, Cloud services, Secrets management, Release strategies (blue-green, canary), Git workflows\n- **Soft skills:** Collaboration, Automation mindset\n- **AI impact:** AI writes pipelines and IaC; engineers review and secure them.",
+      "answer": "Automates building, testing and deploying software.\n\n- **Also called:** CI/CD Engineer, DevOps Consultant, Infrastructure Automation Engineer\n- **At IT services firms (TCS, Infosys, Wipro, Accenture):** DevOps Engineer / DevOps Consultant\n- **At product / Big Tech companies:** Software Engineer, Infrastructure / DevOps\n- **At startups:** DevOps / Infra Engineer\n- **Typical experience to be hired:** 1+ yrs\n- **Next moves — grow:** Platform Engineer, Site Reliability Engineer (SRE), Cloud Architect · **lead:** Engineering Manager · **pivot:** AI Infrastructure / LLMOps Engineer, MLOps Engineer, Application Security (AppSec) / DevSecOps Engineer, Cloud Security Engineer\n- **Narrower (sideways) roles:** Release / Build Engineer\n- **Languages:** Bash, Python, YAML, Groovy, HCL\n- **Frameworks / Standards:** Docker, Kubernetes, Terraform, Ansible\n- **Tools:** Jenkins, GitHub Actions, GitLab CI, Argo CD, Helm, SonarQube\n- **Technical skills:** CI/CD pipelines, Infrastructure as Code, Containers, Monitoring, Linux administration, Cloud services, Secrets management, Release strategies (blue-green, canary), Git workflows\n- **Soft skills:** Collaboration, Automation mindset\n- **AI impact:** AI writes pipelines and IaC; engineers review and secure them.",
       "summary": "Automates building, testing and deploying software.",
       "codeBlocks": [],
       "visuals": [],
@@ -67668,18 +67671,18 @@
       "difficulty": null,
       "keywords": [
         "devops engineer",
-        "build & release engineer",
         "ci/cd engineer",
         "devops consultant",
+        "infrastructure automation engineer",
         "devops",
         "engineer",
         "it-roles"
       ],
       "names": [
         "DevOps Engineer",
-        "Build & Release Engineer",
         "CI/CD Engineer",
-        "DevOps Consultant"
+        "DevOps Consultant",
+        "Infrastructure Automation Engineer"
       ],
       "relatedTopics": [
         "devops",
@@ -67690,7 +67693,7 @@
         "startLine": 695,
         "endLine": 711
       },
-      "contentHash": "089feec403e7f7c2"
+      "contentHash": "99f961e2cad11af2"
     },
     {
       "id": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md#role-cloud-engineer",
@@ -68920,7 +68923,7 @@
       "parentId": null,
       "question": "What does a CTO / CIO do?",
       "prompt": null,
-      "answer": "Top technology executive (CTO: product tech; CIO: internal IT).\n\n- **Also called:** Chief Technology Officer, Chief Information Officer, Head of Technology, VP Engineering\n- **At IT services firms (TCS, Infosys, Wipro, Accenture):** CTO / Chief Digital Officer\n- **At product / Big Tech companies:** CTO / SVP Engineering\n- **At startups:** Co-founder & CTO\n- **Typical experience to be hired:** 15+ yrs\n- **Next moves — grow:** — · **lead:** — · **pivot:** AI Solutions Architect\n- **Languages:** —\n- **Frameworks / Standards:** Business strategy, IT governance\n- **Tools:** —\n- **Technical skills:** Vision, Budget, Org design, Board communication, Vendor strategy, Risk management\n- **Soft skills:** Leadership, Influence\n- **AI impact:** Owns company-wide AI adoption; some firms add a Chief AI Officer (CAIO).",
+      "answer": "Top technology executive (CTO: product tech; CIO: internal IT).\n\n- **Also called:** Chief Technology Officer, Chief Information Officer, Head of Technology, Chief Digital Officer\n- **At IT services firms (TCS, Infosys, Wipro, Accenture):** CTO / Chief Digital Officer\n- **At product / Big Tech companies:** CTO / SVP Engineering\n- **At startups:** Co-founder & CTO\n- **Typical experience to be hired:** 15+ yrs\n- **Next moves — grow:** — · **lead:** — · **pivot:** AI Solutions Architect\n- **Languages:** —\n- **Frameworks / Standards:** Business strategy, IT governance\n- **Tools:** —\n- **Technical skills:** Vision, Budget, Org design, Board communication, Vendor strategy, Risk management\n- **Soft skills:** Leadership, Influence\n- **AI impact:** Owns company-wide AI adoption; some firms add a Chief AI Officer (CAIO).",
       "summary": "Top technology executive (CTO: product tech; CIO: internal IT).",
       "codeBlocks": [],
       "visuals": [],
@@ -68939,7 +68942,7 @@
         "chief technology officer",
         "chief information officer",
         "head of technology",
-        "vp engineering",
+        "chief digital officer",
         "cto",
         "cio",
         "it-roles"
@@ -68949,14 +68952,14 @@
         "Chief Technology Officer",
         "Chief Information Officer",
         "Head of Technology",
-        "VP Engineering"
+        "Chief Digital Officer"
       ],
       "source": {
         "path": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md",
         "startLine": 1175,
         "endLine": 1190
       },
-      "contentHash": "80f7eda07f8f112c"
+      "contentHash": "b33343995d7c0e60"
     },
     {
       "id": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md#role-it-support-help-desk",
@@ -69284,7 +69287,7 @@
       "parentId": null,
       "question": "What does a Solutions / Sales Engineer do?",
       "prompt": null,
-      "answer": "Technical expert who supports sales with demos and proofs of concept.\n\n- **Also called:** Sales Engineer, Solutions Engineer, Technical Account Manager\n- **At IT services firms (TCS, Infosys, Wipro, Accenture):** Pre-Sales Solution Architect\n- **At product / Big Tech companies:** Solutions / Sales Engineer\n- **At startups:** Founding Solutions Engineer\n- **Typical experience to be hired:** 3+ yrs\n- **Next moves — grow:** Pre-Sales / Solutions Consultant, Solution Architect · **lead:** — · **pivot:** Forward Deployed Engineer (FDE), Product Manager (PM), Developer Advocate (DevRel)\n- **Languages:** Python, JavaScript, SQL\n- **Frameworks / Standards:** POC delivery\n- **Tools:** Demo environments, CRM (Salesforce), Postman\n- **Technical skills:** Product demos, Technical discovery, POCs, RFP responses, Integration guidance\n- **Soft skills:** Persuasion, Listening\n- **AI impact:** Close cousin of FDE — FDE continues after the sale.",
+      "answer": "Technical expert who supports sales with demos and proofs of concept.\n\n- **Also called:** Sales Engineer, Solutions Engineer, Pre-Sales Engineer\n- **At IT services firms (TCS, Infosys, Wipro, Accenture):** Pre-Sales Solution Architect\n- **At product / Big Tech companies:** Solutions / Sales Engineer\n- **At startups:** Founding Solutions Engineer\n- **Typical experience to be hired:** 3+ yrs\n- **Next moves — grow:** Pre-Sales / Solutions Consultant, Solution Architect · **lead:** — · **pivot:** Forward Deployed Engineer (FDE), Product Manager (PM), Developer Advocate (DevRel)\n- **Languages:** Python, JavaScript, SQL\n- **Frameworks / Standards:** POC delivery\n- **Tools:** Demo environments, CRM (Salesforce), Postman\n- **Technical skills:** Product demos, Technical discovery, POCs, RFP responses, Integration guidance\n- **Soft skills:** Persuasion, Listening\n- **AI impact:** Close cousin of FDE — FDE continues after the sale.",
       "summary": "Technical expert who supports sales with demos and proofs of concept.",
       "codeBlocks": [],
       "visuals": [],
@@ -69302,7 +69305,7 @@
         "solutions / sales engineer",
         "sales engineer",
         "solutions engineer",
-        "technical account manager",
+        "pre-sales engineer",
         "solutions",
         "sales",
         "engineer",
@@ -69312,7 +69315,7 @@
         "Solutions / Sales Engineer",
         "Sales Engineer",
         "Solutions Engineer",
-        "Technical Account Manager"
+        "Pre-Sales Engineer"
       ],
       "relatedTopics": [
         "database/sql",
@@ -69323,7 +69326,7 @@
         "startLine": 1322,
         "endLine": 1337
       },
-      "contentHash": "32ac5d9b79f18df4"
+      "contentHash": "08b2ad04e36317ee"
     },
     {
       "id": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md#role-customer-success-engineer",
@@ -82272,8 +82275,8 @@
       "parentId": null,
       "question": "Technology stack: Testing",
       "prompt": null,
-      "answer": "| Technology | Used for |\n|---|---|\n| JUnit / TestNG / Mockito | Java unit testing & mocks |\n| Jest / Jasmine / Karma / Vitest | JavaScript unit testing |\n| pytest | Python testing |\n| Selenium / Playwright / Cypress | Browser automation & E2E |\n| Appium | Mobile automation |\n| Postman / REST Assured | API testing |\n| JMeter / k6 / Gatling | Load testing |\n| Cucumber | BDD (Given-When-Then) |",
-      "summary": "JUnit / TestNG / Mockito: Java unit testing & mocks; Jest / Jasmine / Karma / Vitest: JavaScript unit testing; pytest: Python testing; Selenium / Playwright / Cypress: Browser automation & E2E; Appium: Mobile automation; Postman / REST Assured: API testing; JMeter / k6 / Gatling: Load testing; Cucumber: BDD…",
+      "answer": "| Technology | Used for |\n|---|---|\n| JUnit / TestNG / Mockito | Java unit testing & mocks |\n| Jest / Vitest / Jasmine / Karma (deprecated) | JavaScript unit testing (Angular now defaults to Vitest) |\n| pytest | Python testing |\n| Selenium / Playwright / Cypress | Browser automation & E2E |\n| Appium | Mobile automation |\n| Postman / REST Assured | API testing |\n| JMeter / k6 / Gatling | Load testing |\n| Cucumber | BDD (Given-When-Then) |",
+      "summary": "JUnit / TestNG / Mockito: Java unit testing & mocks; Jest / Vitest / Jasmine / Karma (deprecated): JavaScript unit testing (Angular now defaults to Vitest); pytest: Python testing; Selenium / Playwright / Cypress: Browser automation & E2E; Appium: Mobile automation; Postman / REST Assured: API testing; JMeter / k6 /…",
       "codeBlocks": [],
       "visuals": [],
       "contentType": "atlas",
@@ -82292,6 +82295,7 @@
         "tech-stack"
       ],
       "relatedTopics": [
+        "angular",
         "java",
         "javascript",
         "rest-api",
@@ -82302,7 +82306,7 @@
         "startLine": 1857,
         "endLine": 1868
       },
-      "contentHash": "7dc3f55f365eae42"
+      "contentHash": "6e15195432d88d43"
     },
     {
       "id": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md#tech-junit-testng-mockito",
@@ -82349,13 +82353,13 @@
       "contentHash": "21c8946931e2029d"
     },
     {
-      "id": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md#tech-jest-jasmine-karma-vitest",
+      "id": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md#tech-jest-vitest-jasmine-karma-deprecated",
       "kind": "term",
       "parentId": null,
-      "question": "What is Jest / Jasmine / Karma / Vitest used for?",
+      "question": "What is Jest / Vitest / Jasmine / Karma (deprecated) used for?",
       "prompt": null,
-      "answer": "**Jest / Jasmine / Karma / Vitest** — JavaScript unit testing\n\n_Stack layer: Testing_",
-      "summary": "Jest / Jasmine / Karma / Vitest — JavaScript unit testing",
+      "answer": "**Jest / Vitest / Jasmine / Karma (deprecated)** — JavaScript unit testing (Angular now defaults to Vitest)\n\n_Stack layer: Testing_",
+      "summary": "Jest / Vitest / Jasmine / Karma (deprecated) — JavaScript unit testing (Angular now defaults to Vitest)",
       "codeBlocks": [],
       "visuals": [],
       "contentType": "atlas",
@@ -82369,21 +82373,23 @@
       ],
       "difficulty": null,
       "keywords": [
-        "jest / jasmine / karma / vitest",
+        "jest / vitest / jasmine / karma (deprecated)",
         "jest",
+        "vitest",
         "jasmine",
         "karma",
-        "vitest",
+        "deprecated",
         "tech-stack"
       ],
       "names": [
-        "Jest / Jasmine / Karma / Vitest",
+        "Jest / Vitest / Jasmine / Karma (deprecated)",
         "Jest",
+        "Vitest",
         "Jasmine",
-        "Karma",
-        "Vitest"
+        "Karma"
       ],
       "relatedTopics": [
+        "angular",
         "javascript",
         "testing"
       ],
@@ -82392,7 +82398,7 @@
         "startLine": 1862,
         "endLine": 1862
       },
-      "contentHash": "981f2c515e7e8e72"
+      "contentHash": "6ba06d4e004e558b"
     },
     {
       "id": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md#tech-pytest",
@@ -84523,8 +84529,8 @@
       "parentId": null,
       "question": "Skills vs Salary — India (LPA)",
       "prompt": null,
-      "answer": "> Rough estimates, not offers. Ranges are total CTC in LPA for Indian metros, built from published 2026 salary guides (checked Oct 2026) plus general market knowledge — not live data. Company type and interview performance move your pay more than anything here. Check AmbitionBox, Levels.fyi, Glassdoor or Naukri before negotiating.",
-      "summary": "> Rough estimates, not offers. Ranges are total CTC in LPA for Indian metros, built from published 2026 salary guides (checked Oct 2026) plus general market knowledge — not live data. Company type and interview performance move your pay more than anything here. Check AmbitionBox, Levels.fyi, Glassdoor or Naukri before…",
+      "answer": "> Rough estimates, not offers. Ranges are total CTC in LPA for Indian metros, built from published 2026 salary guides and surveys (checked 8 Nov 2026) plus general market knowledge — not live data. Company type and interview performance move your pay more than anything here. Check AmbitionBox, Levels.fyi, Glassdoor or Naukri before negotiating.",
+      "summary": "> Rough estimates, not offers. Ranges are total CTC in LPA for Indian metros, built from published 2026 salary guides and surveys (checked 8 Nov 2026) plus general market knowledge — not live data. Company type and interview performance move your pay more than anything here. Check AmbitionBox, Levels.fyi, Glassdoor or…",
       "codeBlocks": [],
       "visuals": [],
       "contentType": "atlas",
@@ -84546,7 +84552,7 @@
         "startLine": 1937,
         "endLine": 1939
       },
-      "contentHash": "a4293658ad9a4e78"
+      "contentHash": "fc38cd45df463c9d"
     },
     {
       "id": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md#skills-vs-salary-india-lpa-full-stack-developer",
@@ -85320,8 +85326,8 @@
       "parentId": null,
       "question": "Skills vs Salary — India (LPA): Biggest Salary Boosters",
       "prompt": null,
-      "answer": "- **Switching companies:** Typically 30–60% hike vs ~5–8% appraisal at IT services in 2026 — the single biggest lever.\n- **DSA + System Design:** Unlocks product / Big Tech interviews — often 1.5–2.5× pay.\n- **GenAI / Agents / RAG / MCP skills:** Strongest premium in 2026: ~25–40% above peers at the same level.\n- **Cloud certification (AWS/Azure/GCP):** Associate helps shortlisting; Professional + real experience helps pay.\n- **Kubernetes (CKA/CKAD):** High demand for DevOps / platform roles.\n- **Databricks / Snowflake certs:** Strong signal for data engineering roles.\n- **OSCP / CISSP:** Top-valued security certifications.\n- **PMP / SAFe / CSM:** Useful for manager and delivery roles; less impact for engineers.\n- **Domain expertise (BFSI, healthcare, payments):** GCCs pay more for domain + tech combination.\n- **Public proof of work:** GitHub projects, blogs, talks — help get interviews at better-paying companies.",
-      "summary": "Switching companies: Typically 30–60% hike vs ~5–8% appraisal at IT services in 2026 — the single biggest lever. DSA + System Design: Unlocks product / Big Tech interviews — often 1.5–2.5× pay. GenAI / Agents / RAG / MCP skills: Strongest premium in 2026: ~25–40% above peers at the same level. Cloud certification…",
+      "answer": "- **Switching companies:** Typically 30–60% hike vs ~6–7% appraisal at IT services (Aon: 6.6% in 2026 and 2027) — the single biggest lever.\n- **DSA + System Design:** Unlocks product / Big Tech interviews — often 1.5–2.5× pay.\n- **GenAI / Agents / RAG / MCP skills:** Strongest premium in 2026: ~25–40% above peers at the same level.\n- **Cloud certification (AWS/Azure/GCP):** Associate helps shortlisting; Professional + real experience helps pay.\n- **Kubernetes (CKA/CKAD):** High demand for DevOps / platform roles.\n- **Databricks / Snowflake certs:** Strong signal for data engineering roles.\n- **OSCP / CISSP:** Top-valued security certifications.\n- **PMP / SAFe / CSM:** Useful for manager and delivery roles; less impact for engineers.\n- **Domain expertise (BFSI, healthcare, payments):** GCCs pay more for domain + tech combination.\n- **Public proof of work:** GitHub projects, blogs, talks — help get interviews at better-paying companies.",
+      "summary": "Switching companies: Typically 30–60% hike vs ~6–7% appraisal at IT services (Aon: 6.6% in 2026 and 2027) — the single biggest lever. DSA + System Design: Unlocks product / Big Tech interviews — often 1.5–2.5× pay. GenAI / Agents / RAG / MCP skills: Strongest premium in 2026: ~25–40% above peers at the same level.…",
       "codeBlocks": [],
       "visuals": [],
       "contentType": "atlas",
@@ -85354,16 +85360,16 @@
         "startLine": 2227,
         "endLine": 2238
       },
-      "contentHash": "4d7617da79085338"
+      "contentHash": "a55d6f93f83d6470"
     },
     {
-      "id": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md#skills-vs-salary-india-lpa-market-reality-oct-2026",
+      "id": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md#skills-vs-salary-india-lpa-market-reality-nov-2026",
       "kind": "note",
       "parentId": null,
-      "question": "Skills vs Salary — India (LPA): Market Reality (Oct 2026)",
+      "question": "Skills vs Salary — India (LPA): Market Reality (Nov 2026)",
       "prompt": null,
-      "answer": "- Company type beats years. Same experience, product/Big Tech pays 3–5× IT services. ([source](https://resources.instahyre.com/blog/software-engineer-salary-in-india/))\n- IT services hikes stayed lean in 2026: ~5–8% for most staff, below the ~9% all-India average. Specialist tracks got 14–22%. ([source](https://www.ownyourcareer.in/blog/india-it-salary-hike-2026-tcs-infosys-wipro-accenture-cognizant))\n- Standard services fresher pay is still ~₹3.4–9 LPA (most land at 4–6). Specialist AI/cloud/data fresher roles go up to ~₹21 LPA. ([source](https://www.bwpeople.in/article/infosys-to-offer-freshers-salaries-up-to-rs-21-lakh-585056))\n- GenAI/LLM engineers earn ~25–40% more than generalist ML engineers at the same level. ([source](https://resources.instahyre.com/blog/ai-engineer-salary-in-india/))",
-      "summary": "Company type beats years. Same experience, product/Big Tech pays 3–5× IT services. (source) IT services hikes stayed lean in 2026: ~5–8% for most staff, below the ~9% all-India average. Specialist tracks got 14–22%. (source) Standard services fresher pay is still ~₹3.4–9 LPA (most land at 4–6). Specialist…",
+      "answer": "- Company type beats years. Same experience, product/Big Tech pays 3–5× IT services. ([source](https://resources.instahyre.com/blog/software-engineer-salary-in-india/))\n- Aon (Oct 2026): India-wide raises averaged 9% in 2026 and are projected at 9.1% for 2027. IT services/consulting is lowest at 6.6% (both years); tech product companies 9.5%. Attrition is back up to ~18%. ([source](https://www.aon.com/apac/in-the-press/asia-newsroom/2026/aon-study-finds-salaries-in-india-projected-to-fise-9-1-in-2027-employers-balance-growth-and-cost-pressures))\n- Naukri JobSpeak (Oct 2026): white-collar hiring up 14% year on year (helped by a low Diwali-hit base), AI/ML roles up 32%, IT services up only 5%. ([source](https://www.naukri.com/blog/naukri-jobspeak-october-2026-white-collar-hiring-ai-ml-growth/))\n- Standard services fresher pay is still ~₹3.4–9 LPA (most land at 4–6). Specialist AI/cloud/data fresher roles go up to ~₹21 LPA. ([source](https://www.bwpeople.in/article/infosys-to-offer-freshers-salaries-up-to-rs-21-lakh-585056))\n- GenAI/LLM engineers earn ~25–40% more than generalist ML engineers at the same level. ([source](https://resources.instahyre.com/blog/ai-engineer-salary-in-india/))",
+      "summary": "Company type beats years. Same experience, product/Big Tech pays 3–5× IT services. (source) Aon (Oct 2026): India-wide raises averaged 9% in 2026 and are projected at 9.1% for 2027. IT services/consulting is lowest at 6.6% (both years); tech product companies 9.5%. Attrition is back up to ~18%. (source) Naukri…",
       "codeBlocks": [],
       "visuals": [],
       "contentType": "atlas",
@@ -85382,7 +85388,7 @@
         "lpa",
         "market",
         "reality",
-        "oct",
+        "nov",
         "it-careers"
       ],
       "relatedTopics": [
@@ -85391,18 +85397,18 @@
       "source": {
         "path": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md",
         "startLine": 2240,
-        "endLine": 2245
+        "endLine": 2246
       },
-      "contentHash": "bfc43e2124ed50be"
+      "contentHash": "9424120095cbeb1d"
     },
     {
-      "id": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md#working-abroad-from-india-checked-11-oct-2026",
+      "id": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md#working-abroad-from-india-checked-8-nov-2026",
       "kind": "note",
       "parentId": null,
-      "question": "Working Abroad from India (checked 11 Oct 2026)",
+      "question": "Working Abroad from India (checked 8 Nov 2026)",
       "prompt": null,
-      "answer": "> Visa rules and news below were checked on 11 Oct 2026 and change often. The official link on each country is the source of truth. Pay ranges are typical market estimates. Not legal advice.\n\nOrdered from most realistic to hardest for Indian IT professionals.\n\n| Country | Odds from India | Typical pay | Visa route | Usual minimum experience |\n|---|---|---|---|---|\n| Germany | Realistic | €60k–85k | EU Blue Card · Opportunity Card | 3+ yrs |\n| UAE (Dubai/Abu Dhabi) | Realistic | AED 25k–45k/month, tax-free | Employer work visa · Golden Visa | 2+ yrs |\n| Netherlands | Moderate | €55k–85k | Highly Skilled Migrant | 3+ yrs |\n| Ireland | Moderate | €60k–95k | Critical Skills Employment Permit | 3+ yrs |\n| Remote for global companies | Moderate | 1.5–3× Indian market (USD contracts) | No visa — stay in India | 4+ yrs |\n| Japan | Moderate | ¥5M–9M/yr | Engineer/Specialist · Highly Skilled Professional | 2+ yrs |\n| Australia | Hard | AUD 110k–170k | Skills in Demand (482) · 189/190 PR | 3+ yrs |\n| United Kingdom | Hard | £55k–80k (London mid–senior) | Skilled Worker · Global Talent | 5+ yrs |\n| Singapore | Hard | S$84k–150k | Employment Pass | 5+ yrs |\n| Canada | Hard | CAD 90k–140k | Express Entry (PR) · PNP | 3+ yrs |\n| United States | Very hard | $120k–200k+ (senior SWE) | H-1B · L-1 · O-1 | 5+ yrs |",
-      "summary": "> Visa rules and news below were checked on 11 Oct 2026 and change often. The official link on each country is the source of truth. Pay ranges are typical market estimates. Not legal advice.",
+      "answer": "> Visa rules and news below were checked on 8 Nov 2026 and change often. The official link on each country is the source of truth. Pay ranges are typical market estimates. Not legal advice.\n\nOrdered from most realistic to hardest for Indian IT professionals.\n\n| Country | Odds from India | Typical pay | Visa route | Usual minimum experience |\n|---|---|---|---|---|\n| Germany | Realistic | €60k–85k | EU Blue Card · Opportunity Card | 3+ yrs |\n| UAE (Dubai/Abu Dhabi) | Realistic | AED 25k–45k/month, tax-free | Employer work visa · Golden Visa | 2+ yrs |\n| Netherlands | Moderate | €55k–85k | Highly Skilled Migrant | 3+ yrs |\n| Ireland | Moderate | €60k–95k | Critical Skills Employment Permit | 3+ yrs |\n| Remote for global companies | Moderate | 1.5–3× Indian market (USD contracts) | No visa — stay in India | 4+ yrs |\n| Japan | Moderate | ¥5M–9M/yr | Engineer/Specialist · Highly Skilled Professional | 2+ yrs |\n| Australia | Hard | AUD 110k–170k | Skills in Demand (482) · 189/190 PR | 3+ yrs |\n| United Kingdom | Hard | £55k–80k (London mid–senior) | Skilled Worker · Global Talent | 5+ yrs |\n| Singapore | Hard | S$84k–150k | Employment Pass | 5+ yrs |\n| Canada | Hard | CAD 90k–140k | Express Entry (PR) · PNP | 3+ yrs |\n| United States | Very hard | $120k–200k+ (senior SWE) | H-1B · L-1 · O-1 | 5+ yrs |",
+      "summary": "> Visa rules and news below were checked on 8 Nov 2026 and change often. The official link on each country is the source of truth. Pay ranges are typical market estimates. Not legal advice.",
       "codeBlocks": [],
       "visuals": [],
       "contentType": "atlas",
@@ -85417,7 +85423,7 @@
         "abroad",
         "india",
         "checked",
-        "oct",
+        "nov",
         "it-careers"
       ],
       "relatedTopics": [
@@ -85425,19 +85431,19 @@
       ],
       "source": {
         "path": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md",
-        "startLine": 2247,
-        "endLine": 2265
+        "startLine": 2248,
+        "endLine": 2266
       },
-      "contentHash": "aead1290ac4d6a6c"
+      "contentHash": "bb060779b954a344"
     },
     {
-      "id": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md#working-abroad-from-india-checked-11-oct-2026-germany-realistic",
+      "id": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md#working-abroad-from-india-checked-8-nov-2026-germany-realistic",
       "kind": "note",
       "parentId": null,
-      "question": "Working Abroad from India (checked 11 Oct 2026): Germany — Realistic",
+      "question": "Working Abroad from India (checked 8 Nov 2026): Germany — Realistic",
       "prompt": null,
-      "answer": "**Latest (11 Oct 2026):** Oct 2026: IT specialists without a degree confirmed eligible for the Blue Card with 3+ yrs experience. 2026 threshold €45,934 for IT. No sponsor licence needed — any German employer can hire you.\n\n**Blunt take:** The best odds in the West for Indian engineers. English-only jobs exist, but German B1+ roughly triples your options.\n\n- **Visa rule:** Blue Card 2026: €50,700/yr, or €45,934.20 for IT/shortage jobs. Opportunity Card (Chancenkarte) gives a job-search stay.\n- **High demand roles:** Backend Developer (Java), Full Stack Developer, DevOps / Cloud / SRE, SAP / Salesforce / ServiceNow, Data Engineer, AI / LLM Engineer, Cybersecurity\n- **Some demand:** QA / Test Automation (SDET), Frontend Developer, Mobile Developer, Data Scientist / ML Engineer, Forward Deployed Engineer (FDE), Business Analyst, Product Manager, Project / Delivery Manager\n- **Official source:** https://www.make-it-in-germany.com/en/visa-residence/types/eu-blue-card\n\n**How to get in (best route first):**\n\n1. Apply directly to German companies — no sponsor licence is needed, so most can hire you\n2. Filter job boards for 'English' + 'visa sponsorship' (see live feed below)\n3. Get your degree checked on anabin, or rely on the 3-yrs-experience IT route\n4. Start German now — B1 opens mid-size companies, not just startups\n5. Opportunity Card only if you have savings: job-search on the ground",
-      "summary": "Latest (11 Oct 2026): Oct 2026: IT specialists without a degree confirmed eligible for the Blue Card with 3+ yrs experience. 2026 threshold €45,934 for IT. No sponsor licence needed — any German employer can hire you.",
+      "answer": "**Latest (8 Nov 2026):** 2026 Blue Card floors: €50,700 standard, €45,934.20 for IT and shortage jobs — including IT specialists without a degree who have 3+ yrs relevant experience. No sponsor licence needed: any German employer can hire you.\n\n**Blunt take:** The best odds in the West for Indian engineers. English-only jobs exist, but German B1+ roughly triples your options.\n\n- **Visa rule:** Blue Card 2026: €50,700/yr, or €45,934.20 for IT/shortage jobs. Opportunity Card (Chancenkarte) gives a job-search stay.\n- **High demand roles:** Backend Developer (Java), Full Stack Developer, DevOps / Cloud / SRE, SAP / Salesforce / ServiceNow, Data Engineer, AI / LLM Engineer, Cybersecurity\n- **Some demand:** QA / Test Automation (SDET), Frontend Developer, Mobile Developer, Data Scientist / ML Engineer, Forward Deployed Engineer (FDE), Business Analyst, Product Manager, Project / Delivery Manager\n- **Official source:** https://www.make-it-in-germany.com/en/visa-residence/types/eu-blue-card\n\n**How to get in (best route first):**\n\n1. Apply directly to German companies — no sponsor licence is needed, so most can hire you\n2. Filter job boards for 'English' + 'visa sponsorship' (see live feed below)\n3. Get your degree checked on anabin, or rely on the 3-yrs-experience IT route\n4. Start German now — B1 opens mid-size companies, not just startups\n5. Opportunity Card only if you have savings: job-search on the ground",
+      "summary": "Latest (8 Nov 2026): 2026 Blue Card floors: €50,700 standard, €45,934.20 for IT and shortage jobs — including IT specialists without a degree who have 3+ yrs relevant experience. No sponsor licence needed: any German employer can hire you.",
       "codeBlocks": [],
       "visuals": [],
       "contentType": "atlas",
@@ -85446,7 +85452,7 @@
         "it-careers"
       ],
       "section": [
-        "Working Abroad from India (checked 11 Oct 2026)"
+        "Working Abroad from India (checked 8 Nov 2026)"
       ],
       "difficulty": null,
       "keywords": [
@@ -85454,7 +85460,7 @@
         "abroad",
         "india",
         "checked",
-        "oct",
+        "nov",
         "germany",
         "realistic",
         "it-careers"
@@ -85467,19 +85473,19 @@
       ],
       "source": {
         "path": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md",
-        "startLine": 2267,
-        "endLine": 2284
+        "startLine": 2268,
+        "endLine": 2285
       },
-      "contentHash": "f663c5bc0f24bcf8"
+      "contentHash": "e8fb5cdf7abca71b"
     },
     {
-      "id": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md#working-abroad-from-india-checked-11-oct-2026-uae-dubai-abu",
+      "id": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md#working-abroad-from-india-checked-8-nov-2026-uae-dubai-abu",
       "kind": "note",
       "parentId": null,
-      "question": "Working Abroad from India (checked 11 Oct 2026): UAE (Dubai/Abu Dhabi) — Realistic",
+      "question": "Working Abroad from India (checked 8 Nov 2026): UAE (Dubai/Abu Dhabi) — Realistic",
       "prompt": null,
-      "answer": "**Latest (11 Oct 2026):** 2026: Golden Visa widened with an AI-specialist route (no local contract needed if income is high enough). Strong demand in AI and cloud.\n\n**Blunt take:** The easiest move for Indians. Good tax-free pay, but no citizenship path, and packages vary wildly.\n\n- **Visa rule:** No lottery: the employer sponsors your visa. Golden Visa (10-yr) for Level 1–2 tech roles with basic salary AED 30,000+/month.\n- **High demand roles:** AI / LLM Engineer, Full Stack Developer, Backend Developer (Java), DevOps / Cloud / SRE, Cybersecurity, SAP / Salesforce / ServiceNow, Project / Delivery Manager, Forward Deployed Engineer (FDE)\n- **Some demand:** Data Engineer, Data Scientist / ML Engineer, Mobile Developer, Frontend Developer, Business Analyst, Product Manager, QA / Test Automation (SDET)\n- **Official source:** https://u.ae/en/information-and-services/visa-and-emirates-id/residence-visas/golden-visa\n\n**How to get in (best route first):**\n\n1. Ask your Indian employer about Gulf client projects — the fastest, zero-risk route\n2. Apply on LinkedIn and Bayt to product firms and banks, not just staffing agencies\n3. Many people interview in person on a visit visa — budget 4–6 weeks if you try it\n4. Negotiate basic salary high: it decides Golden Visa eligibility and end-of-service pay",
-      "summary": "Latest (11 Oct 2026): 2026: Golden Visa widened with an AI-specialist route (no local contract needed if income is high enough). Strong demand in AI and cloud.",
+      "answer": "**Latest (8 Nov 2026):** 2026: a 3-year AI Specialist visa (announced Mar 2026; reported AED 30,000/month basic salary + STEM degree) can fast-track to the 10-year Golden Visa. Strong demand in AI and cloud.\n\n**Blunt take:** The easiest move for Indians. Good tax-free pay, but no citizenship path, and packages vary wildly.\n\n- **Visa rule:** No lottery: the employer sponsors your visa. Golden Visa (10-yr) for Level 1–2 tech roles with basic salary AED 30,000+/month.\n- **High demand roles:** AI / LLM Engineer, Full Stack Developer, Backend Developer (Java), DevOps / Cloud / SRE, Cybersecurity, SAP / Salesforce / ServiceNow, Project / Delivery Manager, Forward Deployed Engineer (FDE)\n- **Some demand:** Data Engineer, Data Scientist / ML Engineer, Mobile Developer, Frontend Developer, Business Analyst, Product Manager, QA / Test Automation (SDET)\n- **Official source:** https://u.ae/en/information-and-services/visa-and-emirates-id/residence-visas/golden-visa\n\n**How to get in (best route first):**\n\n1. Ask your Indian employer about Gulf client projects — the fastest, zero-risk route\n2. Apply on LinkedIn and Bayt to product firms and banks, not just staffing agencies\n3. Many people interview in person on a visit visa — budget 4–6 weeks if you try it\n4. Negotiate basic salary high: it decides Golden Visa eligibility and end-of-service pay",
+      "summary": "Latest (8 Nov 2026): 2026: a 3-year AI Specialist visa (announced Mar 2026; reported AED 30,000/month basic salary + STEM degree) can fast-track to the 10-year Golden Visa. Strong demand in AI and cloud.",
       "codeBlocks": [],
       "visuals": [],
       "contentType": "atlas",
@@ -85488,7 +85494,7 @@
         "it-careers"
       ],
       "section": [
-        "Working Abroad from India (checked 11 Oct 2026)"
+        "Working Abroad from India (checked 8 Nov 2026)"
       ],
       "difficulty": null,
       "keywords": [
@@ -85496,7 +85502,7 @@
         "abroad",
         "india",
         "checked",
-        "oct",
+        "nov",
         "uae",
         "dubai",
         "abu",
@@ -85512,19 +85518,19 @@
       ],
       "source": {
         "path": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md",
-        "startLine": 2286,
-        "endLine": 2302
+        "startLine": 2287,
+        "endLine": 2303
       },
-      "contentHash": "5c8a95ea08d5c0f7"
+      "contentHash": "b55d684d2611d544"
     },
     {
-      "id": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md#working-abroad-from-india-checked-11-oct-2026-netherlands",
+      "id": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md#working-abroad-from-india-checked-8-nov-2026-netherlands",
       "kind": "note",
       "parentId": null,
-      "question": "Working Abroad from India (checked 11 Oct 2026): Netherlands — Moderate",
+      "question": "Working Abroad from India (checked 8 Nov 2026): Netherlands — Moderate",
       "prompt": null,
-      "answer": "**Latest (11 Oct 2026):** 2026: salary floors up ~4.5%; sponsor rules tightened (firms with repeated fines can lose sponsor status).\n\n**Blunt take:** A fast visa once you have an offer, and English works at work. Housing is the real pain.\n\n- **Visa rule:** €5,942/month (30+), €4,357/month (under 30), excluding holiday pay. Only IND-recognised sponsors can hire you.\n- **High demand roles:** Backend Developer (Java), Data Engineer, DevOps / Cloud / SRE, AI / LLM Engineer, Full Stack Developer\n- **Some demand:** Frontend Developer, Data Scientist / ML Engineer, Cybersecurity, Product Manager, Mobile Developer, QA / Test Automation (SDET)\n- **Official source:** https://ind.nl/en/residence-permits/work/highly-skilled-migrant\n\n**How to get in (best route first):**\n\n1. Only apply to companies on the IND public register of recognised sponsors\n2. Target Amsterdam scale-ups and fintech (Adyen, Booking, ING tech)\n3. Internal transfer from an MNC office in India\n4. Budget for housing before accepting — it eats offers",
-      "summary": "Latest (11 Oct 2026): 2026: salary floors up ~4.5%; sponsor rules tightened (firms with repeated fines can lose sponsor status).",
+      "answer": "**Latest (8 Nov 2026):** 2026: salary floors up ~4.5% (€5,688 → €5,942 for 30+). The IND applies the threshold in force on the day the application is filed, and only fixed, guaranteed pay counts.\n\n**Blunt take:** A fast visa once you have an offer, and English works at work. Housing is the real pain.\n\n- **Visa rule:** €5,942/month (30+), €4,357/month (under 30), excluding holiday pay. Only IND-recognised sponsors can hire you.\n- **High demand roles:** Backend Developer (Java), Data Engineer, DevOps / Cloud / SRE, AI / LLM Engineer, Full Stack Developer\n- **Some demand:** Frontend Developer, Data Scientist / ML Engineer, Cybersecurity, Product Manager, Mobile Developer, QA / Test Automation (SDET)\n- **Official source:** https://ind.nl/en/residence-permits/work/highly-skilled-migrant\n\n**How to get in (best route first):**\n\n1. Only apply to companies on the IND public register of recognised sponsors\n2. Target Amsterdam scale-ups and fintech (Adyen, Booking, ING tech)\n3. Internal transfer from an MNC office in India\n4. Budget for housing before accepting — it eats offers",
+      "summary": "Latest (8 Nov 2026): 2026: salary floors up ~4.5% (€5,688 → €5,942 for 30+). The IND applies the threshold in force on the day the application is filed, and only fixed, guaranteed pay counts.",
       "codeBlocks": [],
       "visuals": [],
       "contentType": "atlas",
@@ -85533,7 +85539,7 @@
         "it-careers"
       ],
       "section": [
-        "Working Abroad from India (checked 11 Oct 2026)"
+        "Working Abroad from India (checked 8 Nov 2026)"
       ],
       "difficulty": null,
       "keywords": [
@@ -85541,7 +85547,7 @@
         "abroad",
         "india",
         "checked",
-        "oct",
+        "nov",
         "netherlands",
         "moderate",
         "it-careers"
@@ -85554,19 +85560,19 @@
       ],
       "source": {
         "path": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md",
-        "startLine": 2304,
-        "endLine": 2320
+        "startLine": 2305,
+        "endLine": 2321
       },
-      "contentHash": "db7217acf6c386cc"
+      "contentHash": "446f37e425081bbd"
     },
     {
-      "id": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md#working-abroad-from-india-checked-11-oct-2026-ireland-moderate",
+      "id": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md#working-abroad-from-india-checked-8-nov-2026-ireland-moderate",
       "kind": "note",
       "parentId": null,
-      "question": "Working Abroad from India (checked 11 Oct 2026): Ireland — Moderate",
+      "question": "Working Abroad from India (checked 8 Nov 2026): Ireland — Moderate",
       "prompt": null,
-      "answer": "**Latest (11 Oct 2026):** 1 Mar 2026: permit salary floors raised (€40,904 for listed ICT roles); more increases planned to 2030.\n\n**Blunt take:** EU HQs of big tech, all in English. Fewer openings than Germany, and Dublin rents are brutal.\n\n- **Visa rule:** €40,904/yr for listed ICT roles (software, security, data), or €68,911 for others. Residency (Stamp 4) after 2 years.\n- **High demand roles:** Cybersecurity, DevOps / Cloud / SRE, Data Engineer, Backend Developer (Java), AI / LLM Engineer, Full Stack Developer\n- **Some demand:** Product Manager, Frontend Developer, Data Scientist / ML Engineer, Business Analyst, Forward Deployed Engineer (FDE)\n- **Official source:** https://enterprise.gov.ie/en/what-we-do/workplace-and-skills/employment-permits/permit-types/critical-skills-employment-permit/\n\n**How to get in (best route first):**\n\n1. Internal transfer from Google/Microsoft/Salesforce/Stripe India to their Dublin HQs\n2. Apply directly to Dublin HQ roles — your software/security/data role is on the critical-skills list\n3. Referrals from Indian engineers already in Dublin",
-      "summary": "Latest (11 Oct 2026): 1 Mar 2026: permit salary floors raised (€40,904 for listed ICT roles); more increases planned to 2030.",
+      "answer": "**Latest (8 Nov 2026):** 1 Mar 2026: permit salary floors raised (€40,904 for listed ICT roles, from €38,000); the government roadmap plans further rises up to 2030.\n\n**Blunt take:** EU HQs of big tech, all in English. Fewer openings than Germany, and Dublin rents are brutal.\n\n- **Visa rule:** €40,904/yr for listed ICT roles (software, security, data), or €68,911 for others. Residency (Stamp 4) after 2 years.\n- **High demand roles:** Cybersecurity, DevOps / Cloud / SRE, Data Engineer, Backend Developer (Java), AI / LLM Engineer, Full Stack Developer\n- **Some demand:** Product Manager, Frontend Developer, Data Scientist / ML Engineer, Business Analyst, Forward Deployed Engineer (FDE)\n- **Official source:** https://enterprise.gov.ie/en/what-we-do/workplace-and-skills/employment-permits/permit-types/critical-skills-employment-permit/\n\n**How to get in (best route first):**\n\n1. Internal transfer from Google/Microsoft/Salesforce/Stripe India to their Dublin HQs\n2. Apply directly to Dublin HQ roles — your software/security/data role is on the critical-skills list\n3. Referrals from Indian engineers already in Dublin",
+      "summary": "Latest (8 Nov 2026): 1 Mar 2026: permit salary floors raised (€40,904 for listed ICT roles, from €38,000); the government roadmap plans further rises up to 2030.",
       "codeBlocks": [],
       "visuals": [],
       "contentType": "atlas",
@@ -85575,7 +85581,7 @@
         "it-careers"
       ],
       "section": [
-        "Working Abroad from India (checked 11 Oct 2026)"
+        "Working Abroad from India (checked 8 Nov 2026)"
       ],
       "difficulty": null,
       "keywords": [
@@ -85583,7 +85589,7 @@
         "abroad",
         "india",
         "checked",
-        "oct",
+        "nov",
         "ireland",
         "moderate",
         "it-careers"
@@ -85595,19 +85601,19 @@
       ],
       "source": {
         "path": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md",
-        "startLine": 2322,
-        "endLine": 2337
+        "startLine": 2323,
+        "endLine": 2338
       },
-      "contentHash": "d17a830e0e1cd330"
+      "contentHash": "99fc20a487822fd2"
     },
     {
-      "id": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md#working-abroad-from-india-checked-11-oct-2026-remote-for-global",
+      "id": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md#working-abroad-from-india-checked-8-nov-2026-remote-for-global",
       "kind": "note",
       "parentId": null,
-      "question": "Working Abroad from India (checked 11 Oct 2026): Remote for global companies — Moderate",
+      "question": "Working Abroad from India (checked 8 Nov 2026): Remote for global companies — Moderate",
       "prompt": null,
-      "answer": "**Latest (11 Oct 2026):** 2026: fewer 'worldwide' roles than in 2021–22; most now require US/EU time-zone overlap.\n\n**Blunt take:** No visa risk, but you compete with the whole world. Public proof of work matters more than your CV.\n\n- **Visa rule:** Paid as a contractor or through an Employer of Record (Deel, Remote.com). Tax is paid in India.\n- **High demand roles:** Full Stack Developer, AI / LLM Engineer, DevOps / Cloud / SRE, Frontend Developer, Mobile Developer\n- **Some demand:** Backend Developer (Java), Data Engineer, QA / Test Automation (SDET), Forward Deployed Engineer (FDE), Data Scientist / ML Engineer\n- **Official source:** https://remotive.com/remote-jobs/software-dev\n\n**How to get in (best route first):**\n\n1. Build public proof: GitHub, a shipped product, technical writing\n2. Apply only to roles open to India/APAC (live feed below)\n3. Offer US/EU time-zone overlap — it removes the #1 objection\n4. Start as a contractor; convert to full-time later",
-      "summary": "Latest (11 Oct 2026): 2026: fewer 'worldwide' roles than in 2021–22; most now require US/EU time-zone overlap.",
+      "answer": "**Latest (8 Nov 2026):** 2026: fewer 'worldwide' roles than in 2021–22; most now require US/EU time-zone overlap.\n\n**Blunt take:** No visa risk, but you compete with the whole world. Public proof of work matters more than your CV.\n\n- **Visa rule:** Paid as a contractor or through an Employer of Record (Deel, Remote.com). Tax is paid in India.\n- **High demand roles:** Full Stack Developer, AI / LLM Engineer, DevOps / Cloud / SRE, Frontend Developer, Mobile Developer\n- **Some demand:** Backend Developer (Java), Data Engineer, QA / Test Automation (SDET), Forward Deployed Engineer (FDE), Data Scientist / ML Engineer\n- **Official source:** https://remotive.com/remote-jobs/software-dev\n\n**How to get in (best route first):**\n\n1. Build public proof: GitHub, a shipped product, technical writing\n2. Apply only to roles open to India/APAC (live feed below)\n3. Offer US/EU time-zone overlap — it removes the #1 objection\n4. Start as a contractor; convert to full-time later",
+      "summary": "Latest (8 Nov 2026): 2026: fewer 'worldwide' roles than in 2021–22; most now require US/EU time-zone overlap.",
       "codeBlocks": [],
       "visuals": [],
       "contentType": "atlas",
@@ -85616,7 +85622,7 @@
         "it-careers"
       ],
       "section": [
-        "Working Abroad from India (checked 11 Oct 2026)"
+        "Working Abroad from India (checked 8 Nov 2026)"
       ],
       "difficulty": null,
       "keywords": [
@@ -85624,7 +85630,7 @@
         "abroad",
         "india",
         "checked",
-        "oct",
+        "nov",
         "remote",
         "global",
         "companies",
@@ -85639,19 +85645,19 @@
       ],
       "source": {
         "path": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md",
-        "startLine": 2339,
-        "endLine": 2355
+        "startLine": 2340,
+        "endLine": 2356
       },
-      "contentHash": "e141cd413ae1d6c9"
+      "contentHash": "0e6d68e3bf80123c"
     },
     {
-      "id": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md#working-abroad-from-india-checked-11-oct-2026-japan-moderate",
+      "id": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md#working-abroad-from-india-checked-8-nov-2026-japan-moderate",
       "kind": "note",
       "parentId": null,
-      "question": "Working Abroad from India (checked 11 Oct 2026): Japan — Moderate",
+      "question": "Working Abroad from India (checked 8 Nov 2026): Japan — Moderate",
       "prompt": null,
-      "answer": "**Latest (11 Oct 2026):** India–Japan HR partnership (Aug 2025) targets 50,000 skilled Indians over 5 years. Large IT shortage persists.\n\n**Blunt take:** Big demand, lower pay than the West. Most jobs expect Japanese (JLPT N2).\n\n- **Visa rule:** Engineer visa needs a degree or 10 yrs experience. HSP points can lead to PR in 1–3 years.\n- **High demand roles:** Backend Developer (Java), Mobile Developer, QA / Test Automation (SDET), Full Stack Developer, DevOps / Cloud / SRE\n- **Some demand:** Frontend Developer, AI / LLM Engineer, Data Engineer, SAP / Salesforce / ServiceNow\n- **Official source:** https://www.isa.go.jp/en/applications/procedures/16-3.html\n\n**How to get in (best route first):**\n\n1. Learn Japanese to N3 → N2 — this is the real gate\n2. Use Japan-focused placement programmes in India that hire directly\n3. English-only roles: Rakuten, Mercari, PayPay, global firms in Tokyo",
-      "summary": "Latest (11 Oct 2026): India–Japan HR partnership (Aug 2025) targets 50,000 skilled Indians over 5 years. Large IT shortage persists.",
+      "answer": "**Latest (8 Nov 2026):** India–Japan action plan (Aug 2025): an aspirational target of 50,000 skilled Indians moving to Japan over 5 years, mainly IT. Large IT shortage persists.\n\n**Blunt take:** Big demand, lower pay than the West. Most jobs expect Japanese (JLPT N2).\n\n- **Visa rule:** Engineer visa needs a degree or 10 yrs experience. HSP points can lead to PR in 1–3 years.\n- **High demand roles:** Backend Developer (Java), Mobile Developer, QA / Test Automation (SDET), Full Stack Developer, DevOps / Cloud / SRE\n- **Some demand:** Frontend Developer, AI / LLM Engineer, Data Engineer, SAP / Salesforce / ServiceNow\n- **Official source:** https://www.isa.go.jp/en/applications/procedures/16-3.html\n\n**How to get in (best route first):**\n\n1. Learn Japanese to N3 → N2 — this is the real gate\n2. Use Japan-focused placement programmes in India that hire directly\n3. English-only roles: Rakuten, Mercari, PayPay, global firms in Tokyo",
+      "summary": "Latest (8 Nov 2026): India–Japan action plan (Aug 2025): an aspirational target of 50,000 skilled Indians moving to Japan over 5 years, mainly IT. Large IT shortage persists.",
       "codeBlocks": [],
       "visuals": [],
       "contentType": "atlas",
@@ -85660,7 +85666,7 @@
         "it-careers"
       ],
       "section": [
-        "Working Abroad from India (checked 11 Oct 2026)"
+        "Working Abroad from India (checked 8 Nov 2026)"
       ],
       "difficulty": null,
       "keywords": [
@@ -85668,7 +85674,7 @@
         "abroad",
         "india",
         "checked",
-        "oct",
+        "nov",
         "japan",
         "moderate",
         "it-careers"
@@ -85682,19 +85688,19 @@
       ],
       "source": {
         "path": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md",
-        "startLine": 2357,
-        "endLine": 2372
+        "startLine": 2358,
+        "endLine": 2373
       },
-      "contentHash": "730165783a64ba93"
+      "contentHash": "008989103f95b75e"
     },
     {
-      "id": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md#working-abroad-from-india-checked-11-oct-2026-australia-hard",
+      "id": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md#working-abroad-from-india-checked-8-nov-2026-australia-hard",
       "kind": "note",
       "parentId": null,
-      "question": "Working Abroad from India (checked 11 Oct 2026): Australia — Hard",
+      "question": "Working Abroad from India (checked 8 Nov 2026): Australia — Hard",
       "prompt": null,
-      "answer": "**Latest (11 Oct 2026):** Oct 2026: next 189 invitation round by 31 Oct. 185,000 PR places for 2026–27. ICT roles (software, BA, security, PM) on the long-term list. Sponsor threshold AUD 79,423 from 1 Jul 2026.\n\n**Blunt take:** PR without a job is possible from India, but only with high points (age, PTE 79+, experience).\n\n- **Visa rule:** Points-based PR (189/190) needs an ACS skills assessment and a high score. Employer sponsorship usually needs local presence.\n- **High demand roles:** Backend Developer (Java), Full Stack Developer, Cybersecurity, Business Analyst, Project / Delivery Manager, Data Engineer, DevOps / Cloud / SRE\n- **Some demand:** QA / Test Automation (SDET), Data Scientist / ML Engineer, AI / LLM Engineer, Frontend Developer, Product Manager\n- **Official source:** https://immi.homeaffairs.gov.au/visas/working-in-australia/skillselect\n\n**How to get in (best route first):**\n\n1. Get an ACS skills assessment\n2. Max out English: PTE 79+ gives the biggest single points jump\n3. Apply for state nomination (190) where ICT is listed\n4. Employer sponsorship mostly after you're in the country",
-      "summary": "Latest (11 Oct 2026): Oct 2026: next 189 invitation round by 31 Oct. 185,000 PR places for 2026–27. ICT roles (software, BA, security, PM) on the long-term list. Sponsor threshold AUD 79,423 from 1 Jul 2026.",
+      "answer": "**Latest (8 Nov 2026):** 15 Oct 2026 round: about 20,000 subclass 189 invitations, with ICT cut-offs up to 100 points (ICT Security Specialist). No date announced for the next round. Sponsor threshold (CSIT) AUD 79,423 from 1 Jul 2026.\n\n**Blunt take:** PR without a job is possible from India, but only with high points (age, PTE 79+, experience).\n\n- **Visa rule:** Points-based PR (189/190) needs an ACS skills assessment and a high score. Employer sponsorship usually needs local presence.\n- **High demand roles:** Backend Developer (Java), Full Stack Developer, Cybersecurity, Business Analyst, Project / Delivery Manager, Data Engineer, DevOps / Cloud / SRE\n- **Some demand:** QA / Test Automation (SDET), Data Scientist / ML Engineer, AI / LLM Engineer, Frontend Developer, Product Manager\n- **Official source:** https://immi.homeaffairs.gov.au/visas/working-in-australia/skillselect\n\n**How to get in (best route first):**\n\n1. Get an ACS skills assessment\n2. Max out English: PTE 79+ gives the biggest single points jump\n3. Apply for state nomination (190) where ICT is listed\n4. Employer sponsorship mostly after you're in the country",
+      "summary": "Latest (8 Nov 2026): 15 Oct 2026 round: about 20,000 subclass 189 invitations, with ICT cut-offs up to 100 points (ICT Security Specialist). No date announced for the next round. Sponsor threshold (CSIT) AUD 79,423 from 1 Jul 2026.",
       "codeBlocks": [],
       "visuals": [],
       "contentType": "atlas",
@@ -85703,7 +85709,7 @@
         "it-careers"
       ],
       "section": [
-        "Working Abroad from India (checked 11 Oct 2026)"
+        "Working Abroad from India (checked 8 Nov 2026)"
       ],
       "difficulty": null,
       "keywords": [
@@ -85711,7 +85717,7 @@
         "abroad",
         "india",
         "checked",
-        "oct",
+        "nov",
         "australia",
         "hard",
         "it-careers"
@@ -85724,19 +85730,19 @@
       ],
       "source": {
         "path": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md",
-        "startLine": 2374,
-        "endLine": 2390
+        "startLine": 2375,
+        "endLine": 2391
       },
-      "contentHash": "37a12fbe31330754"
+      "contentHash": "0330686684ef4e1a"
     },
     {
-      "id": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md#working-abroad-from-india-checked-11-oct-2026-united-kingdom",
+      "id": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md#working-abroad-from-india-checked-8-nov-2026-united-kingdom-hard",
       "kind": "note",
       "parentId": null,
-      "question": "Working Abroad from India (checked 11 Oct 2026): United Kingdom — Hard",
+      "question": "Working Abroad from India (checked 8 Nov 2026): United Kingdom — Hard",
       "prompt": null,
-      "answer": "**Latest (11 Oct 2026):** Oct 2026 rule changes: no change to salary thresholds; new protections for sponsored workers. Market remains tight for mid-level.\n\n**Blunt take:** Sponsors exist, but mid-level is crowded. Senior and niche skills get callbacks.\n\n- **Visa rule:** £41,700/yr or the role's going rate, whichever is higher. The employer must hold a sponsor licence.\n- **High demand roles:** AI / LLM Engineer, Cybersecurity, Data Engineer, DevOps / Cloud / SRE\n- **Some demand:** Backend Developer (Java), Full Stack Developer, Data Scientist / ML Engineer, Product Manager, Forward Deployed Engineer (FDE)\n- **Official source:** https://www.gov.uk/skilled-worker-visa\n\n**How to get in (best route first):**\n\n1. Internal transfer from a bank/consultancy GCC in India (Barclays, HSBC, LSEG, Accenture)\n2. Apply only to firms on the official Register of Licensed Sponsors\n3. Senior/specialist roles only — the salary floor rules out most junior offers\n4. Global Talent visa if you have a strong public track record",
-      "summary": "Latest (11 Oct 2026): Oct 2026 rule changes: no change to salary thresholds; new protections for sponsored workers. Market remains tight for mid-level.",
+      "answer": "**Latest (8 Nov 2026):** Oct 2026 rule changes (HC 584) left salary thresholds unchanged. Since Jan 2026 most new Skilled Worker applicants need B2 English. Market remains tight for mid-level.\n\n**Blunt take:** Sponsors exist, but mid-level is crowded. Senior and niche skills get callbacks.\n\n- **Visa rule:** £41,700/yr or the role's going rate, whichever is higher. The employer must hold a sponsor licence.\n- **High demand roles:** AI / LLM Engineer, Cybersecurity, Data Engineer, DevOps / Cloud / SRE\n- **Some demand:** Backend Developer (Java), Full Stack Developer, Data Scientist / ML Engineer, Product Manager, Forward Deployed Engineer (FDE)\n- **Official source:** https://www.gov.uk/skilled-worker-visa\n\n**How to get in (best route first):**\n\n1. Internal transfer from a bank/consultancy GCC in India (Barclays, HSBC, LSEG, Accenture)\n2. Apply only to firms on the official Register of Licensed Sponsors\n3. Senior/specialist roles only — the salary floor rules out most junior offers\n4. Global Talent visa if you have a strong public track record",
+      "summary": "Latest (8 Nov 2026): Oct 2026 rule changes (HC 584) left salary thresholds unchanged. Since Jan 2026 most new Skilled Worker applicants need B2 English. Market remains tight for mid-level.",
       "codeBlocks": [],
       "visuals": [],
       "contentType": "atlas",
@@ -85745,7 +85751,7 @@
         "it-careers"
       ],
       "section": [
-        "Working Abroad from India (checked 11 Oct 2026)"
+        "Working Abroad from India (checked 8 Nov 2026)"
       ],
       "difficulty": null,
       "keywords": [
@@ -85753,7 +85759,7 @@
         "abroad",
         "india",
         "checked",
-        "oct",
+        "nov",
         "united",
         "kingdom",
         "hard",
@@ -85766,19 +85772,19 @@
       ],
       "source": {
         "path": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md",
-        "startLine": 2392,
-        "endLine": 2408
+        "startLine": 2393,
+        "endLine": 2409
       },
-      "contentHash": "6abb6b6fab14d5eb"
+      "contentHash": "4252ea47c001ad35"
     },
     {
-      "id": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md#working-abroad-from-india-checked-11-oct-2026-singapore-hard",
+      "id": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md#working-abroad-from-india-checked-8-nov-2026-singapore-hard",
       "kind": "note",
       "parentId": null,
-      "question": "Working Abroad from India (checked 11 Oct 2026): Singapore — Hard",
+      "question": "Working Abroad from India (checked 8 Nov 2026): Singapore — Hard",
       "prompt": null,
-      "answer": "**Latest (11 Oct 2026):** EP minimum S$5,600/month in 2026, rising to S$6,000 from Jan 2027. Shortage roles (AI, cloud, security, data) earn bonus COMPASS points.\n\n**Blunt take:** Getting harder. COMPASS gives fewer points when a firm already has many staff of your nationality.\n\n- **Visa rule:** EP minimum salary (higher with age) plus 40 points on COMPASS.\n- **High demand roles:** AI / LLM Engineer, Cybersecurity, Data Engineer, DevOps / Cloud / SRE\n- **Some demand:** Backend Developer (Java), Full Stack Developer, Data Scientist / ML Engineer, Product Manager\n- **Official source:** https://www.mom.gov.sg/passes-and-permits/employment-pass\n\n**How to get in (best route first):**\n\n1. Target shortage-list roles (AI, cloud, security, data) — they get bonus points\n2. Choose firms with diverse teams; avoid Indian-heavy employers\n3. Internal transfer to a regional HQ",
-      "summary": "Latest (11 Oct 2026): EP minimum S$5,600/month in 2026, rising to S$6,000 from Jan 2027. Shortage roles (AI, cloud, security, data) earn bonus COMPASS points.",
+      "answer": "**Latest (8 Nov 2026):** EP minimum S$5,600/month in 2026, rising to S$6,000 from 1 Jan 2027 (S$6,600 in financial services). Shortage roles (AI, cloud, security, data) earn bonus COMPASS points.\n\n**Blunt take:** Getting harder. COMPASS gives fewer points when a firm already has many staff of your nationality.\n\n- **Visa rule:** EP minimum salary (higher with age) plus 40 points on COMPASS.\n- **High demand roles:** AI / LLM Engineer, Cybersecurity, Data Engineer, DevOps / Cloud / SRE\n- **Some demand:** Backend Developer (Java), Full Stack Developer, Data Scientist / ML Engineer, Product Manager\n- **Official source:** https://www.mom.gov.sg/passes-and-permits/employment-pass\n\n**How to get in (best route first):**\n\n1. Target shortage-list roles (AI, cloud, security, data) — they get bonus points\n2. Choose firms with diverse teams; avoid Indian-heavy employers\n3. Internal transfer to a regional HQ",
+      "summary": "Latest (8 Nov 2026): EP minimum S$5,600/month in 2026, rising to S$6,000 from 1 Jan 2027 (S$6,600 in financial services). Shortage roles (AI, cloud, security, data) earn bonus COMPASS points.",
       "codeBlocks": [],
       "visuals": [],
       "contentType": "atlas",
@@ -85787,7 +85793,7 @@
         "it-careers"
       ],
       "section": [
-        "Working Abroad from India (checked 11 Oct 2026)"
+        "Working Abroad from India (checked 8 Nov 2026)"
       ],
       "difficulty": null,
       "keywords": [
@@ -85795,7 +85801,7 @@
         "abroad",
         "india",
         "checked",
-        "oct",
+        "nov",
         "singapore",
         "hard",
         "it-careers"
@@ -85807,19 +85813,19 @@
       ],
       "source": {
         "path": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md",
-        "startLine": 2410,
-        "endLine": 2425
+        "startLine": 2411,
+        "endLine": 2426
       },
-      "contentHash": "483272e4db0968a1"
+      "contentHash": "93adc3c4b83c8ec9"
     },
     {
-      "id": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md#working-abroad-from-india-checked-11-oct-2026-canada-hard",
+      "id": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md#working-abroad-from-india-checked-8-nov-2026-canada-hard",
       "kind": "note",
       "parentId": null,
-      "question": "Working Abroad from India (checked 11 Oct 2026): Canada — Hard",
+      "question": "Working Abroad from India (checked 8 Nov 2026): Canada — Hard",
       "prompt": null,
-      "answer": "**Latest (11 Oct 2026):** 2026 levels plan: temporary foreign worker intake cut 37% (to 230,000). Software developers and data scientists are no longer on the Express Entry STEM list. Points for job offers are planned to return.\n\n**Blunt take:** Much harder than in 2019–22. PR without a job needs a very high CRS, and the tech job market there is tight for newcomers.\n\n- **Visa rule:** General Express Entry draws often need CRS 500+. Cybersecurity is still on the STEM list.\n- **High demand roles:** Cybersecurity\n- **Some demand:** Data Engineer, DevOps / Cloud / SRE, AI / LLM Engineer, Data Scientist / ML Engineer, Backend Developer (Java), Full Stack Developer\n- **Official source:** https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry.html\n\n**How to get in (best route first):**\n\n1. Check your CRS on the official calculator first — below ~480, don't spend money\n2. IELTS CLB 9+ is the cheapest big points boost\n3. Watch provincial (PNP) tech streams\n4. Intra-company transfer if your employer has a Canada office",
-      "summary": "Latest (11 Oct 2026): 2026 levels plan: temporary foreign worker intake cut 37% (to 230,000). Software developers and data scientists are no longer on the Express Entry STEM list. Points for job offers are planned to return.",
+      "answer": "**Latest (8 Nov 2026):** 5 Nov 2026 levels plan (2027–29): 380,000 PR a year, temporary workers capped at 220,000 a year, Express Entry cut to 100,000. Since the Feb 2026 overhaul, software developers and data scientists are not on the Express Entry STEM list.\n\n**Blunt take:** Much harder than in 2019–22. PR without a job needs a very high CRS, and the tech job market there is tight for newcomers.\n\n- **Visa rule:** General Express Entry draws often need CRS 500+. Cybersecurity is still on the STEM list.\n- **High demand roles:** Cybersecurity\n- **Some demand:** Data Engineer, DevOps / Cloud / SRE, AI / LLM Engineer, Data Scientist / ML Engineer, Backend Developer (Java), Full Stack Developer\n- **Official source:** https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry.html\n\n**How to get in (best route first):**\n\n1. Check your CRS on the official calculator first — below ~480, don't spend money\n2. IELTS CLB 9+ is the cheapest big points boost\n3. Watch provincial (PNP) tech streams\n4. Intra-company transfer if your employer has a Canada office",
+      "summary": "Latest (8 Nov 2026): 5 Nov 2026 levels plan (2027–29): 380,000 PR a year, temporary workers capped at 220,000 a year, Express Entry cut to 100,000. Since the Feb 2026 overhaul, software developers and data scientists are not on the Express Entry STEM list.",
       "codeBlocks": [],
       "visuals": [],
       "contentType": "atlas",
@@ -85828,7 +85834,7 @@
         "it-careers"
       ],
       "section": [
-        "Working Abroad from India (checked 11 Oct 2026)"
+        "Working Abroad from India (checked 8 Nov 2026)"
       ],
       "difficulty": null,
       "keywords": [
@@ -85836,7 +85842,7 @@
         "abroad",
         "india",
         "checked",
-        "oct",
+        "nov",
         "canada",
         "hard",
         "it-careers"
@@ -85850,19 +85856,19 @@
       ],
       "source": {
         "path": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md",
-        "startLine": 2427,
-        "endLine": 2443
+        "startLine": 2428,
+        "endLine": 2444
       },
-      "contentHash": "6c3af21167bc3854"
+      "contentHash": "c674bcf746530a2f"
     },
     {
-      "id": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md#working-abroad-from-india-checked-11-oct-2026-united-states",
+      "id": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md#working-abroad-from-india-checked-8-nov-2026-united-states-very",
       "kind": "note",
       "parentId": null,
-      "question": "Working Abroad from India (checked 11 Oct 2026): United States — Very hard",
+      "question": "Working Abroad from India (checked 8 Nov 2026): United States — Very hard",
       "prompt": null,
-      "answer": "**Latest (11 Oct 2026):** H-1B is NOT stopped (no blanket suspension as of 9 Oct 2026). But: a Sept 18 executive order makes an employer's layoffs count against its H-1B petitions. On Oct 8, Microsoft, Adobe, TCS, Infosys, Wipro, HCL, Cognizant and Capgemini were suspended from green card sponsorship (PERM). The $100k H-1B fee is blocked in court. The lottery is now wage-weighted.\n\n**Blunt take:** The hardest route right now. The classic Indian IT services path (TCS/Infosys/Wipro → H-1B → green card) just got much worse.\n\n- **Visa rule:** Wage-weighted H-1B lottery since Feb 2026: higher offered wage = better odds.\n- **High demand roles:** AI / LLM Engineer, Data Scientist / ML Engineer\n- **Some demand:** Backend Developer (Java), Cybersecurity, Data Engineer, DevOps / Cloud / SRE, Full Stack Developer, Forward Deployed Engineer (FDE)\n- **Official source:** https://www.uscis.gov/working-in-the-united-states/h-1b-specialty-occupations\n\n**How to get in (best route first):**\n\n1. L-1 transfer from a US product company's India office (not IT services) after 12+ months\n2. A high-wage offer for a senior/AI role improves lottery odds under the new rules\n3. O-1 if you have a strong public record (patents, talks, major open source)\n4. US master's → OPT → H-1B: costly and slow, but still the most common path",
-      "summary": "Latest (11 Oct 2026): H-1B is NOT stopped (no blanket suspension as of 9 Oct 2026). But: a Sept 18 executive order makes an employer's layoffs count against its H-1B petitions. On Oct 8, Microsoft, Adobe, TCS, Infosys, Wipro, HCL, Cognizant and Capgemini were suspended from green card sponsorship (PERM). The $100k…",
+      "answer": "**Latest (8 Nov 2026):** H-1B is NOT stopped (no blanket suspension as of 8 Nov 2026). But: a Sept 18 executive order makes an employer's layoffs count against its H-1B petitions. On Oct 8, Microsoft, Adobe, TCS, Infosys, Wipro, HCL, Cognizant and Capgemini were suspended from green card sponsorship (PERM). The $100k H-1B fee was extended on paper to Sept 2027 but remains blocked in court. The lottery is now wage-weighted.\n\n**Blunt take:** The hardest route right now. The classic Indian IT services path (TCS/Infosys/Wipro → H-1B → green card) just got much worse.\n\n- **Visa rule:** Wage-weighted H-1B lottery since Feb 2026: higher offered wage = better odds.\n- **High demand roles:** AI / LLM Engineer, Data Scientist / ML Engineer\n- **Some demand:** Backend Developer (Java), Cybersecurity, Data Engineer, DevOps / Cloud / SRE, Full Stack Developer, Forward Deployed Engineer (FDE)\n- **Official source:** https://www.uscis.gov/working-in-the-united-states/h-1b-specialty-occupations\n\n**How to get in (best route first):**\n\n1. L-1 transfer from a US product company's India office (not IT services) after 12+ months\n2. A high-wage offer for a senior/AI role improves lottery odds under the new rules\n3. O-1 if you have a strong public record (patents, talks, major open source)\n4. US master's → OPT → H-1B: costly and slow, but still the most common path",
+      "summary": "Latest (8 Nov 2026): H-1B is NOT stopped (no blanket suspension as of 8 Nov 2026). But: a Sept 18 executive order makes an employer's layoffs count against its H-1B petitions. On Oct 8, Microsoft, Adobe, TCS, Infosys, Wipro, HCL, Cognizant and Capgemini were suspended from green card sponsorship (PERM). The $100k H-1B…",
       "codeBlocks": [],
       "visuals": [],
       "contentType": "atlas",
@@ -85871,7 +85877,7 @@
         "it-careers"
       ],
       "section": [
-        "Working Abroad from India (checked 11 Oct 2026)"
+        "Working Abroad from India (checked 8 Nov 2026)"
       ],
       "difficulty": null,
       "keywords": [
@@ -85879,7 +85885,7 @@
         "abroad",
         "india",
         "checked",
-        "oct",
+        "nov",
         "united",
         "states",
         "very",
@@ -85893,16 +85899,16 @@
       ],
       "source": {
         "path": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md",
-        "startLine": 2445,
-        "endLine": 2461
+        "startLine": 2446,
+        "endLine": 2462
       },
-      "contentHash": "2363b58afc1cd3d1"
+      "contentHash": "88d6d4dbe33516f1"
     },
     {
-      "id": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md#working-abroad-from-india-checked-11-oct-2026-how-to-actually",
+      "id": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md#working-abroad-from-india-checked-8-nov-2026-how-to-actually",
       "kind": "note",
       "parentId": null,
-      "question": "Working Abroad from India (checked 11 Oct 2026): How to Actually Get an Interview",
+      "question": "Working Abroad from India (checked 8 Nov 2026): How to Actually Get an Interview",
       "prompt": null,
       "answer": "1. Internal transfer beats everything. Join an MNC/GCC in India with offices abroad, perform, and ask after 12–18 months.\n2. Get a referral. Cold applications from India mostly go unread; message engineers at target companies with a short, specific ask.\n3. Apply only where you can legally be hired. Check sponsor registers (UK, Netherlands) or pick countries with no licence rule (Germany).\n4. Prepare like it's a product company: DSA, system design, behavioural rounds.\n5. Learn the language where it's the gate: German B1+ or Japanese N2.\n6. Use the local CV format: 1–2 pages, no photo or date of birth (UK/US/IE), numbers in every bullet.\n7. A master's abroad works, but it's the most expensive route. Only do it with a clear job plan.\n8. Never pay an agent for a job offer. That's a scam, every time.\n\n> Live job and news feeds are only available in the interactive page (Arbeitnow, Remotive, Jobicy, Hacker News search).",
       "summary": "Internal transfer beats everything. Join an MNC/GCC in India with offices abroad, perform, and ask after 12–18 months. Get a referral. Cold applications from India mostly go unread; message engineers at target companies with a short, specific ask. Apply only where you can legally be hired. Check sponsor registers (UK,…",
@@ -85914,7 +85920,7 @@
         "it-careers"
       ],
       "section": [
-        "Working Abroad from India (checked 11 Oct 2026)"
+        "Working Abroad from India (checked 8 Nov 2026)"
       ],
       "difficulty": null,
       "keywords": [
@@ -85922,7 +85928,7 @@
         "abroad",
         "india",
         "checked",
-        "oct",
+        "nov",
         "actually",
         "get",
         "interview",
@@ -85935,10 +85941,10 @@
       ],
       "source": {
         "path": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md",
-        "startLine": 2463,
-        "endLine": 2474
+        "startLine": 2464,
+        "endLine": 2475
       },
-      "contentHash": "97dcfd0b70c2589e"
+      "contentHash": "5da7d075e83e1603"
     },
     {
       "id": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md#who-does-what-in-a-project",
@@ -85966,8 +85972,8 @@
       ],
       "source": {
         "path": "IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.md",
-        "startLine": 2476,
-        "endLine": 2486
+        "startLine": 2477,
+        "endLine": 2487
       },
       "contentHash": "ba8f7e96f9be884c"
     }

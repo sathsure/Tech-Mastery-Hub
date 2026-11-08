@@ -23,10 +23,12 @@ export interface PlanRequest {
   title: string;
   /** `topic` is a study-path slug (e.g. "database-sql") when the item links to one. */
   items: Array<{ label: string; topic?: string }>;
+  /** "interview": items were picked for a role's interview prep; otherwise a learning plan. */
+  kind?: "learning" | "interview";
 }
 
-/** How the answer was produced: a written answer, a topic overview, or a learning plan. */
-export type AnswerView = "answer" | "overview" | "plan";
+/** How the answer was produced: a written answer, a topic overview, a plan, or a stack picker for interview prep. */
+export type AnswerView = "answer" | "overview" | "plan" | "pick";
 
 /** One numbered source given to the model and shown in the UI. Citations [n] refer to `n`. */
 export interface Evidence {

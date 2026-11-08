@@ -377,15 +377,23 @@ function assistantView(message, index) {
   return element;
 }
 
+/** Is this answer the interview-prep stack picker (not a roadmap checklist)? */
+const isPrepPicker = message => message?.done?.view === "pick";
+
 /** Text of the plan bar for `picked` selected items. */
-function planBarText(picked) {
+function planBarText(picked, prep = false) {
+  if (prep) {
+    const lead = picked ? `${picked} selected.` : "Select the stacks your interview will cover.";
+    return `${lead} The tutor will list the key questions to practise for each.`;
+  }
   const lead = picked ? `${picked} selected.` : "Select the topics you want to learn.";
   return `${lead} The tutor will put them in the right order.`;
 }
 
-function planBarHtml(index, picked) {
+function planBarHtml(index, picked, prep = false) {
   const disabled = picked ? "" : "disabled";
-  return `<div class="plan-bar"><span>${planBarText(picked)}</span><button type="button" class="btn btn-primary" data-plan="${index}" ${disabled}>${icon("list")}<span>Build my learning plan</span></button></div>`;
+  const label = prep ? "Build my interview prep" : "Build my learning plan";
+  return `<div class="plan-bar"><span>${planBarText(picked, prep)}</span><button type="button" class="btn btn-primary" data-plan="${index}" ${disabled}>${icon("list")}<span>${label}</span></button></div>`;
 }
 
 function renderAnswerBody(element, message, final, index) {
@@ -403,7 +411,7 @@ function renderAnswerBody(element, message, final, index) {
   // A checklist (roadmap or study path) can be turned into a learning plan.
   if (final && tasks && message.done?.view !== "plan") {
     const picked = Object.values(message.checks ?? {}).filter(Boolean).length;
-    body.insertAdjacentHTML("beforeend", planBarHtml(index, picked));
+    body.insertAdjacentHTML("beforeend", planBarHtml(index, picked, isPrepPicker(message)));
   }
 }
 
@@ -827,8 +835,11 @@ function submitPlan(index) {
   // The roadmap's own title ("Roadmap: Forward Deployed Engineer"), else the answer's first heading.
   const title = message.meta?.evidence[0]?.kind === "roadmap" ? message.meta.evidence[0].question : (view.querySelector(".md h1, .md h2, .md strong")?.textContent ?? "").trim();
   const names = items.map(item => item.label);
-  const text = `Build my learning plan: ${names.slice(0, 6).join(", ")}${names.length > 6 ? ` and ${names.length - 6} more` : ""}`;
-  send(text, { plan: { title: title.slice(0, 200), items: items.slice(0, 60).map(item => ({ ...item, label: item.label.slice(0, 200) })) } });
+  const prep = isPrepPicker(message);
+  const list = `${names.slice(0, 6).join(", ")}${names.length > 6 ? ` and ${names.length - 6} more` : ""}`;
+  const text = prep ? `Build my interview prep: ${list}` : `Build my learning plan: ${list}`;
+  const plan = { title: title.slice(0, 200), items: items.slice(0, 60).map(item => ({ ...item, label: item.label.slice(0, 200) })), ...(prep ? { kind: "interview" } : {}) };
+  send(text, { plan });
 }
 
 // Overview sections remember whether they are open, so Back and reloads show them as you left them.
@@ -862,7 +873,7 @@ document.addEventListener("change", event => {
   const bar = view.querySelector(".plan-bar");
   if (bar) {
     const picked = view.querySelectorAll("input[data-check]:checked").length;
-    bar.querySelector("span").textContent = planBarText(picked);
+    bar.querySelector("span").textContent = planBarText(picked, isPrepPicker(message));
     bar.querySelector("[data-plan]").disabled = !picked;
   }
 });

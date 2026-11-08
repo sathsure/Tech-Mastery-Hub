@@ -20,6 +20,7 @@ import { buildLearningPlan, buildOverview, buildTopicList, learningResources, LE
 import { composeFollowUpAnswer, looksLikeFollowUp, previousTurn } from "./chat-followup.js";
 import { TOPIC_DESCRIPTIONS, topicLabel } from "./topic-labels.js";
 import { getFollowUps, getNextQuestions, getQuestionsByTopic, isContextQuestion, loadQuestionIndex } from "./question-index.js";
+import { buildInterviewPrep, findRole, interviewPicker, interviewPrepRole, interviewTopics, PICKER_PREFIX } from "./chat-interview.js";
 import { searchQuestions, type SearchConfidence, type SearchResult } from "./question-search.js";
 
 export const MAX_HISTORY_TURNS = 8;
@@ -159,6 +160,13 @@ function emptySearch(overrides: Partial<SearchResult>): SearchResult {
 
 /** A learning plan or a topic overview asked for directly, or null when the request needs a search. */
 async function directAnswer(request: ChatRequest): Promise<AsyncGenerator<ChatEvent> | null> {
+  if (request.plan?.kind === "interview") {
+    const role = request.plan.title.startsWith(PICKER_PREFIX) ? request.plan.title.slice(PICKER_PREFIX.length) : "";
+    const followUps = role ? [`What does ${article(role)} ${role} do?`, `${role} salary in India (LPA)`] : [];
+    return builtAnswer(request, emptySearch({ intents: ["interview-prep"] }), "plan", await buildInterviewPrep(request.plan), followUps);
+  }
+  const picker = await interviewPickerAnswer(request);
+  if (picker) return picker;
   if (request.plan) {
     const name = request.plan.title.replace(/^Roadmap:\s*/i, "");
     const followUps = /^Roadmap:/i.test(request.plan.title) ? [`What does a ${name} do?`, `${name} salary in India (LPA)`] : [];
@@ -168,6 +176,20 @@ async function directAnswer(request: ChatRequest): Promise<AsyncGenerator<ChatEv
   const overview = await buildOverview(request.overview);
   if (!overview) return null;
   return builtAnswer(request, emptySearch({ mode: "browse" }), "overview", overview.markdown, await topicFollowUps(request.overview));
+}
+
+const article = (word: string) => (/^[aeiou]/i.test(word) ? "an" : "a");
+
+/** "Interview prep: Full Stack Developer" → a checklist of that role's stacks to pick from. */
+async function interviewPickerAnswer(request: ChatRequest): Promise<AsyncGenerator<ChatEvent> | null> {
+  const name = interviewPrepRole(request.message);
+  if (!name) return null;
+  const role = findRole(name, (await loadQuestionIndex()).entries);
+  if (!role) return null;
+  const title = withoutTrailingParentheses(conciseTitle(role));
+  const markdown = interviewPicker(title, interviewTopics(role.relatedTopics ?? []));
+  const followUps = [`Roadmap to become ${article(title)} ${title}`, `${title} salary in India (LPA)`];
+  return builtAnswer(request, emptySearch({ intents: ["interview-prep"] }), "pick", markdown, followUps);
 }
 
 /** Overviews show the main sections first; details come when the user opens one. */
@@ -194,10 +216,9 @@ const WORKING_ABROAD = /^Working Abroad from India \([^)]*\)$/;
 function roleCardMarkdown(entry: QuestionEntry, entries: QuestionEntry[]): string {
   const name = withoutTrailingParentheses(conciseTitle(entry));
   const roadmap = entries.find(item => item.kind === "roadmap" && withoutTrailingParentheses(item.question.replace(/^Roadmap:\s*/, "")) === name);
-  const topic = (entry.relatedTopics ?? []).find(item => item in TOPIC_DESCRIPTIONS && !ATLAS_TOPICS.has(item));
   const card = roleCard(entry, {
-    roadmap: roadmap ? `Roadmap to become a ${name}` : null,
-    interviewTopic: topic ? topicLabel(topic) : null,
+    roadmap: roadmap ? `Roadmap to become ${article(name)} ${name}` : null,
+    interviewPrep: `${PICKER_PREFIX}${name}`,
   });
   return cardsBlock([card]);
 }

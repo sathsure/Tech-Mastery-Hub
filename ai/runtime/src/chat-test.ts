@@ -195,6 +195,29 @@ await check("weak matches say so and point to outside resources instead of answe
   assert.match(none.answer, /Learn more elsewhere/);
 });
 
+await check("interview prep: role card → stack picker → prep plan with key questions", async () => {
+  const card = await collect({ message: "What does a Full Stack Developer do?" }, null);
+  const json = /```tmh-cards\n([\s\S]*?)```/.exec(card.answer)?.[1] ?? "[]";
+  const action = (JSON.parse(json)[0]?.actions ?? []).find((item: { label: string }) => item.label === "Interview Prep");
+  assert.equal(action?.ask, "Interview prep: Full Stack Developer");
+
+  const picker = await collect({ message: action.ask }, null);
+  assert.equal(picker.done?.view, "pick");
+  for (const stack of ["Angular", "React", "Java", "Spring Boot", "Node.js", "SQL", "Behavioral & HR"]) {
+    assert.ok(picker.answer.includes(`- [ ] [${stack}]`), `picker offers ${stack}`);
+  }
+  assert.ok(picker.answer.includes("(../topics/database-sql.md)"), "items link to study paths so the plan knows their topic");
+
+  const plan = await collect({
+    message: "Build my interview prep: Java, SQL",
+    plan: { title: "Interview prep: Full Stack Developer", kind: "interview", items: [{ label: "SQL", topic: "database-sql" }, { label: "Java", topic: "java" }] },
+  }, null);
+  assert.equal(plan.done?.view, "plan");
+  assert.ok(plan.answer.indexOf("**1. Java**") >= 0 && plan.answer.indexOf("**2. SQL**") > plan.answer.indexOf("**1. Java**"), "backend before data");
+  assert.match(plan.answer, /Quiz me on Java/);
+  assert.ok((plan.answer.match(/\(#ask:/g) ?? []).length >= 10, "key questions are listed as links");
+});
+
 await check("FDE roadmap: only the six sections, no internal references, India salary follow-up", async () => {
   const { answer, done } = await collect({ message: "Roadmap to become a Forward Deployed Engineer" }, null);
   const headings = [...answer.matchAll(/^## (.+)$/gm)].map(match => match[1]);
