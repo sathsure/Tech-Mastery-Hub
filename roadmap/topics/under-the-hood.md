@@ -217,6 +217,31 @@
 1. [How does message ordering work?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)
 2. [How does a distributed application achieve reliable message processing?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)
 
+## 34. Service Communication
+
+1. [How do microservices communicate with each other?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)
+2. [How does Service Discovery work?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)
+
+## 35. Resilience
+
+1. [How do Circuit Breakers, Retries and Timeouts prevent cascading failures?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)
+2. [How does Idempotency prevent duplicate processing?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)
+
+## 36. Transactions and Consistency
+
+1. [How do Distributed Transactions work?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)
+2. [How does the Saga Pattern work?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)
+3. [How do distributed systems maintain consistency?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)
+
+## 37. Coordination
+
+1. [How do Replication and Leader Election work?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)
+2. [How does Distributed Locking work?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)
+
+## 38. Observability
+
+1. [How does Distributed Tracing track a request across multiple services?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)
+
 ## Diagrams
 
 - [Frontend programming languages: source to machine code](../../knowledge/visual-notes/01_frontend_programming_languages.png)

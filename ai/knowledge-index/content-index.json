@@ -2057,6 +2057,19 @@
                                                ]
                       },
                       {
+                          "id":  "interview.under-the-hood.10-distributed-systems-internals.md",
+                          "path":  "interview/under-the-hood/10-Distributed-Systems-Internals.md",
+                          "content_type":  "interview",
+                          "domain":  "under-the-hood",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  28869,
+                          "source_of_truth":  false,
+                          "related_concepts":  [
+                                                   "under-the-hood"
+                                               ]
+                      },
+                      {
                           "id":  "interview.coding.02-dsa-patterns.md",
                           "path":  "interview/coding/02-DSA-Patterns.md",
                           "content_type":  "interview",
