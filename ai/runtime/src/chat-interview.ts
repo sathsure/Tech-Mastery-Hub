@@ -111,7 +111,7 @@ export async function buildInterviewPrep(plan: PlanRequest): Promise<string> {
   const weeks = Math.max(1, Math.ceil(topics.length / 2));
   lines.push(
     `You picked ${topics.length + others.length} stack${topics.length + others.length === 1 ? "" : "s"}. Prepare them in this order — frontend, backend, data and DevOps first, then problem solving and design, and the HR round last.`,
-    `Suggested pace: about two stacks a week, so **${weeks} week${weeks === 1 ? "" : "s"}**. For each stack, answer the key questions out loud in 2–3 minutes, then take the quiz.`,
+    `Suggested pace: about two stacks a week, so **${weeks} week${weeks === 1 ? "" : "s"}**. For each stack, answer the key questions out loud in 2–3 minutes, then go through its study path.`,
   );
   let step = 0;
   for (const topic of topics) {
@@ -120,9 +120,9 @@ export async function buildInterviewPrep(plan: PlanRequest): Promise<string> {
     lines.push("", `**${++step}. ${label}**`, "");
     if (questions.length) lines.push(...questions.map(question => `- ${askLink(question, question)}`));
     else lines.push(`- Your notes have no ${label} questions yet.`);
-    lines.push(`- Practise: ${askLink(`Quiz me on ${label}`, `Quiz me on ${label}`)} · ${askLink("Open study path", `${label} study path`)}`);
+    lines.push(`- ${askLink(`${label} study path`, `${label} study path`)}`);
   }
-  for (const item of others) lines.push("", `**${++step}. ${item.label}**`, "", `- ${askLink(`Quiz me on ${item.label}`, `Quiz me on ${item.label}`)}`);
+  for (const item of others) lines.push("", `**${++step}. ${item.label}**`, "", `- ${askLink(item.label, item.label)}`);
   lines.push(
     "",
     "**Interview day checklist**",
