@@ -57,13 +57,20 @@ export function isContextQuestion(entry: QuestionEntry): boolean {
   return /\b(this|the following|below|above)\s+(code|snippet|program|example|query|output)\b/i.test(entry.question);
 }
 
-/** The questions written after this one in the same notes file: the next things to learn. */
+/**
+ * The entries written after this one in the same file: the next things to learn. Questions lead to the next
+ * questions; glossary terms and roles lead to the next ones in the same category (SDLC → STLC → Environment …).
+ */
 export async function getNextQuestions(id: string, limit = 3): Promise<QuestionEntry[]> {
   const index = await loadQuestionIndex();
   const current = index.entries.find(entry => entry.id === id);
   if (!current) return [];
+  const kind = current.kind === "follow-up" ? "question" : current.kind;
+  if (!["question", "term", "role"].includes(kind)) return [];
+  const category = current.section.join(" › ");
   const sameFile = index.entries
-    .filter(entry => entry.kind === "question" && entry.source.path === current.source.path && !isContextQuestion(entry))
+    .filter(entry => entry.kind === kind && entry.source.path === current.source.path && !isContextQuestion(entry))
+    .filter(entry => kind === "question" || entry.section.join(" › ") === category)
     .sort((a, b) => a.source.startLine - b.source.startLine);
   const after = sameFile.filter(entry => entry.source.startLine > current.source.startLine);
   return after.slice(0, limit);
