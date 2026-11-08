@@ -203,7 +203,8 @@ function followUpsFor(top: Evidence | undefined, search: SearchResult): FollowUp
 }
 
 /** Next questions to offer as chips: built from the matches, never invented. */
-export function suggestFollowUps(search: SearchResult, evidence: Evidence[], followUpQuestions: string[]): string[] {
+/** `earlier`: questions already asked in this conversation — never offered again, so chips can't go round in circles. */
+export function suggestFollowUps(search: SearchResult, evidence: Evidence[], followUpQuestions: string[], earlier: string[] = []): string[] {
   const { first, last } = followUpsFor(evidence[0], search);
   // Related entries only from the answer's own topic, so the chips stay on its subject.
   const top = evidence[0];
@@ -211,7 +212,7 @@ export function suggestFollowUps(search: SearchResult, evidence: Evidence[], fol
   const related = evidence.slice(1).filter(item => item.kind !== "note" && sameTopic(item)).map(item => item.question);
   const suggestions = [...first, ...followUpQuestions, ...last, ...related];
   // Each chip must ask something new: not the answered question, not the user's own words, not each other.
-  const asked = [top?.question ?? "", search.query].filter(Boolean);
+  const asked = [top?.question ?? "", search.query, ...earlier].filter(Boolean);
   const unique: string[] = [];
   for (const text of suggestions.map(item => item.trim())) {
     if (!text || text.length > 160) continue;

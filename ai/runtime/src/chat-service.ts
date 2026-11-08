@@ -178,6 +178,9 @@ async function directAnswer(request: ChatRequest): Promise<AsyncGenerator<ChatEv
   return builtAnswer(request, emptySearch({ mode: "browse" }), "overview", overview.markdown, await topicFollowUps(request.overview));
 }
 
+/** Questions the user already asked in this conversation. */
+const askedBefore = (request: ChatRequest) => (request.history ?? []).filter(turn => turn.role === "user").map(turn => turn.content);
+
 const article = (word: string) => (/^[aeiou]/i.test(word) ? "an" : "a");
 
 /** "Interview prep: Full Stack Developer" → a checklist of that role's stacks to pick from. */
@@ -246,7 +249,7 @@ async function cardAnswer(
   const entry = entries.find(item => item.id === top.id);
   if (!entry) return null;
   if (entry.kind === "role" && !search.intents.some(intent => NOT_A_ROLE_CARD.has(intent))) {
-    return builtAnswer(request, search, "answer", roleCardMarkdown(entry, entries), suggestFollowUps(search, evidence, []), [top]);
+    return builtAnswer(request, search, "answer", roleCardMarkdown(entry, entries), suggestFollowUps(search, evidence, (await getNextQuestions(top.id)).map(entry => entry.question), askedBefore(request)), [top]);
   }
   if (entry.kind === "note" && WORKING_ABROAD.test(entry.question)) {
     const followUps = ["Working in Germany from India", "How to actually get an interview abroad"];
@@ -408,7 +411,7 @@ export async function* runChat(request: ChatRequest, options: ChatOptions = {}):
     // Notes-only answers quote the sources rather than cite them, so a missing [n] is not a warning.
     grounding: { ...checkGrounding(answer, evidence), ...(answerMode === "repository" ? { uncited: false } : {}) },
     // A weak match's own follow-ups would lead away from the question; the answer lists the closest entries instead.
-    followUps: search.confidence === "low" ? [] : suggestFollowUps(search, evidence, followUpQuestions),
+    followUps: search.confidence === "low" ? [] : suggestFollowUps(search, evidence, followUpQuestions, askedBefore(request)),
     suggestions: search.suggestions,
     notice: outcome.notice,
     usage: outcome.usage,

@@ -195,6 +195,18 @@ await check("weak matches say so and point to outside resources instead of answe
   assert.match(none.answer, /Learn more elsewhere/);
 });
 
+await check("related chips move forward and never offer what was already asked", async () => {
+  const sdlc = await collect({ message: "What is SDLC (Software Development Life Cycle)?" }, null);
+  assert.equal(sdlc.done?.followUps[0], "What is STLC (Software Testing Life Cycle)?", "next term in the same glossary category");
+  const history = [
+    { role: "user" as const, content: "What is SDLC (Software Development Life Cycle)?" },
+    { role: "assistant" as const, content: sdlc.answer },
+  ];
+  const stlc = await collect({ message: "What is STLC (Software Testing Life Cycle)?", history }, null);
+  assert.ok(!stlc.done?.followUps.some(text => /SDLC/.test(text)), `no way back to SDLC: ${stlc.done?.followUps}`);
+  assert.ok((stlc.done?.followUps.length ?? 0) >= 2, "still offers the next terms");
+});
+
 await check("interview prep: role card → stack picker → prep plan with key questions", async () => {
   const card = await collect({ message: "What does a Full Stack Developer do?" }, null);
   const json = /```tmh-cards\n([\s\S]*?)```/.exec(card.answer)?.[1] ?? "[]";
