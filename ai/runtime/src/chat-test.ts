@@ -214,7 +214,8 @@ await check("interview prep: role card → stack picker → prep plan with key q
   }, null);
   assert.equal(plan.done?.view, "plan");
   assert.ok(plan.answer.indexOf("**1. Java**") >= 0 && plan.answer.indexOf("**2. SQL**") > plan.answer.indexOf("**1. Java**"), "backend before data");
-  assert.match(plan.answer, /Quiz me on Java/);
+  assert.match(plan.answer, /Java study path/);
+  assert.doesNotMatch(plan.answer, /Quiz me/, "no quiz links in the prep plan");
   assert.ok((plan.answer.match(/\(#ask:/g) ?? []).length >= 10, "key questions are listed as links");
 });
 
