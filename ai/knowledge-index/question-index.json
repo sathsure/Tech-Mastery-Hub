@@ -1,18 +1,18 @@
 {
   "schema_version": "1.0.0",
   "repository": "Tech-Mastery-Hub",
-  "generated_at": "2026-11-08T16:03:01.314Z",
-  "source_fingerprint": "c3625f1025b3de746f6be6f6f1906ef10e75ef0bf5b869e1c64dc6e9e79431eb",
+  "generated_at": "2026-11-08T16:50:26.789Z",
+  "source_fingerprint": "6333fe01ba07dd3c92d32a22a0fbd750cb54df968a8481db2040984c406b1d77",
   "stats": {
-    "files": 144,
-    "entries": 2059,
-    "questions": 1132,
+    "files": 145,
+    "entries": 2070,
+    "questions": 1143,
     "followUps": 311,
     "notes": 84,
     "roles": 74,
     "terms": 378,
     "roadmaps": 80,
-    "codeBlocks": 1400,
+    "codeBlocks": 1423,
     "visuals": 86,
     "missingVisuals": 0
   },
@@ -526,6 +526,17 @@
     {
       "path": "interview/under-the-hood/03a-Browser-Internals.md",
       "questions": 12,
+      "followUps": 0,
+      "notes": 0,
+      "roles": 0,
+      "terms": 0,
+      "roadmaps": 0,
+      "withoutAnswer": 0,
+      "missingVisuals": 0
+    },
+    {
+      "path": "interview/under-the-hood/03b-Frontend-Framework-Internals.md",
+      "questions": 11,
       "followUps": 0,
       "notes": 0,
       "roles": 0,
@@ -53599,6 +53610,544 @@
       "contentHash": "874e370772f7568c"
     },
     {
+      "id": "interview/under-the-hood/03b-Frontend-Framework-Internals.md#how-do-angular-application-bootstrap-and-compilation-work",
+      "kind": "question",
+      "parentId": null,
+      "question": "How do Angular application bootstrap and compilation work internally?",
+      "prompt": null,
+      "answer": "**1. What is it?**\n**Compilation** turns component templates into JavaScript functions at build time (AOT). **Bootstrap** is what happens in the browser when `main.ts` starts the app and renders the root component.\n\n**2. How does it work internally?**\nBuild time:\n\n1. The Angular compiler reads `@Component` metadata and the HTML template.\n2. It generates a **template function** per component made of Ivy instructions (`ɵɵelementStart`, `ɵɵtext`, `ɵɵproperty`…) with two modes: **create** (build DOM once) and **update** (refresh bindings).\n3. The bundler outputs `main-HASH.js`.\n\nRuntime:\n\n4. `bootstrapApplication(AppComponent, appConfig)` creates the **platform injector** and the root **environment injector** with your providers.\n5. Angular finds `<app-root>` in `index.html`, creates `AppComponent`, runs its template function in **create** mode.\n6. It runs the first **change detection** (update mode) and attaches listeners; after that it reacts to events or signals.\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  subgraph Build[\"Build time (ng build)\"]\n    T[\"app.component.html<br/>+ .ts metadata\"] --> C[\"Angular compiler (AOT)\"] --> F[\"template function<br/>Ivy instructions\"] --> B[\"main-HASH.js\"]\n  end\n  subgraph Browser[\"Runtime (browser)\"]\n    M[\"main.ts:<br/>bootstrapApplication()\"] --> I[\"Create injectors<br/>platform + root\"] --> R[\"Create AppComponent<br/>in app-root\"]\n    R --> CR[\"Template fn: create mode<br/>→ real DOM\"] --> CD[\"First change detection<br/>update mode\"]\n  end\n  B --> M\n```\n\n**4. Internal implementation**\n\n- Each component instance has an **LView** (an array holding its DOM nodes, binding values and child views) and a shared **TView** (the static template blueprint).\n- Bindings are stored at fixed indexes in the LView, so an update compares `oldValue !== newValue` per slot.\n- No virtual DOM: instructions update real DOM nodes directly.\n\n**5. Why is it designed this way?**\nAOT finds template errors at build time, removes the compiler from the bundle and enables **tree shaking** of unused Angular features (Ivy's \"locality\": each component compiles independently). Cost: build step required; templates can't be built dynamically from strings at runtime.\n\n**6. Framework differences**\nReact compiles only JSX syntax (to function calls) and decides the DOM at runtime via a virtual DOM; Vue compiles templates to render functions with optimisation hints; Svelte compiles to direct DOM code like Angular but without a change detection pass.\n\n**7. Practical example**\n\n```html\n<h1>Hello {{ name }}</h1>\n```\n\ncompiles roughly to: create mode → `ɵɵelementStart(0,'h1'); ɵɵtext(1); ɵɵelementEnd()`; update mode → `ɵɵtextInterpolate1('Hello ', ctx.name, '')`.\n\n**8. How can I observe it?**\n`ng build --configuration development` and open `dist/.../main.js`: search for `ɵɵ` to see template functions. **Angular DevTools** → Components shows the tree created at bootstrap.",
+      "summary": "What is it? Compilation turns component templates into JavaScript functions at build time (AOT). Bootstrap is what happens in the browser when main.ts starts the app and renders the root component.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  subgraph Build[\"Build time (ng build)\"]\n    T[\"app.component.html<br/>+ .ts metadata\"] --> C[\"Angular compiler (AOT)\"] --> F[\"template function<br/>Ivy instructions\"] --> B[\"main-HASH.js\"]\n  end\n  subgraph Browser[\"Runtime (browser)\"]\n    M[\"main.ts:<br/>bootstrapApplication()\"] --> I[\"Create injectors<br/>platform + root\"] --> R[\"Create AppComponent<br/>in app-root\"]\n    R --> CR[\"Template fn: create mode<br/>→ real DOM\"] --> CD[\"First change detection<br/>update mode\"]\n  end\n  B --> M"
+        },
+        {
+          "language": "html",
+          "code": "<h1>Hello {{ name }}</h1>"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood",
+        "angular"
+      ],
+      "section": [
+        "Angular Internals"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "angular",
+        "application",
+        "bootstrap",
+        "compilation",
+        "internally",
+        "template function",
+        "create",
+        "update",
+        "platform injector",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/03b-Frontend-Framework-Internals.md",
+        "startLine": 7,
+        "endLine": 62
+      },
+      "contentHash": "8ae5e2988bf17cd1"
+    },
+    {
+      "id": "interview/under-the-hood/03b-Frontend-Framework-Internals.md#how-does-angular-dependency-injection-work-internally",
+      "kind": "question",
+      "parentId": null,
+      "question": "How does Angular Dependency Injection work internally?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nAngular creates and hands out objects (services) for you. A class **asks** for what it needs (`inject(UserService)` or a constructor parameter); an **injector** finds or creates it.\n\n**2. How does it work internally?**\n\n1. Every **token** (a class or `InjectionToken`) maps to a **provider** recipe: `useClass`, `useValue`, `useFactory`, `useExisting`.\n2. Resolution walks **up** a hierarchy: the component's **element injector** → parent elements → the **environment injector** (route / lazy / root) → platform → `NullInjector` (error: \"No provider for X\").\n3. The first injector that has a provider creates the instance (once, then caches it) and returns it.\n\n**3. Visual**\n\n```mermaid\nflowchart BT\n  C[\"ProductCard component<br/>element injector\"] --> P[\"ProductList component<br/>element injector\"]\n  P --> L[\"Lazy route injector<br/>(providers: [CartService])\"]\n  L --> R[\"Root environment injector<br/>providedIn: 'root' services\"]\n  R --> PL[Platform injector]\n  PL --> N[\"NullInjector → error\"]\n```\n\n**4. Internal implementation**\n\n- The compiler generates a **factory** per injectable (`ɵfac`) that calls `inject()` for each dependency.\n- Injectors store records in a map `token → {factory, value}`; cycles are detected (`NG0200: Circular dependency`).\n- `providedIn: 'root'` services are **tree-shakable**: if nothing injects them, they are not bundled.\n- Element injectors are stored in the LView using a **bloom filter** to quickly skip elements that can't provide a token.\n\n**5. Why is it designed this way?**\nLoose coupling and easy testing (swap a real `HttpClient` for a mock). The hierarchy lets a feature or component get its **own** instance (scoped state). Cost: misconfigured providers can create unexpected duplicate instances.\n\n**6. Framework differences**\n\n| Framework | DI |\n|---|---|\n| Angular | Full hierarchical injector system, built in |\n| Spring (Java) | Container-wide singletons by default, created at start-up |\n| ASP.NET Core | Built-in container with singleton / scoped (per request) / transient lifetimes |\n| React / Vue | No DI container; **Context** / `provide`-`inject` pass values down the tree |\n\n**7. Practical example**\n\n```ts\n@Injectable({ providedIn: 'root' })\nexport class CartService { items = signal<Item[]>([]); }\n\n@Component({ ... })\nexport class CartIcon { cart = inject(CartService); }   // same root instance everywhere\n```\n\n**8. How can I observe it?**\n**Angular DevTools** → select a component → \"Injected services\" and the **Injector Tree** view (Angular 17+). Add `providers: [CartService]` to a component and watch a second instance appear.",
+      "summary": "What is it? Angular creates and hands out objects (services) for you. A class asks for what it needs (inject(UserService) or a constructor parameter); an injector finds or creates it.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart BT\n  C[\"ProductCard component<br/>element injector\"] --> P[\"ProductList component<br/>element injector\"]\n  P --> L[\"Lazy route injector<br/>(providers: [CartService])\"]\n  L --> R[\"Root environment injector<br/>providedIn: 'root' services\"]\n  R --> PL[Platform injector]\n  PL --> N[\"NullInjector → error\"]"
+        },
+        {
+          "language": "ts",
+          "code": "@Injectable({ providedIn: 'root' })\nexport class CartService { items = signal<Item[]>([]); }\n\n@Component({ ... })\nexport class CartIcon { cart = inject(CartService); }   // same root instance everywhere"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood",
+        "angular"
+      ],
+      "section": [
+        "Angular Internals"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "angular",
+        "dependency",
+        "injection",
+        "internally",
+        "asks",
+        "injector",
+        "token",
+        "provider",
+        "up",
+        "element injector",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/03b-Frontend-Framework-Internals.md",
+        "startLine": 66,
+        "endLine": 120
+      },
+      "contentHash": "9f5d1db4f03b389e"
+    },
+    {
+      "id": "interview/under-the-hood/03b-Frontend-Framework-Internals.md#how-does-the-angular-component-lifecycle-work-internally",
+      "kind": "question",
+      "parentId": null,
+      "question": "How does the Angular component lifecycle work internally?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nAngular calls **lifecycle hooks** on a component at fixed moments: when it is created, when its inputs change, after its view is checked, and before it is destroyed.\n\n**2. How does it work internally?**\nOrder for one component:\n\n1. `constructor` — class created (DI happens here). No inputs yet.\n2. `ngOnChanges` — inputs set or changed (before `ngOnInit` and on every input change).\n3. `ngOnInit` — once, after the first inputs.\n4. `ngDoCheck` — every change detection run.\n5. `ngAfterContentInit` / `ngAfterContentChecked` — projected `<ng-content>` ready / checked.\n6. `ngAfterViewInit` / `ngAfterViewChecked` — own view and children ready / checked.\n7. `ngOnDestroy` — before removal (clean up subscriptions, timers).\n\n**3. Visual**\n\n```mermaid\nflowchart TD\n  CT[constructor] --> OC[\"ngOnChanges<br/>(if inputs)\"] --> OI[\"ngOnInit (once)\"] --> DC[ngDoCheck]\n  DC --> ACI[\"ngAfterContentInit (once)\"] --> ACC[ngAfterContentChecked]\n  ACC --> AVI[\"ngAfterViewInit (once)\"] --> AVC[ngAfterViewChecked]\n  AVC -. \"each later change detection:<br/>ngOnChanges if inputs changed, ngDoCheck,<br/>AfterContentChecked, AfterViewChecked\" .-> DC\n  AVC --> OD[\"ngOnDestroy (on removal)\"]\n```\n\n**4. Internal implementation**\n\n- Hooks are registered in the component's **TView** as arrays (`preOrderHooks`, `contentHooks`, `viewHooks`, `destroyHooks`) at first creation.\n- During **refreshView**, Angular runs: pre-order hooks (OnChanges/OnInit/DoCheck) → update bindings → content hooks → refresh child views → view hooks.\n- `ngOnChanges` receives a `SimpleChanges` object built by comparing previous and current input values.\n- Newer APIs `afterNextRender` / `afterRender` run after the DOM is rendered (useful for measuring elements).\n\n**5. Why is it designed this way?**\nHooks tie into the change detection walk, so they cost nothing extra and run in a predictable order (parents before children for init, children before parents for view hooks).\n\n**6. Framework differences**\nReact uses `useEffect` (after paint), `useLayoutEffect` (before paint) and cleanup functions instead of named hooks. Vue has `onMounted`, `onUpdated`, `onUnmounted` and friends — similar idea to Angular.\n\n**7. Practical example**\n\n```ts\nexport class PriceTicker implements OnInit, OnDestroy {\n  private sub?: Subscription;\n  ngOnInit() { this.sub = interval(1000).subscribe(() => this.refresh()); }\n  ngOnDestroy() { this.sub?.unsubscribe(); }   // without this: memory leak\n}\n```\n\n**8. How can I observe it?**\nAdd `console.log` in each hook and toggle the component with `@if`. **Angular DevTools** → Profiler shows which hooks ran and how long they took.",
+      "summary": "What is it? Angular calls lifecycle hooks on a component at fixed moments: when it is created, when its inputs change, after its view is checked, and before it is destroyed.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart TD\n  CT[constructor] --> OC[\"ngOnChanges<br/>(if inputs)\"] --> OI[\"ngOnInit (once)\"] --> DC[ngDoCheck]\n  DC --> ACI[\"ngAfterContentInit (once)\"] --> ACC[ngAfterContentChecked]\n  ACC --> AVI[\"ngAfterViewInit (once)\"] --> AVC[ngAfterViewChecked]\n  AVC -. \"each later change detection:<br/>ngOnChanges if inputs changed, ngDoCheck,<br/>AfterContentChecked, AfterViewChecked\" .-> DC\n  AVC --> OD[\"ngOnDestroy (on removal)\"]"
+        },
+        {
+          "language": "ts",
+          "code": "export class PriceTicker implements OnInit, OnDestroy {\n  private sub?: Subscription;\n  ngOnInit() { this.sub = interval(1000).subscribe(() => this.refresh()); }\n  ngOnDestroy() { this.sub?.unsubscribe(); }   // without this: memory leak\n}"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood",
+        "angular"
+      ],
+      "section": [
+        "Angular Internals"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "angular",
+        "component",
+        "lifecycle",
+        "internally",
+        "lifecycle hooks",
+        "visual",
+        "internal implementation",
+        "tview",
+        "refreshview",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/03b-Frontend-Framework-Internals.md",
+        "startLine": 124,
+        "endLine": 177
+      },
+      "contentHash": "c8c4850edf2ecf8e"
+    },
+    {
+      "id": "interview/under-the-hood/03b-Frontend-Framework-Internals.md#how-do-angular-change-detection-and-signals-work-internally",
+      "kind": "question",
+      "parentId": null,
+      "question": "How do Angular Change Detection and Signals work internally?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nChange detection keeps the DOM in sync with component data. Angular has two triggers: **zone.js** (classic: \"something async happened, check everything\") and **Signals** (reactive: \"this value changed, update what reads it\").\n\n**2. How does it work internally?**\nZone-based:\n\n1. **zone.js** patches async APIs (events, `setTimeout`, promises, XHR).\n2. When one finishes, `ApplicationRef.tick()` runs.\n3. Angular walks the view tree **top-down**, running each template function in update mode and comparing every binding with its previous value.\n4. `OnPush` components are skipped unless an input reference changed, an event fired inside them, an `async` pipe emitted, or they were marked dirty.\n\nSignals:\n\n1. A `signal()` is a **producer**; templates, `computed()` and `effect()` that read it become **consumers** (dependencies are recorded automatically).\n2. Setting a signal marks its consumers **dirty**; a template consumer marks its view for refresh.\n3. In **zoneless** mode (`provideZonelessChangeDetection()`, stable from Angular 20), Angular schedules a check only when signals, events or `markForCheck` say something changed.\n\n**3. Visual**\n\n```mermaid\nflowchart TB\n  subgraph Zone[\"zone.js mode\"]\n    E[click / timer / HTTP] --> Z[zone.js] --> T[\"ApplicationRef.tick()\"] --> W[\"Walk all views top-down<br/>(skip clean OnPush)\"]\n  end\n  subgraph Sig[\"Signals mode\"]\n    S[\"count.set(5)\"] --> G[\"Reactive graph:<br/>mark consumers dirty\"] --> V[\"Only views that read 'count'<br/>are refreshed\"]\n  end\n  W --> D[Update changed DOM bindings]\n  V --> D\n```\n\n**4. Internal implementation**\n\n- Bindings live at fixed slots in each view's LView; update = `if (!Object.is(old, new)) setDomProperty(...)`.\n- In dev mode a second check pass runs and throws **`ExpressionChangedAfterItHasBeenCheckedError`** if a binding changed during the check.\n- Signals use **version numbers**: a `computed` recomputes lazily only if a dependency's version changed (push \"dirty\", pull value).\n\n**5. Why is it designed this way?**\nZone.js made change detection automatic with plain objects, but checks far more than needed and adds a dependency. Signals give **fine-grained** updates, better performance and no zone.js — at the cost of writing state as signals.\n\n**6. Framework differences**\nReact re-renders component functions and diffs a virtual DOM; Vue tracks property reads with Proxies; SolidJS and Preact Signals use the same producer/consumer idea as Angular Signals.\n\n**7. Practical example**\n\n```ts\ncount = signal(0);\ndouble = computed(() => this.count() * 2);   // recomputed only when count changes\ninc() { this.count.update(c => c + 1); }     // marks only this component's view dirty\n```\n\n```html\n<p>{{ count() }} × 2 = {{ double() }}</p>\n```\n\n**8. How can I observe it?**\n**Angular DevTools** → Profiler: record, click around, see each change detection cycle and which components were checked. Compare a zone app with a zoneless + Signals app.",
+      "summary": "What is it? Change detection keeps the DOM in sync with component data. Angular has two triggers: zone.js (classic: \"something async happened, check everything\") and Signals (reactive: \"this value changed, update what reads it\").",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart TB\n  subgraph Zone[\"zone.js mode\"]\n    E[click / timer / HTTP] --> Z[zone.js] --> T[\"ApplicationRef.tick()\"] --> W[\"Walk all views top-down<br/>(skip clean OnPush)\"]\n  end\n  subgraph Sig[\"Signals mode\"]\n    S[\"count.set(5)\"] --> G[\"Reactive graph:<br/>mark consumers dirty\"] --> V[\"Only views that read 'count'<br/>are refreshed\"]\n  end\n  W --> D[Update changed DOM bindings]\n  V --> D"
+        },
+        {
+          "language": "ts",
+          "code": "count = signal(0);\ndouble = computed(() => this.count() * 2);   // recomputed only when count changes\ninc() { this.count.update(c => c + 1); }     // marks only this component's view dirty"
+        },
+        {
+          "language": "html",
+          "code": "<p>{{ count() }} × 2 = {{ double() }}</p>"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood",
+        "angular"
+      ],
+      "section": [
+        "Angular Internals"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "angular",
+        "change",
+        "detection",
+        "signals",
+        "internally",
+        "zone.js",
+        "top-down",
+        "producer",
+        "consumers",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/03b-Frontend-Framework-Internals.md",
+        "startLine": 181,
+        "endLine": 241
+      },
+      "contentHash": "605ff85f63158ac1"
+    },
+    {
+      "id": "interview/under-the-hood/03b-Frontend-Framework-Internals.md#how-do-the-angular-router-and-lazy-loading-work-internally",
+      "kind": "question",
+      "parentId": null,
+      "question": "How do the Angular Router and lazy loading work internally?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nThe **Router** maps the browser URL to components. **Lazy loading** downloads a route's code only when the user first navigates to it.\n\n**2. How does it work internally?**\n\n1. Navigation starts (link click, `router.navigate`, or browser back/forward via the `popstate` event).\n2. The URL is parsed into a **UrlTree**.\n3. **Route matching**: the router walks the route config to find matching routes (and params like `:id`).\n4. For lazy routes, `loadComponent` / `loadChildren` runs a dynamic `import()` → the chunk is fetched.\n5. **Guards** (`canActivate`, `canMatch`…) and **resolvers** run.\n6. The router creates components in the matching `<router-outlet>`s and updates the address bar with `history.pushState` (no page reload).\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  N[\"Click /admin/users\"] --> P[Parse to UrlTree] --> MA[Match route config]\n  MA --> LZ{\"Lazy route?\"}\n  LZ -- yes --> IM[\"import() → fetch chunk-admin.js\"] --> G\n  LZ -- no --> G[\"Guards + resolvers\"]\n  G -- allowed --> A[\"Activate: create components<br/>in router-outlet\"]\n  A --> H[\"history.pushState<br/>URL updated, no reload\"]\n  G -- denied --> X[Cancel or redirect]\n```\n\n**4. Internal implementation**\n\n- Router state is a tree of **ActivatedRoute** objects (params, data, query params as Observables/signals).\n- Navigation is an RxJS pipeline; a new navigation **cancels** an unfinished one.\n- Lazy route configs are cached after the first load; **preloading strategies** (e.g. `PreloadAllModules`) fetch chunks in the background after start-up.\n\n**5. Why is it designed this way?**\nSPA navigation without reloads is fast and keeps state. Lazy loading keeps the first download small; a large admin area doesn't slow down the home page.\n\n**6. Framework differences**\nReact Router / TanStack Router and Vue Router follow the same pattern (route table + `history.pushState` + `import()` for lazy routes). Next.js and Nuxt use **file-based routing** and split code per page automatically.\n\n**7. Practical example**\n\n```ts\nexport const routes: Routes = [\n  { path: '', component: HomeComponent },\n  { path: 'admin', canMatch: [adminGuard],\n    loadChildren: () => import('./admin/admin.routes').then(m => m.ADMIN_ROUTES) },\n];\n```\n\n**8. How can I observe it?**\nDevTools → **Network** → JS filter: navigate to `/admin` and see the chunk load once. `provideRouter(routes, withDebugTracing())` logs every router event (NavigationStart, GuardsCheck, NavigationEnd).",
+      "summary": "What is it? The Router maps the browser URL to components. Lazy loading downloads a route's code only when the user first navigates to it.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  N[\"Click /admin/users\"] --> P[Parse to UrlTree] --> MA[Match route config]\n  MA --> LZ{\"Lazy route?\"}\n  LZ -- yes --> IM[\"import() → fetch chunk-admin.js\"] --> G\n  LZ -- no --> G[\"Guards + resolvers\"]\n  G -- allowed --> A[\"Activate: create components<br/>in router-outlet\"]\n  A --> H[\"history.pushState<br/>URL updated, no reload\"]\n  G -- denied --> X[Cancel or redirect]"
+        },
+        {
+          "language": "ts",
+          "code": "export const routes: Routes = [\n  { path: '', component: HomeComponent },\n  { path: 'admin', canMatch: [adminGuard],\n    loadChildren: () => import('./admin/admin.routes').then(m => m.ADMIN_ROUTES) },\n];"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood",
+        "angular"
+      ],
+      "section": [
+        "Angular Internals"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "angular",
+        "router",
+        "lazy",
+        "loading",
+        "internally",
+        "lazy loading",
+        "urltree",
+        "route matching",
+        "guards",
+        "resolvers",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/03b-Frontend-Framework-Internals.md",
+        "startLine": 245,
+        "endLine": 297
+      },
+      "contentHash": "938638ca0b101181"
+    },
+    {
+      "id": "interview/under-the-hood/03b-Frontend-Framework-Internals.md#how-do-angular-httpclient-and-http-interceptors-work-internally",
+      "kind": "question",
+      "parentId": null,
+      "question": "How do Angular HttpClient and HTTP Interceptors work internally?",
+      "prompt": null,
+      "answer": "**1. What is it?**\n`HttpClient` sends HTTP requests and returns **Observables**. **Interceptors** are functions that every request and response pass through — for auth headers, logging, retries, error handling.\n\n**2. How does it work internally?**\n\n1. `http.get('/api/orders')` creates an immutable **HttpRequest** and returns a **cold Observable** — nothing is sent yet.\n2. On `subscribe` (or `async` pipe / `toSignal`), the request enters the **interceptor chain** in the order provided.\n3. Each interceptor can clone and modify the request, then call `next(req)`.\n4. The last handler, **HttpBackend**, sends it using `XMLHttpRequest` (default) or `fetch` (`withFetch()`).\n5. The response flows back **through the interceptors in reverse**, as `HttpEvent`s, then to your subscriber.\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  C[\"Component<br/>http.get()\"] -- subscribe --> I1[\"authInterceptor<br/>add Bearer token\"]\n  I1 --> I2[\"loggingInterceptor\"]\n  I2 --> BE[\"HttpBackend<br/>XHR or fetch\"]\n  BE --> API[(Backend API)]\n  API --> BE\n  BE -- response --> I2 -- response --> I1\n  I1 -- \"401? refresh + retry\" --> C\n```\n\n**4. Internal implementation**\n\n- Requests and headers are **immutable**; interceptors use `req.clone({ setHeaders: {...} })`.\n- Functional interceptors (`HttpInterceptorFn`) are registered with `provideHttpClient(withInterceptors([...]))` and can use `inject()`.\n- Unsubscribing **aborts** the underlying XHR/fetch, so `switchMap` cancels outdated searches automatically.\n- JSON is parsed by the backend handler based on `responseType`.\n\n**5. Why is it designed this way?**\nObservables give cancellation, retries (`retry`), and composition with RxJS. The interceptor chain (Chain of Responsibility pattern) keeps cross-cutting concerns out of every service.\n\n**6. Framework differences**\nReact/Vue apps usually use `fetch` or **axios** (axios has request/response interceptors too). Spring's `RestClient`/`WebClient` and OkHttp on the backend use the same interceptor-chain idea.\n\n**7. Practical example**\n\n```ts\nexport const authInterceptor: HttpInterceptorFn = (req, next) => {\n  const token = inject(AuthService).token();\n  return next(token ? req.clone({ setHeaders: { Authorization: `Bearer ${token}` } }) : req);\n};\n```\n\n**8. How can I observe it?**\nDevTools → **Network**: confirm the `Authorization` header. Calling `http.get()` without subscribing sends **nothing** — a quick way to see the Observable is cold.",
+      "summary": "What is it? HttpClient sends HTTP requests and returns Observables. Interceptors are functions that every request and response pass through — for auth headers, logging, retries, error handling.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  C[\"Component<br/>http.get()\"] -- subscribe --> I1[\"authInterceptor<br/>add Bearer token\"]\n  I1 --> I2[\"loggingInterceptor\"]\n  I2 --> BE[\"HttpBackend<br/>XHR or fetch\"]\n  BE --> API[(Backend API)]\n  API --> BE\n  BE -- response --> I2 -- response --> I1\n  I1 -- \"401? refresh + retry\" --> C"
+        },
+        {
+          "language": "ts",
+          "code": "export const authInterceptor: HttpInterceptorFn = (req, next) => {\n  const token = inject(AuthService).token();\n  return next(token ? req.clone({ setHeaders: { Authorization: `Bearer ${token}` } }) : req);\n};"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood",
+        "angular"
+      ],
+      "section": [
+        "Angular Internals"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "angular",
+        "httpclient",
+        "http",
+        "interceptors",
+        "internally",
+        "observables",
+        "httprequest",
+        "cold observable",
+        "interceptor chain",
+        "httpbackend",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/03b-Frontend-Framework-Internals.md",
+        "startLine": 301,
+        "endLine": 352
+      },
+      "contentHash": "9285c73d486e492f"
+    },
+    {
+      "id": "interview/under-the-hood/03b-Frontend-Framework-Internals.md#how-do-react-s-virtual-dom-and-reconciliation-work-internally",
+      "kind": "question",
+      "parentId": null,
+      "question": "How do React's Virtual DOM and Reconciliation work internally?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nA component returns a description of the UI as plain JavaScript objects (**React elements**, the \"virtual DOM\"). **Reconciliation** compares the new description with the previous one and changes only the real DOM nodes that differ.\n\n**2. How does it work internally?**\n\n1. State changes → React calls the component function again → new element tree.\n2. React compares old and new **node by node**:\n   - Different **type** (`div` → `span`, `A` → `B`) → destroy the old subtree, build a new one.\n   - Same type → keep the DOM node / component instance, update changed props.\n   - Lists → match children by **`key`**; without keys, by position.\n3. The resulting changes are applied to the DOM in the **commit** phase.\n\n**3. Visual**\n\n```mermaid\nflowchart TD\n  S[\"setState\"] --> R[\"Call Component()<br/>→ new element tree\"]\n  R --> D{\"Same type as before?\"}\n  D -- no --> RE[Unmount old subtree, mount new]\n  D -- yes --> UP[\"Keep node, diff props\"]\n  UP --> K[\"Diff children<br/>match by key\"]\n  RE --> CM[\"Commit: apply DOM mutations\"]\n  K --> CM\n```\n\n**4. Internal implementation**\n\n- A React element is `{ type, props, key, ref }` — cheap to create.\n- The diff is **O(n)** thanks to two heuristics (different type = different tree; keys identify list items). A general tree diff would be O(n³).\n- Using **array index as key** in a reorderable list makes React reuse the wrong DOM nodes (inputs keep the wrong values).\n\n**5. Why is it designed this way?**\nDevelopers describe the UI for the current state (`UI = f(state)`) and never write DOM update code. The cost: React re-runs components and diffs even when little changed — mitigated by `memo`, `useMemo` and the React Compiler.\n\n**6. Framework differences**\nVue also diffs a virtual DOM but knows **which components** depend on changed data and uses compiler hints to skip static parts. Angular, Svelte and Solid have **no virtual DOM**.\n\n**7. Practical example**\n\n```jsx\n{todos.map(t => <TodoRow key={t.id} todo={t} />)}\n```\n\nRemoving the first todo: with `key={t.id}` React removes one row; with `key={index}` it would update every row's props and delete the last one.\n\n**8. How can I observe it?**\n**React DevTools** → Profiler: record an update to see which components rendered and why. Settings → \"Highlight updates when components render\".",
+      "summary": "What is it? A component returns a description of the UI as plain JavaScript objects (React elements, the \"virtual DOM\"). Reconciliation compares the new description with the previous one and changes only the real DOM nodes that differ.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart TD\n  S[\"setState\"] --> R[\"Call Component()<br/>→ new element tree\"]\n  R --> D{\"Same type as before?\"}\n  D -- no --> RE[Unmount old subtree, mount new]\n  D -- yes --> UP[\"Keep node, diff props\"]\n  UP --> K[\"Diff children<br/>match by key\"]\n  RE --> CM[\"Commit: apply DOM mutations\"]\n  K --> CM"
+        },
+        {
+          "language": "jsx",
+          "code": "{todos.map(t => <TodoRow key={t.id} todo={t} />)}"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood",
+        "react"
+      ],
+      "section": [
+        "React Internals"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "react",
+        "virtual",
+        "dom",
+        "reconciliation",
+        "internally",
+        "react elements",
+        "node by node",
+        "type",
+        "key",
+        "commit",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/03b-Frontend-Framework-Internals.md",
+        "startLine": 358,
+        "endLine": 408
+      },
+      "contentHash": "eebbbd95b72fbdba"
+    },
+    {
+      "id": "interview/under-the-hood/03b-Frontend-Framework-Internals.md#how-does-react-s-fiber-architecture-work-internally",
+      "kind": "question",
+      "parentId": null,
+      "question": "How does React's Fiber architecture work internally?",
+      "prompt": null,
+      "answer": "**1. What is it?**\n**Fiber** (React 16+) is React's internal engine. It represents the component tree as a linked structure of **fiber** objects so rendering work can be split into small units, **paused**, prioritised and resumed.\n\n**2. How does it work internally?**\n\n1. Each component/element has a **fiber**: `type`, `props`, `stateNode` (DOM node or instance), links to `child`, `sibling`, `return` (parent), and hook state.\n2. On an update, React builds a **work-in-progress** tree from the **current** tree (double buffering, linked by `alternate`).\n3. **Render phase** (interruptible): process one fiber at a time (`beginWork` / `completeWork`), yielding to the browser about every 5 ms if higher-priority work arrives.\n4. **Commit phase** (synchronous, cannot pause): apply DOM changes, run layout effects, swap work-in-progress to current, then schedule `useEffect`s.\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  subgraph Fibers[\"Fiber tree (linked list walk)\"]\n    APP[App] -- child --> NAV[Nav]\n    NAV -- sibling --> LIST[List]\n    LIST -- child --> ITEM[Item]\n    ITEM -- return --> LIST\n  end\n  U[\"Update with priority (lane)\"] --> RP[\"Render phase<br/>interruptible, yields to browser\"]\n  RP --> CP[\"Commit phase<br/>DOM mutations, synchronous\"]\n  CP --> EF[\"useEffect after paint\"]\n```\n\n**4. Internal implementation**\n\n- **Lanes**: bitmask priorities (sync input > default > transition > idle). `startTransition` marks updates as low priority.\n- The scheduler uses `MessageChannel` tasks to yield control back to the browser between work chunks.\n- Because the render phase can run, pause and restart, render functions must be **pure** (no side effects) — this is why Strict Mode double-invokes them in development.\n\n**5. Why is it designed this way?**\nThe old stack-based reconciler had to finish a whole update in one go, so big updates blocked typing and animations. Fiber enables **concurrent rendering**: urgent updates (typing) interrupt less urgent ones (filtering a big list).\n\n**6. Framework differences**\nAngular and Vue update synchronously within a tick (Vue batches to a microtask); they don't have interruptible rendering. Fiber's scheduling is unique to React.\n\n**7. Practical example**\n\n```jsx\nconst [query, setQuery] = useState('');\nconst [isPending, startTransition] = useTransition();\nonChange={e => { setQuery(e.target.value);                      // urgent: input stays responsive\n                 startTransition(() => setFilter(e.target.value)); }}  // can be interrupted\n```\n\n**8. How can I observe it?**\n**React DevTools** Profiler shows commits and their priority; DevTools **Performance** with React's scheduler tracks (React 19.2+ adds custom tracks) shows render work split into small tasks.",
+      "summary": "What is it? Fiber (React 16+) is React's internal engine. It represents the component tree as a linked structure of fiber objects so rendering work can be split into small units, paused, prioritised and resumed.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  subgraph Fibers[\"Fiber tree (linked list walk)\"]\n    APP[App] -- child --> NAV[Nav]\n    NAV -- sibling --> LIST[List]\n    LIST -- child --> ITEM[Item]\n    ITEM -- return --> LIST\n  end\n  U[\"Update with priority (lane)\"] --> RP[\"Render phase<br/>interruptible, yields to browser\"]\n  RP --> CP[\"Commit phase<br/>DOM mutations, synchronous\"]\n  CP --> EF[\"useEffect after paint\"]"
+        },
+        {
+          "language": "jsx",
+          "code": "const [query, setQuery] = useState('');\nconst [isPending, startTransition] = useTransition();\nonChange={e => { setQuery(e.target.value);                      // urgent: input stays responsive\n                 startTransition(() => setFilter(e.target.value)); }}  // can be interrupted"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood",
+        "react"
+      ],
+      "section": [
+        "React Internals"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "react",
+        "fiber",
+        "architecture",
+        "internally",
+        "paused",
+        "work-in-progress",
+        "current",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/03b-Frontend-Framework-Internals.md",
+        "startLine": 412,
+        "endLine": 463
+      },
+      "contentHash": "5b2166ed455dd058"
+    },
+    {
+      "id": "interview/under-the-hood/03b-Frontend-Framework-Internals.md#how-do-react-hooks-and-component-rendering-work-internally",
+      "kind": "question",
+      "parentId": null,
+      "question": "How do React Hooks and component rendering work internally?",
+      "prompt": null,
+      "answer": "**1. What is it?**\n**Hooks** (`useState`, `useEffect`, `useMemo`…) let function components keep state and side effects between renders. **Rendering** = React calling your component function to get its UI.\n\n**2. How does it work internally?**\n\n1. When React renders a component, it sets a pointer to that component's fiber.\n2. Each hook call reads the **next item in a linked list** stored on the fiber (`memoizedState`): first call → first hook, second call → second hook…\n3. `useState` returns the stored value and a `setState` function.\n4. `setState` puts an **update** in that hook's queue and **schedules** a re-render; React 18+ **batches** multiple updates into one render.\n5. `useEffect` callbacks run **after** the browser paints; `useLayoutEffect` runs after DOM mutation but **before** paint.\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  F[\"Fiber: Counter<br/>memoizedState →\"] --> H1[\"Hook 1: useState<br/>value 3, queue\"]\n  H1 --> H2[\"Hook 2: useMemo<br/>value, deps\"]\n  H2 --> H3[\"Hook 3: useEffect<br/>callback, deps\"]\n  S[\"setCount(4)\"] -- \"enqueue update\" --> H1\n  S --> SCH[Schedule re-render] --> RR[\"Call Counter() again<br/>hooks read in same order\"]\n```\n\n**4. Internal implementation**\n\n- Hooks are matched **by call order**, not by name → the **Rules of Hooks**: never call hooks inside conditions or loops.\n- Dependency arrays are compared with `Object.is`; same deps → `useMemo` returns the cached value, `useEffect` is skipped.\n- A re-render of a parent re-renders its children unless they are memoised (`React.memo`) or the React Compiler memoises automatically.\n\n**5. Why is it designed this way?**\nOrder-based storage needs no names or keys and keeps hooks extremely cheap. The trade-off is the strict \"same order every render\" rule.\n\n**6. Framework differences**\nVue's Composition API (`ref`, `computed`, `watch`) runs **once** at setup and relies on reactive tracking, so it has no call-order rule. Angular uses class fields + Signals; `effect()` / `computed()` are similar ideas.\n\n**7. Practical example**\n\n```jsx\nfunction Counter() {\n  const [count, setCount] = useState(0);           // hook #1\n  useEffect(() => { document.title = count; }, [count]);   // hook #2, runs after paint when count changes\n  return <button onClick={() => { setCount(c => c + 1); setCount(c => c + 1); }}>{count}</button>;\n}   // one click → one batched render → +2\n```\n\n**8. How can I observe it?**\n**React DevTools** → Components → select a component → \"hooks\" lists each hook's current value in order. Add `console.log` in the body to count renders (Strict Mode doubles them in dev).",
+      "summary": "What is it? Hooks (useState, useEffect, useMemo…) let function components keep state and side effects between renders. Rendering = React calling your component function to get its UI.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  F[\"Fiber: Counter<br/>memoizedState →\"] --> H1[\"Hook 1: useState<br/>value 3, queue\"]\n  H1 --> H2[\"Hook 2: useMemo<br/>value, deps\"]\n  H2 --> H3[\"Hook 3: useEffect<br/>callback, deps\"]\n  S[\"setCount(4)\"] -- \"enqueue update\" --> H1\n  S --> SCH[Schedule re-render] --> RR[\"Call Counter() again<br/>hooks read in same order\"]"
+        },
+        {
+          "language": "jsx",
+          "code": "function Counter() {\n  const [count, setCount] = useState(0);           // hook #1\n  useEffect(() => { document.title = count; }, [count]);   // hook #2, runs after paint when count changes\n  return <button onClick={() => { setCount(c => c + 1); setCount(c => c + 1); }}>{count}</button>;\n}   // one click → one batched render → +2"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood",
+        "react"
+      ],
+      "section": [
+        "React Internals"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "react",
+        "hooks",
+        "component",
+        "rendering",
+        "internally",
+        "next item in a linked list",
+        "update",
+        "schedules",
+        "batches",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/03b-Frontend-Framework-Internals.md",
+        "startLine": 467,
+        "endLine": 516
+      },
+      "contentHash": "fc94d612c62577a4"
+    },
+    {
+      "id": "interview/under-the-hood/03b-Frontend-Framework-Internals.md#how-does-vue-s-reactivity-system-work-internally-dependency",
+      "kind": "question",
+      "parentId": null,
+      "question": "How does Vue's reactivity system work internally (dependency tracking and Proxies)?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nVue makes your data **reactive**: when a value changes, everything that used it (templates, `computed`, `watch`) updates automatically. Vue 3 does this with JavaScript **Proxies** and automatic **dependency tracking**.\n\n**2. How does it work internally?**\n\n1. `reactive(obj)` returns a **Proxy** around `obj`; `ref(x)` wraps a value in an object with a `.value` getter/setter.\n2. When an **effect** runs (a component's render, a `computed`, a `watchEffect`), it becomes the **active effect**.\n3. Every property **read** (Proxy `get` trap) calls `track(target, key)`: \"the active effect depends on `target.key`\".\n4. Every **write** (Proxy `set` trap) calls `trigger(target, key)`: re-run (or schedule) every effect that depends on it.\n5. Component re-renders are **batched** into one update per tick (microtask), and `nextTick()` waits for it.\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  subgraph Track[\"Read: track\"]\n    E[\"Active effect:<br/>Counter render\"] --> G[\"state.count (Proxy get)\"] --> DM[(\"deps map:<br/>state → count → {Counter render}\")]\n  end\n  subgraph Trigger[\"Write: trigger\"]\n    W[\"state.count++ (Proxy set)\"] --> DM2[(deps map lookup)] --> Q[\"Queue Counter render<br/>(next microtask)\"]\n  end\n```\n\n**4. Internal implementation**\n\n- Dependencies are stored as `WeakMap<target, Map<key, Dep>>`, where a Dep is the set of effects using that property (WeakMap lets unused objects be garbage-collected).\n- Nested objects become reactive **lazily** when first accessed.\n- `computed` is lazy and cached: it recomputes only if a dependency changed since its last read.\n- Vue 2 used `Object.defineProperty` getters/setters, which couldn't detect **new properties** or array index assignment — Proxies fixed that.\n\n**5. Why is it designed this way?**\nAutomatic tracking means no manual subscriptions and no unnecessary re-renders: only components that actually read the changed property update. Costs: Proxy overhead, and destructuring a reactive object loses reactivity (use `toRefs`).\n\n**6. Framework differences**\nSame idea as Angular Signals, SolidJS signals and MobX. React has **no** tracking: it re-renders on `setState` and diffs.\n\n**7. Practical example**\n\n```js\nconst state = reactive({ count: 0, name: 'Asha' });\nwatchEffect(() => console.log(state.count));   // tracks only 'count'\nstate.name = 'Ravi';    // nothing logged\nstate.count++;          // logs 1\n```\n\n**8. How can I observe it?**\n**Vue DevTools** → Timeline / component inspector. Use `onRenderTracked` and `onRenderTriggered` hooks in a component to log exactly which property was tracked and which change triggered a re-render.",
+      "summary": "What is it? Vue makes your data reactive: when a value changes, everything that used it (templates, computed, watch) updates automatically. Vue 3 does this with JavaScript Proxies and automatic dependency tracking.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  subgraph Track[\"Read: track\"]\n    E[\"Active effect:<br/>Counter render\"] --> G[\"state.count (Proxy get)\"] --> DM[(\"deps map:<br/>state → count → {Counter render}\")]\n  end\n  subgraph Trigger[\"Write: trigger\"]\n    W[\"state.count++ (Proxy set)\"] --> DM2[(deps map lookup)] --> Q[\"Queue Counter render<br/>(next microtask)\"]\n  end"
+        },
+        {
+          "language": "js",
+          "code": "const state = reactive({ count: 0, name: 'Asha' });\nwatchEffect(() => console.log(state.count));   // tracks only 'count'\nstate.name = 'Ravi';    // nothing logged\nstate.count++;          // logs 1"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Vue Internals"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "vue",
+        "reactivity",
+        "system",
+        "internally",
+        "dependency",
+        "tracking",
+        "proxies",
+        "reactive",
+        "dependency tracking",
+        "proxy",
+        "effect",
+        "active effect",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/03b-Frontend-Framework-Internals.md",
+        "startLine": 522,
+        "endLine": 572
+      },
+      "contentHash": "844defceca7d76a9"
+    },
+    {
+      "id": "interview/under-the-hood/03b-Frontend-Framework-Internals.md#how-do-vue-s-template-compiler-and-virtual-dom-work-internally",
+      "kind": "question",
+      "parentId": null,
+      "question": "How do Vue's template compiler and Virtual DOM work internally?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nVue compiles each `<template>` into a **render function** that returns virtual DOM nodes (VNodes). When a component re-renders, Vue **patches** the real DOM by comparing old and new VNodes — using hints from the compiler to skip anything static.\n\n**2. How does it work internally?**\n\n1. Build time: the **SFC compiler** (`@vue/compiler-sfc`, via Vite) parses `.vue` files: template → AST → optimised render function; `<script setup>` → setup function; `<style scoped>` → CSS with attribute selectors.\n2. Runtime: the component's render runs inside a reactive effect (so its reads are tracked).\n3. On change, render runs again → new VNode tree.\n4. The **patch** algorithm compares only **dynamic** nodes and applies DOM operations.\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  T[\".vue template\"] --> C[\"Compiler: AST →<br/>render fn + patch flags\"]\n  C --> R[\"Render effect<br/>→ VNode tree\"]\n  R --> P{\"Patch: compare<br/>dynamic nodes only\"}\n  P --> D[DOM updates]\n  S[\"Static nodes<br/>hoisted, created once\"] -. skipped .-> P\n```\n\n**4. Internal implementation**\n\n- **Patch flags**: the compiler marks each dynamic node with what can change (`TEXT`, `CLASS`, `PROPS`), so the diff checks only that.\n- **Static hoisting**: fully static subtrees are created once and reused.\n- **Block tree**: each block keeps a flat array of its dynamic descendants, so diffing skips static structure entirely.\n- Keyed child lists use a **longest increasing subsequence** algorithm to move as few DOM nodes as possible.\n\n**5. Why is it designed this way?**\nTemplates are more analysable than hand-written JSX, so the compiler can tell the runtime exactly what can change → faster updates than a plain virtual DOM diff. Vue's experimental **Vapor mode** goes further by compiling to direct DOM updates without a virtual DOM.\n\n**6. Framework differences**\nReact diffs whole subtrees with no compiler hints (the React Compiler adds memoisation instead). Angular and Svelte compile templates to direct DOM instructions with no virtual DOM.\n\n**7. Practical example**\n\n```html\n<div class=\"card\">\n  <h2>Static title</h2>              <!-- hoisted: never diffed -->\n  <p>{{ price }}</p>                  <!-- patch flag TEXT: only textContent compared -->\n</div>\n```\n\n**8. How can I observe it?**\nPaste a template into the **Vue SFC Playground** (play.vuejs.org) → \"JS\" tab shows the compiled render function with patch flags and hoisted nodes. Vue DevTools shows component render timings.",
+      "summary": "What is it? Vue compiles each into a render function that returns virtual DOM nodes (VNodes). When a component re-renders, Vue patches the real DOM by comparing old and new VNodes — using hints from the compiler to skip anything static.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  T[\".vue template\"] --> C[\"Compiler: AST →<br/>render fn + patch flags\"]\n  C --> R[\"Render effect<br/>→ VNode tree\"]\n  R --> P{\"Patch: compare<br/>dynamic nodes only\"}\n  P --> D[DOM updates]\n  S[\"Static nodes<br/>hoisted, created once\"] -. skipped .-> P"
+        },
+        {
+          "language": "html",
+          "code": "<div class=\"card\">\n  <h2>Static title</h2>              <!-- hoisted: never diffed -->\n  <p>{{ price }}</p>                  <!-- patch flag TEXT: only textContent compared -->\n</div>"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Vue Internals"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "vue",
+        "template",
+        "compiler",
+        "virtual",
+        "dom",
+        "internally",
+        "render function",
+        "patches",
+        "sfc compiler",
+        "patch",
+        "dynamic",
+        "visual",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/03b-Frontend-Framework-Internals.md",
+        "startLine": 576,
+        "endLine": 624
+      },
+      "contentHash": "96e18b0b9c4d8526"
+    },
+    {
       "id": "practice/coding/01-javascript-coding.md#move-all-0s-to-the-end-without-changing-the-order-of-other",
       "kind": "question",
       "parentId": null,
@@ -62087,7 +62636,7 @@
       "parentId": null,
       "question": "Angular study path",
       "prompt": null,
-      "answer": "## Prerequisites\n\n- [TypeScript](../topics/typescript.md)\n- Overview: [Angular concepts](../../knowledge/concepts/angular/README.md)\n\n## 1. Angular\n\n1. [Our data table loads very slowly when there are thousands of rows. How would you improve its performance?](../../interview/backend/java/08-Architecture.md)\n2. [Scrolling the data table feels laggy. What would you check first?](../../interview/backend/java/08-Architecture.md)\n3. [Sorting and filtering freeze the UI for a moment. How would you fix this?](../../interview/backend/java/08-Architecture.md)\n4. [After adding a data-table library, the bundle size increased a lot. What would you do?](../../interview/backend/java/08-Architecture.md)\n5. [The data table is not needed on the home page, but it still affects load time. How would you handle this?](../../interview/backend/java/08-Architecture.md)\n6. [The table works fine locally but is slow in production. How would you debug this?](../../interview/backend/java/08-Architecture.md)\n7. [API responses are very large and slow down table loading. What would you suggest?](../../interview/backend/java/08-Architecture.md)\n8. [How would you verify if GZip compression is working?](../../interview/backend/java/08-Architecture.md)\n9. [Two users see different data in the table at the same time. How would you handle this?](../../interview/backend/java/08-Architecture.md)\n10. [Filters applied by one user should not affect another user. How would you ensure this?](../../interview/backend/java/08-Architecture.md)\n11. [The table data reloads again and again when navigating back. How would you optimize this?](../../interview/backend/java/08-Architecture.md)\n12. [How would you decide between using a table library or building your own?](../../interview/backend/java/08-Architecture.md)\n13. [A table library causes performance issues but is used across the app. What would you do?](../../interview/backend/java/08-Architecture.md)\n14. [The table shows user-generated content. How would you keep it secure?](../../interview/backend/java/08-Architecture.md)\n15. [How would you measure table performance in real user environments?](../../interview/backend/java/08-Architecture.md)\n16. [A fix for table performance needs major refactoring. How would you plan it?](../../interview/backend/java/08-Architecture.md)\n\n## 2. Part 1 — Angular Basics & Architecture\n\n1. [How would you describe Angular to someone coming from AngularJS — what are the fundamental differences?](../../interview/frontend/05-Angular-1.md)\n\n## 3. Part 2 — Components, Templates & Data Binding\n\n1. [What types of data binding does Angular support?](../../interview/frontend/05-Angular-1.md)\n2. [Can you walk me through the difference between Components and Directives in Angular?](../../interview/frontend/05-Angular-1.md)\n   - [Is every component a directive?](../../interview/frontend/05-Angular-1.md)\n   - [Can directives have lifecycle hooks?](../../interview/frontend/05-Angular-1.md)\n   - [Which directive manipulates DOM structure?](../../interview/frontend/05-Angular-1.md)\n3. [Can you explain ViewEncapsulation in Angular and the trade-offs between the available modes?](../../interview/frontend/05-Angular-1.md)\n4. [When would you use `::ng-deep` in Angular, and what are the risks of relying on it?](../../interview/frontend/05-Angular-1.md)\n\n## 4. Part 3 — Lifecycle Hooks\n\n1. [What are Angular lifecycle hooks?](../../interview/frontend/05-Angular-1.md)\n   - [Can you walk through a comprehensive lifecycle example?](../../interview/frontend/05-Angular-1.md)\n\n## 5. Part 4 — Directives\n\n1. [How do `*ngIf` and `*ngFor` work conceptually?](../../interview/frontend/05-Angular-1.md)\n   - [Why is `trackBy` important when rendering lists with `*ngFor`?](../../interview/frontend/05-Angular-1.md)\n2. [How do attribute directives work internally?](../../interview/frontend/05-Angular-1.md)\n3. [What are the new control flow blocks `@if`, `@for`, `@switch`?](../../interview/frontend/05-Angular-1.md)\n\n## 6. Part 5 — Modules & Standalone APIs\n\n1. [How do Standalone Components differ from NgModules?](../../interview/frontend/05-Angular-1.md)\n\n## 7. Part 6 — View & DOM Interaction\n\n1. [How does `@ViewChild` work, and when would you use it over other approaches to access child elements?](../../interview/frontend/05-Angular-1.md)\n2. [Why is direct DOM manipulation via `ElementRef` discouraged? Use `Renderer2` instead?](../../interview/frontend/05-Angular-1.md)\n\n## 8. Part 7 — Pipes\n\n1. [What are Angular pipes? Pure vs Impure?](../../interview/frontend/05-Angular-1.md)\n   - [Why are pure pipes preferred?](../../interview/frontend/05-Angular-1.md)\n   - [When would you use an impure pipe?](../../interview/frontend/05-Angular-1.md)\n   - [How do you create a custom pipe?](../../interview/frontend/05-Angular-1.md)\n   - [Should pipes perform async operations or API calls?](../../interview/frontend/05-Angular-1.md)\n   - [Is the `async` pipe pure or impure, and why is it safe?](../../interview/frontend/05-Angular-1.md)\n\n## 9. Part 8 — Dependency Injection (DI)\n\n1. [How does Angular's DI system and hierarchy work?](../../interview/frontend/05-Angular-1.md)\n   - [Difference between `providedIn: 'root'` vs `'any'` vs `'platform'`?](../../interview/frontend/05-Angular-1.md)\n   - [Can you explain multi-providers in Angular and give a real-world scenario where you'd use one?](../../interview/frontend/05-Angular-1.md)\n   - [What are Injection Tokens, and why are they required?](../../interview/frontend/05-Angular-1.md)\n   - [If a service is provided in both root and a lazy-loaded module, how many instances exist?](../../interview/frontend/05-Angular-1.md)\n\n## 10. Part 9 — Routing\n\n1. [What are the core concepts of Angular routing?](../../interview/frontend/05-Angular-1.md)\n   - [What are route guards and what types exist?](../../interview/frontend/05-Angular-1.md)\n   - [Difference between `CanActivate`, `CanLoad`, and `CanMatch`?](../../interview/frontend/05-Angular-1.md)\n   - [How do you configure lazy-loaded modules or routes?](../../interview/frontend/05-Angular-1.md)\n   - [How do you access route parameters and query parameters?](../../interview/frontend/05-Angular-1.md)\n\n## 11. Part 10 — Angular Forms\n\n1. [Differences between Template-driven and Reactive forms?](../../interview/frontend/05-Angular-1.md)\n2. [What happens when you mix `(ngModel)` with Reactive Forms?](../../interview/frontend/05-Angular-1.md)\n3. [How do you create a custom form control in Angular? (`ControlValueAccessor`)](../../interview/frontend/05-Angular-1.md)\n4. [How would you globally trim leading and trailing spaces from user input?](../../interview/frontend/05-Angular-1.md)\n5. [What are Signals in Angular?](../../interview/frontend/05-Angular-1.md)\n   - [What are signal inputs, outputs and other newer signal APIs?](../../interview/frontend/05-Angular-1.md)\n\n## 12. Part 1 — Change Detection & Zones\n\n1. [How does Angular's change detection mechanism work, and how did it evolve from AngularJS?](../../interview/frontend/05-Angular-2.md)\n\n## 13. Part 2 — The Angular Build System\n\n1. [Explain Angular's building tools and how they have evolved.](../../interview/frontend/05-Angular-2.md)\n\n## 14. Part 4 — HMR & Dev Server Internals\n\n1. [Can you walk me through how HMR works and how Angular integrates it into the dev server?](../../interview/frontend/05-Angular-2.md)\n   - [How do the Compiler and Bundler work together?](../../interview/frontend/05-Angular-2.md)\n\n## 15. Part 5 — Form State Persistence\n\n1. [How do you preserve form data on refresh but clear it on browser close?](../../interview/frontend/05-Angular-2.md)\n   - [How do you preserve form data on refresh based on user role?](../../interview/frontend/05-Angular-2.md)\n\n## 16. Part 6 — Architecture & API Concerns\n\n1. [How do you hide backend endpoints from the browser's Network tab?](../../interview/frontend/05-Angular-2.md)\n\n## 17. Part 7 — Version Migration & Deprecated Concepts\n\n1. [Can we jump from Angular 5 → Angular 19 directly?](../../interview/frontend/05-Angular-2.md)\n2. [Name some deprecated/removed concepts from Angular 5 → 19.](../../interview/frontend/05-Angular-2.md)\n\n## 18. Part 9 — RxJS in Angular\n\n1. [How does RxJS interact with Angular's Zones and Change Detection?](../../interview/frontend/06-RxJS.md)\n2. [How does Angular's `HttpClient` use RxJS?](../../interview/frontend/06-RxJS.md)\n3. [Trick: If you subscribe twice to the same `this.http.get(...)`, how many HTTP calls happen?](../../interview/frontend/06-RxJS.md)\n4. [How do you avoid multiple HTTP calls when many components need the same data?](../../interview/frontend/06-RxJS.md)\n5. [What does the `async` pipe do?](../../interview/frontend/06-RxJS.md)\n6. [When should you NOT use the `async` pipe?](../../interview/frontend/06-RxJS.md)\n7. [How would you model component state using RxJS?](../../interview/frontend/06-RxJS.md)\n8. [Example: How to debounce a search input in Angular?](../../interview/frontend/06-RxJS.md)\n9. [How does RxJS fit into NgRx?](../../interview/frontend/06-RxJS.md)\n\n## Practice\n\n1. [Build a small Angular application that manages users. It should load initial data from an API, allow CRUD operations, use forms, routing, dialogs, caching, and some custom Angular features. Explain your design decisions.](../../practice/coding/03-angular-coding.md)\n2. [You are building a search autocomplete. You must debounce user input, avoid multiple API calls, cache results for 5 minutes, and cancel stale requests. How would you design this in Angular using RxJS?](../../practice/coding/03-angular-coding.md)\n3. [Rebuild the autocomplete using Angular Signals + RxJS interop. How does it differ from the classic approach?](../../practice/coding/03-angular-coding.md)\n\n## Diagrams\n\n- [Angular_Lifecycle](../../knowledge/visual-notes/angular-lifecycle.png)\n\n## Related roles\n\n[Frontend Developer](../roles/frontend-developer.md) · [Full Stack Developer](../roles/full-stack-developer.md)",
+      "answer": "## Prerequisites\n\n- [TypeScript](../topics/typescript.md)\n- Overview: [Angular concepts](../../knowledge/concepts/angular/README.md)\n\n## 1. Angular\n\n1. [Our data table loads very slowly when there are thousands of rows. How would you improve its performance?](../../interview/backend/java/08-Architecture.md)\n2. [Scrolling the data table feels laggy. What would you check first?](../../interview/backend/java/08-Architecture.md)\n3. [Sorting and filtering freeze the UI for a moment. How would you fix this?](../../interview/backend/java/08-Architecture.md)\n4. [After adding a data-table library, the bundle size increased a lot. What would you do?](../../interview/backend/java/08-Architecture.md)\n5. [The data table is not needed on the home page, but it still affects load time. How would you handle this?](../../interview/backend/java/08-Architecture.md)\n6. [The table works fine locally but is slow in production. How would you debug this?](../../interview/backend/java/08-Architecture.md)\n7. [API responses are very large and slow down table loading. What would you suggest?](../../interview/backend/java/08-Architecture.md)\n8. [How would you verify if GZip compression is working?](../../interview/backend/java/08-Architecture.md)\n9. [Two users see different data in the table at the same time. How would you handle this?](../../interview/backend/java/08-Architecture.md)\n10. [Filters applied by one user should not affect another user. How would you ensure this?](../../interview/backend/java/08-Architecture.md)\n11. [The table data reloads again and again when navigating back. How would you optimize this?](../../interview/backend/java/08-Architecture.md)\n12. [How would you decide between using a table library or building your own?](../../interview/backend/java/08-Architecture.md)\n13. [A table library causes performance issues but is used across the app. What would you do?](../../interview/backend/java/08-Architecture.md)\n14. [The table shows user-generated content. How would you keep it secure?](../../interview/backend/java/08-Architecture.md)\n15. [How would you measure table performance in real user environments?](../../interview/backend/java/08-Architecture.md)\n16. [A fix for table performance needs major refactoring. How would you plan it?](../../interview/backend/java/08-Architecture.md)\n\n## 2. Part 1 — Angular Basics & Architecture\n\n1. [How would you describe Angular to someone coming from AngularJS — what are the fundamental differences?](../../interview/frontend/05-Angular-1.md)\n\n## 3. Part 2 — Components, Templates & Data Binding\n\n1. [What types of data binding does Angular support?](../../interview/frontend/05-Angular-1.md)\n2. [Can you walk me through the difference between Components and Directives in Angular?](../../interview/frontend/05-Angular-1.md)\n   - [Is every component a directive?](../../interview/frontend/05-Angular-1.md)\n   - [Can directives have lifecycle hooks?](../../interview/frontend/05-Angular-1.md)\n   - [Which directive manipulates DOM structure?](../../interview/frontend/05-Angular-1.md)\n3. [Can you explain ViewEncapsulation in Angular and the trade-offs between the available modes?](../../interview/frontend/05-Angular-1.md)\n4. [When would you use `::ng-deep` in Angular, and what are the risks of relying on it?](../../interview/frontend/05-Angular-1.md)\n\n## 4. Part 3 — Lifecycle Hooks\n\n1. [What are Angular lifecycle hooks?](../../interview/frontend/05-Angular-1.md)\n   - [Can you walk through a comprehensive lifecycle example?](../../interview/frontend/05-Angular-1.md)\n\n## 5. Part 4 — Directives\n\n1. [How do `*ngIf` and `*ngFor` work conceptually?](../../interview/frontend/05-Angular-1.md)\n   - [Why is `trackBy` important when rendering lists with `*ngFor`?](../../interview/frontend/05-Angular-1.md)\n2. [How do attribute directives work internally?](../../interview/frontend/05-Angular-1.md)\n3. [What are the new control flow blocks `@if`, `@for`, `@switch`?](../../interview/frontend/05-Angular-1.md)\n\n## 6. Part 5 — Modules & Standalone APIs\n\n1. [How do Standalone Components differ from NgModules?](../../interview/frontend/05-Angular-1.md)\n\n## 7. Part 6 — View & DOM Interaction\n\n1. [How does `@ViewChild` work, and when would you use it over other approaches to access child elements?](../../interview/frontend/05-Angular-1.md)\n2. [Why is direct DOM manipulation via `ElementRef` discouraged? Use `Renderer2` instead?](../../interview/frontend/05-Angular-1.md)\n\n## 8. Part 7 — Pipes\n\n1. [What are Angular pipes? Pure vs Impure?](../../interview/frontend/05-Angular-1.md)\n   - [Why are pure pipes preferred?](../../interview/frontend/05-Angular-1.md)\n   - [When would you use an impure pipe?](../../interview/frontend/05-Angular-1.md)\n   - [How do you create a custom pipe?](../../interview/frontend/05-Angular-1.md)\n   - [Should pipes perform async operations or API calls?](../../interview/frontend/05-Angular-1.md)\n   - [Is the `async` pipe pure or impure, and why is it safe?](../../interview/frontend/05-Angular-1.md)\n\n## 9. Part 8 — Dependency Injection (DI)\n\n1. [How does Angular's DI system and hierarchy work?](../../interview/frontend/05-Angular-1.md)\n   - [Difference between `providedIn: 'root'` vs `'any'` vs `'platform'`?](../../interview/frontend/05-Angular-1.md)\n   - [Can you explain multi-providers in Angular and give a real-world scenario where you'd use one?](../../interview/frontend/05-Angular-1.md)\n   - [What are Injection Tokens, and why are they required?](../../interview/frontend/05-Angular-1.md)\n   - [If a service is provided in both root and a lazy-loaded module, how many instances exist?](../../interview/frontend/05-Angular-1.md)\n\n## 10. Part 9 — Routing\n\n1. [What are the core concepts of Angular routing?](../../interview/frontend/05-Angular-1.md)\n   - [What are route guards and what types exist?](../../interview/frontend/05-Angular-1.md)\n   - [Difference between `CanActivate`, `CanLoad`, and `CanMatch`?](../../interview/frontend/05-Angular-1.md)\n   - [How do you configure lazy-loaded modules or routes?](../../interview/frontend/05-Angular-1.md)\n   - [How do you access route parameters and query parameters?](../../interview/frontend/05-Angular-1.md)\n\n## 11. Part 10 — Angular Forms\n\n1. [Differences between Template-driven and Reactive forms?](../../interview/frontend/05-Angular-1.md)\n2. [What happens when you mix `(ngModel)` with Reactive Forms?](../../interview/frontend/05-Angular-1.md)\n3. [How do you create a custom form control in Angular? (`ControlValueAccessor`)](../../interview/frontend/05-Angular-1.md)\n4. [How would you globally trim leading and trailing spaces from user input?](../../interview/frontend/05-Angular-1.md)\n5. [What are Signals in Angular?](../../interview/frontend/05-Angular-1.md)\n   - [What are signal inputs, outputs and other newer signal APIs?](../../interview/frontend/05-Angular-1.md)\n\n## 12. Part 1 — Change Detection & Zones\n\n1. [How does Angular's change detection mechanism work, and how did it evolve from AngularJS?](../../interview/frontend/05-Angular-2.md)\n\n## 13. Part 2 — The Angular Build System\n\n1. [Explain Angular's building tools and how they have evolved.](../../interview/frontend/05-Angular-2.md)\n\n## 14. Part 4 — HMR & Dev Server Internals\n\n1. [Can you walk me through how HMR works and how Angular integrates it into the dev server?](../../interview/frontend/05-Angular-2.md)\n   - [How do the Compiler and Bundler work together?](../../interview/frontend/05-Angular-2.md)\n\n## 15. Part 5 — Form State Persistence\n\n1. [How do you preserve form data on refresh but clear it on browser close?](../../interview/frontend/05-Angular-2.md)\n   - [How do you preserve form data on refresh based on user role?](../../interview/frontend/05-Angular-2.md)\n\n## 16. Part 6 — Architecture & API Concerns\n\n1. [How do you hide backend endpoints from the browser's Network tab?](../../interview/frontend/05-Angular-2.md)\n\n## 17. Part 7 — Version Migration & Deprecated Concepts\n\n1. [Can we jump from Angular 5 → Angular 19 directly?](../../interview/frontend/05-Angular-2.md)\n2. [Name some deprecated/removed concepts from Angular 5 → 19.](../../interview/frontend/05-Angular-2.md)\n\n## 18. Part 9 — RxJS in Angular\n\n1. [How does RxJS interact with Angular's Zones and Change Detection?](../../interview/frontend/06-RxJS.md)\n2. [How does Angular's `HttpClient` use RxJS?](../../interview/frontend/06-RxJS.md)\n3. [Trick: If you subscribe twice to the same `this.http.get(...)`, how many HTTP calls happen?](../../interview/frontend/06-RxJS.md)\n4. [How do you avoid multiple HTTP calls when many components need the same data?](../../interview/frontend/06-RxJS.md)\n5. [What does the `async` pipe do?](../../interview/frontend/06-RxJS.md)\n6. [When should you NOT use the `async` pipe?](../../interview/frontend/06-RxJS.md)\n7. [How would you model component state using RxJS?](../../interview/frontend/06-RxJS.md)\n8. [Example: How to debounce a search input in Angular?](../../interview/frontend/06-RxJS.md)\n9. [How does RxJS fit into NgRx?](../../interview/frontend/06-RxJS.md)\n\n## 19. Angular Internals\n\n1. [How do Angular application bootstrap and compilation work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n2. [How does Angular Dependency Injection work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n3. [How does the Angular component lifecycle work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n4. [How do Angular Change Detection and Signals work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n5. [How do the Angular Router and lazy loading work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n6. [How do Angular HttpClient and HTTP Interceptors work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n\n## Practice\n\n1. [Build a small Angular application that manages users. It should load initial data from an API, allow CRUD operations, use forms, routing, dialogs, caching, and some custom Angular features. Explain your design decisions.](../../practice/coding/03-angular-coding.md)\n2. [You are building a search autocomplete. You must debounce user input, avoid multiple API calls, cache results for 5 minutes, and cancel stale requests. How would you design this in Angular using RxJS?](../../practice/coding/03-angular-coding.md)\n3. [Rebuild the autocomplete using Angular Signals + RxJS interop. How does it differ from the classic approach?](../../practice/coding/03-angular-coding.md)\n\n## Diagrams\n\n- [Angular_Lifecycle](../../knowledge/visual-notes/angular-lifecycle.png)\n\n## Related roles\n\n[Frontend Developer](../roles/frontend-developer.md) · [Full Stack Developer](../roles/full-stack-developer.md)",
       "summary": "",
       "codeBlocks": [],
       "visuals": [],
@@ -62122,9 +62671,9 @@
       "source": {
         "path": "roadmap/topics/angular.md",
         "startLine": 2,
-        "endLine": 149
+        "endLine": 158
       },
-      "contentHash": "75dc3250ea16cdfa"
+      "contentHash": "9a61e97fe6ad9e8e"
     },
     {
       "id": "roadmap/topics/aws.md#roadmap",
@@ -62838,7 +63387,7 @@
       "parentId": null,
       "question": "React study path",
       "prompt": null,
-      "answer": "## Prerequisites\n\n- [JavaScript](../topics/javascript.md)\n- Overview: [React concepts](../../knowledge/concepts/react/README.md)\n\n## 1. Questions\n\n1. [What are the main differences between React class components and function components?](../../interview/frontend/06-React.md)\n2. [Explain React Hooks rules. What happens if you break them?](../../interview/frontend/06-React.md)\n3. [How does React’s reconciliation (diffing) algorithm work?](../../interview/frontend/06-React.md)\n4. [Why are keys important in lists? What are bad keys?](../../interview/frontend/06-React.md)\n5. [What is `useEffect` and common pitfalls?](../../interview/frontend/06-React.md)\n6. [What’s the difference between `useEffect` and `useLayoutEffect`?](../../interview/frontend/06-React.md)\n7. [Explain `useMemo` and `useCallback`. When to use them?](../../interview/frontend/06-React.md)\n8. [What is React’s Strict Mode and why might effects run twice in dev?](../../interview/frontend/06-React.md)\n9. [Explain React 18 concurrent rendering in simple terms.](../../interview/frontend/06-React.md)\n10. [What is `Suspense` and how is it used?](../../interview/frontend/06-React.md)\n11. [How does server-side rendering (SSR) work with React?](../../interview/frontend/06-React.md)\n12. [What is hydration and what can go wrong?](../../interview/frontend/06-React.md)\n13. [How do you manage global state in a large React app?](../../interview/frontend/06-React.md)\n14. [What are common performance optimization techniques in React?](../../interview/frontend/06-React.md)\n15. [Explain controlled vs uncontrolled components in forms.](../../interview/frontend/06-React.md)\n16. [How do you handle errors in React components?](../../interview/frontend/06-React.md)\n17. [How do you test React components?](../../interview/frontend/06-React.md)\n18. [What are custom hooks and why use them?](../../interview/frontend/06-React.md)\n19. [How do you handle authentication flows in React?](../../interview/frontend/06-React.md)\n20. [How to avoid prop drilling?](../../interview/frontend/06-React.md)\n21. [Explain “lifting state up” with an example.](../../interview/frontend/06-React.md)\n22. [What is `React.forwardRef` and when to use it?](../../interview/frontend/06-React.md)\n23. [What is the difference between `useRef` and `useState`?](../../interview/frontend/06-React.md)\n24. [How do you handle large lists efficiently in React?](../../interview/frontend/06-React.md)\n25. [How do you ensure accessibility (a11y) in React apps?](../../interview/frontend/06-React.md)\n26. [How do you prevent unnecessary re-renders in child components?](../../interview/frontend/06-React.md)\n27. [What’s the difference between `ReactDOM.render` and `createRoot`?](../../interview/frontend/06-React.md)\n28. [How do you organize a large-scale React project?](../../interview/frontend/06-React.md)\n29. [How do you handle side effects like API calls in React?](../../interview/frontend/06-React.md)\n30. [Explain a “trick” question: Why doesn’t this state update immediately?](../../interview/frontend/06-React.md)\n31. [Trick: What’s wrong with this effect?](../../interview/frontend/06-React.md)\n32. [Trick: Why is this component re-rendering even with `React.memo`?](../../interview/frontend/06-React.md)\n33. [How do you type React components and hooks with TypeScript?](../../interview/frontend/06-React.md)\n34. [How do you implement code-splitting in React?](../../interview/frontend/06-React.md)\n35. [How do you debounce or throttle events in React?](../../interview/frontend/06-React.md)\n36. [How do you make a reusable modal component in React?](../../interview/frontend/06-React.md)\n37. [How do you implement dark/light theme toggling?](../../interview/frontend/06-React.md)\n38. [How do you handle file uploads in React?](../../interview/frontend/06-React.md)\n39. [How do you secure a React app against XSS?](../../interview/frontend/06-React.md)\n40. [What's new in React 19?](../../interview/frontend/06-React.md)\n   - [What is the React Compiler?](../../interview/frontend/06-React.md)\n41. [How do you debug React performance issues?](../../interview/frontend/06-React.md)\n\n## Related roles\n\n[Forward Deployed Engineer](../roles/forward-deployed-engineer.md) · [Frontend Developer](../roles/frontend-developer.md) · [Full Stack Developer](../roles/full-stack-developer.md) · [Mobile Developer](../roles/mobile-developer.md)",
+      "answer": "## Prerequisites\n\n- [JavaScript](../topics/javascript.md)\n- Overview: [React concepts](../../knowledge/concepts/react/README.md)\n\n## 1. 06-React\n\n1. [What are the main differences between React class components and function components?](../../interview/frontend/06-React.md)\n2. [Explain React Hooks rules. What happens if you break them?](../../interview/frontend/06-React.md)\n3. [How does React’s reconciliation (diffing) algorithm work?](../../interview/frontend/06-React.md)\n4. [Why are keys important in lists? What are bad keys?](../../interview/frontend/06-React.md)\n5. [What is `useEffect` and common pitfalls?](../../interview/frontend/06-React.md)\n6. [What’s the difference between `useEffect` and `useLayoutEffect`?](../../interview/frontend/06-React.md)\n7. [Explain `useMemo` and `useCallback`. When to use them?](../../interview/frontend/06-React.md)\n8. [What is React’s Strict Mode and why might effects run twice in dev?](../../interview/frontend/06-React.md)\n9. [Explain React 18 concurrent rendering in simple terms.](../../interview/frontend/06-React.md)\n10. [What is `Suspense` and how is it used?](../../interview/frontend/06-React.md)\n11. [How does server-side rendering (SSR) work with React?](../../interview/frontend/06-React.md)\n12. [What is hydration and what can go wrong?](../../interview/frontend/06-React.md)\n13. [How do you manage global state in a large React app?](../../interview/frontend/06-React.md)\n14. [What are common performance optimization techniques in React?](../../interview/frontend/06-React.md)\n15. [Explain controlled vs uncontrolled components in forms.](../../interview/frontend/06-React.md)\n16. [How do you handle errors in React components?](../../interview/frontend/06-React.md)\n17. [How do you test React components?](../../interview/frontend/06-React.md)\n18. [What are custom hooks and why use them?](../../interview/frontend/06-React.md)\n19. [How do you handle authentication flows in React?](../../interview/frontend/06-React.md)\n20. [How to avoid prop drilling?](../../interview/frontend/06-React.md)\n21. [Explain “lifting state up” with an example.](../../interview/frontend/06-React.md)\n22. [What is `React.forwardRef` and when to use it?](../../interview/frontend/06-React.md)\n23. [What is the difference between `useRef` and `useState`?](../../interview/frontend/06-React.md)\n24. [How do you handle large lists efficiently in React?](../../interview/frontend/06-React.md)\n25. [How do you ensure accessibility (a11y) in React apps?](../../interview/frontend/06-React.md)\n26. [How do you prevent unnecessary re-renders in child components?](../../interview/frontend/06-React.md)\n27. [What’s the difference between `ReactDOM.render` and `createRoot`?](../../interview/frontend/06-React.md)\n28. [How do you organize a large-scale React project?](../../interview/frontend/06-React.md)\n29. [How do you handle side effects like API calls in React?](../../interview/frontend/06-React.md)\n30. [Explain a “trick” question: Why doesn’t this state update immediately?](../../interview/frontend/06-React.md)\n31. [Trick: What’s wrong with this effect?](../../interview/frontend/06-React.md)\n32. [Trick: Why is this component re-rendering even with `React.memo`?](../../interview/frontend/06-React.md)\n33. [How do you type React components and hooks with TypeScript?](../../interview/frontend/06-React.md)\n34. [How do you implement code-splitting in React?](../../interview/frontend/06-React.md)\n35. [How do you debounce or throttle events in React?](../../interview/frontend/06-React.md)\n36. [How do you make a reusable modal component in React?](../../interview/frontend/06-React.md)\n37. [How do you implement dark/light theme toggling?](../../interview/frontend/06-React.md)\n38. [How do you handle file uploads in React?](../../interview/frontend/06-React.md)\n39. [How do you secure a React app against XSS?](../../interview/frontend/06-React.md)\n40. [What's new in React 19?](../../interview/frontend/06-React.md)\n   - [What is the React Compiler?](../../interview/frontend/06-React.md)\n41. [How do you debug React performance issues?](../../interview/frontend/06-React.md)\n\n## 2. React Internals\n\n1. [How do React's Virtual DOM and Reconciliation work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n2. [How does React's Fiber architecture work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n3. [How do React Hooks and component rendering work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n\n## Related roles\n\n[Forward Deployed Engineer](../roles/forward-deployed-engineer.md) · [Frontend Developer](../roles/frontend-developer.md) · [Full Stack Developer](../roles/full-stack-developer.md) · [Mobile Developer](../roles/mobile-developer.md)",
       "summary": "",
       "codeBlocks": [],
       "visuals": [],
@@ -62873,9 +63422,9 @@
       "source": {
         "path": "roadmap/topics/react.md",
         "startLine": 2,
-        "endLine": 57
+        "endLine": 63
       },
-      "contentHash": "1c8090455268081b"
+      "contentHash": "be941d8f1d34fa3b"
     },
     {
       "id": "roadmap/topics/README.md#roadmap",
@@ -63321,7 +63870,7 @@
       "parentId": null,
       "question": "Under the Hood study path",
       "prompt": null,
-      "answer": "## Prerequisites\n\n- None. This is a starting point.\n- Overview: [Under the Hood concepts](../../knowledge/concepts/under-the-hood/README.md)\n\n## 1. Source Code to Machine Code\n\n1. [How does human-readable source code eventually become machine instructions?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n2. [What are the differences between Compiler, Interpreter, Assembler, Linker and Runtime?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n3. [What are Bytecode, Intermediate Representation (IR), Assembly Language and Machine Code?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n4. [What are AOT, JIT and interpretation? How do they differ?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n5. [How do JVM, CLR and JavaScript engines execute programs internally?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n6. [How do programming languages interact with the CPU and memory?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n7. [How does frontend code (JavaScript, TypeScript, Dart, WebAssembly) become machine code in the browser?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n8. [How do frontend frameworks (Angular, React, Vue, Svelte, Next.js) get from source code to running in the browser?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n9. [How do different programming languages implement compilation, execution and memory management?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n10. [Do backend frameworks (Spring Boot, Django, Express, ASP.NET Core) compile code themselves?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n\n## 2. CPU and Memory Hierarchy\n\n1. [How does a CPU execute instructions?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n2. [How do CPU registers, L1/L2/L3 cache, RAM and disk interact?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n3. [What exactly is stored in Stack and Heap memory?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n4. [Can the CPU directly access heap memory? How does a program access objects in RAM?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n5. [How does memory allocation and deallocation work?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n6. [How does Garbage Collection identify unused objects?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n\n## 3. Processes, Threads and Scheduling\n\n1. [How do Processes and Threads work internally?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n2. [How does Context Switching happen?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n3. [How does an operating system execute multiple applications simultaneously?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n\n## 4. Virtual Memory\n\n1. [How do Virtual Memory, Paging and Memory Protection work?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n\n## 5. Loading and Rendering a Page\n\n1. [What happens internally when we enter a URL and open a website?](../../interview/under-the-hood/03a-Browser-Internals.md)\n2. [How does a browser convert HTML, CSS and JavaScript into a rendered webpage?](../../interview/under-the-hood/03a-Browser-Internals.md)\n3. [How do DOM, CSSOM, Render Tree, Layout and Paint work together?](../../interview/under-the-hood/03a-Browser-Internals.md)\n\n## 6. JavaScript in the Browser\n\n1. [How does JavaScript execute inside a browser?](../../interview/under-the-hood/03a-Browser-Internals.md)\n2. [How do Call Stack, Event Loop, Microtask Queue and Task Queue work?](../../interview/under-the-hood/03a-Browser-Internals.md)\n3. [How does asynchronous JavaScript execute without blocking the UI?](../../interview/under-the-hood/03a-Browser-Internals.md)\n4. [How does a browser determine which UI elements need updating?](../../interview/under-the-hood/03a-Browser-Internals.md)\n5. [How do Angular, React and Vue detect changes and update the DOM?](../../interview/under-the-hood/03a-Browser-Internals.md)\n\n## 7. Network, Build and Storage\n\n1. [How does a frontend application communicate with a backend?](../../interview/under-the-hood/03a-Browser-Internals.md)\n2. [How do bundlers, Tree Shaking and Code Splitting work?](../../interview/under-the-hood/03a-Browser-Internals.md)\n3. [How do Browser Cache, Cookies, LocalStorage, SessionStorage and IndexedDB work?](../../interview/under-the-hood/03a-Browser-Internals.md)\n4. [How do Browser Tabs and Web Workers work internally?](../../interview/under-the-hood/03a-Browser-Internals.md)\n\n## Diagrams\n\n- [Frontend programming languages: source to machine code](../../knowledge/visual-notes/01_frontend_programming_languages.png)\n- [Frontend frameworks and libraries: build and execution path](../../knowledge/visual-notes/02_frontend_frameworks.png)\n- [Backend programming languages: source, artifact, runtime and execution](../../knowledge/visual-notes/03_backend_programming_languages.png)\n- [Backend frameworks and platforms: source, compiler and runtime](../../knowledge/visual-notes/04_backend_frameworks.png)\n\n## Related roles\n\n[Platform Engineer](../roles/platform-engineer.md)",
+      "answer": "## Prerequisites\n\n- None. This is a starting point.\n- Overview: [Under the Hood concepts](../../knowledge/concepts/under-the-hood/README.md)\n\n## 1. Source Code to Machine Code\n\n1. [How does human-readable source code eventually become machine instructions?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n2. [What are the differences between Compiler, Interpreter, Assembler, Linker and Runtime?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n3. [What are Bytecode, Intermediate Representation (IR), Assembly Language and Machine Code?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n4. [What are AOT, JIT and interpretation? How do they differ?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n5. [How do JVM, CLR and JavaScript engines execute programs internally?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n6. [How do programming languages interact with the CPU and memory?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n7. [How does frontend code (JavaScript, TypeScript, Dart, WebAssembly) become machine code in the browser?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n8. [How do frontend frameworks (Angular, React, Vue, Svelte, Next.js) get from source code to running in the browser?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n9. [How do different programming languages implement compilation, execution and memory management?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n10. [Do backend frameworks (Spring Boot, Django, Express, ASP.NET Core) compile code themselves?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n\n## 2. CPU and Memory Hierarchy\n\n1. [How does a CPU execute instructions?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n2. [How do CPU registers, L1/L2/L3 cache, RAM and disk interact?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n3. [What exactly is stored in Stack and Heap memory?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n4. [Can the CPU directly access heap memory? How does a program access objects in RAM?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n5. [How does memory allocation and deallocation work?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n6. [How does Garbage Collection identify unused objects?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n\n## 3. Processes, Threads and Scheduling\n\n1. [How do Processes and Threads work internally?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n2. [How does Context Switching happen?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n3. [How does an operating system execute multiple applications simultaneously?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n\n## 4. Virtual Memory\n\n1. [How do Virtual Memory, Paging and Memory Protection work?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n\n## 5. Loading and Rendering a Page\n\n1. [What happens internally when we enter a URL and open a website?](../../interview/under-the-hood/03a-Browser-Internals.md)\n2. [How does a browser convert HTML, CSS and JavaScript into a rendered webpage?](../../interview/under-the-hood/03a-Browser-Internals.md)\n3. [How do DOM, CSSOM, Render Tree, Layout and Paint work together?](../../interview/under-the-hood/03a-Browser-Internals.md)\n\n## 6. JavaScript in the Browser\n\n1. [How does JavaScript execute inside a browser?](../../interview/under-the-hood/03a-Browser-Internals.md)\n2. [How do Call Stack, Event Loop, Microtask Queue and Task Queue work?](../../interview/under-the-hood/03a-Browser-Internals.md)\n3. [How does asynchronous JavaScript execute without blocking the UI?](../../interview/under-the-hood/03a-Browser-Internals.md)\n4. [How does a browser determine which UI elements need updating?](../../interview/under-the-hood/03a-Browser-Internals.md)\n5. [How do Angular, React and Vue detect changes and update the DOM?](../../interview/under-the-hood/03a-Browser-Internals.md)\n\n## 7. Network, Build and Storage\n\n1. [How does a frontend application communicate with a backend?](../../interview/under-the-hood/03a-Browser-Internals.md)\n2. [How do bundlers, Tree Shaking and Code Splitting work?](../../interview/under-the-hood/03a-Browser-Internals.md)\n3. [How do Browser Cache, Cookies, LocalStorage, SessionStorage and IndexedDB work?](../../interview/under-the-hood/03a-Browser-Internals.md)\n4. [How do Browser Tabs and Web Workers work internally?](../../interview/under-the-hood/03a-Browser-Internals.md)\n\n## 8. Angular Internals\n\n1. [How do Angular application bootstrap and compilation work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n2. [How does Angular Dependency Injection work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n3. [How does the Angular component lifecycle work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n4. [How do Angular Change Detection and Signals work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n5. [How do the Angular Router and lazy loading work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n6. [How do Angular HttpClient and HTTP Interceptors work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n\n## 9. React Internals\n\n1. [How do React's Virtual DOM and Reconciliation work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n2. [How does React's Fiber architecture work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n3. [How do React Hooks and component rendering work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n\n## 10. Vue Internals\n\n1. [How does Vue's reactivity system work internally (dependency tracking and Proxies)?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n2. [How do Vue's template compiler and Virtual DOM work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n\n## Diagrams\n\n- [Frontend programming languages: source to machine code](../../knowledge/visual-notes/01_frontend_programming_languages.png)\n- [Frontend frameworks and libraries: build and execution path](../../knowledge/visual-notes/02_frontend_frameworks.png)\n- [Backend programming languages: source, artifact, runtime and execution](../../knowledge/visual-notes/03_backend_programming_languages.png)\n- [Backend frameworks and platforms: source, compiler and runtime](../../knowledge/visual-notes/04_backend_frameworks.png)\n\n## Related roles\n\n[Platform Engineer](../roles/platform-engineer.md)",
       "summary": "",
       "codeBlocks": [],
       "visuals": [],
@@ -63355,9 +63904,9 @@
       "source": {
         "path": "roadmap/topics/under-the-hood.md",
         "startLine": 2,
-        "endLine": 72
+        "endLine": 92
       },
-      "contentHash": "f9ddb019262848ea"
+      "contentHash": "41a10171ee2462d0"
     },
     {
       "id": "roadmap/topics/web-architecture.md#roadmap",

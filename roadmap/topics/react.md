@@ -6,7 +6,7 @@
 - [JavaScript](../topics/javascript.md)
 - Overview: [React concepts](../../knowledge/concepts/react/README.md)
 
-## 1. Questions
+## 1. 06-React
 
 1. [What are the main differences between React class components and function components?](../../interview/frontend/06-React.md)
 2. [Explain React Hooks rules. What happens if you break them?](../../interview/frontend/06-React.md)
@@ -50,6 +50,12 @@
 40. [What's new in React 19?](../../interview/frontend/06-React.md)
    - [What is the React Compiler?](../../interview/frontend/06-React.md)
 41. [How do you debug React performance issues?](../../interview/frontend/06-React.md)
+
+## 2. React Internals
+
+1. [How do React's Virtual DOM and Reconciliation work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)
+2. [How does React's Fiber architecture work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)
+3. [How do React Hooks and component rendering work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)
 
 ## Related roles
 
