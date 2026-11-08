@@ -175,7 +175,17 @@
     </div>
   </div>
 
-  <div class="overlay lightbox" id="lightbox" hidden><img alt="" id="lightbox-img" /><button class="icon-btn" type="button" data-action="close-overlay" aria-label="Close"><svg class="icon"><use href="#i-x"></use></svg></button></div>
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Zoomed image" hidden>
+    <div class="lightbox-stage" id="lightbox-stage"><div class="lightbox-content" id="lightbox-content"></div></div>
+    <div class="lightbox-tools" role="toolbar" aria-label="Zoom">
+      <button type="button" data-zoom="out" aria-label="Zoom out" title="Zoom out (−)">−</button>
+      <button type="button" class="lightbox-level" id="lightbox-level" data-zoom="fit" title="Fit to screen (0)">100%</button>
+      <button type="button" data-zoom="in" aria-label="Zoom in" title="Zoom in (+)">+</button>
+      <button type="button" class="lightbox-text" data-zoom="actual" title="Actual size (1)">1:1</button>
+      <span class="lightbox-sep"></span>
+      <button type="button" data-zoom="close" aria-label="Close" title="Close (Esc)"><svg class="icon"><use href="#i-x"></use></svg></button>
+    </div>
+  </div>
   <div class="toasts" id="toasts" aria-live="polite"></div>
 </body>
 </html>

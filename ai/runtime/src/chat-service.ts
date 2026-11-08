@@ -19,7 +19,7 @@ import type { QuestionEntry } from "./question-index-contracts.js";
 import { buildLearningPlan, buildOverview, buildTopicList, learningResources, LEARN_MORE_HEADING } from "./chat-guidance.js";
 import { composeFollowUpAnswer, looksLikeFollowUp, previousTurn } from "./chat-followup.js";
 import { TOPIC_DESCRIPTIONS, topicLabel } from "./topic-labels.js";
-import { getFollowUps, loadQuestionIndex } from "./question-index.js";
+import { getFollowUps, getNextQuestions, getQuestionsByTopic, isContextQuestion, loadQuestionIndex } from "./question-index.js";
 import { searchQuestions, type SearchConfidence, type SearchResult } from "./question-search.js";
 
 export const MAX_HISTORY_TURNS = 8;
@@ -129,11 +129,16 @@ async function* builtAnswer(
   };
 }
 
-/** Next steps after a topic overview: study, quiz, interview. Atlas sections have no study path. */
-function topicFollowUps(topic: string): string[] {
+/** Next steps after a topic overview: the topic's first questions, in the order the notes teach them. */
+async function topicFollowUps(topic: string): Promise<string[]> {
   if (ATLAS_TOPICS.has(topic)) return [];
-  const label = topicLabel(topic);
-  return [`${label} study path`, `Quiz me on ${label}`, `Prepare me for a ${label} interview`];
+  // Notes mainly about this topic first, then beginner questions, then the order they are written in.
+  const levels: Record<string, number> = { beginner: 0, intermediate: 2, advanced: 3 };
+  const rank = (entry: QuestionEntry) => (entry.topics[0] === topic ? 0 : 10) + (entry.difficulty ? levels[entry.difficulty] ?? 1 : 1);
+  const questions = (await getQuestionsByTopic(topic))
+    .filter(entry => entry.kind === "question" && !isContextQuestion(entry))
+    .sort((a, b) => rank(a) - rank(b) || a.source.path.localeCompare(b.source.path) || a.source.startLine - b.source.startLine);
+  return questions.slice(0, 3).map(entry => entry.question);
 }
 
 /** A search result with no hits, used as the frame for built answers. */
@@ -151,7 +156,7 @@ async function directAnswer(request: ChatRequest): Promise<AsyncGenerator<ChatEv
   if (!request.overview || request.overview === "roadmaps") return null;
   const overview = await buildOverview(request.overview);
   if (!overview) return null;
-  return builtAnswer(request, emptySearch({ mode: "browse" }), "overview", overview.markdown, topicFollowUps(request.overview));
+  return builtAnswer(request, emptySearch({ mode: "browse" }), "overview", overview.markdown, await topicFollowUps(request.overview));
 }
 
 /** Overviews show the main sections first; details come when the user opens one. */
@@ -167,7 +172,7 @@ async function overviewAnswer(
   }
   if (topics.length === 0) return null;
   const overview = await buildOverview(topics[0]);
-  return overview ? builtAnswer(request, search, "overview", overview.markdown, topicFollowUps(topics[0])) : null;
+  return overview ? builtAnswer(request, search, "overview", overview.markdown, await topicFollowUps(topics[0])) : null;
 }
 
 /** Intents a role card doesn't answer: they need the roadmap, a comparison or practice instead. */
@@ -330,7 +335,9 @@ export async function* runChat(request: ChatRequest, options: ChatOptions = {}):
     return;
   }
 
-  const followUpQuestions = evidence[0] ? (await getFollowUps(evidence[0].id)).map(entry => entry.question) : [];
+  const followUpQuestions = evidence[0]
+    ? [...(await getFollowUps(evidence[0].id)), ...(await getNextQuestions(evidence[0].id))].map(entry => entry.question)
+    : [];
   yield {
     type: "meta",
     query: request.message,

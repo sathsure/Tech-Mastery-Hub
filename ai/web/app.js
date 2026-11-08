@@ -1,6 +1,7 @@
 import { fetchCatalog, fetchEntry, searchNotes, streamChat } from "./api.js";
 import { escapeHtml, icon, markdownToText, renderMarkdown, withCardsAsText } from "./render.js";
 import { deleteConversation, getConversation, listConversations, newConversation, saveConversation } from "./store.js";
+import { openZoom } from "./zoom.js";
 
 const $ = selector => document.querySelector(selector);
 const thread = $("#thread");
@@ -798,20 +799,18 @@ const DATA_HANDLERS = [
   ["retry", value => retryAnswer(value)],
 ];
 
-function openLightbox(image) {
-  $("#lightbox-img").src = image.src;
-  $("#lightbox-img").alt = image.alt;
-  openOverlay("lightbox");
-}
-
 document.addEventListener("click", event => {
-  const target = event.target.closest("button, img.md-img, .overlay");
-  if (!target) return;
+  const target = event.target.closest("button, img.md-img, .diagram-svg, .overlay");
+  if (!target || target.closest("#lightbox")) return;
   if (target.classList.contains("overlay")) {
     if (event.target === target) closeOverlays();
     return;
   }
-  if (target.matches("img.md-img")) return openLightbox(target);
+  if (target.matches("img.md-img, .diagram-svg")) {
+    // An image inside a link should zoom, not navigate away.
+    event.preventDefault();
+    return openZoom(target);
+  }
   const action = ACTIONS[target.dataset.action];
   if (action) return action();
   const handler = DATA_HANDLERS.find(([key]) => target.dataset[key] !== undefined);
