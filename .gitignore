@@ -25,3 +25,10 @@ coverage/
 # OS files
 .DS_Store
 Thumbs.db
+
+# Local runtime output (recreated automatically)
+ai/runtime/state/
+ai/knowledge-index/reindex-audit.jsonl
+
+# Personal notes
+Bug Fixes & UX.txt
