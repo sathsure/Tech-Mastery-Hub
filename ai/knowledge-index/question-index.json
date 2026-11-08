@@ -1,18 +1,18 @@
 {
   "schema_version": "1.0.0",
   "repository": "Tech-Mastery-Hub",
-  "generated_at": "2026-11-08T15:44:21.419Z",
-  "source_fingerprint": "1e13a96802abe087a9dfa227f4e5bbcf9712726fefc38ee42e99cf779006582c",
+  "generated_at": "2026-11-08T16:00:14.567Z",
+  "source_fingerprint": "03c178da87eff88bb08b11e976c4dc8f42a2bcf9829a15152a715f86cb03e8ef",
   "stats": {
-    "files": 142,
-    "entries": 2037,
-    "questions": 1110,
+    "files": 143,
+    "entries": 2047,
+    "questions": 1120,
     "followUps": 311,
     "notes": 84,
     "roles": 74,
     "terms": 378,
     "roadmaps": 80,
-    "codeBlocks": 1363,
+    "codeBlocks": 1380,
     "visuals": 86,
     "missingVisuals": 0
   },
@@ -503,6 +503,17 @@
     },
     {
       "path": "interview/under-the-hood/01-Languages-Compilers-Execution.md",
+      "questions": 10,
+      "followUps": 0,
+      "notes": 0,
+      "roles": 0,
+      "terms": 0,
+      "roadmaps": 0,
+      "withoutAnswer": 0,
+      "missingVisuals": 0
+    },
+    {
+      "path": "interview/under-the-hood/02-OS-CPU-Memory.md",
       "questions": 10,
       "followUps": 0,
       "notes": 0,
@@ -52527,6 +52538,474 @@
       "contentHash": "33bc9c7520705e60"
     },
     {
+      "id": "interview/under-the-hood/02-OS-CPU-Memory.md#how-does-a-cpu-execute-instructions",
+      "kind": "question",
+      "parentId": null,
+      "question": "How does a CPU execute instructions?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nA CPU repeatedly **fetches** an instruction from memory, **decodes** what it means, and **executes** it (add, compare, load, store, jump). Billions of times per second.\n\n**2. How does it work internally?**\n\n1. **Fetch** — read the instruction at the address in the **instruction pointer** (RIP on x86-64, PC on ARM).\n2. **Decode** — work out the operation and operands; x86 instructions are split into simpler **micro-ops**.\n3. **Execute** — the **ALU** (arithmetic unit) computes, or the load/store unit talks to memory.\n4. **Write back** — the result goes into a **register**.\n5. The instruction pointer moves to the next instruction (or jumps, for `if`/loops/calls).\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  IP[\"Instruction pointer<br/>address 0x401000\"] --> F[\"Fetch<br/>from L1 instruction cache\"]\n  F --> D[\"Decode<br/>→ micro-ops\"]\n  D --> E[\"Execute<br/>ALU / load-store unit\"]\n  E --> W[\"Write back<br/>to registers\"]\n  W --> IP\n```\n\n**4. Internal implementation**\n\n- **Pipelining** — like an assembly line: while one instruction executes, the next is decoded and the one after is fetched.\n- **Out-of-order execution** — the CPU runs later instructions early if their inputs are ready, then commits results in program order (reorder buffer).\n- **Branch prediction** — the CPU guesses which way an `if` goes and runs ahead; a wrong guess flushes the pipeline (~15–20 cycles lost).\n- **Superscalar** — several execution units, so 4+ instructions can finish per cycle.\n\n**5. Why is it designed this way?**\nClock speeds stopped rising around 4–5 GHz, so CPUs get faster by doing more work per cycle (pipelines, out-of-order, multiple cores). Cost: complex hardware, and speculation enabled security bugs like Spectre.\n\n**6. Language differences**\nThe CPU doesn't know the language. C, Rust and Go run as native instructions; Java, C# and JavaScript run as JIT-generated native instructions for hot code; CPython's interpreter loop is itself native code that executes your bytecode.\n\n**7. Practical example**\n\n```java\nfor (int x : data) if (x >= 128) sum += x;\n```\n\nOn **sorted** data the branch is predictable and the loop is several times faster than on random data — same instructions, different branch prediction.\n\n**8. How can I observe it?**\n\n- Linux `perf stat ./app` → `instructions`, `cycles` (IPC = instructions per cycle), `branch-misses`.\n- Compiler Explorer (godbolt.org) shows the instructions; Intel VTune / AMD uProf show pipeline stalls.",
+      "summary": "What is it? A CPU repeatedly fetches an instruction from memory, decodes what it means, and executes it (add, compare, load, store, jump). Billions of times per second.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  IP[\"Instruction pointer<br/>address 0x401000\"] --> F[\"Fetch<br/>from L1 instruction cache\"]\n  F --> D[\"Decode<br/>→ micro-ops\"]\n  D --> E[\"Execute<br/>ALU / load-store unit\"]\n  E --> W[\"Write back<br/>to registers\"]\n  W --> IP"
+        },
+        {
+          "language": "java",
+          "code": "for (int x : data) if (x >= 128) sum += x;"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "CPU and Memory Hierarchy"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "cpu",
+        "execute",
+        "instructions",
+        "fetches",
+        "decodes",
+        "executes",
+        "fetch",
+        "instruction pointer",
+        "decode",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/02-OS-CPU-Memory.md",
+        "startLine": 7,
+        "endLine": 57
+      },
+      "contentHash": "cb47d09197feed1c"
+    },
+    {
+      "id": "interview/under-the-hood/02-OS-CPU-Memory.md#how-do-cpu-registers-l1-l2-l3-cache-ram-and-disk-interact",
+      "kind": "question",
+      "parentId": null,
+      "question": "How do CPU registers, L1/L2/L3 cache, RAM and disk interact?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nA **memory hierarchy**: small and fast near the CPU, big and slow further away. Data moves up the hierarchy when it is used.\n\n| Level | Typical size | Typical latency |\n|---|---|---|\n| Registers | ~16 general-purpose (x86-64) | ~0.3 ns |\n| L1 cache (per core) | 32–64 KB | ~1 ns |\n| L2 cache (per core) | 256 KB–2 MB | ~3–5 ns |\n| L3 cache (shared) | 8–64 MB | ~10–20 ns |\n| RAM | 8–128 GB | ~80–100 ns |\n| SSD | TBs | ~50–100 µs |\n\n**2. How does it work internally?**\n\n1. An instruction needs data at an address.\n2. Check **L1** → miss → **L2** → miss → **L3** → miss → **RAM**.\n3. The data comes back as a whole **64-byte cache line** and is stored in each level on the way.\n4. If the page isn't in RAM at all, a **page fault** makes the OS read it from disk.\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  REG[Registers] <--> L1[\"L1<br/>per core\"] <--> L2[\"L2<br/>per core\"] <--> L3[\"L3<br/>shared\"] <--> RAM[(RAM)] <-. \"page fault /<br/>swap\" .-> DISK[(SSD / disk)]\n```\n\n**4. Internal implementation**\n\n- Caches are **set-associative**: an address maps to a small set of slots; the oldest line in the set is evicted (approximate LRU).\n- **Write-back**: writes go to the cache and reach RAM later, when the line is evicted.\n- **Cache coherence (MESI protocol)**: when one core writes a line, other cores' copies are invalidated, so all cores see the same value.\n- **Prefetchers** detect sequential access and fetch the next lines early.\n\n**5. Why is it designed this way?**\nFast memory is expensive and must be physically close to the core. Most programs reuse recent data (**temporal locality**) and nearby data (**spatial locality**), so small caches catch most accesses (often 95%+ hit rate).\n\n**6. Language differences**\nLanguages that lay data out **contiguously** (C/C++/Rust/Go structs and arrays, Java `int[]`) use caches well. A Java `ArrayList<Integer>` or Python list holds **pointers** to objects scattered on the heap → more cache misses.\n\n**7. Practical example**\n\n```java\nint[][] m = new int[4096][4096];\nfor (int i...) for (int j...) sum += m[i][j];   // row by row: fast (sequential)\nfor (int j...) for (int i...) sum += m[i][j];   // column by column: often 5-10x slower (cache misses)\n```\n\n**8. How can I observe it?**\n\n- `perf stat -e cache-references,cache-misses ./app` (Linux); Intel VTune memory analysis.\n- `lscpu` (Linux) or Task Manager → Performance → CPU shows your L1/L2/L3 sizes.",
+      "summary": "What is it? A memory hierarchy: small and fast near the CPU, big and slow further away. Data moves up the hierarchy when it is used.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  REG[Registers] <--> L1[\"L1<br/>per core\"] <--> L2[\"L2<br/>per core\"] <--> L3[\"L3<br/>shared\"] <--> RAM[(RAM)] <-. \"page fault /<br/>swap\" .-> DISK[(SSD / disk)]"
+        },
+        {
+          "language": "java",
+          "code": "int[][] m = new int[4096][4096];\nfor (int i...) for (int j...) sum += m[i][j];   // row by row: fast (sequential)\nfor (int j...) for (int i...) sum += m[i][j];   // column by column: often 5-10x slower (cache misses)"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "CPU and Memory Hierarchy"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "cpu",
+        "registers",
+        "l1",
+        "l2",
+        "l3",
+        "cache",
+        "ram",
+        "disk",
+        "interact",
+        "memory hierarchy",
+        "64-byte cache line",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/02-OS-CPU-Memory.md",
+        "startLine": 61,
+        "endLine": 115
+      },
+      "contentHash": "791109cab4104e8d"
+    },
+    {
+      "id": "interview/under-the-hood/02-OS-CPU-Memory.md#what-exactly-is-stored-in-stack-and-heap-memory",
+      "kind": "question",
+      "parentId": null,
+      "question": "What exactly is stored in Stack and Heap memory?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nTwo regions of a program's memory:\n\n- **Stack** — one per thread. Holds **call frames**: local variables, parameters, return addresses. Freed automatically when a function returns.\n- **Heap** — shared by all threads. Holds data whose size or lifetime isn't tied to one function call (objects, arrays, strings).\n\n**2. How does it work internally?**\n\n1. Calling a function pushes a **frame**: the **stack pointer** register just moves down by the frame size.\n2. Locals live in that frame (or in registers).\n3. `new` / `malloc` asks the heap allocator for a block and returns its **address**.\n4. Returning pops the frame (stack pointer moves back). Heap blocks stay until freed (manually, by ownership rules or by GC).\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  subgraph Stack[\"Stack (thread 1)\"]\n    F2[\"frame: createUser()<br/>name = ref → heap<br/>age = 30\"]\n    F1[\"frame: main()<br/>user = ref → heap\"]\n  end\n  subgraph Heap\n    U[\"User object<br/>{name, age}\"]\n    S[\"String Asha\"]\n  end\n  F1 -- reference --> U\n  U --> S\n  F2 -- reference --> S\n```\n\n**4. Internal implementation**\n\n- Stack allocation = one pointer subtraction: extremely fast, no fragmentation. Size is fixed per thread (e.g. 512 KB–1 MB default for Java threads; `-Xss`). Too deep recursion → **StackOverflowError**.\n- Heap allocation needs an allocator (free lists, size classes) or a GC with bump-pointer allocation.\n- **Java**: primitives and references in frames live on the stack; all objects on the heap. The JIT's **escape analysis** can avoid heap allocation for objects that never leave a method.\n\n**5. Why is it designed this way?**\nMost data is short-lived and tied to a call → the stack handles it for free. Data that must outlive a call or be shared needs the heap, which is flexible but costs allocation time and cleanup.\n\n**6. Language differences**\n\n| Language | Stack | Heap |\n|---|---|---|\n| C / C++ | Locals, structs, arrays by value | `malloc` / `new`; you free it |\n| Rust | Values by default | `Box`, `Vec`, `String`; freed by ownership |\n| Go | Compiler decides by **escape analysis** | Escaping values; GC frees |\n| Java | Primitives + references | All objects; GC frees |\n| C# | Locals, value types (`struct`) | Class instances; GC frees |\n| Python / JS | Interpreter's own frames | Essentially every value is a heap object |\n\n**7. Practical example**\n\n```java\nint total(int[] prices) {          // 'prices' (a reference) is in this frame\n    int sum = 0;                   // 'sum' in this frame (or a register)\n    for (int p : prices) sum += p;\n    return sum;                    // frame popped; the array stays on the heap while referenced\n}\n```\n\n**8. How can I observe it?**\n\n- Java: IntelliJ debugger \"Frames\" (stack) and \"Variables\"; VisualVM heap dump (heap).\n- Chrome DevTools: Sources → Call Stack panel; Memory → heap snapshot.\n- Go: `go build -gcflags=-m` prints which variables \"escape to heap\".",
+      "summary": "What is it? Two regions of a program's memory:",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  subgraph Stack[\"Stack (thread 1)\"]\n    F2[\"frame: createUser()<br/>name = ref → heap<br/>age = 30\"]\n    F1[\"frame: main()<br/>user = ref → heap\"]\n  end\n  subgraph Heap\n    U[\"User object<br/>{name, age}\"]\n    S[\"String Asha\"]\n  end\n  F1 -- reference --> U\n  U --> S\n  F2 -- reference --> S"
+        },
+        {
+          "language": "java",
+          "code": "int total(int[] prices) {          // 'prices' (a reference) is in this frame\n    int sum = 0;                   // 'sum' in this frame (or a register)\n    for (int p : prices) sum += p;\n    return sum;                    // frame popped; the array stays on the heap while referenced\n}"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "CPU and Memory Hierarchy"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "exactly",
+        "stored",
+        "stack",
+        "heap",
+        "memory",
+        "call frames",
+        "frame",
+        "stack pointer",
+        "address",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/02-OS-CPU-Memory.md",
+        "startLine": 119,
+        "endLine": 187
+      },
+      "contentHash": "2e716e4159e16aa5"
+    },
+    {
+      "id": "interview/under-the-hood/02-OS-CPU-Memory.md#can-the-cpu-directly-access-heap-memory-how-does-a-program",
+      "kind": "question",
+      "parentId": null,
+      "question": "Can the CPU directly access heap memory? How does a program access objects in RAM?",
+      "prompt": null,
+      "answer": "**1. What is it?**\n**Yes.** The heap is ordinary memory; the CPU reads it with normal load/store instructions. But every address a program uses is a **virtual address** that hardware translates to a physical RAM address.\n\n**2. How does it work internally?**\n\n1. Your variable holds a **reference/pointer** = a virtual address (e.g. `0x7f3a1c00`).\n2. Reading `user.age` becomes: load from `address + offset of age`.\n3. The **MMU** (Memory Management Unit) translates virtual → physical, first checking the **TLB** (a cache of recent translations).\n4. TLB miss → the hardware walks the **page tables** (4 levels on x86-64).\n5. With the physical address, the data comes from L1/L2/L3 or RAM.\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  I[\"mov eax, [rbx+12]<br/>read user.age\"] --> VA[\"Virtual address<br/>0x7f3a1c0c\"]\n  VA --> TLB{\"TLB hit?\"}\n  TLB -- yes --> PA[Physical address]\n  TLB -- no --> PW[\"Page-table walk<br/>4 levels\"] --> PA\n  PA --> C{\"In L1/L2/L3?\"}\n  C -- yes --> R[Value in register]\n  C -- no --> RAM[(RAM)] --> R\n```\n\n**4. Internal implementation**\n\n- An object is a block of bytes; each field sits at a **fixed offset** decided by the compiler/runtime (Java object header ~12–16 bytes, then fields).\n- Java uses **compressed oops**: 32-bit references scaled ×8, so heaps up to ~32 GB use half the memory per reference.\n- Moving GCs relocate objects and **update every reference** to them, so references stay valid.\n\n**5. Why is it designed this way?**\nVirtual addresses give each process a private, protected address space and let the OS place pages anywhere in RAM (or on disk). The TLB keeps translation cheap for the common case.\n\n**6. Language differences**\n\n- **C/C++** — raw pointers; pointer arithmetic allowed; invalid pointers → crashes or security bugs.\n- **Rust** — references checked at compile time; raw pointers only in `unsafe`.\n- **Java / C# / Go / JS / Python** — references you can't do arithmetic on; runtime prevents invalid access (`NullPointerException` instead of reading random memory).\n\n**7. Practical example**\n\n```java\nUser u = new User(\"Asha\", 30);   // u = reference (address) to a heap object\nint a = u.age;                   // JIT emits: load [u + offset_of_age]\n```\n\n**8. How can I observe it?**\n\n- Java: **JOL** (Java Object Layout) prints field offsets and object sizes: `ClassLayout.parseClass(User.class).toPrintable()`.\n- C: `printf(\"%p\", &x)` prints virtual addresses; run twice — ASLR changes them.\n- Linux `perf stat -e dTLB-load-misses ./app`.",
+      "summary": "What is it? Yes. The heap is ordinary memory; the CPU reads it with normal load/store instructions. But every address a program uses is a virtual address that hardware translates to a physical RAM address.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  I[\"mov eax, [rbx+12]<br/>read user.age\"] --> VA[\"Virtual address<br/>0x7f3a1c0c\"]\n  VA --> TLB{\"TLB hit?\"}\n  TLB -- yes --> PA[Physical address]\n  TLB -- no --> PW[\"Page-table walk<br/>4 levels\"] --> PA\n  PA --> C{\"In L1/L2/L3?\"}\n  C -- yes --> R[Value in register]\n  C -- no --> RAM[(RAM)] --> R"
+        },
+        {
+          "language": "java",
+          "code": "User u = new User(\"Asha\", 30);   // u = reference (address) to a heap object\nint a = u.age;                   // JIT emits: load [u + offset_of_age]"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "CPU and Memory Hierarchy"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "cpu",
+        "directly",
+        "access",
+        "heap",
+        "memory",
+        "program",
+        "objects",
+        "ram",
+        "yes",
+        "virtual address",
+        "reference/pointer",
+        "mmu",
+        "tlb",
+        "page tables",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/02-OS-CPU-Memory.md",
+        "startLine": 191,
+        "endLine": 245
+      },
+      "contentHash": "0dccf96dcb3ded3b"
+    },
+    {
+      "id": "interview/under-the-hood/02-OS-CPU-Memory.md#how-does-memory-allocation-and-deallocation-work",
+      "kind": "question",
+      "parentId": null,
+      "question": "How does memory allocation and deallocation work?",
+      "prompt": null,
+      "answer": "**1. What is it?**\n**Allocation** = finding a free block of memory big enough for new data. **Deallocation** = returning it so it can be reused. Done by an **allocator** (C/C++/Rust) or a **managed runtime** (Java, C#, Go, JS, Python).\n\n**2. How does it work internally?**\n\n1. The program asks for N bytes (`malloc(64)`, `new User()`).\n2. The allocator looks in its **free lists** / **size classes** for a fitting block.\n3. If none, it asks the OS for more memory (`mmap`/`brk` on Linux, `VirtualAlloc` on Windows), in big chunks.\n4. It returns the block's address.\n5. On free (or when GC finds it dead), the block goes back to a free list (or the region is reclaimed in bulk).\n\n**3. Visual**\n\n```mermaid\nflowchart TD\n  A[\"new / malloc(64)\"] --> B{\"Free block of<br/>this size class?\"}\n  B -- yes --> C[Return its address]\n  B -- no --> D[\"Ask OS for more pages<br/>mmap / VirtualAlloc\"] --> E[Split into blocks] --> C\n  F[\"free() / GC finds it dead\"] --> G[Block back to free list]\n  G -.-> B\n```\n\n**4. Internal implementation**\n\n- **malloc** (glibc ptmalloc, jemalloc, tcmalloc, mimalloc): size classes, per-thread caches to avoid locks, large blocks straight from `mmap`.\n- **JVM**: each thread gets a **TLAB** (Thread-Local Allocation Buffer); allocating is a **bump pointer** — add the size to a pointer. Almost as fast as stack allocation.\n- **Fragmentation**: free memory split into small holes. Compacting GCs (Java, .NET, V8) move live objects together to fix it; `malloc` can't move blocks.\n\n**5. Why is it designed this way?**\nAsking the OS for every allocation would be very slow (system calls), so allocators grab large chunks and manage them in user space. Bump-pointer + compacting GC makes allocation cheap, at the cost of GC work later.\n\n**6. Language differences**\n\n| Language | Allocate | Free |\n|---|---|---|\n| C | `malloc` | `free` (manual) |\n| C++ | `new`, `make_unique` | `delete` or destructor (RAII) |\n| Rust | `Box::new`, `Vec` | Automatic `drop` when owner goes out of scope |\n| Java / C# | `new` (TLAB bump pointer) | Tracing GC |\n| Go | Compiler escape analysis + size-class allocator | Concurrent GC |\n| Python | `pymalloc` for small objects | Reference count hits 0 (+ cycle GC) |\n\n**7. Practical example**\n\n```c\nchar *buf = malloc(1024);   // allocator returns a block address\nstrcpy(buf, \"hi\");\nfree(buf);                  // block returns to the free list\n// using buf now = \"use after free\" bug\n```\n\n**8. How can I observe it?**\n\n- C/C++: **Valgrind** or AddressSanitizer (`-fsanitize=address`) find leaks and use-after-free.\n- Java: VisualVM / JFR \"Allocation\" view; `-Xlog:gc` shows heap before/after each GC.\n- Windows: Process Explorer → Private Bytes growing steadily = possible leak.",
+      "summary": "What is it? Allocation = finding a free block of memory big enough for new data. Deallocation = returning it so it can be reused. Done by an allocator (C/C++/Rust) or a managed runtime (Java, C#, Go, JS, Python).",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart TD\n  A[\"new / malloc(64)\"] --> B{\"Free block of<br/>this size class?\"}\n  B -- yes --> C[Return its address]\n  B -- no --> D[\"Ask OS for more pages<br/>mmap / VirtualAlloc\"] --> E[Split into blocks] --> C\n  F[\"free() / GC finds it dead\"] --> G[Block back to free list]\n  G -.-> B"
+        },
+        {
+          "language": "c",
+          "code": "char *buf = malloc(1024);   // allocator returns a block address\nstrcpy(buf, \"hi\");\nfree(buf);                  // block returns to the free list\n// using buf now = \"use after free\" bug"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "CPU and Memory Hierarchy"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "memory",
+        "allocation",
+        "deallocation",
+        "allocator",
+        "managed runtime",
+        "free lists",
+        "size classes",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/02-OS-CPU-Memory.md",
+        "startLine": 249,
+        "endLine": 308
+      },
+      "contentHash": "9f8e44c7e39412e3"
+    },
+    {
+      "id": "interview/under-the-hood/02-OS-CPU-Memory.md#how-does-garbage-collection-identify-unused-objects",
+      "kind": "question",
+      "parentId": null,
+      "question": "How does Garbage Collection identify unused objects?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nA **garbage collector** frees heap objects the program can no longer use, so you don't call `free`. \"Unused\" means **unreachable**: no chain of references leads to it from the running program.\n\n**2. How does it work internally?**\nTracing GC (Java, C#, Go, JavaScript):\n\n1. Start from **GC roots**: local variables in thread stacks, static fields, CPU registers, JNI handles.\n2. **Mark** every object reachable by following references.\n3. Everything not marked is garbage → **sweep** (add to free list) or **compact/copy** live objects together.\n\nReference counting (CPython): each object counts references to it; at 0 it is freed immediately; a separate cycle detector handles A↔B loops.\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  R1[\"Root: local var 'order'\"] --> O[Order]\n  R2[\"Root: static cache\"] --> C[Customer]\n  O --> I[Item list]\n  O --> C\n  X1[Old Cart] --> X2[Old Item]\n  X2 --> X1\n  style X1 fill:#fde2e1\n  style X2 fill:#fde2e1\n```\n\nRed objects reference each other but nothing reachable points to them → garbage (a tracing GC frees cycles).\n\n**4. Internal implementation**\n\n- **Tri-colour marking**: white (not seen), grey (seen, children not scanned), black (done). Lets marking run **concurrently** with the program.\n- **Write barriers**: small code the JIT adds to every reference write, so the GC notices changes made while it marks.\n- **Generational GC**: most objects die young, so the **young generation** is collected often by copying survivors; **card tables** track old→young references so the GC doesn't scan the whole old generation.\n\n**5. Why is it designed this way?**\nReachability is safe: an unreachable object can never be used again. Generations make collection cheap because young garbage is cheap to discard. Costs: CPU time, extra memory headroom, and pauses (modern collectors like ZGC keep them to around a millisecond).\n\n**6. Language differences**\n\n| Runtime | Method |\n|---|---|\n| Java (HotSpot) | Generational tracing: G1 default; ZGC, Shenandoah for low pause |\n| C# (.NET) | Generational tracing (gen 0/1/2 + large object heap) |\n| Go | Concurrent mark-sweep, **non-generational**, non-moving |\n| JavaScript (V8) | Generational: young gen copying (Scavenger), old gen mark-compact (Orinoco) |\n| Python (CPython) | Reference counting + generational cycle collector |\n| Rust / C / C++ | No GC (ownership / manual / RAII) |\n\n**7. Practical example**\n\n```java\nList<byte[]> cache = new ArrayList<>();   // static field → a GC root\nvoid handle() {\n    byte[] tmp = new byte[1024];          // unreachable after return → collected\n    cache.add(new byte[1024]);            // reachable from the root forever → \"memory leak\" in Java\n}\n```\n\n**8. How can I observe it?**\n\n- Java: `-Xlog:gc*` or VisualVM \"Monitor\" tab (heap sawtooth = normal GC); heap dump → Eclipse MAT \"dominator tree\" finds what keeps objects alive.\n- Chrome DevTools → Memory → compare two heap snapshots to find leaks.\n- Python: `import gc; gc.get_count()`; `sys.getrefcount(obj)`.",
+      "summary": "What is it? A garbage collector frees heap objects the program can no longer use, so you don't call free. \"Unused\" means unreachable: no chain of references leads to it from the running program.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  R1[\"Root: local var 'order'\"] --> O[Order]\n  R2[\"Root: static cache\"] --> C[Customer]\n  O --> I[Item list]\n  O --> C\n  X1[Old Cart] --> X2[Old Item]\n  X2 --> X1\n  style X1 fill:#fde2e1\n  style X2 fill:#fde2e1"
+        },
+        {
+          "language": "java",
+          "code": "List<byte[]> cache = new ArrayList<>();   // static field → a GC root\nvoid handle() {\n    byte[] tmp = new byte[1024];          // unreachable after return → collected\n    cache.add(new byte[1024]);            // reachable from the root forever → \"memory leak\" in Java\n}"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "CPU and Memory Hierarchy"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "garbage",
+        "collection",
+        "identify",
+        "unused",
+        "objects",
+        "garbage collector",
+        "unreachable",
+        "gc roots",
+        "mark",
+        "sweep",
+        "compact/copy",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/02-OS-CPU-Memory.md",
+        "startLine": 312,
+        "endLine": 378
+      },
+      "contentHash": "9e55c06b93f3185f"
+    },
+    {
+      "id": "interview/under-the-hood/02-OS-CPU-Memory.md#how-do-processes-and-threads-work-internally",
+      "kind": "question",
+      "parentId": null,
+      "question": "How do Processes and Threads work internally?",
+      "prompt": null,
+      "answer": "**1. What is it?**\n\n- **Process** — a running program with its **own** virtual address space, open files and resources. Isolated from other processes.\n- **Thread** — a path of execution **inside** a process. Threads share the process's memory (heap, code) but each has its **own stack and registers**.\n\n**2. How does it work internally?**\n\n1. Starting a program: the OS creates a process (`fork`+`exec` on Linux, `CreateProcess` on Windows), sets up its page tables, loads the code, and starts the **main thread**.\n2. Creating a thread (`pthread_create`, `new Thread().start()`): the OS allocates a stack and a **thread control block** (saved registers, state, priority).\n3. The **scheduler** picks which threads run on which CPU cores.\n\n**3. Visual**\n\n```mermaid\nflowchart TB\n  subgraph P1[\"Process A (own address space)\"]\n    H1[(Heap + code + globals)]\n    T1[\"Thread 1<br/>stack + registers\"] --> H1\n    T2[\"Thread 2<br/>stack + registers\"] --> H1\n  end\n  subgraph P2[\"Process B (separate address space)\"]\n    H2[(Heap + code + globals)]\n    T3[\"Thread 1\"] --> H2\n  end\n  K[\"OS kernel: scheduler,<br/>page tables, process/thread tables\"] --> P1\n  K --> P2\n```\n\n**4. Internal implementation**\n\n- Linux represents both as `task_struct`; threads are tasks that share the same memory map (`clone` with `CLONE_VM`).\n- Each process has its own **page tables** → address `0x1000` in A and in B are different physical memory.\n- Threads talk through shared memory (needs locks); processes talk through **IPC**: pipes, sockets, shared memory segments.\n\n**5. Why is it designed this way?**\nProcesses give **isolation** (a crash or bug in one can't corrupt another). Threads give **cheap concurrency** within one program (shared data, no copying). Trade-off: shared memory → race conditions; processes → heavier and slower to communicate.\n\n**6. Language differences**\n\n| Language | Concurrency unit | Maps to |\n|---|---|---|\n| Java | `Thread` (platform); **virtual threads** (Java 21) | 1 OS thread; many virtual threads on few OS threads |\n| C# | Threads + `async/await` tasks on a thread pool | OS threads |\n| Go | **Goroutines** | Many goroutines on few OS threads (M:N scheduler) |\n| JavaScript | One main thread + event loop; Web Workers / worker_threads | Each worker = separate thread + isolate |\n| Python | Threads, but the **GIL** lets one run Python code at a time (optional free-threaded build since 3.13); `multiprocessing` for CPU work | OS threads / processes |\n| Rust / C++ | `std::thread` | OS threads |\n\n**7. Practical example**\nA Spring Boot app is **one process** (the JVM) with many threads: Tomcat request threads (`http-nio-8080-exec-1…`), GC threads, JIT compiler threads.\n\n**8. How can I observe it?**\n\n- Windows **Process Explorer**: a process → Properties → Threads tab.\n- Java: `jcmd <pid> Thread.print` or VisualVM → Threads.\n- Linux: `ps -eLf` (threads), `top -H -p <pid>`.",
+      "summary": "Process — a running program with its own virtual address space, open files and resources. Isolated from other processes. Thread — a path of execution inside a process. Threads share the process's memory (heap, code) but each has its own stack and registers.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart TB\n  subgraph P1[\"Process A (own address space)\"]\n    H1[(Heap + code + globals)]\n    T1[\"Thread 1<br/>stack + registers\"] --> H1\n    T2[\"Thread 2<br/>stack + registers\"] --> H1\n  end\n  subgraph P2[\"Process B (separate address space)\"]\n    H2[(Heap + code + globals)]\n    T3[\"Thread 1\"] --> H2\n  end\n  K[\"OS kernel: scheduler,<br/>page tables, process/thread tables\"] --> P1\n  K --> P2"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Processes, Threads and Scheduling"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "processes",
+        "threads",
+        "internally",
+        "process",
+        "own",
+        "thread",
+        "inside",
+        "own stack and registers",
+        "main thread",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/02-OS-CPU-Memory.md",
+        "startLine": 384,
+        "endLine": 443
+      },
+      "contentHash": "288186b49074b5f7"
+    },
+    {
+      "id": "interview/under-the-hood/02-OS-CPU-Memory.md#how-does-context-switching-happen",
+      "kind": "question",
+      "parentId": null,
+      "question": "How does Context Switching happen?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nA **context switch** is the OS pausing one thread on a CPU core and resuming another. The \"context\" is everything needed to continue later: registers, instruction pointer, stack pointer.\n\n**2. How does it work internally?**\n\n1. Trigger: a **timer interrupt** (time slice used up), the thread **blocks** (waiting for I/O or a lock), or a higher-priority thread becomes ready.\n2. The CPU jumps into the kernel and saves the current thread's registers into its kernel data.\n3. The **scheduler** picks the next thread to run.\n4. If it belongs to a **different process**, the CPU switches page tables (CR3 register on x86).\n5. The new thread's registers are restored and it continues exactly where it stopped.\n\n**3. Visual**\n\n```mermaid\nsequenceDiagram\n  participant A as Thread A\n  participant K as Kernel scheduler\n  participant B as Thread B\n  A->>K: Timer interrupt / blocks on I/O\n  K->>K: Save A's registers, IP, SP\n  K->>K: Pick next thread (B)\n  K->>K: Switch page tables if B is another process\n  K->>B: Restore B's registers, jump to its IP\n  Note over A: A waits until scheduled again\n```\n\n**4. Internal implementation**\n\n- Linux scheduler: **CFS** (Completely Fair Scheduler) for years, replaced by **EEVDF** in kernel 6.6; it picks the thread that has had the least fair share of CPU.\n- Direct cost: ~1–5 µs. Hidden cost: the new thread finds cold **caches and TLB** (PCID on x86 avoids a full TLB flush).\n- Switching between threads of the **same** process is cheaper (no page-table switch).\n\n**5. Why is it designed this way?**\nPreemption (forced switching) means one busy or stuck thread can't freeze the whole machine. The cost is overhead — which is why thousands of OS threads perform badly, and why runtimes added lightweight threads.\n\n**6. Language differences**\nUser-space scheduling avoids kernel switches: **Go goroutines**, **Java virtual threads**, **Kotlin coroutines**, **C#/JS/Python async** switch tasks inside the runtime when they wait, which is much cheaper than an OS context switch.\n\n**7. Practical example**\nA Tomcat thread calls a slow database. While it waits on the socket, the OS switches that core to another request thread. With Java 21 virtual threads, the JVM instead **unmounts** the virtual thread and runs another one on the same OS thread — no OS context switch.\n\n**8. How can I observe it?**\n\n- Linux: `vmstat 1` (column `cs` = context switches/second), `pidstat -w`.\n- Windows: Performance Monitor → \"Context Switches/sec\"; Process Explorer → thread \"Context Switch Delta\".",
+      "summary": "What is it? A context switch is the OS pausing one thread on a CPU core and resuming another. The \"context\" is everything needed to continue later: registers, instruction pointer, stack pointer.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "sequenceDiagram\n  participant A as Thread A\n  participant K as Kernel scheduler\n  participant B as Thread B\n  A->>K: Timer interrupt / blocks on I/O\n  K->>K: Save A's registers, IP, SP\n  K->>K: Pick next thread (B)\n  K->>K: Switch page tables if B is another process\n  K->>B: Restore B's registers, jump to its IP\n  Note over A: A waits until scheduled again"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Processes, Threads and Scheduling"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "context",
+        "switching",
+        "happen",
+        "context switch",
+        "timer interrupt",
+        "blocks",
+        "scheduler",
+        "different process",
+        "visual",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/02-OS-CPU-Memory.md",
+        "startLine": 447,
+        "endLine": 495
+      },
+      "contentHash": "1ad33893ddbe521b"
+    },
+    {
+      "id": "interview/under-the-hood/02-OS-CPU-Memory.md#how-does-an-operating-system-execute-multiple-applications",
+      "kind": "question",
+      "parentId": null,
+      "question": "How does an operating system execute multiple applications simultaneously?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nTwo mechanisms combined:\n\n- **Parallelism** — different threads run **at the same instant** on different CPU cores.\n- **Time-sharing (concurrency)** — each core switches between threads every few milliseconds, so it *looks* simultaneous.\n\n**2. How does it work internally?**\n\n1. Every thread is either **running**, **ready** (waiting for a core) or **blocked** (waiting for I/O, a lock, a timer).\n2. The scheduler keeps **run queues** of ready threads per core.\n3. Each core runs a thread until its time slice ends, it blocks, or something more important arrives.\n4. Blocked threads use no CPU; when their I/O completes, an interrupt moves them back to ready.\n\n**3. Visual**\n\n```mermaid\nstateDiagram-v2\n  [*] --> Ready\n  Ready --> Running: scheduler picks it\n  Running --> Ready: time slice ends\n  Running --> Blocked: waits for disk / network / lock\n  Blocked --> Ready: I/O done (interrupt)\n  Running --> [*]: exits\n```\n\n**4. Internal implementation**\n\n- Per-core run queues + **load balancing** that moves threads between cores.\n- **Priorities** and fairness (Linux EEVDF, Windows priority-based preemptive scheduler with boosts for the foreground window).\n- **DMA** (Direct Memory Access): disks and network cards copy data into RAM without the CPU, then raise an interrupt.\n\n**5. Why is it designed this way?**\nMost programs spend most time **waiting** (user input, disk, network). Giving the CPU to someone else while waiting keeps cores busy and the UI responsive.\n\n**6. Language differences**\nAt OS level every language's threads are scheduled the same way. The difference is **how many OS threads** a program uses: Node.js uses one main thread plus a small pool; Java/C# traditionally one thread per request; Go multiplexes goroutines onto ~one OS thread per core.\n\n**7. Practical example**\nAn 8-core laptop running Chrome, IntelliJ and Spotify may have **3,000+ threads**, but at most 8 (or 16 with hyper-threading) run at any instant; the rest are ready or, mostly, blocked.\n\n**8. How can I observe it?**\n\n- Windows Task Manager → Performance → CPU: \"Processes\", \"Threads\" counts and per-core graphs.\n- Linux `htop`: per-core usage; `uptime` load average = average number of running + ready threads.",
+      "summary": "What is it? Two mechanisms combined:",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "stateDiagram-v2\n  [*] --> Ready\n  Ready --> Running: scheduler picks it\n  Running --> Ready: time slice ends\n  Running --> Blocked: waits for disk / network / lock\n  Blocked --> Ready: I/O done (interrupt)\n  Running --> [*]: exits"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Processes, Threads and Scheduling"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "operating",
+        "system",
+        "execute",
+        "multiple",
+        "applications",
+        "simultaneously",
+        "parallelism",
+        "at the same instant",
+        "time-sharing (concurrency)",
+        "running",
+        "ready",
+        "blocked",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/02-OS-CPU-Memory.md",
+        "startLine": 499,
+        "endLine": 546
+      },
+      "contentHash": "4327a33d1fc05acc"
+    },
+    {
+      "id": "interview/under-the-hood/02-OS-CPU-Memory.md#how-do-virtual-memory-paging-and-memory-protection-work",
+      "kind": "question",
+      "parentId": null,
+      "question": "How do Virtual Memory, Paging and Memory Protection work?",
+      "prompt": null,
+      "answer": "**1. What is it?**\n\n- **Virtual memory** — each process sees its own private address space, as if it had all memory to itself.\n- **Paging** — that space is split into fixed-size **pages** (usually 4 KB) mapped to physical **frames** in RAM, or not loaded at all.\n- **Memory protection** — each page has permissions (read/write/execute, user/kernel), enforced by hardware.\n\n**2. How does it work internally?**\n\n1. The OS builds **page tables** for each process: virtual page → physical frame + permission bits.\n2. On every access, the MMU translates the address (cached in the TLB).\n3. Page **not present** → **page fault** → the OS loads it (from the executable, a file, or swap), updates the table, retries the instruction.\n4. Permission violated (write to read-only, execute data, user touching kernel memory) → the OS kills the access: **segmentation fault** / **access violation**.\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  subgraph PA[\"Process A virtual pages\"]\n    A0[page 0: code]\n    A1[page 1: heap]\n  end\n  subgraph PB[\"Process B virtual pages\"]\n    B0[page 0: code]\n    B1[page 1: heap]\n  end\n  subgraph RAM[\"Physical RAM frames\"]\n    F7[frame 7]\n    F2[frame 2]\n    F9[frame 9]\n  end\n  SW[(Swap / page file)]\n  A0 -- \"R-X\" --> F7\n  B0 -- \"R-X shared library\" --> F7\n  A1 -- \"RW-\" --> F2\n  B1 -- \"RW-\" --> F9\n  B1 -. \"if evicted\" .-> SW\n```\n\n**4. Internal implementation**\n\n- x86-64 uses **4-level page tables** (5-level on newer CPUs), each level indexed by 9 bits of the address.\n- Permission bits: Present, Read/Write, User/Supervisor, **NX** (no-execute — stops running code injected into data).\n- **Copy-on-write**: after `fork`, parent and child share pages until one writes.\n- **ASLR**: code, stack and heap are placed at random addresses to make exploits harder.\n\n**5. Why is it designed this way?**\nIsolation (one program can't read another's memory), simple programming (every process starts from the same layout), sharing (one copy of a library in RAM for all processes), and the ability to use more memory than RAM via swap — though heavy swapping makes everything very slow (\"thrashing\").\n\n**6. Language differences**\nAll languages run on top of it. Managed runtimes **reserve** large virtual ranges up front (the JVM reserves `-Xmx` worth of address space) but only touch pages as needed. A C buffer overflow can corrupt memory **within** its own process; protection only stops crossing into pages that are unmapped or forbidden.\n\n**7. Practical example**\n\n```c\nint *p = NULL;\n*p = 5;   // address 0 is never mapped → page fault → OS sends SIGSEGV → \"Segmentation fault\"\n```\n\nIn Java the same mistake becomes a `NullPointerException`: the JVM catches the hardware fault and turns it into an exception.\n\n**8. How can I observe it?**\n\n- Windows Task Manager → Details: \"Memory (private working set)\" vs \"Commit size\"; Resource Monitor → \"Hard Faults/sec\".\n- Linux: `cat /proc/<pid>/maps` (memory regions + permissions), `/usr/bin/time -v ./app` (page faults).",
+      "summary": "Virtual memory — each process sees its own private address space, as if it had all memory to itself. Paging — that space is split into fixed-size pages (usually 4 KB) mapped to physical frames in RAM, or not loaded at all. Memory protection — each page has permissions (read/write/execute, user/kernel), enforced by…",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  subgraph PA[\"Process A virtual pages\"]\n    A0[page 0: code]\n    A1[page 1: heap]\n  end\n  subgraph PB[\"Process B virtual pages\"]\n    B0[page 0: code]\n    B1[page 1: heap]\n  end\n  subgraph RAM[\"Physical RAM frames\"]\n    F7[frame 7]\n    F2[frame 2]\n    F9[frame 9]\n  end\n  SW[(Swap / page file)]\n  A0 -- \"R-X\" --> F7\n  B0 -- \"R-X shared library\" --> F7\n  A1 -- \"RW-\" --> F2\n  B1 -- \"RW-\" --> F9\n  B1 -. \"if evicted\" .-> SW"
+        },
+        {
+          "language": "c",
+          "code": "int *p = NULL;\n*p = 5;   // address 0 is never mapped → page fault → OS sends SIGSEGV → \"Segmentation fault\""
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Virtual Memory"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "virtual",
+        "memory",
+        "paging",
+        "protection",
+        "virtual memory",
+        "pages",
+        "frames",
+        "memory protection",
+        "page tables",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/02-OS-CPU-Memory.md",
+        "startLine": 552,
+        "endLine": 619
+      },
+      "contentHash": "d29d50f2faf6ac4b"
+    },
+    {
       "id": "practice/coding/01-javascript-coding.md#move-all-0s-to-the-end-without-changing-the-order-of-other",
       "kind": "question",
       "parentId": null,
@@ -62249,7 +62728,7 @@
       "parentId": null,
       "question": "Under the Hood study path",
       "prompt": null,
-      "answer": "## Prerequisites\n\n- None. This is a starting point.\n- Overview: [Under the Hood concepts](../../knowledge/concepts/under-the-hood/README.md)\n\n## 1. Source Code to Machine Code\n\n1. [How does human-readable source code eventually become machine instructions?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n2. [What are the differences between Compiler, Interpreter, Assembler, Linker and Runtime?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n3. [What are Bytecode, Intermediate Representation (IR), Assembly Language and Machine Code?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n4. [What are AOT, JIT and interpretation? How do they differ?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n5. [How do JVM, CLR and JavaScript engines execute programs internally?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n6. [How do programming languages interact with the CPU and memory?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n7. [How does frontend code (JavaScript, TypeScript, Dart, WebAssembly) become machine code in the browser?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n8. [How do frontend frameworks (Angular, React, Vue, Svelte, Next.js) get from source code to running in the browser?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n9. [How do different programming languages implement compilation, execution and memory management?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n10. [Do backend frameworks (Spring Boot, Django, Express, ASP.NET Core) compile code themselves?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n\n## Diagrams\n\n- [Frontend programming languages: source to machine code](../../knowledge/visual-notes/01_frontend_programming_languages.png)\n- [Frontend frameworks and libraries: build and execution path](../../knowledge/visual-notes/02_frontend_frameworks.png)\n- [Backend programming languages: source, artifact, runtime and execution](../../knowledge/visual-notes/03_backend_programming_languages.png)\n- [Backend frameworks and platforms: source, compiler and runtime](../../knowledge/visual-notes/04_backend_frameworks.png)\n\n## Related roles\n\n[Platform Engineer](../roles/platform-engineer.md)",
+      "answer": "## Prerequisites\n\n- None. This is a starting point.\n- Overview: [Under the Hood concepts](../../knowledge/concepts/under-the-hood/README.md)\n\n## 1. Source Code to Machine Code\n\n1. [How does human-readable source code eventually become machine instructions?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n2. [What are the differences between Compiler, Interpreter, Assembler, Linker and Runtime?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n3. [What are Bytecode, Intermediate Representation (IR), Assembly Language and Machine Code?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n4. [What are AOT, JIT and interpretation? How do they differ?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n5. [How do JVM, CLR and JavaScript engines execute programs internally?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n6. [How do programming languages interact with the CPU and memory?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n7. [How does frontend code (JavaScript, TypeScript, Dart, WebAssembly) become machine code in the browser?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n8. [How do frontend frameworks (Angular, React, Vue, Svelte, Next.js) get from source code to running in the browser?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n9. [How do different programming languages implement compilation, execution and memory management?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n10. [Do backend frameworks (Spring Boot, Django, Express, ASP.NET Core) compile code themselves?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n\n## 2. CPU and Memory Hierarchy\n\n1. [How does a CPU execute instructions?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n2. [How do CPU registers, L1/L2/L3 cache, RAM and disk interact?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n3. [What exactly is stored in Stack and Heap memory?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n4. [Can the CPU directly access heap memory? How does a program access objects in RAM?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n5. [How does memory allocation and deallocation work?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n6. [How does Garbage Collection identify unused objects?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n\n## 3. Processes, Threads and Scheduling\n\n1. [How do Processes and Threads work internally?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n2. [How does Context Switching happen?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n3. [How does an operating system execute multiple applications simultaneously?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n\n## 4. Virtual Memory\n\n1. [How do Virtual Memory, Paging and Memory Protection work?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n\n## Diagrams\n\n- [Frontend programming languages: source to machine code](../../knowledge/visual-notes/01_frontend_programming_languages.png)\n- [Frontend frameworks and libraries: build and execution path](../../knowledge/visual-notes/02_frontend_frameworks.png)\n- [Backend programming languages: source, artifact, runtime and execution](../../knowledge/visual-notes/03_backend_programming_languages.png)\n- [Backend frameworks and platforms: source, compiler and runtime](../../knowledge/visual-notes/04_backend_frameworks.png)\n\n## Related roles\n\n[Platform Engineer](../roles/platform-engineer.md)",
       "summary": "",
       "codeBlocks": [],
       "visuals": [],
@@ -62283,9 +62762,9 @@
       "source": {
         "path": "roadmap/topics/under-the-hood.md",
         "startLine": 2,
-        "endLine": 32
+        "endLine": 51
       },
-      "contentHash": "5ad3a513308a3df2"
+      "contentHash": "3ab1946705015264"
     },
     {
       "id": "roadmap/topics/web-architecture.md#roadmap",
