@@ -266,22 +266,6 @@ Accessibility ensures websites are usable by everyone, including:
 
 ## 🧬 Part 5 — DOM, Performance & Modern Features
 
-### ❓ Difference between DOM and Virtual DOM?
-
-### 📝 Answer
-
-| DOM             | Virtual DOM     |
-| --------------- | --------------- |
-| The real page tree, managed by the browser | A lightweight copy of the tree as plain JS objects (React, Vue) |
-| You change it directly (`el.textContent = ...`) | You describe the whole UI for the new state; the library works out the changes |
-| Changes can trigger layout and paint | Changes are compared in memory first (**diffing**), then applied as a small set of real DOM updates |
-
-🧠 **The real benefit is convenience, not raw speed:** you write "what the UI should look like" and the library makes the **minimal** DOM changes for you. Hand-written, targeted DOM updates can be just as fast — the virtual DOM adds the cost of diffing — but it keeps large apps simple and fast enough.
-
-> 💡 Modern frameworks like Svelte and Solid skip the Virtual DOM entirely and compile to direct DOM updates — sometimes even faster.
-
----
-
 ### ❓ What are Web Components?
 
 ### 📝 Answer

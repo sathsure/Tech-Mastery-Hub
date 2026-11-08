@@ -26,8 +26,7 @@
 
 ## 4. HTML Interview Preparation › Part 5 — DOM, Performance & Modern Features
 
-1. [Difference between DOM and Virtual DOM?](../../interview/frontend/01-HTML.md)
-2. [What are Web Components?](../../interview/frontend/01-HTML.md)
+1. [What are Web Components?](../../interview/frontend/01-HTML.md)
    - [What is the `<template>` and `<slot>` element?](../../interview/frontend/01-HTML.md)
 
 ## 5. HTML Interview Preparation › Part 6 — SEO

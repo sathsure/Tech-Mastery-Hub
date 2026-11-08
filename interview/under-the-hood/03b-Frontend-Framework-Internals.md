@@ -180,7 +180,7 @@ Add `console.log` in each hook and toggle the component with `@if`. **Angular De
 
 ---
 
-### ❓ How do Angular Change Detection and Signals work internally?
+### ❓ What are Signals in Angular, and how does Angular change detection work?
 
 ### 📝 Answer
 
@@ -199,7 +199,7 @@ Signals:
 
 1. A `signal()` is a **producer**; templates, `computed()` and `effect()` that read it become **consumers** (dependencies are recorded automatically).
 2. Setting a signal marks its consumers **dirty**; a template consumer marks its view for refresh.
-3. In **zoneless** mode (`provideZonelessChangeDetection()`, stable from Angular 20), Angular schedules a check only when signals, events or `markForCheck` say something changed.
+3. In **zoneless** mode (`provideZonelessChangeDetection()`, stable from Angular 20 and the default for new projects from Angular 21), Angular schedules a check only when signals, template events, the `async` pipe or `markForCheck` say something changed.
 
 **3. Visual**
 
@@ -220,9 +220,12 @@ flowchart TB
 - Bindings live at fixed slots in each view's LView; update = `if (!Object.is(old, new)) setDomProperty(...)`.
 - In dev mode a second check pass runs and throws **`ExpressionChangedAfterItHasBeenCheckedError`** if a binding changed during the check.
 - Signals use **version numbers**: a `computed` recomputes lazily only if a dependency's version changed (push "dirty", pull value).
+- zone.js tracks **async events, not mutations**: `this.items.push('C')` or `this.count++` alone triggers nothing — it is only seen because it ran inside a tracked click, timer or HTTP callback. A spread (`this.items = [...this.items, 'C']`) doesn't trigger change detection either; it only gives `OnPush` a **new reference** to notice.
 
 **5. Why is it designed this way?**
 Zone.js made change detection automatic with plain objects, but checks far more than needed and adds a dependency. Signals give **fine-grained** updates, better performance and no zone.js — at the cost of writing state as signals.
+
+**Signals vs RxJS:** signals are best for **state** (synchronous reads, no subscriptions); RxJS is still best for **streams of events over time** (HTTP, typing, WebSockets). `toSignal()` / `toObservable()` connect the two.
 
 **6. Framework differences**
 React re-renders component functions and diffs a virtual DOM; Vue tracks property reads with Proxies; SolidJS and Preact Signals use the same producer/consumer idea as Angular Signals.
@@ -363,6 +366,12 @@ DevTools → **Network**: confirm the `Authorization` header. Calling `http.get(
 
 **1. What is it?**
 A component returns a description of the UI as plain JavaScript objects (**React elements**, the "virtual DOM"). **Reconciliation** compares the new description with the previous one and changes only the real DOM nodes that differ.
+
+| Real DOM | Virtual DOM |
+|---|---|
+| The page tree managed by the browser | A lightweight copy of the tree as plain JS objects |
+| You change it directly (`el.textContent = ...`) | You describe the UI for the new state; the library works out the changes |
+| Changes can trigger layout and paint | Changes are compared in memory first, then applied as a few real DOM updates |
 
 **2. How does it work internally?**
 

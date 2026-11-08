@@ -1191,53 +1191,11 @@ providers: [provideHttpClient(withInterceptors([trimInterceptor]))]
 
 ---
 
-### ❓ What are Signals in Angular?
+### ❓ Which newer Angular APIs return signals (input, output, model, httpResource)?
+
 ### 📝 Answer
 
-**Signals** (Angular 16+) are a new reactivity primitive — values that **notify consumers** when they change.
-
-```ts
-import { signal, computed, effect } from "@angular/core";
-
-@Component({
-  template: `
-    <p>Count: {{ count() }}</p>
-    <p>Doubled: {{ doubled() }}</p>
-    <button (click)="increment()">+</button>
-  `,
-})
-export class CounterComponent {
-  count = signal(0);
-
-  // Derived value — auto-updates when count changes
-  doubled = computed(() => this.count() * 2);
-
-  constructor() {
-    // Side effect — runs whenever any signal it reads changes
-    effect(() => {
-      console.log("Count changed to:", this.count());
-    });
-  }
-
-  increment() {
-    this.count.update(v => v + 1);
-    // OR: this.count.set(this.count() + 1);
-  }
-}
-```
-
-✅ **Benefits over RxJS for state**
-
-- Synchronous reads (no subscribe boilerplate)
-- Fine-grained change detection (no full tree traversal)
-- Better TypeScript inference
-- Easier mental model for new developers
-
-> 💡 **Signal vs RxJS**: signals are great for **state**. RxJS still wins for **streams of events** (HTTP, user input over time, WebSocket).
-
-#### ↳ Follow-up: What are signal inputs, outputs and other newer signal APIs?
-
-↪ Modern Angular (17.1+) replaces many decorators with functions that return signals:
+A **signal** is a reactive value: `count = signal(0)`, read it with `count()`, change it with `count.set(1)`, and everything that read it updates automatically. Modern Angular (17.1+) replaces many decorators with functions that return signals:
 
 | API | Replaces / does | Example |
 |---|---|---|

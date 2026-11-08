@@ -89,39 +89,34 @@
 2. [What happens when you mix `(ngModel)` with Reactive Forms?](../../interview/frontend/05-Angular-1.md)
 3. [How do you create a custom form control in Angular? (`ControlValueAccessor`)](../../interview/frontend/05-Angular-1.md)
 4. [How would you globally trim leading and trailing spaces from user input?](../../interview/frontend/05-Angular-1.md)
-5. [What are Signals in Angular?](../../interview/frontend/05-Angular-1.md)
-   - [What are signal inputs, outputs and other newer signal APIs?](../../interview/frontend/05-Angular-1.md)
+5. [Which newer Angular APIs return signals (input, output, model, httpResource)?](../../interview/frontend/05-Angular-1.md)
 
-## 12. Part 1 — Change Detection & Zones
-
-1. [How does Angular's change detection mechanism work, and how did it evolve from AngularJS?](../../interview/frontend/05-Angular-2.md)
-
-## 13. Part 2 — The Angular Build System
+## 12. Part 2 — The Angular Build System
 
 1. [Explain Angular's building tools and how they have evolved.](../../interview/frontend/05-Angular-2.md)
 
-## 14. Part 4 — HMR & Dev Server Internals
+## 13. Part 4 — HMR & Dev Server Internals
 
 1. [Can you walk me through how HMR works and how Angular integrates it into the dev server?](../../interview/frontend/05-Angular-2.md)
    - [How do the Compiler and Bundler work together?](../../interview/frontend/05-Angular-2.md)
 
-## 15. Part 5 — Form State Persistence
+## 14. Part 5 — Form State Persistence
 
 1. [How do you preserve form data on refresh but clear it on browser close?](../../interview/frontend/05-Angular-2.md)
    - [How do you preserve form data on refresh based on user role?](../../interview/frontend/05-Angular-2.md)
 
-## 16. Part 6 — Architecture & API Concerns
+## 15. Part 6 — Architecture & API Concerns
 
 1. [How do you hide backend endpoints from the browser's Network tab?](../../interview/frontend/05-Angular-2.md)
 
-## 17. Part 7 — Version Migration & Deprecated Concepts
+## 16. Part 7 — Version Migration & Deprecated Concepts
 
 1. [Can we jump from Angular 5 → Angular 19 directly?](../../interview/frontend/05-Angular-2.md)
 2. [Name some deprecated/removed concepts from Angular 5 → 19.](../../interview/frontend/05-Angular-2.md)
 
-## 18. Part 9 — RxJS in Angular
+## 17. Part 9 — RxJS in Angular
 
-1. [How does RxJS interact with Angular's Zones and Change Detection?](../../interview/frontend/06-RxJS.md)
+1. [How do RxJS streams interact with zone.js, and when should they run outside the Angular zone?](../../interview/frontend/06-RxJS.md)
 2. [How does Angular's `HttpClient` use RxJS?](../../interview/frontend/06-RxJS.md)
 3. [Trick: If you subscribe twice to the same `this.http.get(...)`, how many HTTP calls happen?](../../interview/frontend/06-RxJS.md)
 4. [How do you avoid multiple HTTP calls when many components need the same data?](../../interview/frontend/06-RxJS.md)
@@ -131,22 +126,22 @@
 8. [Example: How to debounce a search input in Angular?](../../interview/frontend/06-RxJS.md)
 9. [How does RxJS fit into NgRx?](../../interview/frontend/06-RxJS.md)
 
-## 19. Angular Internals
+## 18. Angular Internals
 
 1. [How do Angular application bootstrap and compilation work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)
 2. [How does Angular Dependency Injection work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)
 3. [How does the Angular component lifecycle work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)
-4. [How do Angular Change Detection and Signals work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)
+4. [What are Signals in Angular, and how does Angular change detection work?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)
 5. [How do the Angular Router and lazy loading work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)
 6. [How do Angular HttpClient and HTTP Interceptors work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)
 
-## 20. React Internals
+## 19. React Internals
 
 1. [How do React's Virtual DOM and Reconciliation work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)
 2. [How does React's Fiber architecture work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)
 3. [How do React Hooks and component rendering work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)
 
-## 21. Vue Internals
+## 20. Vue Internals
 
 1. [How does Vue's reactivity system work internally (dependency tracking and Proxies)?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)
 2. [How do Vue's template compiler and Virtual DOM work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)

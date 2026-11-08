@@ -724,7 +724,7 @@ To **make a synchronous stream async** — useful for:
 
 # Part 9 — RxJS in Angular
 
-### ❓ How does RxJS interact with Angular's Zones and Change Detection?
+### ❓ How do RxJS streams interact with zone.js, and when should they run outside the Angular zone?
 
 ### 📝 Answer
 
