@@ -242,6 +242,18 @@
 
 1. [How does Distributed Tracing track a request across multiple services?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)
 
+## 39. Runtime Behaviour Across Languages
+
+1. [How do Java, JavaScript, Python, Go, Rust and C# implement concurrency differently?](../../interview/under-the-hood/11-Language-Implementation-Comparisons.md)
+2. [How do Java, C++, Python and JavaScript create objects internally?](../../interview/under-the-hood/11-Language-Implementation-Comparisons.md)
+3. [How do Spring, ASP.NET Core and Angular implement Dependency Injection differently?](../../interview/under-the-hood/11-Language-Implementation-Comparisons.md)
+4. [How do Java, JavaScript, Python, C# and Kotlin implement asynchronous execution?](../../interview/under-the-hood/11-Language-Implementation-Comparisons.md)
+5. [How do Java, Python, C++, C# and JavaScript implement exception handling internally?](../../interview/under-the-hood/11-Language-Implementation-Comparisons.md)
+
+## 40. Observing Internals in Practice
+
+1. [Which tools can I use to observe software internals, and what should I look for?](../../interview/under-the-hood/11-Language-Implementation-Comparisons.md)
+
 ## Diagrams
 
 - [Frontend programming languages: source to machine code](../../knowledge/visual-notes/01_frontend_programming_languages.png)

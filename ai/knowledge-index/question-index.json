@@ -1,18 +1,18 @@
 {
   "schema_version": "1.0.0",
   "repository": "Tech-Mastery-Hub",
-  "generated_at": "2026-11-08T17:08:19.877Z",
-  "source_fingerprint": "8bfcac03f523e59472aa993d42e9b4d3e9d2b3a2843e182a2442439294ff59b0",
+  "generated_at": "2026-11-08T17:10:52.047Z",
+  "source_fingerprint": "c311b7f1a8b9af3033610daffe75c3f6e6bf708357db1f76f021b20c15b67da9",
   "stats": {
-    "files": 152,
-    "entries": 2149,
-    "questions": 1222,
+    "files": 153,
+    "entries": 2155,
+    "questions": 1228,
     "followUps": 311,
     "notes": 84,
     "roles": 74,
     "terms": 378,
     "roadmaps": 80,
-    "codeBlocks": 1550,
+    "codeBlocks": 1564,
     "visuals": 86,
     "missingVisuals": 0
   },
@@ -614,6 +614,17 @@
     {
       "path": "interview/under-the-hood/10-Distributed-Systems-Internals.md",
       "questions": 10,
+      "followUps": 0,
+      "notes": 0,
+      "roles": 0,
+      "terms": 0,
+      "roadmaps": 0,
+      "withoutAnswer": 0,
+      "missingVisuals": 0
+    },
+    {
+      "path": "interview/under-the-hood/11-Language-Implementation-Comparisons.md",
+      "questions": 6,
       "followUps": 0,
       "notes": 0,
       "roles": 0,
@@ -57906,6 +57917,314 @@
       "contentHash": "0de9c5f4f23b0c3f"
     },
     {
+      "id": "interview/under-the-hood/11-Language-Implementation-Comparisons.md#how-do-java-javascript-python-go-rust-and-c-implement",
+      "kind": "question",
+      "parentId": null,
+      "question": "How do Java, JavaScript, Python, Go, Rust and C# implement concurrency differently?",
+      "prompt": null,
+      "answer": "**1. What is it?**\n**Concurrency** = handling many tasks that overlap in time; **parallelism** = running them at the same instant on multiple cores. Languages offer very different building blocks: OS threads, lightweight threads, event loops, or ownership-checked threads.\n\n**2. How does it work internally?**\n\n| Language | Unit | Scheduled by | Parallel on many cores? |\n|---|---|---|---|\n| **Java** | Platform `Thread` (1:1 OS thread); **virtual threads** (Java 21, M:N) | OS / JVM scheduler (ForkJoinPool carriers) | Yes |\n| **C#** | Threads + `Task` on the thread pool | OS + .NET thread pool | Yes |\n| **Go** | **Goroutines** (start ~2 KB stack, growable) | Go runtime **M:N scheduler** (G-M-P model, work stealing) | Yes |\n| **Rust** | OS threads (`std::thread`); async tasks via runtimes (Tokio) | OS / Tokio work-stealing scheduler | Yes, with **compile-time** data-race checks |\n| **JavaScript** | One thread per realm + **event loop**; Web Workers / `worker_threads` | Engine event loop | Only with workers (no shared objects) |\n| **Python (CPython)** | OS threads, but the **GIL** lets one execute Python bytecode at a time; `asyncio`; `multiprocessing` | OS / event loop | Threads: not for Python code (except free-threaded 3.13+ builds); processes: yes |\n\n**3. Visual**\n\n```mermaid\nflowchart TB\n  subgraph J[\"Java platform threads (1:1)\"]\n    JT1[Thread] --> OS1[OS thread]\n    JT2[Thread] --> OS2[OS thread]\n  end\n  subgraph G[\"Go / Java virtual threads (M:N)\"]\n    G1[goroutine] --> C1[OS thread]\n    G2[goroutine] --> C1\n    G3[goroutine] --> C2[OS thread]\n  end\n  subgraph JS[\"JavaScript\"]\n    EL[\"One thread + event loop\"] --> Q[\"task / microtask queues\"]\n  end\n  subgraph PY[\"CPython\"]\n    PT1[Thread] --> GIL{GIL}\n    PT2[Thread] --> GIL\n  end\n```\n\n**4. Internal implementation**\n\n- **Shared memory + locks** (Java, C#, C++, Go also has mutexes): need the **memory model** (`volatile`, `synchronized`, atomics) for visibility between cores.\n- **Go**: \"share memory by communicating\" — **channels** pass values between goroutines; the scheduler parks goroutines blocked on I/O and runs others.\n- **Rust**: the `Send` and `Sync` traits plus ownership make sharing unsynchronised mutable data a **compile error**.\n- **JavaScript**: no shared objects between workers (except `SharedArrayBuffer`) → no data races on normal objects.\n- **CPython GIL**: simplifies the interpreter (reference counting isn't thread-safe), at the cost of CPU parallelism for threads.\n\n**5. Why is it designed this way?**\nOS threads are general but heavy (~1 MB stack, kernel context switches). M:N lightweight threads make millions of concurrent tasks cheap. Event loops avoid locks entirely but can't use many cores alone. Rust trades compile-time strictness for fearless parallelism.\n\n**6. Language differences**\nCovered in the table: the key questions are **1:1 vs M:N**, **shared memory vs message passing**, and **who prevents data races** (you, the compiler, or the single-threaded design).\n\n**7. Practical example**\nHandling 10,000 concurrent slow HTTP calls: Java 21 virtual threads or Go goroutines with plain blocking code; Node.js with `Promise.all`; Python with `asyncio.gather`; classic Java platform threads would need 10,000 OS threads.\n\n**8. How can I observe it?**\nJava: `jcmd <pid> Thread.dump_to_file -format=json out.json` (includes virtual threads). Go: `GODEBUG=schedtrace=1000`, `pprof` goroutine profile. Python: compare CPU-bound threads vs processes timing. Node: `--cpu-prof`, DevTools Performance main-thread view.",
+      "summary": "What is it? Concurrency = handling many tasks that overlap in time; parallelism = running them at the same instant on multiple cores. Languages offer very different building blocks: OS threads, lightweight threads, event loops, or ownership-checked threads.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart TB\n  subgraph J[\"Java platform threads (1:1)\"]\n    JT1[Thread] --> OS1[OS thread]\n    JT2[Thread] --> OS2[OS thread]\n  end\n  subgraph G[\"Go / Java virtual threads (M:N)\"]\n    G1[goroutine] --> C1[OS thread]\n    G2[goroutine] --> C1\n    G3[goroutine] --> C2[OS thread]\n  end\n  subgraph JS[\"JavaScript\"]\n    EL[\"One thread + event loop\"] --> Q[\"task / microtask queues\"]\n  end\n  subgraph PY[\"CPython\"]\n    PT1[Thread] --> GIL{GIL}\n    PT2[Thread] --> GIL\n  end"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Runtime Behaviour Across Languages"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "java",
+        "javascript",
+        "python",
+        "go",
+        "rust",
+        "c#",
+        "implement",
+        "concurrency",
+        "differently",
+        "parallelism",
+        "virtual threads",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/11-Language-Implementation-Comparisons.md",
+        "startLine": 7,
+        "endLine": 65
+      },
+      "contentHash": "8ab8e4a3cd521caf"
+    },
+    {
+      "id": "interview/under-the-hood/11-Language-Implementation-Comparisons.md#how-do-java-c-python-and-javascript-create-objects-internally",
+      "kind": "question",
+      "parentId": null,
+      "question": "How do Java, C++, Python and JavaScript create objects internally?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nCreating an object means: **allocate memory**, **initialise** its fields, and connect it to its **type** information (for method calls). Each language does these steps differently.\n\n**2. How does it work internally?**\n\n- **Java** `new User(\"Asha\")`:\n  1. Class loaded and initialised if first use.\n  2. Memory allocated on the heap (TLAB bump pointer), fields **zeroed**.\n  3. Object header written (mark word + class pointer).\n  4. Constructor chain runs (`super()` first, field initialisers, constructor body).\n  5. A reference is returned.\n- **C++** `User u(\"Asha\");` / `new User(\"Asha\")`: memory on the **stack** (or heap with `new`), constructor runs; objects with virtual methods get a **vptr** to the class's **vtable**; no header otherwise. Destructor runs at scope end / `delete`.\n- **Python** `User(\"Asha\")`: `type.__call__` → `User.__new__` allocates (pymalloc) → `__init__` initialises; every object has a reference count and type pointer; attributes live in a `__dict__` (or fixed `__slots__`).\n- **JavaScript** `new User(\"Asha\")`: creates an object whose prototype is `User.prototype`, runs the constructor with `this` bound to it; V8 assigns a **hidden class (map)** and transitions it as properties are added.\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  subgraph Java\n    J1[load class] --> J2[\"allocate (TLAB) + zero\"] --> J3[header: mark + class ptr] --> J4[\"constructor chain\"]\n  end\n  subgraph CPP[\"C++\"]\n    C1[\"stack or heap memory\"] --> C2[\"vptr (if virtual)\"] --> C3[constructor]\n  end\n  subgraph Python\n    P1[\"__new__ (allocate)\"] --> P2[\"refcount + type ptr\"] --> P3[\"__init__ fills __dict__\"]\n  end\n  subgraph JS[\"JavaScript (V8)\"]\n    S1[\"object with prototype\"] --> S2[\"hidden class (map)\"] --> S3[\"constructor sets this.x → map transitions\"]\n  end\n```\n\n**4. Internal implementation**\n\n| | Header / overhead | Method lookup | Layout fixed? |\n|---|---|---|---|\n| Java | 12–16 bytes header | vtable + inline caches | Yes (class) |\n| C++ | 0 bytes (+ vptr if virtual) | Direct call or vtable | Yes |\n| Python | ~16 bytes + `__dict__` | Dictionary lookups along the MRO (with caches) | No (unless `__slots__`) |\n| JavaScript | Map pointer + properties | Hidden class + inline caches | Dynamic, optimised when shapes are stable |\n\n**5. Why is it designed this way?**\nStatic languages know the layout at compile time → compact objects and fast field access. Dynamic languages allow adding attributes at runtime, so engines add tricks (hidden classes, `__slots__`) to recover speed.\n\n**6. Language differences**\nCovered above. Practical rule: in JavaScript, initialise all properties in the constructor in the same order so objects share hidden classes; in Python, use `__slots__` for millions of small objects.\n\n**7. Practical example**\n\n```java\nUser u = new User(\"Asha\");   // bytecode: new User; dup; ldc \"Asha\"; invokespecial User.<init>\n```\n\n```js\nfunction P(x, y) { this.x = x; this.y = y; }   // all P objects share one hidden class\n```\n\n**8. How can I observe it?**\nJava: `javap -c` (the `new` / `invokespecial` pair), **JOL** for object size. Python: `sys.getsizeof(obj)`, `obj.__dict__`. V8: `node --allow-natives-syntax` with `%HaveSameMap(a, b)`; DevTools heap snapshot shows object sizes. C++: `sizeof(User)`.",
+      "summary": "What is it? Creating an object means: allocate memory, initialise its fields, and connect it to its type information (for method calls). Each language does these steps differently.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  subgraph Java\n    J1[load class] --> J2[\"allocate (TLAB) + zero\"] --> J3[header: mark + class ptr] --> J4[\"constructor chain\"]\n  end\n  subgraph CPP[\"C++\"]\n    C1[\"stack or heap memory\"] --> C2[\"vptr (if virtual)\"] --> C3[constructor]\n  end\n  subgraph Python\n    P1[\"__new__ (allocate)\"] --> P2[\"refcount + type ptr\"] --> P3[\"__init__ fills __dict__\"]\n  end\n  subgraph JS[\"JavaScript (V8)\"]\n    S1[\"object with prototype\"] --> S2[\"hidden class (map)\"] --> S3[\"constructor sets this.x → map transitions\"]\n  end"
+        },
+        {
+          "language": "java",
+          "code": "User u = new User(\"Asha\");   // bytecode: new User; dup; ldc \"Asha\"; invokespecial User.<init>"
+        },
+        {
+          "language": "js",
+          "code": "function P(x, y) { this.x = x; this.y = y; }   // all P objects share one hidden class"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Runtime Behaviour Across Languages"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "java",
+        "c++",
+        "python",
+        "javascript",
+        "create",
+        "objects",
+        "internally",
+        "allocate memory",
+        "initialise",
+        "type",
+        "zeroed",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/11-Language-Implementation-Comparisons.md",
+        "startLine": 69,
+        "endLine": 132
+      },
+      "contentHash": "e2abb76e1963e0d4"
+    },
+    {
+      "id": "interview/under-the-hood/11-Language-Implementation-Comparisons.md#how-do-spring-asp-net-core-and-angular-implement-dependency",
+      "kind": "question",
+      "parentId": null,
+      "question": "How do Spring, ASP.NET Core and Angular implement Dependency Injection differently?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nAll three provide an **IoC container**: you declare dependencies; the framework constructs objects and passes them in. They differ in **when** wiring happens, **object lifetimes**, and how the container is **structured**.\n\n**2. How does it work internally?**\n\n- **Spring (Java)**: at start-up, scan classes → `BeanDefinition`s → create singletons eagerly, resolving constructor parameters **by type** via reflection; post-processors may wrap beans in proxies.\n- **ASP.NET Core (C#)**: you register services in `Program.cs` (`AddSingleton/AddScoped/AddTransient`); the `ServiceProvider` builds them **lazily** on first request using constructor parameters; **scoped** services live per HTTP request.\n- **Angular (TypeScript)**: the compiler generates a factory per injectable; **hierarchical injectors** (environment → element) resolve tokens by walking up the tree at runtime; `providedIn: 'root'` services are lazy and tree-shakable.\n\n**3. Visual**\n\n```mermaid\nflowchart TB\n  subgraph Spring\n    S1[\"Scan @Component / @Bean\"] --> S2[\"BeanDefinitions\"] --> S3[\"Create singletons at start-up<br/>(reflection, proxies)\"]\n  end\n  subgraph ASP[\"ASP.NET Core\"]\n    A1[\"builder.Services.AddScoped: IRepo → Repo\"] --> A2[\"ServiceProvider\"] --> A3[\"Per request scope:<br/>create scoped services lazily\"]\n  end\n  subgraph Angular\n    N1[\"Compiler: factory per @Injectable\"] --> N2[\"Element injector → parent → environment → root\"] --> N3[\"First match creates/returns instance\"]\n  end\n```\n\n**4. Internal implementation**\n\n| | Spring | ASP.NET Core | Angular |\n|---|---|---|---|\n| Registration | Annotations + scanning, `@Bean` | Explicit in code | Decorators + `providers` arrays |\n| Resolution time | Start-up (eager singletons) | First use (lazy) | First injection (lazy) |\n| Lifetimes | singleton, prototype, request, session | singleton, scoped (request), transient | per injector (root, route, component) |\n| Mechanism | Reflection (or AOT-generated) | Reflection / compiled expression trees | Compiler-generated factories |\n| Extra | AOP proxies, conditional auto-config | Middleware, options pattern | Hierarchy per component tree |\n\n**5. Why is it designed this way?**\nSpring favours convention (scanning, auto-configuration) for large enterprise apps; ASP.NET Core favours explicit registration and request scopes; Angular needs a **tree** of injectors to match the UI component tree and lazy-loaded routes.\n\n**6. Framework differences**\nBuild-time DI exists too: Dagger/Hilt (Android), Micronaut and Quarkus (Java), which generate wiring code instead of using runtime reflection → faster start-up.\n\n**7. Practical example**\n\n```java\n// Spring\n@Service class OrderService { OrderService(OrderRepository repo) { } }\n```\n\n```csharp\n// ASP.NET Core\nbuilder.Services.AddScoped<IOrderRepository, OrderRepository>();\npublic class OrderService(IOrderRepository repo) { }\n```\n\n```ts\n// Angular\n@Injectable({ providedIn: 'root' }) export class OrderService { private repo = inject(OrderApi); }\n```\n\n**8. How can I observe it?**\nSpring: `/actuator/beans`. ASP.NET Core: `builder.Host.UseDefaultServiceProvider(o => o.ValidateScopes = true)` catches lifetime mistakes; debugger shows the `ServiceProvider`. Angular: DevTools → Injector Tree.",
+      "summary": "What is it? All three provide an IoC container: you declare dependencies; the framework constructs objects and passes them in. They differ in when wiring happens, object lifetimes, and how the container is structured.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart TB\n  subgraph Spring\n    S1[\"Scan @Component / @Bean\"] --> S2[\"BeanDefinitions\"] --> S3[\"Create singletons at start-up<br/>(reflection, proxies)\"]\n  end\n  subgraph ASP[\"ASP.NET Core\"]\n    A1[\"builder.Services.AddScoped: IRepo → Repo\"] --> A2[\"ServiceProvider\"] --> A3[\"Per request scope:<br/>create scoped services lazily\"]\n  end\n  subgraph Angular\n    N1[\"Compiler: factory per @Injectable\"] --> N2[\"Element injector → parent → environment → root\"] --> N3[\"First match creates/returns instance\"]\n  end"
+        },
+        {
+          "language": "java",
+          "code": "// Spring\n@Service class OrderService { OrderService(OrderRepository repo) { } }"
+        },
+        {
+          "language": "csharp",
+          "code": "// ASP.NET Core\nbuilder.Services.AddScoped<IOrderRepository, OrderRepository>();\npublic class OrderService(IOrderRepository repo) { }"
+        },
+        {
+          "language": "ts",
+          "code": "// Angular\n@Injectable({ providedIn: 'root' }) export class OrderService { private repo = inject(OrderApi); }"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Runtime Behaviour Across Languages"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "spring",
+        "asp.net",
+        "core",
+        "angular",
+        "implement",
+        "dependency",
+        "injection",
+        "differently",
+        "ioc container",
+        "object lifetimes",
+        "structured",
+        "spring (java)",
+        "by type",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/11-Language-Implementation-Comparisons.md",
+        "startLine": 136,
+        "endLine": 199
+      },
+      "contentHash": "acb87a0a2beb4d7e"
+    },
+    {
+      "id": "interview/under-the-hood/11-Language-Implementation-Comparisons.md#how-do-java-javascript-python-c-and-kotlin-implement",
+      "kind": "question",
+      "parentId": null,
+      "question": "How do Java, JavaScript, Python, C# and Kotlin implement asynchronous execution?",
+      "prompt": null,
+      "answer": "**1. What is it?**\n**Asynchronous execution** lets a program start slow work (I/O, timers) and continue doing other things, resuming the rest of the code when the result is ready — without blocking a thread while waiting.\n\n**2. How does it work internally?**\n\n- **JavaScript**: `async/await` compiles to a **state machine** over Promises; continuations run as **microtasks** on the single event-loop thread.\n- **C#**: `async/await` compiled by Roslyn into a **state machine struct**; awaiting a `Task` registers a continuation; it resumes on the thread pool (or the captured `SynchronizationContext` in UI apps).\n- **Python**: `async def` creates a **coroutine** (a generator-like object); `await` yields control to the **asyncio event loop**, which uses `selectors` (epoll/IOCP) to resume coroutines when I/O is ready.\n- **Kotlin**: `suspend` functions are transformed by the compiler into **continuation-passing** state machines; **coroutines** run on dispatchers (thread pools) and are very cheap.\n- **Java**: `CompletableFuture` chains callbacks on executors; reactive (Project Reactor `Mono/Flux`); since Java 21, **virtual threads** make plain blocking code behave asynchronously under the hood (the JVM unmounts the virtual thread on I/O).\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  F[\"async function / suspend fun\"] --> SM[\"Compiler: state machine<br/>state 0 → await → state 1 → ...\"]\n  SM --> AW{\"await on I/O\"}\n  AW -- \"not ready\" --> SAVE[\"save locals + state<br/>return to scheduler\"]\n  SAVE --> LOOP[\"Event loop / thread pool<br/>runs other work\"]\n  LOOP -- \"I/O ready (epoll / IOCP)\" --> RES[\"resume at next state\"]\n  AW -- \"already done\" --> RES\n```\n\n**4. Internal implementation**\n\n| Language | Await target | Resumes on | Colours functions? |\n|---|---|---|---|\n| JavaScript | Promise | Same event-loop thread (microtask) | Yes (`async`) |\n| C# | Task / ValueTask | Thread pool / sync context | Yes |\n| Python | Awaitable (coroutine/Future) | asyncio loop thread | Yes |\n| Kotlin | `suspend` call | Coroutine dispatcher | Yes (`suspend`) |\n| Java 21 | (none — blocking call on a virtual thread) | Any carrier thread | **No** |\n\n\"Coloured functions\" = async code can only be awaited from async code, which spreads `async` through the codebase; Java's virtual threads (and Go's goroutines) avoid that.\n\n**5. Why is it designed this way?**\nThreads blocked on I/O waste memory; state machines let one thread serve thousands of waiting operations. Languages differ in whether they make this explicit (await) or hide it in the runtime (virtual threads, goroutines).\n\n**6. Language differences**\nSee the table. Pitfalls: blocking calls inside async code freeze the event loop (Node, Python); `.Result`/`.Wait()` in C# can deadlock; `synchronized` blocks pinned virtual threads in Java 21–23 (fixed in Java 24).\n\n**7. Practical example**\n\n```js\nconst [user, orders] = await Promise.all([getUser(id), getOrders(id)]);   // both requests in flight at once\n```\n\n```kotlin\nval user = async { api.user(id) }; val orders = async { api.orders(id) }\nshow(user.await(), orders.await())\n```\n\n**8. How can I observe it?**\nDecompile a C# async method (ILSpy/SharpLab.io) or a Kotlin suspend function (IntelliJ \"Show Kotlin Bytecode\") to see the generated state machine. Node: `--trace-event-categories`. Python: `asyncio` debug mode (`PYTHONASYNCIODEBUG=1`) warns about slow callbacks.",
+      "summary": "What is it? Asynchronous execution lets a program start slow work (I/O, timers) and continue doing other things, resuming the rest of the code when the result is ready — without blocking a thread while waiting.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  F[\"async function / suspend fun\"] --> SM[\"Compiler: state machine<br/>state 0 → await → state 1 → ...\"]\n  SM --> AW{\"await on I/O\"}\n  AW -- \"not ready\" --> SAVE[\"save locals + state<br/>return to scheduler\"]\n  SAVE --> LOOP[\"Event loop / thread pool<br/>runs other work\"]\n  LOOP -- \"I/O ready (epoll / IOCP)\" --> RES[\"resume at next state\"]\n  AW -- \"already done\" --> RES"
+        },
+        {
+          "language": "js",
+          "code": "const [user, orders] = await Promise.all([getUser(id), getOrders(id)]);   // both requests in flight at once"
+        },
+        {
+          "language": "kotlin",
+          "code": "val user = async { api.user(id) }; val orders = async { api.orders(id) }\nshow(user.await(), orders.await())"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Runtime Behaviour Across Languages"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "java",
+        "javascript",
+        "python",
+        "c#",
+        "kotlin",
+        "implement",
+        "asynchronous",
+        "execution",
+        "asynchronous execution",
+        "state machine",
+        "microtasks",
+        "state machine struct",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/11-Language-Implementation-Comparisons.md",
+        "startLine": 203,
+        "endLine": 260
+      },
+      "contentHash": "02c95c0032a704c0"
+    },
+    {
+      "id": "interview/under-the-hood/11-Language-Implementation-Comparisons.md#how-do-java-python-c-c-and-javascript-implement-exception",
+      "kind": "question",
+      "parentId": null,
+      "question": "How do Java, Python, C++, C# and JavaScript implement exception handling internally?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nAn **exception** transfers control from where an error happens to the nearest matching handler up the call stack, running cleanup code on the way. Languages differ in the **cost model**, **checked vs unchecked** rules, and **cleanup** mechanisms.\n\n**2. How does it work internally?**\nGeneral flow:\n\n1. `throw` creates an exception object (often capturing a **stack trace**).\n2. The runtime searches the current function for a matching handler (`catch`).\n3. None → the function's frame is **unwound** (popped), cleanup runs (`finally`, destructors, `using`), and the search continues in the caller.\n4. Found → execution continues in the handler. Not found anywhere → the thread/program terminates with an uncaught-exception error.\n\n**3. Visual**\n\n```mermaid\nflowchart BT\n  T[\"parse() throws NumberFormatException\"] --> U1[\"unwind parse(): run finally\"]\n  U1 --> L[\"loadConfig(): no matching catch → unwind\"]\n  L --> M[\"main(): catch (NumberFormatException e)\"]\n  M --> H[Handler runs, program continues]\n```\n\n**4. Internal implementation**\n\n| Language | Mechanism | Cost when no exception | Cleanup |\n|---|---|---|---|\n| **Java** | Per-method **exception table** (bytecode ranges → handler) | ~Zero | `finally`, try-with-resources |\n| **C#** | Two-pass SEH-style: find handler, then unwind | ~Zero | `finally`, `using` |\n| **C++** | **Zero-cost** unwind tables (Itanium ABI / Windows SEH) | Zero; throw is expensive | **Destructors (RAII)** |\n| **Python** | Exception table (3.11+ \"zero-cost\"), unwinds interpreter frames | ~Zero | `finally`, `with` (context managers) |\n| **JavaScript** | Engine unwinds the call stack; async errors become **rejected Promises** | ~Zero | `finally` |\n\n- **Checked exceptions** exist only in **Java**: the compiler forces you to catch or declare them. Kotlin, C#, Python and JS have only unchecked ones.\n- Filling stack traces is the main throw cost in Java; `new Exception(msg, cause, false, false)` can disable it for control-flow-heavy cases.\n\n**5. Why is it designed this way?**\nTable-based (\"zero-cost\") exceptions make the normal path fast and pay only when something goes wrong — matching how rare errors should be. Go and Rust deliberately avoid exceptions for expected errors, returning error values (`error`, `Result`) so failure paths are explicit.\n\n**6. Language differences**\nSee the table; plus: C++ `noexcept` functions terminate if they throw; JavaScript `await` turns a rejected Promise back into a thrown error inside `try/catch`; unhandled Promise rejections crash Node.js processes (since Node 15).\n\n**7. Practical example**\n\n```java\ntry (var in = Files.newBufferedReader(path)) {   // closed automatically, even on exception\n    return parse(in.readLine());\n} catch (IOException e) {\n    throw new ConfigException(\"Cannot read \" + path, e);   // keep the cause\n}\n```\n\n**8. How can I observe it?**\nJava: `javap -c -v` shows the `Exception table:` of a method. IntelliJ / VS / Chrome DevTools: \"break on exceptions\" (caught and uncaught). C++: Compiler Explorer shows `.gcc_except_table` sections. Python: `dis.dis()` on 3.11+ prints the exception table.",
+      "summary": "What is it? An exception transfers control from where an error happens to the nearest matching handler up the call stack, running cleanup code on the way. Languages differ in the cost model, checked vs unchecked rules, and cleanup mechanisms.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart BT\n  T[\"parse() throws NumberFormatException\"] --> U1[\"unwind parse(): run finally\"]\n  U1 --> L[\"loadConfig(): no matching catch → unwind\"]\n  L --> M[\"main(): catch (NumberFormatException e)\"]\n  M --> H[Handler runs, program continues]"
+        },
+        {
+          "language": "java",
+          "code": "try (var in = Files.newBufferedReader(path)) {   // closed automatically, even on exception\n    return parse(in.readLine());\n} catch (IOException e) {\n    throw new ConfigException(\"Cannot read \" + path, e);   // keep the cause\n}"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Runtime Behaviour Across Languages"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "java",
+        "python",
+        "c++",
+        "c#",
+        "javascript",
+        "implement",
+        "exception",
+        "handling",
+        "internally",
+        "cost model",
+        "checked vs unchecked",
+        "cleanup",
+        "stack trace",
+        "unwound",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/11-Language-Implementation-Comparisons.md",
+        "startLine": 264,
+        "endLine": 319
+      },
+      "contentHash": "b18ccb7aaafc5a5c"
+    },
+    {
+      "id": "interview/under-the-hood/11-Language-Implementation-Comparisons.md#which-tools-can-i-use-to-observe-software-internals-and-what",
+      "kind": "question",
+      "parentId": null,
+      "question": "Which tools can I use to observe software internals, and what should I look for?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nA toolbox for **seeing** what this whole section describes: bytecode, threads, memory, GC, network packets, query plans, containers, caches and messages. Observing real behaviour is how you confirm theory and find problems.\n\n**2. How does it work internally?**\nTools get information in three ways:\n\n1. **Runtime introspection APIs** — the JVM's JMX / JFR events, V8 inspector protocol, .NET EventPipe.\n2. **OS-level instrumentation** — process/thread tables, performance counters, packet capture (Npcap/libpcap), eBPF.\n3. **Application/DB statistics** — `EXPLAIN` plans, Redis `INFO`, Kafka metrics, Actuator endpoints.\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  APP[\"Your application\"] --> RT[\"Runtime: JFR, JMX, V8 inspector\"]\n  APP --> OS[\"OS: threads, memory, sockets\"]\n  APP --> DB[\"Database / Redis / Kafka stats\"]\n  RT --> T1[\"VisualVM, JDK Mission Control,<br/>IntelliJ debugger, Chrome DevTools\"]\n  OS --> T2[\"Task Manager, Process Explorer,<br/>Wireshark, netstat\"]\n  DB --> T3[\"EXPLAIN, redis-cli, Kafka CLI / UI\"]\n```\n\n**4. Internal implementation**\n\n| Area | Tools | Look for |\n|---|---|---|\n| Java / JVM | IntelliJ debugger, VisualVM, JConsole, **JFR + JDK Mission Control**, `javap`, `jcmd` | Hot methods, GC pauses, heap growth, blocked threads, bytecode |\n| JavaScript / browser | **Chrome DevTools** (Performance, Memory, Network, Sources) | Long tasks > 50 ms, layout thrashing, detached DOM leaks, waterfall |\n| Angular | **Angular DevTools** | Change detection cycles, component tree, injectors |\n| Database | `EXPLAIN ANALYZE`, SQL Server execution plans + `SET STATISTICS IO ON` | Scans vs seeks, estimated vs actual rows, logical reads |\n| Networking | **Wireshark**, browser Network tab, `curl -v` | Handshakes, retransmissions, TTFB, protocol (h2/h3) |\n| Memory | VisualVM heap dump, JFR allocation profiling, Eclipse MAT | Retained size, dominator tree, allocation hot spots |\n| Operating system | Task Manager, **Process Explorer**, Resource Monitor | Threads per process, handles, page faults, CPU per core |\n| Docker | `docker stats`, `docker inspect`, Docker Desktop | Memory vs limit, restarts, layers, mounts |\n| Redis | `redis-cli INFO`, `SLOWLOG`, `MONITOR` | Hit ratio, memory, slow commands |\n| Kafka | `kafka-consumer-groups.sh --describe`, Kafka UI | Consumer lag, partition skew, under-replicated partitions |\n\n**5. Why is it designed this way?**\nLow-overhead, always-on tools (JFR, metrics) let you observe production safely; heavy tools (debuggers, heap dumps, packet capture) are for reproducing issues locally or in staging.\n\n**6. Language differences**\n.NET: `dotnet-counters`, `dotnet-trace`, `dotnet-dump`, Visual Studio diagnostics. Python: `cProfile`, `py-spy`, `tracemalloc`. Go: `pprof`, `go tool trace`. Node: `--inspect` + Chrome DevTools, `clinic.js`. Rust/C++: `perf`, Valgrind, sanitizers.\n\n**7. Practical example**\n\"Spring Boot API is slow\": JFR recording (method profiling) → most time in `OrderRepository.findAll` → `EXPLAIN ANALYZE` shows a sequential scan → add an index → JFR confirms the hotspot is gone.\n\n**8. How can I observe it?**\nStart small: `jcmd <pid> JFR.start duration=60s filename=rec.jfr`, open it in JDK Mission Control; record a page load in Chrome DevTools Performance; capture one HTTPS request in Wireshark; run `EXPLAIN ANALYZE` on your slowest query. For each, write down what you expected vs what you saw.",
+      "summary": "What is it? A toolbox for seeing what this whole section describes: bytecode, threads, memory, GC, network packets, query plans, containers, caches and messages. Observing real behaviour is how you confirm theory and find problems.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  APP[\"Your application\"] --> RT[\"Runtime: JFR, JMX, V8 inspector\"]\n  APP --> OS[\"OS: threads, memory, sockets\"]\n  APP --> DB[\"Database / Redis / Kafka stats\"]\n  RT --> T1[\"VisualVM, JDK Mission Control,<br/>IntelliJ debugger, Chrome DevTools\"]\n  OS --> T2[\"Task Manager, Process Explorer,<br/>Wireshark, netstat\"]\n  DB --> T3[\"EXPLAIN, redis-cli, Kafka CLI / UI\"]"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Observing Internals in Practice"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "tools",
+        "observe",
+        "software",
+        "internals",
+        "look",
+        "seeing",
+        "runtime introspection apis",
+        "os-level instrumentation",
+        "application/db statistics",
+        "visual",
+        "internal implementation",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/11-Language-Implementation-Comparisons.md",
+        "startLine": 325,
+        "endLine": 376
+      },
+      "contentHash": "f20780416ee2dfad"
+    },
+    {
       "id": "practice/coding/01-javascript-coding.md#move-all-0s-to-the-end-without-changing-the-order-of-other",
       "kind": "question",
       "parentId": null,
@@ -67628,7 +67947,7 @@
       "parentId": null,
       "question": "Under the Hood study path",
       "prompt": null,
-      "answer": "## Prerequisites\n\n- None. This is a starting point.\n- Overview: [Under the Hood concepts](../../knowledge/concepts/under-the-hood/README.md)\n\n## 1. Source Code to Machine Code\n\n1. [How does human-readable source code eventually become machine instructions?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n2. [What are the differences between Compiler, Interpreter, Assembler, Linker and Runtime?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n3. [What are Bytecode, Intermediate Representation (IR), Assembly Language and Machine Code?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n4. [What are AOT, JIT and interpretation? How do they differ?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n5. [How do JVM, CLR and JavaScript engines execute programs internally?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n6. [How do programming languages interact with the CPU and memory?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n7. [How does frontend code (JavaScript, TypeScript, Dart, WebAssembly) become machine code in the browser?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n8. [How do frontend frameworks (Angular, React, Vue, Svelte, Next.js) get from source code to running in the browser?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n9. [How do different programming languages implement compilation, execution and memory management?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n10. [Do backend frameworks (Spring Boot, Django, Express, ASP.NET Core) compile code themselves?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n\n## 2. CPU and Memory Hierarchy\n\n1. [How does a CPU execute instructions?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n2. [How do CPU registers, L1/L2/L3 cache, RAM and disk interact?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n3. [What exactly is stored in Stack and Heap memory?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n4. [Can the CPU directly access heap memory? How does a program access objects in RAM?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n5. [How does memory allocation and deallocation work?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n6. [How does Garbage Collection identify unused objects?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n\n## 3. Processes, Threads and Scheduling\n\n1. [How do Processes and Threads work internally?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n2. [How does Context Switching happen?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n3. [How does an operating system execute multiple applications simultaneously?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n\n## 4. Virtual Memory\n\n1. [How do Virtual Memory, Paging and Memory Protection work?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n\n## 5. Loading and Rendering a Page\n\n1. [What happens internally when we enter a URL and open a website?](../../interview/under-the-hood/03a-Browser-Internals.md)\n2. [How does a browser convert HTML, CSS and JavaScript into a rendered webpage?](../../interview/under-the-hood/03a-Browser-Internals.md)\n3. [How do DOM, CSSOM, Render Tree, Layout and Paint work together?](../../interview/under-the-hood/03a-Browser-Internals.md)\n\n## 6. JavaScript in the Browser\n\n1. [How does JavaScript execute inside a browser?](../../interview/under-the-hood/03a-Browser-Internals.md)\n2. [How do Call Stack, Event Loop, Microtask Queue and Task Queue work?](../../interview/under-the-hood/03a-Browser-Internals.md)\n3. [How does asynchronous JavaScript execute without blocking the UI?](../../interview/under-the-hood/03a-Browser-Internals.md)\n4. [How does a browser determine which UI elements need updating?](../../interview/under-the-hood/03a-Browser-Internals.md)\n5. [How do Angular, React and Vue detect changes and update the DOM?](../../interview/under-the-hood/03a-Browser-Internals.md)\n\n## 7. Network, Build and Storage\n\n1. [How does a frontend application communicate with a backend?](../../interview/under-the-hood/03a-Browser-Internals.md)\n2. [How do bundlers, Tree Shaking and Code Splitting work?](../../interview/under-the-hood/03a-Browser-Internals.md)\n3. [How do Browser Cache, Cookies, LocalStorage, SessionStorage and IndexedDB work?](../../interview/under-the-hood/03a-Browser-Internals.md)\n4. [How do Browser Tabs and Web Workers work internally?](../../interview/under-the-hood/03a-Browser-Internals.md)\n\n## 8. Angular Internals\n\n1. [How do Angular application bootstrap and compilation work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n2. [How does Angular Dependency Injection work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n3. [How does the Angular component lifecycle work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n4. [How do Angular Change Detection and Signals work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n5. [How do the Angular Router and lazy loading work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n6. [How do Angular HttpClient and HTTP Interceptors work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n\n## 9. React Internals\n\n1. [How do React's Virtual DOM and Reconciliation work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n2. [How does React's Fiber architecture work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n3. [How do React Hooks and component rendering work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n\n## 10. Vue Internals\n\n1. [How does Vue's reactivity system work internally (dependency tracking and Proxies)?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n2. [How do Vue's template compiler and Virtual DOM work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n\n## 11. Servers, Localhost and Ports\n\n1. [What exactly is a Server? Is it hardware, software, a process or a computer?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n2. [What is Localhost? How is it different from a physical server or virtual machine?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n3. [How does a server listen for incoming requests using IP addresses and ports?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n4. [What is the difference between Web Server, Application Server and Reverse Proxy?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n\n## 12. Tomcat and Spring Boot\n\n1. [How does Tomcat work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n2. [How is Tomcat different from the computer's localhost?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n3. [How does Spring Boot start its embedded Tomcat server?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n4. [What happens internally when an HTTP request reaches Spring Boot?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n\n## 13. Spring Container and Request Processing\n\n1. [How does Spring Dependency Injection create and manage objects?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n2. [How do Spring AOP, Proxies and @Transactional work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n3. [How does a backend application manage concurrent requests and threads?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n4. [How does Connection Pooling work?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n5. [How do Authentication and Authorization work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n6. [How do Exception Handling, Retries and Timeouts work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n\n## 14. Storage on Disk\n\n1. [How does a database physically store records on disk?](../../interview/under-the-hood/05-Database-Internals.md)\n2. [What are Database Pages, Blocks and Rows?](../../interview/under-the-hood/05-Database-Internals.md)\n\n## 15. Indexes\n\n1. [How does Database Indexing work internally?](../../interview/under-the-hood/05-Database-Internals.md)\n2. [How do B-Tree and B+ Tree work? Why are B+ Trees commonly used?](../../interview/under-the-hood/05-Database-Internals.md)\n3. [How do Clustered, Non-Clustered and Composite Indexes work?](../../interview/under-the-hood/05-Database-Internals.md)\n4. [How does a database decide between Index Seek and Table Scan?](../../interview/under-the-hood/05-Database-Internals.md)\n\n## 16. Query Processing\n\n1. [How does the SQL Query Optimizer select an execution plan?](../../interview/under-the-hood/05-Database-Internals.md)\n2. [How do JOIN operations work internally?](../../interview/under-the-hood/05-Database-Internals.md)\n3. [How do Nested Loop, Hash Join and Merge Join differ?](../../interview/under-the-hood/05-Database-Internals.md)\n\n## 17. Transactions, Logging and Recovery\n\n1. [How does a database manage concurrent transactions?](../../interview/under-the-hood/05-Database-Internals.md)\n2. [How do ACID, Locks and MVCC work internally?](../../interview/under-the-hood/05-Database-Internals.md)\n3. [How does Write-Ahead Logging (WAL) work?](../../interview/under-the-hood/05-Database-Internals.md)\n4. [How does a database recover after a crash?](../../interview/under-the-hood/05-Database-Internals.md)\n\n## 18. Caching and Scaling\n\n1. [How does Database Caching work?](../../interview/under-the-hood/05-Database-Internals.md)\n2. [How do Replication, Partitioning and Sharding work?](../../interview/under-the-hood/05-Database-Internals.md)\n\n## 19. Hashing\n\n1. [How does HashMap work internally, including hashing, buckets and collision handling?](../../interview/under-the-hood/06-Data-Structures-Internals.md)\n2. [Why is HashMap not reversible? Why can't the original key be reconstructed from its hash?](../../interview/under-the-hood/06-Data-Structures-Internals.md)\n\n## 20. Lists, Stacks, Queues and Heaps\n\n1. [How do ArrayList, LinkedList and Arrays store and retrieve elements differently?](../../interview/under-the-hood/06-Data-Structures-Internals.md)\n2. [How do Stack, Queue, Heap and Priority Queue work?](../../interview/under-the-hood/06-Data-Structures-Internals.md)\n\n## 21. Trees and Sets\n\n1. [How do Binary Search Trees, AVL Trees, Red-Black Trees and B+ Trees differ?](../../interview/under-the-hood/06-Data-Structures-Internals.md)\n2. [How does HashSet ensure uniqueness?](../../interview/under-the-hood/06-Data-Structures-Internals.md)\n\n## 22. Algorithms and Performance\n\n1. [How do searching and sorting algorithms work internally?](../../interview/under-the-hood/06-Data-Structures-Internals.md)\n2. [How do time and space complexities affect actual application performance?](../../interview/under-the-hood/06-Data-Structures-Internals.md)\n\n## 23. How Data Travels\n\n1. [How does data travel from one computer to another?](../../interview/under-the-hood/07-Networking-Internals.md)\n2. [How do IP Addresses, MAC Addresses, DNS, Ports and Routing work together?](../../interview/under-the-hood/07-Networking-Internals.md)\n\n## 24. TCP, UDP and HTTP\n\n1. [How do TCP and UDP work internally?](../../interview/under-the-hood/07-Networking-Internals.md)\n2. [How does TCP establish and maintain connections?](../../interview/under-the-hood/07-Networking-Internals.md)\n3. [How do HTTP/1.1, HTTP/2 and HTTP/3 differ internally?](../../interview/under-the-hood/07-Networking-Internals.md)\n\n## 25. Security: TLS, Keys and Certificates\n\n1. [How does HTTPS and the TLS Handshake work?](../../interview/under-the-hood/07-Networking-Internals.md)\n2. [How do Public-Key and Private-Key cryptography work?](../../interview/under-the-hood/07-Networking-Internals.md)\n3. [How does a receiver verify that the sender possesses the legitimate private key?](../../interview/under-the-hood/07-Networking-Internals.md)\n4. [How do Digital Certificates and Certificate Authorities establish trust?](../../interview/under-the-hood/07-Networking-Internals.md)\n\n## 26. Persistent Connections and Traffic Routing\n\n1. [How do WebSockets establish persistent connections?](../../interview/under-the-hood/07-Networking-Internals.md)\n2. [How do Load Balancers, Reverse Proxies and API Gateways work?](../../interview/under-the-hood/07-Networking-Internals.md)\n\n## 27. Virtual Machines\n\n1. [What is a Virtual Machine? How can one physical computer run multiple VMs?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)\n2. [How does a Hypervisor allocate CPU, Memory and Storage?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)\n\n## 28. Containers\n\n1. [How does Docker work internally?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)\n2. [How are Containers different from Virtual Machines?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)\n3. [How do Docker Images and Containers work?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)\n\n## 29. Orchestration and Delivery\n\n1. [How does Kubernetes schedule and manage containers?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)\n2. [How does an application move from source code to a running production environment?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)\n3. [How do CI/CD pipelines build, test and deploy applications?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)\n4. [How do cloud platforms allocate computing resources?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)\n5. [How do Auto Scaling and Load Balancing work?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)\n6. [How are Secrets and Environment Configurations managed?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)\n\n## 30. Storage Hardware and File Systems\n\n1. [How do HDD, SSD and RAM store and retrieve data differently?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)\n2. [How does a File System organize files and directories on disk?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)\n\n## 31. Redis and Caching Patterns\n\n1. [How does Redis store and retrieve data internally?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)\n2. [How do Cache-Aside, Write-Through and Write-Behind work?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)\n\n## 32. Kafka and RabbitMQ\n\n1. [How does Kafka store messages and achieve high throughput?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)\n2. [How do Kafka Partitions, Offsets and Consumer Groups work?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)\n3. [How does RabbitMQ route messages using Exchanges, Queues and Bindings?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)\n4. [How do Message Acknowledgements, Retries and Dead Letter Queues work?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)\n\n## 33. Ordering and Reliability\n\n1. [How does message ordering work?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)\n2. [How does a distributed application achieve reliable message processing?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)\n\n## 34. Service Communication\n\n1. [How do microservices communicate with each other?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)\n2. [How does Service Discovery work?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)\n\n## 35. Resilience\n\n1. [How do Circuit Breakers, Retries and Timeouts prevent cascading failures?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)\n2. [How does Idempotency prevent duplicate processing?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)\n\n## 36. Transactions and Consistency\n\n1. [How do Distributed Transactions work?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)\n2. [How does the Saga Pattern work?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)\n3. [How do distributed systems maintain consistency?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)\n\n## 37. Coordination\n\n1. [How do Replication and Leader Election work?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)\n2. [How does Distributed Locking work?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)\n\n## 38. Observability\n\n1. [How does Distributed Tracing track a request across multiple services?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)\n\n## Diagrams\n\n- [Frontend programming languages: source to machine code](../../knowledge/visual-notes/01_frontend_programming_languages.png)\n- [Frontend frameworks and libraries: build and execution path](../../knowledge/visual-notes/02_frontend_frameworks.png)\n- [Backend programming languages: source, artifact, runtime and execution](../../knowledge/visual-notes/03_backend_programming_languages.png)\n- [Backend frameworks and platforms: source, compiler and runtime](../../knowledge/visual-notes/04_backend_frameworks.png)\n\n## Related roles\n\n[Platform Engineer](../roles/platform-engineer.md)",
+      "answer": "## Prerequisites\n\n- None. This is a starting point.\n- Overview: [Under the Hood concepts](../../knowledge/concepts/under-the-hood/README.md)\n\n## 1. Source Code to Machine Code\n\n1. [How does human-readable source code eventually become machine instructions?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n2. [What are the differences between Compiler, Interpreter, Assembler, Linker and Runtime?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n3. [What are Bytecode, Intermediate Representation (IR), Assembly Language and Machine Code?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n4. [What are AOT, JIT and interpretation? How do they differ?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n5. [How do JVM, CLR and JavaScript engines execute programs internally?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n6. [How do programming languages interact with the CPU and memory?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n7. [How does frontend code (JavaScript, TypeScript, Dart, WebAssembly) become machine code in the browser?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n8. [How do frontend frameworks (Angular, React, Vue, Svelte, Next.js) get from source code to running in the browser?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n9. [How do different programming languages implement compilation, execution and memory management?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n10. [Do backend frameworks (Spring Boot, Django, Express, ASP.NET Core) compile code themselves?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n\n## 2. CPU and Memory Hierarchy\n\n1. [How does a CPU execute instructions?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n2. [How do CPU registers, L1/L2/L3 cache, RAM and disk interact?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n3. [What exactly is stored in Stack and Heap memory?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n4. [Can the CPU directly access heap memory? How does a program access objects in RAM?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n5. [How does memory allocation and deallocation work?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n6. [How does Garbage Collection identify unused objects?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n\n## 3. Processes, Threads and Scheduling\n\n1. [How do Processes and Threads work internally?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n2. [How does Context Switching happen?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n3. [How does an operating system execute multiple applications simultaneously?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n\n## 4. Virtual Memory\n\n1. [How do Virtual Memory, Paging and Memory Protection work?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n\n## 5. Loading and Rendering a Page\n\n1. [What happens internally when we enter a URL and open a website?](../../interview/under-the-hood/03a-Browser-Internals.md)\n2. [How does a browser convert HTML, CSS and JavaScript into a rendered webpage?](../../interview/under-the-hood/03a-Browser-Internals.md)\n3. [How do DOM, CSSOM, Render Tree, Layout and Paint work together?](../../interview/under-the-hood/03a-Browser-Internals.md)\n\n## 6. JavaScript in the Browser\n\n1. [How does JavaScript execute inside a browser?](../../interview/under-the-hood/03a-Browser-Internals.md)\n2. [How do Call Stack, Event Loop, Microtask Queue and Task Queue work?](../../interview/under-the-hood/03a-Browser-Internals.md)\n3. [How does asynchronous JavaScript execute without blocking the UI?](../../interview/under-the-hood/03a-Browser-Internals.md)\n4. [How does a browser determine which UI elements need updating?](../../interview/under-the-hood/03a-Browser-Internals.md)\n5. [How do Angular, React and Vue detect changes and update the DOM?](../../interview/under-the-hood/03a-Browser-Internals.md)\n\n## 7. Network, Build and Storage\n\n1. [How does a frontend application communicate with a backend?](../../interview/under-the-hood/03a-Browser-Internals.md)\n2. [How do bundlers, Tree Shaking and Code Splitting work?](../../interview/under-the-hood/03a-Browser-Internals.md)\n3. [How do Browser Cache, Cookies, LocalStorage, SessionStorage and IndexedDB work?](../../interview/under-the-hood/03a-Browser-Internals.md)\n4. [How do Browser Tabs and Web Workers work internally?](../../interview/under-the-hood/03a-Browser-Internals.md)\n\n## 8. Angular Internals\n\n1. [How do Angular application bootstrap and compilation work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n2. [How does Angular Dependency Injection work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n3. [How does the Angular component lifecycle work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n4. [How do Angular Change Detection and Signals work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n5. [How do the Angular Router and lazy loading work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n6. [How do Angular HttpClient and HTTP Interceptors work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n\n## 9. React Internals\n\n1. [How do React's Virtual DOM and Reconciliation work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n2. [How does React's Fiber architecture work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n3. [How do React Hooks and component rendering work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n\n## 10. Vue Internals\n\n1. [How does Vue's reactivity system work internally (dependency tracking and Proxies)?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n2. [How do Vue's template compiler and Virtual DOM work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n\n## 11. Servers, Localhost and Ports\n\n1. [What exactly is a Server? Is it hardware, software, a process or a computer?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n2. [What is Localhost? How is it different from a physical server or virtual machine?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n3. [How does a server listen for incoming requests using IP addresses and ports?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n4. [What is the difference between Web Server, Application Server and Reverse Proxy?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n\n## 12. Tomcat and Spring Boot\n\n1. [How does Tomcat work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n2. [How is Tomcat different from the computer's localhost?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n3. [How does Spring Boot start its embedded Tomcat server?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n4. [What happens internally when an HTTP request reaches Spring Boot?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n\n## 13. Spring Container and Request Processing\n\n1. [How does Spring Dependency Injection create and manage objects?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n2. [How do Spring AOP, Proxies and @Transactional work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n3. [How does a backend application manage concurrent requests and threads?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n4. [How does Connection Pooling work?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n5. [How do Authentication and Authorization work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n6. [How do Exception Handling, Retries and Timeouts work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n\n## 14. Storage on Disk\n\n1. [How does a database physically store records on disk?](../../interview/under-the-hood/05-Database-Internals.md)\n2. [What are Database Pages, Blocks and Rows?](../../interview/under-the-hood/05-Database-Internals.md)\n\n## 15. Indexes\n\n1. [How does Database Indexing work internally?](../../interview/under-the-hood/05-Database-Internals.md)\n2. [How do B-Tree and B+ Tree work? Why are B+ Trees commonly used?](../../interview/under-the-hood/05-Database-Internals.md)\n3. [How do Clustered, Non-Clustered and Composite Indexes work?](../../interview/under-the-hood/05-Database-Internals.md)\n4. [How does a database decide between Index Seek and Table Scan?](../../interview/under-the-hood/05-Database-Internals.md)\n\n## 16. Query Processing\n\n1. [How does the SQL Query Optimizer select an execution plan?](../../interview/under-the-hood/05-Database-Internals.md)\n2. [How do JOIN operations work internally?](../../interview/under-the-hood/05-Database-Internals.md)\n3. [How do Nested Loop, Hash Join and Merge Join differ?](../../interview/under-the-hood/05-Database-Internals.md)\n\n## 17. Transactions, Logging and Recovery\n\n1. [How does a database manage concurrent transactions?](../../interview/under-the-hood/05-Database-Internals.md)\n2. [How do ACID, Locks and MVCC work internally?](../../interview/under-the-hood/05-Database-Internals.md)\n3. [How does Write-Ahead Logging (WAL) work?](../../interview/under-the-hood/05-Database-Internals.md)\n4. [How does a database recover after a crash?](../../interview/under-the-hood/05-Database-Internals.md)\n\n## 18. Caching and Scaling\n\n1. [How does Database Caching work?](../../interview/under-the-hood/05-Database-Internals.md)\n2. [How do Replication, Partitioning and Sharding work?](../../interview/under-the-hood/05-Database-Internals.md)\n\n## 19. Hashing\n\n1. [How does HashMap work internally, including hashing, buckets and collision handling?](../../interview/under-the-hood/06-Data-Structures-Internals.md)\n2. [Why is HashMap not reversible? Why can't the original key be reconstructed from its hash?](../../interview/under-the-hood/06-Data-Structures-Internals.md)\n\n## 20. Lists, Stacks, Queues and Heaps\n\n1. [How do ArrayList, LinkedList and Arrays store and retrieve elements differently?](../../interview/under-the-hood/06-Data-Structures-Internals.md)\n2. [How do Stack, Queue, Heap and Priority Queue work?](../../interview/under-the-hood/06-Data-Structures-Internals.md)\n\n## 21. Trees and Sets\n\n1. [How do Binary Search Trees, AVL Trees, Red-Black Trees and B+ Trees differ?](../../interview/under-the-hood/06-Data-Structures-Internals.md)\n2. [How does HashSet ensure uniqueness?](../../interview/under-the-hood/06-Data-Structures-Internals.md)\n\n## 22. Algorithms and Performance\n\n1. [How do searching and sorting algorithms work internally?](../../interview/under-the-hood/06-Data-Structures-Internals.md)\n2. [How do time and space complexities affect actual application performance?](../../interview/under-the-hood/06-Data-Structures-Internals.md)\n\n## 23. How Data Travels\n\n1. [How does data travel from one computer to another?](../../interview/under-the-hood/07-Networking-Internals.md)\n2. [How do IP Addresses, MAC Addresses, DNS, Ports and Routing work together?](../../interview/under-the-hood/07-Networking-Internals.md)\n\n## 24. TCP, UDP and HTTP\n\n1. [How do TCP and UDP work internally?](../../interview/under-the-hood/07-Networking-Internals.md)\n2. [How does TCP establish and maintain connections?](../../interview/under-the-hood/07-Networking-Internals.md)\n3. [How do HTTP/1.1, HTTP/2 and HTTP/3 differ internally?](../../interview/under-the-hood/07-Networking-Internals.md)\n\n## 25. Security: TLS, Keys and Certificates\n\n1. [How does HTTPS and the TLS Handshake work?](../../interview/under-the-hood/07-Networking-Internals.md)\n2. [How do Public-Key and Private-Key cryptography work?](../../interview/under-the-hood/07-Networking-Internals.md)\n3. [How does a receiver verify that the sender possesses the legitimate private key?](../../interview/under-the-hood/07-Networking-Internals.md)\n4. [How do Digital Certificates and Certificate Authorities establish trust?](../../interview/under-the-hood/07-Networking-Internals.md)\n\n## 26. Persistent Connections and Traffic Routing\n\n1. [How do WebSockets establish persistent connections?](../../interview/under-the-hood/07-Networking-Internals.md)\n2. [How do Load Balancers, Reverse Proxies and API Gateways work?](../../interview/under-the-hood/07-Networking-Internals.md)\n\n## 27. Virtual Machines\n\n1. [What is a Virtual Machine? How can one physical computer run multiple VMs?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)\n2. [How does a Hypervisor allocate CPU, Memory and Storage?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)\n\n## 28. Containers\n\n1. [How does Docker work internally?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)\n2. [How are Containers different from Virtual Machines?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)\n3. [How do Docker Images and Containers work?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)\n\n## 29. Orchestration and Delivery\n\n1. [How does Kubernetes schedule and manage containers?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)\n2. [How does an application move from source code to a running production environment?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)\n3. [How do CI/CD pipelines build, test and deploy applications?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)\n4. [How do cloud platforms allocate computing resources?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)\n5. [How do Auto Scaling and Load Balancing work?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)\n6. [How are Secrets and Environment Configurations managed?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)\n\n## 30. Storage Hardware and File Systems\n\n1. [How do HDD, SSD and RAM store and retrieve data differently?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)\n2. [How does a File System organize files and directories on disk?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)\n\n## 31. Redis and Caching Patterns\n\n1. [How does Redis store and retrieve data internally?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)\n2. [How do Cache-Aside, Write-Through and Write-Behind work?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)\n\n## 32. Kafka and RabbitMQ\n\n1. [How does Kafka store messages and achieve high throughput?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)\n2. [How do Kafka Partitions, Offsets and Consumer Groups work?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)\n3. [How does RabbitMQ route messages using Exchanges, Queues and Bindings?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)\n4. [How do Message Acknowledgements, Retries and Dead Letter Queues work?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)\n\n## 33. Ordering and Reliability\n\n1. [How does message ordering work?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)\n2. [How does a distributed application achieve reliable message processing?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)\n\n## 34. Service Communication\n\n1. [How do microservices communicate with each other?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)\n2. [How does Service Discovery work?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)\n\n## 35. Resilience\n\n1. [How do Circuit Breakers, Retries and Timeouts prevent cascading failures?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)\n2. [How does Idempotency prevent duplicate processing?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)\n\n## 36. Transactions and Consistency\n\n1. [How do Distributed Transactions work?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)\n2. [How does the Saga Pattern work?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)\n3. [How do distributed systems maintain consistency?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)\n\n## 37. Coordination\n\n1. [How do Replication and Leader Election work?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)\n2. [How does Distributed Locking work?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)\n\n## 38. Observability\n\n1. [How does Distributed Tracing track a request across multiple services?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)\n\n## 39. Runtime Behaviour Across Languages\n\n1. [How do Java, JavaScript, Python, Go, Rust and C# implement concurrency differently?](../../interview/under-the-hood/11-Language-Implementation-Comparisons.md)\n2. [How do Java, C++, Python and JavaScript create objects internally?](../../interview/under-the-hood/11-Language-Implementation-Comparisons.md)\n3. [How do Spring, ASP.NET Core and Angular implement Dependency Injection differently?](../../interview/under-the-hood/11-Language-Implementation-Comparisons.md)\n4. [How do Java, JavaScript, Python, C# and Kotlin implement asynchronous execution?](../../interview/under-the-hood/11-Language-Implementation-Comparisons.md)\n5. [How do Java, Python, C++, C# and JavaScript implement exception handling internally?](../../interview/under-the-hood/11-Language-Implementation-Comparisons.md)\n\n## 40. Observing Internals in Practice\n\n1. [Which tools can I use to observe software internals, and what should I look for?](../../interview/under-the-hood/11-Language-Implementation-Comparisons.md)\n\n## Diagrams\n\n- [Frontend programming languages: source to machine code](../../knowledge/visual-notes/01_frontend_programming_languages.png)\n- [Frontend frameworks and libraries: build and execution path](../../knowledge/visual-notes/02_frontend_frameworks.png)\n- [Backend programming languages: source, artifact, runtime and execution](../../knowledge/visual-notes/03_backend_programming_languages.png)\n- [Backend frameworks and platforms: source, compiler and runtime](../../knowledge/visual-notes/04_backend_frameworks.png)\n\n## Related roles\n\n[Platform Engineer](../roles/platform-engineer.md)",
       "summary": "",
       "codeBlocks": [],
       "visuals": [],
@@ -67662,9 +67981,9 @@
       "source": {
         "path": "roadmap/topics/under-the-hood.md",
         "startLine": 2,
-        "endLine": 255
+        "endLine": 267
       },
-      "contentHash": "f411143bed62a0fe"
+      "contentHash": "d2b6947f329958ea"
     },
     {
       "id": "roadmap/topics/web-architecture.md#roadmap",
