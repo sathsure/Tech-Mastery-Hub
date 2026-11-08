@@ -1,18 +1,18 @@
 {
   "schema_version": "1.0.0",
   "repository": "Tech-Mastery-Hub",
-  "generated_at": "2026-11-08T16:56:20.754Z",
-  "source_fingerprint": "df68862a3b68e4b765e73b1e7571e066bdb8758e47caf01efe888ac6616d70ed",
+  "generated_at": "2026-11-08T16:58:16.276Z",
+  "source_fingerprint": "7e760a2d7d8fde9bf0534aba7fc10d9bb741f670b93de18658c6e30491280a1e",
   "stats": {
-    "files": 147,
-    "entries": 2099,
-    "questions": 1172,
+    "files": 148,
+    "entries": 2107,
+    "questions": 1180,
     "followUps": 311,
     "notes": 84,
     "roles": 74,
     "terms": 378,
     "roadmaps": 80,
-    "codeBlocks": 1469,
+    "codeBlocks": 1486,
     "visuals": 86,
     "missingVisuals": 0
   },
@@ -559,6 +559,17 @@
     {
       "path": "interview/under-the-hood/05-Database-Internals.md",
       "questions": 15,
+      "followUps": 0,
+      "notes": 0,
+      "roles": 0,
+      "terms": 0,
+      "roadmaps": 0,
+      "withoutAnswer": 0,
+      "missingVisuals": 0
+    },
+    {
+      "path": "interview/under-the-hood/06-Data-Structures-Internals.md",
+      "questions": 8,
       "followUps": 0,
       "notes": 0,
       "roles": 0,
@@ -55522,6 +55533,398 @@
       "contentHash": "e83d9869fa636552"
     },
     {
+      "id": "interview/under-the-hood/06-Data-Structures-Internals.md#how-does-hashmap-work-internally-including-hashing-buckets-and",
+      "kind": "question",
+      "parentId": null,
+      "question": "How does HashMap work internally, including hashing, buckets and collision handling?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nA HashMap stores key → value pairs in an **array of buckets**. A **hash function** turns the key into an array index, so `get` and `put` take **O(1) on average** instead of searching.\n\n**2. How does it work internally?** (Java `HashMap`)\n\n1. `put(key, value)`: call `key.hashCode()`, then **spread** it: `h ^ (h >>> 16)` (mixes high bits into low bits).\n2. Index = `hash & (capacity - 1)` (capacity is always a power of two, default 16).\n3. Empty bucket → store a new node. Occupied → walk the bucket; if a node has the same hash **and** `equals()` → replace the value; otherwise append (a **collision**).\n4. A bucket with more than **8** nodes becomes a **red-black tree** (only if capacity ≥ 64; otherwise the table resizes); it turns back into a list at 6.\n5. When size > capacity × **load factor 0.75**, the table **doubles** and every node moves to either its old index or old index + old capacity.\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  K[\"put('apple', 10)\"] --> HC[\"hashCode() = 93029210\"]\n  HC --> SP[\"spread: h ^ (h >>> 16)\"]\n  SP --> IX[\"index = hash & 15 = 5\"]\n  IX --> B5\n  subgraph Table[\"Node[] table (capacity 16)\"]\n    B4[\"[4] null\"]\n    B5[\"[5] apple=10 → kiwi=3\"]\n    B6[\"[6] tree (if > 8 nodes)\"]\n  end\n```\n\n**4. Internal implementation**\n\n- `Node<K,V> { int hash; K key; V value; Node next; }` stored in `Node[] table` (created lazily on first put).\n- `get` compares the stored hash first (cheap), then `equals()` only on hash matches.\n- Resize = O(n) but rare → **amortised** O(1) put. Worst case with all keys colliding: O(n) per lookup, or O(log n) once treeified.\n\n**5. Why is it designed this way?**\nPower-of-two sizes make the index a fast bit-mask instead of `%`; spreading compensates for weak `hashCode()`s that differ only in high bits. Chaining + treeification keeps bad cases bounded. Cost: memory for nodes and pointers.\n\n**6. Language differences**\n\n| Language | Map implementation |\n|---|---|\n| Java `HashMap` | Chaining with lists → red-black trees |\n| Python `dict` | **Open addressing** (probing within one array) + compact entries array; keeps insertion order (3.7+) |\n| JavaScript `Map` | Deterministic hash table that preserves insertion order (V8: OrderedHashMap) |\n| C++ `std::unordered_map` | Chaining (node per element) |\n| Rust `HashMap` | SwissTable (open addressing with SIMD group probing), DoS-resistant SipHash by default |\n| Go `map` | Buckets of 8 entries; SwissTable-based since Go 1.24 |\n\n**7. Practical example**\n\n```java\nMap<String, Integer> stock = new HashMap<>(64);   // presize to avoid resizes\nstock.put(\"apple\", 10);\nstock.get(\"apple\");   // hash → bucket 5 → compare hash → equals → 10\n```\n\n**8. How can I observe it?**\nIntelliJ debugger → expand a `HashMap` and choose \"Show as Object\" to see `table`, bucket lists and `threshold`. Use a key class with `hashCode()` returning a constant and time lookups to see collisions hurt.",
+      "summary": "What is it? A HashMap stores key → value pairs in an array of buckets. A hash function turns the key into an array index, so get and put take O(1) on average instead of searching.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  K[\"put('apple', 10)\"] --> HC[\"hashCode() = 93029210\"]\n  HC --> SP[\"spread: h ^ (h >>> 16)\"]\n  SP --> IX[\"index = hash & 15 = 5\"]\n  IX --> B5\n  subgraph Table[\"Node[] table (capacity 16)\"]\n    B4[\"[4] null\"]\n    B5[\"[5] apple=10 → kiwi=3\"]\n    B6[\"[6] tree (if > 8 nodes)\"]\n  end"
+        },
+        {
+          "language": "java",
+          "code": "Map<String, Integer> stock = new HashMap<>(64);   // presize to avoid resizes\nstock.put(\"apple\", 10);\nstock.get(\"apple\");   // hash → bucket 5 → compare hash → equals → 10"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Hashing"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "hashmap",
+        "internally",
+        "including",
+        "hashing",
+        "buckets",
+        "collision",
+        "handling",
+        "array of buckets",
+        "hash function",
+        "o(1) on average",
+        "spread",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/06-Data-Structures-Internals.md",
+        "startLine": 7,
+        "endLine": 66
+      },
+      "contentHash": "fa5b70fbcd44f1af"
+    },
+    {
+      "id": "interview/under-the-hood/06-Data-Structures-Internals.md#why-is-hashmap-not-reversible-why-can-t-the-original-key-be",
+      "kind": "question",
+      "parentId": null,
+      "question": "Why is HashMap not reversible? Why can't the original key be reconstructed from its hash?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nA hash function maps a **huge** set of possible keys to a **small** set of numbers. Many different keys share the same hash, so a hash alone can't tell you which key produced it. A HashMap doesn't need to reverse anything: it **stores the key itself** next to the value.\n\n**2. How does it work internally?**\n\n1. `\"apple\".hashCode()` produces a 32-bit `int` — only about 4.3 billion possible values.\n2. The number of possible strings is unlimited → by the **pigeonhole principle**, infinitely many strings share each hash code.\n3. The bucket index uses even fewer bits (`hash & 15` keeps 4 bits) → more information thrown away.\n4. On `get`, the map uses the hash only to find the bucket, then compares the **stored keys** with `equals()`.\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  A[\"'Aa'\"] --> H[\"hashCode = 2112\"]\n  B[\"'BB'\"] --> H\n  C[\"... infinitely many other strings\"] --> H\n  H --> I[\"bucket = 2112 & 15 = 0\"]\n  I --> E[\"Bucket 0 stores the KEYS 'Aa' and 'BB'<br/>equals() picks the right one\"]\n```\n\n**4. Internal implementation**\n\n- Java `String.hashCode()` = `s[0]*31^(n-1) + ... + s[n-1]` with integer overflow — information is lost by overflow and by masking.\n- `\"Aa\"` and `\"BB\"` really have the same hash code (2112) — a classic collision.\n- **Cryptographic hashes** (SHA-256) are also one-way, but additionally designed so finding any input for a given hash (**preimage**) is computationally infeasible.\n\n**5. Why is it designed this way?**\nA hash's job is to spread keys **quickly and evenly** over a fixed number of buckets — compression is the point. Storing the key makes lookups exact despite collisions.\n\n**6. Language differences**\nEvery language's hash tables store keys (Python dict entries hold hash, key, value; Java nodes hold hash, key, value). Python randomises string hashing per process (`PYTHONHASHSEED`) to prevent collision attacks; Rust uses keyed SipHash by default.\n\n**7. Practical example**\n\n```java\nSystem.out.println(\"Aa\".hashCode());   // 2112\nSystem.out.println(\"BB\".hashCode());   // 2112 — same hash, different keys\n```\n\n**8. How can I observe it?**\nPrint hash codes of many strings and find duplicates. In the debugger, put `\"Aa\"` and `\"BB\"` in a HashMap and see both nodes chained in the same bucket.",
+      "summary": "What is it? A hash function maps a huge set of possible keys to a small set of numbers. Many different keys share the same hash, so a hash alone can't tell you which key produced it. A HashMap doesn't need to reverse anything: it stores the key itself next to the value.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  A[\"'Aa'\"] --> H[\"hashCode = 2112\"]\n  B[\"'BB'\"] --> H\n  C[\"... infinitely many other strings\"] --> H\n  H --> I[\"bucket = 2112 & 15 = 0\"]\n  I --> E[\"Bucket 0 stores the KEYS 'Aa' and 'BB'<br/>equals() picks the right one\"]"
+        },
+        {
+          "language": "java",
+          "code": "System.out.println(\"Aa\".hashCode());   // 2112\nSystem.out.println(\"BB\".hashCode());   // 2112 — same hash, different keys"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Hashing"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "hashmap",
+        "not",
+        "reversible",
+        "original",
+        "key",
+        "reconstructed",
+        "hash",
+        "huge",
+        "small",
+        "stores the key itself",
+        "pigeonhole principle",
+        "stored keys",
+        "visual",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/06-Data-Structures-Internals.md",
+        "startLine": 70,
+        "endLine": 115
+      },
+      "contentHash": "413aa10ec8537980"
+    },
+    {
+      "id": "interview/under-the-hood/06-Data-Structures-Internals.md#how-do-arraylist-linkedlist-and-arrays-store-and-retrieve",
+      "kind": "question",
+      "parentId": null,
+      "question": "How do ArrayList, LinkedList and Arrays store and retrieve elements differently?",
+      "prompt": null,
+      "answer": "**1. What is it?**\n\n- **Array** — a fixed-size block of **contiguous** memory slots.\n- **ArrayList** (dynamic array) — an array that **grows** by copying into a bigger array when full.\n- **LinkedList** — separate **nodes** scattered in memory, each pointing to the next (and previous).\n\n**2. How does it work internally?**\n\n- Array / ArrayList `get(i)`: address = base + i × element size → **one** memory access, O(1).\n- ArrayList `add(x)`: if full, allocate a new array **1.5×** bigger (Java: `old + old >> 1`), copy, then add → amortised O(1).\n- ArrayList insert in the middle: shift all later elements → O(n) (but a fast memory copy).\n- LinkedList `get(i)`: follow `next` pointers i times (Java starts from the nearer end) → O(n).\n- LinkedList insert at a known node: change 2–4 pointers → O(1).\n\n**3. Visual**\n\n```mermaid\nflowchart TB\n  subgraph AL[\"ArrayList: Object[] elementData (contiguous)\"]\n    direction LR\n    A0[\"[0] ref\"] --- A1[\"[1] ref\"] --- A2[\"[2] ref\"] --- A3[\"[3] empty\"]\n  end\n  subgraph LL[\"LinkedList: nodes scattered on the heap\"]\n    direction LR\n    N1[\"Node: prev | item | next\"] --> N2[\"Node: prev | item | next\"] --> N3[\"Node: prev | item | next\"]\n  end\n```\n\n**4. Internal implementation**\n\n- `ArrayList<Integer>` stores **references** to `Integer` objects; `int[]` stores the numbers themselves (no per-element object, much better for cache).\n- Each `LinkedList` node is a separate object (~24 bytes + the element) → more memory, more GC work, and **cache misses** when walking.\n- CPU caches load 64-byte lines and prefetch sequential memory — arrays benefit, linked lists don't.\n\n**5. Why is it designed this way?**\nArrays give fast random access and great cache behaviour; linked lists give cheap insert/remove when you already hold a node. In practice ArrayList (or `ArrayDeque`) wins almost every benchmark.\n\n**6. Language differences**\n\n| Language | Dynamic array | Linked list |\n|---|---|---|\n| Java | `ArrayList` (1.5× growth) | `LinkedList` |\n| Python | `list` (array of pointers, ~1.125× growth) | none built in (`collections.deque` is a linked list of blocks) |\n| JavaScript | `Array` (V8 uses packed arrays when possible) | none built in |\n| C++ | `std::vector` (usually 2× or 1.5×) | `std::list` |\n| Go | slices (`append`, ~2× for small, ~1.25× for large) | `container/list` |\n| Rust | `Vec` (2×) | `LinkedList` (rarely used) |\n\n**7. Practical example**\n\n```java\nList<Integer> list = new ArrayList<>(10_000);   // presize: no regrowth copies\nfor (int i = 0; i < 10_000; i++) list.add(i);\nint x = list.get(5_000);                         // one array access\n```\n\n**8. How can I observe it?**\n**JMH** benchmark: iterate 1 million elements in `ArrayList` vs `LinkedList`. **JOL** (Java Object Layout) shows bytes per node. VisualVM heap histogram counts `LinkedList$Node` objects.",
+      "summary": "Array — a fixed-size block of contiguous memory slots. ArrayList (dynamic array) — an array that grows by copying into a bigger array when full. LinkedList — separate nodes scattered in memory, each pointing to the next (and previous).",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart TB\n  subgraph AL[\"ArrayList: Object[] elementData (contiguous)\"]\n    direction LR\n    A0[\"[0] ref\"] --- A1[\"[1] ref\"] --- A2[\"[2] ref\"] --- A3[\"[3] empty\"]\n  end\n  subgraph LL[\"LinkedList: nodes scattered on the heap\"]\n    direction LR\n    N1[\"Node: prev | item | next\"] --> N2[\"Node: prev | item | next\"] --> N3[\"Node: prev | item | next\"]\n  end"
+        },
+        {
+          "language": "java",
+          "code": "List<Integer> list = new ArrayList<>(10_000);   // presize: no regrowth copies\nfor (int i = 0; i < 10_000; i++) list.add(i);\nint x = list.get(5_000);                         // one array access"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Lists, Stacks, Queues and Heaps"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "arraylist",
+        "linkedlist",
+        "arrays",
+        "store",
+        "retrieve",
+        "elements",
+        "differently",
+        "array",
+        "contiguous",
+        "grows",
+        "nodes",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/06-Data-Structures-Internals.md",
+        "startLine": 121,
+        "endLine": 182
+      },
+      "contentHash": "e6dd6890f7eb9276"
+    },
+    {
+      "id": "interview/under-the-hood/06-Data-Structures-Internals.md#how-do-stack-queue-heap-and-priority-queue-work",
+      "kind": "question",
+      "parentId": null,
+      "question": "How do Stack, Queue, Heap and Priority Queue work?",
+      "prompt": null,
+      "answer": "**1. What is it?**\n\n- **Stack** — LIFO (last in, first out): `push`, `pop`.\n- **Queue** — FIFO (first in, first out): `offer`, `poll`.\n- **Heap (binary heap)** — a tree where every parent is ≤ its children (min-heap), stored in an **array**.\n- **Priority queue** — a queue that always returns the smallest (or highest-priority) item; usually built on a binary heap.\n\nNote: this \"heap\" data structure is unrelated to heap **memory**.\n\n**2. How does it work internally?**\n\n- Stack/queue in Java: `ArrayDeque` — a **circular array** with `head` and `tail` indexes; both ends O(1), doubles when full.\n- Binary heap in an array: children of index `i` are `2i+1` and `2i+2`; parent is `(i-1)/2`.\n- `offer(x)`: put at the end, **sift up** (swap with parent while smaller) → O(log n).\n- `poll()`: take the root, move the last element to the root, **sift down** (swap with smaller child) → O(log n).\n- `peek()`: the root → O(1).\n\n**3. Visual**\n\n```mermaid\nflowchart TB\n  subgraph Tree[\"Min-heap as a tree\"]\n    R[\"1\"] --> A[\"3\"]\n    R --> B[\"2\"]\n    A --> C[\"7\"]\n    A --> D[\"4\"]\n  end\n  subgraph Arr[\"Same heap as an array\"]\n    direction LR\n    I0[\"[0]=1\"] --- I1[\"[1]=3\"] --- I2[\"[2]=2\"] --- I3[\"[3]=7\"] --- I4[\"[4]=4\"]\n  end\n```\n\n**4. Internal implementation**\n\n- `PriorityQueue` in Java is a min-heap in `Object[] queue`, ordered by `Comparable` or a `Comparator`; iteration order is **not** sorted.\n- Building a heap from n items with \"heapify\" is O(n), not O(n log n).\n- `java.util.Stack` is an old synchronized `Vector` subclass — use `ArrayDeque` instead.\n\n**5. Why is it designed this way?**\nA heap keeps only \"partial order\" (parent vs children), which is cheaper to maintain than full sorting yet gives the minimum instantly. Arrays avoid pointer overhead and are cache-friendly.\n\n**6. Language differences**\nPython: `list` as stack, `collections.deque` as queue, `heapq` functions on a list (min-heap). JavaScript: arrays as stacks (`push`/`pop`); `shift()` is O(n), so real queues need a custom ring buffer; no built-in heap. C++: `std::stack`, `std::queue`, `std::priority_queue` (max-heap by default). Go: `container/heap` interface.\n\n**7. Practical example**\n\n```java\nPriorityQueue<Task> pq = new PriorityQueue<>(Comparator.comparingInt(Task::priority));\npq.offer(new Task(\"email\", 3));\npq.offer(new Task(\"payment\", 1));\npq.poll();   // \"payment\" — lowest number first\n```\n\n**8. How can I observe it?**\nDebugger: inspect `PriorityQueue.queue` after each `offer` to watch sift-up reorder the array. Print the queue with `toString()` — it's heap order, not sorted order.",
+      "summary": "Stack — LIFO (last in, first out): push, pop. Queue — FIFO (first in, first out): offer, poll. Heap (binary heap) — a tree where every parent is ≤ its children (min-heap), stored in an array. Priority queue — a queue that always returns the smallest (or highest-priority) item; usually built on a binary heap.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart TB\n  subgraph Tree[\"Min-heap as a tree\"]\n    R[\"1\"] --> A[\"3\"]\n    R --> B[\"2\"]\n    A --> C[\"7\"]\n    A --> D[\"4\"]\n  end\n  subgraph Arr[\"Same heap as an array\"]\n    direction LR\n    I0[\"[0]=1\"] --- I1[\"[1]=3\"] --- I2[\"[2]=2\"] --- I3[\"[3]=7\"] --- I4[\"[4]=4\"]\n  end"
+        },
+        {
+          "language": "java",
+          "code": "PriorityQueue<Task> pq = new PriorityQueue<>(Comparator.comparingInt(Task::priority));\npq.offer(new Task(\"email\", 3));\npq.offer(new Task(\"payment\", 1));\npq.poll();   // \"payment\" — lowest number first"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Lists, Stacks, Queues and Heaps"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "stack",
+        "queue",
+        "heap",
+        "priority",
+        "heap (binary heap)",
+        "array",
+        "priority queue",
+        "memory",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/06-Data-Structures-Internals.md",
+        "startLine": 186,
+        "endLine": 245
+      },
+      "contentHash": "6bc4803dda3cebd9"
+    },
+    {
+      "id": "interview/under-the-hood/06-Data-Structures-Internals.md#how-do-binary-search-trees-avl-trees-red-black-trees-and-b",
+      "kind": "question",
+      "parentId": null,
+      "question": "How do Binary Search Trees, AVL Trees, Red-Black Trees and B+ Trees differ?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nAll are **sorted trees** for fast search, insert and delete. They differ in **how they stay balanced** and **where they live** (memory vs disk).\n\n| Tree | Balance rule | Worst-case height | Used in |\n|---|---|---|---|\n| **BST** | None | O(n) (degrades to a list) | Teaching, simple cases |\n| **AVL** | Child heights differ by ≤ 1 | ~1.44 log n | Read-heavy in-memory indexes |\n| **Red-Black** | Colour rules: no two reds in a row, equal black height | ~2 log n | Java `TreeMap`, C++ `std::map`, Linux scheduler |\n| **B+ Tree** | Nodes half-full, all leaves same depth, many keys per node | log_fanout n (very shallow) | Database and file-system indexes |\n\n**2. How does it work internally?**\n\n- **BST**: left < node < right; insert sorted data → a straight line.\n- **AVL**: after each insert/delete, check balance factors up the path; fix with **rotations** (single or double).\n- **Red-Black**: new nodes are red; fix violations with **recolouring** and at most 2 rotations per insert.\n- **B+ tree**: wide nodes (one disk page each); overflow → **split** and push a key up.\n\n**3. Visual**\n\n```mermaid\nflowchart TB\n  subgraph Skewed[\"BST after inserting 1,2,3,4\"]\n    S1[1] --> S2[2] --> S3[3] --> S4[4]\n  end\n  subgraph Balanced[\"AVL / Red-Black after the same inserts\"]\n    B2[2] --> B1[1]\n    B2 --> B3[3]\n    B3 --> B4[4]\n  end\n```\n\n**4. Internal implementation**\n\n- A **rotation** re-links three nodes in O(1) while keeping sorted order.\n- AVL stores a height per node; Red-Black stores one colour bit — cheap, fewer rotations on writes.\n- B+ trees put data only in leaves and link the leaves for range scans; node size matches the disk page.\n\n**5. Why is it designed this way?**\nBalance guarantees O(log n). AVL is stricter (faster lookups, more rotations); Red-Black is looser (faster writes) — a good general-purpose trade-off. B+ trees minimise **disk reads**, which matter more than CPU comparisons for databases.\n\n**6. Language differences**\nJava `TreeMap` / `TreeSet` and C++ `std::map` / `std::set` are red-black trees. Rust's `BTreeMap` uses an **in-memory B-tree** (better cache use than node-per-key trees). Python has no built-in sorted tree (third-party `sortedcontainers` uses sorted lists of lists).\n\n**7. Practical example**\n\n```java\nTreeMap<Integer, String> prices = new TreeMap<>();\nprices.put(500, \"A\"); prices.put(120, \"B\"); prices.put(900, \"C\");\nprices.ceilingKey(300);   // 500 — sorted lookups a HashMap can't do\n```\n\n**8. How can I observe it?**\nVisualisations at cs.usfca.edu/~galles/visualization (BST, AVL, Red-Black, B+ tree): insert 1..10 in order and watch the rotations and splits.",
+      "summary": "What is it? All are sorted trees for fast search, insert and delete. They differ in how they stay balanced and where they live (memory vs disk).",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart TB\n  subgraph Skewed[\"BST after inserting 1,2,3,4\"]\n    S1[1] --> S2[2] --> S3[3] --> S4[4]\n  end\n  subgraph Balanced[\"AVL / Red-Black after the same inserts\"]\n    B2[2] --> B1[1]\n    B2 --> B3[3]\n    B3 --> B4[4]\n  end"
+        },
+        {
+          "language": "java",
+          "code": "TreeMap<Integer, String> prices = new TreeMap<>();\nprices.put(500, \"A\"); prices.put(120, \"B\"); prices.put(900, \"C\");\nprices.ceilingKey(300);   // 500 — sorted lookups a HashMap can't do"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Trees and Sets"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "binary",
+        "search",
+        "trees",
+        "avl",
+        "red-black",
+        "b+",
+        "differ",
+        "sorted trees",
+        "how they stay balanced",
+        "where they live",
+        "bst",
+        "b+ tree",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/06-Data-Structures-Internals.md",
+        "startLine": 251,
+        "endLine": 307
+      },
+      "contentHash": "35d91bb59a4b8a2f"
+    },
+    {
+      "id": "interview/under-the-hood/06-Data-Structures-Internals.md#how-does-hashset-ensure-uniqueness",
+      "kind": "question",
+      "parentId": null,
+      "question": "How does HashSet ensure uniqueness?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nA `HashSet` keeps each element at most once. In Java it is literally a **`HashMap` in disguise**: elements are stored as **keys**, and every key maps to the same dummy value.\n\n**2. How does it work internally?**\n\n1. `set.add(x)` calls `map.put(x, PRESENT)`.\n2. The map hashes `x`, finds the bucket, and compares existing keys with `hashCode` + `equals()`.\n3. Equal key already there → `put` returns the old value → `add` returns **false** (nothing added).\n4. Otherwise a new entry is created → `add` returns **true**.\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  A[\"set.add(new Email('a@x.com'))\"] --> P[\"map.put(email, PRESENT)\"]\n  P --> H[\"hashCode() → bucket 3\"]\n  H --> E{\"equals() with a key<br/>already in bucket 3?\"}\n  E -- yes --> F[\"return false (duplicate)\"]\n  E -- no --> T[\"store key → return true\"]\n```\n\n**4. Internal implementation**\n\n- `private transient HashMap<E,Object> map;` and `private static final Object PRESENT = new Object();`.\n- Uniqueness depends **entirely** on your `equals()` and `hashCode()`. Rule: equal objects **must** have equal hash codes.\n- Mutating an object **after** adding it (changing fields used in `hashCode`) \"loses\" it in the wrong bucket.\n\n**5. Why is it designed this way?**\nReusing HashMap gives O(1) average membership checks with no duplicated code. `LinkedHashSet` adds insertion order; `TreeSet` uses `compareTo` instead of `equals` for uniqueness.\n\n**6. Language differences**\nPython `set`: its own open-addressing table using `__hash__` and `__eq__`. JavaScript `Set`: uses **SameValueZero** equality — two different objects with the same fields are both kept. C++ `std::unordered_set`: `std::hash` + `operator==`. Rust `HashSet<T>` is a `HashMap<T, ()>`.\n\n**7. Practical example**\n\n```java\nrecord Email(String value) {}            // records generate equals() and hashCode()\nSet<Email> s = new HashSet<>();\ns.add(new Email(\"a@x.com\"));\ns.add(new Email(\"a@x.com\"));             // false: equal by value\ns.size();                                // 1\n```\n\nWithout proper `equals/hashCode` (a plain class), the size would be **2**.\n\n**8. How can I observe it?**\nDebug into `HashSet.add` (JDK sources) to see it call `map.put`. Remove `hashCode()` from a class, add two equal objects, and print `size()`.",
+      "summary": "What is it? A HashSet keeps each element at most once. In Java it is literally a HashMap in disguise: elements are stored as keys, and every key maps to the same dummy value.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  A[\"set.add(new Email('a@x.com'))\"] --> P[\"map.put(email, PRESENT)\"]\n  P --> H[\"hashCode() → bucket 3\"]\n  H --> E{\"equals() with a key<br/>already in bucket 3?\"}\n  E -- yes --> F[\"return false (duplicate)\"]\n  E -- no --> T[\"store key → return true\"]"
+        },
+        {
+          "language": "java",
+          "code": "record Email(String value) {}            // records generate equals() and hashCode()\nSet<Email> s = new HashSet<>();\ns.add(new Email(\"a@x.com\"));\ns.add(new Email(\"a@x.com\"));             // false: equal by value\ns.size();                                // 1"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Trees and Sets"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "hashset",
+        "ensure",
+        "uniqueness",
+        "hashmap in disguise",
+        "keys",
+        "false",
+        "true",
+        "visual",
+        "internal implementation",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/06-Data-Structures-Internals.md",
+        "startLine": 311,
+        "endLine": 361
+      },
+      "contentHash": "9f8cf6e9c3b53030"
+    },
+    {
+      "id": "interview/under-the-hood/06-Data-Structures-Internals.md#how-do-searching-and-sorting-algorithms-work-internally",
+      "kind": "question",
+      "parentId": null,
+      "question": "How do searching and sorting algorithms work internally?",
+      "prompt": null,
+      "answer": "**1. What is it?**\n\n- **Searching**: linear search (check each element, O(n)) or **binary search** on sorted data (halve the range each step, O(log n)).\n- **Sorting**: put elements in order. Real libraries use **hybrid** algorithms tuned for real data, not textbook ones.\n\n**2. How does it work internally?**\nBinary search: compare with the middle element → discard the half that can't contain the target → repeat.\n\nLibrary sorts:\n\n- **Java `Arrays.sort(int[])`** — **dual-pivot quicksort** (not stable; fine for primitives).\n- **Java `Arrays.sort(Object[])`, `List.sort`** — **TimSort**: finds already-sorted \"runs\" and merges them; stable; O(n log n) worst case, O(n) on nearly sorted data.\n- **Python `sorted`** — TimSort-based (powersort merge policy since 3.11).\n- **JavaScript `Array.prototype.sort`** — V8 uses TimSort (stable since 2019).\n- **C++ `std::sort`** — **introsort** (quicksort → heapsort if recursion gets too deep, insertion sort for small parts).\n\n**3. Visual**\n\n```mermaid\nflowchart TD\n  S[\"Binary search for 42 in [3, 8, 15, 23, 42, 57, 91]\"] --> M1[\"mid = 23 → 42 > 23 → search right half\"]\n  M1 --> M2[\"mid = 57 → 42 < 57 → search left part\"]\n  M2 --> M3[\"mid = 42 → found in 3 steps\"]\n```\n\n```mermaid\nflowchart LR\n  IN[\"Input with natural runs\"] --> RUNS[\"TimSort: detect runs<br/>(extend short ones with insertion sort)\"]\n  RUNS --> STACK[\"Merge runs by size rules\"]\n  STACK --> OUT[\"Sorted, stable\"]\n```\n\n**4. Internal implementation**\n\n- Small sub-arrays (< ~32–64 elements) use **insertion sort** — it beats O(n log n) algorithms at small sizes because of low overhead and cache friendliness.\n- **Stability** (equal elements keep their order) matters when sorting objects by one field after another.\n- Binary search must avoid overflow: `mid = low + (high - low) / 2` (or `>>> 1` in Java).\n\n**5. Why is it designed this way?**\nReal data is often partly sorted; TimSort exploits that. Quicksort has excellent cache behaviour and no extra memory for primitives, where stability doesn't matter.\n\n**6. Language differences**\nRust: `sort` (stable, driftsort) and `sort_unstable` (pattern-defeating quicksort family). Go: `slices.Sort` uses pdqsort. All guarantee O(n log n) in practice; differences are stability and constant factors.\n\n**7. Practical example**\n\n```java\nint[] ids = {42, 7, 19};\nArrays.sort(ids);                                   // dual-pivot quicksort\nint pos = Arrays.binarySearch(ids, 19);             // O(log n): index 1\norders.sort(Comparator.comparing(Order::date));     // TimSort, stable\n```\n\n**8. How can I observe it?**\nStep through `Arrays.sort` in the debugger (JDK sources: `DualPivotQuicksort`, `TimSort`). Benchmark sorting already-sorted vs random lists with **JMH** to see TimSort's advantage. **VisuAlgo.net** animates sorting algorithms.",
+      "summary": "Searching: linear search (check each element, O(n)) or binary search on sorted data (halve the range each step, O(log n)). Sorting: put elements in order. Real libraries use hybrid algorithms tuned for real data, not textbook ones.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart TD\n  S[\"Binary search for 42 in [3, 8, 15, 23, 42, 57, 91]\"] --> M1[\"mid = 23 → 42 > 23 → search right half\"]\n  M1 --> M2[\"mid = 57 → 42 < 57 → search left part\"]\n  M2 --> M3[\"mid = 42 → found in 3 steps\"]"
+        },
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  IN[\"Input with natural runs\"] --> RUNS[\"TimSort: detect runs<br/>(extend short ones with insertion sort)\"]\n  RUNS --> STACK[\"Merge runs by size rules\"]\n  STACK --> OUT[\"Sorted, stable\"]"
+        },
+        {
+          "language": "java",
+          "code": "int[] ids = {42, 7, 19};\nArrays.sort(ids);                                   // dual-pivot quicksort\nint pos = Arrays.binarySearch(ids, 19);             // O(log n): index 1\norders.sort(Comparator.comparing(Order::date));     // TimSort, stable"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Algorithms and Performance"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "searching",
+        "sorting",
+        "algorithms",
+        "internally",
+        "binary search",
+        "hybrid",
+        "java arrays.sort(int[])",
+        "dual-pivot quicksort",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/06-Data-Structures-Internals.md",
+        "startLine": 367,
+        "endLine": 425
+      },
+      "contentHash": "8cfd6d55fb7c4f44"
+    },
+    {
+      "id": "interview/under-the-hood/06-Data-Structures-Internals.md#how-do-time-and-space-complexities-affect-actual-application",
+      "kind": "question",
+      "parentId": null,
+      "question": "How do time and space complexities affect actual application performance?",
+      "prompt": null,
+      "answer": "**1. What is it?**\n**Big-O** describes how cost **grows** as input grows (O(1), O(log n), O(n), O(n²)). It predicts **scalability**, but real speed also depends on constants, memory layout, caches, allocation and I/O, which Big-O ignores.\n\n**2. How does it work internally?**\n\n1. For large n, a worse complexity always loses: O(n²) on 1 million items ≈ 10¹² steps — hours instead of milliseconds.\n2. For small n, **constants** dominate: an O(n) scan of 20 array elements can beat an O(1) hash lookup (hashing + pointer chasing).\n3. **Memory access** dominates many workloads: a cache miss (~100 ns) costs as much as hundreds of simple instructions.\n4. **Space** complexity affects speed too: more memory → more GC work and more cache misses.\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  N[\"n = 1,000,000\"] --> A[\"O(log n) ≈ 20 steps\"]\n  N --> B[\"O(n) ≈ 1 million steps (~1 ms)\"]\n  N --> C[\"O(n log n) ≈ 20 million (~20 ms)\"]\n  N --> D[\"O(n²) ≈ 10¹² steps (hours)\"]\n  style D fill:#fde2e1\n```\n\n**4. Internal implementation**\n\n- Same Big-O, very different speed: iterating `ArrayList` vs `LinkedList` are both O(n), but the array is often **several times faster** (contiguous memory, prefetching).\n- `HashMap` is O(1) average, but a bad `hashCode` turns it into O(n) or O(log n).\n- Hidden complexity: `list.contains()` inside a loop = O(n²); `String +=` in a loop copies the string each time; N+1 database queries turn one query into thousands of network round-trips.\n\n**5. Why is it designed this way?**\nBig-O is a model for comparing algorithms independent of hardware. Use it to avoid algorithms that can't scale, then **measure** to choose between options with similar complexity.\n\n**6. Language differences**\nInterpreted languages (CPython) have high constant factors per operation, so pushing loops into built-ins (`sum`, `sorted`, NumPy in C) matters more. JIT-compiled languages (Java, JS) optimise hot loops, so measuring after **warm-up** matters.\n\n**7. Practical example**\n\n```java\n// O(n²): contains() scans the list each time\nfor (String id : incoming) if (!seen.contains(id)) seen.add(id);    // seen is a List\n// O(n): HashSet lookups\nSet<String> seenSet = new HashSet<>(incoming);\n```\n\nWith 100,000 ids: seconds vs milliseconds.\n\n**8. How can I observe it?**\n**JMH** for Java micro-benchmarks (handles JIT warm-up); profilers (**async-profiler**, VisualVM, IntelliJ Profiler) show where time actually goes; Chrome DevTools Performance for JavaScript. Measure with growing input sizes (1k, 10k, 100k) and see whether time grows linearly or quadratically.",
+      "summary": "What is it? Big-O describes how cost grows as input grows (O(1), O(log n), O(n), O(n²)). It predicts scalability, but real speed also depends on constants, memory layout, caches, allocation and I/O, which Big-O ignores.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  N[\"n = 1,000,000\"] --> A[\"O(log n) ≈ 20 steps\"]\n  N --> B[\"O(n) ≈ 1 million steps (~1 ms)\"]\n  N --> C[\"O(n log n) ≈ 20 million (~20 ms)\"]\n  N --> D[\"O(n²) ≈ 10¹² steps (hours)\"]\n  style D fill:#fde2e1"
+        },
+        {
+          "language": "java",
+          "code": "// O(n²): contains() scans the list each time\nfor (String id : incoming) if (!seen.contains(id)) seen.add(id);    // seen is a List\n// O(n): HashSet lookups\nSet<String> seenSet = new HashSet<>(incoming);"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Algorithms and Performance"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "time",
+        "space",
+        "complexities",
+        "affect",
+        "actual",
+        "application",
+        "performance",
+        "big-o",
+        "grows",
+        "scalability",
+        "constants",
+        "memory access",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/06-Data-Structures-Internals.md",
+        "startLine": 429,
+        "endLine": 478
+      },
+      "contentHash": "b06eb423078341cb"
+    },
+    {
       "id": "practice/coding/01-javascript-coding.md#move-all-0s-to-the-end-without-changing-the-order-of-other",
       "kind": "question",
       "parentId": null,
@@ -65244,7 +65647,7 @@
       "parentId": null,
       "question": "Under the Hood study path",
       "prompt": null,
-      "answer": "## Prerequisites\n\n- None. This is a starting point.\n- Overview: [Under the Hood concepts](../../knowledge/concepts/under-the-hood/README.md)\n\n## 1. Source Code to Machine Code\n\n1. [How does human-readable source code eventually become machine instructions?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n2. [What are the differences between Compiler, Interpreter, Assembler, Linker and Runtime?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n3. [What are Bytecode, Intermediate Representation (IR), Assembly Language and Machine Code?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n4. [What are AOT, JIT and interpretation? How do they differ?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n5. [How do JVM, CLR and JavaScript engines execute programs internally?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n6. [How do programming languages interact with the CPU and memory?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n7. [How does frontend code (JavaScript, TypeScript, Dart, WebAssembly) become machine code in the browser?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n8. [How do frontend frameworks (Angular, React, Vue, Svelte, Next.js) get from source code to running in the browser?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n9. [How do different programming languages implement compilation, execution and memory management?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n10. [Do backend frameworks (Spring Boot, Django, Express, ASP.NET Core) compile code themselves?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n\n## 2. CPU and Memory Hierarchy\n\n1. [How does a CPU execute instructions?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n2. [How do CPU registers, L1/L2/L3 cache, RAM and disk interact?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n3. [What exactly is stored in Stack and Heap memory?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n4. [Can the CPU directly access heap memory? How does a program access objects in RAM?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n5. [How does memory allocation and deallocation work?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n6. [How does Garbage Collection identify unused objects?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n\n## 3. Processes, Threads and Scheduling\n\n1. [How do Processes and Threads work internally?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n2. [How does Context Switching happen?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n3. [How does an operating system execute multiple applications simultaneously?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n\n## 4. Virtual Memory\n\n1. [How do Virtual Memory, Paging and Memory Protection work?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n\n## 5. Loading and Rendering a Page\n\n1. [What happens internally when we enter a URL and open a website?](../../interview/under-the-hood/03a-Browser-Internals.md)\n2. [How does a browser convert HTML, CSS and JavaScript into a rendered webpage?](../../interview/under-the-hood/03a-Browser-Internals.md)\n3. [How do DOM, CSSOM, Render Tree, Layout and Paint work together?](../../interview/under-the-hood/03a-Browser-Internals.md)\n\n## 6. JavaScript in the Browser\n\n1. [How does JavaScript execute inside a browser?](../../interview/under-the-hood/03a-Browser-Internals.md)\n2. [How do Call Stack, Event Loop, Microtask Queue and Task Queue work?](../../interview/under-the-hood/03a-Browser-Internals.md)\n3. [How does asynchronous JavaScript execute without blocking the UI?](../../interview/under-the-hood/03a-Browser-Internals.md)\n4. [How does a browser determine which UI elements need updating?](../../interview/under-the-hood/03a-Browser-Internals.md)\n5. [How do Angular, React and Vue detect changes and update the DOM?](../../interview/under-the-hood/03a-Browser-Internals.md)\n\n## 7. Network, Build and Storage\n\n1. [How does a frontend application communicate with a backend?](../../interview/under-the-hood/03a-Browser-Internals.md)\n2. [How do bundlers, Tree Shaking and Code Splitting work?](../../interview/under-the-hood/03a-Browser-Internals.md)\n3. [How do Browser Cache, Cookies, LocalStorage, SessionStorage and IndexedDB work?](../../interview/under-the-hood/03a-Browser-Internals.md)\n4. [How do Browser Tabs and Web Workers work internally?](../../interview/under-the-hood/03a-Browser-Internals.md)\n\n## 8. Angular Internals\n\n1. [How do Angular application bootstrap and compilation work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n2. [How does Angular Dependency Injection work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n3. [How does the Angular component lifecycle work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n4. [How do Angular Change Detection and Signals work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n5. [How do the Angular Router and lazy loading work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n6. [How do Angular HttpClient and HTTP Interceptors work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n\n## 9. React Internals\n\n1. [How do React's Virtual DOM and Reconciliation work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n2. [How does React's Fiber architecture work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n3. [How do React Hooks and component rendering work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n\n## 10. Vue Internals\n\n1. [How does Vue's reactivity system work internally (dependency tracking and Proxies)?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n2. [How do Vue's template compiler and Virtual DOM work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n\n## 11. Servers, Localhost and Ports\n\n1. [What exactly is a Server? Is it hardware, software, a process or a computer?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n2. [What is Localhost? How is it different from a physical server or virtual machine?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n3. [How does a server listen for incoming requests using IP addresses and ports?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n4. [What is the difference between Web Server, Application Server and Reverse Proxy?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n\n## 12. Tomcat and Spring Boot\n\n1. [How does Tomcat work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n2. [How is Tomcat different from the computer's localhost?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n3. [How does Spring Boot start its embedded Tomcat server?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n4. [What happens internally when an HTTP request reaches Spring Boot?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n\n## 13. Spring Container and Request Processing\n\n1. [How does Spring Dependency Injection create and manage objects?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n2. [How do Spring AOP, Proxies and @Transactional work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n3. [How does a backend application manage concurrent requests and threads?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n4. [How does Connection Pooling work?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n5. [How do Authentication and Authorization work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n6. [How do Exception Handling, Retries and Timeouts work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n\n## 14. Storage on Disk\n\n1. [How does a database physically store records on disk?](../../interview/under-the-hood/05-Database-Internals.md)\n2. [What are Database Pages, Blocks and Rows?](../../interview/under-the-hood/05-Database-Internals.md)\n\n## 15. Indexes\n\n1. [How does Database Indexing work internally?](../../interview/under-the-hood/05-Database-Internals.md)\n2. [How do B-Tree and B+ Tree work? Why are B+ Trees commonly used?](../../interview/under-the-hood/05-Database-Internals.md)\n3. [How do Clustered, Non-Clustered and Composite Indexes work?](../../interview/under-the-hood/05-Database-Internals.md)\n4. [How does a database decide between Index Seek and Table Scan?](../../interview/under-the-hood/05-Database-Internals.md)\n\n## 16. Query Processing\n\n1. [How does the SQL Query Optimizer select an execution plan?](../../interview/under-the-hood/05-Database-Internals.md)\n2. [How do JOIN operations work internally?](../../interview/under-the-hood/05-Database-Internals.md)\n3. [How do Nested Loop, Hash Join and Merge Join differ?](../../interview/under-the-hood/05-Database-Internals.md)\n\n## 17. Transactions, Logging and Recovery\n\n1. [How does a database manage concurrent transactions?](../../interview/under-the-hood/05-Database-Internals.md)\n2. [How do ACID, Locks and MVCC work internally?](../../interview/under-the-hood/05-Database-Internals.md)\n3. [How does Write-Ahead Logging (WAL) work?](../../interview/under-the-hood/05-Database-Internals.md)\n4. [How does a database recover after a crash?](../../interview/under-the-hood/05-Database-Internals.md)\n\n## 18. Caching and Scaling\n\n1. [How does Database Caching work?](../../interview/under-the-hood/05-Database-Internals.md)\n2. [How do Replication, Partitioning and Sharding work?](../../interview/under-the-hood/05-Database-Internals.md)\n\n## Diagrams\n\n- [Frontend programming languages: source to machine code](../../knowledge/visual-notes/01_frontend_programming_languages.png)\n- [Frontend frameworks and libraries: build and execution path](../../knowledge/visual-notes/02_frontend_frameworks.png)\n- [Backend programming languages: source, artifact, runtime and execution](../../knowledge/visual-notes/03_backend_programming_languages.png)\n- [Backend frameworks and platforms: source, compiler and runtime](../../knowledge/visual-notes/04_backend_frameworks.png)\n\n## Related roles\n\n[Platform Engineer](../roles/platform-engineer.md)",
+      "answer": "## Prerequisites\n\n- None. This is a starting point.\n- Overview: [Under the Hood concepts](../../knowledge/concepts/under-the-hood/README.md)\n\n## 1. Source Code to Machine Code\n\n1. [How does human-readable source code eventually become machine instructions?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n2. [What are the differences between Compiler, Interpreter, Assembler, Linker and Runtime?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n3. [What are Bytecode, Intermediate Representation (IR), Assembly Language and Machine Code?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n4. [What are AOT, JIT and interpretation? How do they differ?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n5. [How do JVM, CLR and JavaScript engines execute programs internally?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n6. [How do programming languages interact with the CPU and memory?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n7. [How does frontend code (JavaScript, TypeScript, Dart, WebAssembly) become machine code in the browser?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n8. [How do frontend frameworks (Angular, React, Vue, Svelte, Next.js) get from source code to running in the browser?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n9. [How do different programming languages implement compilation, execution and memory management?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n10. [Do backend frameworks (Spring Boot, Django, Express, ASP.NET Core) compile code themselves?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n\n## 2. CPU and Memory Hierarchy\n\n1. [How does a CPU execute instructions?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n2. [How do CPU registers, L1/L2/L3 cache, RAM and disk interact?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n3. [What exactly is stored in Stack and Heap memory?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n4. [Can the CPU directly access heap memory? How does a program access objects in RAM?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n5. [How does memory allocation and deallocation work?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n6. [How does Garbage Collection identify unused objects?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n\n## 3. Processes, Threads and Scheduling\n\n1. [How do Processes and Threads work internally?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n2. [How does Context Switching happen?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n3. [How does an operating system execute multiple applications simultaneously?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n\n## 4. Virtual Memory\n\n1. [How do Virtual Memory, Paging and Memory Protection work?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n\n## 5. Loading and Rendering a Page\n\n1. [What happens internally when we enter a URL and open a website?](../../interview/under-the-hood/03a-Browser-Internals.md)\n2. [How does a browser convert HTML, CSS and JavaScript into a rendered webpage?](../../interview/under-the-hood/03a-Browser-Internals.md)\n3. [How do DOM, CSSOM, Render Tree, Layout and Paint work together?](../../interview/under-the-hood/03a-Browser-Internals.md)\n\n## 6. JavaScript in the Browser\n\n1. [How does JavaScript execute inside a browser?](../../interview/under-the-hood/03a-Browser-Internals.md)\n2. [How do Call Stack, Event Loop, Microtask Queue and Task Queue work?](../../interview/under-the-hood/03a-Browser-Internals.md)\n3. [How does asynchronous JavaScript execute without blocking the UI?](../../interview/under-the-hood/03a-Browser-Internals.md)\n4. [How does a browser determine which UI elements need updating?](../../interview/under-the-hood/03a-Browser-Internals.md)\n5. [How do Angular, React and Vue detect changes and update the DOM?](../../interview/under-the-hood/03a-Browser-Internals.md)\n\n## 7. Network, Build and Storage\n\n1. [How does a frontend application communicate with a backend?](../../interview/under-the-hood/03a-Browser-Internals.md)\n2. [How do bundlers, Tree Shaking and Code Splitting work?](../../interview/under-the-hood/03a-Browser-Internals.md)\n3. [How do Browser Cache, Cookies, LocalStorage, SessionStorage and IndexedDB work?](../../interview/under-the-hood/03a-Browser-Internals.md)\n4. [How do Browser Tabs and Web Workers work internally?](../../interview/under-the-hood/03a-Browser-Internals.md)\n\n## 8. Angular Internals\n\n1. [How do Angular application bootstrap and compilation work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n2. [How does Angular Dependency Injection work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n3. [How does the Angular component lifecycle work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n4. [How do Angular Change Detection and Signals work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n5. [How do the Angular Router and lazy loading work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n6. [How do Angular HttpClient and HTTP Interceptors work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n\n## 9. React Internals\n\n1. [How do React's Virtual DOM and Reconciliation work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n2. [How does React's Fiber architecture work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n3. [How do React Hooks and component rendering work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n\n## 10. Vue Internals\n\n1. [How does Vue's reactivity system work internally (dependency tracking and Proxies)?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n2. [How do Vue's template compiler and Virtual DOM work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n\n## 11. Servers, Localhost and Ports\n\n1. [What exactly is a Server? Is it hardware, software, a process or a computer?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n2. [What is Localhost? How is it different from a physical server or virtual machine?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n3. [How does a server listen for incoming requests using IP addresses and ports?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n4. [What is the difference between Web Server, Application Server and Reverse Proxy?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n\n## 12. Tomcat and Spring Boot\n\n1. [How does Tomcat work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n2. [How is Tomcat different from the computer's localhost?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n3. [How does Spring Boot start its embedded Tomcat server?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n4. [What happens internally when an HTTP request reaches Spring Boot?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n\n## 13. Spring Container and Request Processing\n\n1. [How does Spring Dependency Injection create and manage objects?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n2. [How do Spring AOP, Proxies and @Transactional work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n3. [How does a backend application manage concurrent requests and threads?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n4. [How does Connection Pooling work?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n5. [How do Authentication and Authorization work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n6. [How do Exception Handling, Retries and Timeouts work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n\n## 14. Storage on Disk\n\n1. [How does a database physically store records on disk?](../../interview/under-the-hood/05-Database-Internals.md)\n2. [What are Database Pages, Blocks and Rows?](../../interview/under-the-hood/05-Database-Internals.md)\n\n## 15. Indexes\n\n1. [How does Database Indexing work internally?](../../interview/under-the-hood/05-Database-Internals.md)\n2. [How do B-Tree and B+ Tree work? Why are B+ Trees commonly used?](../../interview/under-the-hood/05-Database-Internals.md)\n3. [How do Clustered, Non-Clustered and Composite Indexes work?](../../interview/under-the-hood/05-Database-Internals.md)\n4. [How does a database decide between Index Seek and Table Scan?](../../interview/under-the-hood/05-Database-Internals.md)\n\n## 16. Query Processing\n\n1. [How does the SQL Query Optimizer select an execution plan?](../../interview/under-the-hood/05-Database-Internals.md)\n2. [How do JOIN operations work internally?](../../interview/under-the-hood/05-Database-Internals.md)\n3. [How do Nested Loop, Hash Join and Merge Join differ?](../../interview/under-the-hood/05-Database-Internals.md)\n\n## 17. Transactions, Logging and Recovery\n\n1. [How does a database manage concurrent transactions?](../../interview/under-the-hood/05-Database-Internals.md)\n2. [How do ACID, Locks and MVCC work internally?](../../interview/under-the-hood/05-Database-Internals.md)\n3. [How does Write-Ahead Logging (WAL) work?](../../interview/under-the-hood/05-Database-Internals.md)\n4. [How does a database recover after a crash?](../../interview/under-the-hood/05-Database-Internals.md)\n\n## 18. Caching and Scaling\n\n1. [How does Database Caching work?](../../interview/under-the-hood/05-Database-Internals.md)\n2. [How do Replication, Partitioning and Sharding work?](../../interview/under-the-hood/05-Database-Internals.md)\n\n## 19. Hashing\n\n1. [How does HashMap work internally, including hashing, buckets and collision handling?](../../interview/under-the-hood/06-Data-Structures-Internals.md)\n2. [Why is HashMap not reversible? Why can't the original key be reconstructed from its hash?](../../interview/under-the-hood/06-Data-Structures-Internals.md)\n\n## 20. Lists, Stacks, Queues and Heaps\n\n1. [How do ArrayList, LinkedList and Arrays store and retrieve elements differently?](../../interview/under-the-hood/06-Data-Structures-Internals.md)\n2. [How do Stack, Queue, Heap and Priority Queue work?](../../interview/under-the-hood/06-Data-Structures-Internals.md)\n\n## 21. Trees and Sets\n\n1. [How do Binary Search Trees, AVL Trees, Red-Black Trees and B+ Trees differ?](../../interview/under-the-hood/06-Data-Structures-Internals.md)\n2. [How does HashSet ensure uniqueness?](../../interview/under-the-hood/06-Data-Structures-Internals.md)\n\n## 22. Algorithms and Performance\n\n1. [How do searching and sorting algorithms work internally?](../../interview/under-the-hood/06-Data-Structures-Internals.md)\n2. [How do time and space complexities affect actual application performance?](../../interview/under-the-hood/06-Data-Structures-Internals.md)\n\n## Diagrams\n\n- [Frontend programming languages: source to machine code](../../knowledge/visual-notes/01_frontend_programming_languages.png)\n- [Frontend frameworks and libraries: build and execution path](../../knowledge/visual-notes/02_frontend_frameworks.png)\n- [Backend programming languages: source, artifact, runtime and execution](../../knowledge/visual-notes/03_backend_programming_languages.png)\n- [Backend frameworks and platforms: source, compiler and runtime](../../knowledge/visual-notes/04_backend_frameworks.png)\n\n## Related roles\n\n[Platform Engineer](../roles/platform-engineer.md)",
       "summary": "",
       "codeBlocks": [],
       "visuals": [],
@@ -65278,9 +65681,9 @@
       "source": {
         "path": "roadmap/topics/under-the-hood.md",
         "startLine": 2,
-        "endLine": 145
+        "endLine": 165
       },
-      "contentHash": "f1bc3fa84630606b"
+      "contentHash": "953b71ac0d1d7353"
     },
     {
       "id": "roadmap/topics/web-architecture.md#roadmap",

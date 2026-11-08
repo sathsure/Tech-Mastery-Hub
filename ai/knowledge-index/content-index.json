@@ -2005,6 +2005,19 @@
                                                ]
                       },
                       {
+                          "id":  "interview.under-the-hood.06-data-structures-internals.md",
+                          "path":  "interview/under-the-hood/06-Data-Structures-Internals.md",
+                          "content_type":  "interview",
+                          "domain":  "under-the-hood",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  22110,
+                          "source_of_truth":  false,
+                          "related_concepts":  [
+                                                   "under-the-hood"
+                                               ]
+                      },
+                      {
                           "id":  "interview.coding.02-dsa-patterns.md",
                           "path":  "interview/coding/02-DSA-Patterns.md",
                           "content_type":  "interview",
