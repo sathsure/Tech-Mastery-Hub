@@ -51,3 +51,20 @@ export async function getFollowUps(id: string): Promise<QuestionEntry[]> {
   const index = await loadQuestionIndex();
   return index.entries.filter(entry => entry.parentId === id);
 }
+
+/** "What will this code output?" only makes sense next to its snippet, so it is no good as a suggestion chip. */
+export function isContextQuestion(entry: QuestionEntry): boolean {
+  return /\b(this|the following|below|above)\s+(code|snippet|program|example|query|output)\b/i.test(entry.question);
+}
+
+/** The questions written after this one in the same notes file: the next things to learn. */
+export async function getNextQuestions(id: string, limit = 3): Promise<QuestionEntry[]> {
+  const index = await loadQuestionIndex();
+  const current = index.entries.find(entry => entry.id === id);
+  if (!current) return [];
+  const sameFile = index.entries
+    .filter(entry => entry.kind === "question" && entry.source.path === current.source.path && !isContextQuestion(entry))
+    .sort((a, b) => a.source.startLine - b.source.startLine);
+  const after = sameFile.filter(entry => entry.source.startLine > current.source.startLine);
+  return after.slice(0, limit);
+}

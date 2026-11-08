@@ -168,17 +168,28 @@ function careerFollowUps(top: Evidence): FollowUpParts {
   return { first: [], last };
 }
 
-/** A question from the notes: practise answering it, see code or a diagram, or get quizzed. */
-function questionFollowUps(top: Evidence, search: SearchResult): FollowUpParts {
-  const wants = (intent: SearchResult["intents"][number]) => search.intents.includes(intent);
-  const last: string[] = [];
-  if (!wants("interview-prep")) last.push(`How would I answer this in an interview: ${top.question}`);
-  const hasCode = top.codeLanguages.length > 0;
-  if (hasCode && !wants("code")) last.push(`Show a code example for: ${top.question}`);
-  if (!hasCode && !wants("visual")) last.push(`Show a diagram of: ${top.question}`);
-  const subject = search.entities[0]?.name ?? search.topics[0]?.topic ?? top.question.replace(/\?$/, "");
-  if (!wants("quiz")) last.push(`Quiz me on ${search.topics[0]?.topic ?? subject}`);
-  return { first: [], last };
+/**
+ * A question from the notes: suggest only other, distinct questions (its follow-ups and the next
+ * questions in the same notes). Re-wording the same question ("Quiz me on…", "Show a diagram of…")
+ * would only repeat the answer just given.
+ */
+function questionFollowUps(): FollowUpParts {
+  return { first: [], last: [] };
+}
+
+/** Lower-case words of a question, without filler, to spot re-worded duplicates. */
+function questionWords(text: string): Set<string> {
+  const filler = new Set(["what", "is", "are", "the", "a", "an", "how", "does", "do", "in", "of", "for", "to", "and", "why", "work", "works"]);
+  return new Set(text.toLowerCase().replace(/[^a-z0-9 ]/g, " ").split(/\s+/).filter(word => word && !filler.has(word)));
+}
+
+/** True when `text` asks the same thing as `other` (same key words). */
+function sameQuestion(text: string, other: string): boolean {
+  const a = questionWords(text);
+  const b = questionWords(other);
+  if (!a.size || !b.size) return text.trim().toLowerCase() === other.trim().toLowerCase();
+  const shared = [...a].filter(word => b.has(word)).length;
+  return shared / Math.min(a.size, b.size) >= 0.8;
 }
 
 const CAREER_TOPICS = new Set(["it-careers", "it-roles", "tech-stack"]);
@@ -188,7 +199,7 @@ function followUpsFor(top: Evidence | undefined, search: SearchResult): FollowUp
   if (top.kind === "roadmap") return roadmapFollowUps(top);
   if (top.kind === "role") return roleFollowUps(top);
   if (top.topics.some(topic => CAREER_TOPICS.has(topic))) return careerFollowUps(top);
-  return questionFollowUps(top, search);
+  return questionFollowUps();
 }
 
 /** Next questions to offer as chips: built from the matches, never invented. */
@@ -198,6 +209,14 @@ export function suggestFollowUps(search: SearchResult, evidence: Evidence[], fol
   const top = evidence[0];
   const sameTopic = (item: Evidence) => !top || item.topics.some(topic => top.topics.includes(topic));
   const related = evidence.slice(1).filter(item => item.kind !== "note" && sameTopic(item)).map(item => item.question);
-  const suggestions = [...first, ...followUpQuestions.slice(0, 2), ...last, ...related];
-  return [...new Set(suggestions.map(text => text.trim()).filter(text => text && text.length <= 160))].slice(0, 4);
+  const suggestions = [...first, ...followUpQuestions, ...last, ...related];
+  // Each chip must ask something new: not the answered question, not the user's own words, not each other.
+  const asked = [top?.question ?? "", search.query].filter(Boolean);
+  const unique: string[] = [];
+  for (const text of suggestions.map(item => item.trim())) {
+    if (!text || text.length > 160) continue;
+    if ([...asked, ...unique].some(other => sameQuestion(text, other))) continue;
+    unique.push(text);
+  }
+  return unique.slice(0, 4);
 }
