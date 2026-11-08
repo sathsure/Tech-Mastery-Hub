@@ -69,6 +69,12 @@ Crack coding rounds and build with AI.
 3. [ ] [Testing](../topics/testing.md)
 4. [ ] [AI & LLMs](../topics/ai.md)
 
+## Under the hood
+
+Understand how code really runs: compilers, runtimes, CPU and memory.
+
+1. [ ] [Under the Hood](../topics/under-the-hood.md)
+
 ## Interview day
 
 Prepare for the non-technical rounds.

@@ -49,6 +49,7 @@ export const PREREQUISITES: Record<string, string[]> = {
   aws: ["devops"],
   dsa: [],
   messaging: ["microservices"],
+  "under-the-hood": [],
   ai: ["rest-api"],
   "system-design": ["database/sql", "rest-api"],
   "design-patterns": ["java"],
@@ -66,6 +67,7 @@ export const TRACKS: Array<{ name: string; description: string; topics: string[]
   { name: "DevOps and cloud", description: "Ship, run and scale applications.", topics: ["git", "devops", "aws", "microservices", "messaging"] },
   { name: "System design", description: "Design systems that scale and stay up.", topics: ["networking", "database/sql", "rest-api", "system-design", "caching", "microservices", "messaging"] },
   { name: "Coding interviews and AI", description: "Crack coding rounds and build with AI.", topics: ["dsa", "design-patterns", "testing", "ai"] },
+  { name: "Under the hood", description: "Understand how code really runs: compilers, runtimes, CPU and memory.", topics: ["under-the-hood"] },
   { name: "Interview day", description: "Prepare for the non-technical rounds.", topics: ["behavioral"] },
 ];
 

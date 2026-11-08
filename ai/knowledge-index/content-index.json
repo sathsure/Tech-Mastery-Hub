@@ -1729,6 +1729,19 @@
                                                ]
                       },
                       {
+                          "id":  "knowledge.concepts.under-the-hood.readme.md",
+                          "path":  "knowledge/concepts/under-the-hood/README.md",
+                          "content_type":  "concept",
+                          "domain":  "under-the-hood",
+                          "canonical_concept":  "under-the-hood",
+                          "extension":  ".md",
+                          "size_bytes":  6915,
+                          "source_of_truth":  true,
+                          "related_concepts":  [
+
+                                               ]
+                      },
+                      {
                           "id":  "knowledge.concepts.ai.readme.md",
                           "path":  "knowledge/concepts/ai/README.md",
                           "content_type":  "concept",
@@ -1911,6 +1924,19 @@
                           "source_of_truth":  false,
                           "related_concepts":  [
                                                    "testing"
+                                               ]
+                      },
+                      {
+                          "id":  "interview.under-the-hood.01-languages-compilers-execution.md",
+                          "path":  "interview/under-the-hood/01-Languages-Compilers-Execution.md",
+                          "content_type":  "interview",
+                          "domain":  "under-the-hood",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  38059,
+                          "source_of_truth":  false,
+                          "related_concepts":  [
+                                                   "under-the-hood"
                                                ]
                       },
                       {

@@ -4,6 +4,7 @@
   "topicAliases": {
     "dsa": ["dsa", "data structures", "data structure", "data structures and algorithms", "leetcode"],
     "messaging": ["message queue", "message broker", "event streaming", "messaging"],
+    "under-the-hood": ["under the hood", "internals", "software internals", "how it works internally"],
     "ai": ["llm", "llms", "rag", "generative ai", "genai", "gen ai", "embeddings", "vector database", "prompt engineering", "mcp", "ai agent", "ai agents", "tool calling", "function calling", "vector db", "vector dbs", "artificial intelligence", "machine learning"],
     "system-design": ["system design", "system designs", "distributed system", "distributed systems", "scalability"],
     "design-patterns": ["design pattern", "design patterns", "gang of four"],

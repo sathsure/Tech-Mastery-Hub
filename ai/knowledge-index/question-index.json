@@ -1,19 +1,19 @@
 {
   "schema_version": "1.0.0",
   "repository": "Tech-Mastery-Hub",
-  "generated_at": "2026-11-08T14:30:39.991Z",
-  "source_fingerprint": "7b3397d7bf93d5611b441e059ef94d5394490dd8d9a0360b891ea438aa9882fc",
+  "generated_at": "2026-11-08T15:44:21.419Z",
+  "source_fingerprint": "1e13a96802abe087a9dfa227f4e5bbcf9712726fefc38ee42e99cf779006582c",
   "stats": {
-    "files": 140,
-    "entries": 2026,
-    "questions": 1100,
+    "files": 142,
+    "entries": 2037,
+    "questions": 1110,
     "followUps": 311,
     "notes": 84,
     "roles": 74,
     "terms": 378,
-    "roadmaps": 79,
-    "codeBlocks": 1342,
-    "visuals": 82,
+    "roadmaps": 80,
+    "codeBlocks": 1363,
+    "visuals": 86,
     "missingVisuals": 0
   },
   "files": [
@@ -494,6 +494,17 @@
       "path": "interview/testing/01-Testing.md",
       "questions": 20,
       "followUps": 5,
+      "notes": 0,
+      "roles": 0,
+      "terms": 0,
+      "roadmaps": 0,
+      "withoutAnswer": 0,
+      "missingVisuals": 0
+    },
+    {
+      "path": "interview/under-the-hood/01-Languages-Compilers-Execution.md",
+      "questions": 10,
+      "followUps": 0,
       "notes": 0,
       "roles": 0,
       "terms": 0,
@@ -1515,6 +1526,17 @@
     },
     {
       "path": "roadmap/topics/typescript.md",
+      "questions": 0,
+      "followUps": 0,
+      "notes": 0,
+      "roles": 0,
+      "terms": 0,
+      "roadmaps": 1,
+      "withoutAnswer": 0,
+      "missingVisuals": 0
+    },
+    {
+      "path": "roadmap/topics/under-the-hood.md",
       "questions": 0,
       "followUps": 0,
       "notes": 0,
@@ -51971,6 +51993,540 @@
       "contentHash": "6bb93f96b430d340"
     },
     {
+      "id": "interview/under-the-hood/01-Languages-Compilers-Execution.md#how-does-human-readable-source-code-eventually-become-machine",
+      "kind": "question",
+      "parentId": null,
+      "question": "How does human-readable source code eventually become machine instructions?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nThe CPU only understands **machine code**: binary instructions for its own architecture (x86-64, ARM64). Source code (`.java`, `.js`, `.c`) is text for humans. A chain of tools translates one into the other.\n\n**2. How does it work internally?**\n\n1. **Lexing** — the text is split into tokens (`int`, `x`, `=`, `5`, `;`).\n2. **Parsing** — tokens become an **AST** (Abstract Syntax Tree: the code's structure as a tree).\n3. **Semantic analysis** — types and names are checked (compile errors happen here).\n4. **IR generation** — the AST becomes an **intermediate representation** that is easy to optimise.\n5. **Optimisation** — e.g. remove dead code, inline small functions.\n6. **Code generation** — IR becomes machine code (now, or later at runtime).\n7. **Linking / loading** — pieces are joined and loaded into RAM; the CPU starts executing.\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  S[\"Source text<br/>.c .java .js\"] --> L[Lexer: tokens]\n  L --> P[Parser: AST]\n  P --> SA[\"Semantic check<br/>types, names\"]\n  SA --> IR[\"IR<br/>(bytecode, LLVM IR)\"]\n  IR --> O[Optimiser]\n  O --> CG[\"Code generator<br/>machine code\"]\n  CG --> LD[\"Linker / loader<br/>into RAM\"]\n  LD --> CPU[\"CPU executes<br/>x86-64 / ARM64\"]\n```\n\n**4. Internal implementation**\n\n- The AST is a tree data structure; each node is a construct (`IfStatement`, `BinaryExpression`).\n- Optimisers work on IR in **SSA form** (Static Single Assignment: each variable is assigned once), which makes data flow easy to analyse.\n- Code generation does **instruction selection** (which CPU instruction for each IR operation) and **register allocation** (which values live in the CPU's few registers).\n\n**5. Why is it designed this way?**\nSplitting into stages lets one compiler support many languages and many CPUs. LLVM is the classic case: many front ends (C, C++, Rust, Swift) → one IR → many back ends (x86, ARM). The cost is complexity and longer build times.\n\n**6. Language differences**\nEvery language does steps 1–3. They differ in **when** step 6 happens:\n\n| When machine code is made | Languages |\n|---|---|\n| Before running (AOT) | C, C++, Rust, Go |\n| While running (JIT) | Java, C#, JavaScript |\n| Mostly never for your code (interpreted bytecode) | CPython, Ruby (without YJIT), PHP (without JIT) |\n\n**7. Practical example**\n\n```c\nint square(int x) { return x * x; }\n```\n\n`gcc -O2` turns it into roughly two x86-64 instructions: `imul edi, edi` then `mov eax, edi` / `ret`. Compile time does all the work; at runtime the CPU just runs them.\n\n**8. How can I observe it?**\n\n- **Compiler Explorer** (godbolt.org): type C, Rust, Go or Java code and see the generated assembly line by line.\n- `gcc -S file.c` writes the assembly to `file.s`; `objdump -d a.out` shows the machine code bytes.\n- `javap -c MyClass` shows Java bytecode; `node --print-bytecode file.js` shows V8 bytecode.",
+      "summary": "What is it? The CPU only understands machine code: binary instructions for its own architecture (x86-64, ARM64). Source code (.java, .js, .c) is text for humans. A chain of tools translates one into the other.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  S[\"Source text<br/>.c .java .js\"] --> L[Lexer: tokens]\n  L --> P[Parser: AST]\n  P --> SA[\"Semantic check<br/>types, names\"]\n  SA --> IR[\"IR<br/>(bytecode, LLVM IR)\"]\n  IR --> O[Optimiser]\n  O --> CG[\"Code generator<br/>machine code\"]\n  CG --> LD[\"Linker / loader<br/>into RAM\"]\n  LD --> CPU[\"CPU executes<br/>x86-64 / ARM64\"]"
+        },
+        {
+          "language": "c",
+          "code": "int square(int x) { return x * x; }"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Source Code to Machine Code"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "human-readable",
+        "source",
+        "code",
+        "eventually",
+        "become",
+        "machine",
+        "instructions",
+        "machine code",
+        "lexing",
+        "parsing",
+        "ast",
+        "semantic analysis",
+        "ir generation",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/01-Languages-Compilers-Execution.md",
+        "startLine": 9,
+        "endLine": 70
+      },
+      "contentHash": "df1dbdee2ad29b9a"
+    },
+    {
+      "id": "interview/under-the-hood/01-Languages-Compilers-Execution.md#what-are-the-differences-between-compiler-interpreter-assembler",
+      "kind": "question",
+      "parentId": null,
+      "question": "What are the differences between Compiler, Interpreter, Assembler, Linker and Runtime?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nFive different tools in the path from source code to a running program:\n\n| Tool | Input → Output | When |\n|---|---|---|\n| **Compiler** | Source → lower-level code (assembly, bytecode, IR) | Build time (or runtime for a JIT) |\n| **Interpreter** | Source or bytecode → executes it directly, one step at a time | Runtime |\n| **Assembler** | Assembly text (`.s`) → machine code object file (`.o`) | Build time |\n| **Linker** | Object files + libraries → one executable or library | Build time (static) or load time (dynamic) |\n| **Runtime** | Support code that runs alongside your program: memory management, threads, class loading | Runtime |\n\n**2. How does it work internally?**\n\n- **Compiler** — translates the whole unit at once, can optimise across functions.\n- **Interpreter** — a loop: read next instruction → `switch` on its type → do it → repeat.\n- **Assembler** — mostly a 1:1 mapping from mnemonics (`mov`, `add`) to binary opcodes.\n- **Linker** — resolves **symbols**: a call to `printf` in `main.o` is patched with the real address of `printf` from the C library.\n- **Runtime** — e.g. the JVM, .NET CLR, Go runtime: GC, thread scheduler, JIT.\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  subgraph Build[\"Build time\"]\n    direction LR\n    SRC[main.c] --> CC[Compiler] --> ASM[main.s] --> AS[Assembler] --> OBJ[main.o]\n    OBJ --> LK[Linker]\n    LIB[\"libc.a / libc.so\"] --> LK\n    LK --> EXE[\"app.exe / a.out\"]\n  end\n  subgraph Run[\"Runtime\"]\n    direction LR\n    EXE --> OS[OS loader puts it in RAM] --> CPU[CPU runs it]\n    RT[\"Runtime services<br/>GC, threads\"] -.-> CPU\n  end\n```\n\n**4. Internal implementation**\n\n- Object files have **sections** (`.text` = code, `.data` = initialised globals, `.bss` = zeroed globals) and a **symbol table** (names → offsets).\n- **Static linking** copies library code into the executable. **Dynamic linking** leaves a reference; the OS loader maps the shared library (`.so`, `.dll`, `.dylib`) at load time.\n- An interpreter's core is a **dispatch loop**; fast ones use \"threaded code\" (jump straight to the next handler instead of going back through one `switch`).\n\n**5. Why is it designed this way?**\n\n- Separate compile and link → recompile only the changed files; reuse prebuilt libraries.\n- Interpreters start instantly and run anywhere the interpreter runs, but are slower per instruction.\n- Runtimes make languages safer (GC, bounds checks) at some CPU and memory cost.\n\n**6. Language differences**\n\n| Language | Compiler | Assembler + linker | Runtime |\n|---|---|---|---|\n| C / C++ | gcc, clang | Yes (`as`, `ld`) | Tiny (C runtime start-up code) |\n| Rust | rustc (LLVM) | Yes | Small, no GC |\n| Go | `go build` | Go's own assembler and linker | Yes: GC + goroutine scheduler, built into the binary |\n| Java | javac → bytecode | No native linking; JVM loads classes | JVM (JIT, GC) |\n| C# | Roslyn → IL | No native linking (unless Native AOT) | CLR (JIT, GC) |\n| Python | Built into CPython (→ bytecode) | No | CPython interpreter |\n| JavaScript | Built into the engine (V8) | No | Engine + event loop |\n\n**7. Practical example**\n\n```bash\ngcc -c util.c        # compile + assemble → util.o\ngcc -c main.c        # → main.o\ngcc main.o util.o -o app   # link → app\n```\n\nIf `main.c` calls `add()` but `util.c` doesn't define it, compiling works but **linking fails**: `undefined reference to 'add'`. That shows the two steps are separate.\n\n**8. How can I observe it?**\n\n- `gcc -v main.c` prints every stage it runs (compiler, assembler, linker).\n- `nm main.o` lists symbols; `U` means \"undefined here, the linker must find it\".\n- `ldd ./app` (Linux) lists shared libraries loaded at runtime.",
+      "summary": "What is it? Five different tools in the path from source code to a running program:",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  subgraph Build[\"Build time\"]\n    direction LR\n    SRC[main.c] --> CC[Compiler] --> ASM[main.s] --> AS[Assembler] --> OBJ[main.o]\n    OBJ --> LK[Linker]\n    LIB[\"libc.a / libc.so\"] --> LK\n    LK --> EXE[\"app.exe / a.out\"]\n  end\n  subgraph Run[\"Runtime\"]\n    direction LR\n    EXE --> OS[OS loader puts it in RAM] --> CPU[CPU runs it]\n    RT[\"Runtime services<br/>GC, threads\"] -.-> CPU\n  end"
+        },
+        {
+          "language": "bash",
+          "code": "gcc -c util.c        # compile + assemble → util.o\ngcc -c main.c        # → main.o\ngcc main.o util.o -o app   # link → app"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Source Code to Machine Code"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "compiler",
+        "interpreter",
+        "assembler",
+        "linker",
+        "runtime",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/01-Languages-Compilers-Execution.md",
+        "startLine": 74,
+        "endLine": 153
+      },
+      "contentHash": "c2b0489ba1bf1e4a"
+    },
+    {
+      "id": "interview/under-the-hood/01-Languages-Compilers-Execution.md#what-are-bytecode-intermediate-representation-ir-assembly",
+      "kind": "question",
+      "parentId": null,
+      "question": "What are Bytecode, Intermediate Representation (IR), Assembly Language and Machine Code?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nFour levels of code, from most portable to most CPU-specific:\n\n| Level | Who reads it | Portable? | Example |\n|---|---|---|---|\n| **Bytecode** | A virtual machine (JVM, CPython, V8) | Yes, any OS/CPU with that VM | Java `.class`, Python `.pyc` |\n| **IR** | The compiler's optimiser | Yes (internal to the compiler) | LLVM IR, V8 TurboFan graph |\n| **Assembly** | Humans, the assembler | No, one CPU family | `mov eax, 5` |\n| **Machine code** | The CPU | No | `B8 05 00 00 00` |\n\n**2. How does it work internally?**\n\n- **Bytecode** is a compact instruction set for an imaginary CPU. Most VMs are **stack-based**: `iload_1` pushes a value, `iadd` pops two and pushes the sum.\n- **IR** sits inside a compiler between parsing and code generation; it is designed for analysis (SSA form, control-flow graphs).\n- **Assembly** is machine code written as words: one line ≈ one CPU instruction.\n- **Machine code** is the bytes the CPU decodes: an opcode plus operands (registers, memory addresses, constants).\n\n**3. Visual**\n\n```mermaid\nflowchart TD\n  S[\"Source: a + b\"] --> BC[\"Bytecode (JVM)<br/>iload_1, iload_2, iadd\"]\n  S --> IR[\"LLVM IR<br/>%3 = add i32 %1, %2\"]\n  BC --> MC\n  IR --> AS[\"Assembly (x86-64)<br/>add eax, ebx\"]\n  AS --> MC[\"Machine code<br/>01 D8\"]\n  MC --> CPU[CPU decodes and executes]\n```\n\n**4. Internal implementation**\n\n- JVM bytecode: 1-byte opcodes (about 200 of them) on an **operand stack** + local variable slots per method frame.\n- CPython bytecode: also stack-based; since 3.6 each instruction is 2 bytes (\"wordcode\"); 3.11+ adds **specialising** instructions (e.g. a fast path for adding two ints).\n- LLVM IR: typed, register-based, infinite virtual registers in SSA form; the back end maps them to the CPU's real registers.\n\n**5. Why is it designed this way?**\n\n- **Bytecode** → \"compile once, run anywhere\"; smaller than source and faster to start than parsing text.\n- **IR** → one optimiser serves many languages and CPUs.\n- **Machine code** → fastest, but must be produced separately for each CPU and OS.\n\n**6. Language differences**\n\n- Java, Kotlin, Scala → JVM bytecode. C#, F#, VB.NET → CIL (Common Intermediate Language).\n- Python → CPython bytecode (an internal detail; it changes between versions).\n- JavaScript → V8 makes its own bytecode in memory; it is never shipped as a file.\n- C, C++, Rust → LLVM IR or GCC's GIMPLE inside the compiler → machine code. Go → its own SSA IR → machine code.\n\n**7. Practical example**\n\n```java\nint add(int a, int b) { return a + b; }\n```\n\n`javap -c` shows:\n\n```text\niload_1   // push a\niload_2   // push b\niadd      // pop both, push a + b\nireturn   // return top of stack\n```\n\nAfter the method gets \"hot\", the JIT turns it into a single x86 `add` instruction.\n\n**8. How can I observe it?**\n\n- Java: `javap -c -p MyClass.class`.\n- Python: `python -c \"import dis; dis.dis(lambda a, b: a + b)\"`.\n- LLVM IR: `clang -S -emit-llvm file.c` → `file.ll`; Rust: `rustc --emit=llvm-ir`.\n- Assembly and machine code: Compiler Explorer (godbolt.org) with \"Output → Compile to binary\".",
+      "summary": "What is it? Four levels of code, from most portable to most CPU-specific:",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart TD\n  S[\"Source: a + b\"] --> BC[\"Bytecode (JVM)<br/>iload_1, iload_2, iadd\"]\n  S --> IR[\"LLVM IR<br/>%3 = add i32 %1, %2\"]\n  BC --> MC\n  IR --> AS[\"Assembly (x86-64)<br/>add eax, ebx\"]\n  AS --> MC[\"Machine code<br/>01 D8\"]\n  MC --> CPU[CPU decodes and executes]"
+        },
+        {
+          "language": "java",
+          "code": "int add(int a, int b) { return a + b; }"
+        },
+        {
+          "language": "text",
+          "code": "iload_1   // push a\niload_2   // push b\niadd      // pop both, push a + b\nireturn   // return top of stack"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Source Code to Machine Code"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "bytecode",
+        "intermediate",
+        "representation",
+        "ir",
+        "assembly",
+        "language",
+        "machine",
+        "code",
+        "machine code",
+        "stack-based",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/01-Languages-Compilers-Execution.md",
+        "startLine": 157,
+        "endLine": 231
+      },
+      "contentHash": "6980815d314395d3"
+    },
+    {
+      "id": "interview/under-the-hood/01-Languages-Compilers-Execution.md#what-are-aot-jit-and-interpretation-how-do-they-differ",
+      "kind": "question",
+      "parentId": null,
+      "question": "What are AOT, JIT and interpretation? How do they differ?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nThree ways to get from code to CPU instructions:\n\n- **Interpretation** — a program reads your code (or bytecode) and performs each step itself. No machine code for your program is produced.\n- **JIT** (Just-In-Time) — while the program runs, frequently used (\"hot\") code is compiled to machine code.\n- **AOT** (Ahead-Of-Time) — everything is compiled to machine code **before** the program runs.\n\n**2. How does it work internally?**\n\n- Interpreter: loop of fetch → decode → execute per bytecode instruction.\n- JIT: the runtime **counts** how often each method or loop runs. Past a threshold it compiles it, using **profiling data** (real types and branches seen so far), and swaps the new machine code in.\n- If an assumption breaks (e.g. a variable that was always an int becomes a string), the JIT **deoptimises**: it throws the optimised code away and goes back to the interpreter.\n- AOT: the compiler optimises using only what it can prove from the source; the output is a native executable.\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  subgraph I[\"Interpretation\"]\n    direction TB\n    I1[bytecode] --> I2[\"interpreter loop<br/>every time\"]\n  end\n  subgraph J[\"JIT\"]\n    direction TB\n    J1[bytecode] --> J2[\"interpreter + counters\"]\n    J2 -- \"hot code\" --> J3[\"compile with profile<br/>→ machine code\"]\n    J3 -. \"assumption broken:<br/>deoptimise\" .-> J2\n  end\n  subgraph A[\"AOT\"]\n    direction TB\n    A1[source] --> A2[\"compile at build time\"] --> A3[\"native executable\"]\n  end\n```\n\n**4. Internal implementation**\n\n- HotSpot JVM uses **tiered compilation**: interpreter → C1 (quick compile) → C2 (heavily optimised) for the hottest code. Compiled code is kept in the **code cache**.\n- JIT-only optimisations: **inline caching** (remember the object type at a call site), **speculative inlining**, removing checks that profiling shows never fail.\n- AOT cannot see runtime behaviour, so it compiles for all cases; **PGO** (Profile-Guided Optimisation) feeds a recorded profile back into an AOT build.\n\n**5. Why is it designed this way?**\n\n| | Interpretation | JIT | AOT |\n|---|---|---|---|\n| Start-up | Fast | Slow at first (warm-up) | **Fastest** |\n| Peak speed | Slow | **Very fast** (uses real profile) | Fast |\n| Memory | Low | Higher (compiler + code cache) | Low |\n| Portability | High | High (bytecode) | One binary per OS/CPU |\n\nLong-running servers like JIT (warm-up is paid once). Serverless functions, CLIs and mobile apps like AOT (fast start, less memory).\n\n**6. Language differences**\n\n- **Java** — interpreter + JIT (C1/C2). AOT via **GraalVM Native Image**.\n- **C#** — JIT (RyuJIT, tiered since .NET Core 3). AOT via **ReadyToRun** or **Native AOT**.\n- **JavaScript (V8)** — Ignition interpreter → Sparkplug → Maglev → TurboFan (more optimised at each tier).\n- **Python (CPython)** — interpreter. An experimental JIT exists in 3.13+, **off by default**. PyPy is a separate JIT implementation.\n- **PHP 8** — optional JIT in OPcache. **Ruby** — optional YJIT. **Erlang/Elixir** — BEAM JIT since OTP 24.\n- **C, C++, Rust, Go** — AOT only.\n\n**7. Practical example**\n\n```java\nfor (int i = 0; i < 10_000_000; i++) total += i;\n```\n\nThe first few thousand iterations are interpreted. HotSpot notices the hot loop and compiles it (even replacing it **while it is running**, called On-Stack Replacement), so the rest runs as tight machine code.\n\n**8. How can I observe it?**\n\n- `java -XX:+PrintCompilation MyApp` — prints each method as it is JIT-compiled (`%` marks an on-stack replacement).\n- `node --trace-opt --trace-deopt app.js` — shows V8 optimising and deoptimising functions.\n- Benchmark the same code twice in one run: the second run is faster on a JIT (warm-up). Use JMH for Java, not hand-written timing.",
+      "summary": "What is it? Three ways to get from code to CPU instructions:",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  subgraph I[\"Interpretation\"]\n    direction TB\n    I1[bytecode] --> I2[\"interpreter loop<br/>every time\"]\n  end\n  subgraph J[\"JIT\"]\n    direction TB\n    J1[bytecode] --> J2[\"interpreter + counters\"]\n    J2 -- \"hot code\" --> J3[\"compile with profile<br/>→ machine code\"]\n    J3 -. \"assumption broken:<br/>deoptimise\" .-> J2\n  end\n  subgraph A[\"AOT\"]\n    direction TB\n    A1[source] --> A2[\"compile at build time\"] --> A3[\"native executable\"]\n  end"
+        },
+        {
+          "language": "java",
+          "code": "for (int i = 0; i < 10_000_000; i++) total += i;"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Source Code to Machine Code"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "aot",
+        "jit",
+        "interpretation",
+        "differ",
+        "before",
+        "counts",
+        "profiling data",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/01-Languages-Compilers-Execution.md",
+        "startLine": 235,
+        "endLine": 311
+      },
+      "contentHash": "677f58e40936d488"
+    },
+    {
+      "id": "interview/under-the-hood/01-Languages-Compilers-Execution.md#how-do-jvm-clr-and-javascript-engines-execute-programs",
+      "kind": "question",
+      "parentId": null,
+      "question": "How do JVM, CLR and JavaScript engines execute programs internally?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nAll three are **managed runtimes**: they load portable code (JVM bytecode, .NET IL, JavaScript source), run it with an interpreter and/or JIT, and manage memory with a garbage collector.\n\n**2. How does it work internally?**\n\n**JVM (HotSpot):**\n1. **Class loader** finds `.class` files (from JARs) and loads them on first use.\n2. **Verifier** checks the bytecode is safe (no stack overflows or illegal casts).\n3. **Interpreter** runs the bytecode; counters track hot methods.\n4. **JIT** (C1, then C2) compiles hot methods to machine code in the code cache.\n5. **GC** (G1 by default) reclaims unreachable objects on the heap.\n\n**CLR (.NET):**\n1. Loads assemblies (`.dll`) containing IL + metadata.\n2. JIT compiles each method **the first time it is called** (tier 0: quick), recompiling hot methods with full optimisation (tier 1).\n3. Generational GC manages the managed heap.\n\n**JavaScript engine (V8):**\n1. **Parser** builds an AST (lazily: function bodies are parsed only when first called).\n2. **Ignition** turns the AST into bytecode and interprets it, collecting type feedback.\n3. **Sparkplug / Maglev / TurboFan** compile hot functions using that feedback.\n4. **Orinoco GC** manages the heap; the event loop (from the browser or Node.js) decides what runs next.\n\n**3. Visual**\n\n```mermaid\nflowchart TB\n  subgraph JVM\n    direction LR\n    C1[\".class files\"] --> CL[Class loader] --> V[Verifier] --> INT[Interpreter]\n    INT -- hot --> JIT1[\"JIT: C1 then C2\"] --> CC[(Code cache)]\n  end\n  subgraph CLR\n    direction LR\n    D1[\".dll: IL + metadata\"] --> L2[Assembly loader] --> T0[\"JIT tier 0<br/>on first call\"]\n    T0 -- hot --> T1[\"JIT tier 1<br/>optimised\"]\n  end\n  subgraph V8\n    direction LR\n    JS[\".js source\"] --> PA[Parser: AST] --> IG[\"Ignition<br/>bytecode + feedback\"]\n    IG -- hot --> TF[\"Maglev / TurboFan<br/>machine code\"]\n    TF -. deopt .-> IG\n  end\n```\n\n**4. Internal implementation**\n\n- **Objects in memory:** JVM objects have a header (mark word for locks and GC, plus a class pointer) followed by fields. V8 objects point to a **hidden class** (\"map\") that records the layout; objects created the same way share a map, so property access becomes a fixed offset.\n- **Method calls:** JVM uses **vtables** for virtual calls plus inline caches; V8 uses inline caches keyed on the hidden class.\n- **Memory areas (JVM):** heap (objects), one stack per thread (frames with locals), Metaspace (class metadata), code cache (JIT output).\n\n**5. Why is it designed this way?**\n\n- Portable code + JIT → good performance on any platform without shipping per-CPU binaries.\n- Verification + GC → memory safety (no dangling pointers).\n- Costs: warm-up time, more memory, GC pauses (much smaller with modern collectors such as ZGC).\n\n**6. Language differences**\n\n| | JVM | CLR | V8 |\n|---|---|---|---|\n| Input | Bytecode `.class` | IL in `.dll` | JavaScript source text |\n| Typing | Static | Static | Dynamic: types learned at runtime |\n| First execution | Interpreter | JIT tier 0 (no interpreter) | Ignition interpreter |\n| AOT option | GraalVM Native Image | Native AOT, ReadyToRun | None for JS (snapshots only) |\n| Threads | Real OS threads (plus virtual threads in Java 21) | OS threads + async/await | One JS thread per isolate + event loop |\n\n**7. Practical example**\n\n```js\nfunction area(r) { return r.w * r.h; }\nfor (let i = 0; i < 1e6; i++) area({ w: i, h: 2 });   // same shape every call → fast\narea({ h: 2, w: 3, d: 1 });                          // new shape → may deoptimise\n```\n\nV8 optimises `area` for objects with hidden class `{w, h}`. An object with a different shape breaks that assumption.\n\n**8. How can I observe it?**\n\n- JVM: `java -verbose:class` (class loading), `-XX:+PrintCompilation` (JIT), **VisualVM** or **JDK Mission Control** with JFR (heap, GC, threads).\n- .NET: `dotnet-counters monitor` (GC, JIT stats), **ILSpy** (view IL).\n- V8: `node --trace-opt --trace-deopt`, Chrome DevTools → **Memory** tab (heap snapshot) and **Performance** tab.",
+      "summary": "What is it? All three are managed runtimes: they load portable code (JVM bytecode, .NET IL, JavaScript source), run it with an interpreter and/or JIT, and manage memory with a garbage collector.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart TB\n  subgraph JVM\n    direction LR\n    C1[\".class files\"] --> CL[Class loader] --> V[Verifier] --> INT[Interpreter]\n    INT -- hot --> JIT1[\"JIT: C1 then C2\"] --> CC[(Code cache)]\n  end\n  subgraph CLR\n    direction LR\n    D1[\".dll: IL + metadata\"] --> L2[Assembly loader] --> T0[\"JIT tier 0<br/>on first call\"]\n    T0 -- hot --> T1[\"JIT tier 1<br/>optimised\"]\n  end\n  subgraph V8\n    direction LR\n    JS[\".js source\"] --> PA[Parser: AST] --> IG[\"Ignition<br/>bytecode + feedback\"]\n    IG -- hot --> TF[\"Maglev / TurboFan<br/>machine code\"]\n    TF -. deopt .-> IG\n  end"
+        },
+        {
+          "language": "js",
+          "code": "function area(r) { return r.w * r.h; }\nfor (let i = 0; i < 1e6; i++) area({ w: i, h: 2 });   // same shape every call → fast\narea({ h: 2, w: 3, d: 1 });                          // new shape → may deoptimise"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Source Code to Machine Code"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "jvm",
+        "clr",
+        "javascript",
+        "engines",
+        "execute",
+        "programs",
+        "internally",
+        "managed runtimes",
+        "class loader",
+        "verifier",
+        "interpreter",
+        "jit",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/01-Languages-Compilers-Execution.md",
+        "startLine": 315,
+        "endLine": 400
+      },
+      "contentHash": "5830c408b6f90481"
+    },
+    {
+      "id": "interview/under-the-hood/01-Languages-Compilers-Execution.md#how-do-programming-languages-interact-with-the-cpu-and-memory",
+      "kind": "question",
+      "parentId": null,
+      "question": "How do programming languages interact with the CPU and memory?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nIn the end every language becomes CPU instructions that **load** data from memory into **registers**, compute, and **store** results back. Languages differ in how much of this they hide from you.\n\n**2. How does it work internally?**\n\n1. The OS loads the program and gives it a **virtual address space** (its own private view of memory).\n2. The CPU runs a **fetch → decode → execute** cycle on instructions at the address in the **instruction pointer** register.\n3. A load like `mov rax, [address]` asks for data: the **MMU** translates the virtual address to a physical one (using the **TLB**, a cache of translations), then the data comes from **L1 → L2 → L3 cache → RAM**, whichever has it first.\n4. Calling a function pushes a **stack frame** (return address, local variables) onto the thread's stack.\n5. `new` / `malloc` asks an **allocator** for a block on the **heap**; you get back an address (a pointer or reference).\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  subgraph CPU\n    R[\"Registers<br/>~1 cycle\"]\n    L1[\"L1 cache<br/>~4 cycles\"]\n    L2[\"L2 cache<br/>~12 cycles\"]\n    L3[\"L3 cache<br/>~40 cycles\"]\n  end\n  RAM[\"RAM<br/>~100+ ns<br/>stack + heap + code\"]\n  DISK[\"SSD / disk<br/>~100 µs\"]\n  R <--> L1 <--> L2 <--> L3 <--> RAM <-. \"page in / out\" .-> DISK\n```\n\nProcess memory layout (one program):\n\n```mermaid\nflowchart TB\n  ST[\"Stack: frames, local variables<br/>grows down, one per thread\"]\n  HP[\"Heap: objects from new / malloc<br/>grows up\"]\n  DT[\"Data: global and static variables\"]\n  TX[\"Text: machine code (read-only)\"]\n  ST --- HP --- DT --- TX\n```\n\n**4. Internal implementation**\n\n- Caches move data in **64-byte lines**; reading one byte brings its neighbours too. That's why arrays (contiguous) are faster to scan than linked lists (scattered).\n- The CPU can read **any** mapped address — \"stack\" and \"heap\" are just regions of the same virtual memory. The difference is **how** they are managed: the stack by moving a pointer on call/return, the heap by an allocator or GC.\n- Memory is mapped in **pages** (usually 4 KB). Touching a page that isn't in RAM causes a **page fault**; the OS loads it, then the instruction retries.\n\n**5. Why is it designed this way?**\nRAM is ~100× slower than registers, so CPUs add layers of small, fast caches. Virtual memory isolates programs (one cannot read another's memory) and lets each program act as if it had the whole address space.\n\n**6. Language differences**\n\n| Language | You see addresses? | Who frees heap memory? | Layout control |\n|---|---|---|---|\n| C | Yes, raw pointers | You (`free`) | Full (structs, arrays) |\n| C++ | Yes, plus smart pointers | Destructors (RAII) or you | Full |\n| Rust | References checked by the compiler | Compiler-inserted `drop` (ownership) | Full |\n| Go | Pointers, no arithmetic | GC | Good (structs are values) |\n| Java / C# | References only | GC | Limited (objects on the heap; C# has value-type `struct`s) |\n| Python / JavaScript | No | Python: reference counting + cycle GC; JS: GC | None |\n\n**7. Practical example**\n\n```java\nvoid handle() {\n    int count = 3;                      // in this frame on the thread's stack\n    User u = new User(\"Asha\");          // object on the heap; 'u' (a reference) on the stack\n}                                       // frame popped; the User becomes garbage if nothing else points to it\n```\n\n**8. How can I observe it?**\n\n- Windows **Task Manager** / **Process Explorer**: a process's working set (RAM in use) and page faults.\n- Linux `perf stat -e cache-misses ./app` counts cache misses; compare looping over an array vs a linked list.\n- Java: VisualVM heap view; `jcmd <pid> Thread.print` shows each thread's stack frames.",
+      "summary": "What is it? In the end every language becomes CPU instructions that load data from memory into registers, compute, and store results back. Languages differ in how much of this they hide from you.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  subgraph CPU\n    R[\"Registers<br/>~1 cycle\"]\n    L1[\"L1 cache<br/>~4 cycles\"]\n    L2[\"L2 cache<br/>~12 cycles\"]\n    L3[\"L3 cache<br/>~40 cycles\"]\n  end\n  RAM[\"RAM<br/>~100+ ns<br/>stack + heap + code\"]\n  DISK[\"SSD / disk<br/>~100 µs\"]\n  R <--> L1 <--> L2 <--> L3 <--> RAM <-. \"page in / out\" .-> DISK"
+        },
+        {
+          "language": "mermaid",
+          "code": "flowchart TB\n  ST[\"Stack: frames, local variables<br/>grows down, one per thread\"]\n  HP[\"Heap: objects from new / malloc<br/>grows up\"]\n  DT[\"Data: global and static variables\"]\n  TX[\"Text: machine code (read-only)\"]\n  ST --- HP --- DT --- TX"
+        },
+        {
+          "language": "java",
+          "code": "void handle() {\n    int count = 3;                      // in this frame on the thread's stack\n    User u = new User(\"Asha\");          // object on the heap; 'u' (a reference) on the stack\n}                                       // frame popped; the User becomes garbage if nothing else points to it"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Source Code to Machine Code"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "programming",
+        "languages",
+        "interact",
+        "cpu",
+        "memory",
+        "load",
+        "registers",
+        "store",
+        "virtual address space",
+        "fetch → decode → execute",
+        "instruction pointer",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/01-Languages-Compilers-Execution.md",
+        "startLine": 404,
+        "endLine": 478
+      },
+      "contentHash": "15779aabfeb536f4"
+    },
+    {
+      "id": "interview/under-the-hood/01-Languages-Compilers-Execution.md#how-does-frontend-code-javascript-typescript-dart-webassembly",
+      "kind": "question",
+      "parentId": null,
+      "question": "How does frontend code (JavaScript, TypeScript, Dart, WebAssembly) become machine code in the browser?",
+      "prompt": null,
+      "answer": "![Frontend programming languages: source to machine code](../../knowledge/visual-notes/01_frontend_programming_languages.png)\n\n**1. What is it?**\nBrowsers run only two kinds of code: **JavaScript** and **WebAssembly** (`.wasm`). Every other frontend language is first compiled into one of those. HTML and CSS are **not** compiled this way; the browser parses them into the DOM and CSSOM for rendering.\n\n**2. How does it work internally?**\n\n- **JavaScript** — shipped as text. The engine (V8 in Chrome/Edge, SpiderMonkey in Firefox, JavaScriptCore in Safari) parses it → bytecode → interpreter → JIT for hot code → machine code.\n- **TypeScript** — `tsc` (or esbuild/SWC) **removes the types** and outputs plain `.js`. The browser never sees TypeScript.\n- **Dart** — compiled to JavaScript or WebAssembly for the web (native machine code for mobile/desktop apps).\n- **Elm, ClojureScript, PureScript** — each has its own compiler that outputs JavaScript.\n- **C, C++, Rust** — compiled (Clang/Emscripten, rustc) to `.wasm`, a portable binary. The browser validates it and compiles it to machine code.\n\n**3. Visual**\nSee the image above. In short:\n\n```mermaid\nflowchart LR\n  TS[\".ts / .tsx\"] -- tsc --> JS[\".js\"]\n  DART[\".dart\"] -- dart compiler --> JS\n  ELM[\".elm .cljs .purs\"] -- own compiler --> JS\n  DART -- dart2wasm --> WASM[\".wasm\"]\n  RS[\".c .cpp .rs\"] -- \"Emscripten / rustc\" --> WASM\n  JS --> ENG[\"JS engine<br/>parse → bytecode → JIT\"]\n  WASM --> WENG[\"Wasm engine<br/>validate → compile\"]\n  ENG --> MC[\"Machine code on CPU\"]\n  WENG --> MC\n```\n\n**4. Internal implementation**\n\n- JavaScript is dynamically typed, so engines **learn types at runtime** (type feedback, hidden classes) and optimise for what they see.\n- WebAssembly is **statically typed** and already low level, so the engine can compile it quickly with predictable speed: V8 compiles it first with **Liftoff** (fast baseline) and then **TurboFan** (optimised).\n- Wasm runs in a sandbox with its own **linear memory** (one big byte array); it calls browser APIs through JavaScript.\n\n**5. Why is it designed this way?**\n\n- One universal target (JS) means every browser runs every language without plugins.\n- WebAssembly was added for near-native speed (games, video, image editing) and to reuse existing C/C++/Rust code.\n- Trade-off: JS is easier to debug and integrates directly with the DOM; Wasm is faster for heavy computation but can't touch the DOM directly.\n\n**6. Language differences**\nTypeScript only removes types: same runtime behaviour as the JS it emits. Dart, Elm and others bring their own runtime libraries in the bundle (bigger downloads). C/C++/Rust → Wasm bring their own memory management inside linear memory (no JS GC).\n\n**7. Practical example**\n\n```ts\nconst total: number = prices.reduce((sum, p) => sum + p, 0);\n```\n\n`tsc` output: `const total = prices.reduce((sum, p) => sum + p, 0);` — the `: number` is gone. V8 then interprets it, and if this line runs a lot, compiles it to machine code that adds numbers directly.\n\n**8. How can I observe it?**\n\n- `npx tsc file.ts` and open the generated `.js`: types are gone.\n- Chrome DevTools → **Sources** (original code via source maps) and **Performance** (time spent compiling vs running scripts).\n- Wasm: DevTools → Sources shows the module as text (WAT format); `wasm2wat file.wasm` from the WABT tools does the same offline.",
+      "summary": "What is it? Browsers run only two kinds of code: JavaScript and WebAssembly (.wasm). Every other frontend language is first compiled into one of those. HTML and CSS are not compiled this way; the browser parses them into the DOM and CSSOM for rendering.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  TS[\".ts / .tsx\"] -- tsc --> JS[\".js\"]\n  DART[\".dart\"] -- dart compiler --> JS\n  ELM[\".elm .cljs .purs\"] -- own compiler --> JS\n  DART -- dart2wasm --> WASM[\".wasm\"]\n  RS[\".c .cpp .rs\"] -- \"Emscripten / rustc\" --> WASM\n  JS --> ENG[\"JS engine<br/>parse → bytecode → JIT\"]\n  WASM --> WENG[\"Wasm engine<br/>validate → compile\"]\n  ENG --> MC[\"Machine code on CPU\"]\n  WENG --> MC"
+        },
+        {
+          "language": "ts",
+          "code": "const total: number = prices.reduce((sum, p) => sum + p, 0);"
+        }
+      ],
+      "visuals": [
+        {
+          "path": "knowledge/visual-notes/01_frontend_programming_languages.png",
+          "exists": true,
+          "origin": "repository",
+          "reference": "../../knowledge/visual-notes/01_frontend_programming_languages.png",
+          "alt": "Frontend programming languages: source to machine code",
+          "placement": "answer"
+        }
+      ],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Source Code to Machine Code"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "frontend",
+        "code",
+        "javascript",
+        "typescript",
+        "dart",
+        "webassembly",
+        "become",
+        "machine",
+        "browser",
+        "not",
+        "removes the types",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/01-Languages-Compilers-Execution.md",
+        "startLine": 482,
+        "endLine": 542
+      },
+      "contentHash": "218fd21425c8f2cc"
+    },
+    {
+      "id": "interview/under-the-hood/01-Languages-Compilers-Execution.md#how-do-frontend-frameworks-angular-react-vue-svelte-next-js-get",
+      "kind": "question",
+      "parentId": null,
+      "question": "How do frontend frameworks (Angular, React, Vue, Svelte, Next.js) get from source code to running in the browser?",
+      "prompt": null,
+      "answer": "![Frontend frameworks and libraries: build and execution path](../../knowledge/visual-notes/02_frontend_frameworks.png)\n\n**1. What is it?**\nFrameworks are libraries written **in** JavaScript/TypeScript. A **build tool** turns your components (templates, JSX, `.vue`, `.svelte` files) into plain JavaScript **bundles** plus CSS. The browser then runs those bundles like any other JavaScript.\n\n**2. How does it work internally?**\n\n1. **Compile components** — framework-specific step:\n   - Angular: the Angular compiler turns HTML templates into JavaScript instructions (AOT, Ivy).\n   - React: JSX `<Button />` becomes `jsx(Button, {})` function calls.\n   - Vue: the SFC compiler turns `<template>` into a render function.\n   - Svelte / SolidJS: compile components into **direct DOM updates** (no virtual DOM).\n2. **Bundle** — Vite, esbuild, webpack or the Angular CLI join modules, remove unused code (tree shaking), minify, and split into chunks.\n3. **Deliver** — the server sends `index.html`, `.js` bundles and `.css`.\n4. **Execute** — the browser's JS engine runs the bundle; the framework's runtime creates the DOM and keeps it updated.\n\n**3. Visual**\nSee the image above. The shared path:\n\n```mermaid\nflowchart LR\n  SRC[\"Components<br/>.ts + .html / .jsx / .vue / .svelte\"] --> FC[\"Framework compiler<br/>templates → JS\"]\n  FC --> BU[\"Bundler<br/>tree shaking, minify, chunks\"]\n  BU --> OUT[\"dist/<br/>main.js, chunk-*.js, styles.css\"]\n  OUT --> BR[\"Browser JS engine<br/>bytecode → JIT\"]\n  BR --> DOM[\"Framework runtime<br/>creates and updates the DOM\"]\n```\n\n**4. Internal implementation**\n\n| Framework | Compile output | How the page updates at runtime |\n|---|---|---|\n| Angular | Template instructions (Ivy) | Change detection (zone.js) or Signals |\n| React | `jsx()` calls | Virtual DOM diff (reconciliation, Fiber) |\n| Vue | Render functions | Proxy-based reactivity + virtual DOM |\n| Svelte | Imperative DOM code | Compiled reactive assignments, no virtual DOM |\n| SolidJS | Fine-grained DOM bindings | Signals update exact DOM nodes |\n| Next.js / Nuxt | Server bundle + client bundle | Server renders HTML (Node.js); client **hydrates** it |\n\n**5. Why is it designed this way?**\n\n- Compiling templates ahead of time → smaller bundles, faster start, errors found at build time.\n- Bundling → fewer, smaller requests; unused code removed.\n- Virtual DOM (React, Vue) is simple and flexible but does diff work on every update; compile-time approaches (Svelte, Solid) do less runtime work but rely on a smarter compiler.\n\n**6. Language / framework differences**\nAll of them end up as JavaScript run by the same engines (V8, SpiderMonkey, JavaScriptCore). The differences are **build-time output** and **runtime update strategy** (table above). Next.js and Nuxt also run code on the **server** in Node.js, which is a different execution path from the browser.\n\n**7. Practical example**\n\n```jsx\nfunction Hello({ name }) { return <h1>Hello {name}</h1>; }\n```\n\nBuild output (simplified): `function Hello({name}) { return jsx(\"h1\", { children: [\"Hello \", name] }); }`. At runtime React calls `Hello`, gets a virtual DOM object, compares it with the previous one, and updates only the changed text node.\n\n**8. How can I observe it?**\n\n- `ng build` or `vite build`, then open `dist/`: see the generated chunks and their sizes.\n- `npx source-map-explorer dist/*.js` shows what code ended up in each bundle.\n- Chrome DevTools → **Network** (what is downloaded), **Performance** (scripting vs rendering time); Angular DevTools / React DevTools show component trees and update timing.",
+      "summary": "What is it? Frameworks are libraries written in JavaScript/TypeScript. A build tool turns your components (templates, JSX, .vue, .svelte files) into plain JavaScript bundles plus CSS. The browser then runs those bundles like any other JavaScript.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  SRC[\"Components<br/>.ts + .html / .jsx / .vue / .svelte\"] --> FC[\"Framework compiler<br/>templates → JS\"]\n  FC --> BU[\"Bundler<br/>tree shaking, minify, chunks\"]\n  BU --> OUT[\"dist/<br/>main.js, chunk-*.js, styles.css\"]\n  OUT --> BR[\"Browser JS engine<br/>bytecode → JIT\"]\n  BR --> DOM[\"Framework runtime<br/>creates and updates the DOM\"]"
+        },
+        {
+          "language": "jsx",
+          "code": "function Hello({ name }) { return <h1>Hello {name}</h1>; }"
+        }
+      ],
+      "visuals": [
+        {
+          "path": "knowledge/visual-notes/02_frontend_frameworks.png",
+          "exists": true,
+          "origin": "repository",
+          "reference": "../../knowledge/visual-notes/02_frontend_frameworks.png",
+          "alt": "Frontend frameworks and libraries: build and execution path",
+          "placement": "answer"
+        }
+      ],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Source Code to Machine Code"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "frontend",
+        "frameworks",
+        "angular",
+        "react",
+        "vue",
+        "svelte",
+        "next.js",
+        "get",
+        "source",
+        "code",
+        "running",
+        "browser",
+        "build tool",
+        "bundles",
+        "compile components",
+        "direct dom updates",
+        "bundle",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/01-Languages-Compilers-Execution.md",
+        "startLine": 546,
+        "endLine": 610
+      },
+      "contentHash": "fa9686aa3e467534"
+    },
+    {
+      "id": "interview/under-the-hood/01-Languages-Compilers-Execution.md#how-do-different-programming-languages-implement-compilation",
+      "kind": "question",
+      "parentId": null,
+      "question": "How do different programming languages implement compilation, execution and memory management?",
+      "prompt": null,
+      "answer": "![Backend programming languages: source, artifact, runtime and execution](../../knowledge/visual-notes/03_backend_programming_languages.png)\n\n**1. What is it?**\nEvery language goes **source → translator → artifact → runtime or linker → native instructions**. The image shows the artifact at each stage. Languages differ in **which artifact** they produce, **when** machine code is generated, and **who frees memory**.\n\n**2. How does it work internally?**\n\n- **Java / Kotlin / Scala** → `javac` / `kotlinc` / `scalac` → `.class` bytecode → JVM verifies, interprets, JIT-compiles hot code.\n- **C# / F# / VB.NET** → Roslyn / language compiler → IL in `.dll`/`.exe` → CLR JIT (or AOT) → machine code.\n- **C / C++ / Rust** → GCC / Clang / rustc (often LLVM) → `.s` / `.o` → linker → native executable.\n- **Go** → Go compiler → object code → Go linker → one native executable with the Go runtime inside.\n- **Python (CPython)** → bytecode cached as `.pyc` in `__pycache__` → CPython VM interprets it.\n- **JavaScript / Node.js** → (TypeScript via `tsc` first) → V8 bytecode → Ignition + TurboFan → machine code.\n- **PHP / Ruby** → Zend opcodes / YARV instructions → their VM; optional JIT (PHP OPcache JIT, Ruby YJIT).\n- **Erlang / Elixir** → `.beam` bytecode → BEAM VM (JIT since OTP 24).\n\n**3. Visual**\nSee the image above. Grouped by strategy:\n\n```mermaid\nflowchart TB\n  N[\"Native AOT<br/>C, C++, Rust, Go\"] --> N1[\"source → .o → linker → executable → CPU\"]\n  V[\"VM + JIT<br/>Java, Kotlin, C#, JS, Erlang\"] --> V1[\"source → bytecode / IL → interpreter → JIT → CPU\"]\n  P[\"VM, mostly interpreted<br/>CPython, Ruby, PHP by default\"] --> P1[\"source → bytecode → interpreter loop → CPU\"]\n```\n\n**4. Internal implementation — memory management**\n\n| Language | Strategy | How it decides what to free |\n|---|---|---|\n| C | Manual | You call `free()`; mistakes → leaks or crashes |\n| C++ | RAII + smart pointers | Destructor runs when an owner goes out of scope; `shared_ptr` counts references |\n| Rust | Ownership + borrow checker | Compiler proves at **compile time** when a value is dropped; no GC |\n| Go | Concurrent mark-and-sweep GC | Traces reachable objects while the program runs; short pauses |\n| Java | Generational tracing GC (G1 default; ZGC, Shenandoah) | Marks objects reachable from GC roots |\n| C# | Generational tracing GC (gen 0/1/2) | Same idea as Java |\n| JavaScript (V8) | Generational GC (Orinoco) | Young generation copied often; old generation marked and compacted |\n| Python (CPython) | **Reference counting** + cycle collector | Frees an object the moment its count hits 0; a separate GC finds cycles |\n| Erlang / Elixir | Per-process heaps | Each lightweight process is garbage-collected separately |\n\n**5. Why is it designed this way?**\n\n- **Native AOT** (C, Rust, Go): fast start, low memory, predictable — good for systems, CLIs, containers.\n- **VM + JIT** (Java, C#): portable, very fast once warm, rich tooling — good for long-running servers.\n- **Interpreted VM** (Python, Ruby, PHP): simple, flexible, quick to develop — slower per instruction, so heavy work moves to C extensions.\n- **GC vs manual vs ownership**: GC trades some CPU and pause time for safety and productivity; Rust gets safety without GC at the cost of a stricter compiler.\n\n**6. Language differences**\nThe full comparison is the image plus the table above. Key point: the **same concept is not implemented the same way** — e.g. CPython frees memory by reference counting (deterministic), while Java and JavaScript use tracing GC (objects are freed some time after they become unreachable).\n\n**7. Practical example**\nThe same \"sum a list\" function:\n\n- **Rust** → compiled at build time to a loop of machine instructions; memory for the list is freed when it goes out of scope.\n- **Java** → bytecode; interpreted first, then JIT-compiled to a similar loop; the list is freed by GC later.\n- **Python** → bytecode run by the interpreter loop on every call; the list is freed as soon as its reference count reaches 0.\n\n**8. How can I observe it?**\n\n- See the artifacts: `javap -c` (Java), `python -m py_compile x.py` then look in `__pycache__`, `go build -o app && file app` (native binary), `ildasm` / ILSpy (.NET IL).\n- See memory management: Java `-Xlog:gc`, Go `GODEBUG=gctrace=1 ./app`, Python `import sys; sys.getrefcount(obj)`.",
+      "summary": "What is it? Every language goes source → translator → artifact → runtime or linker → native instructions. The image shows the artifact at each stage. Languages differ in which artifact they produce, when machine code is generated, and who frees memory.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart TB\n  N[\"Native AOT<br/>C, C++, Rust, Go\"] --> N1[\"source → .o → linker → executable → CPU\"]\n  V[\"VM + JIT<br/>Java, Kotlin, C#, JS, Erlang\"] --> V1[\"source → bytecode / IL → interpreter → JIT → CPU\"]\n  P[\"VM, mostly interpreted<br/>CPython, Ruby, PHP by default\"] --> P1[\"source → bytecode → interpreter loop → CPU\"]"
+        }
+      ],
+      "visuals": [
+        {
+          "path": "knowledge/visual-notes/03_backend_programming_languages.png",
+          "exists": true,
+          "origin": "repository",
+          "reference": "../../knowledge/visual-notes/03_backend_programming_languages.png",
+          "alt": "Backend programming languages: source, artifact, runtime and execution",
+          "placement": "answer"
+        }
+      ],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Source Code to Machine Code"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "programming",
+        "languages",
+        "implement",
+        "compilation",
+        "execution",
+        "memory",
+        "management",
+        "which artifact",
+        "who frees memory",
+        "java / kotlin / scala",
+        "c# / f# / vb.net",
+        "c / c++ / rust",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/01-Languages-Compilers-Execution.md",
+        "startLine": 614,
+        "endLine": 678
+      },
+      "contentHash": "3b1711a48871eab8"
+    },
+    {
+      "id": "interview/under-the-hood/01-Languages-Compilers-Execution.md#do-backend-frameworks-spring-boot-django-express-asp-net-core",
+      "kind": "question",
+      "parentId": null,
+      "question": "Do backend frameworks (Spring Boot, Django, Express, ASP.NET Core) compile code themselves?",
+      "prompt": null,
+      "answer": "![Backend frameworks and platforms: source, compiler and runtime](../../knowledge/visual-notes/04_backend_frameworks.png)\n\n**1. What is it?**\n**No.** A framework is a **library** (plus conventions and tools) that runs **on** a language's runtime. Compiling and executing are done by the language's compiler and runtime — Spring Boot uses `javac` and the JVM, Django uses CPython, Express uses Node.js/V8.\n\n**2. How does it work internally?**\n\n1. You write application code in the language (`.java`, `.py`, `.ts`).\n2. The **language compiler** produces its normal artifact (`.class`, `.pyc`, `.js`).\n3. The **runtime** (JVM, CPython, Node.js) starts and loads the framework's code like any other library.\n4. The framework takes control: it reads configuration, creates objects, opens the HTTP port, and **calls your code** when requests arrive (\"inversion of control\").\n\n**3. Visual**\nSee the image above. Who does what:\n\n```mermaid\nflowchart LR\n  APP[\"Your code<br/>controllers, services\"] --> FW[\"Framework library<br/>Spring Boot / Django / Express\"]\n  FW --> LANG[\"Language compiler<br/>javac / CPython / tsc\"]\n  LANG --> RT[\"Runtime<br/>JVM / CPython VM / Node.js + V8\"]\n  RT --> CPU[Machine code on CPU]\n  HTTP[HTTP request] --> FW\n  FW -- \"calls your handler\" --> APP\n```\n\n**4. Internal implementation**\nFrameworks do their work **at runtime** using language features, not their own compiler:\n\n- **Spring Boot** — scans classes, uses reflection and generated proxies (CGLIB) for `@Transactional`, starts embedded Tomcat.\n- **Django / Flask / FastAPI** — Python decorators and URL routing tables map paths to functions; run under a WSGI/ASGI server (Gunicorn, Uvicorn).\n- **Express / NestJS** — a middleware chain on Node's `http` module; NestJS adds DI using TypeScript decorators.\n- **ASP.NET Core** — middleware pipeline on the Kestrel web server; built-in DI container.\n\nExceptions that **do** generate code at build time: Quarkus and Micronaut (pre-compute DI at build time), Spring AOT for GraalVM native images, and source generators in .NET.\n\n**5. Why is it designed this way?**\nKeeping compilation in the language means frameworks get every compiler and runtime improvement for free, and you can mix libraries freely. Build-time frameworks (Quarkus, Micronaut) move work from start-up to build time → faster start-up and less memory, at the cost of less runtime flexibility.\n\n**6. Language / framework differences**\n\n| Platform | Frameworks | Execution path |\n|---|---|---|\n| Java / JVM | Spring Boot, Quarkus, Micronaut | `javac` → `.class` → JVM interpreter + JIT |\n| Python | Django, Flask, FastAPI | CPython → `.pyc` → interpreter |\n| .NET | ASP.NET Core | Roslyn → IL → CLR JIT / AOT |\n| Node.js | Express, NestJS, Fastify | `tsc` (if TS) → `.js` → V8 JIT |\n| PHP | Laravel, Symfony | Zend opcodes → Zend VM (optional JIT) |\n| Ruby | Rails, Sinatra | YARV instructions → VM (optional YJIT) |\n| Go | Gin, Echo, Fiber | Native executable |\n| Rust | Actix Web, Axum | Native executable |\n| Erlang / Elixir | Phoenix, Cowboy | `.beam` → BEAM VM |\n\n**7. Practical example**\n\n```java\n@RestController\nclass HelloController {\n    @GetMapping(\"/hello\") String hello() { return \"Hi\"; }\n}\n```\n\n`javac` compiles this to `HelloController.class` like any class. At start-up, Spring scans it, sees `@GetMapping`, and registers `/hello` in its handler map. When a request arrives, Tomcat hands it to Spring's `DispatcherServlet`, which calls `hello()` — by then the JVM may have JIT-compiled it.\n\n**8. How can I observe it?**\n\n- `mvn package`, then `jar tf target/app.jar`: only ordinary `.class` files and libraries, no \"Spring compiler\" output.\n- Start with `--debug` (Spring Boot) to see auto-configuration decisions; `java -verbose:class -jar app.jar` shows framework classes being loaded by the JVM.\n- Django: `python -X importtime manage.py runserver` shows modules imported at start-up.",
+      "summary": "What is it? No. A framework is a library (plus conventions and tools) that runs on a language's runtime. Compiling and executing are done by the language's compiler and runtime — Spring Boot uses javac and the JVM, Django uses CPython, Express uses Node.js/V8.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  APP[\"Your code<br/>controllers, services\"] --> FW[\"Framework library<br/>Spring Boot / Django / Express\"]\n  FW --> LANG[\"Language compiler<br/>javac / CPython / tsc\"]\n  LANG --> RT[\"Runtime<br/>JVM / CPython VM / Node.js + V8\"]\n  RT --> CPU[Machine code on CPU]\n  HTTP[HTTP request] --> FW\n  FW -- \"calls your handler\" --> APP"
+        },
+        {
+          "language": "java",
+          "code": "@RestController\nclass HelloController {\n    @GetMapping(\"/hello\") String hello() { return \"Hi\"; }\n}"
+        }
+      ],
+      "visuals": [
+        {
+          "path": "knowledge/visual-notes/04_backend_frameworks.png",
+          "exists": true,
+          "origin": "repository",
+          "reference": "../../knowledge/visual-notes/04_backend_frameworks.png",
+          "alt": "Backend frameworks and platforms: source, compiler and runtime",
+          "placement": "answer"
+        }
+      ],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Source Code to Machine Code"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "backend",
+        "frameworks",
+        "spring",
+        "boot",
+        "django",
+        "express",
+        "asp.net",
+        "core",
+        "compile",
+        "code",
+        "themselves",
+        "no",
+        "library",
+        "language compiler",
+        "runtime",
+        "calls your code",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/01-Languages-Compilers-Execution.md",
+        "startLine": 682,
+        "endLine": 753
+      },
+      "contentHash": "33bc9c7520705e60"
+    },
+    {
       "id": "practice/coding/01-javascript-coding.md#move-all-0s-to-the-end-without-changing-the-order-of-other",
       "kind": "question",
       "parentId": null,
@@ -59956,7 +60512,7 @@
       "parentId": null,
       "question": "Roadmap: Platform Engineer",
       "prompt": null,
-      "answer": "## Role overview\n\nBuilds internal platforms so developers can ship without friction.\n\n## Prerequisites\n\n- [DevOps](../topics/devops.md)\n- [HTML](../topics/html.md)\n- Usually 4+ years of experience when hired\n\n## Learning stages\n\n### Stage 1: Core skills\n\n- [ ] [JavaScript](../topics/javascript.md)\n\n### Stage 2: Frameworks and depth\n\n- [ ] [TypeScript](../topics/typescript.md)\n\n## Also needed\n\nGo, Python, Backstage, Crossplane, Terraform, Argo CD, Helm\n\n## Where it leads\n\nGrow: Cloud Architect, Tech Lead · Lead: Engineering Manager · Pivot: AI Infrastructure / LLMOps Engineer",
+      "answer": "## Role overview\n\nBuilds internal platforms so developers can ship without friction.\n\n## Prerequisites\n\n- [DevOps](../topics/devops.md)\n- [HTML](../topics/html.md)\n- [Under the Hood](../topics/under-the-hood.md)\n- Usually 4+ years of experience when hired\n\n## Learning stages\n\n### Stage 1: Core skills\n\n- [ ] [JavaScript](../topics/javascript.md)\n\n### Stage 2: Frameworks and depth\n\n- [ ] [TypeScript](../topics/typescript.md)\n\n## Also needed\n\nGo, Python, Backstage, Crossplane, Terraform, Argo CD, Helm\n\n## Where it leads\n\nGrow: Cloud Architect, Tech Lead · Lead: Engineering Manager · Pivot: AI Infrastructure / LLMOps Engineer",
       "summary": "Builds internal platforms so developers can ship without friction.",
       "codeBlocks": [],
       "visuals": [],
@@ -59987,15 +60543,16 @@
       "relatedTopics": [
         "devops",
         "html",
+        "under-the-hood",
         "javascript",
         "typescript"
       ],
       "source": {
         "path": "roadmap/roles/platform-engineer.md",
         "startLine": 2,
-        "endLine": 31
+        "endLine": 32
       },
-      "contentHash": "2b9c3b8153fc7c86"
+      "contentHash": "6118f4244d6db398"
     },
     {
       "id": "roadmap/roles/product-manager.md#roadmap",
@@ -61254,7 +61811,7 @@
       "parentId": null,
       "question": "Where to start",
       "prompt": null,
-      "answer": "Pick a track and follow the study paths in order.\n\n## Frontend\n\nBuild user interfaces for the browser.\n\n1. [ ] [HTML](../topics/html.md)\n2. [ ] [CSS](../topics/css.md)\n3. [ ] [JavaScript](../topics/javascript.md)\n4. [ ] [TypeScript](../topics/typescript.md)\n5. [ ] [Web Vitals](../topics/web-vitals.md)\n6. [ ] [React](../topics/react.md)\n7. [ ] [Angular](../topics/angular.md)\n8. [ ] [RxJS](../topics/rxjs.md)\n\n## Backend with Java\n\nBuild services with Java and Spring.\n\n1. [ ] [Java](../topics/java.md)\n2. [ ] [SQL](../topics/database-sql.md)\n3. [ ] [REST API](../topics/rest-api.md)\n4. [ ] [Spring Boot](../topics/spring.md)\n5. [ ] [Spring Security](../topics/spring-security.md)\n6. [ ] [Microservices](../topics/microservices.md)\n7. [ ] [Spring Cloud](../topics/spring-cloud.md)\n\n## Backend with Node.js\n\nBuild services with JavaScript on the server.\n\n1. [ ] [JavaScript](../topics/javascript.md)\n2. [ ] [Node.js](../topics/nodejs.md)\n3. [ ] [REST API](../topics/rest-api.md)\n4. [ ] [SQL](../topics/database-sql.md)\n5. [ ] [Web Architecture](../topics/web-architecture.md)\n\n## DevOps and cloud\n\nShip, run and scale applications.\n\n1. [ ] [Git](../topics/git.md)\n2. [ ] [DevOps](../topics/devops.md)\n3. [ ] [AWS](../topics/aws.md)\n4. [ ] [Microservices](../topics/microservices.md)\n5. [ ] [Kafka & RabbitMQ](../topics/messaging.md)\n\n## System design\n\nDesign systems that scale and stay up.\n\n1. [ ] [Networking & HTTP](../topics/networking.md)\n2. [ ] [SQL](../topics/database-sql.md)\n3. [ ] [REST API](../topics/rest-api.md)\n4. [ ] [System Design](../topics/system-design.md)\n5. [ ] [Caching & Redis](../topics/caching.md)\n6. [ ] [Microservices](../topics/microservices.md)\n7. [ ] [Kafka & RabbitMQ](../topics/messaging.md)\n\n## Coding interviews and AI\n\nCrack coding rounds and build with AI.\n\n1. [ ] [DSA (Python)](../topics/dsa.md)\n2. [ ] [Design Patterns](../topics/design-patterns.md)\n3. [ ] [Testing](../topics/testing.md)\n4. [ ] [AI & LLMs](../topics/ai.md)\n\n## Interview day\n\nPrepare for the non-technical rounds.\n\n1. [ ] [Behavioral & HR](../topics/behavioral.md)\n\nLooking for a job role? See the [role roadmaps](../roles/README.md).",
+      "answer": "Pick a track and follow the study paths in order.\n\n## Frontend\n\nBuild user interfaces for the browser.\n\n1. [ ] [HTML](../topics/html.md)\n2. [ ] [CSS](../topics/css.md)\n3. [ ] [JavaScript](../topics/javascript.md)\n4. [ ] [TypeScript](../topics/typescript.md)\n5. [ ] [Web Vitals](../topics/web-vitals.md)\n6. [ ] [React](../topics/react.md)\n7. [ ] [Angular](../topics/angular.md)\n8. [ ] [RxJS](../topics/rxjs.md)\n\n## Backend with Java\n\nBuild services with Java and Spring.\n\n1. [ ] [Java](../topics/java.md)\n2. [ ] [SQL](../topics/database-sql.md)\n3. [ ] [REST API](../topics/rest-api.md)\n4. [ ] [Spring Boot](../topics/spring.md)\n5. [ ] [Spring Security](../topics/spring-security.md)\n6. [ ] [Microservices](../topics/microservices.md)\n7. [ ] [Spring Cloud](../topics/spring-cloud.md)\n\n## Backend with Node.js\n\nBuild services with JavaScript on the server.\n\n1. [ ] [JavaScript](../topics/javascript.md)\n2. [ ] [Node.js](../topics/nodejs.md)\n3. [ ] [REST API](../topics/rest-api.md)\n4. [ ] [SQL](../topics/database-sql.md)\n5. [ ] [Web Architecture](../topics/web-architecture.md)\n\n## DevOps and cloud\n\nShip, run and scale applications.\n\n1. [ ] [Git](../topics/git.md)\n2. [ ] [DevOps](../topics/devops.md)\n3. [ ] [AWS](../topics/aws.md)\n4. [ ] [Microservices](../topics/microservices.md)\n5. [ ] [Kafka & RabbitMQ](../topics/messaging.md)\n\n## System design\n\nDesign systems that scale and stay up.\n\n1. [ ] [Networking & HTTP](../topics/networking.md)\n2. [ ] [SQL](../topics/database-sql.md)\n3. [ ] [REST API](../topics/rest-api.md)\n4. [ ] [System Design](../topics/system-design.md)\n5. [ ] [Caching & Redis](../topics/caching.md)\n6. [ ] [Microservices](../topics/microservices.md)\n7. [ ] [Kafka & RabbitMQ](../topics/messaging.md)\n\n## Coding interviews and AI\n\nCrack coding rounds and build with AI.\n\n1. [ ] [DSA (Python)](../topics/dsa.md)\n2. [ ] [Design Patterns](../topics/design-patterns.md)\n3. [ ] [Testing](../topics/testing.md)\n4. [ ] [AI & LLMs](../topics/ai.md)\n\n## Under the hood\n\nUnderstand how code really runs: compilers, runtimes, CPU and memory.\n\n1. [ ] [Under the Hood](../topics/under-the-hood.md)\n\n## Interview day\n\nPrepare for the non-technical rounds.\n\n1. [ ] [Behavioral & HR](../topics/behavioral.md)\n\nLooking for a job role? See the [role roadmaps](../roles/README.md).",
       "summary": "",
       "codeBlocks": [],
       "visuals": [],
@@ -61311,14 +61868,15 @@
         "design-patterns",
         "testing",
         "ai",
+        "under-the-hood",
         "behavioral"
       ],
       "source": {
         "path": "roadmap/topics/README.md",
         "startLine": 2,
-        "endLine": 78
+        "endLine": 84
       },
-      "contentHash": "625250f21c94b937"
+      "contentHash": "bbd555b096285bf6"
     },
     {
       "id": "roadmap/topics/rest-api.md#roadmap",
@@ -61684,6 +62242,50 @@
         "endLine": 47
       },
       "contentHash": "7730326b6419396b"
+    },
+    {
+      "id": "roadmap/topics/under-the-hood.md#roadmap",
+      "kind": "roadmap",
+      "parentId": null,
+      "question": "Under the Hood study path",
+      "prompt": null,
+      "answer": "## Prerequisites\n\n- None. This is a starting point.\n- Overview: [Under the Hood concepts](../../knowledge/concepts/under-the-hood/README.md)\n\n## 1. Source Code to Machine Code\n\n1. [How does human-readable source code eventually become machine instructions?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n2. [What are the differences between Compiler, Interpreter, Assembler, Linker and Runtime?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n3. [What are Bytecode, Intermediate Representation (IR), Assembly Language and Machine Code?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n4. [What are AOT, JIT and interpretation? How do they differ?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n5. [How do JVM, CLR and JavaScript engines execute programs internally?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n6. [How do programming languages interact with the CPU and memory?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n7. [How does frontend code (JavaScript, TypeScript, Dart, WebAssembly) become machine code in the browser?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n8. [How do frontend frameworks (Angular, React, Vue, Svelte, Next.js) get from source code to running in the browser?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n9. [How do different programming languages implement compilation, execution and memory management?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n10. [Do backend frameworks (Spring Boot, Django, Express, ASP.NET Core) compile code themselves?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n\n## Diagrams\n\n- [Frontend programming languages: source to machine code](../../knowledge/visual-notes/01_frontend_programming_languages.png)\n- [Frontend frameworks and libraries: build and execution path](../../knowledge/visual-notes/02_frontend_frameworks.png)\n- [Backend programming languages: source, artifact, runtime and execution](../../knowledge/visual-notes/03_backend_programming_languages.png)\n- [Backend frameworks and platforms: source, compiler and runtime](../../knowledge/visual-notes/04_backend_frameworks.png)\n\n## Related roles\n\n[Platform Engineer](../roles/platform-engineer.md)",
+      "summary": "",
+      "codeBlocks": [],
+      "visuals": [],
+      "contentType": "roadmap",
+      "domain": "roadmap",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Roadmaps",
+        "Topics"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "under the hood study path",
+        "under the hood roadmap",
+        "under the hood learning path",
+        "learn under the hood",
+        "under",
+        "hood",
+        "study",
+        "path",
+        "under-the-hood"
+      ],
+      "names": [
+        "Under the Hood study path",
+        "Under the Hood roadmap",
+        "Under the Hood learning path",
+        "learn Under the Hood"
+      ],
+      "source": {
+        "path": "roadmap/topics/under-the-hood.md",
+        "startLine": 2,
+        "endLine": 32
+      },
+      "contentHash": "5ad3a513308a3df2"
     },
     {
       "id": "roadmap/topics/web-architecture.md#roadmap",
