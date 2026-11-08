@@ -1,18 +1,18 @@
 {
   "schema_version": "1.0.0",
   "repository": "Tech-Mastery-Hub",
-  "generated_at": "2026-11-08T16:53:22.752Z",
-  "source_fingerprint": "f3a48fb44da886f7f0802b8ef6794b6644f3137318acb827e36fcc0fe729b686",
+  "generated_at": "2026-11-08T16:56:20.754Z",
+  "source_fingerprint": "df68862a3b68e4b765e73b1e7571e066bdb8758e47caf01efe888ac6616d70ed",
   "stats": {
-    "files": 146,
-    "entries": 2084,
-    "questions": 1157,
+    "files": 147,
+    "entries": 2099,
+    "questions": 1172,
     "followUps": 311,
     "notes": 84,
     "roles": 74,
     "terms": 378,
     "roadmaps": 80,
-    "codeBlocks": 1447,
+    "codeBlocks": 1469,
     "visuals": 86,
     "missingVisuals": 0
   },
@@ -548,6 +548,17 @@
     {
       "path": "interview/under-the-hood/04-Backend-Server-Internals.md",
       "questions": 14,
+      "followUps": 0,
+      "notes": 0,
+      "roles": 0,
+      "terms": 0,
+      "roadmaps": 0,
+      "withoutAnswer": 0,
+      "missingVisuals": 0
+    },
+    {
+      "path": "interview/under-the-hood/05-Database-Internals.md",
+      "questions": 15,
       "followUps": 0,
       "notes": 0,
       "roles": 0,
@@ -54829,6 +54840,688 @@
       "contentHash": "8c36aab2bf64640e"
     },
     {
+      "id": "interview/under-the-hood/05-Database-Internals.md#how-does-a-database-physically-store-records-on-disk",
+      "kind": "question",
+      "parentId": null,
+      "question": "How does a database physically store records on disk?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nA table is stored in **files** on disk. Each file is divided into fixed-size **pages** (InnoDB: 16 KB, PostgreSQL: 8 KB), and rows are packed inside pages. The database always reads and writes **whole pages**, never single rows.\n\n**2. How does it work internally?**\n\n1. `INSERT` → the engine finds a page with free space (or allocates a new one).\n2. The row is written into that page **in memory** (the buffer pool), and a change record goes to the **write-ahead log**.\n3. The modified (\"dirty\") page is written back to the data file later, in the background.\n4. `SELECT` → the engine locates the right page (via an index or by scanning), loads it into memory if needed, and reads the row.\n\n**3. Visual**\n\n```mermaid\nflowchart TB\n  T[\"Table: orders\"] --> F[\"Data file<br/>MySQL: orders.ibd<br/>PostgreSQL: base/16384/24576\"]\n  F --> P1[\"Page 0 (16 KB)\"]\n  F --> P2[\"Page 1 (16 KB)\"]\n  F --> P3[\"Page 2 ...\"]\n  P2 --> R1[\"Row: id=101, total=500\"]\n  P2 --> R2[\"Row: id=102, total=120\"]\n  P2 --> FS[Free space]\n```\n\n**4. Internal implementation**\n\n- **InnoDB** stores the table **as** its primary-key B+ tree (clustered index): leaf pages contain the full rows, sorted by primary key.\n- **PostgreSQL** stores rows in an unordered **heap** file; every index (including the primary key) points to a row's location `(page, slot)` called the **ctid**.\n- Large values (long text, JSON) are stored **off-page** (InnoDB overflow pages, PostgreSQL TOAST).\n\n**5. Why is it designed this way?**\nDisks and SSDs transfer data in blocks, so reading 16 KB costs about the same as reading 100 bytes. Grouping rows into pages and caching pages makes I/O efficient.\n\n**6. Database differences**\n\n| | MySQL InnoDB | PostgreSQL | SQL Server |\n|---|---|---|---|\n| Page size | 16 KB | 8 KB | 8 KB |\n| Table layout | Clustered by primary key | Heap (unordered) | Clustered index or heap |\n| Old row versions | Undo log | Stored in the table (dead tuples, needs VACUUM) | tempdb version store (with snapshot isolation) |\n\n**7. Practical example**\n`orders` with 1 million rows of ~200 bytes → about 80 rows per 16 KB page → ~12,500 pages ≈ 200 MB file.\n\n**8. How can I observe it?**\nMySQL: look in the data directory for `orders.ibd`; `SHOW TABLE STATUS LIKE 'orders'` (rows, data length). PostgreSQL: `SELECT pg_relation_filepath('orders'), pg_relation_size('orders');` and `SELECT ctid, * FROM orders LIMIT 5;`.",
+      "summary": "What is it? A table is stored in files on disk. Each file is divided into fixed-size pages (InnoDB: 16 KB, PostgreSQL: 8 KB), and rows are packed inside pages. The database always reads and writes whole pages, never single rows.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart TB\n  T[\"Table: orders\"] --> F[\"Data file<br/>MySQL: orders.ibd<br/>PostgreSQL: base/16384/24576\"]\n  F --> P1[\"Page 0 (16 KB)\"]\n  F --> P2[\"Page 1 (16 KB)\"]\n  F --> P3[\"Page 2 ...\"]\n  P2 --> R1[\"Row: id=101, total=500\"]\n  P2 --> R2[\"Row: id=102, total=120\"]\n  P2 --> FS[Free space]"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Storage on Disk"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "database",
+        "physically",
+        "store",
+        "records",
+        "disk",
+        "files",
+        "pages",
+        "whole pages",
+        "in memory",
+        "write-ahead log",
+        "visual",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/05-Database-Internals.md",
+        "startLine": 7,
+        "endLine": 55
+      },
+      "contentHash": "a7258ba925cd94dc"
+    },
+    {
+      "id": "interview/under-the-hood/05-Database-Internals.md#what-are-database-pages-blocks-and-rows",
+      "kind": "question",
+      "parentId": null,
+      "question": "What are Database Pages, Blocks and Rows?",
+      "prompt": null,
+      "answer": "**1. What is it?**\n\n- **Block** — the unit the OS/disk reads (often 4 KB).\n- **Page** — the database's unit of storage and I/O (8 KB or 16 KB), made of one or more blocks.\n- **Row** (tuple/record) — one record of a table, stored inside a page with a small header.\n\n**2. How does it work internally?**\n\n1. Each page has a **header** (page ID, LSN of the last change, checksum, free-space pointers).\n2. A **slot directory** (PostgreSQL: line pointers) lists where each row starts in the page.\n3. Rows grow from one end, the slot array from the other; free space sits in between.\n4. Reading a row: page ID → load page → slot number → offset → row bytes → decode columns using the table schema.\n\n**3. Visual**\n\n```mermaid\nflowchart TB\n  subgraph Page[\"8 KB page\"]\n    H[\"Page header<br/>LSN, checksum, free-space pointers\"]\n    SL[\"Slot array: [1]→7900, [2]→7700, [3]→7550\"]\n    FREE[\"... free space ...\"]\n    R3[\"Row 3: header + columns\"]\n    R2[\"Row 2: header + columns\"]\n    R1[\"Row 1: header + columns\"]\n  end\n  H --- SL --- FREE --- R3 --- R2 --- R1\n```\n\n**4. Internal implementation**\n\n- PostgreSQL row header (~23 bytes) stores **xmin/xmax** (which transactions created/deleted it) for MVCC.\n- InnoDB row header stores the **transaction ID** and a **roll pointer** to the undo log.\n- **NULLs** are tracked in a null bitmap, so they take almost no space.\n- **Fill factor** leaves free space in pages for future updates (fewer page splits / allows HOT updates in PostgreSQL).\n\n**5. Why is it designed this way?**\nFixed-size pages make caching, writing and checksumming simple. The slot directory lets rows move within a page (e.g. during compaction) without changing their external address.\n\n**6. Database differences**\nColumn stores (ClickHouse, Redshift, Snowflake) store **columns** together instead of rows → great for analytics (`SUM(price)` reads only one column), worse for single-row updates.\n\n**7. Practical example**\nUpdating one `INT` column in one row still makes the engine write the whole 16 KB page eventually (plus a small WAL record now).\n\n**8. How can I observe it?**\nPostgreSQL `pageinspect` extension: `SELECT * FROM heap_page_items(get_raw_page('orders', 0));` shows each row's offset, xmin and xmax. MySQL: `innodb_page_size` variable; `information_schema.INNODB_BUFFER_PAGE`.",
+      "summary": "Block — the unit the OS/disk reads (often 4 KB). Page — the database's unit of storage and I/O (8 KB or 16 KB), made of one or more blocks. Row (tuple/record) — one record of a table, stored inside a page with a small header.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart TB\n  subgraph Page[\"8 KB page\"]\n    H[\"Page header<br/>LSN, checksum, free-space pointers\"]\n    SL[\"Slot array: [1]→7900, [2]→7700, [3]→7550\"]\n    FREE[\"... free space ...\"]\n    R3[\"Row 3: header + columns\"]\n    R2[\"Row 2: header + columns\"]\n    R1[\"Row 1: header + columns\"]\n  end\n  H --- SL --- FREE --- R3 --- R2 --- R1"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Storage on Disk"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "database",
+        "pages",
+        "blocks",
+        "rows",
+        "block",
+        "page",
+        "row",
+        "header",
+        "slot directory",
+        "visual",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/05-Database-Internals.md",
+        "startLine": 59,
+        "endLine": 108
+      },
+      "contentHash": "fbc9a0e939337125"
+    },
+    {
+      "id": "interview/under-the-hood/05-Database-Internals.md#how-does-database-indexing-work-internally",
+      "kind": "question",
+      "parentId": null,
+      "question": "How does Database Indexing work internally?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nAn **index** is a separate, sorted data structure (usually a **B+ tree**) that maps column values to row locations — like a book's index mapping words to page numbers. It turns \"scan every row\" into \"jump to the right rows\".\n\n**2. How does it work internally?**\n\n1. `CREATE INDEX idx_email ON users(email)` sorts all `(email, row pointer)` pairs into a B+ tree.\n2. `WHERE email = 'a@x.com'`: start at the root page, compare keys, follow child pointers down to a leaf (3–4 page reads for millions of rows).\n3. The leaf entry gives the row location; read the row from the table (unless the index already has every needed column).\n4. Every `INSERT`/`UPDATE`/`DELETE` also updates every index on the table.\n\n**3. Visual**\n\n```mermaid\nflowchart TB\n  R[\"Root page<br/>keys: g | p\"] --> I1[\"Internal: a..f\"]\n  R --> I2[\"Internal: g..o\"]\n  R --> I3[\"Internal: p..z\"]\n  I1 --> L1[\"Leaf: a@x.com → row (page 12, slot 3)<br/>b@y.com → row (page 40, slot 1)\"]\n  L1 --> T[(\"Table pages\")]\n```\n\n**4. Internal implementation**\n\n- Each B+ tree node **is a page**; one 16 KB page holds hundreds of keys (**high fan-out**), so a tree with 3 levels covers ~10–100 million rows.\n- Leaves are **linked** in key order → range scans (`BETWEEN`, `ORDER BY`) walk sideways.\n- Inserting into a full page causes a **page split**; random keys (UUIDv4) split pages everywhere, sequential keys (auto-increment, UUIDv7) append at the right edge.\n\n**5. Why is it designed this way?**\nDisk reads are the main cost; a shallow, wide tree minimises them. The trade-off: extra storage and slower writes for every index.\n\n**6. Other index types**\n**Hash** indexes (equality only), **GIN** (PostgreSQL: arrays, JSONB, full-text), **GiST** (geometry, ranges), **BRIN** (huge naturally ordered tables), **bitmap** indexes (Oracle, data warehouses).\n\n**7. Practical example**\n\n```sql\nCREATE INDEX idx_orders_customer ON orders(customer_id);\nSELECT * FROM orders WHERE customer_id = 42;   -- now an index lookup instead of a full scan\n```\n\n**8. How can I observe it?**\n`EXPLAIN SELECT ...` before and after creating the index: MySQL `type: ALL` → `ref`, PostgreSQL `Seq Scan` → `Index Scan`. `EXPLAIN ANALYZE` shows real time and rows.",
+      "summary": "What is it? An index is a separate, sorted data structure (usually a B+ tree) that maps column values to row locations — like a book's index mapping words to page numbers. It turns \"scan every row\" into \"jump to the right rows\".",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart TB\n  R[\"Root page<br/>keys: g | p\"] --> I1[\"Internal: a..f\"]\n  R --> I2[\"Internal: g..o\"]\n  R --> I3[\"Internal: p..z\"]\n  I1 --> L1[\"Leaf: a@x.com → row (page 12, slot 3)<br/>b@y.com → row (page 40, slot 1)\"]\n  L1 --> T[(\"Table pages\")]"
+        },
+        {
+          "language": "sql",
+          "code": "CREATE INDEX idx_orders_customer ON orders(customer_id);\nSELECT * FROM orders WHERE customer_id = 42;   -- now an index lookup instead of a full scan"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Indexes"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "database",
+        "indexing",
+        "internally",
+        "index",
+        "b+ tree",
+        "visual",
+        "internal implementation",
+        "is a page",
+        "high fan-out",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/05-Database-Internals.md",
+        "startLine": 114,
+        "endLine": 159
+      },
+      "contentHash": "c520ea36d5320836"
+    },
+    {
+      "id": "interview/under-the-hood/05-Database-Internals.md#how-do-b-tree-and-b-tree-work-why-are-b-trees-commonly-used",
+      "kind": "question",
+      "parentId": null,
+      "question": "How do B-Tree and B+ Tree work? Why are B+ Trees commonly used?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nBoth are **balanced search trees** designed for disks: each node holds many sorted keys and has many children, so the tree stays very shallow.\n\n- **B-Tree**: keys **and data** can be in any node.\n- **B+ Tree**: internal nodes hold **only keys** (signposts); **all data is in the leaves**, and leaves are **linked**.\n\n**2. How does it work internally?**\nSearch: start at the root, binary-search the keys in the node, follow the right child pointer, repeat until the leaf.\nInsert:\n\n1. Find the leaf and insert the key in sorted position.\n2. If the leaf overflows, **split** it in two and push the middle key up to the parent.\n3. Splits can go up to the root; a root split adds a level — the tree grows **from the top**, so all leaves stay at the same depth.\n\nDelete: remove from the leaf; if it becomes too empty, **borrow** from a sibling or **merge** with it.\n\n**3. Visual**\n\n```mermaid\nflowchart TB\n  R[\"Root: 40 | 80\"] --> A[\"10 | 20 | 30\"]\n  R --> B[\"40 | 50 | 60 | 70\"]\n  R --> C[\"80 | 90\"]\n  A -. next .-> B -. next .-> C\n  N[\"Insert 55 into full leaf B\"] --> S[\"Split: [40 50] [55 60 70]<br/>push 55 up → root: 40 | 55 | 80\"]\n```\n\n**4. Internal implementation**\n\n- Node size = one page; order (max children) is in the hundreds.\n- Height for N keys ≈ log_fanout(N): with fan-out 500, 3 levels ≈ 125 million keys.\n- Concurrency: databases use **latch crabbing** (lock a child before releasing its parent) or B-link trees so many threads can read and write at once.\n\n**5. Why is it designed this way? Why B+?**\n\n- Internal nodes without data hold **more keys** → higher fan-out → fewer levels → fewer disk reads.\n- **Linked leaves** → range scans and `ORDER BY` without going back up the tree.\n- Every lookup ends at a leaf → **predictable** cost.\n- Alternatives: hash indexes (no ranges), **LSM trees** (RocksDB, Cassandra: faster writes, slower reads).\n\n**6. Database differences**\nMySQL InnoDB, PostgreSQL, SQL Server, Oracle all use B+ tree variants for normal indexes. MongoDB (WiredTiger) also uses B-trees. Cassandra, RocksDB and many time-series DBs use LSM trees.\n\n**7. Practical example**\n`SELECT * FROM orders WHERE id BETWEEN 1000 AND 1100;` → one root-to-leaf descent to 1000, then follow leaf links until 1100.\n\n**8. How can I observe it?**\nOnline visualiser: \"B+ Tree Visualization\" (cs.usfca.edu/~galles/visualization/BPlusTree.html) — insert keys and watch splits. PostgreSQL `pageinspect`: `bt_metap('idx_name')` shows tree height (level).",
+      "summary": "What is it? Both are balanced search trees designed for disks: each node holds many sorted keys and has many children, so the tree stays very shallow.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart TB\n  R[\"Root: 40 | 80\"] --> A[\"10 | 20 | 30\"]\n  R --> B[\"40 | 50 | 60 | 70\"]\n  R --> C[\"80 | 90\"]\n  A -. next .-> B -. next .-> C\n  N[\"Insert 55 into full leaf B\"] --> S[\"Split: [40 50] [55 60 70]<br/>push 55 up → root: 40 | 55 | 80\"]"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Indexes"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "b-tree",
+        "b+",
+        "tree",
+        "trees",
+        "commonly",
+        "balanced search trees",
+        "and data",
+        "b+ tree",
+        "only keys",
+        "all data is in the leaves",
+        "linked",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/05-Database-Internals.md",
+        "startLine": 163,
+        "endLine": 214
+      },
+      "contentHash": "5cc41223cc3c75be"
+    },
+    {
+      "id": "interview/under-the-hood/05-Database-Internals.md#how-do-clustered-non-clustered-and-composite-indexes-work",
+      "kind": "question",
+      "parentId": null,
+      "question": "How do Clustered, Non-Clustered and Composite Indexes work?",
+      "prompt": null,
+      "answer": "**1. What is it?**\n\n- **Clustered index** — the table **itself** is stored sorted by this key; leaf pages contain the full rows. Only one per table.\n- **Non-clustered (secondary) index** — a separate tree whose leaves store the key + a **pointer** to the row.\n- **Composite index** — an index on **several columns**, sorted by the first column, then the second, and so on.\n\n**2. How does it work internally?**\n\n1. **InnoDB**: the primary key is the clustered index. A secondary index leaf stores `(email, primary key)`.\n2. Lookup by a secondary index: search the secondary tree → get the primary key → search the clustered tree → get the row (**two tree lookups**, a \"bookmark lookup\").\n3. If the secondary index already contains every column the query needs, step 2's second lookup is skipped: a **covering index**.\n4. Composite `(last_name, first_name)`: usable for `last_name = ?` or `last_name = ? AND first_name = ?`, but **not** for `first_name = ?` alone (**leftmost prefix rule**).\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  Q[\"WHERE email = 'a@x.com'\"] --> SI[\"Secondary index (email)<br/>leaf: a@x.com → id 42\"]\n  SI --> CI[\"Clustered index (id)<br/>leaf: id 42 → full row\"]\n  CI --> ROW[\"{id 42, email, name, city}\"]\n  Q2[\"SELECT id FROM users WHERE email = ?\"] --> SI2[\"Secondary index has email + id<br/>→ covering, no 2nd lookup\"]\n```\n\n**4. Internal implementation**\n\n- InnoDB secondary indexes store the **primary key**, so a wide primary key (e.g. a long string) makes every secondary index bigger.\n- PostgreSQL has no clustered index in this sense: all indexes point to the heap by `ctid`; `INCLUDE (cols)` adds payload columns for covering; index-only scans need the visibility map.\n- Composite indexes order: put **equality** columns first, then the **range/sort** column.\n\n**5. Why is it designed this way?**\nClustering makes primary-key lookups and PK range scans very fast (rows are physically together). Secondary indexes give flexibility at the cost of an extra hop and extra writes.\n\n**6. Database differences**\nSQL Server: choose any clustered index (default = PK) and `INCLUDE` columns. MySQL InnoDB: always clustered by PK (or a hidden row ID). PostgreSQL: heap + `CLUSTER` command does a one-time reorder only.\n\n**7. Practical example**\n\n```sql\nCREATE INDEX idx_orders_cust_date ON orders(customer_id, created_at);\nSELECT * FROM orders WHERE customer_id = 42 ORDER BY created_at DESC LIMIT 10;\n-- uses the index for both the filter and the sort: no extra sorting step\n```\n\n**8. How can I observe it?**\nMySQL `EXPLAIN`: `Extra: Using index` = covering; `key_len` shows how many columns of a composite index were used. PostgreSQL: `Index Only Scan` vs `Index Scan` in `EXPLAIN`.",
+      "summary": "Clustered index — the table itself is stored sorted by this key; leaf pages contain the full rows. Only one per table. Non-clustered (secondary) index — a separate tree whose leaves store the key + a pointer to the row. Composite index — an index on several columns, sorted by the first column, then the second, and so…",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  Q[\"WHERE email = 'a@x.com'\"] --> SI[\"Secondary index (email)<br/>leaf: a@x.com → id 42\"]\n  SI --> CI[\"Clustered index (id)<br/>leaf: id 42 → full row\"]\n  CI --> ROW[\"{id 42, email, name, city}\"]\n  Q2[\"SELECT id FROM users WHERE email = ?\"] --> SI2[\"Secondary index has email + id<br/>→ covering, no 2nd lookup\"]"
+        },
+        {
+          "language": "sql",
+          "code": "CREATE INDEX idx_orders_cust_date ON orders(customer_id, created_at);\nSELECT * FROM orders WHERE customer_id = 42 ORDER BY created_at DESC LIMIT 10;\n-- uses the index for both the filter and the sort: no extra sorting step"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Indexes"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "clustered",
+        "non-clustered",
+        "composite",
+        "indexes",
+        "clustered index",
+        "itself",
+        "non-clustered (secondary) index",
+        "pointer",
+        "composite index",
+        "several columns",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/05-Database-Internals.md",
+        "startLine": 218,
+        "endLine": 266
+      },
+      "contentHash": "f28f7f19db11d7bd"
+    },
+    {
+      "id": "interview/under-the-hood/05-Database-Internals.md#how-does-a-database-decide-between-index-seek-and-table-scan",
+      "kind": "question",
+      "parentId": null,
+      "question": "How does a database decide between Index Seek and Table Scan?",
+      "prompt": null,
+      "answer": "**1. What is it?**\n\n- **Index seek** — use the index to jump to matching rows.\n- **Table scan** — read every page of the table sequentially.\n\nThe **optimizer** estimates the cost of each and picks the cheaper one. An index is **not always** faster.\n\n**2. How does it work internally?**\n\n1. Estimate **selectivity**: what fraction of rows match (from statistics: histograms, distinct counts).\n2. Index cost ≈ tree descent + one **random** page read per matching row (worse if rows are scattered).\n3. Scan cost ≈ number of pages × **sequential** read cost (cheap per page, read-ahead helps).\n4. Compare; few matching rows → index seek; a large share (often roughly 5–20%, depends on data) → full scan.\n\n**3. Visual**\n\n```mermaid\nflowchart TD\n  Q[\"WHERE status = ?\"] --> ST[\"Statistics:<br/>status = 'NEW' → 0.1% of rows<br/>status = 'DONE' → 90% of rows\"]\n  ST --> D{Estimated rows}\n  D -- \"few (0.1%)\" --> IS[\"Index seek<br/>few random reads\"]\n  D -- \"many (90%)\" --> TS[\"Table scan<br/>sequential reads\"]\n```\n\n**4. Internal implementation**\n\n- PostgreSQL cost constants: `seq_page_cost = 1`, `random_page_cost = 4` (often lowered to ~1.1 on SSDs), `cpu_tuple_cost`.\n- **Bitmap index scan** (PostgreSQL) is a middle path: collect matching row locations, sort them by page, then read pages in order.\n- **Correlation** matters: if the table is physically ordered like the index, index range reads are nearly sequential.\n\n**5. Why is it designed this way?**\nRandom reads cost more than sequential reads (especially on HDDs). Reading 90% of rows through an index means jumping around for almost every row — slower than just reading the whole table once.\n\n**6. Database differences**\nAll cost-based optimizers do this (MySQL, PostgreSQL, SQL Server, Oracle). Wrong decisions usually come from **stale statistics** or functions on the column (`WHERE LOWER(email) = ?` can't use a plain index on `email`).\n\n**7. Practical example**\n\n```sql\nEXPLAIN SELECT * FROM orders WHERE status = 'NEW';    -- Index Scan (rare value)\nEXPLAIN SELECT * FROM orders WHERE status = 'DONE';   -- Seq Scan (most rows)\n```\n\n**8. How can I observe it?**\n`EXPLAIN ANALYZE` shows estimated vs actual rows — big differences mean bad statistics; run `ANALYZE orders;` (PostgreSQL) or `ANALYZE TABLE orders;` (MySQL). SQL Server: execution plan \"Index Seek\" vs \"Clustered Index Scan\" and `SET STATISTICS IO ON` (logical reads).",
+      "summary": "Index seek — use the index to jump to matching rows. Table scan — read every page of the table sequentially.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart TD\n  Q[\"WHERE status = ?\"] --> ST[\"Statistics:<br/>status = 'NEW' → 0.1% of rows<br/>status = 'DONE' → 90% of rows\"]\n  ST --> D{Estimated rows}\n  D -- \"few (0.1%)\" --> IS[\"Index seek<br/>few random reads\"]\n  D -- \"many (90%)\" --> TS[\"Table scan<br/>sequential reads\"]"
+        },
+        {
+          "language": "sql",
+          "code": "EXPLAIN SELECT * FROM orders WHERE status = 'NEW';    -- Index Scan (rare value)\nEXPLAIN SELECT * FROM orders WHERE status = 'DONE';   -- Seq Scan (most rows)"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Indexes"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "database",
+        "decide",
+        "index",
+        "seek",
+        "table",
+        "scan",
+        "index seek",
+        "table scan",
+        "optimizer",
+        "not always",
+        "selectivity",
+        "random",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/05-Database-Internals.md",
+        "startLine": 270,
+        "endLine": 318
+      },
+      "contentHash": "6a0ca0116921772e"
+    },
+    {
+      "id": "interview/under-the-hood/05-Database-Internals.md#how-does-the-sql-query-optimizer-select-an-execution-plan",
+      "kind": "question",
+      "parentId": null,
+      "question": "How does the SQL Query Optimizer select an execution plan?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nSQL says **what** you want, not **how** to get it. The **optimizer** turns a query into an **execution plan** (which indexes, which join order, which join algorithm) and picks the plan with the lowest **estimated cost**.\n\n**2. How does it work internally?**\n\n1. **Parse** — SQL text → syntax tree; check tables and columns exist.\n2. **Rewrite** — simplify: expand views, flatten subqueries, push filters down, remove redundant conditions.\n3. **Enumerate plans** — access paths per table (scan, index, bitmap) × join orders × join algorithms.\n4. **Estimate cost** of each using **statistics** (row counts, distinct values, histograms, most-common values) → estimated rows → estimated I/O and CPU.\n5. **Pick the cheapest** and hand it to the executor.\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  SQL[\"SQL text\"] --> P[\"Parser<br/>syntax tree\"]\n  P --> RW[\"Rewriter<br/>views, subqueries, push filters\"]\n  RW --> EN[\"Plan enumeration<br/>access paths × join orders × algorithms\"]\n  STATS[(\"Statistics<br/>histograms, n_distinct\")] --> CE[Cost estimation]\n  EN --> CE --> BEST[\"Cheapest plan\"] --> EX[\"Executor\"]\n```\n\n**4. Internal implementation**\n\n- Join order search uses **dynamic programming** (best plan for each subset of tables); with many tables PostgreSQL switches to a genetic algorithm (GEQO, default from 12 tables).\n- Estimates assume column **independence** by default — correlated columns (city + zip code) cause bad estimates; extended statistics fix that.\n- Plans are cached for **prepared statements** (risk: a plan good for one parameter value is bad for another — \"parameter sniffing\" in SQL Server).\n\n**5. Why is it designed this way?**\nThe number of possible plans grows exponentially; a cost model with statistics finds a good plan quickly without running every option. It is only as good as its statistics.\n\n**6. Database differences**\nPostgreSQL: no query hints (extension `pg_hint_plan` exists). MySQL, SQL Server, Oracle support hints (`USE INDEX`, `OPTION (RECOMPILE)`). Oracle and SQL Server can adapt plans at runtime (adaptive joins).\n\n**7. Practical example**\n\n```sql\nEXPLAIN ANALYZE\nSELECT c.name, COUNT(*) FROM customers c JOIN orders o ON o.customer_id = c.id\nWHERE c.city = 'Pune' GROUP BY c.name;\n```\n\nThe plan shows: filter customers by city first (small), then join orders via `idx_orders_customer` — not the other way round.\n\n**8. How can I observe it?**\nPostgreSQL `EXPLAIN (ANALYZE, BUFFERS)`; MySQL `EXPLAIN FORMAT=TREE` / `EXPLAIN ANALYZE`; SQL Server \"Include Actual Execution Plan\" in SSMS. Visualise PostgreSQL plans at **explain.dalibo.com**.",
+      "summary": "What is it? SQL says what you want, not how to get it. The optimizer turns a query into an execution plan (which indexes, which join order, which join algorithm) and picks the plan with the lowest estimated cost.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  SQL[\"SQL text\"] --> P[\"Parser<br/>syntax tree\"]\n  P --> RW[\"Rewriter<br/>views, subqueries, push filters\"]\n  RW --> EN[\"Plan enumeration<br/>access paths × join orders × algorithms\"]\n  STATS[(\"Statistics<br/>histograms, n_distinct\")] --> CE[Cost estimation]\n  EN --> CE --> BEST[\"Cheapest plan\"] --> EX[\"Executor\"]"
+        },
+        {
+          "language": "sql",
+          "code": "EXPLAIN ANALYZE\nSELECT c.name, COUNT(*) FROM customers c JOIN orders o ON o.customer_id = c.id\nWHERE c.city = 'Pune' GROUP BY c.name;"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Query Processing"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "sql",
+        "query",
+        "optimizer",
+        "select",
+        "execution",
+        "plan",
+        "execution plan",
+        "estimated cost",
+        "parse",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/05-Database-Internals.md",
+        "startLine": 324,
+        "endLine": 373
+      },
+      "contentHash": "33940096306d9d05"
+    },
+    {
+      "id": "interview/under-the-hood/05-Database-Internals.md#how-do-join-operations-work-internally",
+      "kind": "question",
+      "parentId": null,
+      "question": "How do JOIN operations work internally?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nA JOIN combines rows from two inputs where a condition matches (`o.customer_id = c.id`). Internally it is an **operator** in the execution plan that receives rows from two child operators and outputs matched pairs.\n\n**2. How does it work internally?**\n\n1. The optimizer picks a **join order** (which table first) and an **algorithm** for each join: nested loop, hash join or merge join.\n2. The executor runs plans as a tree of operators using the **iterator (Volcano) model**: each operator asks its children for \"next row\".\n3. For a 3-table join, the result of the first join becomes the input of the second.\n4. Filters are applied as early as possible so joins process fewer rows.\n\n**3. Visual**\n\n```mermaid\nflowchart BT\n  C[\"Index Scan customers<br/>WHERE city='Pune'\"] --> J1[\"Hash Join<br/>o.customer_id = c.id\"]\n  O[\"Seq Scan orders\"] --> J1\n  J1 --> J2[\"Nested Loop<br/>oi.order_id = o.id\"]\n  OI[\"Index Scan order_items<br/>(per order)\"] --> J2\n  J2 --> AGG[\"Aggregate: COUNT(*)\"] --> OUT[Result rows]\n```\n\n**4. Internal implementation**\n\n- **INNER JOIN**: output only matches. **LEFT JOIN**: also output unmatched left rows with NULLs (the algorithm tracks which left rows matched).\n- **Semi-join** (`EXISTS`, `IN`): stop at the first match per row. **Anti-join** (`NOT EXISTS`): output rows with no match.\n- Join order matters hugely: joining the smallest filtered sets first keeps intermediate results small.\n\n**5. Why is it designed this way?**\nComposable operators let the database build any query from a few building blocks and stream rows without materialising everything in memory.\n\n**6. Database differences**\nMySQL supported only nested-loop joins until **8.0.18** added hash joins; PostgreSQL, SQL Server and Oracle have all three algorithms. Distributed databases add **broadcast** and **shuffle** joins across nodes.\n\n**7. Practical example**\n\n```sql\nSELECT c.name, o.total\nFROM customers c JOIN orders o ON o.customer_id = c.id\nWHERE c.city = 'Pune';\n```\n\n**8. How can I observe it?**\n`EXPLAIN` shows the operator tree (indentation = parent/child). Look for `Hash Join`, `Nested Loop`, `Merge Join` and the estimated vs actual row counts at each level.",
+      "summary": "What is it? A JOIN combines rows from two inputs where a condition matches (o.customer_id = c.id). Internally it is an operator in the execution plan that receives rows from two child operators and outputs matched pairs.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart BT\n  C[\"Index Scan customers<br/>WHERE city='Pune'\"] --> J1[\"Hash Join<br/>o.customer_id = c.id\"]\n  O[\"Seq Scan orders\"] --> J1\n  J1 --> J2[\"Nested Loop<br/>oi.order_id = o.id\"]\n  OI[\"Index Scan order_items<br/>(per order)\"] --> J2\n  J2 --> AGG[\"Aggregate: COUNT(*)\"] --> OUT[Result rows]"
+        },
+        {
+          "language": "sql",
+          "code": "SELECT c.name, o.total\nFROM customers c JOIN orders o ON o.customer_id = c.id\nWHERE c.city = 'Pune';"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Query Processing"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "join",
+        "operations",
+        "internally",
+        "operator",
+        "join order",
+        "algorithm",
+        "iterator (volcano) model",
+        "visual",
+        "internal implementation",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/05-Database-Internals.md",
+        "startLine": 377,
+        "endLine": 423
+      },
+      "contentHash": "4ee55a4ad193262c"
+    },
+    {
+      "id": "interview/under-the-hood/05-Database-Internals.md#how-do-nested-loop-hash-join-and-merge-join-differ",
+      "kind": "question",
+      "parentId": null,
+      "question": "How do Nested Loop, Hash Join and Merge Join differ?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nThree algorithms for matching rows between two inputs:\n\n| Algorithm | Idea | Best when |\n|---|---|---|\n| **Nested loop** | For each outer row, look up matching inner rows | Outer side is small and inner has an index |\n| **Hash join** | Build a hash table on the smaller input, probe it with the other | Large inputs, equality condition, no useful index |\n| **Merge join** | Walk two **sorted** inputs side by side | Both inputs already sorted (indexes) or large range joins |\n\n**2. How does it work internally?**\n\n- **Nested loop**: `for o in outer: for i in inner where i.key = o.key: emit`. With an index on the inner key, each lookup is a B+ tree descent.\n- **Hash join**: (1) **build**: read the smaller input into a hash table keyed by the join column; (2) **probe**: read the other input, hash each key, look up matches.\n- **Merge join**: both inputs sorted by the key; advance two pointers; equal keys → emit; smaller key → advance that side.\n\n**3. Visual**\n\n```mermaid\nflowchart TB\n  subgraph NL[\"Nested loop\"]\n    N1[\"outer row (customer 42)\"] --> N2[\"index lookup in orders<br/>customer_id = 42\"]\n  end\n  subgraph HJ[\"Hash join\"]\n    H1[\"Build: customers → hash table\"] --> H2[\"Probe: each order → hash(customer_id) → match\"]\n  end\n  subgraph MJ[\"Merge join\"]\n    M1[\"sorted customers: 1, 2, 3 ...\"] --> M3[\"walk both lists together\"]\n    M2[\"sorted orders by customer_id: 1, 1, 3 ...\"] --> M3\n  end\n```\n\n**4. Internal implementation**\n\n- Costs: nested loop ≈ outer rows × lookup cost; hash join ≈ O(N + M) but needs memory (`work_mem` in PostgreSQL, `join_buffer_size` in MySQL) — too big → **spills to disk** in batches; merge join ≈ O(N + M) plus sorting cost if not already sorted.\n- Hash join only works for **equality** (`=`); merge join also handles range-like conditions efficiently with sorted data.\n\n**5. Why is it designed this way?**\nNo single algorithm wins everywhere: nested loop is unbeatable for \"few rows + index\", hash join for big unsorted sets, merge join when order already exists. The optimizer chooses per join using estimated sizes.\n\n**6. Database differences**\nMySQL: nested loop (+ block nested loop) only before 8.0.18; hash join since. PostgreSQL / SQL Server / Oracle: all three. SQL Server also has **adaptive joins** that choose between nested loop and hash at runtime.\n\n**7. Practical example**\n`customers` (10 rows after filter) ⋈ `orders` (10 million, indexed on `customer_id`) → **nested loop** (10 index lookups). Join two 5-million-row tables without indexes → **hash join**.\n\n**8. How can I observe it?**\nPostgreSQL: `SET enable_hashjoin = off;` then `EXPLAIN ANALYZE` again to compare plans and timings (for learning only). `EXPLAIN (ANALYZE, BUFFERS)` shows `Batches: 4` when a hash join spilled to disk.",
+      "summary": "What is it? Three algorithms for matching rows between two inputs:",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart TB\n  subgraph NL[\"Nested loop\"]\n    N1[\"outer row (customer 42)\"] --> N2[\"index lookup in orders<br/>customer_id = 42\"]\n  end\n  subgraph HJ[\"Hash join\"]\n    H1[\"Build: customers → hash table\"] --> H2[\"Probe: each order → hash(customer_id) → match\"]\n  end\n  subgraph MJ[\"Merge join\"]\n    M1[\"sorted customers: 1, 2, 3 ...\"] --> M3[\"walk both lists together\"]\n    M2[\"sorted orders by customer_id: 1, 1, 3 ...\"] --> M3\n  end"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Query Processing"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "nested",
+        "loop",
+        "hash",
+        "join",
+        "merge",
+        "differ",
+        "nested loop",
+        "hash join",
+        "merge join",
+        "sorted",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/05-Database-Internals.md",
+        "startLine": 427,
+        "endLine": 477
+      },
+      "contentHash": "0a366ce2a87f933d"
+    },
+    {
+      "id": "interview/under-the-hood/05-Database-Internals.md#how-does-a-database-manage-concurrent-transactions",
+      "kind": "question",
+      "parentId": null,
+      "question": "How does a database manage concurrent transactions?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nMany transactions run at the same time. The database must make each one behave **as if it ran alone** (to a configurable degree — the **isolation level**) while still running them in parallel.\n\n**2. How does it work internally?**\n\n1. Each transaction gets an **ID** and, depending on isolation level, a **snapshot** of what data it may see.\n2. **Reads** see a consistent version of each row (via **MVCC**) without blocking writers.\n3. **Writes** take **row locks**; a second writer of the same row waits until the first commits or rolls back.\n4. Waiting cycles are detected as **deadlocks**; one transaction is aborted.\n5. At commit, changes become visible to new snapshots.\n\n**3. Visual**\n\n```mermaid\nsequenceDiagram\n  participant T1 as Transaction 1\n  participant DB as Database\n  participant T2 as Transaction 2\n  T1->>DB: UPDATE accounts SET bal=bal-100 WHERE id=1 (locks row 1)\n  T2->>DB: SELECT bal FROM accounts WHERE id=1\n  DB-->>T2: old committed value (MVCC, no waiting)\n  T2->>DB: UPDATE accounts ... WHERE id=1\n  Note over T2: waits for T1's row lock\n  T1->>DB: COMMIT (lock released)\n  DB-->>T2: update proceeds on new value\n```\n\n**4. Internal implementation**\n\n| Isolation level | Prevents | Typical implementation |\n|---|---|---|\n| Read Uncommitted | — | Rarely used |\n| **Read Committed** (PostgreSQL, SQL Server, Oracle default) | Dirty reads | New snapshot per statement |\n| **Repeatable Read** (MySQL InnoDB default) | + non-repeatable reads | One snapshot per transaction (+ gap locks in InnoDB) |\n| Serializable | + phantoms, write skew | PostgreSQL SSI (detects conflicts), InnoDB locking reads |\n\n**5. Why is it designed this way?**\nFull serial execution would be correct but slow. Isolation levels let applications trade strictness for throughput; MVCC removes most reader/writer blocking.\n\n**6. Database differences**\nPostgreSQL Serializable uses **SSI** (optimistic: abort on detected conflict, retry needed). MySQL InnoDB uses **next-key locks** to prevent phantoms in Repeatable Read. SQL Server defaults to locking reads unless `READ_COMMITTED_SNAPSHOT` is enabled.\n\n**7. Practical example**\nTwo users book the last seat: `SELECT ... FOR UPDATE` on the seat row makes the second transaction wait, then see it is taken — no double booking.\n\n**8. How can I observe it?**\nOpen two SQL sessions and run the sequence above by hand. PostgreSQL: `SELECT * FROM pg_locks;`; MySQL: `SHOW ENGINE INNODB STATUS` (latest deadlock), `performance_schema.data_locks`.",
+      "summary": "What is it? Many transactions run at the same time. The database must make each one behave as if it ran alone (to a configurable degree — the isolation level) while still running them in parallel.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "sequenceDiagram\n  participant T1 as Transaction 1\n  participant DB as Database\n  participant T2 as Transaction 2\n  T1->>DB: UPDATE accounts SET bal=bal-100 WHERE id=1 (locks row 1)\n  T2->>DB: SELECT bal FROM accounts WHERE id=1\n  DB-->>T2: old committed value (MVCC, no waiting)\n  T2->>DB: UPDATE accounts ... WHERE id=1\n  Note over T2: waits for T1's row lock\n  T1->>DB: COMMIT (lock released)\n  DB-->>T2: update proceeds on new value"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Transactions, Logging and Recovery"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "database",
+        "manage",
+        "concurrent",
+        "transactions",
+        "as if it ran alone",
+        "isolation level",
+        "id",
+        "snapshot",
+        "reads",
+        "mvcc",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/05-Database-Internals.md",
+        "startLine": 483,
+        "endLine": 533
+      },
+      "contentHash": "8862f4dd653b16d6"
+    },
+    {
+      "id": "interview/under-the-hood/05-Database-Internals.md#how-do-acid-locks-and-mvcc-work-internally",
+      "kind": "question",
+      "parentId": null,
+      "question": "How do ACID, Locks and MVCC work internally?",
+      "prompt": null,
+      "answer": "**1. What is it?**\n\n- **ACID** — guarantees of a transaction: **A**tomicity (all or nothing), **C**onsistency (constraints hold), **I**solation (transactions don't see each other's partial work), **D**urability (committed = survives crashes).\n- **Locks** — stop two transactions changing the same data at once.\n- **MVCC** (Multi-Version Concurrency Control) — keep **several versions** of a row so readers see a consistent snapshot without locking.\n\n**2. How does it work internally?**\n\n| Property | Mechanism |\n|---|---|\n| Atomicity | Undo information to roll back; commit record in the log |\n| Consistency | Constraint checks (PK, FK, CHECK, unique) at statement/commit time |\n| Isolation | MVCC snapshots + row locks |\n| Durability | Write-ahead log flushed to disk (`fsync`) at commit |\n\nMVCC read:\n\n1. Each row version records the transaction that created it (and deleted/replaced it).\n2. A transaction's **snapshot** lists which transactions were committed when it started.\n3. A reader walks the versions and returns the newest one **visible** to its snapshot.\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  subgraph Versions[\"Row id=1 versions\"]\n    V1[\"v1: bal=500<br/>created by tx 90 (committed)\"]\n    V2[\"v2: bal=400<br/>created by tx 105 (not yet committed)\"]\n  end\n  R[\"Reader tx 101<br/>snapshot: tx 105 not visible\"] --> V1\n  W[\"Writer tx 105\"] --> V2\n  V2 -. \"older version\" .-> V1\n```\n\n**4. Internal implementation**\n\n- **PostgreSQL**: an update writes a **new tuple** in the table; the old one gets `xmax` set. Old versions are removed later by **VACUUM**.\n- **InnoDB**: the row is updated **in place**; the old version is copied to the **undo log**, and readers rebuild old versions by following the roll pointer. Purge threads clean up undo.\n- Locks: row locks (shared/exclusive), InnoDB **gap/next-key locks** on index ranges, table-level intention locks.\n\n**5. Why is it designed this way?**\nMVCC gives \"readers never block writers, writers never block readers\", which is ideal for read-heavy apps. Costs: storage for old versions and background cleanup (VACUUM / purge); long-running transactions keep old versions alive and bloat tables.\n\n**6. Database differences**\nPostgreSQL (versions in table), MySQL InnoDB and Oracle (undo segments), SQL Server (optional version store in tempdb). SQLite uses database-level locking (WAL mode allows readers during a write).\n\n**7. Practical example**\n\n```sql\nBEGIN;\nUPDATE accounts SET bal = bal - 100 WHERE id = 1;\nUPDATE accounts SET bal = bal + 100 WHERE id = 2;\nCOMMIT;   -- both or neither; other sessions see old balances until this moment\n```\n\n**8. How can I observe it?**\nPostgreSQL: `SELECT xmin, xmax, * FROM accounts;` before and after an update in another session; `pg_stat_user_tables.n_dead_tup` shows old versions waiting for VACUUM. MySQL: `SHOW ENGINE INNODB STATUS` → \"History list length\" (undo not yet purged).",
+      "summary": "ACID — guarantees of a transaction: Atomicity (all or nothing), Consistency (constraints hold), Isolation (transactions don't see each other's partial work), Durability (committed = survives crashes). Locks — stop two transactions changing the same data at once. MVCC (Multi-Version Concurrency Control) — keep several…",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  subgraph Versions[\"Row id=1 versions\"]\n    V1[\"v1: bal=500<br/>created by tx 90 (committed)\"]\n    V2[\"v2: bal=400<br/>created by tx 105 (not yet committed)\"]\n  end\n  R[\"Reader tx 101<br/>snapshot: tx 105 not visible\"] --> V1\n  W[\"Writer tx 105\"] --> V2\n  V2 -. \"older version\" .-> V1"
+        },
+        {
+          "language": "sql",
+          "code": "BEGIN;\nUPDATE accounts SET bal = bal - 100 WHERE id = 1;\nUPDATE accounts SET bal = bal + 100 WHERE id = 2;\nCOMMIT;   -- both or neither; other sessions see old balances until this moment"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Transactions, Logging and Recovery"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "acid",
+        "locks",
+        "mvcc",
+        "internally",
+        "tomicity (all or nothing)",
+        "onsistency (constraints hold)",
+        "several versions",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/05-Database-Internals.md",
+        "startLine": 537,
+        "endLine": 597
+      },
+      "contentHash": "4b8c8a354eb61c7c"
+    },
+    {
+      "id": "interview/under-the-hood/05-Database-Internals.md#how-does-write-ahead-logging-wal-work",
+      "kind": "question",
+      "parentId": null,
+      "question": "How does Write-Ahead Logging (WAL) work?",
+      "prompt": null,
+      "answer": "**1. What is it?**\n**Write-Ahead Logging**: before a changed data page is written to disk, a **log record** describing the change must be safely on disk first. Commit only waits for the **log**, not the data pages.\n\n**2. How does it work internally?**\n\n1. A transaction changes a row → the page is changed **in memory** (buffer pool) and marked dirty.\n2. A log record (\"page 77, offset 120: bal 500 → 400\") is appended to the **WAL buffer** with an increasing **LSN** (Log Sequence Number).\n3. On `COMMIT`, the WAL is written **sequentially** and `fsync`ed → the commit is durable.\n4. Dirty data pages are written later by background writers and **checkpoints** (in any order, at a convenient time).\n5. A page may be written only after the log up to its LSN is on disk (\"write-ahead\" rule).\n\n**3. Visual**\n\n```mermaid\nsequenceDiagram\n  participant T as Transaction\n  participant BP as Buffer pool (RAM)\n  participant WL as WAL file (disk)\n  participant DF as Data files (disk)\n  T->>BP: UPDATE row (page 77 dirty)\n  T->>WL: append log record (LSN 9001)\n  T->>WL: COMMIT → fsync WAL\n  WL-->>T: commit OK (durable)\n  Note over BP,DF: later: checkpoint / background writer\n  BP->>DF: write page 77\n```\n\n**4. Internal implementation**\n\n- **PostgreSQL**: WAL segment files in `pg_wal/` (16 MB each). **InnoDB**: **redo log** files + the **binlog** (used for replication), coordinated by two-phase commit.\n- **Group commit**: many transactions share one `fsync` → high throughput.\n- **Checkpoints** bound recovery time: after a checkpoint, older WAL isn't needed for crash recovery.\n- The same log feeds **replication** (streaming WAL / binlog to replicas) and point-in-time recovery.\n\n**5. Why is it designed this way?**\nAppending to one log file sequentially is much faster than writing random data pages on every commit. Durability comes from the log; data pages can be written lazily in big batches.\n\n**6. Database differences**\nPostgreSQL WAL, InnoDB redo log (+ binlog), SQL Server transaction log, SQLite WAL mode, Kafka (the whole system is a log). LSM-tree databases (RocksDB, Cassandra) also write a WAL before their in-memory table.\n\n**7. Practical example**\n`synchronous_commit = off` (PostgreSQL) or `innodb_flush_log_at_trx_commit = 2` (MySQL) skip the fsync per commit → faster writes, but the last ~second of commits can be lost on a crash.\n\n**8. How can I observe it?**\nPostgreSQL: `SELECT pg_current_wal_lsn();` before and after an update; `pg_waldump` decodes WAL records. MySQL: `SHOW ENGINE INNODB STATUS` → \"Log sequence number\" and \"Last checkpoint at\".",
+      "summary": "What is it? Write-Ahead Logging: before a changed data page is written to disk, a log record describing the change must be safely on disk first. Commit only waits for the log, not the data pages.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "sequenceDiagram\n  participant T as Transaction\n  participant BP as Buffer pool (RAM)\n  participant WL as WAL file (disk)\n  participant DF as Data files (disk)\n  T->>BP: UPDATE row (page 77 dirty)\n  T->>WL: append log record (LSN 9001)\n  T->>WL: COMMIT → fsync WAL\n  WL-->>T: commit OK (durable)\n  Note over BP,DF: later: checkpoint / background writer\n  BP->>DF: write page 77"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Transactions, Logging and Recovery"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "write-ahead",
+        "logging",
+        "wal",
+        "write-ahead logging",
+        "log record",
+        "log",
+        "in memory",
+        "wal buffer",
+        "lsn",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/05-Database-Internals.md",
+        "startLine": 601,
+        "endLine": 649
+      },
+      "contentHash": "8a01b3cc9b7a6e48"
+    },
+    {
+      "id": "interview/under-the-hood/05-Database-Internals.md#how-does-a-database-recover-after-a-crash",
+      "kind": "question",
+      "parentId": null,
+      "question": "How does a database recover after a crash?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nAfter power loss or a crash, data files may contain some changes from unfinished transactions and miss some changes from committed ones. **Crash recovery** uses the write-ahead log to bring the database back to a correct state: every committed transaction present, every uncommitted one gone.\n\n**2. How does it work internally?**\nClassic **ARIES** approach:\n\n1. **Analysis** — read the log from the last **checkpoint**; find which transactions were active and which pages may be dirty.\n2. **Redo** — replay logged changes onto pages whose on-disk LSN is older than the log record (\"repeat history\"), including uncommitted ones.\n3. **Undo** — roll back transactions that never committed, using undo records.\n4. Open for connections.\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  CR[Crash] --> ST[Restart]\n  ST --> AN[\"Analysis<br/>from last checkpoint\"]\n  AN --> RD[\"Redo<br/>replay WAL into pages\"]\n  RD --> UN[\"Undo<br/>roll back uncommitted tx\"]\n  UN --> OK[\"Consistent database<br/>accepting connections\"]\n```\n\n**4. Internal implementation**\n\n- Each page stores the **LSN** of the last change applied → redo is **idempotent** (skip records already applied).\n- **PostgreSQL** needs only redo: uncommitted rows are simply invisible (their transaction is marked aborted in the commit log), and VACUUM cleans them later.\n- **InnoDB**: redo from the redo log, then rolls back incomplete transactions from the undo log (in the background).\n- **Torn pages** (half-written 16 KB page): PostgreSQL writes **full page images** after each checkpoint; InnoDB uses the **doublewrite buffer**.\n\n**5. Why is it designed this way?**\nLogging every change makes it possible to reconstruct any state without forcing data pages to disk at commit. Frequent checkpoints = faster recovery but more I/O during normal running.\n\n**6. Database differences**\nPostgreSQL: redo-only + commit log. InnoDB, SQL Server, DB2: ARIES-style redo + undo. Redis: AOF replay or RDB snapshot load. SQLite: rollback journal or WAL replay.\n\n**7. Practical example**\nA transfer transaction debited account 1 but crashed before crediting account 2 and before COMMIT → on restart the debit is undone; a fully committed transfer is replayed even if its pages were never written.\n\n**8. How can I observe it?**\nIn a test environment, kill the database process (`kill -9`) during a write load, restart, and read the logs: PostgreSQL logs \"database system was not properly shut down; automatic recovery in progress\" and \"redo starts at …\"; MySQL logs \"Starting crash recovery\".",
+      "summary": "What is it? After power loss or a crash, data files may contain some changes from unfinished transactions and miss some changes from committed ones. Crash recovery uses the write-ahead log to bring the database back to a correct state: every committed transaction present, every uncommitted one gone.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  CR[Crash] --> ST[Restart]\n  ST --> AN[\"Analysis<br/>from last checkpoint\"]\n  AN --> RD[\"Redo<br/>replay WAL into pages\"]\n  RD --> UN[\"Undo<br/>roll back uncommitted tx\"]\n  UN --> OK[\"Consistent database<br/>accepting connections\"]"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood"
+      ],
+      "section": [
+        "Transactions, Logging and Recovery"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "database",
+        "recover",
+        "after",
+        "crash",
+        "crash recovery",
+        "aries",
+        "analysis",
+        "checkpoint",
+        "redo",
+        "undo",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/05-Database-Internals.md",
+        "startLine": 653,
+        "endLine": 696
+      },
+      "contentHash": "8ed8e8c743b78bf4"
+    },
+    {
+      "id": "interview/under-the-hood/05-Database-Internals.md#how-does-database-caching-work",
+      "kind": "question",
+      "parentId": null,
+      "question": "How does Database Caching work?",
+      "prompt": null,
+      "answer": "**1. What is it?**\nDatabases keep recently used **pages** in RAM so most reads never touch the disk. MySQL InnoDB calls it the **buffer pool**; PostgreSQL calls it **shared buffers** (plus the OS page cache).\n\n**2. How does it work internally?**\n\n1. A query needs page 77 → look it up in the buffer pool's **hash table** (page ID → memory frame).\n2. **Hit** → use it from RAM. **Miss** → read it from disk into a free frame (evicting an old page if needed).\n3. Writes change the cached page (dirty) + WAL; dirty pages are flushed later.\n4. An eviction policy decides which page to throw out when memory is full.\n\n**3. Visual**\n\n```mermaid\nflowchart LR\n  Q[Query needs page 77] --> H{\"In buffer pool?\"}\n  H -- \"hit (~100 ns)\" --> R[Use page from RAM]\n  H -- \"miss\" --> EV[\"Evict a cold page<br/>(flush first if dirty)\"] --> RD[\"Read page 77 from disk<br/>(~100 µs SSD)\"] --> R\n```\n\n**4. Internal implementation**\n\n- **InnoDB**: LRU list split into **young** and **old** sublists; new pages enter the old part, so one big table scan doesn't flush out the hot pages. Typical size: 50–75% of RAM (`innodb_buffer_pool_size`).\n- **PostgreSQL**: `shared_buffers` (often ~25% of RAM) with a **clock-sweep** algorithm (usage counters); the OS page cache is a second layer (double buffering).\n- MySQL's old **query cache** (caching whole result sets) was removed in 8.0 — it scaled poorly because any write invalidated it.\n\n**5. Why is it designed this way?**\nRAM is ~1000× faster than SSD for random access, and most workloads touch a small \"hot\" set repeatedly. Page caching is transparent and works for every query.\n\n**6. Database differences**\nApplication-level caches (Redis, Caffeine, Hibernate second-level cache) sit **outside** the database and cache objects/results — faster still, but you must handle invalidation yourself.\n\n**7. Practical example**\nRun the same `SELECT` twice: the first may take 50 ms (disk reads), the second 2 ms (all pages in the buffer pool).\n\n**8. How can I observe it?**\nPostgreSQL: `EXPLAIN (ANALYZE, BUFFERS)` → `shared hit` vs `read`; `pg_buffercache` extension. MySQL: `SHOW GLOBAL STATUS LIKE 'Innodb_buffer_pool_read%';` hit ratio = 1 − reads / read_requests.",
+      "summary": "What is it? Databases keep recently used pages in RAM so most reads never touch the disk. MySQL InnoDB calls it the buffer pool; PostgreSQL calls it shared buffers (plus the OS page cache).",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart LR\n  Q[Query needs page 77] --> H{\"In buffer pool?\"}\n  H -- \"hit (~100 ns)\" --> R[Use page from RAM]\n  H -- \"miss\" --> EV[\"Evict a cold page<br/>(flush first if dirty)\"] --> RD[\"Read page 77 from disk<br/>(~100 µs SSD)\"] --> R"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood",
+        "caching"
+      ],
+      "section": [
+        "Caching and Scaling"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "database",
+        "caching",
+        "pages",
+        "buffer pool",
+        "shared buffers",
+        "hash table",
+        "hit",
+        "miss",
+        "under-the-hood"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/05-Database-Internals.md",
+        "startLine": 702,
+        "endLine": 741
+      },
+      "contentHash": "069c28f0da78293d"
+    },
+    {
+      "id": "interview/under-the-hood/05-Database-Internals.md#how-do-replication-partitioning-and-sharding-work",
+      "kind": "question",
+      "parentId": null,
+      "question": "How do Replication, Partitioning and Sharding work?",
+      "prompt": null,
+      "answer": "**1. What is it?**\n\n- **Replication** — **copies** of the same data on several servers (for read scaling and failover).\n- **Partitioning** — splitting one big table into pieces **inside one database server** (by date, range, list or hash).\n- **Sharding** — splitting data across **several database servers**, each holding a subset.\n\n**2. How does it work internally?**\nReplication:\n\n1. The primary writes changes to its log (PostgreSQL WAL, MySQL binlog).\n2. Replicas stream that log and **replay** it.\n3. **Asynchronous**: primary commits without waiting (replicas may lag, data loss possible on failover). **Synchronous**: commit waits for at least one replica.\n\nPartitioning: the planner uses the partition key in `WHERE` to scan only matching partitions (**partition pruning**); old partitions can be dropped instantly.\n\nSharding: a **shard key** (e.g. `customer_id`) decides the server: `hash(key) % N` or a lookup directory; the application or a proxy routes each query.\n\n**3. Visual**\n\n```mermaid\nflowchart TB\n  subgraph Rep[\"Replication: same data, many copies\"]\n    P[(Primary)] -- \"WAL / binlog stream\" --> R1[(Replica 1)]\n    P --> R2[(Replica 2)]\n  end\n  subgraph Part[\"Partitioning: one server\"]\n    T[orders] --> P1[\"orders_2025\"]\n    T --> P2[\"orders_2026\"]\n  end\n  subgraph Shard[\"Sharding: many servers\"]\n    APP[App / router] -- \"customer 1-1M\" --> S1[(Shard A)]\n    APP -- \"customer 1M-2M\" --> S2[(Shard B)]\n  end\n```\n\n**4. Internal implementation**\n\n- PostgreSQL: physical streaming replication (byte-level WAL) and logical replication (row changes). MySQL: binlog in row format; GTIDs track position.\n- PostgreSQL declarative partitioning: each partition is a real table; MySQL partitions are internal to one table.\n- Resharding moves data between servers; **consistent hashing** reduces how much moves. Tools: Vitess (MySQL), Citus (PostgreSQL); distributed SQL (CockroachDB, YugabyteDB, Spanner) shard automatically.\n\n**5. Why is it designed this way?**\nReplication handles **read** load and availability; partitioning handles **big tables** on one server; sharding handles **write** load and data larger than one machine. Each adds complexity: replica lag, cross-partition queries, cross-shard joins and transactions.\n\n**6. Database differences**\nMongoDB and Cassandra have built-in sharding; classic PostgreSQL/MySQL need extensions or proxies for sharding but have mature replication and partitioning.\n\n**7. Practical example**\n\n```sql\nCREATE TABLE orders (id bigint, created_at date, total numeric) PARTITION BY RANGE (created_at);\nCREATE TABLE orders_2026 PARTITION OF orders FOR VALUES FROM ('2026-01-01') TO ('2027-01-01');\n-- WHERE created_at >= '2026-06-01' scans only orders_2026\n```\n\n**8. How can I observe it?**\nPostgreSQL: `SELECT * FROM pg_stat_replication;` (replica lag); `EXPLAIN` shows pruned partitions. MySQL: `SHOW REPLICA STATUS\\G` → `Seconds_Behind_Source`.",
+      "summary": "Replication — copies of the same data on several servers (for read scaling and failover). Partitioning — splitting one big table into pieces inside one database server (by date, range, list or hash). Sharding — splitting data across several database servers, each holding a subset.",
+      "codeBlocks": [
+        {
+          "language": "mermaid",
+          "code": "flowchart TB\n  subgraph Rep[\"Replication: same data, many copies\"]\n    P[(Primary)] -- \"WAL / binlog stream\" --> R1[(Replica 1)]\n    P --> R2[(Replica 2)]\n  end\n  subgraph Part[\"Partitioning: one server\"]\n    T[orders] --> P1[\"orders_2025\"]\n    T --> P2[\"orders_2026\"]\n  end\n  subgraph Shard[\"Sharding: many servers\"]\n    APP[App / router] -- \"customer 1-1M\" --> S1[(Shard A)]\n    APP -- \"customer 1M-2M\" --> S2[(Shard B)]\n  end"
+        },
+        {
+          "language": "sql",
+          "code": "CREATE TABLE orders (id bigint, created_at date, total numeric) PARTITION BY RANGE (created_at);\nCREATE TABLE orders_2026 PARTITION OF orders FOR VALUES FROM ('2026-01-01') TO ('2027-01-01');\n-- WHERE created_at >= '2026-06-01' scans only orders_2026"
+        }
+      ],
+      "visuals": [],
+      "contentType": "interview",
+      "domain": "under-the-hood",
+      "topics": [
+        "under-the-hood",
+        "caching"
+      ],
+      "section": [
+        "Caching and Scaling"
+      ],
+      "difficulty": null,
+      "keywords": [
+        "replication",
+        "partitioning",
+        "sharding",
+        "copies",
+        "inside one database server",
+        "several database servers",
+        "under-the-hood",
+        "caching"
+      ],
+      "source": {
+        "path": "interview/under-the-hood/05-Database-Internals.md",
+        "startLine": 745,
+        "endLine": 805
+      },
+      "contentHash": "e83d9869fa636552"
+    },
+    {
       "id": "practice/coding/01-javascript-coding.md#move-all-0s-to-the-end-without-changing-the-order-of-other",
       "kind": "question",
       "parentId": null,
@@ -63450,7 +64143,7 @@
       "parentId": null,
       "question": "Caching & Redis study path",
       "prompt": null,
-      "answer": "## Prerequisites\n\n- [System Design](../topics/system-design.md)\n- Overview: [Caching & Redis concepts](../../knowledge/concepts/caching/README.md)\n\n## 1. Caching Basics\n\n1. [What is caching and why use it?](../../interview/architecture/06-Caching-Redis.md)\n2. [What are cache hit, cache miss and hit ratio?](../../interview/architecture/06-Caching-Redis.md)\n3. [What are the caching strategies (cache-aside, write-through, write-behind)?](../../interview/architecture/06-Caching-Redis.md)\n   - [On update, should you update the cache or delete the key?](../../interview/architecture/06-Caching-Redis.md)\n4. [What are cache eviction policies?](../../interview/architecture/06-Caching-Redis.md)\n5. [What is cache invalidation and why is it hard?](../../interview/architecture/06-Caching-Redis.md)\n\n## 2. Cache Problems\n\n1. [What are cache stampede, cache penetration and cache avalanche?](../../interview/architecture/06-Caching-Redis.md)\n2. [Local (in-memory) cache vs distributed cache?](../../interview/architecture/06-Caching-Redis.md)\n\n## 3. Redis\n\n1. [What is Redis and why is it so fast?](../../interview/architecture/06-Caching-Redis.md)\n2. [What data types does Redis support, with examples?](../../interview/architecture/06-Caching-Redis.md)\n3. [How does Redis persistence work (RDB vs AOF)?](../../interview/architecture/06-Caching-Redis.md)\n4. [What are TTL and key expiry in Redis?](../../interview/architecture/06-Caching-Redis.md)\n5. [Is Redis single-threaded?](../../interview/architecture/06-Caching-Redis.md)\n6. [How do Redis replication, Sentinel and Cluster differ?](../../interview/architecture/06-Caching-Redis.md)\n7. [How do you use Redis with Spring Boot?](../../interview/architecture/06-Caching-Redis.md)\n\n## 4. Tricky Questions\n\n1. [Tricky: How do you store user sessions when you have many app servers?](../../interview/architecture/06-Caching-Redis.md)\n2. [Tricky: How do you build a leaderboard for millions of players?](../../interview/architecture/06-Caching-Redis.md)\n3. [Tricky: Redis vs Memcached?](../../interview/architecture/06-Caching-Redis.md)\n4. [Tricky: Can Redis lose data?](../../interview/architecture/06-Caching-Redis.md)\n\n## 5. State, Caching & Data Freshness\n\n1. [Cached data improves performance but users see outdated data. How would you balance this?](../../interview/backend/java/08-Architecture.md)\n2. [When should data be cached on frontend vs backend?](../../interview/backend/java/08-Architecture.md)\n\n## 6. Part 7 — Scalable APIs & Caching\n\n1. [How do you design scalable APIs?](../../interview/frontend/09-Web_Architecture.md)\n2. [How would you explain API idempotency, and can you give an example of where it could go wrong if ignored?](../../interview/frontend/09-Web_Architecture.md)\n3. [How do you implement caching effectively?](../../interview/frontend/09-Web_Architecture.md)\n\n## Practice\n\n1. [You are building a search autocomplete. You must debounce user input, avoid multiple API calls, cache results for 5 minutes, and cancel stale requests. How would you design this in Angular using RxJS?](../../practice/coding/03-angular-coding.md)\n\n## Related roles\n\n[AI Infrastructure / LLMOps Engineer](../roles/ai-infrastructure-llmops-engineer.md) · [Backend Developer](../roles/backend-developer.md)",
+      "answer": "## Prerequisites\n\n- [System Design](../topics/system-design.md)\n- Overview: [Caching & Redis concepts](../../knowledge/concepts/caching/README.md)\n\n## 1. Caching Basics\n\n1. [What is caching and why use it?](../../interview/architecture/06-Caching-Redis.md)\n2. [What are cache hit, cache miss and hit ratio?](../../interview/architecture/06-Caching-Redis.md)\n3. [What are the caching strategies (cache-aside, write-through, write-behind)?](../../interview/architecture/06-Caching-Redis.md)\n   - [On update, should you update the cache or delete the key?](../../interview/architecture/06-Caching-Redis.md)\n4. [What are cache eviction policies?](../../interview/architecture/06-Caching-Redis.md)\n5. [What is cache invalidation and why is it hard?](../../interview/architecture/06-Caching-Redis.md)\n\n## 2. Cache Problems\n\n1. [What are cache stampede, cache penetration and cache avalanche?](../../interview/architecture/06-Caching-Redis.md)\n2. [Local (in-memory) cache vs distributed cache?](../../interview/architecture/06-Caching-Redis.md)\n\n## 3. Redis\n\n1. [What is Redis and why is it so fast?](../../interview/architecture/06-Caching-Redis.md)\n2. [What data types does Redis support, with examples?](../../interview/architecture/06-Caching-Redis.md)\n3. [How does Redis persistence work (RDB vs AOF)?](../../interview/architecture/06-Caching-Redis.md)\n4. [What are TTL and key expiry in Redis?](../../interview/architecture/06-Caching-Redis.md)\n5. [Is Redis single-threaded?](../../interview/architecture/06-Caching-Redis.md)\n6. [How do Redis replication, Sentinel and Cluster differ?](../../interview/architecture/06-Caching-Redis.md)\n7. [How do you use Redis with Spring Boot?](../../interview/architecture/06-Caching-Redis.md)\n\n## 4. Tricky Questions\n\n1. [Tricky: How do you store user sessions when you have many app servers?](../../interview/architecture/06-Caching-Redis.md)\n2. [Tricky: How do you build a leaderboard for millions of players?](../../interview/architecture/06-Caching-Redis.md)\n3. [Tricky: Redis vs Memcached?](../../interview/architecture/06-Caching-Redis.md)\n4. [Tricky: Can Redis lose data?](../../interview/architecture/06-Caching-Redis.md)\n\n## 5. State, Caching & Data Freshness\n\n1. [Cached data improves performance but users see outdated data. How would you balance this?](../../interview/backend/java/08-Architecture.md)\n2. [When should data be cached on frontend vs backend?](../../interview/backend/java/08-Architecture.md)\n\n## 6. Part 7 — Scalable APIs & Caching\n\n1. [How do you design scalable APIs?](../../interview/frontend/09-Web_Architecture.md)\n2. [How would you explain API idempotency, and can you give an example of where it could go wrong if ignored?](../../interview/frontend/09-Web_Architecture.md)\n3. [How do you implement caching effectively?](../../interview/frontend/09-Web_Architecture.md)\n\n## 7. Caching and Scaling\n\n1. [How does Database Caching work?](../../interview/under-the-hood/05-Database-Internals.md)\n2. [How do Replication, Partitioning and Sharding work?](../../interview/under-the-hood/05-Database-Internals.md)\n\n## Practice\n\n1. [You are building a search autocomplete. You must debounce user input, avoid multiple API calls, cache results for 5 minutes, and cancel stale requests. How would you design this in Angular using RxJS?](../../practice/coding/03-angular-coding.md)\n\n## Related roles\n\n[AI Infrastructure / LLMOps Engineer](../roles/ai-infrastructure-llmops-engineer.md) · [Backend Developer](../roles/backend-developer.md)",
       "summary": "",
       "codeBlocks": [],
       "visuals": [],
@@ -63486,9 +64179,9 @@
       "source": {
         "path": "roadmap/topics/caching.md",
         "startLine": 2,
-        "endLine": 58
+        "endLine": 63
       },
-      "contentHash": "cd305d73bb077526"
+      "contentHash": "8d9f7252190559e4"
     },
     {
       "id": "roadmap/topics/css.md#roadmap",
@@ -64551,7 +65244,7 @@
       "parentId": null,
       "question": "Under the Hood study path",
       "prompt": null,
-      "answer": "## Prerequisites\n\n- None. This is a starting point.\n- Overview: [Under the Hood concepts](../../knowledge/concepts/under-the-hood/README.md)\n\n## 1. Source Code to Machine Code\n\n1. [How does human-readable source code eventually become machine instructions?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n2. [What are the differences between Compiler, Interpreter, Assembler, Linker and Runtime?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n3. [What are Bytecode, Intermediate Representation (IR), Assembly Language and Machine Code?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n4. [What are AOT, JIT and interpretation? How do they differ?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n5. [How do JVM, CLR and JavaScript engines execute programs internally?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n6. [How do programming languages interact with the CPU and memory?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n7. [How does frontend code (JavaScript, TypeScript, Dart, WebAssembly) become machine code in the browser?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n8. [How do frontend frameworks (Angular, React, Vue, Svelte, Next.js) get from source code to running in the browser?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n9. [How do different programming languages implement compilation, execution and memory management?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n10. [Do backend frameworks (Spring Boot, Django, Express, ASP.NET Core) compile code themselves?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n\n## 2. CPU and Memory Hierarchy\n\n1. [How does a CPU execute instructions?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n2. [How do CPU registers, L1/L2/L3 cache, RAM and disk interact?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n3. [What exactly is stored in Stack and Heap memory?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n4. [Can the CPU directly access heap memory? How does a program access objects in RAM?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n5. [How does memory allocation and deallocation work?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n6. [How does Garbage Collection identify unused objects?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n\n## 3. Processes, Threads and Scheduling\n\n1. [How do Processes and Threads work internally?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n2. [How does Context Switching happen?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n3. [How does an operating system execute multiple applications simultaneously?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n\n## 4. Virtual Memory\n\n1. [How do Virtual Memory, Paging and Memory Protection work?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n\n## 5. Loading and Rendering a Page\n\n1. [What happens internally when we enter a URL and open a website?](../../interview/under-the-hood/03a-Browser-Internals.md)\n2. [How does a browser convert HTML, CSS and JavaScript into a rendered webpage?](../../interview/under-the-hood/03a-Browser-Internals.md)\n3. [How do DOM, CSSOM, Render Tree, Layout and Paint work together?](../../interview/under-the-hood/03a-Browser-Internals.md)\n\n## 6. JavaScript in the Browser\n\n1. [How does JavaScript execute inside a browser?](../../interview/under-the-hood/03a-Browser-Internals.md)\n2. [How do Call Stack, Event Loop, Microtask Queue and Task Queue work?](../../interview/under-the-hood/03a-Browser-Internals.md)\n3. [How does asynchronous JavaScript execute without blocking the UI?](../../interview/under-the-hood/03a-Browser-Internals.md)\n4. [How does a browser determine which UI elements need updating?](../../interview/under-the-hood/03a-Browser-Internals.md)\n5. [How do Angular, React and Vue detect changes and update the DOM?](../../interview/under-the-hood/03a-Browser-Internals.md)\n\n## 7. Network, Build and Storage\n\n1. [How does a frontend application communicate with a backend?](../../interview/under-the-hood/03a-Browser-Internals.md)\n2. [How do bundlers, Tree Shaking and Code Splitting work?](../../interview/under-the-hood/03a-Browser-Internals.md)\n3. [How do Browser Cache, Cookies, LocalStorage, SessionStorage and IndexedDB work?](../../interview/under-the-hood/03a-Browser-Internals.md)\n4. [How do Browser Tabs and Web Workers work internally?](../../interview/under-the-hood/03a-Browser-Internals.md)\n\n## 8. Angular Internals\n\n1. [How do Angular application bootstrap and compilation work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n2. [How does Angular Dependency Injection work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n3. [How does the Angular component lifecycle work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n4. [How do Angular Change Detection and Signals work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n5. [How do the Angular Router and lazy loading work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n6. [How do Angular HttpClient and HTTP Interceptors work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n\n## 9. React Internals\n\n1. [How do React's Virtual DOM and Reconciliation work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n2. [How does React's Fiber architecture work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n3. [How do React Hooks and component rendering work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n\n## 10. Vue Internals\n\n1. [How does Vue's reactivity system work internally (dependency tracking and Proxies)?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n2. [How do Vue's template compiler and Virtual DOM work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n\n## 11. Servers, Localhost and Ports\n\n1. [What exactly is a Server? Is it hardware, software, a process or a computer?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n2. [What is Localhost? How is it different from a physical server or virtual machine?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n3. [How does a server listen for incoming requests using IP addresses and ports?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n4. [What is the difference between Web Server, Application Server and Reverse Proxy?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n\n## 12. Tomcat and Spring Boot\n\n1. [How does Tomcat work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n2. [How is Tomcat different from the computer's localhost?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n3. [How does Spring Boot start its embedded Tomcat server?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n4. [What happens internally when an HTTP request reaches Spring Boot?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n\n## 13. Spring Container and Request Processing\n\n1. [How does Spring Dependency Injection create and manage objects?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n2. [How do Spring AOP, Proxies and @Transactional work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n3. [How does a backend application manage concurrent requests and threads?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n4. [How does Connection Pooling work?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n5. [How do Authentication and Authorization work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n6. [How do Exception Handling, Retries and Timeouts work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n\n## Diagrams\n\n- [Frontend programming languages: source to machine code](../../knowledge/visual-notes/01_frontend_programming_languages.png)\n- [Frontend frameworks and libraries: build and execution path](../../knowledge/visual-notes/02_frontend_frameworks.png)\n- [Backend programming languages: source, artifact, runtime and execution](../../knowledge/visual-notes/03_backend_programming_languages.png)\n- [Backend frameworks and platforms: source, compiler and runtime](../../knowledge/visual-notes/04_backend_frameworks.png)\n\n## Related roles\n\n[Platform Engineer](../roles/platform-engineer.md)",
+      "answer": "## Prerequisites\n\n- None. This is a starting point.\n- Overview: [Under the Hood concepts](../../knowledge/concepts/under-the-hood/README.md)\n\n## 1. Source Code to Machine Code\n\n1. [How does human-readable source code eventually become machine instructions?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n2. [What are the differences between Compiler, Interpreter, Assembler, Linker and Runtime?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n3. [What are Bytecode, Intermediate Representation (IR), Assembly Language and Machine Code?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n4. [What are AOT, JIT and interpretation? How do they differ?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n5. [How do JVM, CLR and JavaScript engines execute programs internally?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n6. [How do programming languages interact with the CPU and memory?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n7. [How does frontend code (JavaScript, TypeScript, Dart, WebAssembly) become machine code in the browser?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n8. [How do frontend frameworks (Angular, React, Vue, Svelte, Next.js) get from source code to running in the browser?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n9. [How do different programming languages implement compilation, execution and memory management?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n10. [Do backend frameworks (Spring Boot, Django, Express, ASP.NET Core) compile code themselves?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)\n\n## 2. CPU and Memory Hierarchy\n\n1. [How does a CPU execute instructions?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n2. [How do CPU registers, L1/L2/L3 cache, RAM and disk interact?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n3. [What exactly is stored in Stack and Heap memory?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n4. [Can the CPU directly access heap memory? How does a program access objects in RAM?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n5. [How does memory allocation and deallocation work?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n6. [How does Garbage Collection identify unused objects?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n\n## 3. Processes, Threads and Scheduling\n\n1. [How do Processes and Threads work internally?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n2. [How does Context Switching happen?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n3. [How does an operating system execute multiple applications simultaneously?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n\n## 4. Virtual Memory\n\n1. [How do Virtual Memory, Paging and Memory Protection work?](../../interview/under-the-hood/02-OS-CPU-Memory.md)\n\n## 5. Loading and Rendering a Page\n\n1. [What happens internally when we enter a URL and open a website?](../../interview/under-the-hood/03a-Browser-Internals.md)\n2. [How does a browser convert HTML, CSS and JavaScript into a rendered webpage?](../../interview/under-the-hood/03a-Browser-Internals.md)\n3. [How do DOM, CSSOM, Render Tree, Layout and Paint work together?](../../interview/under-the-hood/03a-Browser-Internals.md)\n\n## 6. JavaScript in the Browser\n\n1. [How does JavaScript execute inside a browser?](../../interview/under-the-hood/03a-Browser-Internals.md)\n2. [How do Call Stack, Event Loop, Microtask Queue and Task Queue work?](../../interview/under-the-hood/03a-Browser-Internals.md)\n3. [How does asynchronous JavaScript execute without blocking the UI?](../../interview/under-the-hood/03a-Browser-Internals.md)\n4. [How does a browser determine which UI elements need updating?](../../interview/under-the-hood/03a-Browser-Internals.md)\n5. [How do Angular, React and Vue detect changes and update the DOM?](../../interview/under-the-hood/03a-Browser-Internals.md)\n\n## 7. Network, Build and Storage\n\n1. [How does a frontend application communicate with a backend?](../../interview/under-the-hood/03a-Browser-Internals.md)\n2. [How do bundlers, Tree Shaking and Code Splitting work?](../../interview/under-the-hood/03a-Browser-Internals.md)\n3. [How do Browser Cache, Cookies, LocalStorage, SessionStorage and IndexedDB work?](../../interview/under-the-hood/03a-Browser-Internals.md)\n4. [How do Browser Tabs and Web Workers work internally?](../../interview/under-the-hood/03a-Browser-Internals.md)\n\n## 8. Angular Internals\n\n1. [How do Angular application bootstrap and compilation work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n2. [How does Angular Dependency Injection work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n3. [How does the Angular component lifecycle work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n4. [How do Angular Change Detection and Signals work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n5. [How do the Angular Router and lazy loading work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n6. [How do Angular HttpClient and HTTP Interceptors work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n\n## 9. React Internals\n\n1. [How do React's Virtual DOM and Reconciliation work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n2. [How does React's Fiber architecture work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n3. [How do React Hooks and component rendering work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n\n## 10. Vue Internals\n\n1. [How does Vue's reactivity system work internally (dependency tracking and Proxies)?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n2. [How do Vue's template compiler and Virtual DOM work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)\n\n## 11. Servers, Localhost and Ports\n\n1. [What exactly is a Server? Is it hardware, software, a process or a computer?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n2. [What is Localhost? How is it different from a physical server or virtual machine?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n3. [How does a server listen for incoming requests using IP addresses and ports?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n4. [What is the difference between Web Server, Application Server and Reverse Proxy?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n\n## 12. Tomcat and Spring Boot\n\n1. [How does Tomcat work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n2. [How is Tomcat different from the computer's localhost?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n3. [How does Spring Boot start its embedded Tomcat server?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n4. [What happens internally when an HTTP request reaches Spring Boot?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n\n## 13. Spring Container and Request Processing\n\n1. [How does Spring Dependency Injection create and manage objects?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n2. [How do Spring AOP, Proxies and @Transactional work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n3. [How does a backend application manage concurrent requests and threads?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n4. [How does Connection Pooling work?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n5. [How do Authentication and Authorization work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n6. [How do Exception Handling, Retries and Timeouts work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)\n\n## 14. Storage on Disk\n\n1. [How does a database physically store records on disk?](../../interview/under-the-hood/05-Database-Internals.md)\n2. [What are Database Pages, Blocks and Rows?](../../interview/under-the-hood/05-Database-Internals.md)\n\n## 15. Indexes\n\n1. [How does Database Indexing work internally?](../../interview/under-the-hood/05-Database-Internals.md)\n2. [How do B-Tree and B+ Tree work? Why are B+ Trees commonly used?](../../interview/under-the-hood/05-Database-Internals.md)\n3. [How do Clustered, Non-Clustered and Composite Indexes work?](../../interview/under-the-hood/05-Database-Internals.md)\n4. [How does a database decide between Index Seek and Table Scan?](../../interview/under-the-hood/05-Database-Internals.md)\n\n## 16. Query Processing\n\n1. [How does the SQL Query Optimizer select an execution plan?](../../interview/under-the-hood/05-Database-Internals.md)\n2. [How do JOIN operations work internally?](../../interview/under-the-hood/05-Database-Internals.md)\n3. [How do Nested Loop, Hash Join and Merge Join differ?](../../interview/under-the-hood/05-Database-Internals.md)\n\n## 17. Transactions, Logging and Recovery\n\n1. [How does a database manage concurrent transactions?](../../interview/under-the-hood/05-Database-Internals.md)\n2. [How do ACID, Locks and MVCC work internally?](../../interview/under-the-hood/05-Database-Internals.md)\n3. [How does Write-Ahead Logging (WAL) work?](../../interview/under-the-hood/05-Database-Internals.md)\n4. [How does a database recover after a crash?](../../interview/under-the-hood/05-Database-Internals.md)\n\n## 18. Caching and Scaling\n\n1. [How does Database Caching work?](../../interview/under-the-hood/05-Database-Internals.md)\n2. [How do Replication, Partitioning and Sharding work?](../../interview/under-the-hood/05-Database-Internals.md)\n\n## Diagrams\n\n- [Frontend programming languages: source to machine code](../../knowledge/visual-notes/01_frontend_programming_languages.png)\n- [Frontend frameworks and libraries: build and execution path](../../knowledge/visual-notes/02_frontend_frameworks.png)\n- [Backend programming languages: source, artifact, runtime and execution](../../knowledge/visual-notes/03_backend_programming_languages.png)\n- [Backend frameworks and platforms: source, compiler and runtime](../../knowledge/visual-notes/04_backend_frameworks.png)\n\n## Related roles\n\n[Platform Engineer](../roles/platform-engineer.md)",
       "summary": "",
       "codeBlocks": [],
       "visuals": [],
@@ -64585,9 +65278,9 @@
       "source": {
         "path": "roadmap/topics/under-the-hood.md",
         "startLine": 2,
-        "endLine": 115
+        "endLine": 145
       },
-      "contentHash": "87e3f2fa347d26d0"
+      "contentHash": "f1bc3fa84630606b"
     },
     {
       "id": "roadmap/topics/web-architecture.md#roadmap",

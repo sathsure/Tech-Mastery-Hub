@@ -48,6 +48,11 @@
 2. [How would you explain API idempotency, and can you give an example of where it could go wrong if ignored?](../../interview/frontend/09-Web_Architecture.md)
 3. [How do you implement caching effectively?](../../interview/frontend/09-Web_Architecture.md)
 
+## 7. Caching and Scaling
+
+1. [How does Database Caching work?](../../interview/under-the-hood/05-Database-Internals.md)
+2. [How do Replication, Partitioning and Sharding work?](../../interview/under-the-hood/05-Database-Internals.md)
+
 ## Practice
 
 1. [You are building a search autocomplete. You must debounce user input, avoid multiple API calls, cache results for 5 minutes, and cancel stale requests. How would you design this in Angular using RxJS?](../../practice/coding/03-angular-coding.md)

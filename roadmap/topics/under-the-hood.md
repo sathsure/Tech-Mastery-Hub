@@ -102,6 +102,36 @@
 5. [How do Authentication and Authorization work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
 6. [How do Exception Handling, Retries and Timeouts work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
 
+## 14. Storage on Disk
+
+1. [How does a database physically store records on disk?](../../interview/under-the-hood/05-Database-Internals.md)
+2. [What are Database Pages, Blocks and Rows?](../../interview/under-the-hood/05-Database-Internals.md)
+
+## 15. Indexes
+
+1. [How does Database Indexing work internally?](../../interview/under-the-hood/05-Database-Internals.md)
+2. [How do B-Tree and B+ Tree work? Why are B+ Trees commonly used?](../../interview/under-the-hood/05-Database-Internals.md)
+3. [How do Clustered, Non-Clustered and Composite Indexes work?](../../interview/under-the-hood/05-Database-Internals.md)
+4. [How does a database decide between Index Seek and Table Scan?](../../interview/under-the-hood/05-Database-Internals.md)
+
+## 16. Query Processing
+
+1. [How does the SQL Query Optimizer select an execution plan?](../../interview/under-the-hood/05-Database-Internals.md)
+2. [How do JOIN operations work internally?](../../interview/under-the-hood/05-Database-Internals.md)
+3. [How do Nested Loop, Hash Join and Merge Join differ?](../../interview/under-the-hood/05-Database-Internals.md)
+
+## 17. Transactions, Logging and Recovery
+
+1. [How does a database manage concurrent transactions?](../../interview/under-the-hood/05-Database-Internals.md)
+2. [How do ACID, Locks and MVCC work internally?](../../interview/under-the-hood/05-Database-Internals.md)
+3. [How does Write-Ahead Logging (WAL) work?](../../interview/under-the-hood/05-Database-Internals.md)
+4. [How does a database recover after a crash?](../../interview/under-the-hood/05-Database-Internals.md)
+
+## 18. Caching and Scaling
+
+1. [How does Database Caching work?](../../interview/under-the-hood/05-Database-Internals.md)
+2. [How do Replication, Partitioning and Sharding work?](../../interview/under-the-hood/05-Database-Internals.md)
+
 ## Diagrams
 
 - [Frontend programming languages: source to machine code](../../knowledge/visual-notes/01_frontend_programming_languages.png)
