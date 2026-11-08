@@ -1,86 +1,117 @@
-❓ 1. What is Largest Contentful Paint (LCP)?
+# ⚡ Web Vitals & Frontend Performance
+
+### ❓ What are Core Web Vitals?
 
 ### 📝 Answer
 
-LCP measures how long it takes for the **largest visible content** (image, video, block of text) in the viewport to render. Good LCP ≤ **2.5s**.
+Three numbers Google uses to measure **real user experience** (and as a search ranking signal):
 
-💻 **Code Example**
+| Metric | Measures | Good | Poor |
+|---|---|---|---|
+| **LCP** — Largest Contentful Paint | **Loading:** when the main content appears | ≤ 2.5 s | > 4 s |
+| **INP** — Interaction to Next Paint | **Responsiveness:** delay after a click/tap/key until the screen updates | ≤ 200 ms | > 500 ms |
+| **CLS** — Cumulative Layout Shift | **Visual stability:** how much the page jumps around | ≤ 0.1 | > 0.25 |
 
-(prioritize above-the-fold image)
+A page "passes" when **75% of real visits** are in the good range.
+
+**Measure them:** Chrome DevTools / Lighthouse (lab), PageSpeed Insights and Search Console (real users), or the `web-vitals` JS library in your own analytics.
+
+#### ↳ Follow-up: What happened to FID?
+
+↪ INP replaced FID (First Input Delay) in March 2024. FID only measured the first interaction's delay; INP looks at all interactions and the full time until the screen updates.
+
+---
+
+### ❓ What is Largest Contentful Paint (LCP) and how do you improve it?
+
+### 📝 Answer
+
+LCP is when the **largest visible element** (usually the hero image or main heading) finishes rendering. Good: **≤ 2.5 s**.
+
+**Improve it:**
+
+- Load the hero image **early and first**: `fetchpriority="high"`, never `loading="lazy"` on it.
+- Make it **small**: right size, WebP/AVIF, served from a CDN.
+- Reduce **render-blocking** CSS/JS in the `<head>`.
+- Speed up the server response (caching, CDN, SSR/static HTML).
 
 ```html
-<!-- Use proper size + preload hero image -->
-<link rel="preload" as="image" href="/img/hero.jpg" />
+<link rel="preload" as="image" href="/img/hero.jpg" fetchpriority="high" />
 
-<img
-  src="/img/hero.jpg"
-  width="1200"
-  height="600"
-  loading="eager"
-  fetchpriority="high"
-  alt="Hero"
-/>
+<img src="/img/hero.jpg" width="1200" height="600"
+     fetchpriority="high" alt="Hero" />   <!-- no loading="lazy" on the LCP image -->
 ```
 
 ---
 
-❓ 2. How to reduce CLS?
+### ❓ How to reduce CLS?
 
 ### 📝 Answer
 
-CLS (Cumulative Layout Shift) is reduced by **reserving space** for elements (images, ads, fonts) so layout doesn’t jump while loading.
+CLS (Cumulative Layout Shift) grows when content **moves after it appears** — e.g. an image loads and pushes text down while you're reading or about to tap. Fix it by **reserving space** before things load.
 
-💻 **Code Example**
-
-(reserve space for image + avoid layout shift)
+- Give images and videos `width` + `height` (or `aspect-ratio`).
+- Reserve space for ads, embeds and banners (`min-height`).
+- Don't insert content **above** existing content — show toasts and banners as overlays.
+- Load fonts with `font-display: swap` plus a similar fallback font (or `size-adjust`) so text doesn't jump.
 
 ```html
-<!-- Set width/height OR aspect-ratio -->
-<img
-  src="/banner.jpg"
-  alt="Banner"
-  style="width: 100%; aspect-ratio: 16/9; object-fit: cover;"
-/>
+<img src="/banner.jpg" alt="Banner"
+     style="width: 100%; aspect-ratio: 16 / 9; object-fit: cover;" />
 
-<!-- Avoid inserting DOM above existing content dynamically -->
-<div id="toast-container"></div>
-<script>
-  function showToast(msg) {
-    const el = document.createElement("div");
-    el.textContent = msg;
-    document.getElementById("toast-container").appendChild(el);
-  }
-</script>
+<!-- Toasts float above the page instead of pushing it down -->
+<div id="toast-container" style="position: fixed; bottom: 16px; right: 16px;"></div>
 ```
+
+> 💡 Changes within 500 ms after a user's click don't count — expected movement (opening an accordion) is fine.
 
 ---
 
-❓ 3. How to reduce JS main-thread blocking time?
+### ❓ What is INP and how do you improve it?
 
 ### 📝 Answer
 
-Split and defer heavy JS: **code-splitting, async/defer scripts, web workers, and fewer big sync tasks** on the main thread.
+INP (Interaction to Next Paint) is the time from a user's **click, tap or key press** until the browser **paints the result**. Good: **≤ 200 ms**. It's slow when the **main thread is busy** with JavaScript.
 
-💻 **Code Example**
+**Improve it:**
 
-(move heavy work to Web Worker)
+- Break long tasks (> 50 ms) into smaller pieces and **yield** to the browser.
+- Update the UI first, do heavy work after (or in a Web Worker).
+- Debounce expensive handlers (search as you type).
+- Avoid huge DOM updates; virtualise long lists.
 
 ```js
-// worker.js
-self.onmessage = (e) => {
-  const result = heavyComputation(e.data);
-  self.postMessage(result);
-};
+button.addEventListener("click", async () => {
+  showSpinner();                                   // 1. quick visual feedback
+  await new Promise(r => setTimeout(r, 0));        // 2. let the browser paint it
+  doHeavyWork();                                   // 3. then the slow part
+});
+```
+
+Newer browsers also offer `await scheduler.yield()` for step 2.
+
+---
+
+### ❓ How to reduce JS main-thread blocking time?
+
+### 📝 Answer
+
+The browser's main thread does JavaScript **and** layout **and** painting. Long JS tasks freeze the page. Ways to reduce them:
+
+- **Ship less JS:** code-splitting, tree-shaking, remove unused libraries.
+- **Don't block parsing:** `defer` or `async` on scripts.
+- **Move heavy work off the main thread** with a Web Worker.
+- **Split long tasks** and yield between chunks (see INP).
+
+```js
+// worker.js — runs on a separate thread
+self.onmessage = (e) => self.postMessage(heavyComputation(e.data));
 
 // main.js
 const worker = new Worker("/worker.js");
-worker.postMessage({ count: 1000000 });
-worker.onmessage = (e) => {
-  console.log("Result from worker:", e.data);
-};
+worker.postMessage({ count: 1_000_000 });
+worker.onmessage = (e) => console.log("Result from worker:", e.data);
 ```
-
-And load non-critical script without blocking:
 
 ```html
 <script src="/non-critical.js" defer></script>
@@ -88,98 +119,86 @@ And load non-critical script without blocking:
 
 ---
 
-❓ 4. How to implement image optimization?
+### ❓ How to implement image optimization?
 
 ### 📝 Answer
 
-Serve **properly sized, compressed, next-gen** images (WebP/AVIF), use **responsive `<img srcset>`**, lazy-load below-the-fold images, and use CDNs.
+Send the **smallest image that still looks right**:
 
-💻 **Code Example**
-
-(responsive + modern formats)
+- **Modern formats:** AVIF / WebP (often 30–50% smaller than JPEG).
+- **Right size per screen:** `srcset` + `sizes`, so phones don't download desktop images.
+- **Lazy-load** images below the fold (`loading="lazy"`) — but never the LCP image.
+- Always set `width`/`height` (prevents CLS) and serve from a **CDN**.
 
 ```html
 <picture>
-  <source srcset="/img/hero.avif" type="image/avif" />
-  <source srcset="/img/hero.webp" type="image/webp" />
+  <source srcset="/img/photo.avif" type="image/avif" />
+  <source srcset="/img/photo.webp" type="image/webp" />
   <img
-    src="/img/hero.jpg"
-    srcset="
-      /img/hero-480.jpg   480w,
-      /img/hero-768.jpg   768w,
-      /img/hero-1200.jpg 1200w
-    "
+    src="/img/photo.jpg"
+    srcset="/img/photo-480.jpg 480w, /img/photo-768.jpg 768w, /img/photo-1200.jpg 1200w"
     sizes="(max-width: 768px) 100vw, 1200px"
+    width="1200" height="800"
     loading="lazy"
-    alt="Hero"
+    alt="Product photo"
   />
 </picture>
 ```
 
+The browser picks the first format it supports, and the best width for the screen.
+
 ---
 
-❓ 5. Server-side rendering vs client-side rendering performance.
+### ❓ Server-side rendering vs client-side rendering performance.
 
 ### 📝 Answer
 
-- **SSR:** HTML is rendered on the server → **faster first paint/TTFB**, better SEO, but more server load and possible slower navigation if not hydrated well.
-- **CSR:** Browser receives a shell + JS, then renders → usually **slower first paint**, but can be very fast after initial load.
+| | SSR (server-side rendering) | CSR (client-side rendering) |
+|---|---|---|
+| What the browser gets | Ready HTML | An almost empty page + a JS bundle |
+| First content visible (FCP/LCP) | **Faster** | Slower — waits for JS to download and run |
+| Server response time (TTFB) | Slower (the server renders each page) | Faster (static files) |
+| SEO | Better — content is in the HTML | Weaker unless pre-rendered |
+| Interactivity | After **hydration** (JS attaches to the HTML) | After the app boots |
+| Later navigation | Fast once hydrated | Fast |
+| Server cost | Higher | Lower (CDN only) |
 
-💻 **Code Example**
+Middle grounds: **static site generation** (pre-render at build time), **streaming SSR**, and frameworks with partial hydration (Next.js, Angular SSR, Astro).
 
-(very simplified Node SSR)
-
-```js
-// Node + Express example
-import express from "express";
-import { renderToString } from "react-dom/server";
-import App from "./App.js";
-
-const app = express();
-
+```jsx
+// Very simplified React SSR with Express
 app.get("*", (req, res) => {
-  const html = renderToString(<App />);
-  res.send(`
-    <!DOCTYPE html>
-    <html>
-      <head><title>SSR</title></head>
-      <body>
-        <div id="root">${html}</div>
-        <script src="/client.bundle.js" defer></script>
-      </body>
-    </html>
-  `);
+  const html = renderToString(<App url={req.url} />);
+  res.send(`<!DOCTYPE html><html><body>
+      <div id="root">${html}</div>
+      <script src="/client.bundle.js" defer></script>   <!-- hydrates the HTML -->
+    </body></html>`);
 });
-
-app.listen(3000);
 ```
 
 ---
 
-❓ 6. Lazy loading non-critical JS.
+### ❓ Lazy loading non-critical JS.
 
 ### 📝 Answer
 
-Load non-essential JS **on demand** (after user interaction, viewport visibility, or idle time) using **dynamic import** or script injection.
-
-💻 **Code Example**
-
-(dynamic import on interaction)
+Don't download code until it's needed: on **user action**, when it **scrolls into view**, or when the browser is **idle**. Use dynamic `import()`, which bundlers turn into a separate chunk.
 
 ```html
 <button id="open-chat">Open Chat</button>
 
-<script>
+<script type="module">
+  // Load the chat widget only when someone clicks
   document.getElementById("open-chat").addEventListener("click", async () => {
     const { initChatWidget } = await import("./chat-widget.js");
     initChatWidget();
   });
 
-  // Or load when browser is idle
+  // Load analytics when the browser has nothing else to do
   if ("requestIdleCallback" in window) {
-    requestIdleCallback(async () => {
-      await import("./analytics.js");
-    });
+    requestIdleCallback(() => import("./analytics.js"));
   }
 </script>
 ```
+
+In frameworks: React `lazy()` + `Suspense`, Angular `loadComponent` / `@defer` blocks.

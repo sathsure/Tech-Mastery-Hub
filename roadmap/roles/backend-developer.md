@@ -12,6 +12,7 @@ Builds server-side logic, APIs and database access.
 - [HTML](../topics/html.md)
 - [Java](../topics/java.md)
 - [REST API](../topics/rest-api.md)
+- [Testing](../topics/testing.md)
 
 ## Learning stages
 
@@ -20,20 +21,22 @@ Builds server-side logic, APIs and database access.
 - [ ] [JavaScript](../topics/javascript.md)
 - [ ] [Microservices](../topics/microservices.md)
 - [ ] [Spring Boot](../topics/spring.md)
+- [ ] [System Design](../topics/system-design.md)
 
 ### Stage 2: Frameworks and depth
 
+- [ ] [Caching & Redis](../topics/caching.md)
 - [ ] [Kafka & RabbitMQ](../topics/messaging.md)
 - [ ] [Node.js](../topics/nodejs.md)
 - [ ] [TypeScript](../topics/typescript.md)
 
 ## Also useful
 
-[DevOps](../topics/devops.md)
+[DevOps](../topics/devops.md), [Git](../topics/git.md)
 
 ## Also needed
 
-Python, C#, Go, Django, FastAPI, .NET, NestJS, IntelliJ, Postman, Git, Kafka, Redis
+Python, C#, Go, Django, FastAPI, .NET, NestJS, IntelliJ, Postman, Kafka
 
 ## Where it leads
 

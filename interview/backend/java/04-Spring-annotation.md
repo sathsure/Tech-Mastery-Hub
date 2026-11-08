@@ -45,7 +45,7 @@
 
 | Annotation                     | Where It Is Used                  | Explanation                                                               |
 | ------------------------------ | --------------------------------- | ------------------------------------------------------------------------- |
-| `@Transactional`               | Class / Method level              | Manages DB transactions (commit on success, rollback on exception).       |
+| `@Transactional`               | Class / Method level              | Manages DB transactions: commit on success, rollback on **unchecked** exceptions (checked ones commit unless `rollbackFor` is set). |
 | `@EnableTransactionManagement` | Class level (Configuration class) | Enables Spring’s annotation-driven transaction management.                |
 | `@Aspect`                      | Class level                       | Marks a class as an Aspect (contains cross-cutting logic).                |
 | `@EnableAspectJAutoProxy`      | Class level (Configuration class) | Enables AOP proxy support in Spring.                                      |

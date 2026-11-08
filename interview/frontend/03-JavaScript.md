@@ -224,7 +224,11 @@ obj.arrow();    // undefined
 
 - Arrow functions **don't have their own `this`**
 - They **inherit** `this` from their **lexical (outer) scope**
-- Here, the outer scope is the global/module scope → `this.value` is `undefined`
+- Here, the outer scope is the top level of the file, not `obj` → `this` is **not** `obj`:
+  - classic browser script: `this` is `window` → `this.value` is `undefined`
+  - **ES module** (`type="module"`, `.mjs`): `this` is `undefined` → `obj.arrow()` **throws a TypeError**
+
+> ⚠️ An object literal `{ ... }` does **not** create a scope for `this` — that's why arrow functions make poor object methods.
 
 > 💡 **Rule of thumb**:
 > - Use **normal functions** for object methods that need `this`
@@ -263,7 +267,7 @@ let x = 20;
 | Function Declaration          | ✅ Fully (definition included)                  | The function  |
 | `var` variable                | ✅ Declaration only                             | `undefined`   |
 | `let` / `const` variable      | ✅ Declaration only — but in TDZ                | Inaccessible (throws) |
-| Function Expression (`var fn = function() {}`) | ✅ Var hoisted as `undefined` | `undefined`   |
+| Function Expression (`var fn = function() {}`) | ✅ Var hoisted as `undefined` | `undefined` — calling `fn()` early throws `TypeError: fn is not a function` |
 | Arrow Function (`const fn = () => {}`) | ✅ Declaration in TDZ                  | Inaccessible  |
 | `class`                       | ✅ Hoisted but in TDZ                           | Inaccessible  |
 
@@ -476,7 +480,7 @@ setTimeout-0ms
 2. Microtasks drain in order they were queued: `promise-then`, `queueMicrotask`, `asyncFn-after-await`
 3. Then macrotasks: `setTimeout-0ms`
 
-> 💡 **Node.js extras**: `process.nextTick` runs BEFORE other microtasks. `setImmediate` runs AFTER `setTimeout(0)` in the next event loop iteration.
+> 💡 **Node.js extras**: `process.nextTick` runs BEFORE other microtasks. `setImmediate` vs `setTimeout(0)` from the main script can run in **either order** (it depends on timing); inside an I/O callback, `setImmediate` always runs first.
 
 ---
 
@@ -669,7 +673,9 @@ Array.prototype.myReduce = function (callback, initialValue) {
   let acc = initialValue;
   let startIndex = 0;
 
-  if (acc === undefined) {
+  // Check how many arguments were passed, not whether initialValue is undefined:
+  // [1, 2].reduce(fn, undefined) is a valid call with an explicit start value.
+  if (arguments.length < 2) {
     if (this.length === 0) throw new TypeError("Reduce of empty array with no initial value");
     acc = this[0];
     startIndex = 1;
@@ -845,16 +851,17 @@ const shallow2 = Object.assign({}, original);
 shallow1.b.c = 99;
 console.log(original.b.c);           // 99 ❌ inner object shared!
 
-// DEEP copy
-const deep = structuredClone(original);   // ✅ Modern (built-in)
+// DEEP copy (start from a fresh object)
+const source = { a: 1, b: { c: 2 } };
+const deep = structuredClone(source);     // ✅ Modern (built-in)
 deep.b.c = 99;
-console.log(original.b.c);                // 2 ✅ unaffected
+console.log(source.b.c);                  // 2 ✅ unaffected
 
 // Older fallback (loses functions, dates, undefined)
 const deep2 = JSON.parse(JSON.stringify(original));
 ```
 
-> 💡 `structuredClone()` is the modern, native deep-clone. Handles dates, maps, sets, typed arrays, etc.
+> 💡 `structuredClone()` is the modern, native deep-clone. Handles dates, maps, sets, typed arrays and circular references — but throws on functions and DOM nodes, and class instances come back as plain objects.
 
 ---
 
@@ -879,3 +886,201 @@ for (const key in obj) console.log(key, obj[key]);   // x 1, y 2
 > ⚠️ **Avoid `for...in` for arrays** — it includes inherited enumerable props and treats indices as strings.
 
 ---
+
+# 🧩 Part 8 — Must-Know Basics
+
+### ❓ What is the difference between `var`, `let` and `const`?
+
+### 📝 Answer
+
+| | `var` | `let` | `const` |
+|---|---|---|---|
+| Scope | **Function** | **Block** `{ }` | **Block** `{ }` |
+| Re-declare in same scope | ✅ Allowed | ❌ Error | ❌ Error |
+| Re-assign | ✅ | ✅ | ❌ |
+| Before declaration | `undefined` (hoisted) | `ReferenceError` (TDZ) | `ReferenceError` (TDZ) |
+| Creates `window` property at top level | ✅ | ❌ | ❌ |
+
+```js
+if (true) {
+  var a = 1;
+  let b = 2;
+}
+console.log(a);   // 1  — var ignores the block
+console.log(b);   // ReferenceError: b is not defined
+
+const user = { name: "Asha" };
+user.name = "Ravi";   // ✅ allowed — const stops re-assignment, not changes inside the object
+// user = {};         // ❌ TypeError: Assignment to constant variable
+```
+
+> 💡 **Rule:** use `const` by default, `let` when the value must change, and avoid `var`.
+
+---
+
+### ❓ What is the difference between `==` and `===`?
+
+### 📝 Answer
+
+- `===` (**strict**) compares **value and type** — no conversion.
+- `==` (**loose**) **converts** the values to a common type first, then compares.
+
+```js
+5 === "5";          // false — different types
+5 == "5";           // true  — "5" converted to 5
+0 == false;         // true
+"" == 0;            // true
+null == undefined;  // true  (special rule)
+null === undefined; // false
+NaN === NaN;        // false — NaN equals nothing; use Number.isNaN(x)
+```
+
+> 💡 Always use `===`. The one common exception: `x == null` checks for **both** `null` and `undefined`.
+
+---
+
+### ❓ What are event bubbling, capturing and delegation?
+
+### 📝 Answer
+
+When you click an element, the event travels in **three phases**:
+
+```text
+1. Capturing:  window → document → … → parent   (top down)
+2. Target:     the clicked element
+3. Bubbling:   parent → … → document → window   (bottom up)  ← listeners run here by default
+```
+
+```js
+parent.addEventListener("click", () => console.log("parent"));
+child.addEventListener("click", () => console.log("child"));
+// click child → "child", then "parent" (bubbling)
+
+parent.addEventListener("click", () => console.log("parent first"), { capture: true });
+// a capturing listener runs before the child's
+
+child.addEventListener("click", (e) => e.stopPropagation());   // stops it reaching parents
+```
+
+**Event delegation** = one listener on a parent handles events for all its children (even ones added later), using bubbling:
+
+```js
+list.addEventListener("click", (e) => {
+  const item = e.target.closest("li");
+  if (item) console.log("clicked", item.dataset.id);
+});
+```
+
+Fewer listeners, and new `<li>` items work automatically.
+
+---
+
+### ❓ How is the value of `this` decided?
+
+### 📝 Answer
+
+For normal functions, `this` depends on **how the function is called** (checked in this order):
+
+| How it's called | `this` is | Example |
+|---|---|---|
+| With `new` | The new object | `new User()` |
+| With `call` / `apply` / `bind` | The given object | `fn.call(obj)` |
+| As a method `obj.fn()` | The object before the dot | `user.greet()` → `user` |
+| Plain call `fn()` | `undefined` in strict mode / modules; `window` in old sloppy scripts | `const f = user.greet; f()` |
+
+**Arrow functions** ignore all of this — they use `this` from the surrounding code.
+
+```js
+const user = {
+  name: "Asha",
+  greet() { return this.name; },
+};
+user.greet();             // "Asha"
+const g = user.greet;
+g();                      // undefined / TypeError — the method lost its object
+setTimeout(user.greet);   // same problem; fix: setTimeout(() => user.greet()) or user.greet.bind(user)
+```
+
+---
+
+### ❓ How do you handle errors with Promises and async/await?
+
+### 📝 Answer
+
+```js
+// Promises: .catch handles any error in the chain above it
+fetch("/api/user")
+  .then((res) => res.json())
+  .then((user) => show(user))
+  .catch((err) => showError(err))
+  .finally(() => hideSpinner());
+
+// async/await: use try / catch / finally
+async function loadUser() {
+  try {
+    const res = await fetch("/api/user");
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);   // fetch does NOT reject on 404/500!
+    return await res.json();
+  } catch (err) {
+    showError(err);
+  } finally {
+    hideSpinner();
+  }
+}
+```
+
+> ⚠️ **Traps:**
+> - `fetch` only rejects on **network** failure; check `res.ok` for HTTP errors.
+> - A promise with no `.catch` (or an `async` call without `await`/`try`) causes an **unhandled rejection** — in Node.js this crashes the process by default.
+> - `await` in a `for` loop runs requests **one after another**; use `Promise.all` to run them in parallel.
+
+---
+
+### ❓ What is the difference between ES Modules and CommonJS?
+
+### 📝 Answer
+
+| | CommonJS (CJS) | ES Modules (ESM) |
+|---|---|---|
+| Syntax | `const x = require("x")`, `module.exports = ...` | `import x from "x"`, `export default ...` |
+| Loading | Synchronous, at runtime | Static, analysed before running (enables **tree-shaking**) |
+| Where | Node.js (traditional) | Browsers and modern Node.js |
+| Top-level `await` | ❌ | ✅ |
+| `this` at top level | `module.exports` | `undefined` |
+
+Node.js treats `.mjs` files (or `"type": "module"` in `package.json`) as ESM, and `.cjs` as CommonJS. New code should use **ESM**.
+
+---
+
+### ❓ Tricky: What do these print?
+
+### 📝 Answer
+
+```js
+console.log(0.1 + 0.2 === 0.3);     // false — floating point: 0.30000000000000004
+console.log(typeof NaN);            // "number"
+console.log([1, 2, 3] + [4, 5]);    // "1,2,34,5" — arrays become strings, then join
+console.log("5" - 2);               // 3  — minus converts to number
+console.log("5" + 2);               // "52" — plus with a string concatenates
+console.log([10, 1, 2].sort());     // [1, 10, 2] — default sort compares as strings!
+console.log(Math.max());            // -Infinity
+console.log([] + {});               // "[object Object]"
+```
+
+**Fixes to remember:** compare decimals with `Math.abs(a - b) < Number.EPSILON`; sort numbers with `arr.sort((a, b) => a - b)`.
+
+---
+
+### ❓ Tricky: What does this closure-in-a-loop print, and how do you fix it?
+
+### 📝 Answer
+
+```js
+const fns = [];
+for (var i = 0; i < 3; i++) {
+  fns.push(() => i);
+}
+console.log(fns.map((f) => f()));   // [3, 3, 3]
+```
+
+All three functions share **one** `var i`, which is 3 when they run. Fix with `let` (a new `i` per iteration) → `[0, 1, 2]`.

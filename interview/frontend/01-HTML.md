@@ -234,7 +234,7 @@ btn.dataset.action;   // "delete"
 | ------ | ------------ | ---------------- | ---------------- |
 | Normal | **Blocks**   | Immediate        | Yes              |
 | async  | Continues    | When ready (interrupts parsing) | ❌ No |
-| defer  | Continues    | After DOM is parsed (`DOMContentLoaded`) | ✅ Yes |
+| defer  | Continues    | After HTML is fully parsed, just **before** `DOMContentLoaded` | ✅ Yes |
 
 <img src="../../assets/async-defer.png" alt="AsyncDefer Image" width="500" />
 
@@ -308,7 +308,8 @@ Accessibility ensures websites are usable by everyone, including:
 
 ```html
 <button aria-label="Close dialog">X</button>
-<div role="alert" aria-live="polite">Form saved!</div>
+<div role="status">Form saved!</div>          <!-- polite: announced when the reader is idle -->
+<div role="alert">Payment failed</div>       <!-- assertive: announced immediately -->
 ```
 
 **Common ARIA attributes**
@@ -334,11 +335,11 @@ Accessibility ensures websites are usable by everyone, including:
 
 | DOM             | Virtual DOM     |
 | --------------- | --------------- |
-| Browser-managed | JS-managed (React, Vue) |
-| Direct updates  | Batched, diffed updates |
-| Slower for many writes | Faster via reconciliation |
+| The real page tree, managed by the browser | A lightweight copy of the tree as plain JS objects (React, Vue) |
+| You change it directly (`el.textContent = ...`) | You describe the whole UI for the new state; the library works out the changes |
+| Changes can trigger layout and paint | Changes are compared in memory first (**diffing**), then applied as a small set of real DOM updates |
 
-🧠 Virtual DOM minimizes costly DOM operations by computing a minimal diff in memory and applying it in one batch.
+🧠 **The real benefit is convenience, not raw speed:** you write "what the UI should look like" and the library makes the **minimal** DOM changes for you. Hand-written, targeted DOM updates can be just as fast — the virtual DOM adds the cost of diffing — but it keeps large apps simple and fast enough.
 
 > 💡 Modern frameworks like Svelte and Solid skip the Virtual DOM entirely and compile to direct DOM updates — sometimes even faster.
 
@@ -409,7 +410,7 @@ Search engines analyze **HTML structure**, not visuals.
 
 ✅ **Best practices**
 
-- One `<h1>` per page (the page's main topic)
+- A clear `<h1>` for the page's main topic (one is the common convention; Google says several aren't penalised, but one keeps the outline clear)
 - Proper heading hierarchy (`h1 → h2 → h3`, never skip levels)
 - Semantic tags (`<main>`, `<article>`, `<nav>`)
 - Descriptive `<title>` and `<meta name="description">`
@@ -521,7 +522,7 @@ Browser auto-corrects:
 - Element stays in the DOM
 - Removed from layout and accessibility tree
 - JavaScript can still access it
-- No reflow when re-shown
+- Showing it again **does** trigger layout (reflow), because it takes up space again
 
 ```css
 display: none;     /* hidden, not in layout */
@@ -558,8 +559,8 @@ opacity: 0;        /* invisible, takes space, still clickable */
 - Check semantic tags (avoid `<div>` for buttons, links, etc.)
 - Heading hierarchy (`h1 → h2 → h3`, never skip)
 - Misuse of `aria-hidden` or `tabindex="-1"` on important content
-- Hidden content with `display: none` (not announced) vs `visibility: hidden`
-- DOM order should match visual order (avoid `flex-direction: row-reverse` for important content)
+- **CSS changing the visual order** — screen readers follow the **DOM order**, so `order`, `flex-direction: row-reverse`, grid placement or absolute positioning can make what's read differ from what's seen. Fix the DOM order instead.
+- Content hidden with `display: none` or `visibility: hidden` is skipped by screen readers; use a "visually hidden" class if it should be read but not seen
 
 ---
 
@@ -619,11 +620,14 @@ opacity: 0;        /* invisible, takes space, still clickable */
 // ❌ Breaks after DOM update
 document.querySelectorAll('.btn').forEach(b => b.addEventListener('click', ...));
 
-// ✅ Survives DOM updates
+// ✅ Survives DOM updates: one listener on a parent that isn't replaced
 document.body.addEventListener('click', (e) => {
-  if (e.target.matches('.btn')) handleClick(e);
+  const btn = e.target.closest('.btn');   // also works when the click lands on an icon inside the button
+  if (btn) handleClick(btn, e);
 });
 ```
+
+> 💡 Events **bubble** up from the clicked element to its parents, so one listener on a stable parent handles current and future children.
 
 ---
 
@@ -635,7 +639,7 @@ document.body.addEventListener('click', (e) => {
 - Always set `width` and `height` on `<img>` and `<video>` (or use `aspect-ratio` in CSS)
 - Reserve space for ads, embeds, and dynamic content
 - Avoid inserting content above existing content (use `position: fixed/absolute` for banners)
-- Use `font-display: optional` or preload critical fonts to avoid FOUT/FOIT
+- Preload critical fonts and use `font-display: optional` (or `swap` with a size-matched fallback font) so text doesn't jump when the web font arrives
 - Avoid animations that change layout properties (use `transform` instead)
 
 ```html

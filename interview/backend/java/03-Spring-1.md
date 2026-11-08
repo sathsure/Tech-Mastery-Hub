@@ -97,10 +97,11 @@ public class OrderService {
 }
 ```
 
-- Immutable objects are thread-safe
-- App fails during startup in case of missing dependency at compile-time
-- Prevents Circular Dependency Bugs
-- Works Perfectly with Spring Boot Auto-Configuration (Use `@RequiredArgsConstructor` - Lombok)
+- Fields can be `final` → the object is always complete and safe to share between threads
+- A missing bean makes the app **fail at startup** (not later with a `NullPointerException`)
+- Circular dependencies are **reported at startup** instead of hiding until runtime
+- Easy to unit test: `new OrderService(mockPayment)` — no Spring needed
+- With a single constructor, `@Autowired` is optional (Spring 4.3+); Lombok's `@RequiredArgsConstructor` can generate it
 
 _b. Spring IoC Container (Core Implementation Mechanism)_
 
@@ -120,13 +121,15 @@ Two Main IoC Containers
 BeanFactory is the basic container in Spring used to **Creates objects (beans), Stores them, provide when needed**.
 
 ```java
-BeanFactory factory = new ClassPathXmlApplicationContext("beans.xml");
+DefaultListableBeanFactory factory = new DefaultListableBeanFactory();
+new XmlBeanDefinitionReader(factory).loadBeanDefinitions("beans.xml");
 
-MyService service = factory.getBean(MyService.class);
-
+MyService service = factory.getBean(MyService.class);   // created only now
 ```
 
-➡ Bean is created only when `getBean()` is called, makes it **lazy initialization**
+➡ A plain `BeanFactory` creates a singleton bean only when `getBean()` is first called — **lazy initialization**.
+
+> ⚠️ `new ClassPathXmlApplicationContext("beans.xml")` is an **ApplicationContext** (which is also a BeanFactory), so it creates singletons eagerly at startup.
 
 🔹 **ApplicationContext (Advanced – Most Used)**
 
@@ -222,7 +225,18 @@ public class AppConfig {
 
 ### 📝 Answer
 
-🤔❓ My class is not getting injected. Spring says `NoSuchBeanDefinitionException`. Why?
+Almost every injection error means Spring **can't find exactly one bean** of the type you asked for, or you're using an object **Spring didn't create**:
+
+| Error | Usual cause | Fix |
+|---|---|---|
+| `NoSuchBeanDefinitionException` | Class isn't a bean (no `@Component`/`@Service`), or outside the scanned packages | Add a stereotype annotation; keep it under the `@SpringBootApplication` package |
+| `NullPointerException` on a dependency | Object created with `new`, or field injection not done | Let Spring create it; use constructor injection |
+| `NoUniqueBeanDefinitionException` | Two beans of the same type | `@Primary` or `@Qualifier("name")` |
+| `BeanCurrentlyInCreationException` | Circular dependency A → B → A | Redesign; extract a third class |
+
+Details for each case follow.
+
+#### ↳ Follow-up: My class is not getting injected. Spring says `NoSuchBeanDefinitionException`. Why?
 
 ❌ Spring does not know the class. Spring only creates objects for classes it knows about
 ✅ Mark the class with a stereotype annotation.
@@ -233,12 +247,12 @@ public class EmailService {}
 // using @Service is better practice.
 ```
 
-🤔❓ I am getting `NullPointerException` when using a dependency. Why?
+#### ↳ Follow-up: I am getting `NullPointerException` when using a dependency. Why?
 
 ❌ Dependency is not injected.
 ✅ Use `@Autowired` (prefer **constructor injection**).
 
-🤔❓ Spring throws `NoUniqueBeanDefinitionException`. Why?
+#### ↳ Follow-up: Spring throws `NoUniqueBeanDefinitionException`. Why?
 
 ❌ More than one implementation exists.
 
@@ -291,11 +305,11 @@ public class UpiPaymentService implements PaymentService {
 }
 ```
 
-🤔❓ What happens if both `@Primary` and `@Qualifier` are used?
+#### ↳ Follow-up: What happens if both `@Primary` and `@Qualifier` are used?
 
 ✅ `@Qualifier` overrides `@Primary`
 
-🤔❓ Does `@Autowired` inject by type or name?
+#### ↳ Follow-up: Does `@Autowired` inject by type or name?
 
 ✅ By type first, then by name if needed
 
@@ -307,7 +321,7 @@ public class UpiPaymentService implements PaymentService {
 5. Exception
 ```
 
-🤔❓ @Component vs @Bean
+#### ↳ Follow-up: @Component vs @Bean
 
 🔹 @Component
 
@@ -333,11 +347,11 @@ public DataSource dataSource() {
 }
 ```
 
-🤔❓ What is the Return type of `@Bean`?
+#### ↳ Follow-up: What is the Return type of `@Bean`?
 
 Return type = Object you want Spring to manage.
 
-🤔❓ Can we have Multiple `@Bean`?
+#### ↳ Follow-up: Can we have Multiple `@Bean`?
 
 Use:
 
@@ -345,11 +359,11 @@ Use:
 - OR `@Bean(name="customName")`
 - OR `@Qualifier`
 
-🤔❓ I cannot add `@Component` to a library class. Third-party classes cannot be annotated.. How to create object?
+#### ↳ Follow-up: I cannot add `@Component` to a library class. Third-party classes cannot be annotated.. How to create object?
 
 ✅ Define the bean using `@Bean` in the `@Configuration` class.
 
-🤔❓ My application startup is slow because a specific bean is being initialized at launch. How to fix it?
+#### ↳ Follow-up: My application startup is slow because a specific bean is being initialized at launch. How to fix it?
 
 ✅Use `@Lazy`
 
@@ -360,9 +374,11 @@ public class ReportService {
 }
 ```
 
-> Bean will be created only when needed.
-> h. I need to execute a logic immediately after a bean is create. How can I do it?
-> ✅Use `@PostConstruct`
+> Bean will be created only when needed. (Or set `spring.main.lazy-initialization=true` to make all beans lazy — faster startup, but errors show up later.)
+
+#### ↳ Follow-up: I need to run some logic right after a bean is created. How can I do it?
+
+✅ Use `@PostConstruct`
 
 ```java
 @PostConstruct
@@ -380,8 +396,10 @@ Constructor
 ```
 
 > Runs after dependencies are injected.
-> i. I’m seeing resource leaks where **DB connections and threads** aren't closing on shutdown; how can I fix it?
-> ✅ Use `@PreDestroy`
+
+#### ↳ Follow-up: DB connections and threads aren't closing on shutdown. How can I fix it?
+
+✅ Use `@PreDestroy`
 
 ```java
 @PreDestroy
@@ -390,9 +408,11 @@ public void cleanup() {
 }
 ```
 
-> Runs just before bean destruction.
-> j. I see that my DB changes aren't rolling back on exceptions. how can I fix this?
-> ✅Use `@Transactional`
+> Runs just before bean destruction (on a normal shutdown — not for `prototype` beans, which Spring doesn't track).
+
+#### ↳ Follow-up: My DB changes aren't rolling back on exceptions. How can I fix this?
+
+✅ Use `@Transactional` (on a public method called from another bean, and throw an unchecked exception or set `rollbackFor`)
 
 ```java
 @Transactional
@@ -473,7 +493,7 @@ Inside the **SpringApplication constructor**, Spring checks the **classpath**, N
 
 | Found on classpath                                   | Application Type             |
 | ---------------------------------------------------- | ---------------------------- |
-| `javax.servlet.Servlet`                              | SERVLET (Spring MVC, Tomcat) |
+| `jakarta.servlet.Servlet` (`javax.servlet` before Boot 3) | SERVLET (Spring MVC, Tomcat) |
 | `org.springframework.web.reactive.DispatcherHandler` | REACTIVE (WebFlux)           |
 | None                                                 | NONE (CLI / Batch app)       |
 
@@ -488,8 +508,8 @@ This can be found in `pom.xml`
 
 Classpath contains:
 
-- javax.servlet.Servlet
-- Tomcat / Jetty / Undertow
+- jakarta.servlet.Servlet
+- Tomcat (default; Jetty can be swapped in)
 
 > ➡ Spring Boot chooses SERVLET
 
@@ -508,14 +528,18 @@ Once the `SpringApplication` object exists, its **instance `run()`** method exec
 
 Spring loads configuration properties **before** creating the container.
 
-**Properties are loaded from (priority order)**
+**Properties are loaded from many sources. Highest priority first — a higher one overrides a lower one:**
 
-- Command-line arguments
-- `application.properties`
-- `application.yml`
-- `application-{profile}.properties`
-- OS environment variables
-- JVM system properties
+1. Command-line arguments (`--server.port=9090`)
+2. JVM system properties (`-Dserver.port=9090`)
+3. OS environment variables (`SERVER_PORT=9090`)
+4. Profile-specific files: `application-{profile}.properties` / `.yml`
+5. `application.properties` / `application.yml`
+6. Defaults in code (`@PropertySource`, `SpringApplication.setDefaultProperties`)
+
+(Files **outside** the JAR, e.g. `./config/application.yml`, beat the same files packaged **inside** it.)
+
+> 💡 That's why the same JAR can run anywhere: production overrides a value with an environment variable instead of rebuilding.
 
 ✔ These values are stored
 ✔ Used later during bean creation
@@ -599,8 +623,8 @@ public class MyApplication {}
 - Reads a list of auto-configuration classes from:
 
   ```
-  META-INF/spring.factories
-  META-INF/spring/...AutoConfiguration.imports
+  META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports   (Boot 2.7+)
+  META-INF/spring.factories                                                       (Boot 2.x only — no longer read for auto-config in Boot 3)
   ```
 
 - Loads **configuration classes**
@@ -631,24 +655,24 @@ preInstantiateSingletons()
 - Call `@PostConstruct`
 - Bean is ready
 
-🤔❓ Is `@PostConstruct` called once or after all beans?
+#### ↳ Follow-up: Is `@PostConstruct` called once or after all beans?
 
 ✅ Once per bean
 ❌ Not after all beans are created
 
-🤔❓ What about @Lazy beans?
+#### ↳ Follow-up: What about @Lazy beans?
 
 - Skipped in preInstantiateSingletons()
 - Created later when first requested
 
-🤔❓ What about prototype beans?
+#### ↳ Follow-up: What about prototype beans?
 
 - NOT created in preInstantiateSingletons()
 - Created every time they are requested
 
 ---
 
-### ❓What is Spring Profile?
+### ❓ What is Spring Profile?
 
 ### 📝 Answer
 
@@ -761,27 +785,32 @@ public class EmailNotificationService implements NotificationService {
 
 > 📌 Spring injects the **correct implementation automatically**
 
-🤔❓ Can multiple profiles be active at the same time?
+#### ↳ Follow-up: Can multiple profiles be active at the same time?
 
 ✔️ Yes. Spring loads beans from **all active profiles**.
 
-🤔❓ What happens if two profiles define the same bean?
+#### ↳ Follow-up: What happens if two profiles define the same bean?
 
-⚠️ Bean conflict → Spring throws `NoUniqueBeanDefinitionException` unless qualified.
+⚠️ It depends on the bean **names**:
 
-🤔❓ Difference between `@Profile` and `@Conditional`?
+- **Same name** (e.g. both `@Bean dataSource()`): Spring Boot fails at startup with a bean-definition-override error, because overriding is disabled by default.
+- **Different names, same type**: both are created, and injecting by type throws `NoUniqueBeanDefinitionException` unless you use `@Primary` or `@Qualifier`.
+
+Best practice: make the profiles mutually exclusive (`@Profile("dev")` vs `@Profile("!dev")`).
+
+#### ↳ Follow-up: Difference between `@Profile` and `@Conditional`?
 
 | `@Profile`        | `@Conditional`     |
 | ----------------- | ------------------ |
 | Environment-based | Custom logic-based |
 | Simple            | More powerful      |
 
-🤔❓ Are profiles evaluated at runtime?
+#### ↳ Follow-up: Are profiles evaluated at runtime?
 
 ❌ No.
 ✔️ Profiles are resolved **at application startup**.
 
-🤔❓ Why `@Conditional` Is Used?
+#### ↳ Follow-up: Why `@Conditional` Is Used?
 
 - When `@Profile` is not flexible enough
 - When bean creation depends on:
@@ -799,9 +828,8 @@ public class ProdCondition implements Condition {
         ConditionContext context,
         AnnotatedTypeMetadata metadata) {
 
-        String env = context.getEnvironment()
-                            .getProperty("spring.profiles.active");
-        return "prod".equals(env);
+        // works with several active profiles ("prod,cloud"), unlike comparing the property string
+        return context.getEnvironment().acceptsProfiles(Profiles.of("prod"));
     }
 }
 
@@ -821,7 +849,7 @@ public class AppConfig {
 
 ---
 
-### ❓What is Spring Boot Actuator?
+### ❓ What is Spring Boot Actuator?
 
 ### 📝 Answer
 
@@ -851,14 +879,14 @@ public class AppConfig {
 
 🔹 Step 2: Enable Endpoints
 
-By default, only `/health` and `/info` are exposed.
+By default, only `/actuator/health` is exposed over HTTP (`/info` too before Spring Boot 2.5). Expose others explicitly — and protect sensitive ones like `env`, `beans` and `heapdump` with Spring Security.
 
 ```properties
 # application.properties
 management.endpoints.web.exposure.include=health,info,metrics
 ```
 
-🤔❓ Is Spring Boot Actuator enabled by default in a Spring Boot application?
+#### ↳ Follow-up: Is Spring Boot Actuator enabled by default in a Spring Boot application?
 
 ❌ **No.**
 
@@ -873,24 +901,25 @@ You must add the dependency:
 </dependency>
 ```
 
-🤔❓ Difference between Actuator and Logging?
+#### ↳ Follow-up: Difference between Actuator and Logging?
 
 - **Logging** shows what happened.
 - **Actuator** shows current system state.
 
-🤔❓ Difference between Actuator and Swagger?
+#### ↳ Follow-up: Difference between Actuator and Swagger?
 
 - **Actuator** is for operations & monitoring,
 - **Swagger** is for API documentation & testing.
 
-🤔❓ How do you enable only /health and /info endpoints in Spring Boot Actuator?
+#### ↳ Follow-up: How do you enable only /health and /info endpoints in Spring Boot Actuator?
 
 Configure it in `application.properties`:
 
 ```properties
 management.endpoints.web.exposure.include=health,info
-management.endpoints.web.exposure.exclude=*
 ```
+
+> ⚠️ Don't add `management.endpoints.web.exposure.exclude=*` — **exclude wins over include**, so that would hide every endpoint, including `health`.
 
 ![SpringActuator Image](/src/assets/backend/spring-actuator.png)
 
@@ -984,18 +1013,20 @@ public class LoggingAspect {
 }
 ```
 
-🤔❓ How Spring AOP Works Internally
+#### ↳ Follow-up: How Spring AOP Works Internally
 
 - Spring creates a proxy object
 - Calls go through the proxy
 - Proxy executes aspect logic
 - Then calls actual method
 
-🤔❓ Can Spring AOP intercept private methods?
+#### ↳ Follow-up: Can Spring AOP intercept private methods?
 
-    No. It works on public/protected methods via proxies.
+No. Spring AOP works through **proxies**, so it only sees calls that go **through the proxy** to a public method (CGLIB proxies can also catch protected/package-visible ones).
 
-🤔❓ Spring AOP vs AspectJ
+Same trap as `@Transactional`: when one method calls another **in the same class** (`this.other()`), the call skips the proxy and no advice runs. Use AspectJ weaving if you really need private methods or self-calls.
+
+#### ↳ Follow-up: Spring AOP vs AspectJ
 
 | Spring AOP          | AspectJ                          |
 | ------------------- | -------------------------------- |
@@ -1032,7 +1063,7 @@ public class LoggingAspect {
 
 ### 📝 Answer
 
-❓ Problem Before
+**Problem before:**
 
 - REST APIs returned **only data**
 - Client didn’t know **next actions / URLs**
@@ -1063,7 +1094,7 @@ model.add(linkTo(methodOn(UserController.class).getAll()).withRel("all-users"));
 
 ### 📝 Answer
 
-❓ Problem Before
+**Problem before:**
 
 - JSP had poor Spring integration
 - Not HTML-friendly

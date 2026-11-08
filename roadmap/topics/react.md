@@ -47,7 +47,9 @@
 37. [How do you implement dark/light theme toggling?](../../interview/frontend/06-React.md)
 38. [How do you handle file uploads in React?](../../interview/frontend/06-React.md)
 39. [How do you secure a React app against XSS?](../../interview/frontend/06-React.md)
-40. [How do you debug React performance issues?](../../interview/frontend/06-React.md)
+40. [What's new in React 19?](../../interview/frontend/06-React.md)
+   - [What is the React Compiler?](../../interview/frontend/06-React.md)
+41. [How do you debug React performance issues?](../../interview/frontend/06-React.md)
 
 ## Related roles
 

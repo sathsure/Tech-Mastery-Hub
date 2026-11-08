@@ -29,15 +29,21 @@ Authorization then decides:
 💻 **Code Example**
 
 ```js
-// Authentication middleware
+const jwt = require("jsonwebtoken");
+
+// Authentication middleware: WHO are you? (verify the token)
 function authenticate(req, res, next) {
-  if (!req.user) {
-    return res.status(401).json({ message: "User not authenticated" });
+  const token = req.cookies.access_token || req.headers.authorization?.replace("Bearer ", "");
+  if (!token) return res.status(401).json({ message: "User not authenticated" });
+  try {
+    req.user = jwt.verify(token, process.env.JWT_SECRET);   // checks signature and expiry
+    next();
+  } catch {
+    return res.status(401).json({ message: "Invalid or expired token" });
   }
-  next();
 }
 
-// Authorization middleware
+// Authorization middleware: WHAT may you do? (check permissions)
 function authorize(role) {
   return (req, res, next) => {
     if (req.user.role !== role) {
@@ -50,7 +56,7 @@ function authorize(role) {
 app.delete("/admin/user/:id", authenticate, authorize("admin"), handler);
 ```
 
-1️⃣ When a user is authenticated, does that mean they are authorized?
+#### ↳ Follow-up: When a user is authenticated, does that mean they are authorized?
 
 No. Authentication only proves identity. Authorization is required to determine **what the authenticated user can do**. Both must exist together.
 
@@ -74,7 +80,7 @@ No. Authentication only proves identity. Authorization is required to determine 
 
 **Server sessions** store data on the backend and send only a session ID to the browser. This is the most secure option but requires proper scaling using Redis or a shared store.
 
-1️⃣ Why not store JWT in localStorage since it is easy?
+#### ↳ Follow-up: Why not store JWT in localStorage since it is easy?
 
 Storing JWT in localStorage exposes it to XSS attacks. Any injected script can steal the token and impersonate the user. For production systems, JWT should be stored in HTTP-only cookies.
 
@@ -107,7 +113,7 @@ This provides:
 - XSS protection
 - Controlled CSRF defense
 
-1️⃣ Does using JWT authentication completely eliminate the need for CSRF protection?
+#### ↳ Follow-up: Does using JWT authentication completely eliminate the need for CSRF protection?
 
 JWT is immune to CSRF **only when it is not stored in cookies**.
 If JWT is stored in cookies, CSRF protection is still required.
@@ -130,7 +136,11 @@ If JWT is stored in cookies, CSRF protection is still required.
 6. When access token expires, client requests new token
 7. Refresh token is validated
 8. New access token is issued
-9. Refresh token is rotated for security
+9. Refresh token is rotated for security (the old one stops working; reuse of an old one signals theft → revoke the whole session)
+
+Typical lifetimes: access token 5–15 minutes, refresh token days to weeks. Keep the refresh token in an **HttpOnly, Secure cookie** limited to the refresh path, and store it (or its hash) on the server so it can be revoked. See the JWT access & refresh token notes for the full sequence diagram.
+
+---
 
 ### ❓ Explain CSRF with a real example and how you protect against it.
 
@@ -142,17 +152,36 @@ If JWT is stored in cookies, CSRF protection is still required.
 
 CSRF occurs when a malicious website tricks a logged-in user's browser into sending a request to a trusted site. Since cookies are automatically included, the server cannot distinguish between legitimate and forged requests.
 
-### Protection Strategy
+**Real example:** you're logged in to `bank.com`. You open `evil.com`, which contains:
 
-- Generate CSRF token
-- Send it to frontend
-- Require token for state-changing requests
-- Validate token server-side
+```html
+<form action="https://bank.com/transfer" method="POST">
+  <input name="to" value="attacker" /><input name="amount" value="50000" />
+</form>
+<script>document.forms[0].submit()</script>
+```
+
+Your browser sends your `bank.com` cookie with it — the bank sees a valid session.
+
+**Protection (use more than one):**
+
+1. **`SameSite=Lax` or `Strict` cookies** — the browser doesn't send the cookie on cross-site POSTs. Modern browsers default to `Lax`.
+2. **CSRF token** — a random value the page must send back in a header or form field; `evil.com` can't read it.
+3. Check the `Origin` header on state-changing requests.
+4. Never change data with `GET`.
 
 ```js
-const csrf = require("csurf");
-app.use(csrf());
+// Double-submit token with the maintained csrf-csrf package
+const { doubleCsrf } = require("csrf-csrf");
+const { doubleCsrfProtection, generateCsrfToken } = doubleCsrf({
+  getSecret: () => process.env.CSRF_SECRET,
+  getSessionIdentifier: (req) => req.cookies.sid ?? "",
+});
+app.get("/csrf-token", (req, res) => res.json({ token: generateCsrfToken(req, res) }));
+app.use(doubleCsrfProtection);   // POST/PUT/DELETE must send the token in the x-csrf-token header
 ```
+
+> ⚠️ The old `csurf` package is **deprecated and archived** — don't use it in new code.
 
 ---
 
@@ -180,8 +209,21 @@ element.innerHTML = userInput;
 ✅ **Secure Code**
 
 ```js
-element.textContent = userInput;
+element.textContent = userInput;   // treated as text, never as HTML
 ```
+
+**Three types:**
+
+- **Stored** — the script is saved in the database (a comment) and served to every visitor.
+- **Reflected** — the script is in a URL parameter and echoed back in the page.
+- **DOM-based** — frontend code puts URL or user data into the page unsafely (`innerHTML`, `eval`).
+
+**Prevention:**
+
+- Let the framework escape output (React `{value}`, Angular `{{ value }}`); avoid `dangerouslySetInnerHTML` / `bypassSecurityTrust…` unless sanitized (DOMPurify).
+- Validate input on the server and encode output for its context (HTML, attribute, URL).
+- Add a **Content-Security-Policy** header (Helmet) so injected inline scripts don't run.
+- Keep tokens in **HttpOnly** cookies so a successful XSS can't read them.
 
 ---
 
@@ -203,12 +245,20 @@ Backend security must rely on authentication and authorization, not CORS alone.
 
 ### 📝 Answer
 
-Hashing converts passwords into irreversible values.
-Salting adds a unique random value per password to prevent rainbow table attacks.
-Peppering adds a secret value stored outside the database, protecting against database leaks.
+- **Hashing** turns a password into a fixed value that can't be reversed. Use a **slow** password hash — **bcrypt**, **Argon2** or **scrypt** — never fast hashes like MD5 or SHA-256, which attackers can try billions of times per second.
+- **Salting** adds a unique random value per password, so two users with the same password get different hashes and precomputed (rainbow) tables don't work. bcrypt/Argon2 generate and store the salt for you.
+- **Peppering** adds one secret value kept **outside the database** (env/vault), so a stolen database alone isn't enough to crack hashes.
 
 ```js
-bcrypt.hash(password + PEPPER, 12);
+const crypto = require("crypto");
+const bcrypt = require("bcrypt");
+
+// Apply the pepper with an HMAC first: bcrypt only uses the first 72 bytes of its input
+const peppered = crypto.createHmac("sha256", process.env.PEPPER).update(password).digest("base64");
+const hash = await bcrypt.hash(peppered, 12);            // 12 = cost factor (2^12 rounds)
+
+// Login
+const ok = await bcrypt.compare(peppered, storedHash);
 ```
 
 ---

@@ -70,8 +70,8 @@ await check("closures question keeps its code and summary", () => {
   assert.match(entry.summary, /closure is a function/i);
 });
 
-await check("bare ❓ questions (web-vitals) are split", () => {
-  assert.equal(index.files.find(file => file.path === "interview/architecture/01-web-vitals.md")?.questions, 6);
+await check("web-vitals questions are split", () => {
+  assert.equal(index.files.find(file => file.path === "interview/architecture/01-web-vitals.md")?.questions, 8);
   assert.ok(find("interview/architecture/01-web-vitals.md", "CLS"));
 });
 
@@ -83,10 +83,15 @@ await check("level-2 headings inside an answer do not split it", () => {
 });
 
 await check("files without questions become section notes", () => {
-  const notes = index.entries.filter(entry => entry.source.path === "interview/architecture/02-aws-cloud.md");
-  assert.ok(notes.length >= 20 && notes.every(entry => entry.kind === "note"));
-  assert.ok(notes.some(entry => entry.visuals.some(visual => visual.path === "knowledge/visual-notes/aws-compute.png")));
-  assert.match(find("interview/architecture/02-aws-cloud.md", "Core Compute")?.summary ?? "", /Amazon EC2/);
+  const notes = index.entries.filter(entry => entry.source.path === "roadmap/frontend/README.md");
+  assert.ok(notes.length >= 3 && notes.every(entry => entry.kind === "note"), `${notes.length} notes`);
+});
+
+await check("AWS notes are split into questions per service area, with their diagrams", () => {
+  const aws = index.entries.filter(entry => entry.source.path === "interview/architecture/02-aws-cloud.md");
+  assert.ok(aws.length >= 20 && aws.every(entry => entry.kind === "question"));
+  assert.ok(aws.some(entry => entry.visuals.some(visual => visual.path === "knowledge/visual-notes/aws-compute.png")));
+  assert.match(find("interview/architecture/02-aws-cloud.md", "main AWS Compute services")?.answer ?? "", /Amazon EC2/);
 });
 
 await check("quoted snippets are captured as the question prompt", () => {

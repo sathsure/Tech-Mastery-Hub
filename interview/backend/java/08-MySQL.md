@@ -15,14 +15,14 @@ An RDBMS stores data in **structured tables**, enforces **relationships using ke
 CREATE TABLE employee (
   emp_id INT PRIMARY KEY,
   name VARCHAR(50),
-  salary NUMBER
+  salary DECIMAL(10, 2)   -- exact type for money
 );
 ```
 
-🤔❓ How is RDBMS different from DBMS?
+#### ↳ Follow-up: How is RDBMS different from DBMS?
 DBMS doesn’t enforce relationships or ACID strictly.
 
-🤔❓ Can RDBMS scale?
+#### ↳ Follow-up: Can RDBMS scale?
 Vertically very well, horizontally with sharding/replication.
 
 ---
@@ -35,7 +35,7 @@ Vertically very well, horizontally with sharding/replication.
 | ------------------------------- | --------------------------------------- | ---------------------------------------- | ------------------------------ |
 | **What it does**                | Uniquely identifies each row in a table | Ensures values are not duplicated        | Links a table to another table |
 | **Uniqueness**                  | Always unique                           | Always unique                            | Duplicates allowed             |
-| **NULL values**                 | ❌ Not allowed                          | ✔ Allowed (Oracle allows multiple NULLs) | ✔ Allowed                      |
+| **NULL values**                 | ❌ Not allowed                          | ✔ Allowed — MySQL, PostgreSQL and Oracle allow many NULLs; SQL Server allows only one | ✔ Allowed                      |
 | **How many key can be defined** | only ONE (emp_id)                       | MULTIPLE (email, phone)                  | Multiple allowed               |
 
 ```sql
@@ -60,20 +60,18 @@ CREATE TABLE employee (
 );
 ```
 
-🤔❓ Can a foreign key be NULL?
+#### ↳ Follow-up: Can a foreign key be NULL?
 Yes, unless **constrained**.
 
-🤔❓ What Is a Composite Primary Key?
+#### ↳ Follow-up: What Is a Composite Primary Key?
 A composite primary key is a **primary key made up of more than one column**.
 
 ```sql
 -- Composite Primary Key
 CREATE TABLE Employee_Project (
     emp_id INT,
-    email VARCHAR(100) UNIQUE,
-    phone VARCHAR(20) UNIQUE,
     project_id INT,
-    PRIMARY KEY (emp_id, project_id)
+    PRIMARY KEY (emp_id, project_id)   -- the PAIR must be unique; each column alone may repeat
 );
 
 -- Composite Primary Key with Foreign Keys
@@ -227,10 +225,11 @@ emp_id | project_id
 
 ```text
 Employee
---------------------------------
-emp_id | emp_name | dept_name
---------------------------------
-1      | Ravi     | IT
+---------------------------------------------
+emp_id | emp_name | dept_name | dept_location
+---------------------------------------------
+1      | Ravi     | IT        | Adelaide
+2      | Asha     | IT        | Adelaide     ← repeated for every IT employee
 ```
 
 **Hidden dependency:**
@@ -324,9 +323,9 @@ SELECT * FROM employee WHERE email = 'abc@xyz.com';
 - Frequent INSERT / UPDATE / DELETE
 - Small tables (table scan is faster)
 
-🤔❓ How Many Indexes Can Be Used in a Query?
+#### ↳ Follow-up: How Many Indexes Can Be Used in a Query?
 
-- Usually only ONE index per table is used in a query execution plan.
+- Usually **one index per table** is used in a query plan (MySQL can sometimes combine several with an *index merge*, but a good composite index is better).
 - However, Composite (multi-column) indexes count as one index
 - A query involving **multiple tables can use one index per table**.
   ```sql
@@ -344,11 +343,11 @@ SELECT * FROM employee WHERE email = 'abc@xyz.com';
 
 ### 📝 Answer
 
-👉 JOIN usually performs better than a SUBQUERY
+👉 Often they perform the **same**: modern MySQL (8.0+) and PostgreSQL rewrite `IN (subquery)` into a join (*semi-join*). Check with `EXPLAIN`.
 
-- Data is processed in a single execution plan
-- Better use of indexes
-- More readable and maintainable
+- A JOIN is easier for the optimizer and usually clearer when you need columns from both tables
+- Correlated subqueries (that run once per outer row) can be slow on old versions
+- `EXISTS` / `NOT EXISTS` subqueries are fine and handle NULLs safely
 
 ```sql
 -- Subquery
@@ -402,7 +401,7 @@ A stored procedure is a **pre-written SQL program stored in the database** that 
 🔹 Why we use Stored Procedures?
 
 - Reuse SQL logic (write once, use many times)
-- Faster execution (precompiled)
+- Fewer network round trips (many statements run inside the database)
 - Better security (direct table access can be restricted)
 - Keeps business logic close to the data
 
@@ -442,7 +441,7 @@ CALL increaseSalary(@sal);
 SELECT @sal;
 ```
 
-🤔❓ Stored Procedure vs Function?
+#### ↳ Follow-up: Stored Procedure vs Function?
 
 - **Stored Procedure** - Used to perform actions (insert, update, delete, complex logic), May or may not return a value
 - **Function** - Stored SQL block that **always returns a value**, Can be used inside SQL queries
@@ -459,7 +458,7 @@ END;
 SELECT calculateBonus(salary) FROM employee;
 ```
 
-🤔❓ Cursor in Stored Procedure
+#### ↳ Follow-up: Cursor in Stored Procedure
 
 A cursor is used to fetch and process query results row by row inside a stored procedure.
 
@@ -475,53 +474,51 @@ CLOSE cur;
 ```
 
 **Scenario:**
-You want to increase salary by 10% for employees one by one, and maybe do some logic per employee
+You want to increase salary by 10% for employees one by one, and maybe do some logic per employee.
 
-    ```sql
-    CREATE PROCEDURE incSalaryCursor()
+```sql
+DELIMITER //
+CREATE PROCEDURE incSalaryCursor()
+BEGIN
+    DECLARE done INT DEFAULT 0;
+    DECLARE v_id INT;                       -- prefix variables: a variable named "id" would hide the column
+    DECLARE v_sal DECIMAL(10, 2);
 
-    BEGIN
-        DECLARE done INT DEFAULT 0;
-        DECLARE id INT;
-        DECLARE sal INT;
+    DECLARE cur CURSOR FOR SELECT id, salary FROM employee;    -- the rows the cursor reads
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;       -- what to do when rows run out
 
-        DECLARE cur CURSOR FOR SELECT id, salary FROM employee; -- Defines the data the cursor reads
-        DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1; -- Defines what happens when no more rows are available
+    OPEN cur;
+    read_loop: LOOP                          -- LEAVE needs a label
+        FETCH cur INTO v_id, v_sal;
+        IF done = 1 THEN LEAVE read_loop; END IF;
 
-        OPEN cur;
+        UPDATE employee
+        SET salary = v_sal * 1.10,
+            role   = REPLACE(role, 'Junior', 'Senior')
+        WHERE id = v_id;                     -- ⚠️ "WHERE id = id" would be always true and update EVERY row
+    END LOOP;
+    CLOSE cur;
+END //
+DELIMITER ;
+```
 
-        LOOP
-            FETCH cur INTO id, sal;
-            IF done = 1 THEN LEAVE; END IF;
+- `CONTINUE HANDLER FOR NOT FOUND` — when `FETCH` finds no more rows, set `done = 1` and carry on.
+- `DELIMITER //` lets the client send the whole procedure (which contains `;`) as one statement.
 
-            UPDATE employee
-            SET salary = sal * 1.10,
-                role = REPLACE(role, 'Junior', 'Senior')
-            WHERE id = id;
+> 💡 For this simple case a single set-based statement is far faster than a cursor:
+> `UPDATE employee SET salary = salary * 1.10, role = REPLACE(role, 'Junior', 'Senior');`
+> Use cursors only when each row needs logic that SQL can't express.
 
-        END LOOP;
+#### ↳ Follow-up: What is `REPLACE` in a Stored Procedure?
 
-        CLOSE cur;
-    END;
+`REPLACE` is a string function that replaces every occurrence of one piece of text with another.
 
-    -- CONTINUE → continue execution
-    -- HANDLER → declares an exception handler
-    -- FOR NOT FOUND → condition when no rows are found (cursor end)
-    -- SET done = 1 → action to perform
-    ```
+```sql
+SELECT REPLACE('Java Developer', 'Java', 'Angular');
+-- Angular Developer
+```
 
-🤔❓ What is `REPLACE` in a Stored Procedure?
-
-`REPLACE` is a string function used to replace part of a string with another string.
-
-    ```sql
-    SELECT REPLACE('Java Developer', 'Java', 'Angular');
-
-    -- OUTPUT
-    -- Angular Developer
-    ```
-
-🤔❓ What is `DISTINCT`?
+#### ↳ Follow-up: What is `DISTINCT`?
 
 ```sql
 SELECT DISTINCT dept_id, salary FROM emp;
@@ -529,7 +526,7 @@ SELECT DISTINCT dept_id, salary FROM emp;
 
 **Explanation:** DISTINCT applies to the **combined values**, not individual columns.
 
-🤔❓ `WHERE` vs `HAVING`
+#### ↳ Follow-up: `WHERE` vs `HAVING`
 
 ✅ WHERE
 
@@ -564,20 +561,20 @@ HAVING COUNT(*) > 5;
 📌 **Rule**:
 👉 Use `WHERE` whenever possible, `HAVING` only when needed.
 
-🤔❓ Order of SQL execution (VERY COMMON)
+#### ↳ Follow-up: Order of SQL execution (VERY COMMON)
 
 ```text
 FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY
 ```
 
-🤔❓ `DELETE` vs `TRUNCATE`
+#### ↳ Follow-up: `DELETE` vs `TRUNCATE`
 
 ```sql
 DELETE FROM emp;      -- rollback possible
 TRUNCATE TABLE emp;   -- auto commit
 ```
 
-🤔❓ `BETWEEN` is inclusive
+#### ↳ Follow-up: `BETWEEN` is inclusive
 
 ```sql
 WHERE salary BETWEEN 5000 AND 10000;
@@ -585,7 +582,7 @@ WHERE salary BETWEEN 5000 AND 10000;
 
 Includes **5000 & 10000**.
 
-🤔❓ `LIKE` performance issue with `Index`
+#### ↳ Follow-up: `LIKE` performance issue with `Index`
 
 ```sql
 WHERE name LIKE '%John';
@@ -599,12 +596,12 @@ WHERE name LIKE 'John%';
 
 ✅ The database can jump directly to John in the index
 
-🤔❓ `UNION` vs `UNION ALL`
+#### ↳ Follow-up: `UNION` vs `UNION ALL`
 
 - UNION → Combines results of two or more SELECT queries and **Removes duplicate rows**
 - UNION ALL → Combines results of two or more SELECT queries and **Keeps all rows (including duplicates)**
 
-🤔❓ `COALESCE` vs `NVL`
+#### ↳ Follow-up: `COALESCE` vs `NVL`
 
 Both are used to **replace NULL values**
 
@@ -620,7 +617,7 @@ NVL(salary, 0)
 SELECT COALESCE(salary, 0) FROM emp;
 ```
 
-🤔❓ Difference between `CHAR` and `VARCHAR`
+#### ↳ Follow-up: Difference between `CHAR` and `VARCHAR`
 
 Both store text
 
@@ -705,7 +702,7 @@ SHOW INDEX FROM orders;
 **Find unused indexes**
 
 ```sql
-performance_schema.table_io_waits_summary_by_index_usage;
+SELECT * FROM sys.schema_unused_indexes;   -- indexes not used since the server started
 ```
 
 📌 Missing index is the **#1 cause** of performance issues.
@@ -880,7 +877,7 @@ Writes → Primary
 Reads  → Replica
 ```
 
-🤔❓ How they stay synced?
+#### ↳ Follow-up: How they stay synced?
 MySQL uses Asynchronous Replication by default. Here are the steps the system takes automatically:
 
 **Binary Log (Primary):** The Original database records every change (Insert, Update, Delete) into a file called the `binlog`.
@@ -889,17 +886,17 @@ MySQL uses Asynchronous Replication by default. Here are the steps the system ta
 
 **Applier Thread (Replica):** The Replica executes the queries in the `relay log` one by one to update its own data.
 
-🤔❓ How to check Sync Status
+#### ↳ Follow-up: How to check Sync Status
 
 ```sql
-SHOW SLAVE STATUS\G
+SHOW REPLICA STATUS\G      -- MySQL 8.0.22+ (older versions: SHOW SLAVE STATUS)
 ```
 
-| Variable                | Target Value | Meaning                                 |
-| ----------------------- | ------------ | --------------------------------------- |
-| `Slave_IO_Running`      | Yes          | Connected to Primary and receiving logs |
-| `Slave_SQL_Running`     | Yes          | Applying the logs to the data           |
-| `Seconds_Behind_Master` | 0            | The Replica is perfectly synced         |
+| Variable                 | Target Value | Meaning                                 |
+| ------------------------ | ------------ | --------------------------------------- |
+| `Replica_IO_Running`     | Yes          | Connected to Primary and receiving logs |
+| `Replica_SQL_Running`    | Yes          | Applying the logs to the data           |
+| `Seconds_Behind_Source`  | 0            | No replication lag                      |
 
 ```properties
 # Primary (Write)
@@ -933,7 +930,10 @@ public class DataSourceConfig {
         RoutingDataSource routingDataSource = new RoutingDataSource();
         routingDataSource.setTargetDataSources(targetDataSources);
         routingDataSource.setDefaultTargetDataSource(primaryDataSource());
-        return routingDataSource;
+        routingDataSource.afterPropertiesSet();
+        // ⚠️ Without this wrapper the connection is taken BEFORE @Transactional(readOnly = true)
+        // is applied, so every query would go to the primary.
+        return new LazyConnectionDataSourceProxy(routingDataSource);
     }
 }
 
@@ -1205,8 +1205,9 @@ Common levels:
 | **REPEATABLE_READ**  | Within the same transaction, reading the same row twice gives the same result, even if another transaction updates and commits in between. |
 | **SERIALIZABLE**     | Transactions behave as if executed one by one (like a queue). Prevents almost all concurrency issues but reduces performance.              |
 
-Most DBs (like MySQL default) use:
-👉 **REPEATABLE_READ**
+Defaults differ:
+👉 **MySQL (InnoDB): REPEATABLE_READ**
+👉 **PostgreSQL, Oracle, SQL Server: READ_COMMITTED**
 
 🏦 Scenario
 
@@ -1255,7 +1256,7 @@ Used when you want strict control.
 Seat findSeatForUpdate(Long id);
 ```
 
-This prevents others from reading/updating that row.
+Runs `SELECT ... FOR UPDATE`: other transactions that try to **update or lock** that row wait until this one commits. Normal reads still work (they see the last committed version, thanks to MVCC).
 
 🔹 **Optimistic Locking (Version Based)**
 
@@ -1318,8 +1319,9 @@ But for DB operations:
 _Scenario:_
 Two users try to withdraw ₹1000 from same account with ₹1000 balance.
 
-_Without isolation:_
-Balance becomes -1000 ❌
+_Without a lock or atomic update:_ both read 1000, both pass the "enough money?" check, both withdraw → ₹2000 paid out of a ₹1000 account ❌
+
+_Simplest safe fix:_ `UPDATE account SET balance = balance - 1000 WHERE id = 1 AND balance >= 1000` — check how many rows were updated (0 = not enough money).
 
 _With proper isolation:_
 

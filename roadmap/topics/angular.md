@@ -92,6 +92,7 @@
 3. [How do you create a custom form control in Angular? (`ControlValueAccessor`)](../../interview/frontend/05-Angular-1.md)
 4. [How would you globally trim leading and trailing spaces from user input?](../../interview/frontend/05-Angular-1.md)
 5. [What are Signals in Angular?](../../interview/frontend/05-Angular-1.md)
+   - [What are signal inputs, outputs and other newer signal APIs?](../../interview/frontend/05-Angular-1.md)
 
 ## 12. Part 1 — Change Detection & Zones
 

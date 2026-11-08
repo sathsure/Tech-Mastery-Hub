@@ -15,6 +15,7 @@ Automates building, testing and deploying software.
 ### Stage 1: Core skills
 
 - [ ] [DevOps](../topics/devops.md)
+- [ ] [Git](../topics/git.md)
 
 ## Also needed
 

@@ -7,15 +7,18 @@ Builds pipelines that move and transform data into warehouses and lakes.
 
 ## Prerequisites
 
-- [SQL](../topics/database-sql.md)
-- [DevOps](../topics/devops.md)
-- [Java](../topics/java.md)
+- None. Start with Stage 1.
 
 ## Learning stages
 
 ### Stage 1: Core skills
 
-- [ ] [AWS](../topics/aws.md)
+- [ ] [SQL](../topics/database-sql.md)
+- [ ] [Java](../topics/java.md)
+
+## Also useful
+
+[AWS](../topics/aws.md)
 
 ## Also needed
 

@@ -238,7 +238,7 @@ What composition solves
 
 ![CompositionVsInheritance Image](/src/assets/backend/composition-vs-inheritance.png)
 
-🤔❓🔹 What is a Pointer?
+#### ↳ Follow-up: 🔹 What is a Pointer?
 
 - A variable that **stores the memory address** of another variable
 - Common in **C / C++**
@@ -248,7 +248,7 @@ int x = 10;
 int *p = &x;   // p holds address of x
 ```
 
-🤔❓🔹 Why Java Does NOT use Pointers?
+#### ↳ Follow-up: 🔹 Why Java Does NOT use Pointers?
 
 Java **intentionally hides pointers** and uses **references** instead.
 
@@ -344,7 +344,7 @@ calc.add(2, 3, 4);     // calls add(int, int, int)
 calc.add(2.5, 3.5);    // calls add(double, double)
 ```
 
-1️⃣ What is a method signature?
+#### ↳ Follow-up: What is a method signature?
 
 A method signature is the method name + parameter types (and order).
 
@@ -367,7 +367,7 @@ class Example {
 }
 ```
 
-2️⃣ Which method gets called when the reference type and object type are different?
+#### ↳ Follow-up: Which method gets called when the reference type and object type are different?
 
 The method of the object type (runtime type) is called, not the reference type.
 This is called runtime polymorphism / dynamic method dispatch.
@@ -380,7 +380,7 @@ Animal a = new Dog(); // Animal - Reference Type,  Dog - Object Type
 a.sound(); // a reference points to a Dog object, at runtime → calls Dog.sound()
 ```
 
-3️⃣ Why is using `instanceof` considered a design smell?
+#### ↳ Follow-up: Why is using `instanceof` considered a design smell?
 
 ❌ Problem with instanceof
 
@@ -443,7 +443,7 @@ public class Test {
 
 > If you’re using instanceof, you’re probably missing polymorphism.
 
-4️⃣ Why doesn’t Java support polymorphism for static methods?
+#### ↳ Follow-up: Why doesn’t Java support polymorphism for static methods?
 
 Static methods belong to the class, not the object.
 Polymorphism works only with objects, not classes.
@@ -538,7 +538,7 @@ Object → c1 and c2 are two different cars. Each has their own color, speed and
 
 Hence, **Static methods** exists once per class (Meaning c1.showTrafficRule() and c2.showTrafficRule() point to the same memory) and shared by all objects.
 
-5️⃣ Why doesn’t polymorphism work for variables?
+#### ↳ Follow-up: Why doesn’t polymorphism work for variables?
 
 Variables are resolved at compile time, not runtime.
 
@@ -619,7 +619,7 @@ Design principles while writing Java code:
 
 > Clean, simple, and flexible code over “perfect” architecture.
 
-1️⃣ What is the SOLID principle?
+#### ↳ Follow-up: What is the SOLID principle?
 
 SOLID is a set of 5 object-oriented design principles that help write clean, maintainable, and scalable code:
 
@@ -824,7 +824,7 @@ What happens is:
 - Dependency is inverted → OrderService depends on Database (abstraction)
 - Loose coupling → OrderService does not care which database is used
 
-2️⃣ How do SOLID principles help in large systems?
+#### ↳ Follow-up: How do SOLID principles help in large systems?
 
 1. Reduce tight coupling between components
 2. Make code easier to extend without breaking existing logic
@@ -834,7 +834,7 @@ What happens is:
 
 > 👉 They control complexity as the system grows.
 
-3️⃣ Which SOLID principle is most commonly violated?
+#### ↳ Follow-up: Which SOLID principle is most commonly violated?
 
 SRP (Single Responsibility Principle)
 
@@ -877,9 +877,8 @@ System.out.println(a.equals(b)); // true  (same content)
 | Mutability      | ❌ Immutable               | ✅ Mutable                  | ✅ Mutable                  |
 | Thread Safe     | ✅ Yes                     | ❌ No                       | ✅ Yes                      |
 | Performance     | ❌ Slow                    | 🚀 Fastest                  | ⚠️ Slower                   |
-| Memory          | ❌ High                    | ✅ Efficient                | ⚠️ Moderate                 |
-| Synchronization | ❌ No                      | ❌ No                       | ✅ Yes                      |
-| Memory          | String Constant Pool (SCP) | object → Heap & value → SCP | object → Heap & value → SCP |
+| Synchronization | ❌ Not needed (immutable)   | ❌ No                       | ✅ Yes (every method)       |
+| Where it lives  | Heap; **literals** are shared in the String Pool | Heap (a growable internal array) | Heap (a growable internal array) |
 
 ```java
 // BAD: creates multiple objects
@@ -894,6 +893,8 @@ for(int i = 0; i < 1000; i++) {
     sb.append(i);
 }
 ```
+
+> 💡 Each `s = s + i` creates a **new** String (strings are immutable) → O(n²) copying in a loop. A single expression like `"a" + b + c` is fine — the compiler optimises it. Use `StringBuilder` in loops; `StringBuffer` is a legacy synchronized version you rarely need.
 
 ---
 
@@ -965,7 +966,7 @@ try (Resource res = new Resource()) {
 
 👉 **Focus:** _How objects are created_
 
-❓ Problem They Solve
+**Problem they solve:**
 
 - Too many `new` keywords
 - Tight coupling to concrete classes
@@ -982,7 +983,7 @@ try (Resource res = new Resource()) {
 
 **Singleton** restricts object creation to one instance and provides a global access point to it.
 
-[Singleton Class](#L3202)
+See "How Do You Design a Singleton Class?" below for a full, thread-safe example.
 
 🔹 Factory
 
@@ -1025,7 +1026,7 @@ User user = new User.Builder()
 
 👉 **Focus:** _How classes and objects are composed_
 
-❓ Problem They Solve
+**Problem they solve:**
 
 - Rigid class structures
 - Difficult to extend functionality
@@ -1115,7 +1116,7 @@ class ServiceProxy {
 
 👉 **Focus:** _How objects interact and communicate_
 
-❓ Problem They Solve
+**Problem they solve:**
 
 - Hard-coded logic
 - Too many `if-else`
@@ -1194,15 +1195,16 @@ _(All extend `Exception` but NOT `RuntimeException`)_
 - **SQLException** – Database access error
 - **ClassNotFoundException** – Class not found at runtime loading
 - **InterruptedException** – Thread interrupted during execution
-- **FileNotFoundException** – Not implemented `Cloneable` but `clone()` is called
+- **FileNotFoundException** – A file to open doesn't exist (a subclass of IOException)
+- **CloneNotSupportedException** – `clone()` called on a class that doesn't implement `Cloneable`
 
 👉 **You cannot realistically name all checked exceptions**
 (There are **100+**, including custom ones)
 
 ✔ **Unchecked Exceptions**
 
-- Checked at **runtime**
-- Occur due to **programming mistakes**
+- **Not checked by the compiler** — no `try`/`throws` required (all exceptions happen at runtime; the difference is the compile-time check)
+- Usually caused by **programming mistakes** or broken business rules
 
 **Very common ones (must remember):**
 _(Extend `RuntimeException`)_
@@ -1233,7 +1235,7 @@ class MyUnchecked extends RuntimeException {}
 - **NoClassDefFoundError** – Class missing at runtime
 - **VirtualMachineError** – JVM internal failure
 
-🤔❓ **`throw` vs `throws`**
+#### ↳ Follow-up: **`throw` vs `throws`**
 
 | throw                                  | throws                        |
 | -------------------------------------- | ----------------------------- |
@@ -1290,6 +1292,8 @@ public class JnaDemo {
 🟢 No C code written
 🟢 No JNI
 🟢 Clean Java interface
+
+> 💡 Since **Java 22**, the built-in **Foreign Function & Memory API** (`java.lang.foreign`) does the same without a library — the modern standard replacement for JNI and JNA.
 
 ---
 
@@ -1438,10 +1442,8 @@ map.entrySet()    // Set of key-value pairs
 **Queue** - _First In, First Out_, The first element added is the first one removed
 **Stack** - _Last In, First Out_, The last element added is removed first
 **Deque** - _Double-Ended Queue_, You can add or remove elements **from both front and end**
-**Shift** - Remove the **first element**
-**Unshift** - Add an element **at the beginning**
 
-1️⃣ Why `LinkedList` supports Queue and Deque?
+#### ↳ Follow-up: Why `LinkedList` supports Queue and Deque?
 
 In Java, the `LinkedList` class already implements the `Queue` and `Deque` interface
 
@@ -1521,10 +1523,10 @@ A HashMap stores data in key–value pairs and allows fast insertion, deletion, 
 
 Internally, a HashMap consists of:
 
-- An array of buckets
-- Each bucket can store:
-  1. Linked List (Java 7 & earlier)
-  2. Red-Black Tree (Java 8+, when collisions are high)
+- An array of buckets (default 16)
+- Each bucket holds its entries as:
+  1. A **linked list** (always in Java 7; the normal case in Java 8+)
+  2. A **red-black tree** (Java 8+, only when one bucket gets crowded — see step 4)
 
 Each stored entry is called a Node:
 
@@ -1575,7 +1577,7 @@ If:
 - Capacity is **at least 64**
 
 Then:
-👉 The linked list is converted into a **Red-Black Tree**
+👉 The linked list is converted into a **Red-Black Tree** (if the table is smaller than 64, HashMap **resizes** instead; a tree shrinks back to a list at 6 entries)
 
 This improves lookup time:
 
@@ -1587,14 +1589,11 @@ This improves lookup time:
 map.get("apple");
 ```
 
-    - Compute `hashCode()` of `"apple"`
-    - Find bucket index
-    - Traverse in the Linked list **or** Red-Black Tree
-    - Use `equals()` to find exact key
-    - if `equals()` is false, it is called a **hash collision**. Two keys can have the same hashCode() but equals() can return false.
-    - HashMap keeps searching
-    - If key matches → Returns **the value**
-    - If key not matches → Returns **null**
+- Compute `hashCode()` of `"apple"`
+- Find bucket index
+- Traverse the linked list **or** red-black tree in that bucket
+- Use `equals()` to find the exact key — two different keys can share a hash code (a **collision**), so the hash alone isn't enough
+- Key found → return **the value**; not found → return **null**
 
 6. Resizing (Rehashing)
 
@@ -1625,11 +1624,18 @@ ConcurrentHashMap uses an array of buckets, just like HashMap. Each bucket holds
 
 When a thread reads from a ConcurrentHashMap, it usually does not lock anything at all. It simply reads the value. This allows many threads to read at the same time, which makes it very fast.
 
-When a thread writes (put or remove), it locks only the bucket where the key belongs—not the entire map. So:
+When a thread writes (put or remove), it locks only the bucket where the key belongs—not the entire map. (An empty bucket is filled with a lock-free **CAS**; a non-empty one is locked with `synchronized` on its first node.) So:
 
 - Thread A can update bucket #2
 - Thread B can update bucket #7 at the same time
 - They do not block each other
+
+**Interview extras:**
+
+- Java 7 used **segments** (16 sub-maps, each with a lock); Java 8 replaced them with per-bucket locking.
+- ❌ **No `null` keys or values** — `get()` returning `null` must mean "absent" without ambiguity in concurrent code.
+- Iterators are **weakly consistent**: they never throw `ConcurrentModificationException` and may or may not show changes made during iteration.
+- Use atomic methods for read-modify-write: `merge`, `compute`, `putIfAbsent` — not `get` then `put`.
 
 ---
 
@@ -1642,7 +1648,7 @@ When a thread writes (put or remove), it locks only the bucket where the key bel
 | **Ordering**                    | Does **not** maintain any order | Maintains **insertion order** (or **access order** if enabled) | Maintains keys in **sorted order** (natural or comparator) |
 | **How order is achieved**       | No ordering logic               | Uses a **doubly linked list** connecting entries               | Uses a **Red-Black Tree** to keep keys sorted              |
 | **Internal Data Structure**     | Array + Linked List / Tree      | HashMap + **Doubly Linked List**                               | **Red-Black Tree**                                         |
-| **Time Complexity (get / put)** | O(1) average, O(n) worst        | O(1) average, O(n) worst                                       | O(log n) always                                            |
+| **Time Complexity (get / put)** | O(1) average, O(log n) worst (Java 8+ tree bins) | O(1) average, O(log n) worst                    | O(log n) always                                            |
 | **Performance Impact**          | 🚀 Fastest due to no ordering   | ⚡ Slightly slower (extra pointers for order)                  | 🐢 Slower due to tree balancing                            |
 | **Null Keys**                   | One null key allowed            | One null key allowed                                           | ❌ Not allowed (sorting needs comparison)                  |
 | **Null Values**                 | Allowed                         | Allowed                                                        | Allowed                                                    |
@@ -1745,13 +1751,10 @@ for (int i : list) {
 3. `it.next()` detects mismatch
 4. Exception is thrown → **fail-fast behavior**
 
-A **fail-safe iterator** allows modification during iteration because it **iterates over a cloned (snapshot) copy** of the collection.
+A **fail-safe** (non-fail-fast) iterator allows modification during iteration and never throws `ConcurrentModificationException`. Two kinds:
 
-- No exception thrown
-- Thread-safe
-- Slightly slower, higher memory usage
-
-**Examples:** `CopyOnWriteArrayList`, `ConcurrentHashMap`
+- **Snapshot** — iterates over a copy taken when the iterator was created; later changes are not seen. `CopyOnWriteArrayList`, `CopyOnWriteArraySet` (every write copies the array → great for read-mostly lists, costly for frequent writes).
+- **Weakly consistent** — iterates over the live structure; may or may not show changes made during iteration. `ConcurrentHashMap`, `ConcurrentLinkedQueue`.
 
 ```java
 Iterator<Integer> it = list.iterator();
@@ -1913,7 +1916,7 @@ System.out.println(list); // Output: [1 Amit, 2 Neha, 3 Ravi]
 
 ```
 
-1️⃣ Can a class implement **multiple Comparables**?
+#### ↳ Follow-up: Can a class implement **multiple Comparables**?
 
 ❌ **No**
 
@@ -1923,7 +1926,7 @@ class A implements Comparable<A>, Comparable<B> { } // ❌ illegal
 
 📌 Reason: `Comparable` defines **only one natural ordering**.
 
-2️⃣ Can a class have **multiple Comparators**?
+#### ↳ Follow-up: Can a class have **multiple Comparators**?
 
 ✅ **Yes**
 
@@ -1934,7 +1937,7 @@ Comparator<Student> byRoll = (a, b) -> a.roll - b.roll;
 
 📌 Reason: Comparators define **external & multiple** sorting logic.
 
-3️⃣ Will `Collections.sort()` work **without Comparable**?
+#### ↳ Follow-up: Will `Collections.sort()` work **without Comparable**?
 
 ❌ **No**
 
@@ -1944,7 +1947,7 @@ Collections.sort(list); // requires Comparable
 
 📌 Reason: Works **only if elements implement `Comparable`**
 
-4️⃣ Will `Collections.sort(list, comparator)` work **without Comparable**?
+#### ↳ Follow-up: Will `Collections.sort(list, comparator)` work **without Comparable**?
 
 ✅ **Yes**
 
@@ -1954,7 +1957,7 @@ Collections.sort(list, comparator);
 
 📌 Reason: Comparable is **not required** when Comparator is provided.
 
-5️⃣ Is `Comparator` a **functional interface**?
+#### ↳ Follow-up: Is `Comparator` a **functional interface**?
 
 ✅ **Yes**
 
@@ -1964,7 +1967,7 @@ Comparator<Integer> c = (a, b) -> b - a;
 
 📌 Reason: Because it has **one abstract method**: `compare()`.
 
-6️⃣ Which has **higher priority**: Comparable or Comparator?
+#### ↳ Follow-up: Which has **higher priority**: Comparable or Comparator?
 
 🏆 **Comparator**
 
@@ -1974,7 +1977,7 @@ Collections.sort(list, comparator);
 
 📌 Reason: Comparator **overrides natural ordering**.
 
-7️⃣ Does `Comparator` allow sorting in **reverse order** easily?
+#### ↳ Follow-up: Does `Comparator` allow sorting in **reverse order** easily?
 
 ✅ **Yes**
 
@@ -2033,7 +2036,7 @@ list.add("D"); // ❌ throws UnsupportedOperationException
 
 ```
 
-🤔❓ When is this useful?
+#### ↳ Follow-up: When is this useful?
 
 1.  When multiple threads read the same data
 
@@ -2214,9 +2217,11 @@ set.add(new User(1));
 System.out.println(set.contains(new User(1))); // false ❌
 ```
 
-- Default `hashCode()` is memory-based
-- Objects go into **different buckets**
-- `equals()` is never called
+- Default `hashCode()` is an **identity** hash (per object, not based on fields)
+- Equal-looking objects usually land in **different buckets**
+- So `equals()` is never even called for them
+
+> **Rule:** if two objects are `equals()`, they **must** return the same `hashCode()`. Override both together — or use a `record`, which generates both from its fields.
 
 ---
 
@@ -2729,6 +2734,8 @@ nums.stream()
 - `filter()` → **changes stream content**
 - `peek()` → **just observes**
 
+> ⚠️ **Trap:** `peek()` may **not run at all**. Streams are lazy, and since Java 9 `List.of(1, 2, 3).stream().peek(System.out::println).count()` prints nothing — the size is already known, so the elements are never visited.
+
 ---
 
 ### ❓ `findFirst()` vs `findAny()`
@@ -3106,7 +3113,7 @@ public class Child extends Parent {
 
 3. **Interface Level**
 
-Interface Declaration is same as [class-level](#L2350)
+Interface declarations follow the same rules as class-level access (public or package-private).
 
 Interface Members: (❗Implicit rules)
 
@@ -3414,6 +3421,19 @@ protected Object clone() throws CloneNotSupportedException {
 
 ✔ Prevents object cloning
 
+7️⃣ **The shortcut: an enum singleton**
+
+```java
+public enum AppConfig {
+    INSTANCE;
+    public String apiUrl() { return "https://api.example.com"; }
+}
+```
+
+The JVM guarantees one instance, thread-safe creation, and protection against reflection, serialization and cloning — all the steps above for free. Its only limits: it can't extend another class, and it's created when the enum class is first used.
+
+> In Spring apps you rarely write singletons by hand: a bean is one instance per container by default.
+
 ---
 
 ### ❓ AutoBoxing & AutoUnboxing
@@ -3484,10 +3504,10 @@ short s = c;    // ❌ compile-time error
 
 ```java
 byte b = 10;
-double d = b;  // byte → int → double (internally)
+double d = b;  // byte → double directly (any step along the chain is allowed)
 ```
 
-> 💡 Compiler inserts intermediate widening automatically.
+> ⚠️ Widening never needs a cast, but `int → float` and `long → float/double` can **lose precision** for very large numbers (`float` keeps only ~7 digits).
 
 byte - 8 bits → `-128` to `127`
 short - 16 bits → `-32,768` to `32,767`
@@ -3497,13 +3517,19 @@ long - 64 bits `-9,223,372,036,854,775,808` to `9,223,372,036,854,775,807`
 float - 32-bit floating point
 double - 64-bit floating point
 
-✔ Example 4: Widening vs Autoboxing (Very Important)
+✔ Example 4: Widening vs Autoboxing (Very Important — a classic trap)
+
+Java will **widen** OR **box**, but it will **not widen and then box** in one step:
 
 ```java
 byte b = 10;
 
-Integer i = b;  // byte → int → Integer (widening + boxing)
-Long l = b;     // byte → long → Long
+Integer i = b;  // ❌ compile error: byte cannot be converted to Integer
+Long l = b;     // ❌ compile error: byte cannot be converted to Long
+
+int n = b;      // ✅ widening only
+Integer i2 = n; // ✅ boxing only
+Object o = b;   // ✅ boxing to Byte, then Byte is an Object (o.getClass() → Byte)
 ```
 
 ✔ Example 5: Narrowing
@@ -3516,7 +3542,7 @@ int x = 130;
 byte b = (byte) x;  // -126 (overflow)
 ```
 
-🤔❓ Why does Java allow `byte → double` but not `double → byte`?
+#### ↳ Follow-up: Why does Java allow `byte → double` but not `double → byte`?
 
 - byte → double is widening (safe range)
 - double → byte is narrowing (data loss risk)

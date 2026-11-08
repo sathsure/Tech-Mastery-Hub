@@ -92,7 +92,7 @@ const doubled = computed(() => count() * 2);
 count.set(5);   // ✅ Only doubled() and templates that read count() refresh
 ```
 
-> 💡 **Future direction:** Angular is moving toward "zoneless" apps where Signals replace zone.js entirely (`provideExperimentalZonelessChangeDetection`).
+> 💡 **Zoneless Angular:** apps can run **without zone.js** — change detection is triggered by signals, the `async` pipe, template events and `markForCheck()`. It was experimental in v18, became stable in **v20** (`provideZonelessChangeDetection()`), and is the **default for new projects from v21**.
 
 ---
 
@@ -131,14 +131,14 @@ Together they decide how your app is **built, served, updated, and rendered** �
 
 ---
 
-### Vite (Angular v17+ default)
+### esbuild + Vite (Angular v17+ default: the "application" builder)
 
 | Component | Role |
 |-----------|------|
-| Vite Dev Server | Uses **native ES modules** — boots instantly with no upfront bundling |
-| Vite Build Tool | Uses **esbuild** for fast dev transforms; **Rollup** for production builds |
+| **esbuild** | Compiles and bundles the app — for `ng build` (production) and for the dev server |
+| **Vite** | Used **only as the dev server** (`ng serve`): serves the esbuild output and handles reloads |
 
-> 💡 **Why Vite is faster:** It serves ES modules directly to the browser during development, so there's no big bundle to compile up front. The browser fetches modules as needed.
+> 💡 **Why it's faster:** esbuild is written in Go and is many times faster than Webpack, and the dev server only rebuilds what changed. Angular does **not** use Vite's Rollup-based production build.
 
 ---
 
@@ -147,9 +147,8 @@ Together they decide how your app is **built, served, updated, and rendered** �
 ```
 Angular 8   →  View Engine  +  Webpack
 Angular 9   →  Ivy          +  Webpack
-Angular 16  →  Ivy          +  esbuild (partial)
-Angular 17+ →  Ivy          +  Vite + esbuild
-Angular 19  →  Ivy          +  Vite + esbuild + Rollup
+Angular 16  →  Ivy          +  esbuild builder (developer preview)
+Angular 17+ →  Ivy          +  esbuild (build) + Vite (dev server) — default for new projects
 ```
 
 ---
@@ -167,8 +166,10 @@ Angular 19  →  Ivy          +  Vite + esbuild + Rollup
 
 | Mode | When | Use Case |
 |------|------|----------|
-| **JIT** (Just-In-Time) | Compiles in the browser at runtime | Development |
-| **AOT** (Ahead-Of-Time) | Compiles during build | Production ✅ |
+| **JIT** (Just-In-Time) | Compiles templates in the browser at runtime | Rare today (some tests, dynamic templates) |
+| **AOT** (Ahead-Of-Time) | Compiles templates during the build | **Default for dev and production since Angular 9** ✅ |
+
+> 💡 AOT catches template errors at build time, ships no compiler to the browser and starts faster.
 
 ---
 
@@ -254,9 +255,9 @@ Source (.ts + .html) ──► Ivy Compiler ──► Pure JS ──► esbuild 
 
 | ❓ Question | 💬 30-Second Answer |
 |------------|---------------------|
-| Webpack vs Vite? | Vite is faster — it doesn't bundle everything upfront. |
+| Webpack vs esbuild/Vite? | esbuild builds much faster; Vite serves it in development. |
 | Ivy vs View Engine? | Ivy is faster, smaller, and more flexible. |
-| AOT vs JIT? | AOT for production, JIT for development. |
+| AOT vs JIT? | AOT compiles templates at build time — the default everywhere since v9. |
 | Dirty checking? | Angular checks bindings on every change detection cycle. |
 | HMR? | Updates modules without reloading the page. |
 
@@ -384,7 +385,7 @@ ng update @angular/core@N @angular/cli@N
 
 Where `N` is the next major version number.
 
-> 💡 **Use the [Angular Update Guide](https://update.angular.io/)** — it generates an exact step-by-step migration checklist tailored to your `from → to` versions.
+> 💡 **Use the [Angular Update Guide](https://angular.dev/update-guide)** — it generates an exact step-by-step migration checklist tailored to your `from → to` versions.
 
 > 📌 **Pro tip:** Update **one major version at a time**, run all tests, fix any deprecation warnings, then update again.
 
@@ -394,24 +395,23 @@ Where `N` is the next major version number.
 
 ### 📝 Answer
 
-Here's a concise migration cheat-sheet:
+A migration cheat-sheet:
 
 | 🗓 Era | What Changed |
 |--------|--------------|
-| Angular 9 | View Engine → **Ivy** |
-| Angular 9+ | `Http` → **`HttpClient`** |
-| Angular 4+ | `Renderer` → **`Renderer2`** |
-| Angular 9 | `entryComponents` removed (Ivy doesn't need them) |
-| Angular 14+ | NgModules → **Standalone components** |
-| Angular 17+ | Webpack → **Vite + esbuild** |
-| Angular 11+ | TSLint → **ESLint** |
-| Angular 12+ | **Strict mode** enabled by default |
-| Angular 13 | Differential loading removed |
-| Angular 6+ | RxJS chained operators → **pipeable operators** (`.pipe(map(), filter())`) |
-| Angular 15+ | Lazy loading syntax: `loadChildren: () => import('./...').then(m => m.X)` |
-| Angular 16+ | **Signals** introduced |
-| Angular 17+ | New control flow: `*ngIf` → `@if`, `*ngFor` → `@for`, `*ngSwitch` → `@switch` |
-| Angular 18+ | **Functional HTTP interceptors** preferred over class-based |
+| Angular 4 | `Renderer` → **`Renderer2`** |
+| Angular 4.3 → 8 | `Http` → **`HttpClient`** (old `Http` removed in v8) |
+| Angular 6 | RxJS 6: chained operators → **pipeable operators** (`.pipe(map(), filter())`) |
+| Angular 8 | Lazy loading: string `loadChildren: './x#XModule'` → `loadChildren: () => import('./x').then(m => m.XModule)` |
+| Angular 9 | View Engine → **Ivy**; `entryComponents` no longer needed |
+| Angular 11–12 | TSLint → **ESLint** |
+| Angular 12 | **Strict mode** on by default for new projects |
+| Angular 13 | IE11 support and differential loading removed |
+| Angular 14–15 | **Standalone components** (preview in 14, stable in 15); **functional guards & interceptors** |
+| Angular 16 | **Signals** introduced |
+| Angular 17 | New control flow: `*ngIf` → `@if`, `*ngFor` → `@for`, `*ngSwitch` → `@switch`; `@defer`; esbuild + Vite by default |
+| Angular 19 | Standalone is the default (`standalone: true` no longer needed) |
+| Angular 20–21 | Zoneless change detection stable (v20), default for new apps (v21) |
 
 #### 🥇 Biggest practical impacts when upgrading
 
@@ -431,10 +431,10 @@ Here's a concise migration cheat-sheet:
 |---------|--------------|
 | Zone.js | Tells Angular *when* to run CD |
 | Signals | Tell Angular *what* to update (granular) |
-| OnPush | Skip CD unless `@Input` reference changes |
+| OnPush | Check the component only when an `@Input` reference changes, it handles an event, an `async` pipe/signal it reads updates, or `markForCheck()` is called |
 | Ivy | Current compiler; locality + tree-shaking |
 | AOT | Compile at build time (production) |
-| JIT | Compile in browser (dev only) |
+| JIT | Compile in the browser (rarely used now) |
 | HMR | Update modules without page reload |
 | `sessionStorage` | Refresh-safe, tab-scoped |
 | API Gateway | Hide microservice topology, single entry |

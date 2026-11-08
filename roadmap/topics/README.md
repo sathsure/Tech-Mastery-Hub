@@ -42,16 +42,37 @@ Build services with JavaScript on the server.
 
 Ship, run and scale applications.
 
-1. [ ] [DevOps](../topics/devops.md)
-2. [ ] [AWS](../topics/aws.md)
-3. [ ] [Microservices](../topics/microservices.md)
-4. [ ] [Kafka & RabbitMQ](../topics/messaging.md)
+1. [ ] [Git](../topics/git.md)
+2. [ ] [DevOps](../topics/devops.md)
+3. [ ] [AWS](../topics/aws.md)
+4. [ ] [Microservices](../topics/microservices.md)
+5. [ ] [Kafka & RabbitMQ](../topics/messaging.md)
+
+## System design
+
+Design systems that scale and stay up.
+
+1. [ ] [Networking & HTTP](../topics/networking.md)
+2. [ ] [SQL](../topics/database-sql.md)
+3. [ ] [REST API](../topics/rest-api.md)
+4. [ ] [System Design](../topics/system-design.md)
+5. [ ] [Caching & Redis](../topics/caching.md)
+6. [ ] [Microservices](../topics/microservices.md)
+7. [ ] [Kafka & RabbitMQ](../topics/messaging.md)
 
 ## Coding interviews and AI
 
 Crack coding rounds and build with AI.
 
 1. [ ] [DSA (Python)](../topics/dsa.md)
-2. [ ] [AI & LLMs](../topics/ai.md)
+2. [ ] [Design Patterns](../topics/design-patterns.md)
+3. [ ] [Testing](../topics/testing.md)
+4. [ ] [AI & LLMs](../topics/ai.md)
+
+## Interview day
+
+Prepare for the non-technical rounds.
+
+1. [ ] [Behavioral & HR](../topics/behavioral.md)
 
 Looking for a job role? See the [role roadmaps](../roles/README.md).

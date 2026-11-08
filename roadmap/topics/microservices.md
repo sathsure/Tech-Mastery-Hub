@@ -6,7 +6,46 @@
 - [REST API](../topics/rest-api.md)
 - Overview: [Microservices concepts](../../knowledge/concepts/microservices/README.md)
 
-## 1. How They Work
+## 1. Part 1 — Consistency
+
+1. [What is the CAP theorem?](../../interview/architecture/05-Distributed-Systems.md)
+   - [Which would you choose for a bank balance and for a "likes" counter?](../../interview/architecture/05-Distributed-Systems.md)
+   - [What is PACELC?](../../interview/architecture/05-Distributed-Systems.md)
+2. [What is eventual consistency?](../../interview/architecture/05-Distributed-Systems.md)
+   - [Where is eventual consistency not acceptable?](../../interview/architecture/05-Distributed-Systems.md)
+3. [What are ACID and BASE?](../../interview/architecture/05-Distributed-Systems.md)
+
+## 2. Part 2 — Transactions Across Services
+
+1. [Why can't you use a normal database transaction across microservices?](../../interview/architecture/05-Distributed-Systems.md)
+2. [What is the Saga pattern?](../../interview/architecture/05-Distributed-Systems.md)
+   - [Compensation vs rollback?](../../interview/architecture/05-Distributed-Systems.md)
+   - [Is a saga ACID?](../../interview/architecture/05-Distributed-Systems.md)
+3. [What is the Transactional Outbox pattern?](../../interview/architecture/05-Distributed-Systems.md)
+   - [What is CDC?](../../interview/architecture/05-Distributed-Systems.md)
+4. [What are "at most once", "at least once" and "exactly once" delivery?](../../interview/architecture/05-Distributed-Systems.md)
+   - [How do you make a consumer idempotent?](../../interview/architecture/05-Distributed-Systems.md)
+
+## 3. Part 3 — Coordination
+
+1. [What is a distributed lock and when do you need one?](../../interview/architecture/05-Distributed-Systems.md)
+   - [Why does the lock need an expiry?](../../interview/architecture/05-Distributed-Systems.md)
+   - [What is a fencing token?](../../interview/architecture/05-Distributed-Systems.md)
+2. [What is leader election?](../../interview/architecture/05-Distributed-Systems.md)
+   - [What is split brain?](../../interview/architecture/05-Distributed-Systems.md)
+3. [What is a quorum?](../../interview/architecture/05-Distributed-Systems.md)
+4. [How do you generate unique IDs across many servers?](../../interview/architecture/05-Distributed-Systems.md)
+
+## 4. Part 4 — Failures
+
+1. [What are retries with exponential backoff and jitter?](../../interview/architecture/05-Distributed-Systems.md)
+2. [What is a timeout and why should every remote call have one?](../../interview/architecture/05-Distributed-Systems.md)
+3. [What is the bulkhead pattern?](../../interview/architecture/05-Distributed-Systems.md)
+   - [How does it differ from a circuit breaker?](../../interview/architecture/05-Distributed-Systems.md)
+4. [Tricky: The network is reliable, right?](../../interview/architecture/05-Distributed-Systems.md)
+5. [Tricky: A request timed out — did the operation happen?](../../interview/architecture/05-Distributed-Systems.md)
+
+## 5. How They Work
 
 1. [How does RabbitMQ deliver messages?](../../interview/architecture/messaging-rabbitmq-kafka.md)
 2. [How does Kafka deliver events?](../../interview/architecture/messaging-rabbitmq-kafka.md)
@@ -14,55 +53,20 @@
 4. [What is the difference between RabbitMQ and Kafka?](../../interview/architecture/messaging-rabbitmq-kafka.md)
 5. [What are common misconceptions about RabbitMQ and Kafka?](../../interview/architecture/messaging-rabbitmq-kafka.md)
 
-## 2. When to Use Which
+## 6. When to Use Which
 
 1. [When should you use RabbitMQ (use cases)?](../../interview/architecture/messaging-rabbitmq-kafka.md)
 2. [When should you use Kafka (use cases)?](../../interview/architecture/messaging-rabbitmq-kafka.md)
 3. [How do you choose between RabbitMQ and Kafka for a requirement?](../../interview/architecture/messaging-rabbitmq-kafka.md)
 
-## 3. DESIGN STRUCTURE (REST Orchestration)
+## 7. Microservice Design Walkthrough: Payment Dashboard
 
-1. [Repo 1 → dashboard-service](../../interview/architecture/microservice-architecture.md)
-
-## 4. DESIGN STRUCTURE (REST Orchestration) › Repo 1 → dashboard-service
-
-1. [Repo 2 → credit-card-service](../../interview/architecture/microservice-architecture.md)
-
-## 5. DESIGN STRUCTURE (REST Orchestration) › Repo 2 → credit-card-service
-
-1. [Repo 3 → upi-service](../../interview/architecture/microservice-architecture.md)
-
-## 6. DATA FLOW
-
-1. [User closes Credit Subtask](../../interview/architecture/microservice-architecture.md)
-
-## 7. DATABASE DESIGN
-
-1. [DATABASE 1 → dashboard_db](../../interview/architecture/microservice-architecture.md)
-
-## 8. DATABASE DESIGN › DATABASE 1 → dashboard_db
-
-1. [DATABASE 2 → credit_db](../../interview/architecture/microservice-architecture.md)
-
-## 9. DATABASE DESIGN › DATABASE 2 → credit_db
-
-1. [DATABASE 3 → upi_db](../../interview/architecture/microservice-architecture.md)
-
-## 10. DATABASE DESIGN › DATABASE 3 → upi_db
-
-1. [TOTAL TABLE COUNT (Current System)](../../interview/architecture/microservice-architecture.md)
-
-## 11. DATABASE DESIGN › TOTAL TABLE COUNT (Current System)
-
-1. [HOW DATA IS PASSED](../../interview/architecture/microservice-architecture.md)
-
-## 12. HOW DATA IS PASSED
-
-1. [FUTURE: ADD WalletService](../../interview/architecture/microservice-architecture.md)
-
-## 13. FUTURE: ADD WalletService
-
-1. [DATABASE 4 → wallet_db](../../interview/architecture/microservice-architecture.md)
+1. [Design a payment dashboard with microservices: a task has subtasks paid by credit card or UPI, and the task closes when every subtask is paid. How do you structure the services and databases?](../../interview/architecture/microservice-architecture.md)
+2. [What tables does each service own in the payment dashboard design?](../../interview/architecture/microservice-architecture.md)
+3. [What happens step by step when a user closes a credit-card subtask?](../../interview/architecture/microservice-architecture.md)
+4. [How do you add a Wallet payment type to the payment dashboard later?](../../interview/architecture/microservice-architecture.md)
+5. [What are the weak points of the payment dashboard design and how would you improve them?](../../interview/architecture/microservice-architecture.md)
+   - [Orchestration or choreography here?](../../interview/architecture/microservice-architecture.md)
 
 ## Related roles
 

@@ -1845,6 +1845,255 @@
                           "related_concepts":  [
                                                    "database/sql"
                                                ]
+                      },
+                      {
+                          "id":  "interview.architecture.04-system-design.md",
+                          "path":  "interview/architecture/04-System-Design.md",
+                          "content_type":  "interview",
+                          "domain":  "architecture",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  20996,
+                          "source_of_truth":  false,
+                          "related_concepts":  [
+                                                   "system-design"
+                                               ]
+                      },
+                      {
+                          "id":  "interview.architecture.05-distributed-systems.md",
+                          "path":  "interview/architecture/05-Distributed-Systems.md",
+                          "content_type":  "interview",
+                          "domain":  "architecture",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  10496,
+                          "source_of_truth":  false,
+                          "related_concepts":  [
+                                                   "system-design",
+                                                   "microservices"
+                                               ]
+                      },
+                      {
+                          "id":  "interview.backend.java.10-design-patterns-solid.md",
+                          "path":  "interview/backend/java/10-Design-Patterns-SOLID.md",
+                          "content_type":  "interview",
+                          "domain":  "backend",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  15367,
+                          "source_of_truth":  false,
+                          "related_concepts":  [
+                                                   "design-patterns",
+                                                   "java"
+                                               ]
+                      },
+                      {
+                          "id":  "interview.backend.java.11-java-concurrency.md",
+                          "path":  "interview/backend/java/11-Java-Concurrency.md",
+                          "content_type":  "interview",
+                          "domain":  "backend",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  13193,
+                          "source_of_truth":  false,
+                          "related_concepts":  [
+                                                   "java"
+                                               ]
+                      },
+                      {
+                          "id":  "interview.testing.01-testing.md",
+                          "path":  "interview/testing/01-Testing.md",
+                          "content_type":  "interview",
+                          "domain":  "testing",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  11399,
+                          "source_of_truth":  false,
+                          "related_concepts":  [
+                                                   "testing"
+                                               ]
+                      },
+                      {
+                          "id":  "interview.coding.02-dsa-patterns.md",
+                          "path":  "interview/coding/02-DSA-Patterns.md",
+                          "content_type":  "interview",
+                          "domain":  "coding",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  17658,
+                          "source_of_truth":  false,
+                          "related_concepts":  [
+                                                   "dsa"
+                                               ]
+                      },
+                      {
+                          "id":  "interview.database.03-sql-interview-queries.md",
+                          "path":  "interview/database/03-SQL-Interview-Queries.md",
+                          "content_type":  "interview",
+                          "domain":  "database",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  11788,
+                          "source_of_truth":  false,
+                          "related_concepts":  [
+                                                   "database/sql"
+                                               ]
+                      },
+                      {
+                          "id":  "interview.devops.01-git.md",
+                          "path":  "interview/devops/01-Git.md",
+                          "content_type":  "interview",
+                          "domain":  "devops",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  9162,
+                          "source_of_truth":  false,
+                          "related_concepts":  [
+                                                   "git"
+                                               ]
+                      },
+                      {
+                          "id":  "interview.architecture.06-caching-redis.md",
+                          "path":  "interview/architecture/06-Caching-Redis.md",
+                          "content_type":  "interview",
+                          "domain":  "architecture",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  9879,
+                          "source_of_truth":  false,
+                          "related_concepts":  [
+                                                   "caching"
+                                               ]
+                      },
+                      {
+                          "id":  "interview.architecture.07-docker-kubernetes.md",
+                          "path":  "interview/architecture/07-Docker-Kubernetes.md",
+                          "content_type":  "interview",
+                          "domain":  "architecture",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  13313,
+                          "source_of_truth":  false,
+                          "related_concepts":  [
+                                                   "devops"
+                                               ]
+                      },
+                      {
+                          "id":  "interview.architecture.08-networking-http.md",
+                          "path":  "interview/architecture/08-Networking-HTTP.md",
+                          "content_type":  "interview",
+                          "domain":  "architecture",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  11477,
+                          "source_of_truth":  false,
+                          "related_concepts":  [
+                                                   "networking"
+                                               ]
+                      },
+                      {
+                          "id":  "interview.behavioral.01-behavioral-hr.md",
+                          "path":  "interview/behavioral/01-Behavioral-HR.md",
+                          "content_type":  "interview",
+                          "domain":  "behavioral",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  8870,
+                          "source_of_truth":  false,
+                          "related_concepts":  [
+                                                   "behavioral"
+                                               ]
+                      },
+                      {
+                          "id":  "knowledge.concepts.system-design.readme.md",
+                          "path":  "knowledge/concepts/system-design/README.md",
+                          "content_type":  "concept",
+                          "domain":  "system-design",
+                          "canonical_concept":  "system-design",
+                          "extension":  ".md",
+                          "size_bytes":  762,
+                          "source_of_truth":  true,
+                          "related_concepts":  [
+                                                   "microservices"
+                                               ]
+                      },
+                      {
+                          "id":  "knowledge.concepts.design-patterns.readme.md",
+                          "path":  "knowledge/concepts/design-patterns/README.md",
+                          "content_type":  "concept",
+                          "domain":  "design-patterns",
+                          "canonical_concept":  "design-patterns",
+                          "extension":  ".md",
+                          "size_bytes":  629,
+                          "source_of_truth":  true,
+                          "related_concepts":  [
+                                                   "java"
+                                               ]
+                      },
+                      {
+                          "id":  "knowledge.concepts.testing.readme.md",
+                          "path":  "knowledge/concepts/testing/README.md",
+                          "content_type":  "concept",
+                          "domain":  "testing",
+                          "canonical_concept":  "testing",
+                          "extension":  ".md",
+                          "size_bytes":  599,
+                          "source_of_truth":  true,
+                          "related_concepts":  [
+
+                                               ]
+                      },
+                      {
+                          "id":  "knowledge.concepts.git.readme.md",
+                          "path":  "knowledge/concepts/git/README.md",
+                          "content_type":  "concept",
+                          "domain":  "git",
+                          "canonical_concept":  "git",
+                          "extension":  ".md",
+                          "size_bytes":  428,
+                          "source_of_truth":  true,
+                          "related_concepts":  [
+                                                   "devops"
+                                               ]
+                      },
+                      {
+                          "id":  "knowledge.concepts.caching.readme.md",
+                          "path":  "knowledge/concepts/caching/README.md",
+                          "content_type":  "concept",
+                          "domain":  "caching",
+                          "canonical_concept":  "caching",
+                          "extension":  ".md",
+                          "size_bytes":  509,
+                          "source_of_truth":  true,
+                          "related_concepts":  [
+                                                   "system-design"
+                                               ]
+                      },
+                      {
+                          "id":  "knowledge.concepts.networking.readme.md",
+                          "path":  "knowledge/concepts/networking/README.md",
+                          "content_type":  "concept",
+                          "domain":  "networking",
+                          "canonical_concept":  "networking",
+                          "extension":  ".md",
+                          "size_bytes":  528,
+                          "source_of_truth":  true,
+                          "related_concepts":  [
+                                                   "rest-api"
+                                               ]
+                      },
+                      {
+                          "id":  "knowledge.concepts.behavioral.readme.md",
+                          "path":  "knowledge/concepts/behavioral/README.md",
+                          "content_type":  "concept",
+                          "domain":  "behavioral",
+                          "canonical_concept":  "behavioral",
+                          "extension":  ".md",
+                          "size_bytes":  508,
+                          "source_of_truth":  true,
+                          "related_concepts":  [
+
+                                               ]
                       }
                   ]
 }

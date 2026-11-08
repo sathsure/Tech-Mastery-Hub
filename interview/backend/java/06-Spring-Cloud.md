@@ -1,6 +1,6 @@
 ![SpringCloud Image](/src/assets/backend/spring-cloud.png)
 
-### ❓ Why did your team choose microservices over monolith?\_
+### ❓ Why did your team choose microservices over monolith?
 
 ### 📝 Answer
 
@@ -82,7 +82,7 @@ public interface InventoryClient {
 ✔ Service name is stable, IP is not
 ✔ Discovery enables load balancing
 
-🤔❓ What is @FeignClient?
+#### ↳ Follow-up: What is @FeignClient?
 
 ✖️ Problem before Feign:
 
@@ -94,9 +94,13 @@ InventoryResponse res =
   restTemplate.getForObject("http://inventory-service/inventory/1", InventoryResponse.class);
 ```
 
-- Hard to maintain
-- Manual error handling
-- Deprecated for new development
+- Every call is hand-written: URL strings, conversions, error handling
+- In **maintenance mode** (not deprecated) — for new blocking code Spring 6.1+ recommends **`RestClient`**:
+
+```java
+RestClient client = RestClient.create("http://inventory-service");
+InventoryResponse res = client.get().uri("/inventory/{id}", 1).retrieve().body(InventoryResponse.class);
+```
 
 2. WebClient (reactive, non-blocking)
 
@@ -138,6 +142,8 @@ public interface InventoryClient {}
 ```
 
 > **`Feign`** is blocking. For high-throughput or streaming use cases, **`WebClient`** is more suitable.
+>
+> 💡 Spring Cloud OpenFeign is now feature-complete (maintenance mode). Spring's own alternative is the **HTTP interface client**: an interface with `@GetExchange("/inventory/{id}")` methods, backed by `RestClient` or `WebClient`.
 
 2️⃣ _PROBLEM: CONFIGURATION MANAGEMENT_
 
@@ -169,7 +175,7 @@ order-service-dev.yml
 order-service-prod.yml
 ```
 
-🤔❓ Explain Spring Cloud Config Server. Don’t define it — explain how it works.
+#### ↳ Follow-up: Explain Spring Cloud Config Server. Don’t define it — explain how it works.
 
 > Spring Cloud Config Server provides centralized external configuration for distributed microservices. It stores configuration in a version-controlled repository (usually Git) and allows client services to fetch environment-specific configuration at startup or runtime.
 
@@ -183,7 +189,7 @@ Microservice → Config Server → Git Repo
 - Config Server fetches from Git
 - Config is injected into the application context
 
-🤔❓ What annotations are required to create a Config Server?
+#### ↳ Follow-up: What annotations are required to create a Config Server?
 
 ```java
 @SpringBootApplication
@@ -201,25 +207,24 @@ public class ConfigServerApplication {
 ✔ Config Server is a normal Spring Boot app
 ✔ Runs independently from clients
 
-🤔❓ How does a microservice connect to Config Server?
+#### ↳ Follow-up: How does a microservice connect to Config Server?
 
-- Client connects during **bootstrap phase**
-- Config is loaded **before** application context
+Modern way (Spring Cloud 2020+ / Boot 2.4+): import it in **`application.yml`**:
 
 ```yaml
 spring:
   application:
-    name: order-service
-  cloud:
-    config:
-      uri: http://localhost:8888
+    name: order-service          # decides which files the server returns (order-service-*.yml)
+  config:
+    import: "optional:configserver:http://localhost:8888"   # drop "optional:" to fail if the server is down
 ```
 
-✔ Use `bootstrap.yml` (not `application.yml`)
-✔ Config loads **before beans are created**
-✔ App name maps to config file name
+✔ Config is loaded **before beans are created**
+✔ App name + active profile map to config file names
 
-🤔❓ How does Config Server know which config file to load?
+> Older apps used `spring.cloud.config.uri` in `bootstrap.yml`. Since Spring Cloud 2020 that only works if you add `spring-cloud-starter-bootstrap`.
+
+#### ↳ Follow-up: How does Config Server know which config file to load?
 
 Config Server uses:
 
@@ -232,7 +237,7 @@ order-service-dev.yml
 order-service-prod.yml
 ```
 
-🤔❓ What happens if Config Server is down?
+#### ↳ Follow-up: What happens if Config Server is down?
 
 > If Config Server is down and no fallback is configured, the microservice fails to start because configuration is required during bootstrap.
 
@@ -243,7 +248,7 @@ spring:
       fail-fast: false
 ```
 
-🤔❓ Can configuration be refreshed without restarting the service?
+#### ↳ Follow-up: Can configuration be refreshed without restarting the service?
 
 Yes, using **Spring Cloud Bus** or **Actuator refresh**.
 
@@ -255,7 +260,7 @@ Yes, using **Spring Cloud Bus** or **Actuator refresh**.
 ✔ Not all beans should be refreshable
 ✔ Avoid frequent refresh in production
 
-🤔❓ Where should secrets be stored? In Git?
+#### ↳ Follow-up: Where should secrets be stored? In Git?
 
 > Secrets should never be stored in plain Git. Use **encrypted values**, Vault, or cloud-native secret managers.
 
@@ -263,17 +268,17 @@ Yes, using **Spring Cloud Bus** or **Actuator refresh**.
 password: "{cipher}ENCRYPTED_VALUE"
 ```
 
-🤔❓ What is the difference between bootstrap.yml and application.yml?
+#### ↳ Follow-up: What is the difference between bootstrap.yml and application.yml?
 
 ✔️ Expected Answer
 
 | bootstrap.yml      | application.yml |
 | ------------------ | --------------- |
-| Loaded first       | Loaded later    |
-| Config Server info | App config      |
-| External config    | Internal config |
+| Loaded first, by a separate "bootstrap" context | The normal app config |
+| Held Config Server / Vault connection info | App settings |
+| **Legacy** — disabled by default since Spring Cloud 2020 (needs `spring-cloud-starter-bootstrap`) | Now also holds `spring.config.import: configserver:...` |
 
-🤔❓ How to externalize application properties?
+#### ↳ Follow-up: How to externalize application properties?
 
 Ways:
 
@@ -326,7 +331,7 @@ public InventoryResponse fallback(Long productId, Throwable ex) {
 }
 ```
 
-🤔❓ What do you mean by resilience in a microservices system?
+#### ↳ Follow-up: What do you mean by resilience in a microservices system?
 
 > Resilience is the ability of a system to continue functioning gracefully in the presence of partial failures, slow dependencies, or transient network issues.
 
@@ -334,7 +339,7 @@ public InventoryResponse fallback(Long productId, Throwable ex) {
 - Resilience is about **containing failures**
 - Goal is **system stability**, not perfect success
 
-🤔❓ Why do we need resilience patterns in microservices but not in monoliths?
+#### ↳ Follow-up: Why do we need resilience patterns in microservices but not in monoliths?
 
 In a **monolith**:
 
@@ -350,7 +355,7 @@ In **microservices**:
 
 > Microservices fail independently, monoliths fail together.
 
-🤔❓ Which resilience patterns do you commonly use?
+#### ↳ Follow-up: Which resilience patterns do you commonly use?
 
 - **Timeout** – always
 - **Retry** – transient failures
@@ -362,14 +367,14 @@ In **microservices**:
 ✔ Retry without breaker is dangerous
 ✔ Fallback must be meaningful
 
-🤔❓ Explain Circuit Breaker using a real scenario.
+#### ↳ Follow-up: Explain Circuit Breaker using a real scenario.
 
 - Detects failure rate
 - Opens circuit after threshold
 - Prevents repeated calls to failing service
 - Moves to half-open to test recovery
 
-🤔❓ Which annotation is used to define a fallback method in a microservices architecture when a service call fails?
+#### ↳ Follow-up: Which annotation is used to define a fallback method in a microservices architecture when a service call fails?
 
 Using Resilience4j:
 
@@ -400,7 +405,7 @@ public InventoryResponse fallback(Long productId, Throwable ex) {
 }
 ```
 
-🤔❓ What is the difference between Retry and Circuit Breaker?
+#### ↳ Follow-up: What is the difference between Retry and Circuit Breaker?
 
 | Retry                    | Circuit Breaker           |
 | ------------------------ | ------------------------- |
@@ -414,7 +419,7 @@ public InventoryResponse fallback(Long productId, Throwable ex) {
 ✖️ Retry alone can **kill your system**
 ✔ Always combine retry with breaker
 
-🤔❓ What happens if you configure retries incorrectly?
+#### ↳ Follow-up: What happens if you configure retries incorrectly?
 
 > Retries amplify failures if not controlled.
 
@@ -424,15 +429,22 @@ public InventoryResponse fallback(Long productId, Throwable ex) {
 ✔ Exponential backoff
 ✔ Retry only on idempotent calls
 
-🤔❓ What is `Bulkhead` pattern and why is it important?
+#### ↳ Follow-up: What is `Bulkhead` pattern and why is it important?
 
 - Isolates resources
 - Prevents one slow dependency from blocking others
 
 ```java
-@Bulkhead(name = "inventoryService", type = Bulkhead.Type.THREADPOOL)
+// SEMAPHORE (default): limits how many calls run at once; works with normal synchronous methods
+@Bulkhead(name = "inventoryService")
 public InventoryResponse checkStock(Long productId) {
     return inventoryClient.checkStock(productId);
+}
+
+// THREADPOOL: runs the call in its own small thread pool; the method must return a CompletableFuture
+@Bulkhead(name = "inventoryService", type = Bulkhead.Type.THREADPOOL)
+public CompletableFuture<InventoryResponse> checkStockAsync(Long productId) {
+    return CompletableFuture.completedFuture(inventoryClient.checkStock(productId));
 }
 ```
 
@@ -442,7 +454,7 @@ public InventoryResponse checkStock(Long productId) {
 ✔ Protect thread pools
 ✔ Bulkhead + Circuit Breaker = strong resilience
 
-🤔❓ How do you configure resilience without annotations?
+#### ↳ Follow-up: How do you configure resilience without annotations?
 
 Using **application.yml** (preferred for production)
 
@@ -456,7 +468,7 @@ resilience4j:
         slidingWindowSize: 10
 ```
 
-🤔❓ Where should resilience be applied?
+#### ↳ Follow-up: Where should resilience be applied?
 
 > At every remote call boundary.
 > 📌 Boundaries
@@ -465,7 +477,7 @@ resilience4j:
 ✔ External APIs
 ✔ Messaging consumers
 
-🤔❓ What are common mistakes teams make with resilience?
+#### ↳ Follow-up: What are common mistakes teams make with resilience?
 
 ✖️ Mistakes
 
@@ -517,7 +529,7 @@ spring:
 ❌ No business logic in gateway
 ✔ Backend APIs stay clean
 
-🤔❓ Why do we need an API Gateway in a microservices architecture?
+#### ↳ Follow-up: Why do we need an API Gateway in a microservices architecture?
 
 ✔️ Expected Senior Answer
 
@@ -528,7 +540,7 @@ spring:
 - Gateway = **edge service**
 - Backend services = **business logic only**
 
-🤔❓ What are the responsibilities of an API Gateway?
+#### ↳ Follow-up: What are the responsibilities of an API Gateway?
 
 ✔️ Correct Responsibilities
 
@@ -548,7 +560,7 @@ spring:
 
 > **If logic belongs to a domain, it does NOT belong in Gateway.**
 
-🤔❓ How does Spring Cloud Gateway route requests?
+#### ↳ Follow-up: How does Spring Cloud Gateway route requests?
 
 ✔️ Explanation
 
@@ -576,7 +588,7 @@ spring:
 - `lb://` → load-balanced via service discovery
 - Gateway never uses hardcoded IPs
 
-🤔❓ What annotations are commonly used in API Gateway?
+#### ↳ Follow-up: What annotations are commonly used in API Gateway?
 
 ✔️ Important Note (Senior Insight)
 
@@ -602,7 +614,7 @@ public class ApiGatewayApplication {
 ✔ No `@RestController` for routing
 ✔ Gateway ≠ REST API service
 
-🤔❓ How do services connect through API Gateway?
+#### ↳ Follow-up: How do services connect through API Gateway?
 
 ✔️ Flow Explanation
 
@@ -621,7 +633,7 @@ uri: lb://inventory-service
 ✔ Gateway talks to **service names**, not instances
 ✔ Discovery + Load Balancer handle actual routing
 
-🤔❓ Where should authentication and authorization happen?
+#### ↳ Follow-up: Where should authentication and authorization happen?
 
 ✔️ Senior Answer
 
@@ -641,7 +653,7 @@ http
 ✔ Token propagated downstream
 ✔ Zero trust between services
 
-🤔❓ Can API Gateway aggregate responses from multiple services?
+#### ↳ Follow-up: Can API Gateway aggregate responses from multiple services?
 
 ✔️ Correct Answer
 
@@ -658,7 +670,7 @@ http
 ✔ Gateway aggregation must be fast
 ❌ Gateway ≠ orchestration engine
 
-🤔❓ How do you implement rate limiting in API Gateway?
+#### ↳ Follow-up: How do you implement rate limiting in API Gateway?
 
 Example (Conceptual)
 
@@ -676,7 +688,7 @@ filters:
 ✔ Protect backend services
 ✔ Prevent abuse
 
-🤔❓ What happens if API Gateway goes down?
+#### ↳ Follow-up: What happens if API Gateway goes down?
 
 ✔️ Senior Answer
 
@@ -688,7 +700,7 @@ filters:
 ✔ Horizontal scaling is mandatory
 ✔ No local session storage
 
-🤔❓ What are common mistakes teams make with API Gateway?
+#### ↳ Follow-up: What are common mistakes teams make with API Gateway?
 
 ✖️ Anti-Patterns
 
@@ -738,7 +750,7 @@ traceId → service → service → service
 ✔ Metrics show symptoms
 ✔ Traces show root cause
 
-🤔❓ Why do we need distributed tracing in microservices?
+#### ↳ Follow-up: Why do we need distributed tracing in microservices?
 
 > In microservices, a single request flows across multiple services. Distributed tracing allows us to track that request end-to-end using a traceId, making debugging and performance analysis possible.
 
@@ -754,7 +766,7 @@ traceId → service → service → service
 ✔ Multiple services → Same traceId
 ✔ Without tracing, production debugging is guesswork
 
-🤔❓ Explain traceId and spanId.
+#### ↳ Follow-up: Explain traceId and spanId.
 
 - **Trace** → Entire request journey
 - **Span** → One unit of work within the trace
@@ -780,7 +792,7 @@ Payment Service (span3)
 ✔ spanId changes per service/method
 ✔ Parent-child span relationship matters
 
-🤔❓ How is trace context propagated between services?
+#### ↳ Follow-up: How is trace context propagated between services?
 
 - Trace context travels via **HTTP headers**
 - Automatically handled by Spring
@@ -799,7 +811,7 @@ X-B3-SpanId
 ✔ Propagation must be end-to-end
 ✔ Custom HTTP clients must be instrumented
 
-🤔❓ What annotations are used in Spring for tracing?
+#### ↳ Follow-up: What annotations are used in Spring for tracing?
 
 > In modern Spring Boot (3+), tracing is mostly automatic. Annotations are optional and used for custom spans.
 
@@ -816,7 +828,17 @@ public InventoryResponse checkStock(Long productId) {
 ✔ Custom spans only where needed
 ❌ Don’t over-instrument
 
-🤔❓ How do you enable distributed tracing in Spring Boot?
+#### ↳ Follow-up: How do you enable distributed tracing in Spring Boot?
+
+In Spring Boot 3, **Micrometer Tracing** replaced Spring Cloud Sleuth. Add Actuator, a tracer bridge and an exporter:
+
+```xml
+<dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-actuator</artifactId></dependency>
+<dependency><groupId>io.micrometer</groupId><artifactId>micrometer-tracing-bridge-brave</artifactId></dependency>   <!-- or -bridge-otel -->
+<dependency><groupId>io.zipkin.reporter2</groupId><artifactId>zipkin-reporter-brave</artifactId></dependency>
+```
+
+Then set the sampling rate:
 
 ```yaml
 management:
@@ -835,7 +857,7 @@ management:
 ✔ Reduced sampling in prod
 ✔ Tracing has overhead
 
-🤔❓ How do you connect Spring Boot with Zipkin or Jaeger?
+#### ↳ Follow-up: How do you connect Spring Boot with Zipkin or Jaeger?
 
 - Spring Boot sends trace data
 - Tracing backend stores & visualizes
@@ -855,7 +877,7 @@ management:
 ✔ App sends spans, backend visualizes
 ✔ Backend failure should not break app
 
-🤔❓ How do logs relate to distributed tracing?
+#### ↳ Follow-up: How do logs relate to distributed tracing?
 
 > Logs become useful only when correlated with traceId.
 
@@ -872,7 +894,7 @@ management:
 ✔ Centralized logging is required
 ✔ Tracing without logs is incomplete
 
-🤔❓ What happens if one service is not instrumented?
+#### ↳ Follow-up: What happens if one service is not instrumented?
 
 > The trace breaks at that service. Downstream calls will start a new trace.
 
@@ -885,7 +907,7 @@ management:
 ✔ One missing service breaks trace
 ✔ Infrastructure components must be instrumented
 
-🤔❓ How is distributed tracing different from logging and metrics?
+#### ↳ Follow-up: How is distributed tracing different from logging and metrics?
 
 | Aspect    | Logging        | Metrics    | Tracing         |
 | --------- | -------------- | ---------- | --------------- |
@@ -895,7 +917,7 @@ management:
 
 > Metrics show that a problem exists; traces show where and why.
 
-🤔❓ What are common mistakes teams make with distributed tracing?
+#### ↳ Follow-up: What are common mistakes teams make with distributed tracing?
 
 - Sampling too high in prod
 - Missing async propagation
@@ -1209,7 +1231,7 @@ management:
 - Separate by **business capability**, not technical layers
 - Data ownership per service (no shared DB)
 
-🤔❓ Can two microservices share the same database?
+#### ↳ Follow-up: Can two microservices share the same database?
 
 No. Each service owns its data. Sharing DB causes tight coupling, schema lockstep, and breaks independent deployment.
 
@@ -1415,11 +1437,25 @@ Avoid hardcoded URLs. Service discovery enables:
 
 ### 📝 Answer
 
-- High latency
-- High traffic fan-out
-- Cascading failures
+Avoid a synchronous call when the caller **doesn't need the answer right now**, or when waiting would make one slow service slow everyone:
 
-Use **event-driven architecture** (Kafka / RabbitMQ).
+| Situation | Why REST hurts |
+|---|---|
+| Long chains (A → B → C → D) | Latencies add up; any failure breaks the whole request |
+| Fan-out to many services | One slow service delays the response |
+| Work that can happen later (emails, reports, analytics) | The user waits for something they don't need yet |
+| Spiky traffic | A sudden burst overloads the downstream service |
+
+Use **events or a queue** instead (Kafka / RabbitMQ):
+
+```text
+Sync:  Order → (wait) Payment → (wait) Email → reply   ← slow, fragile
+Async: Order → publish OrderPlaced → reply immediately
+                 ├── Payment service consumes it
+                 └── Email service consumes it
+```
+
+Keep REST for **queries that need an immediate answer** ("is this item in stock?"), with timeouts and a circuit breaker.
 
 ---
 
@@ -1443,7 +1479,7 @@ spring:
 - Environment-specific overrides
 - Immutable containers
 
-🤔❓ Why not use application.yml inside the jar?
+#### ↳ Follow-up: Why not use application.yml inside the jar?
 
 It breaks 12-factor principles and requires rebuild for config change.
 
@@ -1514,7 +1550,7 @@ spring:
             - Path=/orders/**
 ```
 
-🤔❓ Should business logic be in Gateway?
+#### ↳ Follow-up: Should business logic be in Gateway?
 
 No. Gateway handles cross-cutting concerns only.
 

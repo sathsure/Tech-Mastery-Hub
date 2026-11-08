@@ -141,6 +141,8 @@ function rawTokens(text: string): string[] {
     const clean = trimEndChars(token, ".");
     if (!clean) continue;
     tokens.push(clean);
+    // "@WebMvcTest" is also found as "WebMvcTest".
+    if (clean.startsWith("@") && clean.length > 1) tokens.push(clean.slice(1));
     if (/[./-]/.test(clean)) for (const part of clean.split(/[./-]/)) if (part) tokens.push(part);
   }
   return tokens;
@@ -350,7 +352,11 @@ interface ParsedQuery {
   corrections: SearchResult["corrections"];
   /** Doc positions of roles/terms named in the query, best first. */
   pinned: number[];
+  /** "Full form of CI/CD", "what does SDLC stand for": a glossary definition is the answer. */
+  wantsDefinition: boolean;
 }
+
+const DEFINITION_REQUEST = /\b(full form|stands? for|abbreviation|acronym|meaning of|define|definition)\b/;
 
 const INTENT_RULES: Array<[SearchIntent, RegExp[]]> = [
   ["interview-prep", [/\b(interview|interviews|prepare|preparing|preparation|prep|asked in|crack)\b/]],
@@ -540,11 +546,28 @@ function pinNamed(
     const entry = engineRef.docs[position].entry;
     return !learning.length || [...entry.topics, ...(entry.relatedTopics ?? [])].some(topic => learning.includes(topic));
   };
-  return [...new Set(named.flatMap(item => item.positions))]
+  const pinned = [...new Set(named.flatMap(item => item.positions))]
     .filter(onTopic)
     .sort((a, b) => kindRank[engineRef.docs[a].entry.kind] - kindRank[engineRef.docs[b].entry.kind] || a - b)
     .slice(0, 3);
+  // "What is the CAP theorem?": a full interview answer about the term beats its one-line glossary definition.
+  const onlyTerms = pinned.every(position => engineRef.docs[position].entry.kind === "term");
+  const fullAnswer = onlyTerms && !DEFINITION_REQUEST.test(text) && named.some(item => hasFullAnswer(item.key, engineRef));
+  return fullAnswer ? [] : pinned;
 }
+
+/** Is there an interview question titled "What is <term>…" ("What is the Saga pattern?" for "saga pattern")? */
+function hasFullAnswer(key: string, engineRef: Engine): boolean {
+  let titles = questionTitles.get(engineRef);
+  if (!titles) {
+    titles = engineRef.docs.filter(doc => doc.entry.kind === "question").map(doc => ` ${entityKey(doc.entry.question)} `);
+    questionTitles.set(engineRef, titles);
+  }
+  return ["what is", "what is the", "what is a", "what is an", "what are", "what are the"].some(lead => titles.some(title => title.startsWith(` ${lead} ${key} `)));
+}
+
+/** Interview question titles as name keys, built once per loaded index. */
+const questionTitles = new WeakMap<Engine, string[]>();
 
 function parseQuery(query: string, engineRef: Engine, forcedTopic?: string): ParsedQuery {
   const vocabulary = engineRef.vocabulary;
@@ -587,7 +610,8 @@ function parseQuery(query: string, engineRef: Engine, forcedTopic?: string): Par
   for (let i = 0; i + 1 < primary.length; i++) bigrams.push([primary[i], primary[i + 1]]);
 
   const uniqueTopics = topics.filter((item, position) => topics.findIndex(other => other.topic === item.topic) === position);
-  return { topics: uniqueTopics, domain, intents, weights, primary: [...new Set(primary)], bigrams, corrections, pinned };
+  const wantsDefinition = DEFINITION_REQUEST.test(text);
+  return { topics: uniqueTopics, domain, intents, weights, primary: [...new Set(primary)], bigrams, corrections, pinned, wantsDefinition };
 }
 
 function correctTypo(term: string, engineRef: Engine): string | null {
@@ -650,12 +674,18 @@ function termScore(engineRef: Engine, doc: Doc, parsed: ParsedQuery): { score: n
 
 /** Study paths list every question of a topic, so they match many words; they lead only when a path is asked for. */
 const STUDY_PATH_DAMPING = 0.6;
+/** Follow-up titles are short, so they outscore their longer main question on shared words; the main answer leads. */
+const FOLLOW_UP_DAMPING = 0.85;
+/** Glossary lines are one sentence with a two-word title, so they outscore the full explanation of the same thing. */
+const TERM_DAMPING = 0.8;
 
 /** Multipliers for what the user asked for: diagrams, code, the named topic and domain. */
 function intentBoost(doc: Doc, parsed: ParsedQuery): number {
   let boost = 1;
   const wantsPath = parsed.intents.includes("roadmap") || parsed.intents.includes("interview-prep");
   if (doc.entry.kind === "roadmap" && !wantsPath) boost *= STUDY_PATH_DAMPING;
+  if (doc.entry.kind === "follow-up") boost *= FOLLOW_UP_DAMPING;
+  if (doc.entry.kind === "term" && !parsed.wantsDefinition) boost *= TERM_DAMPING;
   if (parsed.intents.includes("visual") && doc.entry.visuals.length) boost *= INTENT_BOOST;
   if (parsed.intents.includes("code") && doc.entry.codeBlocks.length) boost *= INTENT_BOOST;
   if (parsed.topics.some(item => doc.entry.topics.includes(item.topic))) boost *= TOPIC_BOOST;

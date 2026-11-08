@@ -719,15 +719,17 @@ While upgrading Spring Boot / Java, I faced **compatibility and breaking changes
 </dependencyManagement>
 ```
 
-🔹 2. Java Version Issues (Java 8 → 17)
+🔹 2. Java & Jakarta Changes (Java 8 → 17, Spring Boot 2 → 3)
 
 ❌ **Problem**
 
-- Removed APIs (e.g. `javax.*`)
+- **Java 11** removed the bundled Java EE modules (JAXB, JAX-WS, `javax.annotation`) → add them as dependencies
+- **Spring Boot 3** moved to **Jakarta EE 9+**, which renamed packages `javax.persistence`, `javax.servlet`, `javax.validation` → `jakarta.*`
+- Boot 3 requires **Java 17** as the minimum
 
 ✅ **Solution**
 
-- Migrated to `jakarta.*`
+- Migrated imports to `jakarta.*` (OpenRewrite recipes can do this automatically)
 
 ```java
 // Old
@@ -741,17 +743,20 @@ import jakarta.persistence.Entity;
 
 ❌ **Problem**
 
-- Deprecated `WebSecurityConfigurerAdapter`
+- `WebSecurityConfigurerAdapter` was removed (Spring Security 6)
+- `antMatchers` / `authorizeRequests` replaced; chained `.and()` style deprecated
 
 ✅ **Solution**
 
-- Used `SecurityFilterChain`
+- A `SecurityFilterChain` bean with the **lambda DSL**
 
 ```java
 @Bean
 SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    http.csrf().disable()
-        .authorizeHttpRequests(auth -> auth.anyRequest().authenticated());
+    http.csrf(csrf -> csrf.disable())                    // was: http.csrf().disable()
+        .authorizeHttpRequests(auth -> auth
+            .requestMatchers("/public/**").permitAll()  // was: antMatchers(...)
+            .anyRequest().authenticated());
     return http.build();
 }
 ```

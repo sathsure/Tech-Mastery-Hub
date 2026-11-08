@@ -7,6 +7,7 @@ Runs and scales model serving, GPUs and AI pipelines in production.
 
 ## Prerequisites
 
+- [SQL](../topics/database-sql.md)
 - [DevOps](../topics/devops.md)
 - [REST API](../topics/rest-api.md)
 - Usually 3+ years of experience when hired
@@ -16,6 +17,11 @@ Runs and scales model serving, GPUs and AI pipelines in production.
 ### Stage 1: Core skills
 
 - [ ] [AI & LLMs](../topics/ai.md)
+- [ ] [System Design](../topics/system-design.md)
+
+### Stage 2: Frameworks and depth
+
+- [ ] [Caching & Redis](../topics/caching.md)
 
 ## Also needed
 

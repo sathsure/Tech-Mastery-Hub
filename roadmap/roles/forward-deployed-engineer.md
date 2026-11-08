@@ -27,11 +27,11 @@ Engineer embedded with a customer to build and deploy the company's product (oft
 
 ## Also useful
 
-[AWS](../topics/aws.md), [DevOps](../topics/devops.md)
+[AWS](../topics/aws.md), [DevOps](../topics/devops.md), [Git](../topics/git.md)
 
 ## Also needed
 
-Python, FastAPI, LangGraph, Palantir Foundry/AIP, Git, Jupyter, Postman, Customer data platforms
+Python, FastAPI, LangGraph, Palantir Foundry/AIP, Jupyter, Postman, Customer data platforms
 
 ## Where it leads
 

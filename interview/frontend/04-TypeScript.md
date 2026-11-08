@@ -8,10 +8,13 @@
 
 ### 📝 Answer
 
-| Keyword     | Variable can be reassigned? | Contents can be mutated? | Type inferred |
-| ----------- | --------------------------- | ------------------------ | ------------- |
-| `const`     | ❌ No                       | ✅ Yes (deep mutable)    | Wider type (`string`, `number[]`) |
-| `as const`  | ❌ No                       | ❌ No (deeply readonly)  | **Literal** type (`"red"`, `readonly [1, 2]`) |
+They do different jobs: `const` is about the **variable**; `as const` is about the **value's type**.
+
+| | `const` (JavaScript) | `as const` (TypeScript assertion) |
+| --- | --- | --- |
+| Stops re-assigning the variable? | ✅ Yes | ❌ Not its job (`let x = [1] as const` can be reassigned) |
+| Stops changing the contents? | ❌ No — objects/arrays stay mutable | ✅ Yes, deeply `readonly` (compile-time only) |
+| Inferred type | Wider (`number[]`, `{ a: number }`) | **Literal** (`readonly [1, 2, 3]`, `{ readonly a: 1 }`) |
 
 ```ts
 // const: variable is fixed, but contents are mutable
@@ -154,13 +157,16 @@ const result = pair("age", 30);   // type: [string, number]
 ```
 
 **Default type parameter:**
+The default is used only when TypeScript **can't infer** `T` and you don't pass it:
+
 ```ts
-function createState<T = string>(initial: T): T {
-  return initial;
+class Store<T = string> {
+  private items: T[] = [];
+  add(item: T) { this.items.push(item); }
 }
 
-const s = createState("hi");       // T = string
-const n = createState<number>(42); // T = number
+const names = new Store();          // T = string (default — nothing to infer from)
+const ids = new Store<number>();    // T = number (given explicitly)
 ```
 
 ---
@@ -188,7 +194,7 @@ type Frozen<T> = { readonly [K in keyof T]: T[K] };
 
 // Remove optional/readonly
 type Mutable<T> = { -readonly [K in keyof T]: T[K] };
-type Required<T> = { [K in keyof T]-?: T[K] };
+type AllRequired<T> = { [K in keyof T]-?: T[K] };   // same as the built-in Required<T>
 ```
 
 **Built-in `Partial`, `Required`, `Readonly` work this way.**
@@ -274,7 +280,7 @@ type DefStr = NonNullable<MaybeStr>;                  // string
 function greet(name: string, age: number) { /* ... */ }
 type GreetArgs = Parameters<typeof greet>;            // [string, number]
 
-// Awaited (ES2022+)
+// Awaited (TypeScript 4.5+)
 type Result = Awaited<Promise<Promise<number>>>;      // number
 ```
 
@@ -459,9 +465,11 @@ printPoint(myCoords);             // ✅ Works — same shape
 
 ### 📝 Answer
 
-**Decorators** are annotations that modify classes, methods, properties, or parameters at runtime.
+**Decorators** are functions written as `@name` above a class, method or property. They run **once, when the class is defined**, and can add metadata or replace/wrap the decorated thing.
 
-> ⚠️ Currently a Stage 3 proposal. Enable in `tsconfig.json` with `"experimentalDecorators": true`.
+> ⚠️ There are **two versions**:
+> - **Standard decorators** (TC39 proposal, supported by TypeScript 5.0+ with **no flag**) — classes, methods, accessors, fields.
+> - **Legacy decorators** (`"experimentalDecorators": true`) — also support **parameter** decorators; used by Angular and NestJS. The examples below use this style.
 
 ```ts
 function Logger(target: Function) {
@@ -505,21 +513,22 @@ class Calculator {
 ```ts
 type Color = { r: number; g: number; b: number };
 
-// ❌ Without satisfies: value typed as Color (loses literal info)
+// ❌ With a type annotation, the variable's type becomes exactly Record<string, Color>
 const palette: Record<string, Color> = {
   red:   { r: 255, g: 0, b: 0 },
   green: { r: 0, g: 255, b: 0 },
 };
-palette.red.toString();   // works on any value, not just defined keys
+palette.blue.r;           // ✅ compiles — any string key is allowed... but crashes at runtime (undefined)
 
-// ✅ With satisfies: keeps literal types AND validates
+// ✅ With satisfies: checked against the type, but keeps its own precise type
 const palette2 = {
   red:   { r: 255, g: 0, b: 0 },
   green: { r: 0, g: 255, b: 0 },
 } satisfies Record<string, Color>;
 
-palette2.red;             // ✅ Type-safe
-palette2.blue;            // ❌ Error: doesn't exist
+palette2.red.r;           // ✅ type-safe
+palette2.blue;            // ❌ compile error: 'blue' doesn't exist
+// and a typo like { r: 255, g: 0, bb: 0 } is still caught by the check
 ```
 
 > 💡 Best of both worlds: type validation **without** losing inference.
@@ -575,7 +584,7 @@ type StatusType = typeof Status[keyof typeof Status];
 | Reverse mapping      | ✅ (numeric enums)      | ❌                       |
 | TypeScript-only      | ⚠️ Yes (not ECMAScript) | ✅ Standard JS           |
 
-> 💡 **Modern preference**: use `as const` objects or string literal unions over `enum` — better tree-shaking, no runtime cost.
+> 💡 **Modern preference**: use `as const` objects or string literal unions over `enum` — better tree-shaking, no runtime cost. Another reason: Node.js's built-in TypeScript support (type stripping) and TS 5.8's `erasableSyntaxOnly` option **don't allow `enum`**, because it isn't plain JavaScript with types removed.
 
 ---
 

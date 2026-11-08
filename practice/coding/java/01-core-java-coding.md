@@ -1,101 +1,107 @@
-### ❓ What will be the output?
+# ☕ Core Java — Output Questions (Tricks & Traps)
+
+## try / catch / finally
+
+### ❓ What will be the output? (return in try and in finally)
 
 > ```java
-> try {
->     return 1;
-> } finally {
->     return 2;
+> static int test() {
+>     try {
+>         return 1;
+>     } finally {
+>         return 2;
+>     }
 > }
+> System.out.println(test());
 > ```
 
 ### 📝 Answer
 
-```java
+```text
 2
 ```
 
-🧠 _Explanation_
-
-`finally` always overrides the return value.
+🧠 **Why:** `finally` always runs, and a `return` inside `finally` **replaces** the earlier return value. (Never return from `finally` in real code — it also hides exceptions.)
 
 ---
 
-### ❓ What will be the output?
+### ❓ What will be the output? (return in catch and in finally)
 
 > ```java
-> try {
->     int a = 10 / 0;
->     return 1;
-> } catch (Exception e) {
->     return 2;
-> } finally {
->     return 3;
+> static int test() {
+>     try {
+>         int a = 10 / 0;
+>         return 1;
+>     } catch (Exception e) {
+>         return 2;
+>     } finally {
+>         return 3;
+>     }
 > }
 > ```
 
 ### 📝 Answer
 
-```java
+```text
 3
 ```
 
-🧠 _Explanation_
-
-`finally` executes even after `catch` return.
+🧠 **Why:** `10 / 0` throws, `catch` prepares to return 2, then `finally` runs and its `return 3` wins.
 
 ---
 
-### ❓ What will be the output?
+### ❓ What will be the output? (changing a primitive in finally)
 
 > ```java
-> int x = 10;
-> try {
->     return x;
-> } finally {
->     x = 20;
+> static int test() {
+>     int x = 10;
+>     try {
+>         return x;
+>     } finally {
+>         x = 20;
+>     }
 > }
 > ```
 
 ### 📝 Answer
 
-```java
+```text
 10
 ```
 
-🧠 _Explanation_
-
-Returned value is copied before `finally` executes.
+🧠 **Why:** the value `10` is **copied** as the return value before `finally` runs. Changing `x` afterwards doesn't change that copy.
 
 ---
 
-### ❓ What will be the output?
+### ❓ What will be the output? (changing an object in finally)
 
 > ```java
-> class Test {
->     int x = 10;
-> }
+> class Test { int x = 10; }
 >
-> Test t = new Test();
-> try {
->     return t;
-> } finally {
->     t.x = 20;
+> static Test test() {
+>     Test t = new Test();
+>     try {
+>         return t;
+>     } finally {
+>         t.x = 20;
+>     }
 > }
+> System.out.println(test().x);
 > ```
 
 ### 📝 Answer
 
-```java
-Test{x=20}
+```text
+20
 ```
 
-🧠 _Explanation_
+🧠 **Why:** what is copied is the **reference**, not the object. `finally` changes the same object, so the caller sees `x = 20`.
 
-Object reference is returned, not the object state.
+> ⚠️ Printing `test()` itself would show something like `Test@1b6d3586`, because `Test` doesn't override `toString()`.
 
 ---
 
-### ❓ What will be the output?
+### ❓ What will be the output? (System.exit in try)
 
 > ```java
 > try {
@@ -107,100 +113,198 @@ Object reference is returned, not the object state.
 
 ### 📝 Answer
 
-```java
-(No Output)
+```text
+(no output)
 ```
 
-🧠 _Explanation_
-
-`System.exit()` terminates JVM immediately.
+🧠 **Why:** `System.exit()` stops the JVM immediately, so `finally` never gets a chance to run. This is the classic exception to "finally always runs".
 
 ---
 
-### ❓ What will be the output?
+### ❓ What will be the output? (return in finally swallows an exception)
+
+> ```java
+> static int test() {
+>     try {
+>         throw new RuntimeException();
+>     } finally {
+>         return 10;
+>     }
+> }
+> System.out.println(test());
+> ```
+
+### 📝 Answer
+
+```text
+10
+```
+
+🧠 **Why:** the `return` in `finally` **discards the exception** — the caller never knows it happened. Another reason not to return from `finally`.
+
+---
+
+### ❓ What will be the output? (try-with-resources closing order)
+
+> ```java
+> class A implements AutoCloseable { public void close() { System.out.println("A Closed"); } }
+> class B implements AutoCloseable { public void close() { System.out.println("B Closed"); } }
+>
+> try (A a = new A(); B b = new B()) {
+>     System.out.println("Try");
+> }
+> ```
+
+### 📝 Answer
+
+```text
+Try
+B Closed
+A Closed
+```
+
+🧠 **Why:** resources close **in reverse order** of opening — like stacking plates, the last one opened is closed first.
+
+---
+
+## Initialization Order
+
+### ❓ What will be the output? (overloaded main method)
 
 > ```java
 > public static void main(String[] args) {
 >     main(10);
 > }
+>
+> public static void main(int a) {
+>     System.out.println(a);
+> }
 > ```
-
-public static void main(int a) {
-System.out.println(a);
-}
-
-````
 
 ### 📝 Answer
 
-```java
+```text
 10
-````
+```
 
-🧠 _Explanation_
-
-Overloaded `main()` is a normal static method.
+🧠 **Why:** only `main(String[])` is the entry point. Any other `main` is just a normal overloaded static method.
 
 ---
 
-### ❓ What will be the output?
+### ❓ What will be the output? (static blocks and main)
 
 > ```java
-> static {
->     System.out.println("Before Main");
-> }
+> static { System.out.println("Before Main"); }
 >
 > public static void main(String[] args) {
 >     System.out.println("Main");
 > }
 >
-> static {
->     System.out.println("After Main");
-> }
+> static { System.out.println("After Main"); }
 > ```
 
 ### 📝 Answer
 
-```java
+```text
 Before Main
 After Main
 Main
 ```
 
-🧠 _Explanation_
-
-Static blocks execute before `main()`.
+🧠 **Why:** all static blocks run **when the class loads**, top to bottom — before `main()` is called, no matter where they appear in the file.
 
 ---
 
-### ❓ What will be the output?
+### ❓ What will be the output? (instance block and constructor)
 
 > ```java
-> {
->     System.out.println("Instance");
+> class Test {
+>     { System.out.println("Instance"); }
+>     Test() { System.out.println("Constructor"); }
 > }
->
-> Test() {
->     System.out.println("Constructor");
-> }
->
 > new Test();
 > ```
 
 ### 📝 Answer
 
-```java
+```text
 Instance
 Constructor
 ```
 
-🧠 _Explanation_
-
-Instance block runs before constructor.
+🧠 **Why:** instance initializer blocks run on every `new`, just **before the constructor body**.
 
 ---
 
-### ❓ What will be the output?
+### ❓ What will be the output? (static, instance block and constructor)
+
+> ```java
+> class Test {
+>     static { System.out.println("Static"); }
+>     { System.out.println("Instance"); }
+>     Test() { System.out.println("Constructor"); }
+>
+>     public static void main(String[] args) {
+>         new Test();
+>     }
+> }
+> ```
+
+### 📝 Answer
+
+```text
+Static
+Instance
+Constructor
+```
+
+🧠 **Why:** order is **static (once, at class load) → instance block → constructor** (every object).
+
+---
+
+### ❓ What will be the output? (static blocks in parent and child)
+
+> ```java
+> class A { static { System.out.println("A Static"); } }
+> class B extends A { static { System.out.println("B Static"); } }
+>
+> new B();
+> ```
+
+### 📝 Answer
+
+```text
+A Static
+B Static
+```
+
+🧠 **Why:** a parent class is loaded (and its static blocks run) **before** its child class.
+
+---
+
+### ❓ What will be the output? (parent and child constructors)
+
+> ```java
+> class A { A() { System.out.println("A"); } }
+> class B extends A { B() { System.out.println("B"); } }
+>
+> new B();
+> ```
+
+### 📝 Answer
+
+```text
+A
+B
+```
+
+🧠 **Why:** every constructor first calls `super()` (added automatically), so the parent is built first.
+
+---
+
+## Strings & Wrappers
+
+### ❓ What will be the output? (== on string literals)
 
 > ```java
 > String a = "Java";
@@ -210,17 +314,15 @@ Instance block runs before constructor.
 
 ### 📝 Answer
 
-```java
+```text
 true
 ```
 
-🧠 _Explanation_
-
-String literals are stored in the String Pool.
+🧠 **Why:** identical string literals share **one object in the String Pool**, so both variables hold the same reference.
 
 ---
 
-### ❓ What will be the output?
+### ❓ What will be the output? (== on new String objects)
 
 > ```java
 > String a = new String("Java");
@@ -230,17 +332,15 @@ String literals are stored in the String Pool.
 
 ### 📝 Answer
 
-```java
+```text
 false
 ```
 
-🧠 _Explanation_
-
-`new` creates separate heap objects.
+🧠 **Why:** `new` always creates a **new object**. `==` compares references; use `a.equals(b)` (true) to compare content.
 
 ---
 
-### ❓ What will be the output?
+### ❓ What will be the output? (String intern)
 
 > ```java
 > String a = new String("Java").intern();
@@ -250,215 +350,15 @@ false
 
 ### 📝 Answer
 
-```java
+```text
 true
 ```
 
-🧠 _Explanation_
-
-`intern()` returns pooled reference.
+🧠 **Why:** `intern()` returns the **pooled** copy of the string — the same one the literal uses.
 
 ---
 
-### ❓ What will be the output?
-
-> ```java
-> Integer a = 127;
-> Integer b = 127;
-> System.out.println(a == b);
-> ```
-
-### 📝 Answer
-
-```java
-true
-```
-
-🧠 _Explanation_
-
-Integer cache range is `-128 to 127`.
-
----
-
-### ❓ What will be the output?
-
-> ```java
-> Integer a = 128;
-> Integer b = 128;
-> System.out.println(a == b);
-> ```
-
-### 📝 Answer
-
-```java
-false
-```
-
-🧠 _Explanation_
-
-Outside Integer cache range.
-
----
-
-### ❓ What will be the output?
-
-> ```java
-> Integer a = null;
-> int b = a;
-> ```
-
-### 📝 Answer
-
-```java
-NullPointerException
-```
-
-🧠 _Explanation_
-
-Auto-unboxing `null` throws NPE.
-
----
-
-### ❓ What will be the output?
-
-> ```java
-> static void test(Object o) {
->     System.out.println("Object");
-> }
->
-> static void test(String s) {
->     System.out.println("String");
-> }
->
-> test(null);
-> ```
-
-### 📝 Answer
-
-```java
-String
-```
-
-🧠 _Explanation_
-
-Most specific overloaded method is chosen.
-
----
-
-### ❓ What will be the output?
-
-> ```java
-> class A {
->     static void show() {
->         System.out.println("A");
->     }
-> }
->
-> class B extends A {
->     static void show() {
->         System.out.println("B");
->     }
-> }
->
-> A a = new B();
-> a.show();
-> ```
-
-### 📝 Answer
-
-```java
-A
-```
-
-🧠 _Explanation_
-
-Static methods are resolved at compile time.
-
----
-
-### ❓ What will be the output?
-
-> ```java
-> class A {
->     void show() {
->         System.out.println("A");
->     }
-> }
->
-> class B extends A {
->     void show() {
->         System.out.println("B");
->     }
-> }
->
-> A a = new B();
-> a.show();
-> ```
-
-### 📝 Answer
-
-```java
-B
-```
-
-🧠 _Explanation_
-
-Runtime polymorphism applies to instance methods.
-
----
-
-### ❓ What will be the output?
-
-> ```java
-> class A {
->     A() {
->         System.out.println("A");
->     }
-> }
->
-> class B extends A {
->     B() {
->         System.out.println("B");
->     }
-> }
->
-> new B();
-> ```
-
-### 📝 Answer
-
-```java
-A
-B
-```
-
-🧠 _Explanation_
-
-Parent constructor executes first.
-
----
-
-### ❓ What will be the output?
-
-> ```java
-> final StringBuilder sb = new StringBuilder("Java");
-> sb.append(" World");
-> System.out.println(sb);
-> ```
-
-### 📝 Answer
-
-```java
-Java World
-```
-
-🧠 _Explanation_
-
-`final` prevents reassignment, not mutation.
-
----
-
-### ❓ What will be the output?
+### ❓ What will be the output? (String concat is immutable)
 
 > ```java
 > String s = "Java";
@@ -468,37 +368,247 @@ Java World
 
 ### 📝 Answer
 
-```java
+```text
 Java
 ```
 
+🧠 **Why:** strings are **immutable**. `concat` returns a **new** string, which is thrown away here. Fix: `s = s.concat(" World");`
+
 ---
 
-### ❓ What will be the output?
+### ❓ What will be the output? (final StringBuilder)
 
 > ```java
-> Collection<Integer> c = new ArrayList<>();
-> c.add(3);
-> c.add(1);
-> c.add(2);
->
-> Collections.sort(c);
-> System.out.println(c);
->
+> final StringBuilder sb = new StringBuilder("Java");
+> sb.append(" World");
+> System.out.println(sb);
 > ```
 
 ### 📝 Answer
 
-❌ Compiles and throws ClassCastException at runtime.
+```text
+Java World
+```
 
-🧠 _Explanation_
-
-- `Collections.sort()` accepts a `List`, not a `Collection`.
-- Reference type mismatch
+🧠 **Why:** `final` stops you **re-assigning the variable**, not changing the object it points to.
 
 ---
 
-### ❓ What will be the output?
+### ❓ What will be the output? (StringBuilder passed to a method)
+
+> ```java
+> static void change(StringBuilder sb) {
+>     sb.append("B");
+>     sb = new StringBuilder("C");
+> }
+>
+> StringBuilder sb = new StringBuilder("A");
+> change(sb);
+> System.out.println(sb);
+> ```
+
+### 📝 Answer
+
+```text
+AB
+```
+
+🧠 **Why:** Java passes **a copy of the reference**. `append` changes the shared object; re-assigning `sb` inside the method only changes the method's own copy.
+
+---
+
+### ❓ What will be the output? (Integer == with 127)
+
+> ```java
+> Integer a = 127;
+> Integer b = 127;
+> System.out.println(a == b);
+> ```
+
+### 📝 Answer
+
+```text
+true
+```
+
+🧠 **Why:** autoboxing uses `Integer.valueOf`, which **caches -128 to 127**, so both get the same object.
+
+---
+
+### ❓ What will be the output? (Integer == with 128)
+
+> ```java
+> Integer a = 128;
+> Integer b = 128;
+> System.out.println(a == b);
+> ```
+
+### 📝 Answer
+
+```text
+false
+```
+
+🧠 **Why:** 128 is outside the cache, so two different objects are created. Always compare wrappers with `equals()`.
+
+---
+
+### ❓ What will be the output? (unboxing null)
+
+> ```java
+> Integer a = null;
+> int b = a;
+> ```
+
+### 📝 Answer
+
+```text
+NullPointerException
+```
+
+🧠 **Why:** `int b = a` really calls `a.intValue()` — on `null`.
+
+---
+
+## Overloading & Polymorphism
+
+### ❓ What will be the output? (null with Object and String overloads)
+
+> ```java
+> static void test(Object o) { System.out.println("Object"); }
+> static void test(String s) { System.out.println("String"); }
+>
+> test(null);
+> ```
+
+### 📝 Answer
+
+```text
+String
+```
+
+🧠 **Why:** `null` fits both; Java picks the **most specific** type, and `String` is more specific than `Object`.
+
+---
+
+### ❓ What will be the output? (null with Integer and Long overloads)
+
+> ```java
+> static void test(Integer a) { System.out.println("Integer"); }
+> static void test(Long a)    { System.out.println("Long"); }
+>
+> test(null);
+> ```
+
+### 📝 Answer
+
+```text
+Compile-time error: reference to test is ambiguous
+```
+
+🧠 **Why:** neither `Integer` nor `Long` is more specific than the other, so the compiler can't choose.
+
+---
+
+### ❓ What will be the output? (overloading: widening vs boxing)
+
+> ```java
+> static void test(long a)    { System.out.println("long"); }
+> static void test(Integer a) { System.out.println("Integer"); }
+>
+> test(10);
+> ```
+
+### 📝 Answer
+
+```text
+long
+```
+
+🧠 **Why:** Java tries in this order: **exact match → widening (int → long) → boxing (int → Integer) → varargs**. Widening comes before boxing.
+
+---
+
+### ❓ What will be the output? (overloading: exact match vs varargs)
+
+> ```java
+> static void test(int a)    { System.out.println("int"); }
+> static void test(int... a) { System.out.println("varargs"); }
+>
+> test(10);
+> ```
+
+### 📝 Answer
+
+```text
+int
+```
+
+🧠 **Why:** varargs is the **last** choice; an exact match always wins.
+
+---
+
+### ❓ What will be the output? (static method "overriding")
+
+> ```java
+> class A { static void show() { System.out.println("A"); } }
+> class B extends A { static void show() { System.out.println("B"); } }
+>
+> A a = new B();
+> a.show();
+> ```
+
+### 📝 Answer
+
+```text
+A
+```
+
+🧠 **Why:** static methods are **hidden, not overridden**. The call is chosen at compile time by the variable's type (`A`), not the object's type.
+
+---
+
+### ❓ What will be the output? (instance method overriding)
+
+> ```java
+> class A { void show() { System.out.println("A"); } }
+> class B extends A { void show() { System.out.println("B"); } }
+>
+> A a = new B();
+> a.show();
+> ```
+
+### 📝 Answer
+
+```text
+B
+```
+
+🧠 **Why:** instance methods use **runtime polymorphism** — the actual object (`B`) decides.
+
+---
+
+## Collections
+
+### ❓ What will be the output? (Collections.sort on a Collection)
+
+> ```java
+> Collection<Integer> c = new ArrayList<>();
+> c.add(3); c.add(1); c.add(2);
+> Collections.sort(c);
+> ```
+
+### 📝 Answer
+
+```text
+Compile-time error: no suitable method found for sort(Collection<Integer>)
+```
+
+🧠 **Why:** `Collections.sort()` accepts only a **`List`**. The variable's type is `Collection`, so it doesn't compile — even though the object is an `ArrayList`. Fix: declare `List<Integer> c`.
+
+---
+
+### ❓ What will be the output? (List remove by index vs by value)
 
 > ```java
 > List<Integer> list = new ArrayList<>();
@@ -509,24 +619,18 @@ Java
 
 ### 📝 Answer
 
-❌ it throws java.lang.IndexOutOfBoundsException at `list.remove(10);`
+```text
+IndexOutOfBoundsException: Index 10 out of bounds for length 2
+```
 
-🧠 _Explanation_
-
-List has two overloaded remove() methods:
-
-- remove(int index)
-- remove(Object o)
+🧠 **Why:** `List` has `remove(int index)` and `remove(Object o)`. The literal `10` is an `int`, so **remove by index** is chosen. To remove the value: `list.remove(Integer.valueOf(10));`
 
 ---
 
-### ❓ What will be the output?
+### ❓ What will be the output? (removing from a list inside a for-each loop)
 
 > ```java
-> List<String> list = new ArrayList<>();
-> list.add("A");
-> list.add("B");
->
+> List<String> list = new ArrayList<>(List.of("A", "B"));
 > for (String s : list) {
 >     list.remove(s);
 > }
@@ -535,75 +639,30 @@ List has two overloaded remove() methods:
 
 ### 📝 Answer
 
-❌ it throws java.util.ConcurrentModificationException at `list.remove(s);`
-
-🧠 _Explanation_
-
-- Enhanced for-loop uses an **Iterator internally**
-- Modifying the list directly breaks iterator contract
-
-✅ _Correct Way_
-
-```java
-Iterator<String> it = list.iterator();
-while (it.hasNext()) {
-    it.next();
-    it.remove();
-}
-System.out.println(list); // []
+```text
+[B]
 ```
 
-_Alternate 1_
+🧠 **Why (the trap inside the trap):** removing "A" shrinks the list to size 1. The loop's `hasNext()` checks `cursor != size` → `1 != 1` is false, so the loop **just stops** — no exception, and "B" is never visited.
 
-❌ Traditional for loop — Does NOT throw exception
+With **three** items (`"A", "B", "C"`) the same code throws **`ConcurrentModificationException`**, because the iterator's next `next()` call sees the list changed.
 
-```java
-List<String> list = new ArrayList<>();
-list.add("A");
-list.add("B");
-
-for (int i = 0; i < list.size(); i++) {
-    list.remove(i);
-}
-System.out.println(list); // [B] - No exception, but wrong Output
-
-```
-
-- When you remove index `0`, elements shift left
-- `"B"` moves to index `0`
-- Loop increments `i` → skips `"B"`
-
-✅ _Correct Way_
+✅ **Correct ways:**
 
 ```java
-for (int i = list.size() - 1; i >= 0; i--) {
-    list.remove(i);
-}
-System.out.println(list); // []
+list.removeIf(s -> true);                // simplest
 
+Iterator<String> it = list.iterator();   // or the iterator's own remove()
+while (it.hasNext()) { it.next(); it.remove(); }
+
+for (int i = list.size() - 1; i >= 0; i--) list.remove(i);   // or go backwards by index
 ```
 
-- Removing from the end
-- No shifting issues
-
-_Alternate 2_
-
-✅ while loop with index — Safe
-
-```java
-int i = 0;
-while (i < list.size()) {
-    list.remove(i);
-}
-System.out.println(list); // []
-```
-
-- After removal, next element shifts to same index
-- Index is not incremented
+> ⚠️ A forward index loop `for (int i = 0; i < list.size(); i++) list.remove(i);` doesn't throw but **skips** elements: after removing index 0, "B" shifts to index 0 and `i` moves on to 1.
 
 ---
 
-### ❓ What will be the output?
+### ❓ What will be the output? (HashSet with duplicates)
 
 > ```java
 > Set<Integer> set = new HashSet<>();
@@ -615,19 +674,15 @@ System.out.println(list); // []
 
 ### 📝 Answer
 
-```
-[20, 10]   // or [10, 20]
+```text
+[20, 10]
 ```
 
-✔️ If order matters
-
-```java
-Set<Integer> set = new LinkedHashSet<>();
-```
+🧠 **Why:** the duplicate `10` is ignored (`add` returns `false`). `HashSet` has **no guaranteed order** — this order comes from the hash buckets and can change. Use `LinkedHashSet` for insertion order or `TreeSet` for sorted order.
 
 ---
 
-### ❓ What will be the output?
+### ❓ What will be the output? (HashSet without equals and hashCode)
 
 > ```java
 > class Employee {
@@ -643,45 +698,21 @@ Set<Integer> set = new LinkedHashSet<>();
 
 ### 📝 Answer
 
-```
+```text
 2
 ```
 
-🧠 _Explanation_
+🧠 **Why:** without `equals()` and `hashCode()`, Java compares objects by **identity**. Two `new` objects are different, so both are kept.
 
-> Each `new Employee(1)` is a different object in memory, so both are added to the set.
-
-✅ _Correct Way_
+✅ **Fix:** override both (or use a `record`, which generates them):
 
 ```java
-class Employee {
-    int id;
-    Employee(int id) { this.id = id; }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true; // this refers to: The object already present in the HashSet. o refers to: The new object being added to the HashSet.
-        if (!(o instanceof Employee)) return false; // Ensures the other object is of the correct type before comparing data
-        Employee e = (Employee) o;
-        return id == e.id;
-    }
-
-    @Override
-    public int hashCode() {
-        return Integer.hashCode(id);
-    }
-}
-
-Set<Employee> set = new HashSet<>();
-set.add(new Employee(1));
-set.add(new Employee(1));
-System.out.println(set.size()); // 1
-
+record Employee(int id) { }   // equals/hashCode by id → set.size() == 1
 ```
 
 ---
 
-### ❓ What will be the output?
+### ❓ What will be the output? (HashMap with null keys)
 
 > ```java
 > Map<String, Integer> map = new HashMap<>();
@@ -692,344 +723,50 @@ System.out.println(set.size()); // 1
 
 ### 📝 Answer
 
-```
+```text
 {null=2}
 ```
 
-🧠 _Explanation_
-
-`HashMap` allows one `null` key & multiple `null` values.
+🧠 **Why:** `HashMap` allows **one** `null` key (the second `put` replaces its value) and any number of `null` values. `TreeMap` and `ConcurrentHashMap` don't allow `null` keys.
 
 ---
 
-### ❓ What will be the output?
+### ❓ What will be the output? (changing a key after putting it in a HashMap)
 
 > ```java
-> Map<StringBuilder, String> map   new HashMap<>();
->
+> Map<StringBuilder, String> map = new HashMap<>();
 > StringBuilder key = new StringBuilder("A");
 > map.put(key, "Value");
->
 > key.append("B");
 >
 > System.out.println(map.get(key));
+> System.out.println(map.get(new StringBuilder("AB")));
 > ```
 
 ### 📝 Answer
 
-```
+```text
+Value
 null
 ```
 
-🧠 _Explanation_
+🧠 **Why:** `StringBuilder` does **not** override `equals()`/`hashCode()`, so it's compared by **identity**. The same object is still found; a new object with the same text is not.
 
-- `StringBuilder` is **mutable**
-- `map.get(key);`, generate a Hash based on `"AB"` and check in the bucket.
-- Since there is no content for `"AB"`, the output result is `null`
-
-✅ _Correct Way_
+The real "mutable key" trap is with keys whose `hashCode` depends on their content:
 
 ```java
-Map<String, String> map = new HashMap<>();
-String key = "A";
+Map<List<String>, String> map = new HashMap<>();
+List<String> key = new ArrayList<>(List.of("A"));
 map.put(key, "Value");
+key.add("B");                       // hashCode changes → entry sits in the old bucket
+System.out.println(map.get(key));   // null — the entry is "lost"
 ```
 
-> String is immutable, StringBuilder is mutable.
-> HashMap requires keys to be immutable.
+Rule: use **immutable keys** (`String`, `Integer`, records).
 
 ---
 
-### ❓ What will be the output? **(orElse() vs orElseGet())**
-
-> ```java
-> Optional<String> name = Optional.of("Dev");
->
-> String value = name.orElse(getDefault());
-> System.out.println(value);
->
-> static String getDefault() {
->     System.out.println("Default called");
->     return "Default";
-> }
-> ```
-
-### 📝 Answer
-
-```
-Default called
-Dev
-```
-
-🧠 _Explanation_
-
-- orElse() always executes the argument even when value is present.
-- use `orElseGet()` → `name.orElseGet(() -> getDefault());`
-
-```
-Dev
-```
-
----
-
-### ❓ What will be the output? **(Optional get())**
-
-> ```java
-> Optional<String> name = Optional.empty();
-> System.out.println(name.get());
-> ```
-
-### 📝 Answer
-
-❌ Throws NoSuchElementException
-
----
-
-### ❓ What will be the output? (Static + Inheritance Trap)
-
-> ```java
-> class A {
->     static {
->         System.out.println("A Static");
->     }
-> }
->
-> class B extends A {
->     static {
->         System.out.println("B Static");
->     }
-> }
->
-> public class Test {
->     public static void main(String[] args) {
->         new B();
->     }
-> }
-> ```
-
-### 📝 Answer
-
-```java
-A Static
-B Static
-```
-
-🧠 _Explanation_
-
-Parent class loads before child class.
-
----
-
-### ❓ What will be the output? (Instance vs Static Block)
-
-> ```java
-> class Test {
->     static {
->         System.out.println("Static");
->     }
->
->     {
->         System.out.println("Instance");
->     }
->
->     Test() {
->         System.out.println("Constructor");
->     }
->
->     public static void main(String[] args) {
->         new Test();
->     }
-> }
-> ```
-
-### 📝 Answer
-
-```java
-Static
-Instance
-Constructor
-```
-
-🧠 _Explanation_
-
-Static → Instance block → Constructor.
-
----
-
-### ❓ What will be the output? (Method Overloading + Boxing)
-
-> ```java
-> static void test(long a) {
->     System.out.println("long");
-> }
->
-> static void test(Integer a) {
->     System.out.println("Integer");
-> }
->
-> public static void main(String[] args) {
->     test(10);
-> }
-> ```
-
-### 📝 Answer
-
-```java
-long
-```
-
-🧠 _Explanation_
-
-Widening beats boxing in method resolution.
-
----
-
-### ❓ What will be the output? (Overloading + Varargs)
-
-> ```java
-> static void test(int a) {
->     System.out.println("int");
-> }
->
-> static void test(int... a) {
->     System.out.println("varargs");
-> }
->
-> public static void main(String[] args) {
->     test(10);
-> }
-> ```
-
-### 📝 Answer
-
-```java
-int
-```
-
-🧠 _Explanation_
-
-Exact match is preferred over varargs.
-
----
-
-### ❓ What will be the output? (Ambiguous Overload)
-
-> ```java
-> static void test(Integer a) {
->     System.out.println("Integer");
-> }
->
-> static void test(Long a) {
->     System.out.println("Long");
-> }
->
-> public static void main(String[] args) {
->     test(null);
-> }
-> ```
-
-### 📝 Answer
-
-```java
-Compile-time error
-```
-
-🧠 _Explanation_
-
-`null` matches both wrappers → ambiguity.
-
----
-
-### ❓ What will be the output? (finally + throw)
-
-> ```java
-> static int test() {
->     try {
->         throw new RuntimeException();
->     } finally {
->         return 10;
->     }
-> }
->
-> public static void main(String[] args) {
->     System.out.println(test());
-> }
-> ```
-
-### 📝 Answer
-
-```java
-10
-```
-
-🧠 _Explanation_
-
-`return` in `finally` suppresses exception.
-
----
-
-### ❓ What will be the output? (try-with-resources Order)
-
-> ```java
-> class A implements AutoCloseable {
->     public void close() {
->         System.out.println("A Closed");
->     }
-> }
->
-> class B implements AutoCloseable {
->     public void close() {
->         System.out.println("B Closed");
->     }
-> }
->
-> public static void main(String[] args) {
->     try (A a = new A(); B b = new B()) {
->         System.out.println("Try");
->     }
-> }
-> ```
-
-### 📝 Answer
-
-```java
-Try
-B Closed
-A Closed
-```
-
-🧠 _Explanation_
-
-Resources close in reverse order of creation.
-
----
-
-### ❓ What will be the output? (StringBuilder Trap)
-
-> ```java
-> StringBuilder sb = new StringBuilder("A");
-> change(sb);
-> System.out.println(sb);
->
-> static void change(StringBuilder sb) {
->     sb.append("B");
->     sb = new StringBuilder("C");
-> }
-> ```
-
-### 📝 Answer
-
-```java
-AB
-```
-
-🧠 _Explanation_
-
-Reference reassignment doesn’t affect caller.
-
----
-
-### ❓ What will be the output? (HashMap Mutation Trap)
+### ❓ What will be the output? (adding to a HashMap while looping over it)
 
 > ```java
 > Map<String, String> map = new HashMap<>();
@@ -1038,29 +775,70 @@ Reference reassignment doesn’t affect caller.
 > for (String key : map.keySet()) {
 >     map.put("B", "2");
 > }
->
 > System.out.println(map.size());
 > ```
 
 ### 📝 Answer
 
-```java
-ConcurrentModificationException
+```text
+2
 ```
 
-🧠 _Explanation_
+🧠 **Why (surprising):** with only one entry, the iterator has already found there is no next entry before `"B"` is added, so the loop ends without checking for changes.
 
-Structural modification during iteration is illegal.
+With **two or more** entries (e.g. `"A"` and `"C"`), the next `next()` call detects the change and throws **`ConcurrentModificationException`**. Never rely on this — don't modify a map while iterating it; collect changes first or use `ConcurrentHashMap`.
 
 ---
 
-### ❓ What will be the output? (Finalize Trap)
+## Optional
+
+### ❓ What will be the output? (orElse vs orElseGet)
+
+> ```java
+> static String getDefault() {
+>     System.out.println("Default called");
+>     return "Default";
+> }
+>
+> Optional<String> name = Optional.of("Dev");
+> System.out.println(name.orElse(getDefault()));
+> ```
+
+### 📝 Answer
+
+```text
+Default called
+Dev
+```
+
+🧠 **Why:** `orElse(x)` is a normal method call, so `getDefault()` runs **first, always**, even though a value exists. `orElseGet(() -> getDefault())` calls it **only when empty** — it would print just `Dev`.
+
+---
+
+### ❓ What will be the output? (Optional.get on empty)
+
+> ```java
+> Optional<String> name = Optional.empty();
+> System.out.println(name.get());
+> ```
+
+### 📝 Answer
+
+```text
+NoSuchElementException: No value present
+```
+
+🧠 **Why:** `get()` on an empty `Optional` throws. Prefer `orElse`, `orElseGet`, `orElseThrow`, or `ifPresent`.
+
+---
+
+## Miscellaneous Traps
+
+### ❓ What will be the output? (finalize and System.gc)
 
 > ```java
 > class Test {
->     protected void finalize() {
->         System.out.println("Finalize");
->     }
+>     protected void finalize() { System.out.println("Finalize"); }
 >
 >     public static void main(String[] args) {
 >         Test t = new Test();
@@ -1072,17 +850,15 @@ Structural modification during iteration is illegal.
 
 ### 📝 Answer
 
-```java
+```text
 May or may not print "Finalize"
 ```
 
-🧠 _Explanation_
-
-`finalize()` execution is not guaranteed.
+🧠 **Why:** `System.gc()` is only a **request**, and `finalize()` is never guaranteed to run. `finalize()` is deprecated — use try-with-resources or `Cleaner` instead.
 
 ---
 
-### ❓ What will be the output? (Precedence Trap)
+### ❓ What will be the output? (a++ + ++a + a++)
 
 > ```java
 > int a = 10;
@@ -1091,36 +867,40 @@ May or may not print "Finalize"
 
 ### 📝 Answer
 
-```java
+```text
 34
 ```
 
-🧠 _Explanation_
+🧠 **Why:** evaluated left to right:
 
-Post → Pre → Post evaluation order.
+| Part | Value used | `a` after |
+|---|---|---|
+| `a++` | 10 | 11 |
+| `++a` | 12 | 12 |
+| `a++` | 12 | 13 |
+
+10 + 12 + 12 = **34**.
 
 ---
 
-### ❓ What will be the output? (Thread start vs run)
+### ❓ What will be the output? (Thread run instead of start)
 
 > ```java
-> Thread t = new Thread(() -> System.out.println("Run"));
+> Thread t = new Thread(() -> System.out.println("Run " + Thread.currentThread().getName()));
 > t.run();
 > ```
 
 ### 📝 Answer
 
-```java
-Run
+```text
+Run main
 ```
 
-🧠 _Explanation_
-
-`run()` executes like a normal method.
+🧠 **Why:** `run()` is just a normal method call on the **current (main) thread**. Only `start()` creates a new thread.
 
 ---
 
-### ❓ What will be the output? (Dead Code Trap)
+### ❓ What will be the output? (if (true) else)
 
 > ```java
 > if (true)
@@ -1131,54 +911,51 @@ Run
 
 ### 📝 Answer
 
-```java
+```text
 A
 ```
 
-🧠 _Explanation_
-
-Compiler removes unreachable branch.
+🧠 **Why:** the condition is a compile-time constant, so the `else` branch can never run (the compiler may even drop it). Unlike `while (false) { }`, an unreachable `if` branch is **not** a compile error — Java allows it for "debug flag" code.
 
 ---
 
-### ❓ What will be the output? (ClassCast Trap)
+### ❓ What will be the output? (casting an Integer to String)
 
 > ```java
-> Object o = new Integer(10);
+> Object o = Integer.valueOf(10);
 > String s = (String) o;
 > ```
 
 ### 📝 Answer
 
-```java
-ClassCastException
+```text
+ClassCastException: class java.lang.Integer cannot be cast to class java.lang.String
 ```
 
-🧠 _Explanation_
-
-Runtime cast mismatch.
+🧠 **Why:** the cast compiles (an `Object` *might* be a `String`), but at runtime the object is an `Integer`. Check first with pattern matching: `if (o instanceof String s) { ... }`.
 
 ---
 
-### ❓ What will be the output? (Volatile Visibility)
+### ❓ What will be the output? (volatile flag between threads)
 
 > ```java
-> volatile boolean flag = false;
+> static volatile boolean flag = false;
 >
-> new Thread(() -> {
->     while (!flag) {}
->     System.out.println("Done");
-> }).start();
->
-> flag = true;
+> public static void main(String[] args) {
+>     new Thread(() -> {
+>         while (!flag) { }
+>         System.out.println("Done");
+>     }).start();
+>     flag = true;
+> }
 > ```
 
 ### 📝 Answer
 
-```java
+```text
 Done
 ```
 
-🧠 _Explanation_
+🧠 **Why:** `volatile` makes the main thread's write **visible** to the other thread, so its loop ends. Without `volatile`, the loop might **never** see the change and spin forever.
 
-`volatile` guarantees visibility across threads.
+> Note: `volatile` only works on fields — a local variable can't be `volatile` (and a lambda can't change a local variable anyway).

@@ -7,6 +7,7 @@ Designs end-to-end AI systems — models, data, RAG, agents, security and cost.
 
 ## Prerequisites
 
+- [SQL](../topics/database-sql.md)
 - [DevOps](../topics/devops.md)
 - [HTML](../topics/html.md)
 - [Java](../topics/java.md)
@@ -20,6 +21,7 @@ Designs end-to-end AI systems — models, data, RAG, agents, security and cost.
 - [ ] [AI & LLMs](../topics/ai.md)
 - [ ] [AWS](../topics/aws.md)
 - [ ] [JavaScript](../topics/javascript.md)
+- [ ] [System Design](../topics/system-design.md)
 
 ### Stage 2: Frameworks and depth
 

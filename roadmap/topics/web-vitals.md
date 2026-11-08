@@ -8,14 +8,17 @@
 - [JavaScript](../topics/javascript.md)
 - Overview: [Web Vitals concepts](../../knowledge/concepts/web-vitals/README.md)
 
-## 1. Questions
+## 1. Web Vitals & Frontend Performance
 
-1. [What is Largest Contentful Paint (LCP)?](../../interview/architecture/01-web-vitals.md)
-2. [How to reduce CLS?](../../interview/architecture/01-web-vitals.md)
-3. [How to reduce JS main-thread blocking time?](../../interview/architecture/01-web-vitals.md)
-4. [How to implement image optimization?](../../interview/architecture/01-web-vitals.md)
-5. [Server-side rendering vs client-side rendering performance.](../../interview/architecture/01-web-vitals.md)
-6. [Lazy loading non-critical JS.](../../interview/architecture/01-web-vitals.md)
+1. [What are Core Web Vitals?](../../interview/architecture/01-web-vitals.md)
+   - [What happened to FID?](../../interview/architecture/01-web-vitals.md)
+2. [What is Largest Contentful Paint (LCP) and how do you improve it?](../../interview/architecture/01-web-vitals.md)
+3. [How to reduce CLS?](../../interview/architecture/01-web-vitals.md)
+4. [What is INP and how do you improve it?](../../interview/architecture/01-web-vitals.md)
+5. [How to reduce JS main-thread blocking time?](../../interview/architecture/01-web-vitals.md)
+6. [How to implement image optimization?](../../interview/architecture/01-web-vitals.md)
+7. [Server-side rendering vs client-side rendering performance.](../../interview/architecture/01-web-vitals.md)
+8. [Lazy loading non-critical JS.](../../interview/architecture/01-web-vitals.md)
 
 ## Related roles
 

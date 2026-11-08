@@ -7,15 +7,14 @@ Installs, tunes, backs up and secures databases.
 
 ## Prerequisites
 
-- [SQL](../topics/database-sql.md)
-- [DevOps](../topics/devops.md)
+- None. Start with Stage 1.
 - Usually 1+ years of experience when hired
 
 ## Learning stages
 
 ### Stage 1: Core skills
 
-- [ ] [AWS](../topics/aws.md)
+- [ ] [SQL](../topics/database-sql.md)
 
 ## Also needed
 

@@ -608,10 +608,9 @@ export class MyComponent {
 
 **Problems with `el.nativeElement.style.color = "red"`:**
 
-- ❌ Exposes app to XSS attacks
-- ❌ Tightly coupled to browser DOM
-- ❌ Breaks Server-Side Rendering (SSR)
-- ❌ Doesn't work in Web Workers
+- ❌ Tightly coupled to the browser DOM — breaks with **Server-Side Rendering** (no real DOM on the server) and Web Workers
+- ❌ Bypasses Angular's sanitization: setting `innerHTML` this way can open **XSS** holes (a template `[innerHTML]` binding is sanitized; direct DOM writes are not)
+- ❌ Angular doesn't know about the change, so it can be overwritten by the next render
 
 **`Renderer2`** provides a **safe, platform-independent** abstraction.
 
@@ -795,10 +794,11 @@ Component Injector (one per component instance)
 
 | Scope        | Behavior                                                |
 | ------------ | ------------------------------------------------------- |
-| `'root'`     | **Single instance** shared across the entire app (eager + lazy modules) |
-| `'any'`      | Eager modules share one instance; **each lazy module gets its own** |
+| `'root'`     | **Single instance** shared across the entire app (eager + lazy parts) — the normal choice |
+| `'any'`      | Eager modules share one instance; **each lazy module gets its own** (deprecated since v15) |
 | `'platform'` | Single instance shared across **multiple Angular apps** on the same page |
-| `'self'`     | Provided only in the local component (no inheritance)    |
+
+> `'self'` is **not** a `providedIn` value. To get one instance per component, list the service in that component's `providers: [...]`. (`@Self()` is a different thing — an injection flag that only looks in the current injector.)
 
 ```ts
 @Injectable({ providedIn: "root" })
@@ -1222,7 +1222,17 @@ providers: [
 ]
 ```
 
-> 💡 **Approach 3 (Modern)**: Use `inject(HTTP_INTERCEPTORS)` with functional interceptors via `provideHttpClient(withInterceptors([...]))`.
+**Approach 3 (modern Angular 15+): a functional interceptor**
+
+```ts
+export const trimInterceptor: HttpInterceptorFn = (req, next) =>
+  next(req.body ? req.clone({ body: trimStringsDeep(req.body) }) : req);
+
+// app.config.ts
+providers: [provideHttpClient(withInterceptors([trimInterceptor]))]
+```
+
+> ⚠️ Skip fields that must keep their spaces — especially **passwords**, where trimming silently changes what the user typed.
 
 ---
 
@@ -1269,5 +1279,20 @@ export class CounterComponent {
 - Easier mental model for new developers
 
 > 💡 **Signal vs RxJS**: signals are great for **state**. RxJS still wins for **streams of events** (HTTP, user input over time, WebSocket).
+
+#### ↳ Follow-up: What are signal inputs, outputs and other newer signal APIs?
+
+↪ Modern Angular (17.1+) replaces many decorators with functions that return signals:
+
+| API | Replaces / does | Example |
+|---|---|---|
+| `input()` / `input.required()` | `@Input()` — a read-only signal | `name = input.required<string>();` → `{{ name() }}` |
+| `output()` | `@Output()` + `EventEmitter` | `saved = output<User>(); this.saved.emit(user);` |
+| `model()` | Two-way binding `[(value)]` in one line | `value = model(0);` |
+| `viewChild()` / `contentChild()` | `@ViewChild` / `@ContentChild` as signals | `box = viewChild<ElementRef>('box');` |
+| `linkedSignal()` | A writable signal that **resets** when its source changes | Selected item resets when the list changes |
+| `resource()` / `httpResource()` | Load async data into signals (value, loading, error) | `user = httpResource(() => \`/api/users/${id()}\`);` |
+
+Because inputs are signals, you can use them in `computed()` directly instead of writing `ngOnChanges`.
 
 ---

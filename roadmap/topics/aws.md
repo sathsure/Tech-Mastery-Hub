@@ -6,119 +6,76 @@
 - [DevOps](../topics/devops.md)
 - Overview: [AWS concepts](../../knowledge/concepts/aws/README.md)
 
-## 1. Questions
+## 1. COMPUTE SERVICES
 
-1. [AWS Cloud Practitioner](../../interview/architecture/02-aws-cloud.md)
+1. [What are the main AWS Compute services (EC2, Lambda, Auto Scaling, Elastic Beanstalk, ECS, EKS, Fargate)?](../../interview/architecture/02-aws-cloud.md)
+2. [AWS Compute: which service fits each scenario?](../../interview/architecture/02-aws-cloud.md)
 
-## 2. AWS Cloud Practitioner › COMPUTE SERVICES
+## 2. STORAGE SERVICES
 
-1. [Core Compute Services (VERY IMPORTANT)](../../interview/architecture/02-aws-cloud.md)
+1. [What are the main AWS Storage services (S3, Glacier, EBS, EFS, FSx)?](../../interview/architecture/02-aws-cloud.md)
+2. [AWS Storage: which service fits each scenario?](../../interview/architecture/02-aws-cloud.md)
 
-## 3. AWS Cloud Practitioner › COMPUTE SERVICES › Core Compute Services (VERY IMPORTANT)
+## 3. AWS DATABASE SERVICES
 
-1. [Container & Modern Compute (High-Level Awareness)](../../interview/architecture/02-aws-cloud.md)
+1. [What are the main AWS Database services (RDS, Aurora, DynamoDB, ElastiCache, Redshift)?](../../interview/architecture/02-aws-cloud.md)
+2. [AWS Database: which service fits each scenario?](../../interview/architecture/02-aws-cloud.md)
 
-## 4. AWS Cloud Practitioner › COMPUTE SERVICES › Container & Modern Compute (High-Level Awareness)
+## 4. NETWORKING & CONTENT DELIVERY
 
-1. [Batch & Specialized Compute (Basic Recognition Only)](../../interview/architecture/02-aws-cloud.md)
+1. [What are the main AWS Networking & Content Delivery services (VPC, Route 53, CloudFront, API Gateway)?](../../interview/architecture/02-aws-cloud.md)
+2. [AWS Networking & Content Delivery: which service fits each scenario?](../../interview/architecture/02-aws-cloud.md)
 
-## 5. AWS Cloud Practitioner › COMPUTE SERVICES › Batch & Specialized Compute (Basic Recognition Only)
+## 5. SECURITY, IDENTITY & COMPLIANCE
 
-1. [Hybrid & Edge Compute (Conceptual Awareness)](../../interview/architecture/02-aws-cloud.md)
+1. [What are the main AWS Security, Identity & Compliance services (IAM, KMS, Shield, WAF, GuardDuty)?](../../interview/architecture/02-aws-cloud.md)
+2. [AWS Security, Identity & Compliance: which service fits each scenario?](../../interview/architecture/02-aws-cloud.md)
 
-## 6. AWS Cloud Practitioner › COMPUTE SERVICES › Hybrid & Edge Compute (Conceptual Awareness)
+## 6. MANAGEMENT & MONITORING
 
-1. [Trick Questions](../../interview/architecture/02-aws-cloud.md)
+1. [What are the main AWS Management & Monitoring services (CloudWatch, CloudTrail, Config, Systems Manager)?](../../interview/architecture/02-aws-cloud.md)
+2. [AWS Management & Monitoring: which service fits each scenario?](../../interview/architecture/02-aws-cloud.md)
 
-## 7. AWS Cloud Practitioner › COMPUTE SERVICES › Trick Questions
+## 7. PRICING & COST MANAGEMENT
 
-1. [STORAGE SERVICES](../../interview/architecture/02-aws-cloud.md)
+1. [What are the main AWS Pricing & Cost Management services (Cost Explorer, Budgets, Pricing Calculator, Savings Plans)?](../../interview/architecture/02-aws-cloud.md)
+2. [AWS Pricing & Cost Management: which service fits each scenario?](../../interview/architecture/02-aws-cloud.md)
 
-## 8. AWS Cloud Practitioner › STORAGE SERVICES
+## 8. DEPLOYMENT & MIGRATION
 
-1. [Trick Questions](../../interview/architecture/02-aws-cloud.md)
+1. [What are the main AWS Deployment & Migration services?](../../interview/architecture/02-aws-cloud.md)
 
-## 9. AWS Cloud Practitioner › STORAGE SERVICES › Trick Questions
+## 9. MIGRATION PLANNING & DISCOVERY
 
-1. [AWS DATABASE SERVICES](../../interview/architecture/02-aws-cloud.md)
+1. [What are the main AWS Migration Planning & Discovery services?](../../interview/architecture/02-aws-cloud.md)
 
-## 10. AWS Cloud Practitioner › AWS DATABASE SERVICES
+## 10. APPLICATION & SERVER MIGRATION
 
-1. [Trick Questions](../../interview/architecture/02-aws-cloud.md)
+1. [What are the main AWS Application & Server Migration services?](../../interview/architecture/02-aws-cloud.md)
 
-## 11. AWS Cloud Practitioner › AWS DATABASE SERVICES › Trick Questions
+## 11. DATABASE MIGRATION
 
-1. [NETWORKING & CONTENT DELIVERY](../../interview/architecture/02-aws-cloud.md)
+1. [What are the main AWS Database Migration services?](../../interview/architecture/02-aws-cloud.md)
 
-## 12. AWS Cloud Practitioner › NETWORKING & CONTENT DELIVERY
+## 12. DATA TRANSFER (ONLINE & HYBRID)
 
-1. [Trick Questions](../../interview/architecture/02-aws-cloud.md)
+1. [What are the main AWS Data Transfer services?](../../interview/architecture/02-aws-cloud.md)
+2. [AWS Deployment & Migration: which service fits each scenario?](../../interview/architecture/02-aws-cloud.md)
 
-## 13. AWS Cloud Practitioner › NETWORKING & CONTENT DELIVERY › Trick Questions
+## 13. APPLICATION INTEGRATION
 
-1. [SECURITY, IDENTITY & COMPLIANCE](../../interview/architecture/02-aws-cloud.md)
+1. [What are the main AWS Application Integration services (SQS, SNS, EventBridge, Step Functions)?](../../interview/architecture/02-aws-cloud.md)
+2. [AWS Application Integration: which service fits each scenario?](../../interview/architecture/02-aws-cloud.md)
 
-## 14. AWS Cloud Practitioner › SECURITY, IDENTITY & COMPLIANCE
+## 14. ANALYTICS (FOUNDATION LEVEL)
 
-1. [Trick Questions](../../interview/architecture/02-aws-cloud.md)
+1. [What are the main AWS Analytics services (Athena, Kinesis, Glue, QuickSight)?](../../interview/architecture/02-aws-cloud.md)
+2. [AWS Analytics: which service fits each scenario?](../../interview/architecture/02-aws-cloud.md)
 
-## 15. AWS Cloud Practitioner › SECURITY, IDENTITY & COMPLIANCE › Trick Questions
+## 15. AI & MACHINE LEARNING
 
-1. [MANAGEMENT & MONITORING](../../interview/architecture/02-aws-cloud.md)
-
-## 16. AWS Cloud Practitioner › MANAGEMENT & MONITORING
-
-1. [Trick Questions](../../interview/architecture/02-aws-cloud.md)
-
-## 17. AWS Cloud Practitioner › MANAGEMENT & MONITORING › Trick Questions
-
-1. [PRICING & COST MANAGEMENT](../../interview/architecture/02-aws-cloud.md)
-
-## 18. AWS Cloud Practitioner › MANAGEMENT & MONITORING › PRICING & COST MANAGEMENT
-
-1. [Trick Questions](../../interview/architecture/02-aws-cloud.md)
-
-## 19. AWS Cloud Practitioner › DEPLOYMENT & MIGRATION
-
-1. [DEPLOYMENT SERVICES (Application & Infrastructure Deployment)](../../interview/architecture/02-aws-cloud.md)
-
-## 20. AWS Cloud Practitioner › DEPLOYMENT & MIGRATION › DEPLOYMENT SERVICES (Application & Infrastructure Deployment)
-
-1. [MIGRATION PLANNING & DISCOVERY](../../interview/architecture/02-aws-cloud.md)
-
-## 21. AWS Cloud Practitioner › DEPLOYMENT & MIGRATION › MIGRATION PLANNING & DISCOVERY
-
-1. [APPLICATION & SERVER MIGRATION](../../interview/architecture/02-aws-cloud.md)
-
-## 22. AWS Cloud Practitioner › DEPLOYMENT & MIGRATION › APPLICATION & SERVER MIGRATION
-
-1. [DATABASE MIGRATION](../../interview/architecture/02-aws-cloud.md)
-
-## 23. AWS Cloud Practitioner › DEPLOYMENT & MIGRATION › DATABASE MIGRATION
-
-1. [DATA TRANSFER (ONLINE & HYBRID)](../../interview/architecture/02-aws-cloud.md)
-
-## 24. AWS Cloud Practitioner › DEPLOYMENT & MIGRATION › DATA TRANSFER (ONLINE & HYBRID)
-
-1. [Trick Questions](../../interview/architecture/02-aws-cloud.md)
-
-## 25. AWS Cloud Practitioner › DEPLOYMENT & MIGRATION › Trick Questions
-
-1. [APPLICATION INTEGRATION](../../interview/architecture/02-aws-cloud.md)
-2. [ANALYTICS (FOUNDATION LEVEL)](../../interview/architecture/02-aws-cloud.md)
-3. [AI & MACHINE LEARNING](../../interview/architecture/02-aws-cloud.md)
-
-## 26. AWS Cloud Practitioner › DEPLOYMENT & MIGRATION › APPLICATION INTEGRATION
-
-1. [Trick Questions](../../interview/architecture/02-aws-cloud.md)
-
-## 27. AWS Cloud Practitioner › DEPLOYMENT & MIGRATION › ANALYTICS (FOUNDATION LEVEL)
-
-1. [Trick Questions](../../interview/architecture/02-aws-cloud.md)
-
-## 28. AWS Cloud Practitioner › DEPLOYMENT & MIGRATION › AI & MACHINE LEARNING
-
-1. [Trick Questions](../../interview/architecture/02-aws-cloud.md)
+1. [What are the main AWS AI & Machine Learning services (SageMaker, Bedrock, Rekognition, Comprehend)?](../../interview/architecture/02-aws-cloud.md)
+2. [AWS AI & Machine Learning: which service fits each scenario?](../../interview/architecture/02-aws-cloud.md)
 
 ## Diagrams
 
@@ -138,5 +95,5 @@
 
 ## Related roles
 
-[AI Solutions Architect](../roles/ai-solutions-architect.md) · [Cloud Architect](../roles/cloud-architect.md) · [Cloud Engineer](../roles/cloud-engineer.md) · [Cloud Security Engineer](../roles/cloud-security-engineer.md) · [Data Engineer](../roles/data-engineer.md) · [Database Administrator](../roles/database-administrator.md)
+[AI Solutions Architect](../roles/ai-solutions-architect.md) · [Cloud Architect](../roles/cloud-architect.md) · [Cloud Engineer](../roles/cloud-engineer.md) · [Cloud Security Engineer](../roles/cloud-security-engineer.md)
 
