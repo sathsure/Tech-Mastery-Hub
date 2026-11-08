@@ -183,7 +183,7 @@
 ## 28. Containers
 
 1. [How does Docker work internally?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)
-2. [How are Containers different from Virtual Machines?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)
+2. [How are Containers (like Docker) different from Virtual Machines?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)
 3. [How do Docker Images and Containers work?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)
 
 ## 29. Orchestration and Delivery
@@ -260,6 +260,10 @@
 - [Frontend frameworks and libraries: build and execution path](../../knowledge/visual-notes/02_frontend_frameworks.png)
 - [Backend programming languages: source, artifact, runtime and execution](../../knowledge/visual-notes/03_backend_programming_languages.png)
 - [Backend frameworks and platforms: source, compiler and runtime](../../knowledge/visual-notes/04_backend_frameworks.png)
+- [How a browser renders a page](../../knowledge/visual-notes/browser-render.png)
+- [JavaScript event loop](../../knowledge/visual-notes/event-loop.png)
+- [Angular lifecycle hooks](../../knowledge/visual-notes/angular-lifecycle.png)
+- [Spring bean life cycle](../../knowledge/visual-notes/backend/spring-bean-life-cycle.png)
 
 ## Related roles
 

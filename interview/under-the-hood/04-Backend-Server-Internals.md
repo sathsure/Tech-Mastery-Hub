@@ -446,6 +446,8 @@ OrderDto get(@PathVariable long id) { return service.find(id); }   // returned o
 **1. What is it?**
 The **Spring container** (ApplicationContext) creates your objects (**beans**), wires their dependencies, and manages their lifetime. You declare what you need; Spring builds the object graph.
 
+**IoC vs DI:** **Inversion of Control (IoC)** is the principle — the container, not your code, controls creating and connecting objects. **Dependency Injection (DI)** is how Spring implements IoC — it passes dependencies in through constructors, setters or fields instead of your class calling `new`.
+
 **2. How does it work internally?**
 
 1. **Find definitions**: component scanning (`@Component`, `@Service`…), `@Bean` methods and auto-configuration → **BeanDefinitions** (class, scope, dependencies).
@@ -456,6 +458,8 @@ The **Spring container** (ApplicationContext) creates your objects (**beans**), 
 6. The finished bean is stored in the **singleton cache** and reused.
 
 **3. Visual**
+
+![Spring bean life cycle](../../knowledge/visual-notes/backend/spring-bean-life-cycle.png)
 
 ```mermaid
 flowchart LR

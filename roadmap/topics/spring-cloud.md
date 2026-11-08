@@ -42,8 +42,6 @@
    - [How do you implement rate limiting in API Gateway?](../../interview/backend/java/06-Spring-Cloud.md)
    - [What happens if API Gateway goes down?](../../interview/backend/java/06-Spring-Cloud.md)
    - [What are common mistakes teams make with API Gateway?](../../interview/backend/java/06-Spring-Cloud.md)
-   - [Why do we need distributed tracing in microservices?](../../interview/backend/java/06-Spring-Cloud.md)
-   - [Explain traceId and spanId.](../../interview/backend/java/06-Spring-Cloud.md)
    - [How is trace context propagated between services?](../../interview/backend/java/06-Spring-Cloud.md)
    - [What annotations are used in Spring for tracing?](../../interview/backend/java/06-Spring-Cloud.md)
    - [How do you enable distributed tracing in Spring Boot?](../../interview/backend/java/06-Spring-Cloud.md)
@@ -82,16 +80,11 @@
 
 1. [How do services trust each other?](../../interview/backend/java/06-Spring-Cloud.md)
 
-## 9. Data Consistency
-
-1. [How do you handle transactions across services?](../../interview/backend/java/06-Spring-Cloud.md)
-2. [How do you maintain consistency across multiple microservices?](../../interview/backend/java/06-Spring-Cloud.md)
-
-## 10. Observability (Production Reality)
+## 9. Observability (Production Reality)
 
 1. [How do you debug prod issues?](../../interview/backend/java/06-Spring-Cloud.md)
 
-## 11. Fundamentals (Architecture Thinking)
+## 10. Fundamentals (Architecture Thinking)
 
 1. [You are asked to split a monolith into microservices. What criteria do you use to identify service boundaries?](../../interview/backend/java/06-Spring-Cloud.md)
    - [Can two microservices share the same database?](../../interview/backend/java/06-Spring-Cloud.md)
@@ -100,35 +93,33 @@
 4. [How Router Traffic Is Handled (API Gateway)](../../interview/backend/java/06-Spring-Cloud.md)
 5. [How Traffic Routing Works in Kubernetes](../../interview/backend/java/06-Spring-Cloud.md)
 
-## 12. Service Communication & Discovery
+## 11. Service Communication & Discovery
 
-1. [How do services discover each other in Spring Cloud?](../../interview/backend/java/06-Spring-Cloud.md)
-2. [When would you avoid synchronous REST calls between services?](../../interview/backend/java/06-Spring-Cloud.md)
+1. [When would you avoid synchronous REST calls between services?](../../interview/backend/java/06-Spring-Cloud.md)
 
-## 13. Configuration Management
+## 12. Configuration Management
 
 1. [How do you manage configuration across environments for 20+ microservices?](../../interview/backend/java/06-Spring-Cloud.md)
    - [Why not use application.yml inside the jar?](../../interview/backend/java/06-Spring-Cloud.md)
 
-## 14. Fault Tolerance & Resilience
+## 13. Fault Tolerance & Resilience
 
-1. [What happens when one microservice goes down? How do you prevent system-wide failure?](../../interview/backend/java/06-Spring-Cloud.md)
-2. [Difference between Retry and Circuit Breaker?](../../interview/backend/java/06-Spring-Cloud.md)
+1. [Difference between Retry and Circuit Breaker?](../../interview/backend/java/06-Spring-Cloud.md)
 
-## 15. API Gateway
+## 14. API Gateway
 
 1. [Why do we need an API Gateway in microservices?](../../interview/backend/java/06-Spring-Cloud.md)
    - [Should business logic be in Gateway?](../../interview/backend/java/06-Spring-Cloud.md)
 
-## 16. Security
+## 15. Security
 
 1. [How do you secure communication between microservices?](../../interview/backend/java/06-Spring-Cloud.md)
 
-## 17. Observability & Monitoring
+## 16. Observability & Monitoring
 
 1. [How do you debug issues in production across 15 microservices?](../../interview/backend/java/06-Spring-Cloud.md)
 
-## 18. Deployment & Scalability
+## 17. Deployment & Scalability
 
 1. [How does Kubernetes change microservices design?](../../interview/backend/java/06-Spring-Cloud.md)
 

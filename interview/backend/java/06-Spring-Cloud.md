@@ -760,44 +760,6 @@ traceId → service → service → service
 ✔ Metrics show symptoms
 ✔ Traces show root cause
 
-#### ↳ Follow-up: Why do we need distributed tracing in microservices?
-
-> In microservices, a single request flows across multiple services. Distributed tracing allows us to track that request end-to-end using a traceId, making debugging and performance analysis possible.
-
-🔑 Key Understanding
-
-- Logs alone are insufficient
-- You debug **flows**, not services
-- Failures are often cross-service
-
-🧠 RULES TO REMEMBER
-
-✔ One request → One trace
-✔ Multiple services → Same traceId
-✔ Without tracing, production debugging is guesswork
-
-#### ↳ Follow-up: Explain traceId and spanId.
-
-- **Trace** → Entire request journey
-- **Span** → One unit of work within the trace
-- **traceId** → Same across services
-- **spanId** → Unique per operation
-
-Example Flow
-
-```mermaid
-flowchart LR
-  C[Client] -->|traceId=abc| O["Order Service<br/>span1"]
-  O -->|traceId=abc| I["Inventory Service<br/>span2"]
-  I -->|traceId=abc| P["Payment Service<br/>span3"]
-```
-
-🧠 RULES
-
-✔ traceId remains same across services
-✔ spanId changes per service/method
-✔ Parent-child span relationship matters
-
 #### ↳ Follow-up: How is trace context propagated between services?
 
 - Trace context travels via **HTTP headers**
@@ -1171,61 +1133,6 @@ http
 
 ## Data Consistency
 
-### ❓ How do you handle transactions across services?
-
-### 📝 Answer
-
-**Saga Pattern** is a way to manage transactions across multiple services by breaking them into small steps and undoing steps if something fails.
-
-Imagine **one business action** needs **multiple services**.
-
-Example: **Online Order**
-
-1. Order Service → creates order
-2. Payment Service → takes money
-3. Inventory Service → reduces stock
-
-Each service:
-
-- Has **its own database**
-- Works **independently**
-
-❌ There is **NO single big transaction** across all services.
-
-_How Saga Works (Step by Step)_
-
-- Order is created
-- Payment is successful
-- Inventory update fails
-- 🤔❓ Now What?
-  - If step 3 fails, **undo step 2**
-  - If step 2 is undone, **undo step 1**
-
-Undo actions are called: **Compensating Transactions**
-
-| Step | Action       | If fails       |
-| ---- | ------------ | -------------- |
-| 1    | Create Order | Cancel Order   |
-| 2    | Take Payment | Refund Payment |
-| 3    | Update Stock | (End)          |
-
-```mermaid
-sequenceDiagram
-  participant O as Order Service
-  participant P as Payment Service
-  participant I as Inventory Service
-  O->>O: 1. Create order
-  O->>P: 2. Take payment
-  P-->>O: Paid
-  O->>I: 3. Update stock
-  I-->>O: Failed (out of stock)
-  Note over O,I: Compensating transactions, in reverse order
-  O->>P: Refund payment
-  O->>O: Cancel order
-```
-
----
-
 ## Observability (Production Reality)
 
 ### ❓ How do you debug prod issues?
@@ -1443,40 +1350,6 @@ Kubernetes handles everything.
 
 ## Service Communication & Discovery
 
-### ❓ How do services discover each other in Spring Cloud?
-
-### 📝 Answer
-
-**Eureka Client**
-
-```yaml
-spring:
-  application:
-    name: order-service
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka
-```
-
-**Calling another service (Feign)**
-
-```java
-@FeignClient(name = "inventory-service")
-public interface InventoryClient {
-  @GetMapping("/inventory/{productId}")
-  InventoryResponse checkStock(@PathVariable Long productId);
-}
-```
-
-Avoid hardcoded URLs. Service discovery enables:
-
-- Scaling
-- Failover
-- Blue/Green deployments
-
----
-
 ### ❓ When would you avoid synchronous REST calls between services?
 
 ### 📝 Answer
@@ -1540,34 +1413,6 @@ It breaks 12-factor principles and requires rebuild for config change.
 ---
 
 ## Fault Tolerance & Resilience
-
-### ❓ What happens when one microservice goes down? How do you prevent system-wide failure?
-
-### 📝 Answer
-
-- Circuit Breaker
-- Retry
-- Timeout
-- Bulkhead
-
-**Resilience4j Example**
-
-```java
-@CircuitBreaker(name = "inventoryService", fallbackMethod = "fallback")
-public InventoryResponse checkStock(Long productId) {
-    return inventoryClient.checkStock(productId);
-}
-
-public InventoryResponse fallback(Long productId, Throwable ex) {
-    return new InventoryResponse(productId, false);
-}
-```
-
-- Fail fast
-- Graceful degradation
-- Prevent thread exhaustion
-
----
 
 ### ❓ Difference between Retry and Circuit Breaker?
 
@@ -1638,24 +1483,6 @@ public class SecurityConfig {
 - Zero trust inside cluster
 
 ## Data Consistency
-
-### ❓ How do you maintain consistency across multiple microservices?
-
-### 📝 Answer
-
-**Saga Pattern**
-
-_Choreography Saga (Event-based)_
-
-- OrderCreated → InventoryUpdated → PaymentProcessed
-
-_Orchestration Saga_
-
-- Central Saga service controlling steps
-
-Avoid 2PC (XA). Use **eventual consistency**.
-
----
 
 ## Observability & Monitoring
 

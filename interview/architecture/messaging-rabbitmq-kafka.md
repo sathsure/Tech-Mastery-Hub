@@ -48,17 +48,6 @@ Because events aren't removed on read, consumers can **replay** them by moving t
 
 ---
 
-### ❓ How do Kafka consumer groups and partitions work?
-
-### 📝 Answer
-
-- **Different consumer groups** each receive **every** event independently (inventory, notifications and analytics can all read the same `OrderCreated` event).
-- **Within one group**, the topic's partitions are divided among the consumers: each partition is read by **one consumer of the group at a time**, so the group shares the work.
-- Ordering is guaranteed **within a partition**, not across a whole topic — events with the same key (e.g. `orderId`) go to the same partition and stay in order.
-- More consumers than partitions in a group means the extra consumers sit idle.
-
----
-
 ### ❓ What is the difference between RabbitMQ and Kafka?
 
 ### 📝 Answer

@@ -30,24 +30,6 @@ Result: a ~200 MB image instead of ~800 MB, with no Maven or source code inside.
 
 ---
 
-### ❓ What are Docker image layers and why does instruction order matter?
-
-### 📝 Answer
-
-Each Dockerfile instruction creates a **layer**. Docker caches layers and reuses them if nothing they depend on changed. Once one layer changes, **every layer after it is rebuilt**.
-
-So put things that change rarely first:
-
-```dockerfile
-COPY package.json package-lock.json ./   # changes rarely
-RUN npm ci                                # cached most builds
-COPY . .                                  # your code changes often → only this rebuilds
-```
-
-Copying all code **before** `npm ci` would reinstall dependencies on every code change.
-
----
-
 ### ❓ CMD vs ENTRYPOINT?
 
 ### 📝 Answer

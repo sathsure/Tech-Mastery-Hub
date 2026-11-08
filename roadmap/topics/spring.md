@@ -22,9 +22,8 @@
 ## 2. Spring Core & Fundamentals
 
 1. [What is Spring, Why it was introduced?](../../interview/backend/java/03-Spring-1.md)
-2. [What is Spring IoC and how is it implemented internally?](../../interview/backend/java/03-Spring-1.md)
-3. [What are the different bean configuration approaches used to implement IoC in Spring?](../../interview/backend/java/03-Spring-1.md)
-4. [Common Spring Dependency Injection Errors – Why Do They Happen?](../../interview/backend/java/03-Spring-1.md)
+2. [What are the different bean configuration approaches used to implement IoC in Spring?](../../interview/backend/java/03-Spring-1.md)
+3. [Common Spring Dependency Injection Errors – Why Do They Happen?](../../interview/backend/java/03-Spring-1.md)
    - [My class is not getting injected. Spring says `NoSuchBeanDefinitionException`. Why?](../../interview/backend/java/03-Spring-1.md)
    - [I am getting `NullPointerException` when using a dependency. Why?](../../interview/backend/java/03-Spring-1.md)
    - [Spring throws `NoUniqueBeanDefinitionException`. Why?](../../interview/backend/java/03-Spring-1.md)
@@ -38,27 +37,26 @@
    - [I need to run some logic right after a bean is created. How can I do it?](../../interview/backend/java/03-Spring-1.md)
    - [DB connections and threads aren't closing on shutdown. How can I fix it?](../../interview/backend/java/03-Spring-1.md)
    - [My DB changes aren't rolling back on exceptions. How can I fix this?](../../interview/backend/java/03-Spring-1.md)
-5. [Can you explain the different bean scopes in Spring?](../../interview/backend/java/03-Spring-1.md)
-6. [Explain the lifecycle of a Spring bean and how you can intervene at different stages of its initialization and destruction.](../../interview/backend/java/03-Spring-1.md)
+4. [Can you explain the different bean scopes in Spring?](../../interview/backend/java/03-Spring-1.md)
+5. [Explain the lifecycle of a Spring bean and how you can intervene at different stages of its initialization and destruction.](../../interview/backend/java/03-Spring-1.md)
    - [Is `@PostConstruct` called once or after all beans?](../../interview/backend/java/03-Spring-1.md)
    - [What about @Lazy beans?](../../interview/backend/java/03-Spring-1.md)
    - [What about prototype beans?](../../interview/backend/java/03-Spring-1.md)
-7. [What is Spring Profile?](../../interview/backend/java/03-Spring-1.md)
+6. [What is Spring Profile?](../../interview/backend/java/03-Spring-1.md)
    - [Can multiple profiles be active at the same time?](../../interview/backend/java/03-Spring-1.md)
    - [What happens if two profiles define the same bean?](../../interview/backend/java/03-Spring-1.md)
    - [Difference between `@Profile` and `@Conditional`?](../../interview/backend/java/03-Spring-1.md)
    - [Are profiles evaluated at runtime?](../../interview/backend/java/03-Spring-1.md)
    - [Why `@Conditional` Is Used?](../../interview/backend/java/03-Spring-1.md)
-8. [What is Spring Boot Actuator?](../../interview/backend/java/03-Spring-1.md)
+7. [What is Spring Boot Actuator?](../../interview/backend/java/03-Spring-1.md)
    - [Is Spring Boot Actuator enabled by default in a Spring Boot application?](../../interview/backend/java/03-Spring-1.md)
    - [Difference between Actuator and Logging?](../../interview/backend/java/03-Spring-1.md)
    - [Difference between Actuator and Swagger?](../../interview/backend/java/03-Spring-1.md)
    - [How do you enable only /health and /info endpoints in Spring Boot Actuator?](../../interview/backend/java/03-Spring-1.md)
-9. [What is Spring AOP, Why it was introduced?](../../interview/backend/java/03-Spring-1.md)
-   - [How Spring AOP Works Internally](../../interview/backend/java/03-Spring-1.md)
+8. [What is Spring AOP, Why it was introduced?](../../interview/backend/java/03-Spring-1.md)
    - [Can Spring AOP intercept private methods?](../../interview/backend/java/03-Spring-1.md)
    - [Spring AOP vs AspectJ](../../interview/backend/java/03-Spring-1.md)
-10. [What is Spring Modular Design?](../../interview/backend/java/03-Spring-1.md)
+9. [What is Spring Modular Design?](../../interview/backend/java/03-Spring-1.md)
 
 ## 3. Other Spring Concepts
 
@@ -70,9 +68,7 @@
 ## 4. Database
 
 1. [What is DataSource?](../../interview/backend/java/03-Spring-2.md)
-2. [What is connection pooling?](../../interview/backend/java/03-Spring-2.md)
-   - [What does an application server do?](../../interview/backend/java/03-Spring-2.md)
-3. [How do I allow only certain threads to use certain DB connections?](../../interview/backend/java/03-Spring-2.md)
+2. [How do I allow only certain threads to use certain DB connections?](../../interview/backend/java/03-Spring-2.md)
 
 ## 5. Spring Data JPA
 
@@ -103,15 +99,14 @@
 ## 7. Spring Security
 
 1. [What is Spring Security and why do we need it?](../../interview/backend/java/05-Spring-Security.md)
-2. [Explain authentication vs authorization with a real example.](../../interview/backend/java/05-Spring-Security.md)
-   - [Can authorization happen without authentication?](../../interview/backend/java/05-Spring-Security.md)
-   - [What happens when we add `spring-boot-starter-security`?](../../interview/backend/java/05-Spring-Security.md)
-3. [Explain Spring Security architecture.](../../interview/backend/java/05-Spring-Security.md)
+2. [Can authorization happen without authentication?](../../interview/backend/java/05-Spring-Security.md)
+3. [What happens when we add `spring-boot-starter-security`?](../../interview/backend/java/05-Spring-Security.md)
+4. [Explain Spring Security architecture.](../../interview/backend/java/05-Spring-Security.md)
    - [What is SecurityFilterChain?](../../interview/backend/java/05-Spring-Security.md)
    - [Why do we need PasswordEncoder?](../../interview/backend/java/05-Spring-Security.md)
-4. [Difference between Roles and Authorities in Spring Security?](../../interview/backend/java/05-Spring-Security.md)
+5. [Difference between Roles and Authorities in Spring Security?](../../interview/backend/java/05-Spring-Security.md)
    - [Can a user have authorities without roles?](../../interview/backend/java/05-Spring-Security.md)
-5. [Explain JWT authentication flow.](../../interview/backend/java/05-Spring-Security.md)
+6. [Explain JWT authentication flow.](../../interview/backend/java/05-Spring-Security.md)
    - [Structure of JWT](../../interview/backend/java/05-Spring-Security.md)
    - [How to Generate Access Token?](../../interview/backend/java/05-Spring-Security.md)
    - [How to Generate Refresh Token?](../../interview/backend/java/05-Spring-Security.md)
@@ -122,7 +117,7 @@
    - [Why NOT store both in cookies?](../../interview/backend/java/05-Spring-Security.md)
    - [What is CSRF?](../../interview/backend/java/05-Spring-Security.md)
    - [When Can We Disable CSRF in Spring?](../../interview/backend/java/05-Spring-Security.md)
-6. [CORS vs CSRF vs OAuth2 vs JWT?](../../interview/backend/java/05-Spring-Security.md)
+7. [CORS vs CSRF vs OAuth2 vs JWT?](../../interview/backend/java/05-Spring-Security.md)
    - [Why `@Order` matters?](../../interview/backend/java/05-Spring-Security.md)
    - [What happens when we call `.cors(cors -> {})`?](../../interview/backend/java/05-Spring-Security.md)
    - [Does Spring MVC CORS config also work here?](../../interview/backend/java/05-Spring-Security.md)
@@ -132,18 +127,17 @@
    - [Why Access Token in Header and Refresh Token in Cookie?](../../interview/backend/java/05-Spring-Security.md)
    - [What SessionCreationPolicy Actually Controls?](../../interview/backend/java/05-Spring-Security.md)
    - [Is OAuth2 authentication or authorization?](../../interview/backend/java/05-Spring-Security.md)
-7. [Filters vs Interceptors](../../interview/backend/java/05-Spring-Security.md)
-8. [How Role-Based Access is Implemented in Spring Security](../../interview/backend/java/05-Spring-Security.md)
-9. [What is SAML?](../../interview/backend/java/05-Spring-Security.md)
-10. [SAML vs JWT](../../interview/backend/java/05-Spring-Security.md)
-11. [SAML vs OAuth vs OIDC](../../interview/backend/java/05-Spring-Security.md)
+8. [Filters vs Interceptors](../../interview/backend/java/05-Spring-Security.md)
+9. [How Role-Based Access is Implemented in Spring Security](../../interview/backend/java/05-Spring-Security.md)
+10. [What is SAML?](../../interview/backend/java/05-Spring-Security.md)
+11. [SAML vs JWT](../../interview/backend/java/05-Spring-Security.md)
+12. [SAML vs OAuth vs OIDC](../../interview/backend/java/05-Spring-Security.md)
 
 ## 8. Transaction Basics
 
-1. [What does @Transactional actually do?](../../interview/backend/java/07-Spring-Transactions.md)
-2. [What is a Spring proxy?](../../interview/backend/java/07-Spring-Transactions.md)
-3. [In a Spring service, what can go wrong when using @Transactional?](../../interview/backend/java/07-Spring-Transactions.md)
-4. [A method calls another transactional method on the same instance. Is the second transaction boundary applied?](../../interview/backend/java/07-Spring-Transactions.md)
+1. [What is a Spring proxy?](../../interview/backend/java/07-Spring-Transactions.md)
+2. [In a Spring service, what can go wrong when using @Transactional?](../../interview/backend/java/07-Spring-Transactions.md)
+3. [A method calls another transactional method on the same instance. Is the second transaction boundary applied?](../../interview/backend/java/07-Spring-Transactions.md)
 
 ## 9. Rollback Rules and Propagation
 
@@ -171,14 +165,21 @@
    - [`@Mock` vs `@MockBean`/`@MockitoBean`?](../../interview/testing/01-Testing.md)
 2. [What is Testcontainers?](../../interview/testing/01-Testing.md)
 
-## 13. Tomcat and Spring Boot
+## 13. Servers, Localhost and Ports
+
+1. [What exactly is a Server? Is it hardware, software, a process or a computer?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
+2. [What is Localhost? How is it different from a physical server or virtual machine?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
+3. [How does a server listen for incoming requests using IP addresses and ports?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
+4. [What is the difference between Web Server, Application Server and Reverse Proxy?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
+
+## 14. Tomcat and Spring Boot
 
 1. [How does Tomcat work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
 2. [How is Tomcat different from the computer's localhost?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
 3. [How does Spring Boot start its embedded Tomcat server?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
 4. [What happens internally when an HTTP request reaches Spring Boot?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
 
-## 14. Spring Container and Request Processing
+## 15. Spring Container and Request Processing
 
 1. [How does Spring Dependency Injection create and manage objects?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
 2. [How do Spring AOP, Proxies and @Transactional work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
@@ -189,10 +190,10 @@
 
 ## Diagrams
 
-- [SpringBeanLifeCycle](../../knowledge/visual-notes/backend/spring-bean-life-cycle.png)
 - [SpringActuator](../../knowledge/visual-notes/backend/spring-actuator.png)
 - [ModularDesign](../../knowledge/visual-notes/backend/spring-modular-design.png)
 - [SpringAnnotations](../../knowledge/visual-notes/backend/spring-annotations.png)
+- [Spring bean life cycle](../../knowledge/visual-notes/backend/spring-bean-life-cycle.png)
 
 ## Related roles
 

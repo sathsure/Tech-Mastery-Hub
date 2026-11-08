@@ -141,6 +141,8 @@ Order for one component:
 
 **3. Visual**
 
+![Angular lifecycle hooks](../../knowledge/visual-notes/angular-lifecycle.png)
+
 ```mermaid
 flowchart TD
   CT[constructor] --> OC["ngOnChanges<br/>(if inputs)"] --> OI["ngOnInit (once)"] --> DC[ngDoCheck]

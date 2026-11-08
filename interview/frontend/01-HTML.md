@@ -2,69 +2,6 @@
 
 ## 🧱 Part 1 — Browser Internals & Rendering
 
-### ❓ How does a browser render a webpage?
-
-### 📝 Answer
-
-When a browser receives HTML from a server, it **does not immediately show it on the screen**.
-Instead, it follows a strict internal pipeline to understand _what_ to show and _how_ to show it.
-
-🔍 **Step-by-step breakdown**
-
-1. **HTML Parsing** — Browser reads HTML top to bottom and converts it into a tree-like structure called the **DOM (Document Object Model)**.
-2. **CSS Parsing** — CSS files are parsed into another tree called the **CSSOM**, which determines styles like colors, fonts, and layout.
-3. **Render Tree Creation** — DOM + CSSOM are merged. Invisible elements (`display: none`) are excluded.
-4. **Layout (Reflow)** — Browser calculates **exact position and size** of each element based on viewport, fonts, and flex/grid rules.
-5. **Paint** — Pixels are drawn (colors, text, borders).
-6. **Compositing** — Layers are combined and sent to the GPU for display.
-
-<img src="../../assets/browser-render.png" alt="BrowserRender Image" width="500" />
-
-```text
-HTML → DOM
-CSS  → CSSOM
-DOM + CSSOM → Render Tree → Layout → Paint → Composite
-```
-
-> 💡 **Key Takeaway**
->
-> - Changing `width`, `height`, `top`, `left` → triggers **reflow** (expensive — recalculates layout)
-> - Changing `color`, `background`, `visibility` → triggers **repaint** (cheaper)
-> - Changing `transform`, `opacity` → only **compositing** (cheapest, GPU-accelerated)
-
-#### ↳ **Follow-up:** Why does `transform: translateX(...)` perform better than `left: ...`?
-
-↪ Because `transform` skips layout and paint and only re-composites the layer on the GPU. `left` triggers a full reflow.
-
----
-
-#### ↳ Follow-up: Can you walk me through the Critical Rendering Path and why it matters for performance?
-### 📝 Answer
-
-The **Critical Rendering Path (CRP)** is the sequence of steps the browser must complete to render the **first pixel** on screen.
-
-```text
-HTML → DOM
-CSS  → CSSOM   (BLOCKS rendering)
-JS   → Can BLOCK parsing
-↓
-Render Tree → Layout → Paint
-```
-
-> ⚠️ **Important Rules**
->
-> - **CSS is render-blocking** by default. The browser will not paint anything until all CSS is parsed.
-> - **JS is parser-blocking** by default. A `<script>` tag pauses HTML parsing until it loads and runs.
-
-✅ **Optimizations**
-
-- Inline critical CSS (above-the-fold styles)
-- Use `defer` or `async` for non-critical JS
-- Lazy-load images and below-the-fold content
-- Use `<link rel="preload">` for critical assets
-
----
-
 ## 🏷️ Part 2 — Semantic HTML & Structure
 
 ### ❓ What does "semantic HTML" mean?

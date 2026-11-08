@@ -25,12 +25,9 @@
    - [Can NoSQL databases do transactions?](../../interview/architecture/04-System-Design.md)
 7. [What is database replication?](../../interview/architecture/04-System-Design.md)
    - [How do you fix "I updated my profile but still see the old one"?](../../interview/architecture/04-System-Design.md)
-8. [What is sharding (partitioning)?](../../interview/architecture/04-System-Design.md)
-   - [Replication vs sharding?](../../interview/architecture/04-System-Design.md)
-9. [What is consistent hashing?](../../interview/architecture/04-System-Design.md)
+8. [What is consistent hashing?](../../interview/architecture/04-System-Design.md)
    - [What are virtual nodes?](../../interview/architecture/04-System-Design.md)
-10. [What is a message queue and why use one in system design?](../../interview/architecture/04-System-Design.md)
-   - [What happens if a message keeps failing?](../../interview/architecture/04-System-Design.md)
+9. [What is a message queue and why use one in system design?](../../interview/architecture/04-System-Design.md)
 
 ## 2. Part 2 — Classic Design Questions
 
@@ -82,23 +79,15 @@
 ## 6. Part 2 — Transactions Across Services
 
 1. [Why can't you use a normal database transaction across microservices?](../../interview/architecture/05-Distributed-Systems.md)
-2. [What is the Saga pattern?](../../interview/architecture/05-Distributed-Systems.md)
-   - [Compensation vs rollback?](../../interview/architecture/05-Distributed-Systems.md)
-   - [Is a saga ACID?](../../interview/architecture/05-Distributed-Systems.md)
-3. [What is the Transactional Outbox pattern?](../../interview/architecture/05-Distributed-Systems.md)
+2. [What is the Transactional Outbox pattern?](../../interview/architecture/05-Distributed-Systems.md)
    - [What is CDC?](../../interview/architecture/05-Distributed-Systems.md)
-4. [What are "at most once", "at least once" and "exactly once" delivery?](../../interview/architecture/05-Distributed-Systems.md)
+3. [What are "at most once", "at least once" and "exactly once" delivery?](../../interview/architecture/05-Distributed-Systems.md)
    - [How do you make a consumer idempotent?](../../interview/architecture/05-Distributed-Systems.md)
 
 ## 7. Part 3 — Coordination
 
-1. [What is a distributed lock and when do you need one?](../../interview/architecture/05-Distributed-Systems.md)
-   - [Why does the lock need an expiry?](../../interview/architecture/05-Distributed-Systems.md)
-   - [What is a fencing token?](../../interview/architecture/05-Distributed-Systems.md)
-2. [What is leader election?](../../interview/architecture/05-Distributed-Systems.md)
-   - [What is split brain?](../../interview/architecture/05-Distributed-Systems.md)
-3. [What is a quorum?](../../interview/architecture/05-Distributed-Systems.md)
-4. [How do you generate unique IDs across many servers?](../../interview/architecture/05-Distributed-Systems.md)
+1. [What is a quorum?](../../interview/architecture/05-Distributed-Systems.md)
+2. [How do you generate unique IDs across many servers?](../../interview/architecture/05-Distributed-Systems.md)
 
 ## 8. Part 4 — Failures
 
@@ -112,6 +101,31 @@
 ## 9. Part 11 — Final System Design Question
 
 1. [Final Question: Design a MEAN system for 1 million users](../../interview/frontend/09-Web_Architecture.md)
+
+## 10. Service Communication
+
+1. [How do microservices communicate with each other?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)
+2. [How does Service Discovery work?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)
+
+## 11. Resilience
+
+1. [How do Circuit Breakers, Retries and Timeouts prevent cascading failures?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)
+2. [How does Idempotency prevent duplicate processing?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)
+
+## 12. Transactions and Consistency
+
+1. [How do Distributed Transactions work?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)
+2. [How does the Saga Pattern work?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)
+3. [How do distributed systems maintain consistency?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)
+
+## 13. Coordination
+
+1. [How do Replication and Leader Election work?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)
+2. [How does Distributed Locking work?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)
+
+## 14. Observability
+
+1. [How does Distributed Tracing track a request across multiple services?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)
 
 ## Related roles
 

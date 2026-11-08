@@ -78,6 +78,8 @@ The **critical rendering path**: bytes → structured trees → layout → pixel
 
 **3. Visual**
 
+![How a browser renders a page](../../knowledge/visual-notes/browser-render.png)
+
 ```mermaid
 flowchart LR
   H[HTML bytes] --> T[Tokenizer] --> DOM[DOM tree]
@@ -258,6 +260,8 @@ One turn of the event loop:
 4. Repeat.
 
 **3. Visual**
+
+![JavaScript event loop](../../knowledge/visual-notes/event-loop.png)
 
 ```mermaid
 flowchart TD

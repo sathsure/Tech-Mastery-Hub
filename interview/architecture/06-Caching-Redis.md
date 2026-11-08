@@ -36,41 +36,6 @@ A low hit ratio means the cache isn't helping: wrong data cached, TTL too short,
 
 ---
 
-### ❓ What are the caching strategies (cache-aside, write-through, write-behind)?
-
-### 📝 Answer
-
-| Strategy | How it works | Good for |
-|---|---|---|
-| **Cache-aside (lazy loading)** | App checks cache → on miss reads DB and puts it in cache | Most read-heavy apps (default choice) |
-| **Read-through** | Cache itself loads from DB on a miss | Same as above, logic inside the cache library |
-| **Write-through** | Write to cache **and** DB together | Data read right after being written |
-| **Write-behind (write-back)** | Write to cache; DB updated later in batches | Very high write rates; risk of losing data |
-| **Write-around** | Write only to DB; cache fills on next read | Data rarely read after writing |
-
-**Cache-aside in code:**
-
-```java
-public Product get(long id) {
-    Product p = redis.get("product:" + id);
-    if (p != null) return p;                       // hit
-    p = db.findById(id);                           // miss
-    redis.set("product:" + id, p, Duration.ofMinutes(10));
-    return p;
-}
-
-public void update(Product p) {
-    db.save(p);
-    redis.delete("product:" + p.id());             // invalidate, next read reloads
-}
-```
-
-#### ↳ Follow-up: On update, should you update the cache or delete the key?
-
-↪ Usually **delete**. Updating can leave wrong data if two writes race; deleting just makes the next read load fresh data.
-
----
-
 ### ❓ What are cache eviction policies?
 
 ### 📝 Answer
@@ -138,22 +103,6 @@ Common combo: a small local cache (seconds) in front of Redis (minutes) — a **
 ---
 
 ## Redis
-
-### ❓ What is Redis and why is it so fast?
-
-### 📝 Answer
-
-Redis is an **in-memory key-value data store** used as a cache, session store, message broker, rate-limit counter and more.
-
-Why fast:
-
-- Data lives in **RAM**.
-- Simple data structures with O(1) operations for most commands.
-- One main thread runs commands (no lock overhead) with efficient non-blocking networking.
-
-It can also save to disk (persistence), so data can survive a restart.
-
----
 
 ### ❓ What data types does Redis support, with examples?
 

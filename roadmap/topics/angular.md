@@ -41,8 +41,7 @@
 
 ## 4. Part 3 — Lifecycle Hooks
 
-1. [What are Angular lifecycle hooks?](../../interview/frontend/05-Angular-1.md)
-   - [Can you walk through a comprehensive lifecycle example?](../../interview/frontend/05-Angular-1.md)
+1. [Can you walk through a comprehensive Angular lifecycle example?](../../interview/frontend/05-Angular-1.md)
 
 ## 5. Part 4 — Directives
 
@@ -71,11 +70,10 @@
 
 ## 9. Part 8 — Dependency Injection (DI)
 
-1. [How does Angular's DI system and hierarchy work?](../../interview/frontend/05-Angular-1.md)
-   - [Difference between `providedIn: 'root'` vs `'any'` vs `'platform'`?](../../interview/frontend/05-Angular-1.md)
-   - [Can you explain multi-providers in Angular and give a real-world scenario where you'd use one?](../../interview/frontend/05-Angular-1.md)
-   - [What are Injection Tokens, and why are they required?](../../interview/frontend/05-Angular-1.md)
-   - [If a service is provided in both root and a lazy-loaded module, how many instances exist?](../../interview/frontend/05-Angular-1.md)
+1. [Difference between `providedIn: 'root'` vs `'any'` vs `'platform'`?](../../interview/frontend/05-Angular-1.md)
+2. [Can you explain multi-providers in Angular and give a real-world scenario where you'd use one?](../../interview/frontend/05-Angular-1.md)
+3. [What are Injection Tokens, and why are they required?](../../interview/frontend/05-Angular-1.md)
+4. [If a service is provided in both root and a lazy-loaded module, how many instances exist?](../../interview/frontend/05-Angular-1.md)
 
 ## 10. Part 9 — Routing
 
@@ -142,6 +140,17 @@
 5. [How do the Angular Router and lazy loading work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)
 6. [How do Angular HttpClient and HTTP Interceptors work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)
 
+## 20. React Internals
+
+1. [How do React's Virtual DOM and Reconciliation work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)
+2. [How does React's Fiber architecture work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)
+3. [How do React Hooks and component rendering work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)
+
+## 21. Vue Internals
+
+1. [How does Vue's reactivity system work internally (dependency tracking and Proxies)?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)
+2. [How do Vue's template compiler and Virtual DOM work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)
+
 ## Practice
 
 1. [Build a small Angular application that manages users. It should load initial data from an API, allow CRUD operations, use forms, routing, dialogs, caching, and some custom Angular features. Explain your design decisions.](../../practice/coding/03-angular-coding.md)
@@ -150,7 +159,7 @@
 
 ## Diagrams
 
-- [Angular_Lifecycle](../../knowledge/visual-notes/angular-lifecycle.png)
+- [Angular lifecycle hooks](../../knowledge/visual-notes/angular-lifecycle.png)
 
 ## Related roles
 

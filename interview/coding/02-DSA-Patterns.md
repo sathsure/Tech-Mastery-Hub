@@ -17,33 +17,6 @@ Use an array by default. Use a linked list when you insert/remove in the middle 
 
 ---
 
-### ❓ How does a hash table work?
-
-### 📝 Answer
-
-A hash table stores key → value pairs. A **hash function** turns the key into an index in an array of buckets, so lookup is **O(1) on average**.
-
-```mermaid
-flowchart LR
-  K["key: apple"] --> H["hash(apple) % 8 = 3"]
-  H --> B3
-  subgraph Buckets[Array of 8 buckets]
-    B0[0: empty]
-    B3["3: (apple, 5) → (grape, 2)"]
-    B7[7: empty]
-  end
-```
-
-If `grape` also hashes to 3, that is a **collision**: both live in bucket 3 (chaining).
-
-- **Collision:** two keys land in the same bucket → keep a small list there (chaining) or try the next slot (open addressing).
-- **Resize:** when it gets too full, it doubles and re-places every key.
-- Worst case O(n) if many keys collide.
-
-In Python: `dict` and `set`. Keys must be **hashable** (immutable): strings, numbers, tuples — not lists.
-
----
-
 ### ❓ Stack vs queue vs deque?
 
 ### 📝 Answer
@@ -58,24 +31,6 @@ stack = []; stack.append(1); stack.pop()          # O(1)
 from collections import deque
 q = deque(); q.append(1); q.popleft()             # O(1)  (list.pop(0) is O(n)!)
 ```
-
----
-
-### ❓ What is a heap (priority queue)?
-
-### 📝 Answer
-
-A heap always gives you the **smallest (min-heap) or largest (max-heap) item in O(1)**, and adds/removes in **O(log n)**. It's a binary tree stored in an array where every parent ≤ its children.
-
-```python
-import heapq
-h = []
-heapq.heappush(h, 5); heapq.heappush(h, 1); heapq.heappush(h, 3)
-heapq.heappop(h)          # 1  (smallest)
-heapq.heappush(h, -x)     # trick: push negatives for a max-heap
-```
-
-Use for: top K items, merge K sorted lists, Dijkstra, scheduling by priority.
 
 ---
 
@@ -102,12 +57,6 @@ Use for: top K items, merge K sorted lists, Dijkstra, scheduling by priority.
 | In-order | left, node, right | Sorted output of a BST |
 | Post-order | left, right, node | Delete a tree, evaluate expressions |
 | Level-order | level by level (BFS) | Shortest path in a tree, print by level |
-
-#### ↳ Follow-up: What is a balanced tree?
-
-↪ A tree whose height stays about log n (AVL, Red-Black). Java's `TreeMap` is a Red-Black tree.
-
----
 
 ### ❓ How do you represent a graph?
 

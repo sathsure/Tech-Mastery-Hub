@@ -1450,26 +1450,9 @@ map.entrySet()    // Set of key-value pairs
 
 ---
 
-### ❓ Difference Between `ArrayList` and `LinkedList`
+### ❓ Why `LinkedList` supports Queue and Deque?
 
 ### 📝 Answer
-
-| Feature                  | ArrayList                                            | LinkedList                                         |
-| ------------------------ | ---------------------------------------------------- | -------------------------------------------------- |
-| Internal structure       | Uses a **dynamic array**                             | Uses a **doubly linked list**                      |
-| How data is stored       | Elements are stored **next to each other** in memory | Each element is stored in a **separate node**      |
-| Random access (`get(i)`) | ✅ Very fast because index is directly calculated    | ❌ Slow because it must traverse from start/end    |
-| Add at end (`add(e)`)    | ✅ Fast (usually)                                    | ✅ Fast                                            |
-| Insert/Delete in middle  | ❌ Slow because elements must be shifted             | ⚠️ Faster than ArrayList _after reaching position_ |
-| Traversal                | Faster due to better cache locality                  | Slower due to node hopping                         |
-| Memory usage             | Less memory (only data)                              | More memory (data + 2 pointers)                    |
-| Queue/Deque support      | ❌ Not supported                                     | ✅ Supported (`addFirst`, `removeLast`, etc.)      |
-
-**Queue** - _First In, First Out_, The first element added is the first one removed
-**Stack** - _Last In, First Out_, The last element added is removed first
-**Deque** - _Double-Ended Queue_, You can add or remove elements **from both front and end**
-
-#### ↳ Follow-up: Why `LinkedList` supports Queue and Deque?
 
 In Java, the `LinkedList` class already implements the `Queue` and `Deque` interface
 
@@ -1538,118 +1521,6 @@ head=0, tail=5
 ```
 
 > `ArrayList` is best for access, `LinkedList` is good for frequent front operations, and `ArrayDeque` is the best choice for queues and stacks.
-
----
-
-### ❓ How does `HashMap` work internally?
-
-### 📝 Answer
-
-A HashMap stores data in key–value pairs and allows fast insertion, deletion, and lookup (on average O(1) time).
-
-Internally, a HashMap consists of:
-
-- An array of buckets (default 16)
-- Each bucket holds its entries as:
-  1. A **linked list** (always in Java 7; the normal case in Java 8+)
-  2. A **red-black tree** (Java 8+, only when one bucket gets crowded — see step 4)
-
-Each stored entry is called a Node:
-
-```
-Node {
-  int hash;
-  Key key;
-  Value value;
-  Node next;
-}
-```
-
-```mermaid
-flowchart LR
-  K["put(apple, 10)"] --> H["hashCode() → spread hash"]
-  H --> I["index = hash & (16 - 1) = 5"]
-  I --> B5
-  subgraph Table[Bucket array, size 16]
-    B4[4: empty]
-    B5["5: apple=10 → kiwi=3<br/>(list; tree if more than 8)"]
-    B6[6: empty]
-  end
-```
-
-🔍 Step-by-Step:
-
-1. Hashing the Key
-
-When you insert `map.put("apple", 10);`
-
-- The key’s `hashCode()` method is called
-- Hash is processed to reduce collisions
-
-2. Finding the Bucket Index
-
-The hash is converted into an array index: `index = hash & (capacity - 1)`
-
-Example:
-
-```
-capacity = 16
-hash = 21
-index = 21 & 15 = 5
-```
-
-So the entry goes into **bucket 5**.
-
-3. Handling Collisions
-
-If multiple keys map to the **same index**, a **collision** occurs.
-
-- If key exists → value is updated
-- If key is different → new node is added
-
-4. Java 8 Optimization (Treeification)
-
-If:
-
-- A bucket has **more than 8 entries**
-- Capacity is **at least 64**
-
-Then:
-👉 The linked list is converted into a **Red-Black Tree** (if the table is smaller than 64, HashMap **resizes** instead; a tree shrinks back to a list at 6 entries)
-
-This improves lookup time:
-
-- From **O(n)** → **O(log n)**
-
-5. How Data Is Retrieved (get)
-
-```java
-map.get("apple");
-```
-
-- Compute `hashCode()` of `"apple"`
-- Find bucket index
-- Traverse the linked list **or** red-black tree in that bucket
-- Use `equals()` to find the exact key — two different keys can share a hash code (a **collision**), so the hash alone isn't enough
-- Key found → return **the value**; not found → return **null**
-
-6. Resizing (Rehashing)
-
-When Number of entries > **capacity × load factor (0.75)**
-
-Then:
-
-- Capacity doubles (e.g., 16 → 32)
-- All entries are **rehashed**
-- Improves performance by reducing collisions
-
-7. Time Complexity
-
-| Operation | Average | Worst Case |
-| --------- | ------- | ---------- |
-| put()     | O(1)    | O(log n)   |
-| get()     | O(1)    | O(log n)   |
-| remove()  | O(1)    | O(log n)   |
 
 ---
 

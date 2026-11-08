@@ -6,42 +6,36 @@
 - None. This is a starting point.
 - Overview: [HTML concepts](../../knowledge/concepts/html/README.md)
 
-## 1. HTML Interview Preparation › Part 1 — Browser Internals & Rendering
-
-1. [How does a browser render a webpage?](../../interview/frontend/01-HTML.md)
-   - [Why does `transform: translateX(...)` perform better than `left: ...`?](../../interview/frontend/01-HTML.md)
-   - [Can you walk me through the Critical Rendering Path and why it matters for performance?](../../interview/frontend/01-HTML.md)
-
-## 2. HTML Interview Preparation › Part 2 — Semantic HTML & Structure
+## 1. HTML Interview Preparation › Part 2 — Semantic HTML & Structure
 
 1. [What does "semantic HTML" mean?](../../interview/frontend/01-HTML.md)
 2. [Difference between `<div>` and `<span>`?](../../interview/frontend/01-HTML.md)
 3. [Difference between `id` and `class`?](../../interview/frontend/01-HTML.md)
 4. [Difference between `<section>`, `<article>`, and `<div>`?](../../interview/frontend/01-HTML.md)
 
-## 3. HTML Interview Preparation › Part 3 — Attributes & Data
+## 2. HTML Interview Preparation › Part 3 — Attributes & Data
 
 1. [What are `data-*` attributes?](../../interview/frontend/01-HTML.md)
 2. [Difference between `<script>`, `async`, and `defer`?](../../interview/frontend/01-HTML.md)
 3. [How would you explain the difference between preload, prefetch, and preconnect — and when would you reach for each?](../../interview/frontend/01-HTML.md)
 
-## 4. HTML Interview Preparation › Part 4 — Accessibility (a11y)
+## 3. HTML Interview Preparation › Part 4 — Accessibility (a11y)
 
 1. [How do you approach accessibility (a11y) in HTML, and what does it mean to you in practice?](../../interview/frontend/01-HTML.md)
    - [What are ARIA attributes?](../../interview/frontend/01-HTML.md)
 
-## 5. HTML Interview Preparation › Part 5 — DOM, Performance & Modern Features
+## 4. HTML Interview Preparation › Part 5 — DOM, Performance & Modern Features
 
 1. [Difference between DOM and Virtual DOM?](../../interview/frontend/01-HTML.md)
 2. [What are Web Components?](../../interview/frontend/01-HTML.md)
    - [What is the `<template>` and `<slot>` element?](../../interview/frontend/01-HTML.md)
 
-## 6. HTML Interview Preparation › Part 6 — SEO
+## 5. HTML Interview Preparation › Part 6 — SEO
 
 1. [How does HTML structure impact SEO?](../../interview/frontend/01-HTML.md)
    - [What is the difference between `<meta>` tags for SEO and Open Graph?](../../interview/frontend/01-HTML.md)
 
-## 7. Trick Questions & Mock Scenarios
+## 6. Trick Questions & Mock Scenarios
 
 1. [Is ARIA better than semantic HTML?](../../interview/frontend/01-HTML.md)
 2. [Does HTML support multithreading?](../../interview/frontend/01-HTML.md)
@@ -49,7 +43,7 @@
 4. [Does `display: none` remove an element from the DOM?](../../interview/frontend/01-HTML.md)
    - [Difference between `display: none` and `hidden` attribute?](../../interview/frontend/01-HTML.md)
 
-## 8. Mock Interview Scenarios
+## 7. Mock Interview Scenarios
 
 1. [We're getting complaints that the page feels slow, but the HTML is pretty small. Where would you start debugging?](../../interview/frontend/01-HTML.md)
 2. [A QA engineer filed a bug — screen reader users are hearing content in the wrong order. How would you investigate that?](../../interview/frontend/01-HTML.md)
@@ -61,7 +55,6 @@
 
 ## Diagrams
 
-- [BrowserRender](../../knowledge/visual-notes/browser-render.png)
 - [Semantic](../../knowledge/visual-notes/semantic.png)
 - [AsyncDefer](../../knowledge/visual-notes/async-defer.png)
 

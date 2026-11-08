@@ -13,12 +13,10 @@
 
 ## 2. How the Web Works
 
-1. [What happens when you type a URL into the browser and press Enter?](../../interview/architecture/08-Networking-HTTP.md)
-2. [How does DNS work?](../../interview/architecture/08-Networking-HTTP.md)
+1. [How does DNS work?](../../interview/architecture/08-Networking-HTTP.md)
    - [Why does a DNS change take time to "propagate"?](../../interview/architecture/08-Networking-HTTP.md)
-3. [TCP vs UDP?](../../interview/architecture/08-Networking-HTTP.md)
-4. [What is the TCP three-way handshake?](../../interview/architecture/08-Networking-HTTP.md)
-5. [What are the OSI and TCP/IP models?](../../interview/architecture/08-Networking-HTTP.md)
+2. [What is the TCP three-way handshake?](../../interview/architecture/08-Networking-HTTP.md)
+3. [What are the OSI and TCP/IP models?](../../interview/architecture/08-Networking-HTTP.md)
 
 ## 3. HTTP
 
@@ -26,11 +24,9 @@
 2. [What do the HTTP status code groups mean?](../../interview/architecture/08-Networking-HTTP.md)
    - [401 vs 403?](../../interview/architecture/08-Networking-HTTP.md)
    - [502 vs 504?](../../interview/architecture/08-Networking-HTTP.md)
-3. [HTTP/1.1 vs HTTP/2 vs HTTP/3?](../../interview/architecture/08-Networking-HTTP.md)
-4. [How does HTTPS / TLS work?](../../interview/architecture/08-Networking-HTTP.md)
-5. [What are cookies, and what do HttpOnly, Secure and SameSite do?](../../interview/architecture/08-Networking-HTTP.md)
-6. [What is CORS and why does the browser block my API call?](../../interview/architecture/08-Networking-HTTP.md)
-7. [What are HTTP caching headers?](../../interview/architecture/08-Networking-HTTP.md)
+3. [What are cookies, and what do HttpOnly, Secure and SameSite do?](../../interview/architecture/08-Networking-HTTP.md)
+4. [What is CORS and why does the browser block my API call?](../../interview/architecture/08-Networking-HTTP.md)
+5. [What are HTTP caching headers?](../../interview/architecture/08-Networking-HTTP.md)
 
 ## 4. Real-time & APIs
 
@@ -42,8 +38,30 @@
 
 1. [Tricky: Is data in a GET query string secure over HTTPS?](../../interview/architecture/08-Networking-HTTP.md)
 2. [Tricky: What is the difference between a URL and a URI?](../../interview/architecture/08-Networking-HTTP.md)
-3. [Tricky: What is localhost vs 127.0.0.1 vs 0.0.0.0?](../../interview/architecture/08-Networking-HTTP.md)
-4. [Tricky: What is latency made of on a slow page load?](../../interview/architecture/08-Networking-HTTP.md)
+3. [Tricky: What is latency made of on a slow page load?](../../interview/architecture/08-Networking-HTTP.md)
+
+## 6. How Data Travels
+
+1. [How does data travel from one computer to another?](../../interview/under-the-hood/07-Networking-Internals.md)
+2. [How do IP Addresses, MAC Addresses, DNS, Ports and Routing work together?](../../interview/under-the-hood/07-Networking-Internals.md)
+
+## 7. TCP, UDP and HTTP
+
+1. [How do TCP and UDP work internally?](../../interview/under-the-hood/07-Networking-Internals.md)
+2. [How does TCP establish and maintain connections?](../../interview/under-the-hood/07-Networking-Internals.md)
+3. [How do HTTP/1.1, HTTP/2 and HTTP/3 differ internally?](../../interview/under-the-hood/07-Networking-Internals.md)
+
+## 8. Security: TLS, Keys and Certificates
+
+1. [How does HTTPS and the TLS Handshake work?](../../interview/under-the-hood/07-Networking-Internals.md)
+2. [How do Public-Key and Private-Key cryptography work?](../../interview/under-the-hood/07-Networking-Internals.md)
+3. [How does a receiver verify that the sender possesses the legitimate private key?](../../interview/under-the-hood/07-Networking-Internals.md)
+4. [How do Digital Certificates and Certificate Authorities establish trust?](../../interview/under-the-hood/07-Networking-Internals.md)
+
+## 9. Persistent Connections and Traffic Routing
+
+1. [How do WebSockets establish persistent connections?](../../interview/under-the-hood/07-Networking-Internals.md)
+2. [How do Load Balancers, Reverse Proxies and API Gateways work?](../../interview/under-the-hood/07-Networking-Internals.md)
 
 ## Diagrams
 

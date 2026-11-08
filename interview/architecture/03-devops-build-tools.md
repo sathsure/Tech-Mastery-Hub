@@ -2,73 +2,6 @@
 
 ## 1️⃣ Docker – Basic Conceptual Questions
 
-### ❓ What is Docker and why is it used?
-
-### 📝 Answer
-
-Docker packages an application **with everything it needs** (runtime, libraries, config) into a **container** that runs the same way on any machine.
-
-```mermaid
-flowchart LR
-  D[Dockerfile] -- docker build --> I[Image<br/>app + Java + libraries]
-  I --> L[Laptop container]
-  I --> T[Test container]
-  I --> P[Production container]
-```
-
-- **Problem it solves:** "It works on my machine" — different Java versions, missing libraries, different OS settings between laptops, test and production.
-- **Why teams prefer it:** the same image goes from laptop → test → production, starts in seconds, and many containers share one server.
-
-```bash
-docker run -p 8080:8080 myapp:1.0    # same result on every machine
-```
-
----
-
-### ❓ What is the difference between Docker and a Virtual Machine?
-
-### 📝 Answer
-
-| Virtual machine | Docker container |
-|---|---|
-| Runs a **full guest operating system** on virtual hardware | **Shares the host's OS kernel**; contains only the app and its libraries |
-| Size in GBs, boots in minutes | Size in MBs, starts in seconds |
-| Strong isolation | Lighter isolation (process level) |
-| A few VMs per server | Dozens or hundreds of containers per server |
-
-Containers start fast because there's **no operating system to boot** — starting one is like starting a process.
-
----
-
-### ❓ What is a Docker image?
-
-### 📝 Answer
-
-An image is a **read-only template** for creating containers — like a class, while a container is an object.
-
-- **Contains:** a base OS layer (e.g. a slim Linux), the runtime (JRE), your app (JAR), and settings (ports, start command).
-- **Immutable:** once built, it never changes. A change means building a **new image** with a new tag (`myapp:1.1`).
-- Built in **layers**; unchanged layers are reused (cached).
-
----
-
-### ❓ What is a Docker container?
-
-### 📝 Answer
-
-A container is a **running instance of an image**, with its own process, network and file system.
-
-- **Created with:** `docker run myapp:1.0` (creates and starts it).
-- **When it stops:** the process ends, but the container still exists and can be started again. Files written **inside** it are lost when the container is **removed** — keep important data in a volume or database.
-
-```bash
-docker ps          # running containers
-docker stop app    # stop
-docker rm app      # remove (its internal files are gone)
-```
-
----
-
 ### ❓ What is a Dockerfile?
 
 ### 📝 Answer
@@ -285,16 +218,6 @@ Agents are needed so builds don't overload the controller, many builds can run i
 ---
 
 ## 3️⃣ Apache Tomcat
-
-### ❓ What is Apache Tomcat?
-
-### 📝 Answer
-
-Tomcat is an open-source **web server and servlet container** for Java. It accepts HTTP requests and passes them to your Java code (servlets — Spring MVC is built on them).
-
-It's a **web container**, not a full Java EE / Jakarta EE application server like WildFly or WebLogic (which add things like EJB and JMS).
-
----
 
 ### ❓ What kind of applications run on Tomcat?
 

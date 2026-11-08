@@ -396,50 +396,6 @@ if (value === null) { ... }
 
 # 🔄 Part 5 — Event Loop & Async
 
-### ❓ How does the JavaScript Event Loop work?
-
-### 📝 Answer
-
-JavaScript is **single-threaded** but achieves async behavior through the **event loop**.
-
-![EventLoop Image](/src/assets/event-loop.png)
-
-**Components:**
-
-**1. Call Stack** — Executes synchronous code top to bottom
-
-- One thing at a time
-- Must be **empty** before async tasks run
-
-**2. Web APIs / Node APIs** — Background work (handled outside JS)
-
-- `setTimeout`, `setInterval`, HTTP, DOM events, file I/O
-- Not JS execution — just waiting
-
-**3. Microtask Queue** (high priority)
-
-Runs **immediately after** the call stack empties, **before any macrotask**:
-
-- `Promise.then / catch / finally`
-- `queueMicrotask()`
-- `async/await` continuations
-- `process.nextTick` (Node.js — even higher priority than promises)
-
-**ALL microtasks drain completely before next macrotask**
-
-**4. Macrotask Queue** (low priority)
-
-One macrotask runs per cycle:
-
-- `setTimeout`, `setInterval`
-- I/O callbacks
-- DOM events
-- `setImmediate` (Node only)
-
-> 💡 `setTimeout(fn, 0)` still has to wait for the call stack and all microtasks to clear.
-
----
-
 ### ❓ What will this code output, and why?
 
 ### 📝 Answer

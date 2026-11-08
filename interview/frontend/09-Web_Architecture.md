@@ -211,29 +211,6 @@ For unsafe operations (PUT/DELETE/custom headers), the browser sends a **preflig
 
 ---
 
-### ❓ How do you manage environment configurations?
-
-### 📝 Answer
-
-Each environment (dev, QA, prod) has **isolated configuration**:
-
-- Use `.env` files for local development (never commit them)
-- Use **environment variables** in deployed environments
-- Use **secret managers** (AWS Secrets Manager, HashiCorp Vault) for sensitive values
-- This avoids leaks and enables safe CI/CD deployments
-
-```js
-const config = {
-  dbUrl: process.env.DB_URL,
-  jwtSecret: process.env.JWT_SECRET,
-  apiKey: process.env.STRIPE_KEY
-};
-```
-
-> 📌 **Rule:** Secrets never live in source code, never in Docker images, never in logs.
-
----
-
 # Part 3 — Backend Design Patterns
 
 ### ❓ How do you structure a large Node.js backend?
@@ -707,35 +684,6 @@ res.json(toUserDto(user));
 ```
 
 > 📌 **Default to opacity:** sensitive fields excluded by default, opt-in to include. Never the other way around.
-
----
-
-### ❓ How do you handle partial failures in distributed systems?
-
-### 📝 Answer
-
-The **resilience toolkit:**
-
-| Tool | Purpose |
-|------|---------|
-| **Timeouts** | Don't wait forever; fail fast |
-| **Retries with backoff** | Recover from transient failures |
-| **Retry budgets** | Cap retries to avoid amplifying load |
-| **Circuit breakers** | Stop hammering a failing service |
-| **Bulkheads** | Isolate failures to one resource pool |
-| **Fallbacks** | Return cached/default data when service is down |
-
-> 💡 **Pattern:** Circuit breaker opens after N failures → all subsequent calls fail immediately for a cool-down period → after that, allow a trial request to check if the service recovered.
-
-```mermaid
-stateDiagram-v2
-  [*] --> Closed
-  Closed --> Open: N failures
-  Open --> HalfOpen: cool-down ends
-  HalfOpen --> Closed: trial call succeeds
-  HalfOpen --> Open: trial call fails
-  note right of Open: calls fail fast, no load on the broken service
-```
 
 ---
 

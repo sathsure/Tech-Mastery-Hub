@@ -10,10 +10,8 @@
 
 1. [What is caching and why use it?](../../interview/architecture/06-Caching-Redis.md)
 2. [What are cache hit, cache miss and hit ratio?](../../interview/architecture/06-Caching-Redis.md)
-3. [What are the caching strategies (cache-aside, write-through, write-behind)?](../../interview/architecture/06-Caching-Redis.md)
-   - [On update, should you update the cache or delete the key?](../../interview/architecture/06-Caching-Redis.md)
-4. [What are cache eviction policies?](../../interview/architecture/06-Caching-Redis.md)
-5. [What is cache invalidation and why is it hard?](../../interview/architecture/06-Caching-Redis.md)
+3. [What are cache eviction policies?](../../interview/architecture/06-Caching-Redis.md)
+4. [What is cache invalidation and why is it hard?](../../interview/architecture/06-Caching-Redis.md)
 
 ## 2. Cache Problems
 
@@ -22,13 +20,12 @@
 
 ## 3. Redis
 
-1. [What is Redis and why is it so fast?](../../interview/architecture/06-Caching-Redis.md)
-2. [What data types does Redis support, with examples?](../../interview/architecture/06-Caching-Redis.md)
-3. [How does Redis persistence work (RDB vs AOF)?](../../interview/architecture/06-Caching-Redis.md)
-4. [What are TTL and key expiry in Redis?](../../interview/architecture/06-Caching-Redis.md)
-5. [Is Redis single-threaded?](../../interview/architecture/06-Caching-Redis.md)
-6. [How do Redis replication, Sentinel and Cluster differ?](../../interview/architecture/06-Caching-Redis.md)
-7. [How do you use Redis with Spring Boot?](../../interview/architecture/06-Caching-Redis.md)
+1. [What data types does Redis support, with examples?](../../interview/architecture/06-Caching-Redis.md)
+2. [How does Redis persistence work (RDB vs AOF)?](../../interview/architecture/06-Caching-Redis.md)
+3. [What are TTL and key expiry in Redis?](../../interview/architecture/06-Caching-Redis.md)
+4. [Is Redis single-threaded?](../../interview/architecture/06-Caching-Redis.md)
+5. [How do Redis replication, Sentinel and Cluster differ?](../../interview/architecture/06-Caching-Redis.md)
+6. [How do you use Redis with Spring Boot?](../../interview/architecture/06-Caching-Redis.md)
 
 ## 4. Tricky Questions
 
@@ -53,10 +50,27 @@
 1. [How does Database Caching work?](../../interview/under-the-hood/05-Database-Internals.md)
 2. [How do Replication, Partitioning and Sharding work?](../../interview/under-the-hood/05-Database-Internals.md)
 
-## 8. Redis and Caching Patterns
+## 8. Storage Hardware and File Systems
+
+1. [How do HDD, SSD and RAM store and retrieve data differently?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)
+2. [How does a File System organize files and directories on disk?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)
+
+## 9. Redis and Caching Patterns
 
 1. [How does Redis store and retrieve data internally?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)
 2. [How do Cache-Aside, Write-Through and Write-Behind work?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)
+
+## 10. Kafka and RabbitMQ
+
+1. [How does Kafka store messages and achieve high throughput?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)
+2. [How do Kafka Partitions, Offsets and Consumer Groups work?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)
+3. [How does RabbitMQ route messages using Exchanges, Queues and Bindings?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)
+4. [How do Message Acknowledgements, Retries and Dead Letter Queues work?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)
+
+## 11. Ordering and Reliability
+
+1. [How does message ordering work?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)
+2. [How does a distributed application achieve reliable message processing?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)
 
 ## Practice
 

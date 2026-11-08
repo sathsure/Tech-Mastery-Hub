@@ -16,34 +16,17 @@ Spring Security solves this using **filters**, **contexts**, and **standard secu
 
 ---
 
-### ❓ Explain authentication vs authorization with a real example.
+### ❓ Can authorization happen without authentication?
 
 ### 📝 Answer
 
-- **Authentication** answers: _Who are you?_
-- **Authorization** answers: _What are you allowed to do?_
-
-**Example:**
-
-- Logging in with username/password → Authentication
-- Accessing `/admin/deleteUser` → Authorization
-
-👉 Authentication happens **before** authorization.
-
-```mermaid
-flowchart LR
-  R[Request] --> A{"Authentication:<br/>who are you?"}
-  A -- bad credentials --> E401[401 Unauthorized]
-  A -- ok --> Z{"Authorization:<br/>allowed to do this?"}
-  Z -- no --> E403[403 Forbidden]
-  Z -- yes --> OK[Controller runs]
-```
-
-#### ↳ Follow-up: Can authorization happen without authentication?
-
 **Not really — it always knows "who" first.** If no one logged in, Spring Security treats the caller as an **anonymous user** (`AnonymousAuthenticationToken`). Authorization rules then decide what that anonymous user may do: `permitAll()` lets them in; `authenticated()` sends a 401.
 
-#### ↳ Follow-up: What happens when we add `spring-boot-starter-security`?
+---
+
+### ❓ What happens when we add `spring-boot-starter-security`?
+
+### 📝 Answer
 
 Spring Security automatically:
 

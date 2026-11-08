@@ -173,33 +173,6 @@ flowchart LR
 
 ---
 
-### ❓ What is sharding (partitioning)?
-
-### 📝 Answer
-
-Sharding splits **one big table across several databases**. Each database (shard) holds part of the rows.
-
-- **Hash sharding:** `shard = hash(userId) % 4` → even spread, but range queries hit all shards.
-- **Range sharding:** users A–M on shard 1, N–Z on shard 2 → easy ranges, but can create hot spots.
-- **Shard key** choice is the most important decision: pick one that spreads load and is in most queries (e.g. `userId`).
-
-```mermaid
-flowchart LR
-  A[App] --> R{"shard = hash(userId) % 4"}
-  R --> S0[(Shard 0)]
-  R --> S1[(Shard 1)]
-  R --> S2[(Shard 2)]
-  R --> S3[(Shard 3)]
-```
-
-**Downsides:** joins across shards are hard, and adding shards means moving data (consistent hashing helps).
-
-#### ↳ Follow-up: Replication vs sharding?
-
-↪ Replication = same data copied (more reads, safety). Sharding = data split (more storage and writes). Large systems use both.
-
----
-
 ### ❓ What is consistent hashing?
 
 ### 📝 Answer
@@ -235,12 +208,6 @@ A queue lets one service **hand work to another without waiting**. The sender pu
 - **Decoupling:** services don't need to be up at the same time.
 
 Examples: RabbitMQ, Kafka, AWS SQS. See the RabbitMQ vs Kafka notes for when to use which.
-
-#### ↳ Follow-up: What happens if a message keeps failing?
-
-↪ After a few retries it moves to a **dead-letter queue**, so it doesn't block others and someone can inspect it.
-
----
 
 ## Part 2 — Classic Design Questions
 

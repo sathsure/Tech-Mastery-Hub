@@ -2,37 +2,6 @@
 
 ## How the Web Works
 
-### ❓ What happens when you type a URL into the browser and press Enter?
-
-### 📝 Answer
-
-```mermaid
-sequenceDiagram
-  participant B as Browser
-  participant D as DNS
-  participant S as Server
-  B->>D: 1. What is the IP of shop.com?
-  D-->>B: 93.184.216.34
-  B->>S: 2. TCP handshake (SYN, SYN-ACK, ACK)
-  B->>S: 3. TLS handshake (HTTPS keys)
-  B->>S: 4. GET / HTTP/2
-  S-->>B: 5. 200 OK + HTML
-  B->>B: 6. Parse HTML, load CSS/JS/images, render
-```
-
-1. **URL parsed** — protocol `https`, host `shop.com`, path `/`.
-2. **DNS lookup** — host name → IP address (browser cache → OS cache → DNS resolvers).
-3. **TCP connection** — three-way handshake to port 443.
-4. **TLS handshake** — agree on encryption, check the server's certificate.
-5. **HTTP request** — `GET /` with headers and cookies.
-6. **Server** — load balancer → app → database → builds the response.
-7. **Response** — status code, headers, HTML.
-8. **Rendering** — the browser builds the DOM and CSSOM, runs JS, lays out and paints (see the HTML notes on the rendering pipeline).
-
-> 💡 This is the most common networking interview question — go as deep as the interviewer wants on any step.
-
----
-
 ### ❓ How does DNS work?
 
 ### 📝 Answer
@@ -75,21 +44,6 @@ The answer is cached for its **TTL**.
 #### ↳ Follow-up: Why does a DNS change take time to "propagate"?
 
 ↪ Resolvers keep the old answer until its TTL expires. Lower the TTL a day before a planned change.
-
----
-
-### ❓ TCP vs UDP?
-
-### 📝 Answer
-
-| TCP | UDP |
-|---|---|
-| Connection first (handshake) | No connection — just send |
-| **Reliable**: lost packets resent, order kept | No guarantee of delivery or order |
-| Slower, more overhead | Faster, lightweight |
-| Web (HTTP/1.1, HTTP/2), email, file transfer, databases | Video calls, live streaming, gaming, DNS queries, HTTP/3 (QUIC) |
-
-Simple picture: TCP is a registered courier with tracking; UDP is dropping leaflets.
 
 ---
 
@@ -166,51 +120,6 @@ Interview use: "an **L4** load balancer routes by IP/port; an **L7** one reads H
 #### ↳ Follow-up: 502 vs 504?
 
 ↪ Both come from a proxy/gateway. 502 = the server behind it sent a bad or no response. 504 = it didn't answer in time.
-
----
-
-### ❓ HTTP/1.1 vs HTTP/2 vs HTTP/3?
-
-### 📝 Answer
-
-| | HTTP/1.1 | HTTP/2 | HTTP/3 |
-|---|---|---|---|
-| Transport | TCP | TCP | **QUIC over UDP** |
-| Requests per connection | One at a time (browsers open ~6 connections) | **Many in parallel** (multiplexing) | Many in parallel |
-| Headers | Plain text, repeated | Compressed (HPACK) | Compressed (QPACK) |
-| Head-of-line blocking | Yes | Fixed at HTTP level, still at TCP level | **Fixed** — one lost packet doesn't stall other streams |
-| Setup | TCP + TLS handshakes | Same | Faster (combined handshake, 0-RTT resume) |
-
-HTTP/3 helps most on mobile and lossy networks.
-
----
-
-### ❓ How does HTTPS / TLS work?
-
-### 📝 Answer
-
-HTTPS = HTTP inside an encrypted **TLS** connection. It gives **privacy** (nobody can read it), **integrity** (nobody can change it) and **authentication** (you are talking to the real site).
-
-Simplified TLS 1.3 handshake:
-
-```mermaid
-sequenceDiagram
-  participant B as Browser
-  participant S as Server
-  B->>S: Hello: supported ciphers + key share
-  S-->>B: Key share + certificate (signed by a CA)
-  Note over B: Check certificate: trusted CA, right domain, not expired
-  Note over B,S: Both compute the same session key
-  B->>S: Encrypted HTTP request (symmetric key)
-  S-->>B: Encrypted HTTP response
-```
-
-1. Browser says hello with supported ciphers and a key share.
-2. Server replies with its key share and its **certificate** (signed by a trusted Certificate Authority).
-3. Browser **checks the certificate** (trusted CA, right domain, not expired).
-4. Both compute the same **session key** from the key shares → all data is encrypted with fast symmetric encryption.
-
-Key idea: **asymmetric** crypto (public/private keys) is used only to agree on a key safely; **symmetric** crypto encrypts the actual traffic because it's much faster.
 
 ---
 
@@ -333,14 +242,6 @@ It's encrypted on the wire, but URLs end up in **browser history, server logs an
 ### 📝 Answer
 
 A **URI** identifies a resource; a **URL** is a URI that also tells you **where and how to get it** (`https://shop.com/cart`). Every URL is a URI; `urn:isbn:9780134685991` is a URI but not a URL.
-
----
-
-### ❓ Tricky: What is localhost vs 127.0.0.1 vs 0.0.0.0?
-
-### 📝 Answer
-
-`127.0.0.1` (and `localhost`, which usually resolves to it or `::1`) means **this machine** — only local programs can connect. `0.0.0.0` as a server bind address means **all network interfaces** — reachable from other machines. A server in Docker must bind `0.0.0.0` to be reachable from outside the container.
 
 ---
 

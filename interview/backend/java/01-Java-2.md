@@ -588,44 +588,6 @@ executor.submit(() -> {
 
 ---
 
-### ❓ Process vs Thread?
-
-### 📝 Answer
-
-**Process**
-
-- A **process** is an independent program in execution.
-- Has **its own memory space**.
-- Heavyweight (creation & switching is costly).
-
-  **Thread**
-
-- A **thread** is a small unit of execution inside a process.
-- **Shares memory** with other threads of the same process.
-- Lightweight and faster.
-
-  **Key Differences**
-
-| Feature       | Process         | Thread                  |
-| ------------- | --------------- | ----------------------- |
-| Memory        | Separate memory | Shared memory           |
-| Communication | Expensive (IPC) | Easy (shared variables) |
-| Creation      | Slow            | Fast                    |
-| Example       | A running IntelliJ and a running Spring Boot app are two processes | Inside the Spring Boot app: request-handling threads, GC threads, a scheduler thread |
-
-**Simple Example**
-
-```java
-// One process, multiple threads
-public class MyThread extends Thread {
-    public void run() {
-        System.out.println("Thread running");
-    }
-}
-```
-
----
-
 ### ❓ `volatile` Keyword?
 
 ### 📝 Answer
@@ -937,39 +899,6 @@ public class MemoryDemo { // Metaspace (class metadata: methods, field layout)
 
 ---
 
-### ❓ How does Garbage Collection work?
-
-### 📝 Answer
-
-The garbage collector frees objects that **nothing can reach** any more.
-
-1. **Mark** — start from **GC roots** (local variables on thread stacks, static fields, active threads) and follow every reference; everything reached is alive.
-2. **Sweep** — memory of unmarked (unreachable) objects is reclaimed.
-3. **Compact** — live objects are moved together so free memory isn't fragmented.
-
-**Generations:** most objects die young, so the heap is split:
-
-```mermaid
-flowchart LR
-  N[new Object] --> E[Eden]
-  E -- survives minor GC --> S[Survivor spaces]
-  S -- survives several GCs --> O[Old generation]
-  E -- unreachable --> X[Freed]
-  S -- unreachable --> X
-  O -- unreachable: major GC --> X
-```
-
-| Area | Holds | Collected |
-|---|---|---|
-| **Young generation** (Eden + 2 Survivor spaces) | New objects | Often and fast (minor GC) |
-| **Old generation** | Objects that survived several minor GCs | Less often, slower (major GC) |
-
-**Collectors:** **G1** (default since Java 9 — balanced), **ZGC** / Shenandoah (pauses of a few milliseconds even on huge heaps), Parallel (max throughput), Serial (small apps).
-
-> 💡 Unreachable **cycles** (A → B → A with nothing pointing at them) are collected too — Java doesn't use reference counting. `System.gc()` is only a hint.
-
----
-
 ### ❓ What causes memory leaks in Java?
 
 ### 📝 Answer
@@ -1101,16 +1030,6 @@ Contains:
 ✔ JRE = runtime only
 ✔ JDK needed for development
 ✔ Java is platform-independent (Same **.class** file runs on any platform as long as the correct JVM exists)
-
-#### ↳ Follow-up: **Java Compilation and Runtime Execution**
-
-- JDK’s `javac` compiles all `.java` files into `.class` files (written in **bytecode**)
-- Tomcat Startup
-  - JVM loads `.class` files using the `ClassLoader`
-  - JVM **Interpreter** executes bytecode **instruction by instruction**
-  - JVM monitors execution
-    - Only Frequently executed methods / loops are detected
-    - **JIT** compiles them into native machine code
 
 #### ↳ Follow-up: **Why Java is Platform Independent?**
 

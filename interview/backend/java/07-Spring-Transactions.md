@@ -2,61 +2,6 @@
 
 ## Transaction Basics
 
-### ❓ What does @Transactional actually do?
-
-**Problem:** A money transfer debits one account and credits another. If the credit fails after the debit succeeded, money disappears. Both updates must succeed or fail together.
-
-### 📝 Answer
-
-`@Transactional` makes Spring run the method inside **one database transaction**:
-
-```mermaid
-sequenceDiagram
-  participant C as Caller
-  participant P as Spring proxy
-  participant S as TransferService (real bean)
-  participant DB as Database
-  C->>P: transfer(...)
-  P->>DB: BEGIN transaction
-  P->>S: transfer(...)
-  S->>DB: debit + credit (same connection)
-  alt returns normally
-    P->>DB: COMMIT
-  else RuntimeException / Error
-    P->>DB: ROLLBACK
-  end
-```
-
-1. Spring wraps the bean in a **proxy**.
-2. When the method is called **through the proxy**, the proxy starts (or joins) a transaction.
-3. All repository calls in the method use the same connection and transaction.
-4. The method returns normally → **commit**. It throws a `RuntimeException` or `Error` → **rollback**.
-
-```java
-@Service
-public class TransferService {
-
-    private final AccountRepository accounts;
-
-    public TransferService(AccountRepository accounts) {
-        this.accounts = accounts;
-    }
-
-    @Transactional
-    public void transfer(long fromId, long toId, BigDecimal amount) {
-        Account from = accounts.findById(fromId).orElseThrow();
-        Account to = accounts.findById(toId).orElseThrow();
-        from.debit(amount);   // throws InsufficientFundsException (unchecked) if the balance is too low
-        to.credit(amount);
-        // Normal return: both updates commit together. Any RuntimeException: both roll back.
-    }
-}
-```
-
-**Remember:** the annotation does nothing by itself — the proxy around the bean does the work.
-
----
-
 ### ❓ What is a Spring proxy?
 
 **Problem:** Spring has to start and finish a transaction around your method without you writing that code inside the method.

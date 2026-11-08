@@ -176,7 +176,7 @@ Inside: one Java process with its own filesystem and network; outside: just anot
 
 ---
 
-### ❓ How are Containers different from Virtual Machines?
+### ❓ How are Containers (like Docker) different from Virtual Machines?
 
 ### 📝 Answer
 

@@ -280,46 +280,7 @@ To **override styles of child or third-party components** that use Emulated enca
 
 # ♻️ Part 3 — Lifecycle Hooks
 
-### ❓ What are Angular lifecycle hooks?
-
-### 📝 Answer
-
-Lifecycle hooks let you tap into key moments in a component's life.
-
-| Hook                    | When It Runs                                | Common Use                          |
-| ----------------------- | ------------------------------------------- | ----------------------------------- |
-| `ngOnChanges`           | Whenever an `@Input()` value changes        | React to parent updates             |
-| `ngOnInit`              | Once after first `ngOnChanges`              | Initialization, API calls           |
-| `ngDoCheck`             | Every change detection cycle                | Custom change detection (rare)      |
-| `ngAfterContentInit`    | Once after `<ng-content>` projected         | Access projected content            |
-| `ngAfterContentChecked` | After every projected content check         | React to content changes            |
-| `ngAfterViewInit`       | Once after view + child views initialized   | Access DOM via `@ViewChild`         |
-| `ngAfterViewChecked`    | After every view check                      | Measure layout (use sparingly)      |
-| `ngOnDestroy`           | Just before component is destroyed          | Cleanup subscriptions, intervals    |
-
-**Execution order:**
-
-```text
-ngOnChanges
-   ↓
-ngOnInit
-   ↓
-ngDoCheck
-   ↓
-ngAfterContentInit  → ngAfterContentChecked
-   ↓
-ngAfterViewInit     → ngAfterViewChecked
-   ↓
-(repeat DoCheck → AfterContentChecked → AfterViewChecked on each CD)
-   ↓
-ngOnDestroy
-```
-
-![Angular_Lifecycle Image](/src/assets/angular-lifecycle.png)
-
----
-
-#### ↳ Follow-up: Can you walk through a comprehensive lifecycle example?
+### ❓ Can you walk through a comprehensive Angular lifecycle example?
 
 ### 📝 Answer
 
@@ -774,29 +735,7 @@ If `AsyncPipe` were pure → it would run only once → UI would never update.
 
 # 🏗️ Part 8 — Dependency Injection (DI)
 
-### ❓ How does Angular's DI system and hierarchy work?
-
-### 📝 Answer
-
-Providers can be registered:
-
-- At **root level** with `providedIn: 'root'`
-- At **module level** in `NgModule.providers`
-- At **component level** in `@Component({ providers: [...] })`
-
-The **injector tree mirrors the component/module tree**. A child injector falls back to parent injectors when resolving dependencies.
-
-```text
-Root Injector
-   ↓
-Module Injector (lazy module = own injector)
-   ↓
-Component Injector (one per component instance)
-```
-
----
-
-#### ↳ Follow-up: Difference between `providedIn: 'root'` vs `'any'` vs `'platform'`?
+### ❓ Difference between `providedIn: 'root'` vs `'any'` vs `'platform'`?
 
 ### 📝 Answer
 
@@ -815,7 +754,7 @@ export class UserService { /* ... */ }
 
 ---
 
-#### ↳ Follow-up: Can you explain multi-providers in Angular and give a real-world scenario where you'd use one?
+### ❓ Can you explain multi-providers in Angular and give a real-world scenario where you'd use one?
 
 ### 📝 Answer
 
@@ -842,7 +781,7 @@ constructor(@Inject(VALIDATORS) private validators: Validator[]) {
 
 ---
 
-#### ↳ Follow-up: What are Injection Tokens, and why are they required?
+### ❓ What are Injection Tokens, and why are they required?
 
 ### 📝 Answer
 
@@ -871,7 +810,7 @@ constructor(@Inject(APP_CONFIG) private config: AppConfig) {}
 
 ---
 
-#### ↳ Follow-up: If a service is provided in both root and a lazy-loaded module, how many instances exist?
+### ❓ If a service is provided in both root and a lazy-loaded module, how many instances exist?
 
 ### 📝 Answer
 

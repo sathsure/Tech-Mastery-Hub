@@ -1962,7 +1962,8 @@
                           "size_bytes":  31921,
                           "source_of_truth":  false,
                           "related_concepts":  [
-                                                   "under-the-hood"
+                                                   "under-the-hood",
+                                                   "javascript"
                                                ]
                       },
                       {
@@ -1975,7 +1976,9 @@
                           "size_bytes":  30224,
                           "source_of_truth":  false,
                           "related_concepts":  [
-                                                   "under-the-hood"
+                                                   "under-the-hood",
+                                                   "angular",
+                                                   "react"
                                                ]
                       },
                       {
@@ -1988,7 +1991,8 @@
                           "size_bytes":  37756,
                           "source_of_truth":  false,
                           "related_concepts":  [
-                                                   "under-the-hood"
+                                                   "under-the-hood",
+                                                   "spring"
                                                ]
                       },
                       {
@@ -2001,7 +2005,8 @@
                           "size_bytes":  39457,
                           "source_of_truth":  false,
                           "related_concepts":  [
-                                                   "under-the-hood"
+                                                   "under-the-hood",
+                                                   "database/sql"
                                                ]
                       },
                       {
@@ -2014,7 +2019,9 @@
                           "size_bytes":  22110,
                           "source_of_truth":  false,
                           "related_concepts":  [
-                                                   "under-the-hood"
+                                                   "under-the-hood",
+                                                   "dsa",
+                                                   "java"
                                                ]
                       },
                       {
@@ -2027,7 +2034,8 @@
                           "size_bytes":  30396,
                           "source_of_truth":  false,
                           "related_concepts":  [
-                                                   "under-the-hood"
+                                                   "under-the-hood",
+                                                   "networking"
                                                ]
                       },
                       {
@@ -2040,7 +2048,8 @@
                           "size_bytes":  31857,
                           "source_of_truth":  false,
                           "related_concepts":  [
-                                                   "under-the-hood"
+                                                   "under-the-hood",
+                                                   "devops"
                                                ]
                       },
                       {
@@ -2053,7 +2062,9 @@
                           "size_bytes":  29358,
                           "source_of_truth":  false,
                           "related_concepts":  [
-                                                   "under-the-hood"
+                                                   "under-the-hood",
+                                                   "caching",
+                                                   "messaging"
                                                ]
                       },
                       {
@@ -2066,7 +2077,9 @@
                           "size_bytes":  28869,
                           "source_of_truth":  false,
                           "related_concepts":  [
-                                                   "under-the-hood"
+                                                   "under-the-hood",
+                                                   "microservices",
+                                                   "system-design"
                                                ]
                       },
                       {

@@ -55,39 +55,6 @@ The `eslint-plugin-react-hooks` rule catches these mistakes.
 
 ---
 
-### ❓ How does React’s reconciliation (diffing) algorithm work?
-
-### 📝 Answer
-
-- React builds a virtual DOM tree.
-- On update, it compares old vs new tree:
-
-  - Different types → replace node.
-  - Same type → update props and recursively diff children.
-
-- For lists, `key` helps React match items and avoid unnecessary re-renders.
-
-```mermaid
-flowchart TD
-  S[State changes] --> N[Render: build new virtual DOM tree]
-  N --> D{"Diff with old tree,<br/>node by node"}
-  D -- different element type --> R[Replace the whole subtree]
-  D -- same type --> U[Keep node, update changed props]
-  U --> K[Diff children; match list items by key]
-  R --> C[Commit: apply only these changes to the real DOM]
-  K --> C
-```
-
-💻 **Code Example**
-
-```jsx
-{
-  items.map((item) => <Todo key={item.id} item={item} />);
-}
-```
-
----
-
 ### ❓ Why are keys important in lists? What are bad keys?
 
 ### 📝 Answer

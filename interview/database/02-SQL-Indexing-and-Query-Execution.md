@@ -24,32 +24,6 @@ Actual speed also depends on data distribution, caching and the execution plan t
 
 ---
 
-### ❓ What is the internal structure of an index?
-
-### 📝 Answer
-
-MySQL InnoDB uses a **B+ Tree** for standard indexes.
-
-```mermaid
-flowchart TB
-  R["Root: 30 | 60"] --> A["Leaf: 10, 20"]
-  R --> B["Leaf: 30, 40, 50"]
-  R --> C["Leaf: 60, 70, 80"]
-  A -. linked .-> B -. linked .-> C
-  style B fill:#d4efdf
-```
-
-Searching for 50 follows the root to the green leaf.
-
-- Internal nodes: sorted keys + pointers to child nodes.
-- Leaf nodes: keys + row data (clustered index) or primary keys (secondary index).
-
-**Searching for 50:** start at the root → 50 is between 30 and 60 → follow that pointer → reach the leaf → find 50 → fetch the row if needed.
-
-Why a B+ Tree: high branching factor → few levels → few disk-page reads; balanced; linked leaves make range searches (`BETWEEN`, `>`, `<`) efficient.
-
----
-
 ### ❓ Is an index a separate table?
 
 ### 📝 Answer
@@ -104,48 +78,6 @@ A query through a secondary index first finds the primary keys, then looks each 
 | Data dictionary | Index **metadata** (name, columns, type) |
 
 Index metadata and index data are different things: the dictionary says the index exists; the pages hold the B+ Tree itself.
-
----
-
-### ❓ How does SQL know that an index exists, and who decides to use it?
-
-### 📝 Answer
-
-`CREATE INDEX` makes MySQL:
-
-1. Build the index structure.
-2. Register its metadata in the data dictionary.
-3. Maintain it automatically on every `INSERT`, `UPDATE` and `DELETE`.
-
-You don't tell a query which index to use — the **query optimizer** decides:
-
-```mermaid
-flowchart LR
-  Q[SQL query] --> P[Parser]
-  P --> O["Optimizer<br/>checks indexes + statistics,<br/>estimates cost"]
-  O --> E{Cheapest plan?}
-  E -- index --> I[Index scan]
-  E -- whole table --> T[Full table scan]
-  I --> S[Storage engine] --> R[Result]
-  T --> S
-```
-
-Verify:
-
-```sql
-SHOW INDEX FROM customers;
-
-EXPLAIN SELECT * FROM customers WHERE city = 'Bengaluru';
-```
-
-| `EXPLAIN` column | Meaning |
-|---|---|
-| `key` | Index the optimizer chose |
-| `type` | Access method — `const`, `ref`, `range`, `index`, `ALL` (full scan) |
-| `rows` | Estimated rows examined |
-| `Extra` | e.g. `Using index` (covering), `Using filesort`, `Using where` |
-
-Creating an index doesn't guarantee it's used: a table scan can be cheaper for small tables or when the query returns a large share of the rows.
 
 ---
 
