@@ -31,6 +31,14 @@
 
 Angular has **four primary types of binding**, plus a custom two-way pattern.
 
+```mermaid
+flowchart LR
+  C[Component class] -- "{{ value }} interpolation" --> V[Template / DOM]
+  C -- "[prop] property binding" --> V
+  V -- "(event) event binding" --> C
+  C <-- "[(ngModel)] two-way" --> V
+```
+
 #### 1️⃣ Interpolation `{{ }}` — Component → View
 
 Display a value as text.
@@ -272,46 +280,7 @@ To **override styles of child or third-party components** that use Emulated enca
 
 # ♻️ Part 3 — Lifecycle Hooks
 
-### ❓ What are Angular lifecycle hooks?
-
-### 📝 Answer
-
-Lifecycle hooks let you tap into key moments in a component's life.
-
-| Hook                    | When It Runs                                | Common Use                          |
-| ----------------------- | ------------------------------------------- | ----------------------------------- |
-| `ngOnChanges`           | Whenever an `@Input()` value changes        | React to parent updates             |
-| `ngOnInit`              | Once after first `ngOnChanges`              | Initialization, API calls           |
-| `ngDoCheck`             | Every change detection cycle                | Custom change detection (rare)      |
-| `ngAfterContentInit`    | Once after `<ng-content>` projected         | Access projected content            |
-| `ngAfterContentChecked` | After every projected content check         | React to content changes            |
-| `ngAfterViewInit`       | Once after view + child views initialized   | Access DOM via `@ViewChild`         |
-| `ngAfterViewChecked`    | After every view check                      | Measure layout (use sparingly)      |
-| `ngOnDestroy`           | Just before component is destroyed          | Cleanup subscriptions, intervals    |
-
-**Execution order:**
-
-```text
-ngOnChanges
-   ↓
-ngOnInit
-   ↓
-ngDoCheck
-   ↓
-ngAfterContentInit  → ngAfterContentChecked
-   ↓
-ngAfterViewInit     → ngAfterViewChecked
-   ↓
-(repeat DoCheck → AfterContentChecked → AfterViewChecked on each CD)
-   ↓
-ngOnDestroy
-```
-
-![Angular_Lifecycle Image](/src/assets/angular-lifecycle.png)
-
----
-
-#### ↳ Follow-up: Can you walk through a comprehensive lifecycle example?
+### ❓ Can you walk through a comprehensive Angular lifecycle example?
 
 ### 📝 Answer
 
@@ -766,29 +735,7 @@ If `AsyncPipe` were pure → it would run only once → UI would never update.
 
 # 🏗️ Part 8 — Dependency Injection (DI)
 
-### ❓ How does Angular's DI system and hierarchy work?
-
-### 📝 Answer
-
-Providers can be registered:
-
-- At **root level** with `providedIn: 'root'`
-- At **module level** in `NgModule.providers`
-- At **component level** in `@Component({ providers: [...] })`
-
-The **injector tree mirrors the component/module tree**. A child injector falls back to parent injectors when resolving dependencies.
-
-```text
-Root Injector
-   ↓
-Module Injector (lazy module = own injector)
-   ↓
-Component Injector (one per component instance)
-```
-
----
-
-#### ↳ Follow-up: Difference between `providedIn: 'root'` vs `'any'` vs `'platform'`?
+### ❓ Difference between `providedIn: 'root'` vs `'any'` vs `'platform'`?
 
 ### 📝 Answer
 
@@ -807,7 +754,7 @@ export class UserService { /* ... */ }
 
 ---
 
-#### ↳ Follow-up: Can you explain multi-providers in Angular and give a real-world scenario where you'd use one?
+### ❓ Can you explain multi-providers in Angular and give a real-world scenario where you'd use one?
 
 ### 📝 Answer
 
@@ -834,7 +781,7 @@ constructor(@Inject(VALIDATORS) private validators: Validator[]) {
 
 ---
 
-#### ↳ Follow-up: What are Injection Tokens, and why are they required?
+### ❓ What are Injection Tokens, and why are they required?
 
 ### 📝 Answer
 
@@ -863,7 +810,7 @@ constructor(@Inject(APP_CONFIG) private config: AppConfig) {}
 
 ---
 
-#### ↳ Follow-up: If a service is provided in both root and a lazy-loaded module, how many instances exist?
+### ❓ If a service is provided in both root and a lazy-loaded module, how many instances exist?
 
 ### 📝 Answer
 
@@ -874,6 +821,14 @@ Angular has **hierarchical DI**:
 - `providedIn: 'root'` → one application-wide singleton
 - A **lazy-loaded module** has its **own injector**
 - If the same service is also provided in that lazy module → Angular creates **another instance** scoped to that module
+
+```mermaid
+flowchart TD
+  R["Root injector<br/>LoggerService #1"] --> E[Eager components]
+  R --> L["Lazy module injector<br/>LoggerService #2"]
+  L --> LC[Lazy module components<br/>get #2, not #1]
+  E -.-> E1[get #1]
+```
 
 ❌ **Example: Two instances**
 
@@ -1236,53 +1191,11 @@ providers: [provideHttpClient(withInterceptors([trimInterceptor]))]
 
 ---
 
-### ❓ What are Signals in Angular?
+### ❓ Which newer Angular APIs return signals (input, output, model, httpResource)?
+
 ### 📝 Answer
 
-**Signals** (Angular 16+) are a new reactivity primitive — values that **notify consumers** when they change.
-
-```ts
-import { signal, computed, effect } from "@angular/core";
-
-@Component({
-  template: `
-    <p>Count: {{ count() }}</p>
-    <p>Doubled: {{ doubled() }}</p>
-    <button (click)="increment()">+</button>
-  `,
-})
-export class CounterComponent {
-  count = signal(0);
-
-  // Derived value — auto-updates when count changes
-  doubled = computed(() => this.count() * 2);
-
-  constructor() {
-    // Side effect — runs whenever any signal it reads changes
-    effect(() => {
-      console.log("Count changed to:", this.count());
-    });
-  }
-
-  increment() {
-    this.count.update(v => v + 1);
-    // OR: this.count.set(this.count() + 1);
-  }
-}
-```
-
-✅ **Benefits over RxJS for state**
-
-- Synchronous reads (no subscribe boilerplate)
-- Fine-grained change detection (no full tree traversal)
-- Better TypeScript inference
-- Easier mental model for new developers
-
-> 💡 **Signal vs RxJS**: signals are great for **state**. RxJS still wins for **streams of events** (HTTP, user input over time, WebSocket).
-
-#### ↳ Follow-up: What are signal inputs, outputs and other newer signal APIs?
-
-↪ Modern Angular (17.1+) replaces many decorators with functions that return signals:
+A **signal** is a reactive value: `count = signal(0)`, read it with `count()`, change it with `count.set(1)`, and everything that read it updates automatically. Modern Angular (17.1+) replaces many decorators with functions that return signals:
 
 | API | Replaces / does | Example |
 |---|---|---|

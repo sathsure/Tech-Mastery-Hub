@@ -40,14 +40,12 @@
 2. [Difference between `Collection` and `Collections`](../../interview/backend/java/01-Java-1.md)
 3. [Difference between `List`, `Set`, and `Map`](../../interview/backend/java/01-Java-1.md)
 4. [Why does `Map` not extend `Collection`?](../../interview/backend/java/01-Java-1.md)
-5. [Difference Between `ArrayList` and `LinkedList`](../../interview/backend/java/01-Java-1.md)
-   - [Why `LinkedList` supports Queue and Deque?](../../interview/backend/java/01-Java-1.md)
-6. [How does `HashMap` work internally?](../../interview/backend/java/01-Java-1.md)
-7. [How does ConcurrentHashMap work internally?](../../interview/backend/java/01-Java-1.md)
-8. [Difference between `HashMap`, `LinkedHashMap`, `TreeMap`](../../interview/backend/java/01-Java-1.md)
-9. [What is fail-fast vs fail-safe iterator?](../../interview/backend/java/01-Java-1.md)
-10. [Difference between `Iterator` and `ListIterator`](../../interview/backend/java/01-Java-1.md)
-11. [Difference between `Comparable` and `Comparator`](../../interview/backend/java/01-Java-1.md)
+5. [Why `LinkedList` supports Queue and Deque?](../../interview/backend/java/01-Java-1.md)
+6. [How does ConcurrentHashMap work internally?](../../interview/backend/java/01-Java-1.md)
+7. [Difference between `HashMap`, `LinkedHashMap`, `TreeMap`](../../interview/backend/java/01-Java-1.md)
+8. [What is fail-fast vs fail-safe iterator?](../../interview/backend/java/01-Java-1.md)
+9. [Difference between `Iterator` and `ListIterator`](../../interview/backend/java/01-Java-1.md)
+10. [Difference between `Comparable` and `Comparator`](../../interview/backend/java/01-Java-1.md)
    - [Can a class implement multiple Comparables?](../../interview/backend/java/01-Java-1.md)
    - [Can a class have multiple Comparators?](../../interview/backend/java/01-Java-1.md)
    - [Will `Collections.sort()` work without Comparable?](../../interview/backend/java/01-Java-1.md)
@@ -55,8 +53,8 @@
    - [Is `Comparator` a functional interface?](../../interview/backend/java/01-Java-1.md)
    - [Which has higher priority: Comparable or Comparator?](../../interview/backend/java/01-Java-1.md)
    - [Does `Comparator` allow sorting in reverse order easily?](../../interview/backend/java/01-Java-1.md)
-12. [What is `WeakHashMap`?](../../interview/backend/java/01-Java-1.md)
-13. [When would you prefer immutable collections?](../../interview/backend/java/01-Java-1.md)
+11. [What is `WeakHashMap`?](../../interview/backend/java/01-Java-1.md)
+12. [When would you prefer immutable collections?](../../interview/backend/java/01-Java-1.md)
    - [When is this useful?](../../interview/backend/java/01-Java-1.md)
 
 ## 4. Equals and Hashcode
@@ -98,10 +96,9 @@
 
 1. [How do you handle concurrency in Java applications?](../../interview/backend/java/01-Java-2.md)
 2. [Deadlocks – How do they occur and how do you prevent them?](../../interview/backend/java/01-Java-2.md)
-3. [Process vs Thread?](../../interview/backend/java/01-Java-2.md)
-4. [`volatile` Keyword?](../../interview/backend/java/01-Java-2.md)
-5. [Callable vs Runnable](../../interview/backend/java/01-Java-2.md)
-6. [Fixed Thread Pool vs Cached Thread Pool](../../interview/backend/java/01-Java-2.md)
+3. [`volatile` Keyword?](../../interview/backend/java/01-Java-2.md)
+4. [Callable vs Runnable](../../interview/backend/java/01-Java-2.md)
+5. [Fixed Thread Pool vs Cached Thread Pool](../../interview/backend/java/01-Java-2.md)
 
 ## 10. JVM Deep Dive
 
@@ -109,13 +106,11 @@
    - [Where is Serializable used in real applications?](../../interview/backend/java/01-Java-2.md)
    - [Serializable vs JSON](../../interview/backend/java/01-Java-2.md)
 2. [Explain JVM memory structure. Heap vs Stack vs Metaspace](../../interview/backend/java/01-Java-2.md)
-3. [How does Garbage Collection work?](../../interview/backend/java/01-Java-2.md)
-4. [What causes memory leaks in Java?](../../interview/backend/java/01-Java-2.md)
+3. [What causes memory leaks in Java?](../../interview/backend/java/01-Java-2.md)
 
 ## 11. JVM vs JRE vs JDK
 
 1. [JVM Internals](../../interview/backend/java/01-Java-2.md)
-   - [Java Compilation and Runtime Execution](../../interview/backend/java/01-Java-2.md)
    - [Why Java is Platform Independent?](../../interview/backend/java/01-Java-2.md)
 2. [How Do You Build a Java Application?](../../interview/backend/java/01-Java-2.md)
 
@@ -213,6 +208,26 @@
 3. [Tricky: What happens if you forget `shutdown()` on an `ExecutorService`?](../../interview/backend/java/11-Java-Concurrency.md)
 4. [Tricky: Why is `ConcurrentModificationException` thrown in a single-threaded loop?](../../interview/backend/java/11-Java-Concurrency.md)
 5. [Tricky: Concurrency vs parallelism?](../../interview/backend/java/11-Java-Concurrency.md)
+
+## 22. Hashing
+
+1. [How does HashMap work internally, including hashing, buckets and collision handling?](../../interview/under-the-hood/06-Data-Structures-Internals.md)
+2. [Why is HashMap not reversible? Why can't the original key be reconstructed from its hash?](../../interview/under-the-hood/06-Data-Structures-Internals.md)
+
+## 23. Lists, Stacks, Queues and Heaps
+
+1. [How do ArrayList, LinkedList and Arrays store and retrieve elements differently?](../../interview/under-the-hood/06-Data-Structures-Internals.md)
+2. [How do Stack, Queue, Heap and Priority Queue work?](../../interview/under-the-hood/06-Data-Structures-Internals.md)
+
+## 24. Trees and Sets
+
+1. [How do Binary Search Trees, AVL Trees, Red-Black Trees and B+ Trees differ?](../../interview/under-the-hood/06-Data-Structures-Internals.md)
+2. [How does HashSet ensure uniqueness?](../../interview/under-the-hood/06-Data-Structures-Internals.md)
+
+## 25. Algorithms and Performance
+
+1. [How do searching and sorting algorithms work internally?](../../interview/under-the-hood/06-Data-Structures-Internals.md)
+2. [How do time and space complexities affect actual application performance?](../../interview/under-the-hood/06-Data-Structures-Internals.md)
 
 ## Practice
 

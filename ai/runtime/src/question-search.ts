@@ -686,8 +686,8 @@ function intentBoost(doc: Doc, parsed: ParsedQuery): number {
   if (doc.entry.kind === "roadmap" && !wantsPath) boost *= STUDY_PATH_DAMPING;
   if (doc.entry.kind === "follow-up") boost *= FOLLOW_UP_DAMPING;
   if (doc.entry.kind === "term" && !parsed.wantsDefinition) boost *= TERM_DAMPING;
-  if (parsed.intents.includes("visual") && doc.entry.visuals.length) boost *= INTENT_BOOST;
-  if (parsed.intents.includes("code") && doc.entry.codeBlocks.length) boost *= INTENT_BOOST;
+  if (parsed.intents.includes("visual") && visualCount(doc.entry)) boost *= INTENT_BOOST;
+  if (parsed.intents.includes("code") && doc.entry.codeBlocks.some(block => !isDiagram(block))) boost *= INTENT_BOOST;
   if (parsed.topics.some(item => doc.entry.topics.includes(item.topic))) boost *= TOPIC_BOOST;
   if (parsed.domain && doc.entry.domain === parsed.domain) boost *= DOMAIN_BOOST;
   return boost;
@@ -707,6 +707,16 @@ function scoreDoc(engineRef: Engine, doc: Doc, parsed: ParsedQuery): Scored | nu
   const titleCoverage = share(parsed.primary, term => doc.questionTerms.includes(term), 0);
   const score = raw * (0.4 + 0.3 * anyCoverage + 0.3 * coverage) * (1 + TITLE_BOOST * titleCoverage) * intentBoost(doc, parsed);
   return { doc, score, coverage, matched };
+}
+
+/** A Mermaid block is a diagram, not a code example. */
+function isDiagram(block: { language: string }): boolean {
+  return block.language.toLowerCase() === "mermaid";
+}
+
+/** Images plus Mermaid diagrams in an entry. */
+function visualCount(entry: QuestionEntry): number {
+  return entry.visuals.length + entry.codeBlocks.filter(isDiagram).length;
 }
 
 function upperBound(branch: Branch, parsed: ParsedQuery): number {
@@ -762,8 +772,8 @@ function toHit(item: { doc: Doc; score: number; coverage: number; matched: strin
     score: Math.round(item.score * 100) / 100,
     coverage: Math.round(item.coverage * 100) / 100,
     matchedTerms: item.matched,
-    codeLanguages: [...new Set(entry.codeBlocks.map(block => block.language))],
-    visualCount: entry.visuals.length,
+    codeLanguages: [...new Set(entry.codeBlocks.filter(block => !isDiagram(block)).map(block => block.language))],
+    visualCount: visualCount(entry),
     matchedBy,
   };
 }
@@ -802,7 +812,8 @@ function roundRobin<T>(lists: T[][], limit: number): T[] {
   return picked.slice(0, limit);
 }
 
-function suggestionsFor(engineRef: Engine, query: string, topics: string[]): SearchResult["suggestions"] {
+/** `noSubject`: nothing was asked yet ("can you help me"), so popular starter questions are welcome. */
+function suggestionsFor(engineRef: Engine, query: string, topics: string[], noSubject = false): SearchResult["suggestions"] {
   const tokens = rawTokens(query).filter(token => token.length >= 3);
   const nearTopics = engineRef.topicNames.filter(topic =>
     tokens.some(token => {
@@ -812,7 +823,10 @@ function suggestionsFor(engineRef: Engine, query: string, topics: string[]): Sea
   );
   const popular = [...engineRef.topicCounts.entries()].filter(([topic]) => topic !== "(untagged)").sort((a, b) => b[1] - a[1]).map(([topic]) => topic);
   const suggestedTopics = [...new Set([...topics, ...nearTopics, ...popular])].slice(0, 8);
-  const starters = suggestedTopics.slice(0, 4).flatMap(topic => browse(engineRef, doc => doc.entry.topics.includes(topic) && doc.entry.kind === "question", 1));
+  // Starter questions only for topics the query itself points to; the most popular topics would be
+  // unrelated ("What is WebAssembly?" → "Why OOP was introduced?"), and nothing beats a wrong lead.
+  const related = noSubject ? suggestedTopics : [...new Set([...topics, ...nearTopics])];
+  const starters = related.slice(0, 4).flatMap(topic => browse(engineRef, doc => doc.entry.topics.includes(topic) && doc.entry.kind === "question", 1));
   return {
     topics: suggestedTopics,
     questions: starters.map(doc => ({ id: doc.entry.id, question: doc.entry.question, topic: doc.entry.topics[0] ?? null })),
@@ -937,7 +951,7 @@ function emptyResult(ctx: SearchContext): SearchResult {
     strategy: { narrowedTo: [], widened: false, branchesTotal: ctx.engineRef.branches.length, branchesVisited: 0, branchesPruned: 0, entriesScored: 0 },
     hits: [],
     facets: [],
-    suggestions: suggestionsFor(ctx.engineRef, ctx.query, []),
+    suggestions: suggestionsFor(ctx.engineRef, ctx.query, [], true),
   };
 }
 

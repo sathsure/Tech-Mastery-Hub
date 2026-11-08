@@ -8,14 +8,10 @@
 
 ## 1. Docker – Basic Conceptual Questions
 
-1. [What is Docker and why is it used?](../../interview/architecture/03-devops-build-tools.md)
-2. [What is the difference between Docker and a Virtual Machine?](../../interview/architecture/03-devops-build-tools.md)
-3. [What is a Docker image?](../../interview/architecture/03-devops-build-tools.md)
-4. [What is a Docker container?](../../interview/architecture/03-devops-build-tools.md)
-5. [What is a Dockerfile?](../../interview/architecture/03-devops-build-tools.md)
-6. [Why should applications inside Docker be stateless?](../../interview/architecture/03-devops-build-tools.md)
-7. [How do you pass configuration to a Docker container?](../../interview/architecture/03-devops-build-tools.md)
-8. [What are common benefits of using Docker in projects?](../../interview/architecture/03-devops-build-tools.md)
+1. [What is a Dockerfile?](../../interview/architecture/03-devops-build-tools.md)
+2. [Why should applications inside Docker be stateless?](../../interview/architecture/03-devops-build-tools.md)
+3. [How do you pass configuration to a Docker container?](../../interview/architecture/03-devops-build-tools.md)
+4. [What are common benefits of using Docker in projects?](../../interview/architecture/03-devops-build-tools.md)
 
 ## 2. Jenkins + Groovy – CI/CD Basics
 
@@ -36,13 +32,12 @@
 
 ## 3. Apache Tomcat
 
-1. [What is Apache Tomcat?](../../interview/architecture/03-devops-build-tools.md)
-2. [What kind of applications run on Tomcat?](../../interview/architecture/03-devops-build-tools.md)
-3. [How does Tomcat handle incoming requests?](../../interview/architecture/03-devops-build-tools.md)
-4. [What is a WAR file?](../../interview/architecture/03-devops-build-tools.md)
-5. [Difference between embedded Tomcat and external Tomcat?](../../interview/architecture/03-devops-build-tools.md)
-6. [What are common issues seen in Tomcat?](../../interview/architecture/03-devops-build-tools.md)
-7. [How do you restart or redeploy applications in Tomcat?](../../interview/architecture/03-devops-build-tools.md)
+1. [What kind of applications run on Tomcat?](../../interview/architecture/03-devops-build-tools.md)
+2. [How does Tomcat handle incoming requests?](../../interview/architecture/03-devops-build-tools.md)
+3. [What is a WAR file?](../../interview/architecture/03-devops-build-tools.md)
+4. [Difference between embedded Tomcat and external Tomcat?](../../interview/architecture/03-devops-build-tools.md)
+5. [What are common issues seen in Tomcat?](../../interview/architecture/03-devops-build-tools.md)
+6. [How do you restart or redeploy applications in Tomcat?](../../interview/architecture/03-devops-build-tools.md)
 
 ## 4. Maven
 
@@ -65,11 +60,10 @@
 ## 6. Docker — Beyond the Basics
 
 1. [What does a good Dockerfile for a Spring Boot app look like?](../../interview/architecture/07-Docker-Kubernetes.md)
-2. [What are Docker image layers and why does instruction order matter?](../../interview/architecture/07-Docker-Kubernetes.md)
-3. [CMD vs ENTRYPOINT?](../../interview/architecture/07-Docker-Kubernetes.md)
-4. [What are Docker volumes?](../../interview/architecture/07-Docker-Kubernetes.md)
-5. [What is Docker Compose?](../../interview/architecture/07-Docker-Kubernetes.md)
-6. [How do you make a Docker image smaller and safer?](../../interview/architecture/07-Docker-Kubernetes.md)
+2. [CMD vs ENTRYPOINT?](../../interview/architecture/07-Docker-Kubernetes.md)
+3. [What are Docker volumes?](../../interview/architecture/07-Docker-Kubernetes.md)
+4. [What is Docker Compose?](../../interview/architecture/07-Docker-Kubernetes.md)
+5. [How do you make a Docker image smaller and safer?](../../interview/architecture/07-Docker-Kubernetes.md)
 
 ## 7. Kubernetes Basics
 
@@ -98,6 +92,26 @@
 1. [Tricky: Docker vs Kubernetes — do you need both?](../../interview/architecture/07-Docker-Kubernetes.md)
 2. [Tricky: Why does my Java app get OOMKilled although the heap is smaller than the limit?](../../interview/architecture/07-Docker-Kubernetes.md)
 3. [Tricky: A Pod is running but users get 503 errors. Why?](../../interview/architecture/07-Docker-Kubernetes.md)
+
+## 10. Virtual Machines
+
+1. [What is a Virtual Machine? How can one physical computer run multiple VMs?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)
+2. [How does a Hypervisor allocate CPU, Memory and Storage?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)
+
+## 11. Containers
+
+1. [How does Docker work internally?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)
+2. [How are Containers (like Docker) different from Virtual Machines?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)
+3. [How do Docker Images and Containers work?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)
+
+## 12. Orchestration and Delivery
+
+1. [How does Kubernetes schedule and manage containers?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)
+2. [How does an application move from source code to a running production environment?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)
+3. [How do CI/CD pipelines build, test and deploy applications?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)
+4. [How do cloud platforms allocate computing resources?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)
+5. [How do Auto Scaling and Load Balancing work?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)
+6. [How are Secrets and Environment Configurations managed?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)
 
 ## Related roles
 

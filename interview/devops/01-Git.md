@@ -144,6 +144,20 @@ Combining several small commits ("fix typo", "wip", "fix again") into **one clea
 
 Most teams today use GitHub Flow or trunk-based development.
 
+GitHub Flow in one picture:
+
+```mermaid
+gitGraph
+  commit id: "v1"
+  branch feature/login
+  checkout feature/login
+  commit id: "add form"
+  commit id: "add tests"
+  checkout main
+  merge feature/login id: "PR merged → deploy"
+  commit id: "v2"
+```
+
 ---
 
 ## Undoing Things
@@ -154,6 +168,19 @@ Most teams today use GitHub Flow or trunk-based development.
 
 - `git revert <commit>` — makes a **new commit that undoes** an old one. History is kept → **safe on shared branches**.
 - `git reset` — **moves the branch pointer back**, dropping commits from the branch. Rewrites history → use only on local commits.
+
+```mermaid
+flowchart LR
+  subgraph Revert["git revert C"]
+    direction LR
+    a1[A] --> b1[B] --> c1[C] --> r1["C' (undoes C)"]
+  end
+  subgraph Reset["git reset --hard B"]
+    direction LR
+    a2[A] --> b2["B ← main now here"]
+    c2["C (dropped)"]
+  end
+```
 
 | `git reset` mode | Commits removed | Changes kept? |
 |---|---|---|

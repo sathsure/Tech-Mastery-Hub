@@ -1729,6 +1729,19 @@
                                                ]
                       },
                       {
+                          "id":  "knowledge.concepts.under-the-hood.readme.md",
+                          "path":  "knowledge/concepts/under-the-hood/README.md",
+                          "content_type":  "concept",
+                          "domain":  "under-the-hood",
+                          "canonical_concept":  "under-the-hood",
+                          "extension":  ".md",
+                          "size_bytes":  8603,
+                          "source_of_truth":  true,
+                          "related_concepts":  [
+
+                                               ]
+                      },
+                      {
                           "id":  "knowledge.concepts.ai.readme.md",
                           "path":  "knowledge/concepts/ai/README.md",
                           "content_type":  "concept",
@@ -1911,6 +1924,175 @@
                           "source_of_truth":  false,
                           "related_concepts":  [
                                                    "testing"
+                                               ]
+                      },
+                      {
+                          "id":  "interview.under-the-hood.01-languages-compilers-execution.md",
+                          "path":  "interview/under-the-hood/01-Languages-Compilers-Execution.md",
+                          "content_type":  "interview",
+                          "domain":  "under-the-hood",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  38059,
+                          "source_of_truth":  false,
+                          "related_concepts":  [
+                                                   "under-the-hood"
+                                               ]
+                      },
+                      {
+                          "id":  "interview.under-the-hood.02-os-cpu-memory.md",
+                          "path":  "interview/under-the-hood/02-OS-CPU-Memory.md",
+                          "content_type":  "interview",
+                          "domain":  "under-the-hood",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  28010,
+                          "source_of_truth":  false,
+                          "related_concepts":  [
+                                                   "under-the-hood"
+                                               ]
+                      },
+                      {
+                          "id":  "interview.under-the-hood.03a-browser-internals.md",
+                          "path":  "interview/under-the-hood/03a-Browser-Internals.md",
+                          "content_type":  "interview",
+                          "domain":  "under-the-hood",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  31921,
+                          "source_of_truth":  false,
+                          "related_concepts":  [
+                                                   "under-the-hood",
+                                                   "javascript"
+                                               ]
+                      },
+                      {
+                          "id":  "interview.under-the-hood.03b-frontend-framework-internals.md",
+                          "path":  "interview/under-the-hood/03b-Frontend-Framework-Internals.md",
+                          "content_type":  "interview",
+                          "domain":  "under-the-hood",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  30224,
+                          "source_of_truth":  false,
+                          "related_concepts":  [
+                                                   "under-the-hood",
+                                                   "angular",
+                                                   "react"
+                                               ]
+                      },
+                      {
+                          "id":  "interview.under-the-hood.04-backend-server-internals.md",
+                          "path":  "interview/under-the-hood/04-Backend-Server-Internals.md",
+                          "content_type":  "interview",
+                          "domain":  "under-the-hood",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  37756,
+                          "source_of_truth":  false,
+                          "related_concepts":  [
+                                                   "under-the-hood",
+                                                   "spring"
+                                               ]
+                      },
+                      {
+                          "id":  "interview.under-the-hood.05-database-internals.md",
+                          "path":  "interview/under-the-hood/05-Database-Internals.md",
+                          "content_type":  "interview",
+                          "domain":  "under-the-hood",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  39457,
+                          "source_of_truth":  false,
+                          "related_concepts":  [
+                                                   "under-the-hood",
+                                                   "database/sql"
+                                               ]
+                      },
+                      {
+                          "id":  "interview.under-the-hood.06-data-structures-internals.md",
+                          "path":  "interview/under-the-hood/06-Data-Structures-Internals.md",
+                          "content_type":  "interview",
+                          "domain":  "under-the-hood",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  22110,
+                          "source_of_truth":  false,
+                          "related_concepts":  [
+                                                   "under-the-hood",
+                                                   "dsa",
+                                                   "java"
+                                               ]
+                      },
+                      {
+                          "id":  "interview.under-the-hood.07-networking-internals.md",
+                          "path":  "interview/under-the-hood/07-Networking-Internals.md",
+                          "content_type":  "interview",
+                          "domain":  "under-the-hood",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  30396,
+                          "source_of_truth":  false,
+                          "related_concepts":  [
+                                                   "under-the-hood",
+                                                   "networking"
+                                               ]
+                      },
+                      {
+                          "id":  "interview.under-the-hood.08-cloud-virtualization-deployment.md",
+                          "path":  "interview/under-the-hood/08-Cloud-Virtualization-Deployment.md",
+                          "content_type":  "interview",
+                          "domain":  "under-the-hood",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  31857,
+                          "source_of_truth":  false,
+                          "related_concepts":  [
+                                                   "under-the-hood",
+                                                   "devops"
+                                               ]
+                      },
+                      {
+                          "id":  "interview.under-the-hood.09-storage-caching-messaging.md",
+                          "path":  "interview/under-the-hood/09-Storage-Caching-Messaging.md",
+                          "content_type":  "interview",
+                          "domain":  "under-the-hood",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  29358,
+                          "source_of_truth":  false,
+                          "related_concepts":  [
+                                                   "under-the-hood",
+                                                   "caching",
+                                                   "messaging"
+                                               ]
+                      },
+                      {
+                          "id":  "interview.under-the-hood.10-distributed-systems-internals.md",
+                          "path":  "interview/under-the-hood/10-Distributed-Systems-Internals.md",
+                          "content_type":  "interview",
+                          "domain":  "under-the-hood",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  28869,
+                          "source_of_truth":  false,
+                          "related_concepts":  [
+                                                   "under-the-hood",
+                                                   "microservices",
+                                                   "system-design"
+                                               ]
+                      },
+                      {
+                          "id":  "interview.under-the-hood.11-language-implementation-comparisons.md",
+                          "path":  "interview/under-the-hood/11-Language-Implementation-Comparisons.md",
+                          "content_type":  "interview",
+                          "domain":  "under-the-hood",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  21027,
+                          "source_of_truth":  false,
+                          "related_concepts":  [
+                                                   "under-the-hood"
                                                ]
                       },
                       {

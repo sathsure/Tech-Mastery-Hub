@@ -30,9 +30,8 @@
 
 ## 5. Part 5 — Event Loop & Async
 
-1. [How does the JavaScript Event Loop work?](../../interview/frontend/03-JavaScript.md)
-2. [What will this code output, and why?](../../interview/frontend/03-JavaScript.md)
-3. [Difference between `Promise.all`, `allSettled`, `race`, and `any`?](../../interview/frontend/03-JavaScript.md)
+1. [What will this code output, and why?](../../interview/frontend/03-JavaScript.md)
+2. [Difference between `Promise.all`, `allSettled`, `race`, and `any`?](../../interview/frontend/03-JavaScript.md)
    - [You're calling three backend APIs in parallel. One critical, two optional. Which do you use?](../../interview/frontend/03-JavaScript.md)
    - [Implement an API timeout using Promises.](../../interview/frontend/03-JavaScript.md)
    - [You have 3 CDN URLs for the same resource. Use the fastest. Which?](../../interview/frontend/03-JavaScript.md)
@@ -65,6 +64,27 @@
 7. [Tricky: What do these print?](../../interview/frontend/03-JavaScript.md)
 8. [Tricky: What does this closure-in-a-loop print, and how do you fix it?](../../interview/frontend/03-JavaScript.md)
 
+## 9. Loading and Rendering a Page
+
+1. [What happens internally when we enter a URL and open a website?](../../interview/under-the-hood/03a-Browser-Internals.md)
+2. [How does a browser convert HTML, CSS and JavaScript into a rendered webpage?](../../interview/under-the-hood/03a-Browser-Internals.md)
+3. [How do DOM, CSSOM, Render Tree, Layout and Paint work together?](../../interview/under-the-hood/03a-Browser-Internals.md)
+
+## 10. JavaScript in the Browser
+
+1. [How does JavaScript execute inside a browser?](../../interview/under-the-hood/03a-Browser-Internals.md)
+2. [How do Call Stack, Event Loop, Microtask Queue and Task Queue work?](../../interview/under-the-hood/03a-Browser-Internals.md)
+3. [How does asynchronous JavaScript execute without blocking the UI?](../../interview/under-the-hood/03a-Browser-Internals.md)
+4. [How does a browser determine which UI elements need updating?](../../interview/under-the-hood/03a-Browser-Internals.md)
+5. [How do Angular, React and Vue detect changes and update the DOM?](../../interview/under-the-hood/03a-Browser-Internals.md)
+
+## 11. Network, Build and Storage
+
+1. [How does a frontend application communicate with a backend?](../../interview/under-the-hood/03a-Browser-Internals.md)
+2. [How do bundlers, Tree Shaking and Code Splitting work?](../../interview/under-the-hood/03a-Browser-Internals.md)
+3. [How do Browser Cache, Cookies, LocalStorage, SessionStorage and IndexedDB work?](../../interview/under-the-hood/03a-Browser-Internals.md)
+4. [How do Browser Tabs and Web Workers work internally?](../../interview/under-the-hood/03a-Browser-Internals.md)
+
 ## Practice
 
 1. [Move all `0`s to the end without changing the order of other elements](../../practice/coding/01-javascript-coding.md)
@@ -91,7 +111,8 @@
 
 ## Diagrams
 
-- [EventLoop](../../knowledge/visual-notes/event-loop.png)
+- [How a browser renders a page](../../knowledge/visual-notes/browser-render.png)
+- [JavaScript event loop](../../knowledge/visual-notes/event-loop.png)
 
 ## Related roles
 

@@ -211,29 +211,6 @@ For unsafe operations (PUT/DELETE/custom headers), the browser sends a **preflig
 
 ---
 
-### ❓ How do you manage environment configurations?
-
-### 📝 Answer
-
-Each environment (dev, QA, prod) has **isolated configuration**:
-
-- Use `.env` files for local development (never commit them)
-- Use **environment variables** in deployed environments
-- Use **secret managers** (AWS Secrets Manager, HashiCorp Vault) for sensitive values
-- This avoids leaks and enables safe CI/CD deployments
-
-```js
-const config = {
-  dbUrl: process.env.DB_URL,
-  jwtSecret: process.env.JWT_SECRET,
-  apiKey: process.env.STRIPE_KEY
-};
-```
-
-> 📌 **Rule:** Secrets never live in source code, never in Docker images, never in logs.
-
----
-
 # Part 3 — Backend Design Patterns
 
 ### ❓ How do you structure a large Node.js backend?
@@ -710,25 +687,6 @@ res.json(toUserDto(user));
 
 ---
 
-### ❓ How do you handle partial failures in distributed systems?
-
-### 📝 Answer
-
-The **resilience toolkit:**
-
-| Tool | Purpose |
-|------|---------|
-| **Timeouts** | Don't wait forever; fail fast |
-| **Retries with backoff** | Recover from transient failures |
-| **Retry budgets** | Cap retries to avoid amplifying load |
-| **Circuit breakers** | Stop hammering a failing service |
-| **Bulkheads** | Isolate failures to one resource pool |
-| **Fallbacks** | Return cached/default data when service is down |
-
-> 💡 **Pattern:** Circuit breaker opens after N failures → all subsequent calls fail immediately for a cool-down period → after that, allow a trial request to check if the service recovered.
-
----
-
 ### ❓ What happens if MongoDB goes down?
 
 ### 📝 Answer
@@ -834,14 +792,15 @@ logger.info({
 
 **Modern CI/CD pipeline:**
 
-```
-[Git push] → [Build & Test] → [Build artifact/image] → [Deploy to staging]
-                ↓                       ↓                    ↓
-           [Lint, type-check]      [Tag with SHA]       [Smoke tests]
-                                                             ↓
-                                                  [Deploy to prod (canary)]
-                                                             ↓
-                                                  [Monitor → Promote or Rollback]
+```mermaid
+flowchart LR
+  G[Git push] --> B["Build + test<br/>lint, type-check"]
+  B --> A["Build image<br/>tag with commit SHA"]
+  A --> S["Deploy to staging<br/>smoke tests"]
+  S --> C["Prod canary<br/>1% of users"]
+  C --> M{Metrics healthy?}
+  M -- yes --> F[Promote to 100%]
+  M -- no --> R[Roll back]
 ```
 
 **Deployment strategies:**
@@ -865,6 +824,24 @@ logger.info({
 - ✅ **Redundancy across availability zones** → survive a data-center failure
 - ✅ **Database replication** → primary + replicas
 - ✅ **No single point of failure** in the critical path
+
+```mermaid
+flowchart TB
+  U[Users] --> LB["Load balancer<br/>health checks"]
+  subgraph AZ1[Availability zone A]
+    A1[App node]
+    DB1[(DB primary)]
+  end
+  subgraph AZ2[Availability zone B]
+    A2[App node]
+    DB2[(DB replica)]
+  end
+  LB --> A1
+  LB --> A2
+  A1 --> DB1
+  A2 --> DB1
+  DB1 -. replicates .-> DB2
+```
 
 > 💡 **Mental check:** "What's the *one thing* that takes down everything if it dies?" — find it, then add redundancy.
 

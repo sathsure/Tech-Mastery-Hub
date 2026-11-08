@@ -46,39 +46,6 @@ C1: < 20 · C2: 20–40 · C3: 40–60 · C4: > 60
 
 ---
 
-### ❓ What is a B-Tree?
-
-### 📝 Answer
-
-A **self-balancing** M-way search tree. For order M:
-
-| Rule | Value |
-|---|---|
-| Maximum children | M |
-| Maximum keys | M − 1 |
-| Minimum children (non-root internal node) | ⌈M/2⌉ |
-| Minimum keys (non-root node) | ⌈M/2⌉ − 1 |
-| Root | At least 2 children unless it is a leaf |
-| Leaves | All at the **same level** |
-| Data | Stored with keys in **internal and leaf** nodes |
-
----
-
-### ❓ What is a B+ Tree?
-
-### 📝 Answer
-
-A variant of the B-Tree designed for database indexes:
-
-1. Same order rules (max M children, max M − 1 keys).
-2. **Internal nodes hold only separator keys** that guide the search.
-3. **All data entries (or row pointers) are in the leaves.**
-4. All leaves are at the same level.
-5. **Leaves are linked** to each other, in key order.
-6. Splits and merges keep the tree balanced.
-
----
-
 ### ❓ Why must all leaf nodes be at the same level?
 
 ### 📝 Answer
@@ -111,10 +78,19 @@ For fast **range scans** and sequential reads:
 SELECT * FROM employees WHERE employee_id BETWEEN 100 AND 200;
 ```
 
-```text
-Leaf 1        Leaf 2        Leaf 3        Leaf 4
-90, 95   →   100, 120  →   150, 180  →   200, 230
+```mermaid
+flowchart TB
+  R["Root: 100 | 200"] --> L1["90, 95"]
+  R --> L2["100, 120"]
+  R --> L3["150, 180"]
+  R --> L4["200, 230"]
+  L1 -. next leaf .-> L2 -. next leaf .-> L3 -. next leaf .-> L4
+  style L2 fill:#d4efdf
+  style L3 fill:#d4efdf
+  style L4 fill:#d4efdf
 ```
+
+Green leaves are read for `BETWEEN 100 AND 200`: go down once to 100, then follow the leaf links.
 
 1. Search from the root down to the leaf containing 100.
 2. Read the matching entries.
@@ -145,43 +121,6 @@ A **B+ Tree is one specific, self-balancing implementation** of that idea.
 | Structure depends on the implementation | Defined rules for splits and merges |
 
 ## B-Tree vs B+ Tree
-
-### ❓ What is the difference between a B-Tree and a B+ Tree?
-
-### 📝 Answer
-
-| Feature | B-Tree | B+ Tree |
-|---|---|---|
-| Where data lives | Internal and leaf nodes | Leaf nodes only |
-| Internal nodes | Keys + data/pointers | Separator keys only |
-| Leaf nodes linked | No | Yes |
-| Search can end at an internal node | Yes | No |
-| Range queries | Less convenient | Efficient |
-| Fan-out | Lower | **Higher** (internal nodes hold only keys) |
-| Use in databases | Less common | Very common |
-
-**Remember:** B-Tree → data at every level, search may stop early. B+ Tree → data only in leaves, search always reaches a leaf, leaves form a linked list.
-
----
-
-### ❓ Which is faster for SQL queries: B-Tree or B+ Tree?
-
-### 📝 Answer
-
-**Range query** (`WHERE id BETWEEN 100 AND 200`): **B+ Tree** — find the first leaf, then follow the linked leaves. A B-Tree has to move up and down the tree to visit the keys in order.
-
-**Equality query** (`WHERE id = 100`): **no universal winner.** A B-Tree may find the key in an internal node and stop early. But a B+ Tree's higher fan-out often makes it **shorter**, so it may need fewer disk reads overall.
-
-| SQL condition | General advantage |
-|---|---|
-| `WHERE id = 100` | No universal winner |
-| `WHERE id BETWEEN 100 AND 200` | B+ Tree |
-| `WHERE id > 100` / `WHERE id < 100` | B+ Tree |
-| `ORDER BY id` | B+ Tree |
-
-**Interview answer:** "B+ Trees are particularly good for range queries because their leaves are linked. For equality searches both are logarithmic; the real cost depends on tree height, fan-out and disk I/O."
-
----
 
 ### ❓ Which index structure do SQL databases use?
 

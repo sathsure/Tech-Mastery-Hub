@@ -159,7 +159,7 @@ await check("committed index matches the sources", async () => {
   assert.equal(committed.source_fingerprint, index.source_fingerprint, `stale ${QUESTION_INDEX_PATH}; run npm run question-index`);
   assert.equal(committed.entries.length, index.entries.length);
   assert.ok((await getQuestionsByTopic("RxJS")).length > 50);
-  const parent = find("interview/frontend/01-HTML.md", "render a webpage");
+  const parent = find("interview/frontend/02-CSS.md", "What problem does Flexbox solve?");
   assert.ok(parent && (await getFollowUps(parent.id)).length >= 1);
 });
 

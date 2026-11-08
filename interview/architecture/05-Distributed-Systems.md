@@ -28,6 +28,13 @@ You can't have both during a partition. Since partitions **will** happen, the re
 
 ↪ An extension of CAP: if Partition → choose A or C; Else (normal times) → choose lower Latency or Consistency.
 
+```mermaid
+flowchart TD
+  Q{Network partition?}
+  Q -- "Yes (P)" --> PA["Choose Availability (A)<br/>or Consistency (C)"]
+  Q -- "No: Else (E)" --> EL["Choose low Latency (L)<br/>or Consistency (C)"]
+```
+
 ---
 
 ### ❓ What is eventual consistency?
@@ -78,49 +85,6 @@ Options: **Saga** (preferred), or **two-phase commit** (rarely used — slow and
 
 ---
 
-### ❓ What is the Saga pattern?
-
-### 📝 Answer
-
-A saga is a sequence of **local transactions**, one per service. If a step fails, earlier steps are undone by **compensating actions** (not rollbacks).
-
-```text
-Create order → Reserve stock → Charge payment → Ship
-                                  ❌ fails
-              ← Release stock ← Cancel order        (compensations)
-```
-
-**Two styles**
-
-| Choreography | Orchestration |
-|---|---|
-| Each service listens for events and reacts | A central orchestrator tells each service what to do |
-| No central part; simple for 2–3 steps | Easy to follow and change for many steps |
-| Hard to see the whole flow | Orchestrator is extra code to run |
-
-```mermaid
-sequenceDiagram
-  participant O as Order
-  participant I as Inventory
-  participant P as Payment
-  O->>I: ReserveStock
-  I-->>O: StockReserved
-  O->>P: ChargeCard
-  P-->>O: PaymentFailed
-  O->>I: ReleaseStock (compensate)
-  O->>O: Mark order CANCELLED
-```
-
-#### ↳ Follow-up: Compensation vs rollback?
-
-↪ A rollback undoes uncommitted work automatically. A compensation is a new action that reverses committed work, e.g. "refund" for "charge".
-
-#### ↳ Follow-up: Is a saga ACID?
-
-↪ No — it lacks isolation. Others can see the order before payment finishes, so use states like `PENDING` → `CONFIRMED`.
-
----
-
 ### ❓ What is the Transactional Outbox pattern?
 
 ### 📝 Answer
@@ -163,40 +127,6 @@ In practice: use **at least once + idempotent consumers** (remember processed me
 ---
 
 ## Part 3 — Coordination
-
-### ❓ What is a distributed lock and when do you need one?
-
-### 📝 Answer
-
-A lock shared by many servers, so **only one of them does a job at a time** — for example, only one instance runs the nightly billing job.
-
-- Simple version with Redis: `SET lock:billing <myId> NX PX 30000` → succeeds only if nobody holds it; expires after 30 s so a crashed holder can't block forever.
-- Release only if you still own it (compare the value), otherwise you may delete someone else's lock.
-- Stronger options: ZooKeeper, etcd, or a database row lock.
-
-#### ↳ Follow-up: Why does the lock need an expiry?
-
-↪ If the server holding it crashes, the lock would never be released without one.
-
-#### ↳ Follow-up: What is a fencing token?
-
-↪ An increasing number given with each lock. The storage rejects writes with an older number, so a slow old lock holder can't overwrite newer work.
-
----
-
-### ❓ What is leader election?
-
-### 📝 Answer
-
-Choosing **one node as the leader** among several, so one node makes decisions (e.g. accepts writes or schedules jobs). If the leader dies, the others elect a new one.
-
-Used by: Kafka controller, database primaries, Kubernetes controllers. Tools: ZooKeeper, etcd, Raft algorithm.
-
-#### ↳ Follow-up: What is split brain?
-
-↪ A network split makes two nodes both think they're the leader and both accept writes. Prevent it by requiring a **majority (quorum)** to elect a leader.
-
----
 
 ### ❓ What is a quorum?
 

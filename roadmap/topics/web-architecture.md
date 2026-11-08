@@ -20,7 +20,6 @@
 2. [How do you secure APIs beyond authentication?](../../interview/frontend/09-Web_Architecture.md)
 3. [How do you prevent XSS and injection attacks?](../../interview/frontend/09-Web_Architecture.md)
 4. [Explain CORS and how you configure it correctly](../../interview/frontend/09-Web_Architecture.md)
-5. [How do you manage environment configurations?](../../interview/frontend/09-Web_Architecture.md)
 
 ## 3. Part 3 — Backend Design Patterns
 
@@ -61,9 +60,8 @@
 1. [How do you handle secure file uploads?](../../interview/frontend/09-Web_Architecture.md)
 2. [How do you prevent API abuse?](../../interview/frontend/09-Web_Architecture.md)
 3. [How do you prevent accidental data leaks?](../../interview/frontend/09-Web_Architecture.md)
-4. [How do you handle partial failures in distributed systems?](../../interview/frontend/09-Web_Architecture.md)
-5. [What happens if MongoDB goes down?](../../interview/frontend/09-Web_Architecture.md)
-6. [What happens when Node.js crashes in production?](../../interview/frontend/09-Web_Architecture.md)
+4. [What happens if MongoDB goes down?](../../interview/frontend/09-Web_Architecture.md)
+5. [What happens when Node.js crashes in production?](../../interview/frontend/09-Web_Architecture.md)
 
 ## 10. Part 10 — Observability, Deployments & HA
 

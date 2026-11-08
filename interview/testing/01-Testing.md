@@ -16,6 +16,19 @@
 | Smoke | "Does it start and respond at all?" | Health check after deploy | Fast |
 | Regression | Old features still work after changes | Re-run the suite on every PR | — |
 
+**Test pyramid:** many fast unit tests at the bottom, fewer slow E2E tests at the top.
+
+```mermaid
+flowchart TB
+  E2E["E2E: few, slow, test like a user"]
+  INT["Integration: some, seconds each"]
+  UNIT["Unit: many, milliseconds each"]
+  E2E --- INT --- UNIT
+  style E2E fill:#fde2e1,stroke:#c0392b
+  style INT fill:#fff3cd,stroke:#b7950b
+  style UNIT fill:#d4efdf,stroke:#1e8449
+```
+
 ---
 
 ### ❓ What is the test pyramid?
@@ -74,6 +87,13 @@ void appliesTenPercentDiscountAboveThousand() {
 Given a cart with items worth ₹1200
 When the customer checks out
 Then a 10% discount is applied
+```
+
+**TDD cycle:**
+
+```mermaid
+flowchart LR
+  R["Red: write a failing test"] --> G["Green: just enough code to pass"] --> F["Refactor: clean up, tests stay green"] --> R
 ```
 
 ---

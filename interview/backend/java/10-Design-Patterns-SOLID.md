@@ -292,6 +292,12 @@ class PayPalAdapter implements PaymentGateway {
 }
 ```
 
+```mermaid
+flowchart LR
+  C["Your code<br/>calls pay(rupees)"] --> A["PayPalAdapter<br/>implements PaymentGateway"]
+  A -- "sendPayment(rupees / 83)" --> P["PayPalApi<br/>(third-party, cannot change)"]
+```
+
 JDK example: `Arrays.asList()` (array → List), `InputStreamReader` (bytes → characters).
 
 ---
@@ -435,8 +441,13 @@ A request passes **along a chain of handlers**; each one handles it or passes it
 
 Real examples: Servlet **filters** and the **Spring Security filter chain** (CORS → authentication → authorization), Express/NestJS middleware, Angular HTTP interceptors.
 
-```text
-Request → [Logging] → [Auth check] → [Rate limit] → Controller
+```mermaid
+flowchart LR
+  R[Request] --> L[Logging] --> A{Auth ok?}
+  A -- no --> X[401: stop here]
+  A -- yes --> RL{Under rate limit?}
+  RL -- no --> Y[429: stop here]
+  RL -- yes --> C[Controller]
 ```
 
 ---

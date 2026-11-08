@@ -2,44 +2,6 @@
 
 ## Transaction Basics
 
-### ❓ What does @Transactional actually do?
-
-**Problem:** A money transfer debits one account and credits another. If the credit fails after the debit succeeded, money disappears. Both updates must succeed or fail together.
-
-### 📝 Answer
-
-`@Transactional` makes Spring run the method inside **one database transaction**:
-
-1. Spring wraps the bean in a **proxy**.
-2. When the method is called **through the proxy**, the proxy starts (or joins) a transaction.
-3. All repository calls in the method use the same connection and transaction.
-4. The method returns normally → **commit**. It throws a `RuntimeException` or `Error` → **rollback**.
-
-```java
-@Service
-public class TransferService {
-
-    private final AccountRepository accounts;
-
-    public TransferService(AccountRepository accounts) {
-        this.accounts = accounts;
-    }
-
-    @Transactional
-    public void transfer(long fromId, long toId, BigDecimal amount) {
-        Account from = accounts.findById(fromId).orElseThrow();
-        Account to = accounts.findById(toId).orElseThrow();
-        from.debit(amount);   // throws InsufficientFundsException (unchecked) if the balance is too low
-        to.credit(amount);
-        // Normal return: both updates commit together. Any RuntimeException: both roll back.
-    }
-}
-```
-
-**Remember:** the annotation does nothing by itself — the proxy around the bean does the work.
-
----
-
 ### ❓ What is a Spring proxy?
 
 **Problem:** Spring has to start and finish a transaction around your method without you writing that code inside the method.
@@ -106,6 +68,13 @@ Consequences: `private` and `final` methods can't be intercepted, and calls **in
 ### 📝 Answer
 
 **No, not with Spring's default proxy-based transactions.** The call `this.methodB()` goes straight to the real object; the proxy never sees it. `methodB()` simply runs inside whatever transaction `methodA()` already has, and its own settings are ignored.
+
+```mermaid
+flowchart LR
+  C[Caller] --> P[Proxy: starts transaction] --> A["methodA()"]
+  A -- "this.methodB(): skips the proxy" --> B["methodB()<br/>REQUIRES_NEW ignored"]
+  O[Other bean] --> P2[Proxy: new transaction] --> B2["methodB() in another bean<br/>REQUIRES_NEW works"]
+```
 
 ```java
 @Service

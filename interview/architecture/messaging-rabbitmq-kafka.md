@@ -15,8 +15,12 @@ RabbitMQ is a **message broker** that typically **pushes** messages to consumers
 
 If the consumer crashes before acknowledging, RabbitMQ **redelivers** the message to another consumer. A message is not deleted just because it was sent — it stays until it is acknowledged (or expires, or is dead-lettered by a configured rule). Queues and messages can be persisted to disk.
 
-```text
-Producer → Exchange → Queue → (push) → Consumer → ack → message removed
+```mermaid
+flowchart LR
+  P[Producer] --> E[Exchange] --> Q[(Queue)]
+  Q -- push --> C[Consumer]
+  C -- ack --> Q
+  Q -. no ack: redeliver .-> C2[Another consumer]
 ```
 
 ---
@@ -33,23 +37,14 @@ Kafka is a **distributed event log**; consumers **pull** events:
 4. Each consumer group tracks its position with an **offset**.
 5. Events stay in Kafka for the configured **retention** period or size — even after they've been read.
 
-```text
-Producer → Topic (partitioned log) ← (poll) ← Consumer group A (offset 42)
-                                    ← (poll) ← Consumer group B (offset 17)
+```mermaid
+flowchart LR
+  P[Producer] -- append --> T[(Topic: partitioned log<br/>events kept for retention period)]
+  A[Consumer group A<br/>offset 42] -- poll --> T
+  B[Consumer group B<br/>offset 17] -- poll --> T
 ```
 
 Because events aren't removed on read, consumers can **replay** them by moving their offset back.
-
----
-
-### ❓ How do Kafka consumer groups and partitions work?
-
-### 📝 Answer
-
-- **Different consumer groups** each receive **every** event independently (inventory, notifications and analytics can all read the same `OrderCreated` event).
-- **Within one group**, the topic's partitions are divided among the consumers: each partition is read by **one consumer of the group at a time**, so the group shares the work.
-- Ordering is guaranteed **within a partition**, not across a whole topic — events with the same key (e.g. `orderId`) go to the same partition and stay in order.
-- More consumers than partitions in a group means the extra consumers sit idle.
 
 ---
 

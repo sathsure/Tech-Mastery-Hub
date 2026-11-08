@@ -112,15 +112,21 @@ function piecesAnswer(heading: string, found: { item: Evidence; pieces: string[]
   return [`**${heading}**${note} — _${found.item.question}_ [${found.item.n}]`, "", ...found.pieces.slice(0, 2).flatMap(piece => [piece, ""])].join("\n").trim();
 }
 
+const isMermaid = (block: string) => /^\s*```\s*mermaid\b/i.test(block);
+
 function codeAnswer(evidence: Evidence[], previous: PreviousTurn, topics: string[]): string {
-  const found = pickPieces(evidence, previous, item => codeBlocks(item.answer ?? ""));
+  const found = pickPieces(evidence, previous, item => codeBlocks(item.answer ?? "").filter(block => !isMermaid(block)));
   if (found) return piecesAnswer("Code example", found);
   const subject = subjectOf(previous);
   return nothingNew("a code example", subject, `${subject} code example`, topics);
 }
 
 function visualAnswer(evidence: Evidence[], previous: PreviousTurn, topics: string[]): string {
-  const found = pickPieces(evidence, previous, item => item.visuals.map(visual => `![${visual.alt || item.question}](${visual.url})`));
+  // Images first, then Mermaid diagrams written in the note.
+  const found = pickPieces(evidence, previous, item => [
+    ...item.visuals.map(visual => `![${visual.alt || item.question}](${visual.url})`),
+    ...codeBlocks(item.answer ?? "").filter(isMermaid),
+  ]);
   if (found) return piecesAnswer("Diagram", found);
   const subject = subjectOf(previous);
   return nothingNew("a diagram", subject, `${subject} diagram explained`, topics);
@@ -148,6 +154,17 @@ export function composeFollowUpAnswer(message: string, search: SearchResult, evi
   if (search.intents.includes("code")) return codeAnswer(evidence, previous, topics);
   if (search.intents.includes("visual")) return visualAnswer(evidence, previous, topics);
   const top = evidence[0];
-  if (!top || !previous.answer.includes(top.question)) return null;
+  if (!top || !alreadyAnswered(top, previous.answer)) return null;
   return excerptAnswer(message, evidence, previous, topics);
+}
+
+/**
+ * The previous answer explained this entry, not just named it. A study path or overview lists question
+ * titles as links; that is not an answer, so the full entry should still be shown.
+ */
+function alreadyAnswered(entry: Evidence, previousAnswer: string): boolean {
+  if (!previousAnswer.includes(entry.question)) return false;
+  const body = paragraphs(entry.answer ?? "").filter(part => part.length > 40);
+  if (!body.length) return true;
+  return body.some(part => alreadySaid(part, previousAnswer));
 }

@@ -16,25 +16,17 @@ Spring Security solves this using **filters**, **contexts**, and **standard secu
 
 ---
 
-### ❓ Explain authentication vs authorization with a real example.
+### ❓ Can authorization happen without authentication?
 
 ### 📝 Answer
 
-- **Authentication** answers: _Who are you?_
-- **Authorization** answers: _What are you allowed to do?_
-
-**Example:**
-
-- Logging in with username/password → Authentication
-- Accessing `/admin/deleteUser` → Authorization
-
-👉 Authentication happens **before** authorization.
-
-#### ↳ Follow-up: Can authorization happen without authentication?
-
 **Not really — it always knows "who" first.** If no one logged in, Spring Security treats the caller as an **anonymous user** (`AnonymousAuthenticationToken`). Authorization rules then decide what that anonymous user may do: `permitAll()` lets them in; `authenticated()` sends a 401.
 
-#### ↳ Follow-up: What happens when we add `spring-boot-starter-security`?
+---
+
+### ❓ What happens when we add `spring-boot-starter-security`?
+
+### 📝 Answer
 
 Spring Security automatically:
 
@@ -60,6 +52,15 @@ Spring Security works using a **Filter Chain**.
 5. Request allowed or rejected
 
 Each filter has **one responsibility**.
+
+```mermaid
+flowchart LR
+  R[HTTP request] --> F1[CorsFilter] --> F2["Authentication filter<br/>(JWT / form login)"]
+  F2 --> SC[(SecurityContext:<br/>who is the user)]
+  F2 --> F3["AuthorizationFilter<br/>(roles, rules)"]
+  F3 -- allowed --> D[DispatcherServlet → Controller]
+  F3 -- denied --> X[401 / 403]
+```
 
 #### ↳ Follow-up: What is SecurityFilterChain?
 

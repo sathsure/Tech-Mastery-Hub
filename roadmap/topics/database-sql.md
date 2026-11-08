@@ -47,18 +47,14 @@
 
 1. [What is a Binary Search Tree (BST), and what is its limitation?](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
 2. [What is an M-way search tree?](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
-3. [What is a B-Tree?](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
-4. [What is a B+ Tree?](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
-5. [Why must all leaf nodes be at the same level?](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
-6. [Where does a search start in a B-Tree or B+ Tree?](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
-7. [Why are B+ Tree leaves (leaf nodes) linked?](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
-8. [What is the difference between multilevel indexing and a B+ Tree?](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
+3. [Why must all leaf nodes be at the same level?](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
+4. [Where does a search start in a B-Tree or B+ Tree?](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
+5. [Why are B+ Tree leaves (leaf nodes) linked?](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
+6. [What is the difference between multilevel indexing and a B+ Tree?](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
 
 ## 3. B-Tree vs B+ Tree
 
-1. [What is the difference between a B-Tree and a B+ Tree?](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
-2. [Which is faster for SQL queries: B-Tree or B+ Tree?](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
-3. [Which index structure do SQL databases use?](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
+1. [Which index structure do SQL databases use?](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
 
 ## 4. Insertion
 
@@ -78,13 +74,11 @@
 ## 7. Indexes
 
 1. [How does an index work?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
-2. [What is the internal structure of an index?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
-3. [Is an index a separate table?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
-4. [Where is an index stored?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
-5. [How does SQL know that an index exists, and who decides to use it?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
-6. [Why might MySQL do a full table scan even though there is an index on employee_id?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
-7. [How does an index improve a JOIN on customer_id?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
-8. [Why not index every column?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
+2. [Is an index a separate table?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
+3. [Where is an index stored?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
+4. [Why might MySQL do a full table scan even though there is an index on employee_id?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
+5. [How does an index improve a JOIN on customer_id?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
+6. [Why not index every column?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
 
 ## 8. Query Execution Order
 
@@ -147,6 +141,36 @@
 2. [Tricky: Why does `WHERE YEAR(order_date) = 2026` ignore the index on order_date?](../../interview/database/03-SQL-Interview-Queries.md)
 3. [Tricky: What does `SELECT NULL = NULL` return?](../../interview/database/03-SQL-Interview-Queries.md)
 4. [Tricky: Can you use a column alias in WHERE?](../../interview/database/03-SQL-Interview-Queries.md)
+
+## 18. Storage on Disk
+
+1. [How does a database physically store records on disk?](../../interview/under-the-hood/05-Database-Internals.md)
+2. [What are Database Pages, Blocks and Rows?](../../interview/under-the-hood/05-Database-Internals.md)
+
+## 19. Indexes
+
+1. [How does Database Indexing work internally?](../../interview/under-the-hood/05-Database-Internals.md)
+2. [How do B-Tree and B+ Tree work? Why are B+ Trees commonly used?](../../interview/under-the-hood/05-Database-Internals.md)
+3. [How do Clustered, Non-Clustered and Composite Indexes work?](../../interview/under-the-hood/05-Database-Internals.md)
+4. [How does a database decide between Index Seek and Table Scan?](../../interview/under-the-hood/05-Database-Internals.md)
+
+## 20. Query Processing
+
+1. [How does the SQL Query Optimizer select an execution plan?](../../interview/under-the-hood/05-Database-Internals.md)
+2. [How do JOIN operations work internally?](../../interview/under-the-hood/05-Database-Internals.md)
+3. [How do Nested Loop, Hash Join and Merge Join differ?](../../interview/under-the-hood/05-Database-Internals.md)
+
+## 21. Transactions, Logging and Recovery
+
+1. [How does a database manage concurrent transactions?](../../interview/under-the-hood/05-Database-Internals.md)
+2. [How do ACID, Locks and MVCC work internally?](../../interview/under-the-hood/05-Database-Internals.md)
+3. [How does Write-Ahead Logging (WAL) work?](../../interview/under-the-hood/05-Database-Internals.md)
+4. [How does a database recover after a crash?](../../interview/under-the-hood/05-Database-Internals.md)
+
+## 22. Caching and Scaling
+
+1. [How does Database Caching work?](../../interview/under-the-hood/05-Database-Internals.md)
+2. [How do Replication, Partitioning and Sharding work?](../../interview/under-the-hood/05-Database-Internals.md)
 
 ## Practice
 

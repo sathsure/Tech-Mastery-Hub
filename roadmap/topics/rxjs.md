@@ -78,7 +78,7 @@
 
 ## 9. Part 9 — RxJS in Angular
 
-1. [How does RxJS interact with Angular's Zones and Change Detection?](../../interview/frontend/06-RxJS.md)
+1. [How do RxJS streams interact with zone.js, and when should they run outside the Angular zone?](../../interview/frontend/06-RxJS.md)
 2. [How does Angular's `HttpClient` use RxJS?](../../interview/frontend/06-RxJS.md)
 3. [Trick: If you subscribe twice to the same `this.http.get(...)`, how many HTTP calls happen?](../../interview/frontend/06-RxJS.md)
 4. [How do you avoid multiple HTTP calls when many components need the same data?](../../interview/frontend/06-RxJS.md)

@@ -9,6 +9,7 @@ Builds internal platforms so developers can ship without friction.
 
 - [DevOps](../topics/devops.md)
 - [HTML](../topics/html.md)
+- [Under the Hood](../topics/under-the-hood.md)
 - Usually 4+ years of experience when hired
 
 ## Learning stages

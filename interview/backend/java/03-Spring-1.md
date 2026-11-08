@@ -17,156 +17,6 @@ Spring is a **lightweight, modular, inversion-of-control (IoC) based framework**
 
 ---
 
-### ❓ What is Spring IoC and how is it implemented internally?
-
-### 📝 Answer
-
-**Inversion of Control (IoC)**
-
-Control of **object creation is transferred** from the application code **to the Spring container**.
-
-```java
-// ❌ Without Spring:
-Service service = new ServiceImpl();
-
-// ✅ With Spring:
-@Autowired
-private Service service;
-```
-
-> IoC (in Spring) → Spring container controls object creation and lifecycle.
-> DI (in Spring) → Spring injects required dependencies into those objects.
-
-_a. **Dependency Injection (DI)** – Core IoC Implementation_
-
-Spring implements IoC mainly using **Dependency Injection**, where dependencies are provided to an object rather than the object creating them itself.
-
-Types of Dependency Injection:
-
-| Types                     | Explanation                                        |
-| ------------------------- | -------------------------------------------------- |
-| **Constructor Injection** | Dependencies are injected via the constructor      |
-| **Setter Injection**      | Dependencies are injected via setter methods       |
-| **Field Injection**       | Dependencies are injected directly into its fields |
-
-❌ Field Injection — Problems Explained with **One Simple Example**
-
-```java
-@Service
-public class OrderService {
-
-    @Autowired
-    private PaymentService paymentService; // cannot be final. Object exists without its required dependency.
-
-    public void placeOrder() {
-        paymentService.pay();   // ❌ may be null
-    }
-}
-
-OrderService service = new OrderService();   // Looks valid, but required dependency is invisible
-service.placeOrder();   // ❌ NullPointerException
-```
-
-What Goes Wrong Here
-
-- **Dependencies are hidden → class contract is unclear**
-- **Object can be created in an invalid state**
-- **No immutability (`final` not possible)**
-
-```java
-OrderService service = new OrderService();
-// No way to inject mock without Spring or reflection
-```
-
-- **Failures occur at runtime, not at creation**
-
-```java
-service.placeOrder(); // ❌ fails during execution
-```
-
-✅ Constructor Injection — The Fix
-
-```java
-public class OrderService {
-
-    private final PaymentService paymentService;
-
-    public OrderService(PaymentService paymentService) {
-        this.paymentService = paymentService;
-    }
-}
-```
-
-- Fields can be `final` → the object is always complete and safe to share between threads
-- A missing bean makes the app **fail at startup** (not later with a `NullPointerException`)
-- Circular dependencies are **reported at startup** instead of hiding until runtime
-- Easy to unit test: `new OrderService(mockPayment)` — no Spring needed
-- With a single constructor, `@Autowired` is optional (Spring 4.3+); Lombok's `@RequiredArgsConstructor` can generate it
-
-_b. Spring IoC Container (Core Implementation Mechanism)_
-
-The **IoC container** is responsible for:
-
-- Instantiating beans
-- Injecting dependencies
-- Managing lifecycle
-- Handling scopes
-
-![SpringBeanLifeCycle Image](/src/assets/backend/spring-bean-life-cycle.png)
-
-Two Main IoC Containers
-
-🔹 **BeanFactory (Basic Container)**
-
-BeanFactory is the basic container in Spring used to **Creates objects (beans), Stores them, provide when needed**.
-
-```java
-DefaultListableBeanFactory factory = new DefaultListableBeanFactory();
-new XmlBeanDefinitionReader(factory).loadBeanDefinitions("beans.xml");
-
-MyService service = factory.getBean(MyService.class);   // created only now
-```
-
-➡ A plain `BeanFactory` creates a singleton bean only when `getBean()` is first called — **lazy initialization**.
-
-> ⚠️ `new ClassPathXmlApplicationContext("beans.xml")` is an **ApplicationContext** (which is also a BeanFactory), so it creates singletons eagerly at startup.
-
-🔹 **ApplicationContext (Advanced – Most Used)**
-
-ApplicationContext is the advanced Spring container
-
-- Creates **beans**
-- Connects them together
-- Prepares **everything in advance**
-- Makes sure the application is ready to run
-
-```java
-ApplicationContext context =
-        new AnnotationConfigApplicationContext(AppConfig.class);
-```
-
-➡ Bean is created at **application startup**, before `getBean()` is called, which makes it **eager initialization** .
-
-```java
-//  Spring Boot
-@SpringBootApplication
-public class MyApp {}
-
-
-// ➡ Spring Boot automatically creates an ApplicationContext. You never see BeanFactory
-
-// Spring (non-Boot)
-AnnotationConfigApplicationContext context =
-    new AnnotationConfigApplicationContext(AppConfig.class);
-
-
-// ➡ Still ApplicationContext
-```
-
-> **Spring Boot always uses ApplicationContext**
-
----
-
 ### ❓ What are the different bean configuration approaches used to implement IoC in Spring?
 
 ### 📝 Answer
@@ -451,6 +301,22 @@ public class ReportGenerator {}
 ### ❓ Explain the lifecycle of a Spring bean and how you can intervene at different stages of its initialization and destruction.
 
 ### 📝 Answer
+
+**Bean lifecycle at a glance** (where you can step in is in brackets):
+
+```mermaid
+flowchart TD
+  A[1. Create object: constructor] --> B["2. Inject dependencies<br/>(@Autowired fields / setters)"]
+  B --> C["3. Aware callbacks<br/>(BeanNameAware, ApplicationContextAware)"]
+  C --> D["4. BeanPostProcessor: before init"]
+  D --> E["5. Init<br/>(@PostConstruct, afterPropertiesSet, initMethod)"]
+  E --> F["6. BeanPostProcessor: after init<br/>(proxies for @Transactional, AOP)"]
+  F --> G[7. Bean ready to use]
+  G --> H["8. Context closes: destroy<br/>(@PreDestroy, destroy, destroyMethod)"]
+```
+
+The rest of this answer shows how Spring Boot gets to step 1: what happens from `main()` until beans are created.
+
 
 🔹 JVM STARTS → `main()` METHOD
 
@@ -1012,13 +878,6 @@ public class LoggingAspect {
     }
 }
 ```
-
-#### ↳ Follow-up: How Spring AOP Works Internally
-
-- Spring creates a proxy object
-- Calls go through the proxy
-- Proxy executes aspect logic
-- Then calls actual method
 
 #### ↳ Follow-up: Can Spring AOP intercept private methods?
 

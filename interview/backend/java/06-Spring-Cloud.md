@@ -588,6 +588,16 @@ spring:
 - `lb://` → load-balanced via service discovery
 - Gateway never uses hardcoded IPs
 
+```mermaid
+flowchart LR
+  C[Client] --> G[Spring Cloud Gateway]
+  G --> P{"Predicate:<br/>Path=/orders/**?"}
+  P -- yes --> F[Filters: auth, headers, rate limit]
+  F --> R[Service registry: lb://order-service]
+  R --> O1[order-service #1]
+  R --> O2[order-service #2]
+```
+
 #### ↳ Follow-up: What annotations are commonly used in API Gateway?
 
 ✔️ Important Note (Senior Insight)
@@ -749,48 +759,6 @@ traceId → service → service → service
 ✔ Logs without traceId are useless
 ✔ Metrics show symptoms
 ✔ Traces show root cause
-
-#### ↳ Follow-up: Why do we need distributed tracing in microservices?
-
-> In microservices, a single request flows across multiple services. Distributed tracing allows us to track that request end-to-end using a traceId, making debugging and performance analysis possible.
-
-🔑 Key Understanding
-
-- Logs alone are insufficient
-- You debug **flows**, not services
-- Failures are often cross-service
-
-🧠 RULES TO REMEMBER
-
-✔ One request → One trace
-✔ Multiple services → Same traceId
-✔ Without tracing, production debugging is guesswork
-
-#### ↳ Follow-up: Explain traceId and spanId.
-
-- **Trace** → Entire request journey
-- **Span** → One unit of work within the trace
-- **traceId** → Same across services
-- **spanId** → Unique per operation
-
-Example Flow
-
-```
-Client
-  |
-  | traceId=abc
-Order Service (span1)
-  |
-Inventory Service (span2)
-  |
-Payment Service (span3)
-```
-
-🧠 RULES
-
-✔ traceId remains same across services
-✔ spanId changes per service/method
-✔ Parent-child span relationship matters
 
 #### ↳ Follow-up: How is trace context propagated between services?
 
@@ -1082,6 +1050,15 @@ spring:
 
 Without protection → Thread exhaustion → System down
 
+```mermaid
+flowchart LR
+  U[Users] --> O[Order service]
+  O -- "waits, threads pile up" --> I["Inventory service<br/>(slow)"]
+  O2[Order service + circuit breaker] -- "timeout / breaker open" --> FB["Fallback: in-stock = false<br/>answer fast"]
+  style I fill:#fde2e1
+  style FB fill:#d4efdf
+```
+
 ```java
 @CircuitBreaker(name = "inventory", fallbackMethod = "fallback")
 public InventoryResponse check(Long productId) {
@@ -1155,46 +1132,6 @@ http
 ---
 
 ## Data Consistency
-
-### ❓ How do you handle transactions across services?
-
-### 📝 Answer
-
-**Saga Pattern** is a way to manage transactions across multiple services by breaking them into small steps and undoing steps if something fails.
-
-Imagine **one business action** needs **multiple services**.
-
-Example: **Online Order**
-
-1. Order Service → creates order
-2. Payment Service → takes money
-3. Inventory Service → reduces stock
-
-Each service:
-
-- Has **its own database**
-- Works **independently**
-
-❌ There is **NO single big transaction** across all services.
-
-_How Saga Works (Step by Step)_
-
-- Order is created
-- Payment is successful
-- Inventory update fails
-- 🤔❓ Now What?
-  - If step 3 fails, **undo step 2**
-  - If step 2 is undone, **undo step 1**
-
-Undo actions are called: **Compensating Transactions**
-
-| Step | Action       | If fails       |
-| ---- | ------------ | -------------- |
-| 1    | Create Order | Cancel Order   |
-| 2    | Take Payment | Refund Payment |
-| 3    | Update Stock | (End)          |
-
----
 
 ## Observability (Production Reality)
 
@@ -1285,6 +1222,16 @@ Example registries:
 2. Client asks for `USER-SERVICE`
 3. LoadBalancer picks **one healthy instance**
 4. Request is forwarded
+
+```mermaid
+flowchart LR
+  U1[user-service #1] -. registers .-> REG[(Service registry<br/>Eureka / Consul)]
+  U2[user-service #2] -. registers .-> REG
+  C[Caller service] -- "http://USER-SERVICE" --> LB[Spring Cloud LoadBalancer]
+  LB -- asks for instances --> REG
+  LB -- round robin --> U1
+  LB -- round robin --> U2
+```
 
 🔹 **Simple Code Example (Client-Side Load Balancing)**
 
@@ -1384,8 +1331,12 @@ If running on Kubernetes:
 
 🚀 Traffic Flow
 
-```
-Client → Ingress → Service → Pod
+```mermaid
+flowchart LR
+  C[Client] --> I["Ingress<br/>routing by host/path"] --> S["Service<br/>load balancing"]
+  S --> P1[Pod 1]
+  S --> P2[Pod 2]
+  S --> P3[Pod 3]
 ```
 
 - **Ingress** → Routing
@@ -1398,40 +1349,6 @@ Kubernetes handles everything.
 ---
 
 ## Service Communication & Discovery
-
-### ❓ How do services discover each other in Spring Cloud?
-
-### 📝 Answer
-
-**Eureka Client**
-
-```yaml
-spring:
-  application:
-    name: order-service
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka
-```
-
-**Calling another service (Feign)**
-
-```java
-@FeignClient(name = "inventory-service")
-public interface InventoryClient {
-  @GetMapping("/inventory/{productId}")
-  InventoryResponse checkStock(@PathVariable Long productId);
-}
-```
-
-Avoid hardcoded URLs. Service discovery enables:
-
-- Scaling
-- Failover
-- Blue/Green deployments
-
----
 
 ### ❓ When would you avoid synchronous REST calls between services?
 
@@ -1448,11 +1365,21 @@ Avoid a synchronous call when the caller **doesn't need the answer right now**, 
 
 Use **events or a queue** instead (Kafka / RabbitMQ):
 
-```text
-Sync:  Order → (wait) Payment → (wait) Email → reply   ← slow, fragile
-Async: Order → publish OrderPlaced → reply immediately
-                 ├── Payment service consumes it
-                 └── Email service consumes it
+**Sync (slow, fragile):**
+
+```mermaid
+flowchart LR
+  O[Order] -- wait --> P[Payment] -- wait --> E[Email] --> R[Reply to user]
+```
+
+**Async (fast, independent):**
+
+```mermaid
+flowchart LR
+  O[Order] -- "publish OrderPlaced" --> K[(Kafka / RabbitMQ)]
+  O --> R[Reply to user immediately]
+  K --> P[Payment service]
+  K --> E[Email service]
 ```
 
 Keep REST for **queries that need an immediate answer** ("is this item in stock?"), with timeouts and a circuit breaker.
@@ -1486,34 +1413,6 @@ It breaks 12-factor principles and requires rebuild for config change.
 ---
 
 ## Fault Tolerance & Resilience
-
-### ❓ What happens when one microservice goes down? How do you prevent system-wide failure?
-
-### 📝 Answer
-
-- Circuit Breaker
-- Retry
-- Timeout
-- Bulkhead
-
-**Resilience4j Example**
-
-```java
-@CircuitBreaker(name = "inventoryService", fallbackMethod = "fallback")
-public InventoryResponse checkStock(Long productId) {
-    return inventoryClient.checkStock(productId);
-}
-
-public InventoryResponse fallback(Long productId, Throwable ex) {
-    return new InventoryResponse(productId, false);
-}
-```
-
-- Fail fast
-- Graceful degradation
-- Prevent thread exhaustion
-
----
 
 ### ❓ Difference between Retry and Circuit Breaker?
 
@@ -1584,24 +1483,6 @@ public class SecurityConfig {
 - Zero trust inside cluster
 
 ## Data Consistency
-
-### ❓ How do you maintain consistency across multiple microservices?
-
-### 📝 Answer
-
-**Saga Pattern**
-
-_Choreography Saga (Event-based)_
-
-- OrderCreated → InventoryUpdated → PaymentProcessed
-
-_Orchestration Saga_
-
-- Central Saga service controlling steps
-
-Avoid 2PC (XA). Use **eventual consistency**.
-
----
 
 ## Observability & Monitoring
 

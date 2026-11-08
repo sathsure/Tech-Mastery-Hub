@@ -362,6 +362,18 @@ Risk: in a **thread pool**, threads are reused, so a value can leak into the nex
 
 No. `volatile` gives visibility, not atomicity. `i++` is read → add → write; two threads can still interleave. Use `AtomicInteger.incrementAndGet()`.
 
+```mermaid
+sequenceDiagram
+  participant T1 as Thread 1
+  participant I as i (volatile)
+  participant T2 as Thread 2
+  T1->>I: read i = 5
+  T2->>I: read i = 5
+  T1->>I: write 6
+  T2->>I: write 6
+  Note over I: Two increments, but i = 6 (one update lost)
+```
+
 ---
 
 ### ❓ Tricky: What is printed?
