@@ -15,6 +15,7 @@ Manages versions, builds and release schedules.
 ### Stage 1: Core skills
 
 - [ ] [DevOps](../topics/devops.md)
+- [ ] [Linux & Shell](../topics/linux.md)
 
 ## Also useful
 
@@ -22,7 +23,7 @@ Manages versions, builds and release schedules.
 
 ## Also needed
 
-Bash, Groovy, Python, Bazel, Artifactory, Nexus
+Groovy, Python, Bazel, Artifactory, Nexus
 
 ## Where it leads
 

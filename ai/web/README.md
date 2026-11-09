@@ -39,6 +39,15 @@ the visitor address comes from headers the proxy sets itself, never from a value
   (`TUTOR_GITHUB_REPO`, default `sathsure/Tech-Mastery-Hub`; `TUTOR_GITHUB_BRANCH`, default `main`)
 - Topic overviews show a topic's sections first; open one to see its questions (progressive disclosure)
 - Roadmap checklists are selectable: tick topics, then **Build my learning plan** for a prerequisite-ordered sequence
+- **Interview prep** for a role: tick its stacks, then get the key questions to practise for each
+- **Interviewer question sets**: "Prepare a question set to interview a Java developer with 10+ years" first shows a setup
+  checklist (experience, role, stack, duration, categories, difficulty, company, focus) with what the request already said
+  ticked; then a timed, prioritised set with expected answers, what to look for and follow-ups
+- **Mock interview** ("Mock interview on SQL", "Quiz me on Java" or `/quiz java`): 5 questions from the notes, one at a
+  time; each typed answer is scored 1–4 by the key points it covers, with what you missed and a final summary. The
+  interview state travels with each request, so the server stays stateless
+- **Live scoring sheet** on every question set: score each answer 1–4, add notes, see a running scorecard and
+  recommendation, then copy or print it (scores are saved with the chat)
 - When the notes don't cover a question, the tutor says so and links to YouTube, Udemy and official docs
 - **Back** (button, `Alt+←` or the browser's back) returns to the previous screen and scroll position
 - "Beyond your notes" callout for anything the notes don't support, plus a grounding badge per answer
@@ -60,6 +69,7 @@ the visitor address comes from headers the proxy sets itself, never from a value
 | `render.js` | Markdown rendering and enhancements |
 | `api.js` | Calls to `/chat`, `/search`, `/catalog`, `/entry` |
 | `store.js` | Saved chats |
+| `scoring.js` | Interview scoring sheet for question sets |
 
 Libraries (`marked`, `DOMPurify`, `highlight.js`, `mermaid`) are served from `ai/runtime/node_modules`
 under `/vendor/`, so the app works offline and loads no third-party scripts.

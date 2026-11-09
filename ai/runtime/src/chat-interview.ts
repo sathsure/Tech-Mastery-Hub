@@ -13,11 +13,11 @@ import { topicSlug } from "./roadmap-generator.js";
 export const LAYERS: Array<[string, string[]]> = [
   ["Frontend", ["html", "css", "javascript", "typescript", "angular", "react", "rxjs", "web-vitals"]],
   ["Backend", ["java", "spring", "spring-security", "nodejs", "rest-api", "microservices", "spring-cloud", "messaging"]],
-  ["Data", ["database/sql", "caching"]],
-  ["Cloud & DevOps", ["git", "devops", "aws"]],
+  ["Data", ["database/sql", "caching", "data-engineering"]],
+  ["Cloud & DevOps", ["linux", "git", "devops", "aws", "observability"]],
   ["AI", ["ai"]],
-  ["Core skills", ["dsa", "design-patterns", "testing", "networking", "system-design", "web-architecture", "under-the-hood"]],
-  ["HR round", ["behavioral"]],
+  ["Core skills", ["dsa", "design-patterns", "testing", "security", "networking", "system-design", "web-architecture", "under-the-hood"]],
+  ["HR round", ["behavioral", "agile"]],
 ];
 const ORDER = LAYERS.flatMap(([, topics]) => topics);
 
@@ -28,7 +28,7 @@ const IMPLIES: Record<string, string[]> = {
   typescript: ["javascript"],
   nodejs: ["javascript", "rest-api"],
   spring: ["java", "rest-api", "microservices", "design-patterns"],
-  devops: ["git", "aws", "networking"],
+  devops: ["git", "aws", "networking", "linux"],
   aws: ["devops"],
 };
 

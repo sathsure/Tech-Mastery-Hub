@@ -273,17 +273,32 @@ function checkPlan(plan: unknown): Checked<ChatRequest["plan"]> {
     checked.push({ label: label.trim(), topic: topic as string | undefined });
   }
   const kind = input.kind;
-  if (kind !== undefined && kind !== "learning" && kind !== "interview") return invalid("plan kind must be learning or interview.");
+  if (kind !== undefined && kind !== "learning" && kind !== "interview" && kind !== "question-set") return invalid("plan kind must be learning, interview or question-set.");
   return { ok: true, value: { title: input.title.trim(), items: checked, ...(kind ? { kind } : {}) } };
 }
 
 const optionalString = (value: unknown, max: number) =>
   value === undefined || (typeof value === "string" && value.length <= max);
 
+/** The checked mock-interview state, or why it is invalid. */
+function checkMock(mock: unknown): Checked<ChatRequest["mock"]> {
+  if (mock === undefined) return { ok: true, value: undefined };
+  const input = mock as Record<string, unknown> | null;
+  const ids = input?.ids;
+  const scores = input?.scores;
+  const valid =
+    typeof input?.topic === "string" && input.topic.length <= 60 &&
+    Array.isArray(ids) && ids.length > 0 && ids.length <= 10 && ids.every(id => typeof id === "string" && id.length <= 300) &&
+    Number.isInteger(input.index) && (input.index as number) >= 0 && (input.index as number) <= ids.length &&
+    Array.isArray(scores) && scores.length <= 10 && scores.every(score => score === null || (Number.isInteger(score) && score >= 1 && score <= 4));
+  if (!valid) return invalid("mock must have a topic, 1-10 question ids, an index and scores of 1-4 or null.");
+  return { ok: true, value: { topic: input!.topic as string, ids: ids as string[], index: input!.index as number, scores: scores as Array<number | null> } };
+}
+
 /** Validates a /chat body: the request, or why it is invalid. */
 export function validateChatRequest(value: unknown): Checked<ChatRequest> {
   if (!value || typeof value !== "object" || Array.isArray(value)) return invalid("Request body must be a JSON object.");
-  const { message, history, topic, plan, overview } = value as Record<string, unknown>;
+  const { message, history, topic, plan, overview, mock } = value as Record<string, unknown>;
   if (!optionalString(overview, 100)) return invalid("overview must be a topic id of 100 characters or fewer.");
   if (typeof message !== "string" || !message.trim()) return invalid("message is required.");
   if (message.length > 2000) return invalid("message must be 2000 characters or fewer.");
@@ -292,6 +307,8 @@ export function validateChatRequest(value: unknown): Checked<ChatRequest> {
   if (historyProblem) return invalid(historyProblem);
   const checkedPlan = checkPlan(plan);
   if (!checkedPlan.ok) return checkedPlan;
+  const checkedMock = checkMock(mock);
+  if (!checkedMock.ok) return checkedMock;
   return {
     ok: true,
     value: {
@@ -300,6 +317,7 @@ export function validateChatRequest(value: unknown): Checked<ChatRequest> {
       topic: topic as string | undefined,
       plan: checkedPlan.value,
       overview: overview as string | undefined,
+      ...(checkedMock.value ? { mock: checkedMock.value } : {}),
     },
   };
 }

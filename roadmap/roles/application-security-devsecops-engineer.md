@@ -7,19 +7,20 @@ Builds security into code and pipelines.
 
 ## Prerequisites
 
-- None. Start with Stage 1.
+- [DevOps](../topics/devops.md)
+- [Java](../topics/java.md)
+- [REST API](../topics/rest-api.md)
 - Usually 3+ years of experience when hired
 
 ## Learning stages
 
 ### Stage 1: Core skills
 
-- [ ] [DevOps](../topics/devops.md)
-- [ ] [Java](../topics/java.md)
+- [ ] [Security (OWASP)](../topics/security.md)
 
 ## Also needed
 
-Python, Go, OWASP, SAST/DAST, Threat modelling (STRIDE), SonarQube, Snyk, Checkmarx, Trivy, OWASP ZAP
+Python, Go, SAST/DAST, Threat modelling (STRIDE), SonarQube, Snyk, Checkmarx, Trivy
 
 ## Where it leads
 

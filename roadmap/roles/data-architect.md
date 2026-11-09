@@ -7,18 +7,18 @@ Designs how data is stored, connected and governed.
 
 ## Prerequisites
 
-- None. Start with Stage 1.
+- [SQL](../topics/database-sql.md)
 - Usually 8+ years of experience when hired
 
 ## Learning stages
 
 ### Stage 1: Core skills
 
-- [ ] [SQL](../topics/database-sql.md)
+- [ ] [Data Engineering](../topics/data-engineering.md)
 
 ## Also needed
 
-Python, Data Mesh, Lakehouse, Kimball / Inmon, ERwin, Snowflake, Databricks
+Python, Data Mesh, Kimball / Inmon, ERwin, Snowflake, Databricks
 
 ## Where it leads
 

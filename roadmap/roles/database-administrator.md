@@ -15,10 +15,11 @@ Installs, tunes, backs up and secures databases.
 ### Stage 1: Core skills
 
 - [ ] [SQL](../topics/database-sql.md)
+- [ ] [Linux & Shell](../topics/linux.md)
 
 ## Also needed
 
-Bash, Oracle, PostgreSQL, MongoDB, pgAdmin, SSMS, Oracle Enterprise Manager
+Oracle, PostgreSQL, MongoDB, pgAdmin, SSMS, Oracle Enterprise Manager
 
 ## Where it leads
 

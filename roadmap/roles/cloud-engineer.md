@@ -7,18 +7,22 @@ Builds and manages infrastructure on AWS, Azure or GCP.
 
 ## Prerequisites
 
-- [DevOps](../topics/devops.md)
+- None. Start with Stage 1.
 - Usually 1+ years of experience when hired
 
 ## Learning stages
 
 ### Stage 1: Core skills
 
-- [ ] [AWS](../topics/aws.md)
+- [ ] [Linux & Shell](../topics/linux.md)
+
+## Also useful
+
+[AWS](../topics/aws.md)
 
 ## Also needed
 
-Python, Bash, HCL, JSON/YAML, Terraform, CloudFormation, Bicep, CDK, Azure, Google Cloud, CLI tools
+Python, HCL, JSON/YAML, Terraform, CloudFormation, Bicep, CDK, Azure, Google Cloud, CLI tools
 
 ## Where it leads
 

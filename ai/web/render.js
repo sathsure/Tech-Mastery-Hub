@@ -290,7 +290,7 @@ function enhanceChecklists(root, checks) {
       const key = String(index++);
       box.disabled = false;
       box.dataset.check = key;
-      box.checked = Boolean(checks[key]);
+      box.checked = key in checks ? Boolean(checks[key]) : box.checked;
       // What the plan needs: the item's text, and its study-path topic when it links to one.
       const link = item.querySelector(".repo-link, a");
       box.dataset.label = (link?.textContent ?? item.textContent ?? "").trim();

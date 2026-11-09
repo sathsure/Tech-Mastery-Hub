@@ -185,7 +185,7 @@ export async function buildInterviewHub(layers: Array<[string, string[]]>, hasRo
   return [
     "**Interview prep** — model answers, key points and likely follow-ups from your notes.",
     "",
-    "Two ways to start: pick the **job** you are applying for, or practise one **topic**.",
+    "Two ways to start: pick the **job** you are applying for, or practise one **topic**. Ready to test yourself? Start a [mock interview](#ask:Mock%20interview).",
     "",
     cardsBlock(cards),
     "",
@@ -222,6 +222,13 @@ const DOCS: Record<string, { name: string; url: string }> = {
   caching: { name: "Redis docs", url: "https://redis.io/docs/latest/" },
   networking: { name: "MDN: How the web works", url: "https://developer.mozilla.org/en-US/docs/Learn_web_development/Getting_started/Web_standards/How_the_web_works" },
   behavioral: { name: "The STAR method (Indeed)", url: "https://www.indeed.com/career-advice/interviewing/how-to-use-the-star-interview-response-technique" },
+  "linux": { name: "The Linux command line (linuxcommand.org)", url: "https://linuxcommand.org/tlcl.php" },
+  "security": { name: "OWASP Top 10", url: "https://owasp.org/Top10/" },
+  "observability": { name: "Google SRE book", url: "https://sre.google/sre-book/table-of-contents/" },
+  "agile": { name: "The Scrum Guide", url: "https://scrumguides.org/scrum-guide.html" },
+  "job-search": { name: "Tech Interview Handbook: resume", url: "https://www.techinterviewhandbook.org/resume/" },
+  "data-engineering": { name: "Apache Spark documentation", url: "https://spark.apache.org/docs/latest/" },
+  salary: { name: "Income Tax Department e-filing portal", url: "https://www.incometax.gov.in/iec/foportal/" },
 };
 
 export const LEARN_MORE_HEADING = "**Learn more elsewhere**";

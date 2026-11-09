@@ -14,11 +14,12 @@ Decides which AI features to build and how to measure their value and risks.
 
 ### Stage 1: Core skills
 
+- [ ] [Agile & Scrum](../topics/agile.md)
 - [ ] [SQL](../topics/database-sql.md)
 
 ## Also needed
 
-Python (helpful), Agile, OKRs, AI evaluation basics, Responsible AI, Jira, Claude / ChatGPT, Model playgrounds, Amplitude, Figma
+Python (helpful), OKRs, AI evaluation basics, Responsible AI, Jira, Claude / ChatGPT, Model playgrounds, Amplitude, Figma
 
 ## Where it leads
 

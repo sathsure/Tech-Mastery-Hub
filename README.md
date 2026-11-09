@@ -1,220 +1,102 @@
-# \# Tech-Mastery-Hub
+# Tech-Mastery-Hub
 
-# 
+> A centralized hub for developer learning, mastery, and interviews.
 
-# > A centralized hub for developer learning, mastery, and interviews.
+## 🚀 What is Tech-Mastery-Hub?
 
-# 
+Tech-Mastery-Hub brings together technical roadmaps, concepts, masterclasses, visual notes, interview preparation, practice, projects, career data and AI-assisted learning in one place.
 
-# \## 🚀 What is Tech-Mastery-Hub?
+## 🗺 Roadmaps
 
-# 
+Structured learning paths that answer: *What should I learn?*
 
-# Tech-Mastery-Hub brings together technical roadmaps, concepts, masterclasses, visual notes, interview preparation, practice, projects, and AI-assisted learning in one place.
+- [Foundations](./roadmap/foundations/)
+- [Frontend](./roadmap/frontend/)
+- [Backend](./roadmap/backend/)
+- [Database](./roadmap/database/)
+- [DevOps](./roadmap/devops/)
+- [Cloud](./roadmap/cloud/)
+- [Networking](./roadmap/networking/)
+- [Architecture](./roadmap/architecture/)
+- [Study path per topic](./roadmap/topics/) and [roadmap per job role](./roadmap/roles/)
 
-# 
+## 🧠 Knowledge
 
-# \## 🗺 Roadmaps
+The central source of technical knowledge.
 
-# 
+- [Concepts](./knowledge/concepts/)
+- [Masterclasses](./knowledge/masterclasses/)
+- [Visual Notes](./knowledge/visual-notes/)
+- [Resources](./knowledge/resources/)
 
-# Structured learning paths that answer:
+## 🎓 Masterclasses
 
-# 
+Deep, structured learning from beginner to advanced — for example the [SQL Masterclass](./knowledge/masterclasses/SQL_MasterClass.html).
 
-# > What should I learn?
+## 🎤 Interview Preparation
 
-# 
+[Interview notes](./interview/) by technology, each answer simple and short, with an example and likely follow-ups:
 
-# \- \[Foundations](./roadmap/foundations/)
+- Frontend, Backend (Java, Spring, Node.js), Database, Cloud & DevOps, Architecture & System Design
+- Coding (DSA), Testing, AI & LLMs, "Under the hood" internals
+- Linux & Shell, Security (OWASP Top 10 2025), Observability & SRE, Data Engineering
+- Agile & Scrum, Behavioral & HR rounds, Job search & resume
+- [Salary, payslips & compensation in India](./interview/career/01-Salary-Compensation-India.md) — CTC vs take-home, allowances, PF, gratuity, old vs new tax regime, ESOPs/RSUs, with worked ₹10–25 LPA examples (FY 2026-27)
 
-# \- \[Frontend](./roadmap/frontend/)
+## 🧪 Practice
 
-# \- \[Backend](./roadmap/backend/)
+- [Coding](./practice/coding/) (Java, JavaScript, Angular, CSS, SQL, LeetCode in Python)
+- [Quizzes](./practice/quizzes/), [scenarios](./practice/scenarios/) and [mock interviews](./practice/mock-interviews/)
 
-# \- \[Database](./roadmap/database/)
+## 🚀 Projects
 
-# \- \[DevOps](./roadmap/devops/)
+Apply the concepts through [real-world projects](./projects/): beginner, intermediate and advanced.
 
-# \- \[Cloud](./roadmap/cloud/)
+## 🧭 IT Roles & Terminology Atlas
 
-# \- \[Networking](./roadmap/networking/)
+An offline-capable web page ([IT_Roles_Terminology_Atlas](./IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.html)) with:
 
-# \- \[Architecture](./roadmap/architecture/)
+- 74 IT roles, career ladders and "my path" recommendations
+- A glossary of 258 terms, each explained in 2–3 simple lines, with **flashcards and a quiz** (spaced repetition, saved in your browser)
+- Salary ranges in India by role and experience, and working abroad by country
+- **Pay & Tax** — a take-home calculator (old vs new regime), a side-by-side offer comparison, and income tax for India plus 10 countries with take-home estimates and official links
 
-# 
+Content lives in [`it-atlas-data.js`](./IT_Roles_Terminology_Atlas/it-atlas-data.js); calculations in [`pay-tax.js`](./IT_Roles_Terminology_Atlas/pay-tax.js) (tests: `npm run atlas-check` in `ai/runtime`).
 
-# \## 🧠 Knowledge
+## 🤖 AI Tutor
 
-# 
+A chat over these notes ([`ai/web`](./ai/web/README.md), runtime in [`ai/runtime`](./ai/runtime/)). Answers come from the repository, with every source cited; Claude writes them when an API key is set, otherwise the notes answer directly.
 
-# The central source of technical knowledge.
+Try asking:
 
-# 
+> Where do I start?
+> How does HashMap work internally?
+> Interview prep: Full Stack Developer
+> Prepare an interview question set to interview a Java developer with 10+ years
+> What is the difference between CTC and take-home salary?
 
-# \- \[Concepts](./knowledge/concepts/)
+Candidates can take a **mock interview** ("Mock interview on Java" or `/quiz java`): 5 questions from the notes, each answer scored 1–4 against the model answer's key points, then a summary of what to review.
 
-# \- \[Masterclasses](./knowledge/masterclasses/)
+Interviewers get a setup checklist (experience, role, stack, duration, categories, difficulty, company, focus), then a timed question set with expected answers, follow-ups and a live 1–4 scoring sheet.
 
-# \- \[Visual Notes](./knowledge/visual-notes/)
+## 📚 Philosophy
 
-# \- \[Resources](./knowledge/resources/)
+A concept should have a single source of truth. Roadmaps, masterclasses, interview questions, practice material, visual notes and projects reference the same underlying concepts instead of duplicating them.
 
-# 
+## 🏗 Architecture
 
-# \## 🎓 Masterclasses
-
-# 
-
-# Deep, structured learning from beginner to advanced.
-
-# 
-
-# Examples:
-
-# 
-
-# \- SQL Masterclass
-
-# \- JavaScript Masterclass
-
-# \- Angular Masterclass
-
-# \- Networking Masterclass
-
-# 
-
-# \## 🎤 Interview Preparation
-
-# 
-
-# Prepare by technology, difficulty, and interview type.
-
-# 
-
-# \- Frontend
-
-# \- Backend
-
-# \- Database
-
-# \- Cloud
-
-# \- Architecture
-
-# \- Coding
-
-# \- Scenario-based
-
-# 
-
-# \## 🧪 Practice
-
-# 
-
-# \- Quizzes
-
-# \- Coding
-
-# \- Scenario-based questions
-
-# \- Mock interviews
-
-# 
-
-# \## 🚀 Projects
-
-# 
-
-# Apply the concepts through real-world projects.
-
-# 
-
-# \- Beginner
-
-# \- Intermediate
-
-# \- Advanced
-
-# 
-
-# \## 🤖 AI Tutor
-
-# 
-
-# The planned AI layer will allow you to interact with the knowledge base naturally.
-
-# 
-
-# Examples:
-
-# 
-
-# > What should I learn today?
-
-# 
-
-# > Teach me SQL from beginner to advanced.
-
-# 
-
-# > Give me Angular interview questions.
-
-# 
-
-# > Start a mock interview.
-
-# 
-
-# > Explain this image.
-
-# 
-
-# > What concepts should I learn before SQL JOIN?
-
-# 
-
-# \## 📚 Philosophy
-
-# 
-
-# A concept should have a single source of truth.
-
-# 
-
-# Roadmaps, masterclasses, interview questions, practice material, visual notes, and projects should reference the same underlying concepts instead of duplicating them.
-
-# 
-
-# \## 🏗 Architecture
-
-# 
-
-# ```text
-
-# Roadmap
-
-# &#x20;  │
-
-# &#x20;  ▼
-
-# Concepts
-
-# &#x20;  │
-
-# &#x20;  ├──► Masterclasses
-
-# &#x20;  ├──► Visual Notes
-
-# &#x20;  ├──► Interview
-
-# &#x20;  ├──► Practice
-
-# &#x20;  └──► Projects
-
-# &#x20;           │
-
-# &#x20;           ▼
-
-# &#x20;        AI Tutor
-
+```text
+Roadmap
+   │
+   ▼
+Concepts
+   │
+   ├──► Masterclasses
+   ├──► Visual Notes
+   ├──► Interview
+   ├──► Practice
+   └──► Projects
+            │
+            ▼
+         AI Tutor
+```

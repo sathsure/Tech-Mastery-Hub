@@ -16,6 +16,20 @@ export interface ChatRequest {
   plan?: PlanRequest;
   /** A topic id picked in the sidebar: answer with that topic's overview. */
   overview?: string;
+  /** A mock interview in progress: the message is the answer to the current question. */
+  mock?: MockState;
+}
+
+/** A mock interview's progress; the server returns it on the done event and the client sends it back. */
+export interface MockState {
+  /** Learning topic id, e.g. "java". */
+  topic: string;
+  /** Question entry ids, in the order they are asked. */
+  ids: string[];
+  /** Position of the question being answered; equals ids.length when the interview is over. */
+  index: number;
+  /** Score 1–4 per answered question; null when skipped. */
+  scores: Array<number | null>;
 }
 
 export interface PlanRequest {
@@ -23,12 +37,12 @@ export interface PlanRequest {
   title: string;
   /** `topic` is a study-path slug (e.g. "database-sql") when the item links to one. */
   items: Array<{ label: string; topic?: string }>;
-  /** "interview": items were picked for a role's interview prep; otherwise a learning plan. */
-  kind?: "learning" | "interview";
+  /** "interview": items were picked for a role's interview prep; "question-set": an interviewer's question-set setup; otherwise a learning plan. */
+  kind?: "learning" | "interview" | "question-set";
 }
 
-/** How the answer was produced: a written answer, a topic overview, a plan, or a stack picker for interview prep. */
-export type AnswerView = "answer" | "overview" | "plan" | "pick";
+/** How the answer was produced: a written answer, a topic overview, a plan, a stack picker for interview prep, or the setup checklist for an interviewer's question set. */
+export type AnswerView = "answer" | "overview" | "plan" | "pick" | "setup" | "mock";
 
 /** One numbered source given to the model and shown in the UI. Citations [n] refer to `n`. */
 export interface Evidence {
@@ -89,6 +103,8 @@ export type ChatEvent =
       suggestions: SearchResult["suggestions"];
       notice: string | null;
       usage: { inputTokens: number; outputTokens: number; cacheReadTokens: number; cacheWriteTokens: number } | null;
+      /** Present on mock interview turns: send it back with the next answer while index < ids.length. */
+      mock?: MockState | null;
     }
   | { type: "error"; code: string; message: string };
 

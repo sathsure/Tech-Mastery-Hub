@@ -13,6 +13,7 @@ Gathers business requirements and translates them for developers.
 
 ### Stage 1: Core skills
 
+- [ ] [Agile & Scrum](../topics/agile.md)
 - [ ] [SQL](../topics/database-sql.md)
 
 ## Also needed

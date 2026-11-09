@@ -42,11 +42,13 @@ Build services with JavaScript on the server.
 
 Ship, run and scale applications.
 
-1. [ ] [Git](../topics/git.md)
-2. [ ] [DevOps](../topics/devops.md)
-3. [ ] [AWS](../topics/aws.md)
-4. [ ] [Microservices](../topics/microservices.md)
-5. [ ] [Kafka & RabbitMQ](../topics/messaging.md)
+1. [ ] [Linux & Shell](../topics/linux.md)
+2. [ ] [Git](../topics/git.md)
+3. [ ] [DevOps](../topics/devops.md)
+4. [ ] [AWS](../topics/aws.md)
+5. [ ] [Observability & SRE](../topics/observability.md)
+6. [ ] [Microservices](../topics/microservices.md)
+7. [ ] [Kafka & RabbitMQ](../topics/messaging.md)
 
 ## System design
 
@@ -75,10 +77,27 @@ Understand how code really runs: compilers, runtimes, CPU and memory.
 
 1. [ ] [Under the Hood](../topics/under-the-hood.md)
 
+## Security
+
+Build applications that resist common attacks.
+
+1. [ ] [REST API](../topics/rest-api.md)
+2. [ ] [Security (OWASP)](../topics/security.md)
+
+## Data engineering
+
+Move and shape data for analytics.
+
+1. [ ] [SQL](../topics/database-sql.md)
+2. [ ] [Data Engineering](../topics/data-engineering.md)
+
 ## Interview day
 
-Prepare for the non-technical rounds.
+Prepare for the non-technical rounds and the job switch.
 
 1. [ ] [Behavioral & HR](../topics/behavioral.md)
+2. [ ] [Agile & Scrum](../topics/agile.md)
+3. [ ] [Job Search & Resume](../topics/job-search.md)
+4. [ ] [Salary & Payslips (India)](../topics/salary.md)
 
 Looking for a job role? See the [role roadmaps](../roles/README.md).

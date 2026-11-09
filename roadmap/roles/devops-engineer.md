@@ -16,10 +16,11 @@ Automates building, testing and deploying software.
 
 - [ ] [DevOps](../topics/devops.md)
 - [ ] [Git](../topics/git.md)
+- [ ] [Linux & Shell](../topics/linux.md)
 
 ## Also needed
 
-Bash, Python, YAML, Groovy, HCL, Terraform, Ansible, GitHub Actions, GitLab CI, Argo CD, Helm, SonarQube
+Python, YAML, Groovy, HCL, Terraform, Ansible, GitHub Actions, GitLab CI, Argo CD, Helm, SonarQube
 
 ## Where it leads
 

@@ -12,6 +12,13 @@
     "git": ["git", "git commands", "github flow"],
     "caching": ["redis", "caching", "memcached"],
     "networking": ["computer networking", "computer networks", "tcp/ip", "networking basics"],
+    "salary": ["payslip", "pay slip", "salary slip", "payslips", "salary structure", "salary breakup", "salary break up", "salary components", "compensation"],
+    "linux": ["linux", "shell scripting", "bash scripting", "linux commands", "unix", "bash"],
+    "security": ["owasp", "web security", "application security", "appsec", "owasp top 10", "secure coding"],
+    "observability": ["observability", "site reliability", "site reliability engineering", "opentelemetry", "monitoring and alerting", "distributed tracing"],
+    "agile": ["agile", "scrum", "scrum master", "sprint planning", "user story", "user stories"],
+    "job-search": ["job search", "resume", "cv", "job switch", "switch jobs", "linkedin profile", "background verification"],
+    "data-engineering": ["data pipeline", "data pipelines", "apache spark", "pyspark", "airflow", "dbt", "lakehouse"],
     "behavioral": ["behavioral", "behavioural", "hr interview", "hr round", "hr questions", "behavioral interview", "behavioural interview"],
     "javascript": ["javascript", "js", "ecmascript", "es6", "vanilla js"],
     "typescript": ["typescript", "ts"],
@@ -35,7 +42,7 @@
     "it-roles": ["it roles", "tech roles", "job roles", "software roles", "who does what"],
     "it-terminology": ["glossary", "terminology", "jargon", "abbreviation", "abbreviations", "full form"],
     "tech-stack": ["tech stack", "technology stack", "stack map"],
-    "it-careers": ["career ladder", "career path", "career hierarchy", "job levels", "designation", "designations", "salary", "salaries", "lpa", "ctc", "working abroad", "abroad", "onsite"]
+    "it-careers": ["career ladder", "career path", "career hierarchy", "job levels", "designation", "designations", "salary", "salaries", "lpa", "working abroad", "abroad", "onsite"]
   },
   "termSynonyms": [
     ["use cases", "use case", "when should i use", "when should you use", "when to use"],

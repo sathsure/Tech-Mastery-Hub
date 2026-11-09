@@ -193,12 +193,14 @@
       const i = A.glossary.findIndex((g) => slug(g.t) === item);
       if (i >= 0) return goTerm(i);
     }
+    // Pay & Tax keeps its sub-view in the link (#pay/offers, #pay/world).
+    if (tab === "pay" && item) return showTab("pay", { hash: `pay/${item}` });
     showTab(tab || "overview");
   }
   addEventListener("hashchange", route);
 
   /* ---------- Overview ---------- */
-  $("#heroCounts").textContent = `${A.roles.length} roles · ${A.glossary.length} terms · ${A.stack.reduce((n, s) => n + s.items.length, 0)} technologies · salaries & visas — explained in one line each.`;
+  $("#heroCounts").textContent = `${A.roles.length} roles · ${A.glossary.length} terms · ${A.stack.reduce((n, s) => n + s.items.length, 0)} technologies · salaries & visas — explained simply, with examples.`;
 
   const POPULAR = ["FDE", "RAG", "System Design", "Kubernetes", "SRE", "Spring Boot", "CTC", "Microservices"];
   $("#popular").innerHTML = `<span>Popular:</span>` + POPULAR.map((p) => `<button class="pop" data-q="${esc(p)}">${esc(p)}</button>`).join("");

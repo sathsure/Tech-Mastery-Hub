@@ -128,6 +128,25 @@ out.push("### How to Actually Get an Interview", "");
 AB.howTo.forEach((h, i) => out.push(`${i + 1}. ${h}`));
 out.push("", "> Live job and news feeds are only available in the interactive page (Arbeitnow, Remotive, Jobicy, Hacker News search).", "");
 
+const TX = A.taxes;
+// Only the first sentences of the note: the treaty advice reads like a working-abroad answer and pulls those searches here.
+out.push("## Income Tax by Country", "", `> Checked ${TX.asOf}. ${TX.note.split(". ").slice(0, 2).join(". ")}.`, "",
+  "The Atlas's **Pay & Tax** tab turns these tax rules into a take-home calculator, an offer comparison and rough estimates.", "");
+const money = (c, n) => (c.cur === "INR" ? `₹${n.toLocaleString("en-IN")}` : `${c.sym}${n.toLocaleString("en-US")}`);
+const taxRange = (c, [from, to]) => (to == null ? `Above ${money(c, from)}` : from === 0 ? `Up to ${money(c, to)}` : `${money(c, from)} – ${money(c, to)}`);
+// India is covered in depth by interview/career/01-Salary-Compensation-India.md.
+TX.countries.filter((c) => c.c !== "India").forEach((c) => {
+  out.push(`### Income tax in ${c.c}`, "", `**Tax year:** ${c.year}`, "", c.summary, "");
+  c.regimes.forEach((r) => {
+    out.push(`**${r.name}**`, "", "| Taxable income | Rate |", "|---|---|");
+    r.brackets.forEach((b) => out.push(`| ${taxRange(c, b)} | ${b[3] || `${b[2]}%`} |`));
+    out.push("", r.extra, "");
+  });
+  out.push("**Employee contributions:**", "", ...c.social.map((s) => `- ${s}`), "", "**Good to know:**", "", ...c.notes.map((s) => `- ${s}`));
+  if (c.excludes) out.push(`- Not in the Atlas estimate: ${c.excludes}.`);
+  out.push("", "**Official sources:**", "", ...c.links.map((l) => `- [${l.t}](${l.u})`), "");
+});
+
 out.push("## Who Does What in a Project", "", "| Phase | What | Who | Output |", "|---|---|---|---|");
 A.sdlc.forEach((p) => out.push(`| ${p.phase} | ${cell(p.what)} | ${cell(p.who)} | ${cell(p.out)} |`));
 out.push("");

@@ -14,11 +14,12 @@ Decides what to build and why, based on user and business needs.
 
 ### Stage 1: Core skills
 
+- [ ] [Agile & Scrum](../topics/agile.md)
 - [ ] [SQL](../topics/database-sql.md)
 
 ## Also needed
 
-Agile, OKRs, RICE prioritisation, Jira, Confluence, Productboard, Amplitude, Mixpanel
+OKRs, RICE prioritisation, Jira, Confluence, Productboard, Amplitude, Mixpanel
 
 ## Where it leads
 

@@ -7,18 +7,19 @@ Keeps production reliable using software engineering practices.
 
 ## Prerequisites
 
-- None. Start with Stage 1.
+- [DevOps](../topics/devops.md)
+- [Linux & Shell](../topics/linux.md)
 - Usually 3+ years of experience when hired
 
 ## Learning stages
 
 ### Stage 1: Core skills
 
-- [ ] [DevOps](../topics/devops.md)
+- [ ] [Observability & SRE](../topics/observability.md)
 
 ## Also needed
 
-Go, Python, Bash, OpenTelemetry, Prometheus, Grafana, PagerDuty, Datadog, ELK
+Go, Python, Prometheus, Grafana, PagerDuty, Datadog, ELK
 
 ## Where it leads
 

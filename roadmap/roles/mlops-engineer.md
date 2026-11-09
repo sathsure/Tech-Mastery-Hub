@@ -7,18 +7,20 @@ Automates training, deployment and monitoring of ML models.
 
 ## Prerequisites
 
-- None. Start with Stage 1.
+- [SQL](../topics/database-sql.md)
+- [DevOps](../topics/devops.md)
+- [Linux & Shell](../topics/linux.md)
 - Usually 3+ years of experience when hired
 
 ## Learning stages
 
 ### Stage 1: Core skills
 
-- [ ] [DevOps](../topics/devops.md)
+- [ ] [Data Engineering](../topics/data-engineering.md)
 
 ## Also needed
 
-Python, Bash, YAML, Kubeflow, MLflow, Airflow, SageMaker, Weights & Biases
+Python, YAML, Kubeflow, MLflow, SageMaker, Weights & Biases
 
 ## Where it leads
 
