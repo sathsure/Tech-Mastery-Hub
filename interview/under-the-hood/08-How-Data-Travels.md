@@ -15,7 +15,7 @@ The **TCP/IP model** has four layers:
 | **Internet** | Which computer (IP address), routing | IP |
 | **Link** | The next hop on the local network | Ethernet, Wi-Fi |
 
-![Packets flow down the layers on the sender, across routers, and up the layers on the receiver](https://upload.wikimedia.org/wikipedia/commons/c/c4/IP_stack_connections.svg)
+![Packets flow down the layers on the sender, across routers, and up the layers on the receiver](../../knowledge/visual-notes/under-the-hood/tcp-ip-layers.svg)
 
 _Image: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:IP_stack_connections.svg) · Kbrose · CC BY-SA 3.0_
 
@@ -31,7 +31,7 @@ DNS is the internet's phone book. When you type `shop.com`:
 2. If not found, a **resolver** (from your ISP, or 8.8.8.8 / 1.1.1.1) asks a **root server** → which points to the **`.com` server** → which points to **shop.com's own name server** → which returns the IP.
 3. The answer is cached for its **TTL**, so most lookups take milliseconds.
 
-![DNS resolution: the resolver asks the root, then the .com server, then the domain's own name server](https://upload.wikimedia.org/wikipedia/commons/a/a5/Example_of_an_iterative_DNS_resolver.svg)
+![DNS resolution: the resolver asks the root, then the .com server, then the domain's own name server](../../knowledge/visual-notes/under-the-hood/dns-resolution.svg)
 
 _Image: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:An_example_of_theoretical_DNS_recursion.svg) · Lion Kimbro · Public domain_
 
@@ -46,7 +46,7 @@ _Image: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:An_example_o
 - **TCP** — a **reliable conversation**. It sets up a connection first (the 3-way handshake), numbers every byte, re-sends anything lost, and delivers it **in order**. Used for web pages, APIs, email and databases.
 - **UDP** — **fire and forget**. No connection, no guarantees, very little overhead. Used where speed beats perfection: video calls, games, DNS. HTTP/3 builds its own reliability on top of UDP (QUIC).
 
-![TCP three-way handshake: SYN, SYN-ACK, ACK before any data is sent](https://upload.wikimedia.org/wikipedia/commons/9/98/Tcp-handshake.svg)
+![TCP three-way handshake: SYN, SYN-ACK, ACK before any data is sent](../../knowledge/visual-notes/under-the-hood/tcp-handshake.svg)
 
 _Image: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Tcp-handshake.svg) · CC BY-SA 3.0_
 
@@ -64,7 +64,7 @@ HTTPS is HTTP inside an encrypted **TLS** tunnel. Before any data is sent, the b
 4. Both sides use **public-key cryptography** to agree on a shared secret **session key** — without ever sending it.
 5. Everything after that is encrypted with that fast **symmetric** key.
 
-![TLS handshake: hello messages, certificate, key exchange, then encrypted application data](https://upload.wikimedia.org/wikipedia/commons/d/d3/Full_TLS_1.2_Handshake.svg)
+![TLS handshake: hello messages, certificate, key exchange, then encrypted application data](../../knowledge/visual-notes/under-the-hood/tls-handshake.svg)
 
 _Image: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Full_TLS_1.2_Handshake.svg) · Fleshgrinder · Public domain_
 

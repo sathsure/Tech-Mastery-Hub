@@ -15,6 +15,7 @@ import { renderUserTurn, SYSTEM_PROMPT } from "./answer-prompt.js";
 import type { AnswerMode, AnswerView, ChatEvent, ChatRequest, Evidence } from "./chat-contracts.js";
 import { buildEvidence, checkGrounding, composeRepositoryAnswer, MAX_EVIDENCE, suggestFollowUps, withoutTrailingParentheses } from "./chat-evidence.js";
 import { cardsBlock, conciseTitle, countryCard, isCountryNote, roleCard } from "./chat-cards.js";
+import { roleTestHref } from "./role-test-link.js";
 import type { QuestionEntry } from "./question-index-contracts.js";
 import { buildCareerAtlas, buildInterviewHub, buildLearningPlan, buildOverview, buildRoadmapsHub, buildTopicList, buildTopicsHub, CAREER_ATLAS, INTERVIEW_HUB, learningResources, LEARN_MORE_HEADING, ROADMAPS_HUB, TOPICS_HUB } from "./chat-guidance.js";
 import { TRACKS } from "./roadmap-generator.js";
@@ -261,6 +262,7 @@ function roleCardMarkdown(entry: QuestionEntry, entries: QuestionEntry[]): strin
   const card = roleCard(entry, {
     roadmap: roadmap ? `Roadmap to become ${article(name)} ${name}` : null,
     interviewPrep: `${PICKER_PREFIX}${name}`,
+    readinessTest: roleTestHref(conciseTitle(entry)),
   });
   return cardsBlock([card]);
 }

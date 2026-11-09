@@ -241,7 +241,9 @@ function renderSidebar() {
   const navItem = item => `<li><button type="button" class="nav-item" data-ask="${item.id === "roadmaps" ? "Roadmaps" : `Explore ${escapeHtml(item.label)}`}" data-overview="${item.id === "roadmaps" ? "roadmaps-hub" : escapeHtml(item.id)}" title="${escapeHtml(item.description ?? item.label)}">${icon(NAV_ICONS[item.id] ?? "book", "nav-ic")}<span>${escapeHtml(item.label)}</span></button></li>`;
   // The glossary and the learning roadmap are the main ways in, so they lead the sidebar.
   const primary = ["it-terminology", "roadmaps"].map(id => atlas.find(item => item.id === id)).filter(Boolean);
-  $("#primary-list").innerHTML = primary.map(navItem).join("");
+  // The Role Readiness Test lives in the Atlas, served by this tutor under /atlas/.
+  const roleTest = `<li><a class="nav-item" href="/atlas/IT_Roles_Terminology_Atlas.html#roletest" target="_blank" rel="noopener" title="Score how ready you are for a role, topic by topic">${icon("target", "nav-ic")}<span>Role Readiness Test</span></a></li>`;
+  $("#primary-list").innerHTML = primary.map(navItem).join("") + roleTest;
   $("#topic-list").innerHTML = topics.map(navItem).join("");
   $("#atlas-list").innerHTML = atlas.filter(item => !primary.includes(item)).map(navItem).join("");
   topicFilter.innerHTML = `<option value="">All notes</option>` + [...topics, ...atlas].map(topic => `<option value="${escapeHtml(topic.id)}">${escapeHtml(topic.label)}</option>`).join("");

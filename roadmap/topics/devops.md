@@ -100,6 +100,11 @@
 3. [How does Kubernetes keep applications running?](../../interview/under-the-hood/09-Virtual-Machines-and-Containers.md)
 4. [How does code get from a developer's laptop to production?](../../interview/under-the-hood/09-Virtual-Machines-and-Containers.md)
 
+## Diagrams
+
+- [Containers share one OS kernel through the container engine; each VM carries its own guest operating system](../../knowledge/visual-notes/under-the-hood/containers-vs-vms.png)
+- [Kubernetes architecture: the control plane manages worker nodes that run pods](../../knowledge/visual-notes/under-the-hood/kubernetes-architecture.png)
+
 ## Related roles
 
 [AI Infrastructure / LLMOps Engineer](../roles/ai-infrastructure-llmops-engineer.md) · [AI Solutions Architect](../roles/ai-solutions-architect.md) · [Application Security / DevSecOps Engineer](../roles/application-security-devsecops-engineer.md) · [Cloud Architect](../roles/cloud-architect.md) · [Cloud Engineer](../roles/cloud-engineer.md) · [Cloud Security Engineer](../roles/cloud-security-engineer.md) · [DevOps Engineer](../roles/devops-engineer.md) · [Full Stack Developer](../roles/full-stack-developer.md) · [MLOps Engineer](../roles/mlops-engineer.md) · [Platform Engineer](../roles/platform-engineer.md) · [Production / Application Support](../roles/production-application-support.md) · [Release / Build Engineer](../roles/release-build-engineer.md) · [Security Analyst](../roles/security-analyst.md) · [Site Reliability Engineer](../roles/site-reliability-engineer.md)

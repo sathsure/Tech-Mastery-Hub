@@ -23,7 +23,7 @@ flowchart LR
 - **Interpreted** (Python): quick to start and change, slower to run.
 - **Bytecode + JIT** (Java, C#, JavaScript engines): portable *and* fast, because the hot parts are compiled to machine code while the program runs.
 
-![How a compiler works: source code is analysed and translated into machine code](https://upload.wikimedia.org/wikipedia/commons/6/6b/Compiler.svg)
+![How a compiler works: source code is analysed and translated into machine code](../../knowledge/visual-notes/under-the-hood/compiler.svg)
 
 _Image: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Compiler.svg) · Surachit · CC BY-SA 3.0_
 

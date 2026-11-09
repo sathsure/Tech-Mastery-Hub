@@ -113,6 +113,10 @@
 ## Diagrams
 
 - [AWS_Compliance](../../knowledge/visual-notes/aws-compliance.png)
+- [Packets flow down the layers on the sender, across routers, and up the layers on the receiver](../../knowledge/visual-notes/under-the-hood/tcp-ip-layers.svg)
+- [DNS resolution: the resolver asks the root, then the .com server, then the domain's own name server](../../knowledge/visual-notes/under-the-hood/dns-resolution.svg)
+- [TCP three-way handshake: SYN, SYN-ACK, ACK before any data is sent](../../knowledge/visual-notes/under-the-hood/tcp-handshake.svg)
+- [TLS handshake: hello messages, certificate, key exchange, then encrypted application data](../../knowledge/visual-notes/under-the-hood/tls-handshake.svg)
 
 ## Related roles
 

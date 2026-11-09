@@ -109,6 +109,7 @@
 
 ## Diagrams
 
+- [How a compiler works: source code is analysed and translated into machine code](../../knowledge/visual-notes/under-the-hood/compiler.svg)
 - [Browser rendering: HTML and CSS are parsed into trees, combined, laid out and painted](../../knowledge/visual-notes/browser-render.png)
 - [Event loop: the call stack, Web APIs, the microtask queue and the task queue](../../knowledge/visual-notes/event-loop.png)
 - [Angular component lifecycle hooks, from constructor to ngOnDestroy](../../knowledge/visual-notes/angular-lifecycle.png)

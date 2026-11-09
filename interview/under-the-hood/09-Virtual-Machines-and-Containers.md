@@ -7,7 +7,7 @@
 - A **virtual machine (VM)** pretends to be a whole computer. A **hypervisor** splits one physical server into several VMs, and each runs its **own full operating system**. Strong isolation, but heavy: GBs in size, minutes to boot.
 - A **container** packages just your **app and its libraries** and **shares the host's operating-system kernel**. Light: MBs in size, starts in seconds; many more fit on one machine.
 
-![Containers share one OS kernel through the container engine; each VM carries its own guest operating system](https://upload.wikimedia.org/wikipedia/commons/0/0a/Docker-containerized-and-vm-transparent-bg.png)
+![Containers share one OS kernel through the container engine; each VM carries its own guest operating system](../../knowledge/visual-notes/under-the-hood/containers-vs-vms.png)
 
 _Image: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Docker-containerized-and-vm-transparent-bg.png) · Docker · CC BY-SA 4.0_
 
@@ -53,7 +53,7 @@ Kubernetes runs containers across many machines and keeps them in the state you 
 4. Controllers keep comparing **desired** vs **actual** state: a pod crashes → a new one starts; a node dies → its pods move elsewhere.
 5. A **Service** gives the pods one stable address and load-balances between them.
 
-![Kubernetes architecture: the control plane manages worker nodes that run pods](https://upload.wikimedia.org/wikipedia/commons/b/be/Kubernetes.png)
+![Kubernetes architecture: the control plane manages worker nodes that run pods](../../knowledge/visual-notes/under-the-hood/kubernetes-architecture.png)
 
 _Image: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Kubernetes.png) · Khtan66 · CC BY-SA 4.0_
 

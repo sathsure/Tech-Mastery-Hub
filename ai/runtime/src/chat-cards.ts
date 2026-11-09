@@ -146,6 +146,8 @@ export interface RoleCardContext {
   roadmap: string | null;
   /** Question that opens the interview-prep stack picker for this role. */
   interviewPrep: string | null;
+  /** Atlas Role Readiness Test link, when the role has a test. */
+  readinessTest?: string | null;
 }
 
 export function roleCard(entry: QuestionEntry, context: RoleCardContext): RoleCard {
@@ -162,6 +164,7 @@ export function roleCard(entry: QuestionEntry, context: RoleCardContext): RoleCa
   const actions: CardAction[] = [];
   if (context.roadmap) actions.push({ label: "Explore Roadmap", ask: context.roadmap });
   if (context.interviewPrep) actions.push({ label: "Interview Prep", ask: context.interviewPrep });
+  if (context.readinessTest) actions.push({ label: "Take the readiness test", href: context.readinessTest });
   return {
     type: "role",
     title,

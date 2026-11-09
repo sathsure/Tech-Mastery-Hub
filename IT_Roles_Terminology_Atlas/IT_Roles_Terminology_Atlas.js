@@ -64,7 +64,7 @@
   const icon = (k, cls = "") => `<svg class="ic ${cls}" aria-hidden="true"><use href="#i-${k}"/></svg>`;
   const FAM_ICON = { ai: "sparkles", dev: "code", data: "database", ops: "cloud", qa: "check", sec: "shield", design: "pen", arch: "building", support: "headset", biz: "chart" };
   const famIcon = (id) => icon(FAM_ICON[id] || "briefcase");
-  const TAB_ICON = { overview: "home", mypath: "compass", ladder: "stairs", roles: "briefcase", glossary: "book", stack: "layers", salary: "rupee", abroad: "globe", lifecycle: "flow" };
+  const TAB_ICON = { overview: "home", mypath: "compass", ladder: "stairs", roles: "briefcase", roletest: "target", glossary: "book", stack: "layers", salary: "rupee", abroad: "globe", lifecycle: "flow" };
   document.querySelectorAll(".tabs button").forEach((b) => b.insertAdjacentHTML("afterbegin", icon(TAB_ICON[b.dataset.tab])));
   const QUICK_ICON = { roles: "briefcase", salary: "rupee", abroad: "globe", mypath: "compass" };
   document.querySelectorAll(".quick-card").forEach((b) => b.insertAdjacentHTML("afterbegin", `<span class="q-ic">${icon(QUICK_ICON[b.dataset.tab] || "sparkles")}</span>`));
@@ -195,6 +195,8 @@
     }
     // Pay & Tax keeps its sub-view in the link (#pay/offers, #pay/world).
     if (tab === "pay" && item) return showTab("pay", { hash: `pay/${item}` });
+    // Role Test opens one role's setup (#roletest/tech-lead); role-test-ui.js reads the rest.
+    if (tab === "roletest" && item) return showTab("roletest", { hash: `roletest/${item}` });
     showTab(tab || "overview");
   }
   addEventListener("hashchange", route);

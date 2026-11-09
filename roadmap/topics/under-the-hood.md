@@ -101,9 +101,26 @@
 
 ## Diagrams
 
+- [How a compiler works: source code is analysed and translated into machine code](../../knowledge/visual-notes/under-the-hood/compiler.svg)
+- [A data warehouse collects data from many operational systems and serves reports and analysis](../../knowledge/visual-notes/under-the-hood/data-warehouse-overview.jpg)
+- [Memory hierarchy: registers and cache at the top are fastest and smallest; disks at the bottom are slowest and largest](../../knowledge/visual-notes/under-the-hood/memory-hierarchy.svg)
+- [The call stack: each method call gets a frame with its local variables and return address](../../knowledge/visual-notes/under-the-hood/call-stack.svg)
+- [Mark and sweep: reachable objects are marked, the rest are swept away](../../knowledge/visual-notes/under-the-hood/mark-and-sweep-gc.gif)
+- [Virtual memory: each process's addresses map to pages in physical RAM or on disk](../../knowledge/visual-notes/under-the-hood/virtual-memory.svg)
+- [A process with several threads: each thread has its own registers and stack but they share code, data and files](../../knowledge/visual-notes/under-the-hood/multithreaded-process.svg)
+- [Process states: a process moves between ready, running and waiting as the scheduler switches](../../knowledge/visual-notes/under-the-hood/process-states.svg)
+- [Hash table: keys are hashed to bucket indexes; colliding keys share a bucket](../../knowledge/visual-notes/under-the-hood/hash-table.svg)
+- [Linked list: each node holds a value and a pointer to the next node](../../knowledge/visual-notes/under-the-hood/singly-linked-list.svg)
+- [B+ tree index: the database walks from the root to the right leaf instead of scanning the table](../../knowledge/visual-notes/under-the-hood/b-plus-tree.png)
 - [Browser rendering: HTML and CSS are parsed into trees, combined, laid out and painted](../../knowledge/visual-notes/browser-render.png)
 - [Event loop: the call stack, Web APIs, the microtask queue and the task queue](../../knowledge/visual-notes/event-loop.png)
 - [Angular component lifecycle hooks, from constructor to ngOnDestroy](../../knowledge/visual-notes/angular-lifecycle.png)
+- [Packets flow down the layers on the sender, across routers, and up the layers on the receiver](../../knowledge/visual-notes/under-the-hood/tcp-ip-layers.svg)
+- [DNS resolution: the resolver asks the root, then the .com server, then the domain's own name server](../../knowledge/visual-notes/under-the-hood/dns-resolution.svg)
+- [TCP three-way handshake: SYN, SYN-ACK, ACK before any data is sent](../../knowledge/visual-notes/under-the-hood/tcp-handshake.svg)
+- [TLS handshake: hello messages, certificate, key exchange, then encrypted application data](../../knowledge/visual-notes/under-the-hood/tls-handshake.svg)
+- [Containers share one OS kernel through the container engine; each VM carries its own guest operating system](../../knowledge/visual-notes/under-the-hood/containers-vs-vms.png)
+- [Kubernetes architecture: the control plane manages worker nodes that run pods](../../knowledge/visual-notes/under-the-hood/kubernetes-architecture.png)
 
 ## Related roles
 

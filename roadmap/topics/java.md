@@ -323,6 +323,17 @@
 
 - [CompositionVsInheritance](../../knowledge/visual-notes/backend/composition-vs-inheritance.png)
 - [Collections](../../knowledge/visual-notes/backend/java-collections.png)
+- [How a compiler works: source code is analysed and translated into machine code](../../knowledge/visual-notes/under-the-hood/compiler.svg)
+- [A data warehouse collects data from many operational systems and serves reports and analysis](../../knowledge/visual-notes/under-the-hood/data-warehouse-overview.jpg)
+- [Memory hierarchy: registers and cache at the top are fastest and smallest; disks at the bottom are slowest and largest](../../knowledge/visual-notes/under-the-hood/memory-hierarchy.svg)
+- [The call stack: each method call gets a frame with its local variables and return address](../../knowledge/visual-notes/under-the-hood/call-stack.svg)
+- [Mark and sweep: reachable objects are marked, the rest are swept away](../../knowledge/visual-notes/under-the-hood/mark-and-sweep-gc.gif)
+- [Virtual memory: each process's addresses map to pages in physical RAM or on disk](../../knowledge/visual-notes/under-the-hood/virtual-memory.svg)
+- [A process with several threads: each thread has its own registers and stack but they share code, data and files](../../knowledge/visual-notes/under-the-hood/multithreaded-process.svg)
+- [Process states: a process moves between ready, running and waiting as the scheduler switches](../../knowledge/visual-notes/under-the-hood/process-states.svg)
+- [Hash table: keys are hashed to bucket indexes; colliding keys share a bucket](../../knowledge/visual-notes/under-the-hood/hash-table.svg)
+- [Linked list: each node holds a value and a pointer to the next node](../../knowledge/visual-notes/under-the-hood/singly-linked-list.svg)
+- [B+ tree: internal nodes guide the search; the leaves hold the values and link to each other](../../knowledge/visual-notes/under-the-hood/b-plus-tree.png)
 
 ## Related roles
 

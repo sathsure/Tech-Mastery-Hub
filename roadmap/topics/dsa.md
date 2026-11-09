@@ -106,6 +106,12 @@
 24. [Coin Change (LeetCode 322)](../../practice/coding/python/01-LeetCode-Python.md)
 25. [Which problem-solving pattern fits which kind of question?](../../practice/coding/python/01-LeetCode-Python.md)
 
+## Diagrams
+
+- [Hash table: keys are hashed to bucket indexes; colliding keys share a bucket](../../knowledge/visual-notes/under-the-hood/hash-table.svg)
+- [Linked list: each node holds a value and a pointer to the next node](../../knowledge/visual-notes/under-the-hood/singly-linked-list.svg)
+- [B+ tree: internal nodes guide the search; the leaves hold the values and link to each other](../../knowledge/visual-notes/under-the-hood/b-plus-tree.png)
+
 ## Related roles
 
 [Backend Developer](../roles/backend-developer.md)

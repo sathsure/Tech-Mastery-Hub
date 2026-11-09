@@ -29,7 +29,7 @@ An index is a separate, **sorted** structure (a **B+ tree**) that points to wher
 - **Without an index:** `WHERE email = 'a@x.com'` checks every row — a **full table scan**, O(n).
 - **With an index on `email`:** walk down the B+ tree in about 3–4 page reads, then fetch the row — O(log n).
 
-![B+ tree index: the database walks from the root to the right leaf instead of scanning the table](https://upload.wikimedia.org/wikipedia/commons/3/37/Bplustree.png)
+![B+ tree index: the database walks from the root to the right leaf instead of scanning the table](../../knowledge/visual-notes/under-the-hood/b-plus-tree.png)
 
 _Image: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Bplustree.png) · Grundprinzip · CC BY 3.0_
 

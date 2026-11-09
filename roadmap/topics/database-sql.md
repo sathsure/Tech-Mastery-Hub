@@ -170,6 +170,15 @@
 5. [How do you find duplicate records?](../../practice/coding/sql/02-MySQL-coding.md)
 6. [EXISTS vs IN — what's the difference?](../../practice/coding/sql/02-MySQL-coding.md)
 
+## Diagrams
+
+- [A data warehouse collects data from many operational systems and serves reports and analysis](../../knowledge/visual-notes/under-the-hood/data-warehouse-overview.jpg)
+- [Memory hierarchy: registers and cache at the top are fastest and smallest; disks at the bottom are slowest and largest](../../knowledge/visual-notes/under-the-hood/memory-hierarchy.svg)
+- [The call stack: each method call gets a frame with its local variables and return address](../../knowledge/visual-notes/under-the-hood/call-stack.svg)
+- [Mark and sweep: reachable objects are marked, the rest are swept away](../../knowledge/visual-notes/under-the-hood/mark-and-sweep-gc.gif)
+- [Virtual memory: each process's addresses map to pages in physical RAM or on disk](../../knowledge/visual-notes/under-the-hood/virtual-memory.svg)
+- [B+ tree index: the database walks from the root to the right leaf instead of scanning the table](../../knowledge/visual-notes/under-the-hood/b-plus-tree.png)
+
 ## Related roles
 
 [AI Evaluation Engineer](../roles/ai-evaluation-engineer.md) · [AI Infrastructure / LLMOps Engineer](../roles/ai-infrastructure-llmops-engineer.md) · [AI Product Manager](../roles/ai-product-manager.md) · [AI Solutions Architect](../roles/ai-solutions-architect.md) · [Analytics Engineer](../roles/analytics-engineer.md) · [Backend Developer](../roles/backend-developer.md) · [BI Developer](../roles/bi-developer.md) · [Business Analyst](../roles/business-analyst.md) · [Customer Success Engineer](../roles/customer-success-engineer.md) · [Data Analyst](../roles/data-analyst.md) · [Data Architect](../roles/data-architect.md) · [Data Engineer](../roles/data-engineer.md) · [Data Scientist](../roles/data-scientist.md) · [Database Administrator](../roles/database-administrator.md) · [Enterprise Architect](../roles/enterprise-architect.md) · [FinOps Engineer / Analyst](../roles/finops-engineer-analyst.md) · [Forward Deployed Engineer](../roles/forward-deployed-engineer.md) · [Full Stack Developer](../roles/full-stack-developer.md) · [Mainframe Developer](../roles/mainframe-developer.md) · [Manual QA / Test Engineer](../roles/manual-qa-test-engineer.md) · [MLOps Engineer](../roles/mlops-engineer.md) · [Product Manager](../roles/product-manager.md) · [Production / Application Support](../roles/production-application-support.md) · [Solution Architect](../roles/solution-architect.md) · [Solutions / Sales Engineer](../roles/solutions-sales-engineer.md) · [Tech Lead](../roles/tech-lead.md)

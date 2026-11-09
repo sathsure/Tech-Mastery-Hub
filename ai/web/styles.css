@@ -120,7 +120,7 @@ kbd { font-size: 11px; padding: 0 5px; line-height: 18px; border-radius: 4px; co
 details[open] > summary .chevron { transform: rotate(90deg); }
 .side-intro { margin: 0 0 4px; padding: 0 10px 0 28px; font-size: 12px; line-height: 1.45; color: var(--muted); }
 .nav-list { list-style: none; margin: 2px 0 6px; padding: 0; }
-.nav-item { display: flex; align-items: center; gap: 8px; width: 100%; min-height: 32px; padding: 5px 10px 5px 28px; border: 0; border-radius: var(--radius-sm); background: none; color: var(--text-2); font-size: 14px; text-align: left; }
+.nav-item { display: flex; align-items: center; gap: 8px; width: 100%; min-height: 32px; padding: 5px 10px 5px 28px; border: 0; border-radius: var(--radius-sm); background: none; color: var(--text-2); font-size: 14px; text-align: left; text-decoration: none; }
 .nav-item .icon { width: 15px; height: 15px; color: var(--muted); margin-left: -20px; }
 .nav-item:hover { background: var(--bg-hover); color: var(--text); }
 .nav-item span { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
@@ -626,6 +626,10 @@ html.theming .thread { view-transition-name: none; }
 .card-btn.primary { border-color: var(--accent); background: var(--accent); color: var(--accent-text); }
 .card-btn.primary:hover { background: var(--accent-hover); color: var(--accent-text); }
 .card-btn .icon { width: 13px; height: 13px; }
+/* Link buttons inside answers keep the button look, not the answer-link colour. */
+.md a.card-btn { color: var(--text); text-decoration: none; }
+.md a.card-btn:hover { color: var(--accent); }
+.md a.card-btn.primary { color: var(--accent-text); }
 .card-error { display: flex; align-items: center; gap: 6px; color: var(--muted); }
 
 /* Loading placeholders */

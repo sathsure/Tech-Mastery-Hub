@@ -15,7 +15,7 @@ A HashMap stores key–value pairs in an **array of buckets**. It finds the righ
 
 **`map.get("ravi")`:** same hash → same bucket → check each entry with `equals()` → return the value. On average **O(1)**.
 
-![Hash table: keys are hashed to bucket indexes; colliding keys share a bucket](https://upload.wikimedia.org/wikipedia/commons/7/7d/Hash_table_3_1_1_0_1_0_0_SP.svg)
+![Hash table: keys are hashed to bucket indexes; colliding keys share a bucket](../../knowledge/visual-notes/under-the-hood/hash-table.svg)
 
 _Image: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Hash_table_3_1_1_0_1_0_0_SP.svg) · Jorge Stolfi · CC BY-SA 3.0_
 
@@ -35,7 +35,7 @@ _Image: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Hash_table_3
 - **ArrayList** keeps elements in **one block of memory** (an array). Reading `get(i)` is instant — O(1) — because the position is calculated. Inserting in the middle shifts everything after it.
 - **LinkedList** keeps each element in a separate **node** that points to the next (and previous). Inserting at a known node is quick, but finding element *i* means walking the chain — O(n).
 
-![Linked list: each node holds a value and a pointer to the next node](https://upload.wikimedia.org/wikipedia/commons/6/6d/Singly-linked-list.svg)
+![Linked list: each node holds a value and a pointer to the next node](../../knowledge/visual-notes/under-the-hood/singly-linked-list.svg)
 
 _Image: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Singly-linked-list.svg) · Lasindi · Public domain_
 
@@ -62,7 +62,7 @@ A **balanced search tree** keeps data sorted, so each step halves (or better) th
 - **Binary search tree / red-black tree:** each node has two children; used in memory (`TreeMap`).
 - **B+ tree:** each node holds **many** keys, so the tree is very short — a few levels can index millions of rows. All data sits in the leaves, linked together for fast range scans. **This is how database indexes work** (see *Inside a database*).
 
-![B+ tree: internal nodes guide the search; the leaves hold the values and link to each other](https://upload.wikimedia.org/wikipedia/commons/3/37/Bplustree.png)
+![B+ tree: internal nodes guide the search; the leaves hold the values and link to each other](../../knowledge/visual-notes/under-the-hood/b-plus-tree.png)
 
 _Image: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Bplustree.png) · Grundprinzip · CC BY 3.0_
 

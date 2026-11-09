@@ -9,7 +9,7 @@
 
 **Analogy:** a process is a **restaurant kitchen**; threads are the **cooks** in it. Cooks share the same fridge and stove (memory), so they work together quickly — but two cooks grabbing the same pan at once causes trouble (a race condition).
 
-![A process with several threads: each thread has its own registers and stack but they share code, data and files](https://upload.wikimedia.org/wikipedia/commons/a/a5/Multithreaded_process.svg)
+![A process with several threads: each thread has its own registers and stack but they share code, data and files](../../knowledge/visual-notes/under-the-hood/multithreaded-process.svg)
 
 _Image: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Multithreaded_process.svg) · Cburnett · CC BY-SA 3.0_
 
@@ -28,7 +28,7 @@ _Image: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Multithreade
 
 A CPU core runs one thread at a time. To make many threads look simultaneous, the operating system's **scheduler** gives each a short time slice, then **saves** its state (registers, position) and **loads** the next thread's state. That save-and-load is a **context switch**.
 
-![Process states: a process moves between ready, running and waiting as the scheduler switches](https://upload.wikimedia.org/wikipedia/commons/8/83/Process_states.svg)
+![Process states: a process moves between ready, running and waiting as the scheduler switches](../../knowledge/visual-notes/under-the-hood/process-states.svg)
 
 _Image: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Process_states.svg) · A3r · Public domain_
 

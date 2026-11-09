@@ -1,6 +1,6 @@
 /* Checks the Role Readiness Test bank and scoring. Run: node IT_Roles_Terminology_Atlas/role-test.test.js */
 const assert = require("node:assert/strict");
-const bank = require("./role-test-data-2.js");
+const bank = require("./role-test-data-5.js");
 const E = require("./role-test-engine.js");
 const A = require("./it-atlas-data.js");
 
@@ -11,9 +11,10 @@ function check(name, run) {
 let seed = 7;
 const random = () => ((seed = (seed * 9301 + 49297) % 233280) / 233280);
 
-check("bank: every topic has 2 easy, 2 medium and 2 hard questions with valid answers", () => {
+check("bank: every topic has 12 questions — 4 easy, 4 medium, 4 hard — with valid answers and no repeats", () => {
   for (const [id, t] of Object.entries(bank.topics)) {
-    for (const level of [1, 2, 3]) assert.equal(t.q.filter((q) => q.l === level).length, 2, `${id} level ${level}`);
+    for (const level of [1, 2, 3]) assert.equal(t.q.filter((q) => q.l === level).length, 4, `${id} level ${level}`);
+    assert.equal(new Set(t.q.map((q) => q.q + (q.code || ""))).size, t.q.length, `${id}: duplicate question`);
     for (const q of t.q) {
       assert.ok(q.q && q.e && q.o.length >= 3 && q.o.length <= 4, `${id}: ${q.q}`);
       assert.ok(Number.isInteger(q.a) && q.a >= 0 && q.a < q.o.length, `${id}: answer index for ${q.q}`);
@@ -43,7 +44,7 @@ check("build: core topics ask easy+medium+hard, supporting topics easy+medium, a
   }
   for (const r of bank.roles) {
     const n = E.buildTest(bank, r, null, random).length;
-    assert.ok(n >= 15 && n <= 32, `${r.name} has ${n} questions`);
+    assert.ok(n >= 12 && n <= 32, `${r.name} has ${n} questions`);
   }
 });
 

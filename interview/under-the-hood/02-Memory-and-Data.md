@@ -17,7 +17,7 @@ They all organise data — the difference is **where** the data lives and **how 
 - **Disk / database** = the filing cabinet in your office — slower, but kept safely.
 - **Data warehouse** = the company's central archive, combining every department's cabinets for big reports.
 
-![A data warehouse collects data from many operational systems and serves reports and analysis](https://upload.wikimedia.org/wikipedia/commons/4/46/Data_warehouse_overview.JPG)
+![A data warehouse collects data from many operational systems and serves reports and analysis](../../knowledge/visual-notes/under-the-hood/data-warehouse-overview.jpg)
 
 _Image: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Data_warehouse_overview.JPG) · Hhultgren · Public domain_
 
@@ -35,7 +35,7 @@ Computers use layers of memory: the closer to the CPU, the **faster, smaller and
 | SSD | 100s of GB – TBs | ~0.1 ms | Yes |
 | Hard disk | TBs | ~10 ms | Yes |
 
-![Memory hierarchy: registers and cache at the top are fastest and smallest; disks at the bottom are slowest and largest](https://upload.wikimedia.org/wikipedia/commons/0/0c/ComputerMemoryHierarchy.svg)
+![Memory hierarchy: registers and cache at the top are fastest and smallest; disks at the bottom are slowest and largest](../../knowledge/visual-notes/under-the-hood/memory-hierarchy.svg)
 
 _Image: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:ComputerMemoryHierarchy.svg) · Danlas · Public domain_
 
@@ -59,7 +59,7 @@ void placeOrder() {
 }                                   // the Order object itself is on the heap
 ```
 
-![The call stack: each method call gets a frame with its local variables and return address](https://upload.wikimedia.org/wikipedia/commons/d/d3/Call_stack_layout.svg)
+![The call stack: each method call gets a frame with its local variables and return address](../../knowledge/visual-notes/under-the-hood/call-stack.svg)
 
 _Image: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Call_stack_layout.svg) · R. S. Shaw · Public domain_
 
@@ -74,7 +74,7 @@ The garbage collector (GC) finds objects your program can no longer reach and fr
 1. **Mark:** start from "roots" — local variables on stacks, static fields — and follow every reference, marking each object reached.
 2. **Sweep / compact:** anything not marked is garbage; free it, and often move live objects together to avoid gaps.
 
-![Mark and sweep: reachable objects are marked, the rest are swept away](https://upload.wikimedia.org/wikipedia/commons/4/4a/Animation_of_the_Naive_Mark_and_Sweep_Garbage_Collector_Algorithm.gif)
+![Mark and sweep: reachable objects are marked, the rest are swept away](../../knowledge/visual-notes/under-the-hood/mark-and-sweep-gc.gif)
 
 _Image: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Animation_of_the_Naive_Mark_and_Sweep_Garbage_Collector_Algorithm.gif) · M17 · CC0_
 
@@ -88,7 +88,7 @@ _Image: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Animation_of
 
 Each program gets its **own private address space**, as if it had the whole memory to itself. The operating system maps these virtual addresses to real RAM in fixed-size **pages**, and can move rarely used pages to disk.
 
-![Virtual memory: each process's addresses map to pages in physical RAM or on disk](https://upload.wikimedia.org/wikipedia/commons/6/6e/Virtual_memory.svg)
+![Virtual memory: each process's addresses map to pages in physical RAM or on disk](../../knowledge/visual-notes/under-the-hood/virtual-memory.svg)
 
 _Image: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Virtual_memory.svg) · Ehamberg · CC BY-SA 3.0_
 

@@ -29,6 +29,13 @@
     book: '<path d="M4 4.5A1.5 1.5 0 0 1 5.5 3H20v15H5.5A1.5 1.5 0 0 0 4 19.5zM4 19.5A1.5 1.5 0 0 0 5.5 21H20v-3"/>',
     alert: '<path d="M12 3 2 20h20zM12 10v4M12 17h.01"/>',
     clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+    compass: '<circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5z"/>',
+    rocket: '<path d="M12 2c3.5 2.5 5 7 3 13H9C7 9 8.5 4.5 12 2zM9 15l-3 4h3M15 15l3 4h-3M12 7.5v2"/>',
+    clipboard: '<rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 3h6v3H9zM9 11h6M9 15h4"/>',
+    chart: '<path d="M3 21h18M6 17v-6M11 17V5M16 17v-9M21 17v-4"/>',
+    users: '<circle cx="9" cy="8" r="3.5"/><path d="M2 20c0-3.3 3.1-6 7-6s7 2.7 7 6M16 4.5a3.5 3.5 0 0 1 0 7M18 14c2.4.6 4 2.9 4 6"/>',
+    pen: '<path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>',
+    chat: '<path d="M4 5h16v11H9l-5 4z"/>',
   };
   const icon = (name, cls = "rt-ic") => `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[name] || ICON.target}</svg>`;
 
@@ -36,7 +43,12 @@
   const history = load(HISTORY, {});
   const roleKey = (role, choice) => (role.choice ? `${role.name} (${topicLabel(choice || role.choice.options[0])})` : role.name);
   const topicLabel = (id) => BANK.topics[id]?.label || id;
-  const studyPath = (id) => `../roadmap/topics/${id === "sql" ? "database-sql" : id}.md`;
+  // Served by the AI tutor (under /atlas/), links open the tutor; opened as a file, they open the markdown study paths.
+  const TUTOR = location.pathname.startsWith("/atlas/");
+  const ask = (q) => `/?q=${encodeURIComponent(q)}`;
+  const studyPath = (id) => (TUTOR ? ask(BANK.topics[id]?.tutor?.study || `${topicLabel(id)} study path`) : BANK.topics[id]?.path || `../roadmap/topics/${id === "sql" ? "database-sql" : id}.md`);
+  const mockLink = (id) => ask(`Mock interview: ${BANK.topics[id]?.tutor?.mock || topicLabel(id)}`);
+  const slug = (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(?:^-)|(?:-$)/g, "");
   const tone = (pct) => (pct >= 70 ? "good" : pct >= 40 ? "mid" : "low");
   const minutes = (n) => Math.max(5, Math.round(n * 0.5));
   const DIFF = { 1: "Easy", 2: "Medium", 3: "Hard" };
@@ -55,7 +67,10 @@
   const animateRings = () => requestAnimationFrame(() => requestAnimationFrame(() => root.querySelectorAll(".rt-ring-value[data-offset]").forEach((c) => { c.style.strokeDashoffset = c.dataset.offset; })));
 
   const state = { view: "home", role: null, choice: null, items: [], answers: [], index: 0, guess: false, result: null };
-  const show = (view) => { state.view = view; render(); root.scrollIntoView({ block: "start", behavior: reduceMotion ? "auto" : "smooth" }); };
+  const show = (view) => {
+    state.view = view;
+    if (view === "home" && location.hash.startsWith("#roletest/")) window.history.replaceState(null, "", "#roletest");
+    render(); root.scrollIntoView({ block: "start", behavior: reduceMotion ? "auto" : "smooth" }); };
 
   // ---------- Home ----------
   function home() {
@@ -81,7 +96,7 @@
           <span class="rt-eyebrow">${icon("target", "rt-ic sm")} Role Readiness Test</span>
           <h2>How ready are you for your next role?</h2>
           <p>Answer a short set of questions across the topics a role needs. Get a readiness score, a topic-by-topic breakdown and exactly what to study next.</p>
-          <ol class="rt-steps"><li><b>1</b><span>Pick a role</span></li><li><b>2</b><span>Answer 15–30 questions</span></li><li><b>3</b><span>Get your score &amp; study plan</span></li></ol>
+          <ol class="rt-steps"><li><b>1</b><span>Pick a role</span></li><li><b>2</b><span>Answer 12–30 questions</span></li><li><b>3</b><span>Get your score &amp; study plan</span></li></ol>
         </div>
         <div class="rt-hero-art" aria-hidden="true">
           <div class="rt-demo">${ring(72, 132, 12)}<span class="rt-demo-level">Interview-ready</span>
@@ -165,8 +180,8 @@
         <span class="rt-bar-track"><span style="--w:${Math.max(t.pct, 2)}%"></span></span><b>${t.pct}%</b><small>${t.right}/${t.asked}</small></li>`).join("");
     const next = r.studyNext.length ? r.studyNext.map((t) => `
       <div class="rt-next-card ${tone(t.pct)}"><div class="rt-next-head">${ring(t.pct, 48, 5)}<div><b>${esc(t.label)}</b><small>${t.core ? "Core topic" : "Supporting topic"} · ${t.right}/${t.asked} right</small></div></div>
-        <a class="rt-link" href="${studyPath(t.id)}" target="_blank" rel="noopener">${icon("book", "rt-ic sm")} Open the study path</a>
-        <span class="rt-tip">Then try “Mock interview on ${esc(t.label)}” in the tutor.</span></div>`).join("")
+        <a class="rt-link" href="${esc(studyPath(t.id))}" target="_blank" rel="noopener">${icon("book", "rt-ic sm")} Open the study path</a>
+        ${TUTOR ? `<a class="rt-link" href="${esc(mockLink(t.id))}" target="_blank" rel="noopener">${icon("chat", "rt-ic sm")} Start a mock interview</a>` : `<span class="rt-tip">Then try “Mock interview on ${esc(t.label)}” in the tutor.</span>`}</div>`).join("")
       : `<p class="rt-note">No weak topics below 70% — try a mock interview in the tutor to practise explaining your answers out loud.</p>`;
     // Core-topic misconceptions first; the first five are shown, the rest fold away.
     const missItem = (m) => {
@@ -275,5 +290,16 @@
     else if (answered && e.key === "Enter") { e.preventDefault(); next(); }
   });
 
-  render();
+  // Deep link: #roletest/<role-slug> opens that role's setup (the tutor's role cards link here).
+  function openFromHash() {
+    const m = /^#roletest\/([a-z0-9-]+)$/.exec(location.hash);
+    const role = m && BANK.roles.find((r) => slug(r.name) === m[1]);
+    if (!role) return false;
+    Object.assign(state, { role, choice: role.choice ? role.choice.options[0] : null });
+    state.view = "setup";
+    render();
+    return true;
+  }
+  addEventListener("hashchange", openFromHash);
+  if (!openFromHash()) render();
 })();
