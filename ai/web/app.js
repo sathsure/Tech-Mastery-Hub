@@ -241,9 +241,12 @@ function renderSidebar() {
   const navItem = item => `<li><button type="button" class="nav-item" data-ask="${item.id === "roadmaps" ? "Roadmaps" : `Explore ${escapeHtml(item.label)}`}" data-overview="${item.id === "roadmaps" ? "roadmaps-hub" : escapeHtml(item.id)}" title="${escapeHtml(item.description ?? item.label)}">${icon(NAV_ICONS[item.id] ?? "book", "nav-ic")}<span>${escapeHtml(item.label)}</span></button></li>`;
   // The glossary and the learning roadmap are the main ways in, so they lead the sidebar.
   const primary = ["it-terminology", "roadmaps"].map(id => atlas.find(item => item.id === id)).filter(Boolean);
-  // The Role Readiness Test lives in the Atlas, served by this tutor under /atlas/.
-  const roleTest = `<li><a class="nav-item" href="/atlas/IT_Roles_Terminology_Atlas.html#roletest" target="_blank" rel="noopener" title="Score how ready you are for a role, topic by topic">${icon("target", "nav-ic")}<span>Role Readiness Test</span></a></li>`;
-  $("#primary-list").innerHTML = primary.map(navItem).join("") + roleTest;
+  // The Career Atlas (with the Role Readiness Test) opens over the chat on this same page.
+  const atlasLinks = [
+    ["overview", "compass", "Career Atlas", "Roles, salaries, career ladder and working abroad"],
+    ["roletest", "target", "Role Readiness Test", "Score how ready you are for a role, topic by topic"],
+  ].map(([section, name, label, title]) => `<li><button type="button" class="nav-item" data-atlas="${section}" title="${title}">${icon(name, "nav-ic")}<span>${label}</span></button></li>`);
+  $("#primary-list").innerHTML = atlasLinks[0] + primary.map(navItem).join("") + atlasLinks[1];
   $("#topic-list").innerHTML = topics.map(navItem).join("");
   $("#atlas-list").innerHTML = atlas.filter(item => !primary.includes(item)).map(navItem).join("");
   topicFilter.innerHTML = `<option value="">All notes</option>` + [...topics, ...atlas].map(topic => `<option value="${escapeHtml(topic.id)}">${escapeHtml(topic.label)}</option>`).join("");
@@ -302,6 +305,116 @@ function toggleTheme() {
     // Theme still switches for this visit.
   }
 }
+
+// ---------- Career Atlas (same page) ----------
+// The Atlas opens over the chat at /#atlas/<section>. The chat stays loaded underneath, so
+// "Chat" in the Atlas (or the browser's Back) returns to the same conversation and scroll position.
+const ATLAS_PAGE = "/atlas/IT_Roles_Terminology_Atlas.html";
+const atlasView = $("#atlas-view");
+const pageTitle = document.title;
+let atlasFrame = null;
+/** Marks the history entry openAtlas() created, so "Chat" can step back to the screen before it. */
+let atlasToken = null;
+let atlasReturnFocus = null;
+
+/** The section in the address (#atlas/salary → "salary", #atlas → ""), or null when the Atlas is not open. */
+function atlasSection() {
+  const match = /^#atlas(?:\/(.*))?$/.exec(location.hash);
+  return match ? decodeURIComponent(match[1] ?? "") : null;
+}
+const atlasUrl = section => `${location.pathname}${location.search}#atlas/${section}`;
+
+function syncAtlasTheme() {
+  const theme = document.documentElement.getAttribute("data-theme");
+  try {
+    localStorage.setItem("atlas-theme", theme);
+    const root = atlasFrame?.contentDocument?.documentElement;
+    if (root && root.dataset.theme !== theme) root.dataset.theme = theme;
+  } catch {
+    // The Atlas keeps its own theme.
+  }
+}
+
+function showAtlas(section) {
+  section = section || "overview";
+  syncAtlasTheme();
+  if (!atlasFrame) {
+    atlasFrame = document.createElement("iframe");
+    atlasFrame.className = "atlas-frame";
+    atlasFrame.title = "Career Atlas";
+    atlasFrame.src = `${ATLAS_PAGE}?embed=1#${section}`;
+    atlasView.append(atlasFrame);
+  } else {
+    try {
+      // replace(): changing sections must not add history entries of its own. The URL is absolute:
+      // a bare "#x" would resolve against this page, not the Atlas.
+      const frameLocation = atlasFrame.contentWindow.location;
+      if (frameLocation.hash.slice(1) !== section) frameLocation.replace(`${ATLAS_PAGE}?embed=1#${section}`);
+    } catch {
+      atlasFrame.src = `${ATLAS_PAGE}?embed=1#${section}`;
+    }
+  }
+  if (atlasView.hidden) atlasReturnFocus = document.activeElement;
+  atlasView.hidden = false;
+  document.body.classList.add("atlas-open");
+  document.title = "Career Atlas · Tech-Mastery-Hub";
+  atlasFrame.focus();
+}
+
+function hideAtlas() {
+  if (atlasView.hidden) return;
+  atlasView.hidden = true;
+  document.body.classList.remove("atlas-open");
+  document.title = pageTitle;
+  (atlasReturnFocus?.isConnected ? atlasReturnFocus : input).focus();
+}
+
+/** Open the Atlas as a new screen in the browser's history. */
+function openAtlas(section = "overview") {
+  closeOverlays();
+  closeSidebar();
+  rememberScroll();
+  atlasToken = `${Date.now()}`;
+  history.pushState({ tmh: nav.at, c: history.state?.c ?? null, atlas: section, opened: atlasToken }, "", atlasUrl(section));
+  // Screens ahead of this one are gone from the browser's history.
+  nav.max = nav.at;
+  saveNav();
+  updateNavButtons();
+  showAtlas(section);
+}
+
+/** "Chat" in the Atlas: step back to the chat screen it was opened from. */
+function leaveAtlas() {
+  if (atlasToken && history.state?.opened === atlasToken) return history.back();
+  // Opened from a link or a typed address: no known chat screen behind it, so turn this one into the chat.
+  hideAtlas();
+  history.replaceState({ tmh: nav.at, c: history.state?.c ?? null }, "", `${location.pathname}${location.search}`);
+}
+
+addEventListener("message", event => {
+  if (event.origin !== location.origin || !atlasFrame || event.source !== atlasFrame.contentWindow || event.data?.source !== "atlas") return;
+  const { type } = event.data;
+  if (type === "close") leaveAtlas();
+  else if (type === "route" && !atlasView.hidden && typeof history.state?.atlas === "string") {
+    const section = String(event.data.hash || "overview").slice(0, 200);
+    if (section !== history.state.atlas) history.replaceState({ ...history.state, atlas: section }, "", atlasUrl(section));
+  } else if (type === "theme" && (event.data.theme === "dark" || event.data.theme === "light") && event.data.theme !== document.documentElement.getAttribute("data-theme")) {
+    applyTheme(event.data.theme);
+    try {
+      localStorage.setItem("tmh.theme", event.data.theme);
+    } catch {
+      // Theme still switches for this visit.
+    }
+  }
+});
+
+// Anything marked data-atlas="<section>" opens the Atlas here (Ctrl/⌘-click on a link still opens a new tab).
+document.addEventListener("click", event => {
+  const target = event.target.closest("[data-atlas]");
+  if (!target || event.ctrlKey || event.metaKey || event.shiftKey) return;
+  event.preventDefault();
+  openAtlas(target.dataset.atlas || "overview");
+});
 
 // ---------- Welcome ----------
 
@@ -887,6 +1000,14 @@ document.addEventListener(
 );
 
 addEventListener("popstate", event => {
+  if (typeof event.state?.atlas === "string") return showAtlas(event.state.atlas);
+  // A typed or clicked /#atlas/<section> on this page: make it an Atlas screen.
+  const section = atlasSection();
+  if (section !== null) {
+    history.replaceState({ ...(event.state ?? { tmh: nav.at }), atlas: section || "overview" }, "", atlasUrl(section || "overview"));
+    return showAtlas(section || "overview");
+  }
+  hideAtlas();
   if (Number.isInteger(event.state?.tmh)) showScreen(event.state);
 });
 
@@ -1053,7 +1174,11 @@ async function start() {
   }
   renderSidebar();
   updateNavButtons();
-  if (params.get("q")) send(params.get("q"));
+  const section = atlasSection();
+  if (section !== null) {
+    history.replaceState({ ...(history.state ?? { tmh: nav.at }), atlas: section || "overview" }, "", atlasUrl(section || "overview"));
+    showAtlas(section || "overview");
+  } else if (params.get("q")) send(params.get("q"));
   else input.focus();
 }
 

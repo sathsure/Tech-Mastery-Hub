@@ -687,3 +687,11 @@ html.theming .thread { view-transition-name: none; }
   body.print-one .msg-foot, body.print-one .followups, body.print-one .score-actions { display: none !important; }
   body.print-one .score-btn:not(.on) { opacity: 0.35; }
 }
+
+/* ---------- Career Atlas, opened over the chat (same page, /#atlas/<section>) ---------- */
+.atlas-view { position: fixed; inset: 0; z-index: 60; background: var(--bg); animation: atlas-in .18s ease; }
+.atlas-view[hidden] { display: none; }
+.atlas-frame { display: block; width: 100%; height: 100%; border: 0; background: var(--bg); }
+body.atlas-open .shell { visibility: hidden; }
+@keyframes atlas-in { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .atlas-view { animation: none; } }

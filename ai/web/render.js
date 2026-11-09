@@ -70,9 +70,10 @@ function cardButton(action, primary) {
   if (action.href && /^https:\/\//.test(action.href)) {
     return `<a class="${cls}" href="${escapeHtml(action.href)}" target="_blank" rel="noopener noreferrer">${escapeHtml(action.label)}${icon("external")}</a>`;
   }
-  // Same-server pages (the Atlas Role Test) open in a new tab too.
+  // Atlas pages (e.g. the Role Test) open over the chat on this page; app.js handles data-atlas.
   if (action.href && /^\/atlas\/[\w./#-]+$/.test(action.href)) {
-    return `<a class="${cls}" href="${escapeHtml(action.href)}" target="_blank" rel="noopener">${escapeHtml(action.label)}${icon("external")}</a>`;
+    const section = action.href.split("#")[1] ?? "overview";
+    return `<a class="${cls}" href="${escapeHtml(action.href)}" data-atlas="${escapeHtml(section)}">${escapeHtml(action.label)}${icon("arrow")}</a>`;
   }
   if (!action.ask) return "";
   const overview = action.overview ? ` data-overview="${escapeHtml(action.overview)}"` : "";

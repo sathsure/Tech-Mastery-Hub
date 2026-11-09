@@ -616,8 +616,10 @@ await check("API: /chat streams events, JSON mode, validation, and /visuals", as
     assert.match(atlas.headers.get("content-security-policy") ?? "", /connect-src 'self' https:\/\/www\.arbeitnow\.com/);
     assert.match(await atlas.text(), /role-test-data-5\.js/);
     assert.equal((await fetch(`${base}/atlas/role-test-ui.js`)).status, 200);
+    assert.match(atlas.headers.get("content-security-policy") ?? "", /frame-ancestors 'self'/, "the tutor can show the Atlas in its own page");
     const redirect = await fetch(`${base}/atlas`, { redirect: "manual" });
-    assert.equal(redirect.headers.get("location"), "/atlas/IT_Roles_Terminology_Atlas.html");
+    assert.equal(redirect.headers.get("location"), "/#atlas", "/atlas opens the Atlas inside the tutor");
+    assert.match((await fetch(`${base}/`)).headers.get("content-security-policy") ?? "", /frame-ancestors 'none'/, "the tutor itself is never framed");
     assert.equal((await fetch(`${base}/atlas/role-test.test.js`)).status, 404, "tests are not served");
     assert.equal((await fetch(`${base}/atlas/..%2Fai%2Fruntime%2Fpackage.json`)).status, 404, "no way out of the Atlas folder");
     assert.doesNotMatch((await fetch(`${base}/`)).headers.get("content-security-policy") ?? "", /arbeitnow/, "the tutor keeps its strict policy");

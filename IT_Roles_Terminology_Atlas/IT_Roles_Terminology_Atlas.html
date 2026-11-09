@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="One-stop reference for IT roles, career hierarchy, terminology, languages, frameworks and tools.">
-<title>IT Roles &amp; Terminology Atlas</title>
+<title>Career Atlas · Tech-Mastery-Hub</title>
 <link rel="stylesheet" href="IT_Roles_Terminology_Atlas.css">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
@@ -13,47 +13,59 @@
 <body>
 <header class="topbar">
   <div class="topbar-inner">
-    <a class="brand" href="#overview" data-tab="overview"><span class="brand-mark">IT</span><span>Roles &amp; Terminology Atlas</span></a>
+    <button id="backToChat" class="back-chat" type="button" hidden><svg class="ic" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg><span>Chat</span></button>
+    <a class="brand" href="#overview" data-tab="overview"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5z"/></svg></span><span class="brand-text">Career Atlas</span></a>
     <div class="search-wrap">
-      <input id="globalSearch" type="search" placeholder="Search roles, terms, tools, salaries…" autocomplete="off" aria-label="Search the atlas" aria-controls="searchResults" role="combobox" aria-expanded="false">
+      <svg class="search-ic" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input id="globalSearch" type="search" placeholder="Search roles, terms, tools, salaries" autocomplete="off" aria-label="Search the atlas" aria-controls="searchResults" role="combobox" aria-expanded="false">
       <kbd class="search-kbd">Ctrl K</kbd>
       <div id="searchResults" class="search-results" role="listbox" hidden></div>
     </div>
     <button id="themeToggle" class="icon-btn" type="button" aria-label="Toggle dark mode"></button>
     <a id="profileBtn" class="profile-btn" href="welcome.html"></a>
   </div>
-  <nav class="tabs" aria-label="Sections">
-    <button data-tab="overview" class="active">Overview</button>
-    <button data-tab="mypath">My Path</button>
-    <button data-tab="ladder">Career Ladder</button>
-    <button data-tab="roles">Roles</button>
-    <button data-tab="roletest">Role Test</button>
-    <button data-tab="glossary">Glossary</button>
-    <button data-tab="stack">Tech Stack</button>
-    <button data-tab="salary">Salary (India)</button>
-    <button data-tab="pay">Pay &amp; Tax</button>
-    <button data-tab="abroad">Work Abroad</button>
-    <button data-tab="lifecycle">Who Does What</button>
-  </nav>
 </header>
+
+<div class="layout">
+<nav class="tabs rail" aria-label="Sections">
+  <p class="rail-label">Explore</p>
+  <button data-tab="overview" class="active">Overview</button>
+  <button data-tab="roles">Roles</button>
+  <button data-tab="ladder">Career ladder</button>
+  <button data-tab="lifecycle">Who does what</button>
+  <button data-tab="stack">Tech stack</button>
+  <button data-tab="glossary">Glossary</button>
+  <p class="rail-label">Your career</p>
+  <button data-tab="mypath">My path</button>
+  <button data-tab="roletest">Readiness test</button>
+  <p class="rail-label">Pay &amp; moves</p>
+  <button data-tab="salary">Salary (India)</button>
+  <button data-tab="pay">Take-home &amp; tax</button>
+  <button data-tab="abroad">Work abroad</button>
+</nav>
 
 <main>
   <!-- Overview -->
   <section id="overview" class="panel active">
-    <div class="hero">
-      <h1>Everything in IT, in one place.</h1>
-      <p id="heroCounts">Roles, career levels, terms, tools and salaries — explained simply, with examples.</p>
-      <div id="popular" class="popular"></div>
+    <div class="panel-head">
+      <div>
+        <p class="eyebrow">Career Atlas</p>
+        <h1 class="h1">The IT industry, one step at a time</h1>
+        <p id="heroCounts" class="lead">Roles, career levels, terms, tools and salaries, explained simply.</p>
+      </div>
     </div>
+    <div id="popular" class="popular"></div>
+    <h2 class="h3">Start here</h2>
     <div class="quick">
-      <button class="quick-card" data-tab="salary"><b>Check my salary</b><span>Build your skill list, see your LPA range</span></button>
-      <button class="quick-card quick-test" data-tab="roletest"><b>Role readiness test</b><span>How ready are you for Full Stack, DevOps, Data…? Get a % score</span></button>
-      <button class="quick-card" data-tab="pay"><b>Take-home &amp; tax</b><span>CTC → monthly in-hand, compare offers, tax abroad</span></button>
-      <button class="quick-card" data-tab="abroad"><b>Work abroad</b><span>Visa odds by country + live jobs &amp; news</span></button>
-      <button class="quick-card quick-path" data-tab="mypath"><b>My path</b><span id="quickPath">Match your skills to roles, plan a switch</span></button>
-      <button class="quick-card" data-quick-ai><b>Learn AI-era terms</b><span>Agents, RAG, MCP, evals and more</span></button>
+      <button class="quick-card" data-tab="mypath"><b>Find my fit</b><span id="quickPath">Match your skills to roles</span></button>
+      <button class="quick-card" data-tab="salary"><b>Check my salary</b><span>Your likely range in India</span></button>
+      <button class="quick-card" data-tab="roletest"><b>Readiness test</b><span>Score yourself for a role</span></button>
+      <button class="quick-card" data-tab="abroad"><b>Work abroad</b><span>Visa odds and pay by country</span></button>
     </div>
-    <h2 class="h2">Role families</h2>
+    <div class="section-head">
+      <h2 class="h3">Role families</h2>
+      <button class="btn-link" type="button" data-quick-ai>AI-era terms →</button>
+    </div>
     <div id="familyCards" class="family-grid"></div>
   </section>
 
@@ -61,19 +73,20 @@
   <section id="mypath" class="panel">
     <div class="panel-head">
       <div>
+        <p class="eyebrow">Your career</p>
         <h2 class="h2">My path</h2>
-        <p class="lead">Personal results from your own skills, experience and saved items — calculated in this browser, not a generic answer.</p>
+        <p class="lead">Worked out in this browser from your skills and experience.</p>
       </div>
-      <button class="btn-ghost" type="button" data-act="print">Print / Save PDF</button>
+      <button class="btn-ghost" type="button" data-act="print">Print / PDF</button>
     </div>
     <div id="profileBar" class="profile-bar"></div>
-    <div class="mp-grid">
+    <div class="subview" data-sub="moves" data-label="Next moves">
       <section class="card-block">
-        <h3 class="h3 tight">Recommended next moves</h3>
         <div id="fitList" class="fit-list"></div>
       </section>
+    </div>
+    <div class="subview" data-sub="plan" data-label="Plan a switch">
       <section id="planner" class="card-block">
-        <h3 class="h3 tight">Plan a switch</h3>
         <div class="plan-controls">
           <label>From<select id="planFrom"></select></label>
           <span class="plan-arrow" aria-hidden="true">→</span>
@@ -82,38 +95,53 @@
         <div id="planOut"></div>
       </section>
     </div>
-    <section class="card-block">
-      <h3 class="h3 tight">Saved <small class="muted">your study list</small></h3>
-      <div id="savedList"></div>
-    </section>
+    <div class="subview" data-sub="saved" data-label="Saved">
+      <section class="card-block">
+        <div id="savedList"></div>
+      </section>
+    </div>
   </section>
 
   <!-- Career ladder -->
   <section id="ladder" class="panel">
-    <h2 class="h2">Career hierarchy</h2>
-    <p class="lead">Two parallel tracks after Senior level: keep building (IC) or lead people (Management).</p>
-    <div class="ladder-viz">
-      <div id="ladderChart" class="range-chart card-block" aria-label="Career levels by years of experience"></div>
-      <aside id="ladderDetail" class="detail-card card-block" aria-live="polite"></aside>
+    <div class="panel-head">
+      <div>
+        <p class="eyebrow">Explore</p>
+        <h2 class="h2">Career ladder</h2>
+        <p class="lead">After Senior, two tracks: keep building (IC) or lead people (Management).</p>
+      </div>
     </div>
-    <details class="section-fold">
-      <summary>Same level, different names — all companies side by side</summary>
+    <div class="subview" data-sub="levels" data-label="Levels">
+      <div class="ladder-viz">
+        <div id="ladderChart" class="range-chart card-block" aria-label="Career levels by years of experience"></div>
+        <aside id="ladderDetail" class="detail-card card-block" aria-live="polite"></aside>
+      </div>
+    </div>
+    <div class="subview" data-sub="titles" data-label="Titles by company">
       <p id="levelNote" class="count"></p>
       <div class="table-wrap"><table id="levelMatrix" class="gloss level-matrix"></table></div>
       <ul id="ladderNotes" class="notes"></ul>
-    </details>
+    </div>
   </section>
 
   <!-- Roles -->
   <section id="roles" class="panel">
-    <h2 class="h2">IT roles</h2>
+    <div class="panel-head">
+      <div>
+        <p class="eyebrow">Explore</p>
+        <h2 class="h2">IT roles</h2>
+        <p class="lead">What each role does, its tools, and what companies call it.</p>
+      </div>
+    </div>
     <div class="filters">
-      <input id="roleFilter" type="search" placeholder="Filter roles, languages, tools…" aria-label="Filter roles">
+      <div class="filter-row">
+        <input id="roleFilter" type="search" placeholder="Filter roles, languages, tools" aria-label="Filter roles">
+        <label class="inline-select">Sort <select id="roleSort">
+            <option value="default">Default</option>
+            <option value="match">Best match for me</option>
+          </select></label>
+      </div>
       <div id="familyChips" class="chips"></div>
-      <label class="inline-select">Sort <select id="roleSort">
-          <option value="default">Default order</option>
-          <option value="match">Best match for my skills</option>
-        </select></label>
     </div>
     <p id="roleCount" class="count"></p>
     <div id="roleGrid" class="role-grid"></div>
@@ -124,9 +152,15 @@
 
   <!-- Glossary -->
   <section id="glossary" class="panel">
-    <h2 class="h2">Glossary</h2>
+    <div class="panel-head">
+      <div>
+        <p class="eyebrow">Explore</p>
+        <h2 class="h2">Glossary</h2>
+        <p class="lead">IT terms in plain words.</p>
+      </div>
+    </div>
     <div class="filters">
-      <input id="termFilter" type="search" placeholder="Filter terms…" aria-label="Filter glossary">
+      <input id="termFilter" type="search" placeholder="Filter terms" aria-label="Filter glossary">
       <div id="catChips" class="chips"></div>
       <nav id="azBar" class="az" aria-label="Jump to letter"></nav>
     </div>
@@ -141,8 +175,13 @@
 
   <!-- Stack -->
   <section id="stack" class="panel">
-    <h2 class="h2">Technology stack map</h2>
-    <p class="lead">What each language, framework and tool is used for.</p>
+    <div class="panel-head">
+      <div>
+        <p class="eyebrow">Explore</p>
+        <h2 class="h2">Tech stack</h2>
+        <p class="lead">What each language, framework and tool is used for.</p>
+      </div>
+    </div>
     <div id="stackGrid" class="stack-grid"></div>
   </section>
 
@@ -150,89 +189,94 @@
   <section id="salary" class="panel">
     <div class="panel-head">
       <div>
-        <h2 class="h2">Skills vs salary — India</h2>
-        <p class="lead">Build your skill list, see your likely range, and what moves it up. Got an offer? <a href="#pay" data-tab="pay">Work out your monthly take-home →</a></p>
+        <p class="eyebrow">Pay &amp; moves</p>
+        <h2 class="h2">Salary in India</h2>
+        <p class="lead">Add your skills, see your likely range. Got an offer? <a href="#pay" data-tab="pay">Work out take-home →</a></p>
       </div>
-      <details class="note"><summary>ⓘ Estimates only</summary><p id="salaryNote"></p></details>
-    </div>
-    <div id="reality" class="reality"></div>
-
-    <div class="est-controls">
-      <label>Role<select id="salTrack"></select></label>
-      <label>Experience (yrs)<input id="myExp" type="number" min="0" max="40" step="0.5" value="4"></label>
-      <label>City<select id="salCity"></select></label>
-      <label>Company type<select id="salCompany"></select></label>
-      <label>Work mode<select id="salMode"></select></label>
+      <details class="note"><summary>Estimates only</summary><p id="salaryNote"></p></details>
     </div>
 
-    <div class="builder">
-      <div class="builder-main">
-        <div class="builder-top">
-          <h3 class="h3 tight">My skills <span id="skillCount" class="muted"></span></h3>
-          <div class="builder-actions">
-            <button id="loadTypical" class="btn-link" type="button" title="Add the skills a resume at this role and level usually shows">Fill typical</button>
-            <button id="copySkills" class="btn-link" type="button" title="Copy skills grouped by category">Copy for resume</button>
-            <button id="clearSkills" class="btn-link danger" type="button">Clear</button>
-          </div>
-        </div>
-        <div class="skill-add">
-          <input id="skillInput" list="skillList" placeholder="Add a skill — e.g. Kubernetes, AWS, RAG" autocomplete="off" aria-label="Add a skill">
-          <datalist id="skillList"></datalist>
-          <button id="skillAddBtn" class="btn" type="button">Add</button>
-        </div>
-        <div id="mySkills" class="my-skills"></div>
-        <div id="suggestBox" class="suggest"></div>
+    <div class="subview" data-sub="estimate" data-label="Estimate">
+      <div class="est-controls">
+        <label>Role<select id="salTrack"></select></label>
+        <label>Experience (yrs)<input id="myExp" type="number" min="0" max="40" step="0.5" value="4"></label>
+        <label>City<select id="salCity"></select></label>
+        <label>Company type<select id="salCompany"></select></label>
+        <label>Work mode<select id="salMode"></select></label>
       </div>
-      <aside class="builder-side" aria-live="polite">
-        <div class="est-card">
-          <span class="est-label">Estimated range</span>
-          <strong id="estLpa">—</strong>
-          <small id="estBasis"></small>
-          <small id="estYou" class="est-you"></small>
-        </div>
-        <div class="meters">
-          <div class="meter-block">
-            <div class="meter-head"><span title="How many of your skills fit the chosen role">Relevance</span><b id="relLabel">—</b></div>
-            <div class="meter"><span id="relBar"></span></div>
-            <small id="relText"></small>
+      <div class="builder">
+        <div class="builder-main">
+          <div class="builder-top">
+            <h3 class="h3 tight">My skills <span id="skillCount" class="muted"></span></h3>
+            <div class="builder-actions">
+              <button id="loadTypical" class="btn-link" type="button" title="Add the skills a resume at this role and level usually shows">Fill typical</button>
+              <button id="copySkills" class="btn-link" type="button" title="Copy skills grouped by category">Copy for resume</button>
+              <button id="clearSkills" class="btn-link danger" type="button">Clear</button>
+            </div>
           </div>
-          <div class="meter-block">
-            <div class="meter-head"><span id="strTitle" title="Expected skills covered for your experience, plus high-value extras">Strength</span><b id="strLabel">—</b></div>
-            <div class="meter"><span id="strBar"></span></div>
-            <small id="strText"></small>
+          <div class="skill-add">
+            <input id="skillInput" list="skillList" placeholder="Add a skill, e.g. Kubernetes, AWS, RAG" autocomplete="off" aria-label="Add a skill">
+            <datalist id="skillList"></datalist>
+            <button id="skillAddBtn" class="btn" type="button">Add</button>
           </div>
+          <div id="mySkills" class="my-skills"></div>
+          <div id="suggestBox" class="suggest"></div>
         </div>
-        <div id="advice" class="advice"></div>
-      </aside>
+        <aside class="builder-side" aria-live="polite">
+          <div class="est-card">
+            <span class="est-label">Estimated range</span>
+            <strong id="estLpa">—</strong>
+            <small id="estBasis"></small>
+            <small id="estYou" class="est-you"></small>
+          </div>
+          <div class="meters">
+            <div class="meter-block">
+              <div class="meter-head"><span title="How many of your skills fit the chosen role">Relevance</span><b id="relLabel">—</b></div>
+              <div class="meter"><span id="relBar"></span></div>
+              <small id="relText"></small>
+            </div>
+            <div class="meter-block">
+              <div class="meter-head"><span id="strTitle" title="Expected skills covered for your experience, plus high-value extras">Strength</span><b id="strLabel">—</b></div>
+              <div class="meter"><span id="strBar"></span></div>
+              <small id="strText"></small>
+            </div>
+          </div>
+          <div id="advice" class="advice"></div>
+        </aside>
+      </div>
     </div>
 
-    <details class="section-fold" open>
-      <summary>Salary by experience <span id="trackStack" class="muted"></span></summary>
-      <div id="salChart" class="range-chart" aria-label="Salary range by experience"></div>
-      <div id="salBand" class="band-detail" aria-live="polite"></div>
-    </details>
-    <details class="section-fold">
-      <summary>Company type vs pay</summary>
+    <div class="subview" data-sub="experience" data-label="By experience">
+      <section class="card-block">
+        <h3 class="h3 tight">Salary by experience <span id="trackStack" class="muted"></span></h3>
+        <div id="salChart" class="range-chart" aria-label="Salary range by experience"></div>
+        <div id="salBand" class="band-detail" aria-live="polite"></div>
+      </section>
+    </div>
+    <div class="subview" data-sub="company" data-label="Company type">
       <div class="table-wrap">
         <table class="gloss tiers"><thead><tr><th>Company type</th><th>Examples</th><th>Pay vs IT services</th></tr></thead><tbody id="tierBody"></tbody></table>
       </div>
-    </details>
-    <details class="section-fold">
-      <summary>Biggest salary boosters</summary>
+    </div>
+    <div class="subview" data-sub="boosters" data-label="Boosters">
       <div id="boosters" class="boosters"></div>
-    </details>
+    </div>
+    <div class="subview" data-sub="market" data-label="Market now">
+      <div id="reality" class="reality"></div>
+    </div>
   </section>
 
   <!-- Pay & tax -->
   <section id="pay" class="panel">
     <div class="panel-head">
       <div>
-        <h2 class="h2">Pay &amp; tax</h2>
-        <p class="lead">Turn a CTC into monthly take-home under both Indian tax regimes, compare job offers side by side, and check income tax in the countries Indians move to.</p>
+        <p class="eyebrow">Pay &amp; moves</p>
+        <h2 class="h2">Take-home &amp; tax</h2>
+        <p class="lead">CTC to monthly in-hand, offer comparison, and tax abroad.</p>
       </div>
-      <details class="note"><summary>ⓘ Rules used</summary><p id="payTaxNote"></p></details>
+      <details class="note"><summary>Rules used</summary><p id="payTaxNote"></p></details>
     </div>
-    <div id="ptTabs" class="chips pt-tabs" role="tablist" aria-label="Pay and tax tools"></div>
+    <div id="ptTabs" class="seg" role="tablist" aria-label="Pay and tax tools"></div>
     <div id="pt-calc" class="pt-view"></div>
     <div id="pt-offers" class="pt-view" hidden></div>
     <div id="pt-world" class="pt-view" hidden></div>
@@ -242,10 +286,11 @@
   <section id="abroad" class="panel">
     <div class="panel-head">
       <div>
-        <h2 class="h2">Work abroad from India</h2>
-        <p class="lead">Where Indian IT professionals can realistically get hired, and how — blunt.</p>
+        <p class="eyebrow">Pay &amp; moves</p>
+        <h2 class="h2">Work abroad</h2>
+        <p class="lead">Where Indian IT professionals realistically get hired, and how.</p>
       </div>
-      <details class="note"><summary>ⓘ Checked <span id="abroadAsOf"></span></summary><p id="abroadNote"></p></details>
+      <details class="note"><summary>Checked <span id="abroadAsOf"></span></summary><p id="abroadNote"></p></details>
     </div>
 
     <div class="abroad-filter">
@@ -256,65 +301,79 @@
           <option value="fit">Best fit for my role</option>
           <option value="pay">Highest pay for my role</option>
         </select></label>
-      <span class="odds-legend"><i class="o4"></i>Realistic <i class="o3"></i>Moderate <i class="o2"></i>Hard <i class="o1"></i>Very hard</span>
     </div>
     <p id="abroadSummary" class="abroad-summary"></p>
-    <section class="card-block">
-      <h3 class="h3 tight">Expected pay by country <small id="payAsOf" class="muted"></small></h3>
-      <div id="payChart" class="range-chart pay-chart" aria-label="Expected pay by country in rupees"></div>
-      <details class="note-inline"><summary>How these numbers are worked out</summary><p id="payNote"></p></details>
-    </section>
-    <div id="countryGrid" class="country-grid"></div>
 
-    <details class="section-fold" open>
-      <summary>How to actually get an interview</summary>
-      <ol id="howTo" class="howto"></ol>
-    </details>
-
-    <section class="live" aria-labelledby="liveTitle">
-      <div class="live-head">
-        <h3 id="liveTitle" class="h3 tight">Live <span class="live-dot" aria-hidden="true"></span></h3>
-        <div class="live-tabs" role="tablist">
-          <button role="tab" data-feed="visa" class="active">Visa-sponsored jobs (Europe)</button>
-          <button role="tab" data-feed="remote">Remote jobs open to India</button>
-          <button role="tab" data-feed="news">Visa &amp; hiring news</button>
+    <div class="subview" data-sub="countries" data-label="Countries">
+      <p class="odds-legend"><i class="o4"></i>Realistic <i class="o3"></i>Moderate <i class="o2"></i>Hard <i class="o1"></i>Very hard</p>
+      <div id="countryGrid" class="country-grid"></div>
+    </div>
+    <div class="subview" data-sub="pay" data-label="Pay by country">
+      <section class="card-block">
+        <h3 class="h3 tight">Expected pay by country <small id="payAsOf" class="muted"></small></h3>
+        <div id="payChart" class="range-chart pay-chart" aria-label="Expected pay by country in rupees"></div>
+        <details class="note-inline"><summary>How these numbers are worked out</summary><p id="payNote"></p></details>
+      </section>
+    </div>
+    <div class="subview" data-sub="howto" data-label="Getting hired">
+      <section class="card-block">
+        <ol id="howTo" class="howto"></ol>
+      </section>
+    </div>
+    <div class="subview" data-sub="live" data-label="Live jobs">
+      <section class="live" aria-labelledby="liveTitle">
+        <div class="live-head">
+          <h3 id="liveTitle" class="h3 tight">Live <span class="live-dot" aria-hidden="true"></span></h3>
+          <div class="live-tabs" role="tablist">
+            <button role="tab" data-feed="visa" class="active">Visa-sponsored (Europe)</button>
+            <button role="tab" data-feed="remote">Remote, open to India</button>
+            <button role="tab" data-feed="news">Visa &amp; hiring news</button>
+          </div>
+          <div class="refresh-wrap">
+            <small id="feedUpdated" class="muted"></small>
+            <button id="feedRefresh" class="btn-ghost" type="button" aria-label="Refresh live data"><span class="spin-icon" aria-hidden="true">↻</span> Refresh</button>
+          </div>
         </div>
-        <div class="refresh-wrap">
-          <small id="feedUpdated" class="muted"></small>
-          <button id="feedRefresh" class="btn-ghost" type="button" aria-label="Refresh live data"><span class="spin-icon" aria-hidden="true">↻</span> Refresh</button>
-        </div>
-      </div>
-      <input id="feedFilter" type="search" placeholder="Filter this feed — e.g. java, data, Berlin" aria-label="Filter feed">
-      <p id="feedMeta" class="count"></p>
-      <div id="feedList" class="feed-list"></div>
-    </section>
+        <input id="feedFilter" type="search" placeholder="Filter, e.g. java, data, Berlin" aria-label="Filter feed">
+        <p id="feedMeta" class="count"></p>
+        <div id="feedList" class="feed-list"></div>
+      </section>
+    </div>
   </section>
 
   <!-- Lifecycle -->
   <section id="lifecycle" class="panel">
-    <h2 class="h2">Who does what in a project</h2>
-    <p class="lead">How roles fit together across the software lifecycle.</p>
+    <div class="panel-head">
+      <div>
+        <p class="eyebrow">Explore</p>
+        <h2 class="h2">Who does what</h2>
+        <p class="lead">How roles fit together across a software project.</p>
+      </div>
+    </div>
     <div id="flow" class="flow"></div>
   </section>
+
+  <footer>
+    <p>Titles, years and tools vary by company. Treat this as a guide.</p>
+    <details id="shortcuts" class="shortcuts">
+      <summary>Keyboard shortcuts <kbd>?</kbd></summary>
+      <dl class="sc-list">
+        <dt><kbd>Ctrl</kbd> <kbd>K</kbd> or <kbd>/</kbd></dt><dd>Search everything</dd>
+        <dt><kbd>↑</kbd> <kbd>↓</kbd> <kbd>Enter</kbd></dt><dd>Move and open in search</dd>
+        <dt><kbd>Esc</kbd></dt><dd>Close search or an open role / comparison</dd>
+        <dt><kbd>?</kbd></dt><dd>Show or hide this list</dd>
+      </dl>
+    </details>
+  </footer>
 </main>
+</div>
 
 <div id="cmpTray" class="cmp-tray" role="region" aria-label="Compare tray" hidden></div>
 <button id="toTop" class="to-top" type="button" aria-label="Back to top" hidden>↑</button>
 <div id="toast" class="toast" role="status" hidden></div>
 
-<footer>
-  <p>IT Roles &amp; Terminology Atlas · Titles, years and tools vary by company — treat as a guide.</p>
-  <details id="shortcuts" class="shortcuts">
-    <summary>Keyboard shortcuts <kbd>?</kbd></summary>
-    <dl class="sc-list">
-      <dt><kbd>Ctrl</kbd> <kbd>K</kbd> or <kbd>/</kbd></dt><dd>Search everything</dd>
-      <dt><kbd>↑</kbd> <kbd>↓</kbd> <kbd>Enter</kbd></dt><dd>Move and open in search</dd>
-      <dt><kbd>Esc</kbd></dt><dd>Close search or an open role / comparison</dd>
-      <dt><kbd>?</kbd></dt><dd>Show or hide this list</dd>
-    </dl>
-  </details>
-</footer>
 
+<script src="atlas-ui.js"></script>
 <script src="it-atlas-data.js"></script>
 <script src="IT_Roles_Terminology_Atlas.js"></script>
 <script src="pay-tax.js"></script>

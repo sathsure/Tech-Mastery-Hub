@@ -21,6 +21,9 @@
   const roleText = (r) => [r.name, ...roleNamesText(r), r.what, r.why || "", r.ai || "", famName(r.family), ...r.languages, ...r.frameworks, ...r.tools, ...r.skills, ...(r.soft || [])].join(" ").toLowerCase();
   const termText = (g) => [g.t, g.f || "", g.d, g.c].join(" ").toLowerCase();
   const NEW = '<span class="new-badge">New</span>';
+  /** "🇩🇪" → "DE"; anything else (e.g. 🌐 for remote work) → "". */
+  const flagCode = (f) => [...String(f || "")].map((c) => c.codePointAt(0)).every((n) => n >= 0x1f1e6 && n <= 0x1f1ff) && f
+    ? [...f].map((c) => String.fromCharCode(c.codePointAt(0) - 0x1f1e6 + 65)).join("") : "";
 
   /* ---------- Icons: one inline sprite, line style (24px grid, currentColor stroke) ---------- */
   const ICONS = {
@@ -57,16 +60,21 @@
     bulb: '<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/>',
     bolt: '<path d="M13 2 4 14h7l-1 8 9-12h-7z"/>',
     sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
-    moon: '<path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/>'
+    moon: '<path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/>',
+    wallet: '<path d="M4 7h15a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h12v3"/><path d="M16 13.5h.01"/>',
+    bookmark: '<path d="M6 3h12v18l-6-4-6 4z"/>',
+    compare: '<path d="M7 4 3 8l4 4M3 8h14M17 12l4 4-4 4M21 16H7"/>',
+    user: '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
+    arrow: '<path d="M5 12h14M13 6l6 6-6 6"/>'
   };
   document.body.insertAdjacentHTML("afterbegin", `<svg width="0" height="0" style="position:absolute" aria-hidden="true">${Object.entries(ICONS)
     .map(([k, p]) => `<symbol id="i-${k}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${p}</symbol>`).join("")}</svg>`);
   const icon = (k, cls = "") => `<svg class="ic ${cls}" aria-hidden="true"><use href="#i-${k}"/></svg>`;
   const FAM_ICON = { ai: "sparkles", dev: "code", data: "database", ops: "cloud", qa: "check", sec: "shield", design: "pen", arch: "building", support: "headset", biz: "chart" };
   const famIcon = (id) => icon(FAM_ICON[id] || "briefcase");
-  const TAB_ICON = { overview: "home", mypath: "compass", ladder: "stairs", roles: "briefcase", roletest: "target", glossary: "book", stack: "layers", salary: "rupee", abroad: "globe", lifecycle: "flow" };
+  const TAB_ICON = { overview: "home", mypath: "compass", ladder: "stairs", roles: "briefcase", roletest: "target", glossary: "book", stack: "layers", salary: "rupee", pay: "wallet", abroad: "globe", lifecycle: "flow" };
   document.querySelectorAll(".tabs button").forEach((b) => b.insertAdjacentHTML("afterbegin", icon(TAB_ICON[b.dataset.tab])));
-  const QUICK_ICON = { roles: "briefcase", salary: "rupee", abroad: "globe", mypath: "compass" };
+  const QUICK_ICON = { roles: "briefcase", salary: "rupee", abroad: "globe", mypath: "compass", roletest: "target" };
   document.querySelectorAll(".quick-card").forEach((b) => b.insertAdjacentHTML("afterbegin", `<span class="q-ic">${icon(QUICK_ICON[b.dataset.tab] || "sparkles")}</span>`));
 
   /* ---------- Chart tooltip: any element with data-tip (HTML, already escaped) ---------- */
@@ -107,11 +115,12 @@
   const greeting = firstName ? `Hi, ${esc(firstName)}` : "My profile";
   $("#profileBtn").innerHTML = personal
     ? `<span class="avatar">${esc((firstName || "Me")[0].toUpperCase())}</span><span class="pb-text">${greeting}</span>`
-    : `<span class="pb-text">★ Get recommendations</span>`;
+    : `${icon("user")}<span class="pb-text">Set up profile</span>`;
   $("#profileBtn").title = personal ? "Edit your profile" : "Tell us about you to see personal recommendations";
   // Scroll to an element and keep it marked until the next click elsewhere, so a search result is easy to spot.
   const jumpTo = (el, block = "center") => {
     if (!el) return;
+    window.atlasReveal?.(el);
     document.querySelectorAll(".target").forEach((x) => x.classList.remove("target"));
     el.classList.add("target");
     el.scrollIntoView({ block, behavior: "smooth" });
@@ -341,7 +350,7 @@
     return pct >= 35 ? 1 : 0;
   };
   function renderRoleChips() {
-    $("#familyChips").innerHTML = [{ id: "all", name: "All" }, { id: "saved", name: `★ Saved (${saved.roles.length})` }, ...A.families]
+    $("#familyChips").innerHTML = [{ id: "all", name: "All" }, { id: "saved", name: `Saved (${saved.roles.length})` }, ...A.families]
       .map((f) => `<button class="chip${roleState.family === f.id ? " active" : ""}" data-fam="${f.id}">${esc(f.name)}</button>`).join("");
   }
   function renderRoles() {
@@ -504,11 +513,11 @@
   }
   function saveBtn(i) {
     const on = saved.roles.includes(slug(A.roles[i].name));
-    return `<button class="btn-ghost${on ? " on" : ""}" type="button" data-act="save-role" data-i="${i}" aria-pressed="${on}">${on ? "★ Saved" : "☆ Save"}</button>`;
+    return `<button class="btn-ghost${on ? " on" : ""}" type="button" data-act="save-role" data-i="${i}" aria-pressed="${on}">${icon("bookmark")}${on ? "Saved" : "Save"}</button>`;
   }
   function cmpBtn(i) {
     const on = compareList.includes(slug(A.roles[i].name));
-    return `<button class="btn-ghost${on ? " on" : ""}" type="button" data-act="cmp" data-i="${i}" aria-pressed="${on}">${on ? "✓ In compare" : "⇄ Compare"}</button>`;
+    return `<button class="btn-ghost${on ? " on" : ""}" type="button" data-act="cmp" data-i="${i}" aria-pressed="${on}">${icon("compare")}${on ? "In compare" : "Compare"}</button>`;
   }
   function salaryAt(ti, exp) {
     const b = bandFor(S.tracks[ti], exp), m = payMult();
@@ -519,7 +528,7 @@
   const countriesHtml = (key) => {
     const hot = hotCountries(key);
     const ti = S.tracks.findIndex((_, t) => profileOf(t).key === key);
-    return hot.length ? hot.map((k) => `<span class="pill" data-tip="${esc(`<b>${k.c}</b><br>${payAbroad(k.c, ti, sal.exp).text} at ${sal.exp} yrs<br>${k.oddsText} · usually ${k.minExp}+ yrs`)}">${k.flag} ${esc(k.c)}${sal.exp < k.minExp ? ` <small>(${k.minExp}+ yrs)</small>` : ""}</span>`).join("")
+    return hot.length ? hot.map((k) => `<span class="pill" data-tip="${esc(`<b>${k.c}</b><br>${payAbroad(k.c, ti, sal.exp).text} at ${sal.exp} yrs<br>${k.oddsText} · usually ${k.minExp}+ yrs`)}">${esc(k.c)}${sal.exp < k.minExp ? ` <small>(${k.minExp}+ yrs)</small>` : ""}</span>`).join("")
       : `<span class="muted">No high-demand country in our list</span>`;
   };
   /** One roadmap item: its alternatives ("Java|Kotlin") and whether the user has any of them. */
@@ -1041,8 +1050,8 @@
   function renderPayChart(list, ti, exp) {
     const india = personal && ab.role === "me" ? estimate(ti, exp, evaluate(ti, sal.skills, exp)) : salaryAt(ti, exp);
     const ctc = personal && +profile.ctc;
-    const rows = [...list.map(({ k, p }) => ({ name: `${k.flag} ${k.c.split(" (")[0]}`, lpa: p.lpa, tip: `<b>${esc(k.c)}</b><br>${esc(p.text)}<br>${esc(p.c.tax)}<br>≈ ₹${p.lpa[0]}–${p.lpa[1]} LPA` })),
-      { name: "🇮🇳 India (your city)", lpa: india, india: true, tip: `<b>India</b> · ${esc(S.cities[sal.city].n.split(" (")[0])}<br>${range(india)}` }]
+    const rows = [...list.map(({ k, p }) => ({ name: k.c.split(" (")[0], lpa: p.lpa, tip: `<b>${esc(k.c)}</b><br>${esc(p.text)}<br>${esc(p.c.tax)}<br>≈ ₹${p.lpa[0]}–${p.lpa[1]} LPA` })),
+      { name: "India (your city)", lpa: india, india: true, tip: `<b>India</b> · ${esc(S.cities[sal.city].n.split(" (")[0])}<br>${range(india)}` }]
       .sort((a, b) => midOf(b.lpa) - midOf(a.lpa));
     const top = Math.max(...rows.map((r) => r.lpa[1]), ctc || 0), step = payTickStep(top), max = Math.ceil(top / step) * step;
     const ticks = Array.from({ length: max / step + 1 }, (_, k) => k * step);
@@ -1065,7 +1074,7 @@
       : `For a <b>${esc(role)}</b> with <b>${exp} yrs</b>, no country shows high demand at your level — build experience or switch to an in-demand role.`;
     $("#countryGrid").innerHTML = list.map(({ k, f, p }) => `<details class="country o${k.odds}" data-country="${esc(k.c)}">
       <summary>
-        <span class="flag" aria-hidden="true">${k.flag}</span>
+        <span class="flag" aria-hidden="true">${flagCode(k.flag) || icon("globe")}</span>
         <span class="c-main"><b>${esc(k.c)}</b><small>${esc(k.visa)}</small></span>
         <span class="c-side"><span class="odds o${k.odds}">${esc(k.oddsText)}</span><b class="c-pay">${esc(p.text)}</b><small>≈ ₹${p.lpa[0]}–${p.lpa[1]} LPA</small></span>
         <span class="fit"><span class="demand ${DEMAND[f.d][1]}">${DEMAND[f.d][0]} for ${esc(role)}</span>${f.under ? `<span class="demand d0">Usually needs ${k.minExp}+ yrs</span>` : ""}</span>
@@ -1378,7 +1387,7 @@
       <span class="fit-ic">${famIcon(r.family)}</span>
       <div class="rec-main"><div class="rec-title"><button class="fit-name" type="button" data-act="open-role" data-i="${x.i}">${esc(r.name)}</button>${x === best ? `<span class="top-pick">Top pick</span>` : ""}${x === upside && x !== best ? `<span class="top-pick upside">Biggest pay upside</span>` : ""}</div>
         <div class="rec-why" data-tip="${esc(tip)}">${chips}</div></div>
-      <span class="fit-actions"><button class="icon-act${compareList.includes(slug(r.name)) ? " on" : ""}" type="button" data-act="cmp" data-i="${x.i}" aria-label="Compare ${esc(r.name)}" title="Add to compare">⇄</button><button class="icon-act" type="button" data-act="plan-to" data-i="${x.i}" aria-label="Plan a switch to ${esc(r.name)}" title="Plan this move">→</button></span>
+      <span class="fit-actions"><button class="icon-act${compareList.includes(slug(r.name)) ? " on" : ""}" type="button" data-act="cmp" data-i="${x.i}" aria-label="Compare ${esc(r.name)}" title="Add to compare">${icon("compare")}</button><button class="icon-act" type="button" data-act="plan-to" data-i="${x.i}" aria-label="Plan a switch to ${esc(r.name)}" title="Plan this move">${icon("arrow")}</button></span>
     </div>`;
   }
   // Plain skill-overlap list (used for students / no role, and as a folded extra).
@@ -1387,7 +1396,7 @@
       <button class="fit-name" type="button" data-act="open-role" data-i="${i}">${esc(A.roles[i].name)}</button>
       <span class="fit-bar" data-tip="${esc(`<b>${esc(A.roles[i].name)} · ${m.pct}%</b><br>${m.steps} to learn`)}"><span style="width:${m.pct}%"></span></span>
       <b class="fit-pct">${m.pct}%</b>
-      <span class="fit-actions"><button class="icon-act" type="button" data-act="plan-to" data-i="${i}" aria-label="Plan a switch to ${esc(A.roles[i].name)}" title="Plan this move">→</button></span>
+      <span class="fit-actions"><button class="icon-act" type="button" data-act="plan-to" data-i="${i}" aria-label="Plan a switch to ${esc(A.roles[i].name)}" title="Plan this move">${icon("arrow")}</button></span>
     </div>`).join("");
 
   function profileBarHtml() {
@@ -1466,7 +1475,7 @@
     const sr = saved.roles.map(roleBySlug).filter((i) => i >= 0);
     const st = saved.terms.map((s) => A.glossary.findIndex((g) => slug(g.t) === s)).filter((i) => i >= 0);
     if (!sr.length && !st.length) {
-      return `<p class="empty-inline">Nothing saved yet. Use <b>☆ Save</b> on a role or the ☆ next to any glossary term — they collect here as your study list.</p>`;
+      return `<p class="empty-inline">Nothing saved yet. Use <b>Save</b> on a role or the star next to any glossary term. They collect here as your study list.</p>`;
     }
     const firstThree = sr.length > 3 ? "first 3 " : "";
     const compare = sr.length > 1 ? `<button class="btn-link" type="button" data-act="cmp-saved">Compare ${firstThree}saved roles →</button>` : "";
@@ -1718,7 +1727,7 @@
     }
     store.set("atlas-plan", JSON.stringify(plan));
     showTab("mypath");
-    $("#planner").scrollIntoView({ block: "start" });
+    window.atlasReveal?.($("#planner"));
   }
   function printFrom(b) {
     const view = b.closest(".inline-view");
@@ -1766,8 +1775,8 @@
   const roleLists = (r) => [...r.languages, ...r.frameworks, ...r.tools, ...r.skills];
   const index = [
     ...A.roles.map((r, i) => ({ kind: "Role", title: r.name, sub: r.what, text: roleText(r), lists: roleLists(r), go: () => openRole(i) })),
-    ...AB.countries.map((k) => ({ kind: "Country", title: `${k.flag} ${k.c} — ${k.oddsText}`, sub: `${k.visa} · ${k.pay}`, text: [k.c, k.visa, k.rule, k.hot, "abroad visa work overseas job"].join(" ").toLowerCase(),
-      go: () => { showTab("abroad"); const d = [...document.querySelectorAll(".country")].find((el) => el.textContent.includes(k.c)); if (d) { d.open = true; d.scrollIntoView({ block: "center" }); } } })),
+    ...AB.countries.map((k) => ({ kind: "Country", title: `${k.c} — ${k.oddsText}`, sub: `${k.visa} · ${k.pay}`, text: [k.c, k.visa, k.rule, k.hot, "abroad visa work overseas job"].join(" ").toLowerCase(),
+      go: () => { showTab("abroad"); const d = [...document.querySelectorAll(".country")].find((el) => el.textContent.includes(k.c)); if (d) { d.open = true; window.atlasReveal?.(d); d.scrollIntoView({ block: "center" }); } } })),
     ...A.glossary.map((g, i) => ({ kind: "Term", title: g.t + (g.f ? ` — ${g.f}` : ""), sub: g.d, text: termText(g), go: () => goTerm(i) })),
     ...A.stack.flatMap((s, si) => s.items.map((it, ii) => ({ kind: "Tech", title: it.n, sub: `${it.u} · ${s.layer}`, text: [it.n, it.u, s.layer].join(" ").toLowerCase(), go: () => goStack(si, ii) }))),
     ...S.tracks.map((t, i) => ({ kind: "Salary", title: `${t.track} salary`, sub: `${range(t.rows[0].lpa)} (entry) to ${range(t.rows[t.rows.length - 1].pot)} (top)`, text: [t.track, t.stack, "salary lpa ctc pay"].join(" ").toLowerCase(), go: () => goTrack(i) })),

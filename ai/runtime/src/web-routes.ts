@@ -5,7 +5,8 @@
  *   GET /vendor/<name>    browser libraries from node_modules (fixed list)
  *   GET /catalog          topics, Atlas sections and role families for the sidebar
  *   GET /entry?id=...     one full source entry for the source viewer
- *   GET /atlas/<file>     the IT Roles & Terminology Atlas (incl. the Role Readiness Test)
+ *   GET /atlas/<file>     the IT Roles & Terminology Atlas (incl. the Role Readiness Test); /atlas → /#atlas,
+ *                         where the tutor shows it over the chat
  */
 import type { IncomingMessage, ServerResponse } from "node:http";
 import { readFile } from "node:fs/promises";
@@ -20,7 +21,7 @@ import { TOPIC_DESCRIPTIONS, TOPIC_LABELS } from "./topic-labels.js";
 const RUNTIME_DIR = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const WEB_DIR = resolve(REPOSITORY_ROOT, "ai/web");
 const ATLAS_DIR = resolve(REPOSITORY_ROOT, "IT_Roles_Terminology_Atlas");
-export const ATLAS_HOME = "/atlas/IT_Roles_Terminology_Atlas.html";
+export const ATLAS_HOME = "/#atlas";
 const VENDOR: Record<string, string> = {
   "marked.js": "marked/lib/marked.esm.js",
   "purify.js": "dompurify/dist/purify.es.mjs",
@@ -48,8 +49,8 @@ const CSP = [
   "base-uri 'none'",
   "frame-ancestors 'none'",
 ].join("; ");
-/** The Atlas also reads live job and tech-news feeds from these public APIs. */
-const ATLAS_CSP = CSP.replace("connect-src 'self'", "connect-src 'self' https://www.arbeitnow.com https://remotive.com https://jobicy.com https://hn.algolia.com");
+/** The Atlas also reads live job and tech-news feeds from these public APIs, and opens inside the tutor page. */
+const ATLAS_CSP = CSP.replace("connect-src 'self'", "connect-src 'self' https://www.arbeitnow.com https://remotive.com https://jobicy.com https://hn.algolia.com").replace("frame-ancestors 'none'", "frame-ancestors 'self'");
 
 export { TOPIC_LABELS };
 const ATLAS_TOPICS = ["roadmaps", "it-roles", "it-terminology", "tech-stack", "it-careers"];

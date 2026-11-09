@@ -7,7 +7,7 @@
   const slug = (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(?:^-)|(?:-$)/g, "");
   const load = (k, d) => { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch { return d; } };
   const save = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} };
-  const DASH = "IT_Roles_Terminology_Atlas.html";
+  const DASH = `IT_Roles_Terminology_Atlas.html${location.search}`; // keeps ?embed=1 inside the tutor
 
   try { document.documentElement.dataset.theme = localStorage.getItem("atlas-theme") || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"); } catch {}
 
@@ -115,7 +115,7 @@
       city: +$("#wCity").value, company: +$("#wCompany").value, mode: +$("#wMode").value
     }));
     try { localStorage.removeItem("atlas-plan"); } catch {} // so the switch plan starts from the new role/target
-    location.href = `${DASH}#mypath`;
+    location.replace(`${DASH}#mypath`);
   }
   // Skip: first visit → browse without recommendations. Editing an existing profile → just go back unchanged.
   const editing = !!prev.role && !prev.skipped;
@@ -123,7 +123,7 @@
     if (editing) b.textContent = "Cancel — back to the atlas";
     b.addEventListener("click", () => {
       if (!editing) save("atlas-profile", { skipped: true });
-      location.href = DASH;
+      location.replace(DASH);
     });
   });
   if (editing) {
@@ -132,7 +132,7 @@
       if (!confirm("Remove your name, role, skills and salary from this browser?")) return;
       save("atlas-profile", { skipped: true });
       save("atlas-salary", Object.assign(sal, { skills: [] }));
-      location.href = DASH;
+      location.replace(DASH);
     });
   }
 
