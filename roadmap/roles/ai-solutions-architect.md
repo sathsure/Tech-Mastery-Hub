@@ -11,6 +11,7 @@ Designs end-to-end AI systems — models, data, RAG, agents, security and cost.
 - [DevOps](../topics/devops.md)
 - [HTML](../topics/html.md)
 - [Java](../topics/java.md)
+- [Python](../topics/python.md)
 - [REST API](../topics/rest-api.md)
 - Usually 8+ years of experience when hired
 
@@ -29,7 +30,7 @@ Designs end-to-end AI systems — models, data, RAG, agents, security and cost.
 
 ## Also needed
 
-Python, Agent patterns, Azure AI Foundry / Azure OpenAI, Google Vertex AI, Draw.io
+Agent patterns, Azure AI Foundry / Azure OpenAI, Google Vertex AI, Draw.io
 
 ## Where it leads
 

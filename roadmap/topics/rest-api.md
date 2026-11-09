@@ -20,7 +20,19 @@
 3. [Can we get Request Body in GET?](../../interview/backend/java/02-REST-Api.md)
 4. [Without @Controller, can we receive API?](../../interview/backend/java/02-REST-Api.md)
 
-## 3. REST API & Controller Design
+## 3. REST API Design
+
+1. [What makes an API RESTful?](../../interview/backend/java/02-REST-Api.md)
+2. [What is the difference between PUT, PATCH and POST? Which are idempotent?](../../interview/backend/java/02-REST-Api.md)
+3. [How do you name REST endpoints well?](../../interview/backend/java/02-REST-Api.md)
+4. [How do you paginate large lists?](../../interview/backend/java/02-REST-Api.md)
+5. [How do you version a REST API?](../../interview/backend/java/02-REST-Api.md)
+6. [What should an API error response look like?](../../interview/backend/java/02-REST-Api.md)
+7. [How do you cache REST responses?](../../interview/backend/java/02-REST-Api.md)
+8. [How do you secure a REST API?](../../interview/backend/java/02-REST-Api.md)
+9. [REST vs GraphQL vs gRPC — when would you use each?](../../interview/backend/java/02-REST-Api.md)
+
+## 4. REST API & Controller Design
 
 1. [Our REST API is getting hard to maintain as features grow. How would you structure controllers better?](../../interview/backend/java/08-Architecture.md)
 2. [Multiple controllers are returning different response formats. How would you standardize this?](../../interview/backend/java/08-Architecture.md)
@@ -28,5 +40,5 @@
 
 ## Related roles
 
-[AI / LLM Engineer](../roles/ai-llm-engineer.md) · [AI Agent Engineer](../roles/ai-agent-engineer.md) · [AI Evaluation Engineer](../roles/ai-evaluation-engineer.md) · [AI Infrastructure / LLMOps Engineer](../roles/ai-infrastructure-llmops-engineer.md) · [AI Red Teamer / AI Safety Engineer](../roles/ai-red-teamer-ai-safety-engineer.md) · [AI Solutions Architect](../roles/ai-solutions-architect.md) · [Application Security / DevSecOps Engineer](../roles/application-security-devsecops-engineer.md) · [Automation Test Engineer](../roles/automation-test-engineer.md) · [Backend Developer](../roles/backend-developer.md) · [Context / Prompt Engineer](../roles/context-prompt-engineer.md) · [Forward Deployed Engineer](../roles/forward-deployed-engineer.md) · [Frontend Developer](../roles/frontend-developer.md) · [Full Stack Developer](../roles/full-stack-developer.md) · [Penetration Tester / Ethical Hacker](../roles/penetration-tester-ethical-hacker.md) · [Solution Architect](../roles/solution-architect.md)
+[AI / LLM Engineer](../roles/ai-llm-engineer.md) · [AI Agent Engineer](../roles/ai-agent-engineer.md) · [AI Evaluation Engineer](../roles/ai-evaluation-engineer.md) · [AI Infrastructure / LLMOps Engineer](../roles/ai-infrastructure-llmops-engineer.md) · [AI Red Teamer / AI Safety Engineer](../roles/ai-red-teamer-ai-safety-engineer.md) · [AI Solutions Architect](../roles/ai-solutions-architect.md) · [AI Trainer / Data Annotation Specialist](../roles/ai-trainer-data-annotation-specialist.md) · [Application Security / DevSecOps Engineer](../roles/application-security-devsecops-engineer.md) · [Automation Test Engineer](../roles/automation-test-engineer.md) · [Backend Developer](../roles/backend-developer.md) · [Context / Prompt Engineer](../roles/context-prompt-engineer.md) · [Conversational AI Designer](../roles/conversational-ai-designer.md) · [Data Scientist](../roles/data-scientist.md) · [Enterprise Architect](../roles/enterprise-architect.md) · [Forward Deployed Engineer](../roles/forward-deployed-engineer.md) · [Frontend Developer](../roles/frontend-developer.md) · [Full Stack Developer](../roles/full-stack-developer.md) · [GRC / Compliance Analyst](../roles/grc-compliance-analyst.md) · [IAM Engineer](../roles/iam-engineer.md) · [Machine Learning Engineer](../roles/machine-learning-engineer.md) · [Penetration Tester / Ethical Hacker](../roles/penetration-tester-ethical-hacker.md) · [Physical AI / Robotics Engineer](../roles/physical-ai-robotics-engineer.md) · [Responsible AI / AI Governance Lead](../roles/responsible-ai-ai-governance-lead.md) · [Security Analyst](../roles/security-analyst.md) · [Solution Architect](../roles/solution-architect.md) · [Tech Lead](../roles/tech-lead.md)
 

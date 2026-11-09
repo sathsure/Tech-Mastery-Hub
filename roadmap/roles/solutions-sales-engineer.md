@@ -9,6 +9,7 @@ Technical expert who supports sales with demos and proofs of concept.
 
 - [SQL](../topics/database-sql.md)
 - [HTML](../topics/html.md)
+- [Python](../topics/python.md)
 - Usually 3+ years of experience when hired
 
 ## Learning stages
@@ -19,7 +20,7 @@ Technical expert who supports sales with demos and proofs of concept.
 
 ## Also needed
 
-Python, POC delivery, Demo environments, CRM (Salesforce), Postman
+POC delivery, Demo environments, CRM (Salesforce), Postman
 
 ## Where it leads
 

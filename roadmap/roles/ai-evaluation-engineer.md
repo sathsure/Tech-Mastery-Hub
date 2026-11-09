@@ -8,6 +8,7 @@ Measures whether AI outputs are correct, safe and improving between versions.
 ## Prerequisites
 
 - [SQL](../topics/database-sql.md)
+- [Python](../topics/python.md)
 - [REST API](../topics/rest-api.md)
 - Usually 2+ years of experience when hired
 
@@ -19,7 +20,7 @@ Measures whether AI outputs are correct, safe and improving between versions.
 
 ## Also needed
 
-Python, Ragas, DeepEval, OpenAI Evals, Inspect, Braintrust, LangSmith, Langfuse, promptfoo, Weights & Biases
+Ragas, DeepEval, OpenAI Evals, Inspect, Braintrust, LangSmith, Langfuse, promptfoo, Weights & Biases
 
 ## Where it leads
 

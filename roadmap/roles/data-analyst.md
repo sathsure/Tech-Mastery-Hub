@@ -14,10 +14,11 @@ Turns data into reports, dashboards and business answers.
 ### Stage 1: Core skills
 
 - [ ] [SQL](../topics/database-sql.md)
+- [ ] [Python](../topics/python.md)
 
 ## Also needed
 
-Python, R, Excel formulas, pandas, DAX, Excel, Power BI, Tableau, Looker
+R, Excel formulas, DAX, Excel, Power BI, Tableau, Looker
 
 ## Where it leads
 

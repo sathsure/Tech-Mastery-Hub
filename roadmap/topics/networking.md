@@ -40,28 +40,15 @@
 2. [Tricky: What is the difference between a URL and a URI?](../../interview/architecture/08-Networking-HTTP.md)
 3. [Tricky: What is latency made of on a slow page load?](../../interview/architecture/08-Networking-HTTP.md)
 
-## 6. How Data Travels
+## 6. How data travels: packets, layers and DNS (networking, all languages)
 
-1. [How does data travel from one computer to another?](../../interview/under-the-hood/07-Networking-Internals.md)
-2. [How do IP Addresses, MAC Addresses, DNS, Ports and Routing work together?](../../interview/under-the-hood/07-Networking-Internals.md)
+1. [How does data travel from one computer to another?](../../interview/under-the-hood/08-How-Data-Travels.md)
+2. [How does DNS find a website's IP address?](../../interview/under-the-hood/08-How-Data-Travels.md)
 
-## 7. TCP, UDP and HTTP
+## 7. TCP, UDP and HTTPS (networking, all languages)
 
-1. [How do TCP and UDP work internally?](../../interview/under-the-hood/07-Networking-Internals.md)
-2. [How does TCP establish and maintain connections?](../../interview/under-the-hood/07-Networking-Internals.md)
-3. [How do HTTP/1.1, HTTP/2 and HTTP/3 differ internally?](../../interview/under-the-hood/07-Networking-Internals.md)
-
-## 8. Security: TLS, Keys and Certificates
-
-1. [How does HTTPS and the TLS Handshake work?](../../interview/under-the-hood/07-Networking-Internals.md)
-2. [How do Public-Key and Private-Key cryptography work?](../../interview/under-the-hood/07-Networking-Internals.md)
-3. [How does a receiver verify that the sender possesses the legitimate private key?](../../interview/under-the-hood/07-Networking-Internals.md)
-4. [How do Digital Certificates and Certificate Authorities establish trust?](../../interview/under-the-hood/07-Networking-Internals.md)
-
-## 9. Persistent Connections and Traffic Routing
-
-1. [How do WebSockets establish persistent connections?](../../interview/under-the-hood/07-Networking-Internals.md)
-2. [How do Load Balancers, Reverse Proxies and API Gateways work?](../../interview/under-the-hood/07-Networking-Internals.md)
+1. [What is the difference between TCP and UDP?](../../interview/under-the-hood/08-How-Data-Travels.md)
+2. [How does HTTPS keep data private (the TLS handshake)?](../../interview/under-the-hood/08-How-Data-Travels.md)
 
 ## Diagrams
 

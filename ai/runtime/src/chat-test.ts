@@ -281,6 +281,41 @@ await check("mock interview: asks one question at a time, scores answers, and en
   assert.equal(validateChatRequest({ message: "x", mock: { topic: "java", ids: [], index: 0, scores: [] } }).ok, false);
 });
 
+await check("mock interview: Claude grades answers when available, and key-point matching is the fallback", async () => {
+  const start = await collect({ message: "Mock interview on SQL" }, null);
+  const mock = start.done!.mock!;
+  const grader = new FakeModel(async function* () {
+    yield { type: "text", text: 'Here you go: {"score": 4, "covered": ["Explains the trade-off"], "missed": [], "feedback": "Clear and complete — nice use of an example."}' };
+    yield final();
+  });
+  const graded = await collect({ message: "My answer in my own words, with an example and a trade-off.", mock }, grader);
+  assert.match(graded.answer, /\*\*Score: 4\/4\*\* — Clear and complete/);
+  assert.match(graded.answer, /Graded by Claude/);
+  const sent = String(grader.inputs[0].messages[0].content);
+  assert.ok(sent.includes("<candidate_answer>") && sent.includes("<model_answer>"), "the grader gets the model answer and the candidate's answer");
+  const broken = new FakeModel(async function* () {
+    yield { type: "text", text: "I think this is pretty good!" };
+    yield final();
+  });
+  const fallback = await collect({ message: "Another answer.", mock }, broken);
+  assert.match(fallback.answer, /\*\*Score: [1-4]\/4\*\*/);
+  assert.match(fallback.answer, /Graded by matching the key points/, "bad JSON falls back to the free grader");
+});
+
+await check("home page hubs: Explore topics and Roadmaps list choices instead of opening one item", async () => {
+  const topics = await collect({ message: "Explore topics", overview: "topics" }, null);
+  assert.equal(topics.done?.view, "overview");
+  const areas = cardsIn(topics.answer);
+  assert.deepEqual(areas.map(card => card.title).slice(0, 3), ["Frontend", "Backend", "Data"]);
+  const backend = areas.find(card => card.title === "Backend");
+  assert.ok(backend?.type === "topic" && backend.items.some(item => item.label === "Java" && item.overview === "java"), "each topic chip opens its overview");
+  const roadmaps = await collect({ message: "Roadmaps", overview: "roadmaps-hub" }, null);
+  const cards = cardsIn(roadmaps.answer);
+  assert.equal(cards[0].title, "Roadmap for a job role");
+  assert.ok(cards[0].type === "topic" && cards[0].items.some(item => item.label === "Full Stack Developer"));
+  assert.ok(cards.some(card => card.title === "Backend with Java"), "learning tracks are listed too");
+});
+
 await check("home page hubs: Career atlas shows all four parts, Interview prep offers roles and topics", async () => {
   const cardsOf = (answer: string): Card[] => JSON.parse(/```tmh-cards\n([\s\S]*?)```/.exec(answer)?.[1] ?? "[]");
   const atlas = await collect({ message: "Explore the Career Atlas", overview: "career-atlas" }, null);
@@ -353,11 +388,11 @@ await check("follow-ups: only what is new, never the previous explanation again"
   assert.doesNotMatch(cicd.answer, /beyond the previous answer/);
   assert.match(cicd.answer, /```mermaid/, "the note's diagram is shown");
 
-  // "Show me a diagram" finds Mermaid diagrams written in the notes, not just image files.
+  // "Show me a diagram" finds the notes' diagrams: Mermaid or an image.
   const dns = await collect({ message: "How does DNS work?", history: [] }, null);
   const dnsDiagram = await collect({ message: "show me a diagram", history: [{ role: "user" as const, content: "How does DNS work?" }, { role: "assistant" as const, content: dns.answer }] }, null);
   assert.match(dnsDiagram.answer, /^\*\*Diagram\*\*/);
-  assert.match(dnsDiagram.answer, /```mermaid/);
+  assert.match(dnsDiagram.answer, /```mermaid|!\[/);
 
   // Claude is told the question builds on the previous answer.
   const model = new FakeModel(async function* () {

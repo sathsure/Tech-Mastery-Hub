@@ -7,14 +7,16 @@ Puts ML models into production and keeps them working.
 
 ## Prerequisites
 
-- None. Start with Stage 1.
+- [Java](../topics/java.md)
+- [Python](../topics/python.md)
+- [REST API](../topics/rest-api.md)
 - Usually 2+ years of experience when hired
 
 ## Learning stages
 
 ### Stage 1: Core skills
 
-- [ ] [Java](../topics/java.md)
+- [ ] [AI & LLMs](../topics/ai.md)
 
 ## Also useful
 
@@ -22,7 +24,7 @@ Puts ML models into production and keeps them working.
 
 ## Also needed
 
-Python, C++, PyTorch, TensorFlow, Hugging Face, ONNX, MLflow, Kubeflow, SageMaker, Vertex AI
+C++, TensorFlow, Hugging Face, ONNX, MLflow, Kubeflow, SageMaker, Vertex AI
 
 ## Where it leads
 

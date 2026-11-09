@@ -7,18 +7,20 @@ Uses statistics and ML to find patterns and make predictions.
 
 ## Prerequisites
 
-- None. Start with Stage 1.
+- [SQL](../topics/database-sql.md)
+- [Python](../topics/python.md)
+- [REST API](../topics/rest-api.md)
 - Usually 1+ years of experience when hired
 
 ## Learning stages
 
 ### Stage 1: Core skills
 
-- [ ] [SQL](../topics/database-sql.md)
+- [ ] [AI & LLMs](../topics/ai.md)
 
 ## Also needed
 
-Python, R, scikit-learn, pandas, NumPy, XGBoost, TensorFlow/PyTorch, Jupyter, Databricks, MLflow
+R, scikit-learn, XGBoost, Jupyter, Databricks, MLflow
 
 ## Where it leads
 

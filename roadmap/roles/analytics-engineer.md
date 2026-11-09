@@ -8,6 +8,7 @@ Builds clean, tested data models that analysts and BI tools use.
 ## Prerequisites
 
 - [SQL](../topics/database-sql.md)
+- [Python](../topics/python.md)
 - Usually 2+ years of experience when hired
 
 ## Learning stages
@@ -22,7 +23,7 @@ Builds clean, tested data models that analysts and BI tools use.
 
 ## Also needed
 
-Python, Jinja, Dimensional modelling, Snowflake, BigQuery, Databricks, Looker
+Jinja, Dimensional modelling, Snowflake, BigQuery, Databricks, Looker
 
 ## Where it leads
 

@@ -15,6 +15,7 @@ Tracks and reduces cloud and AI spend.
 ### Stage 1: Core skills
 
 - [ ] [SQL](../topics/database-sql.md)
+- [ ] [Python](../topics/python.md)
 
 ## Also useful
 
@@ -22,7 +23,7 @@ Tracks and reduces cloud and AI spend.
 
 ## Also needed
 
-Python, FinOps Framework, Azure Cost Management, CloudHealth, Kubecost
+FinOps Framework, Azure Cost Management, CloudHealth, Kubecost
 
 ## Where it leads
 

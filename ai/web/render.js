@@ -144,7 +144,8 @@ function countryCardHtml(card) {
 
 function itemHtml(item, asChip) {
   const cls = asChip ? "chip-link" : "card-link";
-  const inner = item.ask ? `<button type="button" class="${cls}" data-ask="${escapeHtml(item.ask)}">${escapeHtml(item.label)}</button>` : escapeHtml(item.label);
+  const overview = item.overview ? ` data-overview="${escapeHtml(item.overview)}"` : "";
+  const inner = item.ask ? `<button type="button" class="${cls}" data-ask="${escapeHtml(item.ask)}"${overview}>${escapeHtml(item.label)}</button>` : escapeHtml(item.label);
   return asChip ? inner : `<li>${inner}</li>`;
 }
 

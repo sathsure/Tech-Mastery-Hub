@@ -11,6 +11,7 @@ Builds server-side logic, APIs and database access.
 - [DSA (Python)](../topics/dsa.md)
 - [HTML](../topics/html.md)
 - [Java](../topics/java.md)
+- [Python](../topics/python.md)
 - [REST API](../topics/rest-api.md)
 - [Testing](../topics/testing.md)
 
@@ -36,7 +37,7 @@ Builds server-side logic, APIs and database access.
 
 ## Also needed
 
-Python, C#, Go, Django, FastAPI, .NET, NestJS, IntelliJ, Postman, Kafka
+C#, Go, .NET, NestJS, IntelliJ, Postman, Kafka
 
 ## Where it leads
 

@@ -64,26 +64,24 @@
 7. [Tricky: What do these print?](../../interview/frontend/03-JavaScript.md)
 8. [Tricky: What does this closure-in-a-loop print, and how do you fix it?](../../interview/frontend/03-JavaScript.md)
 
-## 9. Loading and Rendering a Page
+## 9. How code becomes something the CPU can run (all languages)
 
-1. [What happens internally when we enter a URL and open a website?](../../interview/under-the-hood/03a-Browser-Internals.md)
-2. [How does a browser convert HTML, CSS and JavaScript into a rendered webpage?](../../interview/under-the-hood/03a-Browser-Internals.md)
-3. [How do DOM, CSSOM, Render Tree, Layout and Paint work together?](../../interview/under-the-hood/03a-Browser-Internals.md)
+1. [What happens between writing code and the computer running it?](../../interview/under-the-hood/01-How-Code-Runs.md)
+   - [Is Java compiled or interpreted?](../../interview/under-the-hood/01-How-Code-Runs.md)
+2. [What is the difference between AOT and JIT compilation?](../../interview/under-the-hood/01-How-Code-Runs.md)
 
-## 10. JavaScript in the Browser
+## 10. Language runtimes: the JVM and JavaScript engines (Java & JavaScript)
 
-1. [How does JavaScript execute inside a browser?](../../interview/under-the-hood/03a-Browser-Internals.md)
-2. [How do Call Stack, Event Loop, Microtask Queue and Task Queue work?](../../interview/under-the-hood/03a-Browser-Internals.md)
-3. [How does asynchronous JavaScript execute without blocking the UI?](../../interview/under-the-hood/03a-Browser-Internals.md)
-4. [How does a browser determine which UI elements need updating?](../../interview/under-the-hood/03a-Browser-Internals.md)
-5. [How do Angular, React and Vue detect changes and update the DOM?](../../interview/under-the-hood/03a-Browser-Internals.md)
+1. [How does the JVM run a Java program?](../../interview/under-the-hood/01-How-Code-Runs.md)
+2. [How does a JavaScript engine like V8 run code?](../../interview/under-the-hood/01-How-Code-Runs.md)
 
-## 11. Network, Build and Storage
+## 11. Inside the browser: from a URL to pixels on screen (frontend)
 
-1. [How does a frontend application communicate with a backend?](../../interview/under-the-hood/03a-Browser-Internals.md)
-2. [How do bundlers, Tree Shaking and Code Splitting work?](../../interview/under-the-hood/03a-Browser-Internals.md)
-3. [How do Browser Cache, Cookies, LocalStorage, SessionStorage and IndexedDB work?](../../interview/under-the-hood/03a-Browser-Internals.md)
-4. [How do Browser Tabs and Web Workers work internally?](../../interview/under-the-hood/03a-Browser-Internals.md)
+1. [What happens when you type a URL and press Enter?](../../interview/under-the-hood/06-Inside-the-Browser.md)
+2. [How does a browser turn HTML, CSS and JavaScript into a page?](../../interview/under-the-hood/06-Inside-the-Browser.md)
+3. [How does the JavaScript event loop work?](../../interview/under-the-hood/06-Inside-the-Browser.md)
+4. [How do frameworks like Angular and React update the screen efficiently?](../../interview/under-the-hood/06-Inside-the-Browser.md)
+5. [How do cookies, localStorage, sessionStorage and IndexedDB differ?](../../interview/under-the-hood/06-Inside-the-Browser.md)
 
 ## Practice
 
@@ -111,8 +109,9 @@
 
 ## Diagrams
 
-- [How a browser renders a page](../../knowledge/visual-notes/browser-render.png)
-- [JavaScript event loop](../../knowledge/visual-notes/event-loop.png)
+- [Browser rendering: HTML and CSS are parsed into trees, combined, laid out and painted](../../knowledge/visual-notes/browser-render.png)
+- [Event loop: the call stack, Web APIs, the microtask queue and the task queue](../../knowledge/visual-notes/event-loop.png)
+- [Angular component lifecycle hooks, from constructor to ngOnDestroy](../../knowledge/visual-notes/angular-lifecycle.png)
 
 ## Related roles
 

@@ -9,6 +9,7 @@ Keeps production reliable using software engineering practices.
 
 - [DevOps](../topics/devops.md)
 - [Linux & Shell](../topics/linux.md)
+- [Python](../topics/python.md)
 - Usually 3+ years of experience when hired
 
 ## Learning stages
@@ -19,7 +20,7 @@ Keeps production reliable using software engineering practices.
 
 ## Also needed
 
-Go, Python, Prometheus, Grafana, PagerDuty, Datadog, ELK
+Go, Prometheus, Grafana, PagerDuty, Datadog, ELK
 
 ## Where it leads
 

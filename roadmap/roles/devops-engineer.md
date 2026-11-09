@@ -7,20 +7,21 @@ Automates building, testing and deploying software.
 
 ## Prerequisites
 
-- None. Start with Stage 1.
+- [DevOps](../topics/devops.md)
+- [Git](../topics/git.md)
+- [Linux & Shell](../topics/linux.md)
+- [Python](../topics/python.md)
 - Usually 1+ years of experience when hired
 
 ## Learning stages
 
 ### Stage 1: Core skills
 
-- [ ] [DevOps](../topics/devops.md)
-- [ ] [Git](../topics/git.md)
-- [ ] [Linux & Shell](../topics/linux.md)
+- [ ] [Terraform & IaC](../topics/terraform.md)
 
 ## Also needed
 
-Python, YAML, Groovy, HCL, Terraform, Ansible, GitHub Actions, GitLab CI, Argo CD, Helm, SonarQube
+YAML, Groovy, Ansible, GitHub Actions, GitLab CI, Argo CD, Helm, SonarQube
 
 ## Where it leads
 

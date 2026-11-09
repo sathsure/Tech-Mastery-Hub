@@ -87,6 +87,8 @@ check("US, Canada, Ireland, Australia, Singapore, UAE: hand-worked figures", () 
   const jp = T.countryEstimate(country("Japan"), 6000000);
   assert.equal(jp.taxable, 2444000, "6M − 1.64M employment deduction − 876,000 social − 1.04M basic");
   assert.equal(jp.incomeTax, 149985, "146,900 + 2.1% surtax");
+  const jp8 = T.countryEstimate(country("Japan"), 8000000);
+  assert.equal(jp8.taxable, 4280000, "8M − 1.9M employment deduction − 1,149,700 social − 670,000 basic (income 6.1M is in the middle band)");
 });
 
 check("Data: every country has a year, brackets and an official link", () => {

@@ -20,6 +20,8 @@ export interface CardItem {
   label: string;
   /** Question asked when the item is clicked; plain text without it. */
   ask?: string;
+  /** Topic id: clicking opens that topic's overview (used with `ask`). */
+  overview?: string;
 }
 
 export interface RoleCard {

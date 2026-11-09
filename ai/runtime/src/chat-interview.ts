@@ -12,11 +12,12 @@ import { topicSlug } from "./roadmap-generator.js";
 /** Picker groups, in the order a candidate usually prepares them (basics before frameworks, HR last). */
 export const LAYERS: Array<[string, string[]]> = [
   ["Frontend", ["html", "css", "javascript", "typescript", "angular", "react", "rxjs", "web-vitals"]],
-  ["Backend", ["java", "spring", "spring-security", "nodejs", "rest-api", "microservices", "spring-cloud", "messaging"]],
+  ["Backend", ["java", "spring", "spring-security", "python", "nodejs", "rest-api", "microservices", "spring-cloud", "messaging"]],
   ["Data", ["database/sql", "caching", "data-engineering"]],
-  ["Cloud & DevOps", ["linux", "git", "devops", "aws", "observability"]],
+  ["Cloud & DevOps", ["linux", "git", "devops", "terraform", "aws", "observability"]],
   ["AI", ["ai"]],
   ["Core skills", ["dsa", "design-patterns", "testing", "security", "networking", "system-design", "web-architecture", "under-the-hood"]],
+  ["Leadership", ["leadership"]],
   ["HR round", ["behavioral", "agile"]],
 ];
 const ORDER = LAYERS.flatMap(([, topics]) => topics);
@@ -33,7 +34,7 @@ const IMPLIES: Record<string, string[]> = {
 };
 
 /** Programming topics: a role that writes code in one of them also gets the coding-interview basics (DSA, design, testing). SQL alone doesn't count — analysts use it too. */
-const ENGINEERING = new Set(["javascript", "typescript", "angular", "react", "nodejs", "java", "spring", "devops", "aws"]);
+const ENGINEERING = new Set(["javascript", "typescript", "angular", "react", "nodejs", "java", "spring", "python", "devops", "aws"]);
 
 /** The stacks to offer for a role, in picker order. */
 export function interviewTopics(relatedTopics: string[]): string[] {

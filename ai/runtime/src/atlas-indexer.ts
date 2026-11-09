@@ -80,7 +80,7 @@ function phraseText(text: string): string {
 function relatedTopics(text: string, lookups: Lookups): string[] {
   const padded = phraseText(text);
   const atlasTopics = new Set([...Object.values(PART_TOPICS), DEFAULT_TOPIC]);
-  return Object.entries(lookups.topicAliases)
+  return Object.entries(lookups.roleAliases)
     .filter(([topic, aliases]) => !atlasTopics.has(topic) && aliases.some(alias => padded.includes(phraseText(alias))))
     .map(([topic]) => topic)
     .sort(byText);

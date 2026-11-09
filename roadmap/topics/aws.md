@@ -95,5 +95,5 @@
 
 ## Related roles
 
-[AI Solutions Architect](../roles/ai-solutions-architect.md) · [Cloud Architect](../roles/cloud-architect.md) · [Cloud Security Engineer](../roles/cloud-security-engineer.md)
+[AI Solutions Architect](../roles/ai-solutions-architect.md) · [Cloud Architect](../roles/cloud-architect.md)
 

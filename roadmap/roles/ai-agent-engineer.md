@@ -9,6 +9,7 @@ Builds autonomous AI agents that plan, call tools and complete multi-step tasks.
 
 - [HTML](../topics/html.md)
 - [Java](../topics/java.md)
+- [Python](../topics/python.md)
 - [REST API](../topics/rest-api.md)
 - Usually 2+ years of experience when hired
 
@@ -30,7 +31,7 @@ Builds autonomous AI agents that plan, call tools and complete multi-step tasks.
 
 ## Also needed
 
-Python, LangGraph, Claude Agent SDK, OpenAI Agents SDK, CrewAI, AutoGen, A2A protocol, Claude / GPT / Gemini APIs, Langfuse / LangSmith, Temporal
+LangGraph, Claude Agent SDK, OpenAI Agents SDK, CrewAI, AutoGen, A2A protocol, Claude / GPT / Gemini APIs, Langfuse / LangSmith, Temporal
 
 ## Where it leads
 

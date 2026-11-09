@@ -18,7 +18,7 @@ Runs Scrum ceremonies and removes blockers for the team.
 
 ## Also needed
 
-Kanban, SAFe, Jira, Miro
+Kanban, Jira, Miro
 
 ## Where it leads
 

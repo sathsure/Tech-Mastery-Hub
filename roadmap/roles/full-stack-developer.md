@@ -11,6 +11,7 @@ Works on both frontend and backend of an application.
 - [DevOps](../topics/devops.md)
 - [HTML](../topics/html.md)
 - [Java](../topics/java.md)
+- [Python](../topics/python.md)
 - [REST API](../topics/rest-api.md)
 
 ## Learning stages

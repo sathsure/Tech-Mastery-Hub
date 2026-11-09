@@ -8,17 +8,23 @@ Secures cloud accounts, identities and data.
 ## Prerequisites
 
 - [DevOps](../topics/devops.md)
+- [Python](../topics/python.md)
 - Usually 4+ years of experience when hired
 
 ## Learning stages
 
 ### Stage 1: Core skills
 
-- [ ] [AWS](../topics/aws.md)
+- [ ] [Observability & SRE](../topics/observability.md)
+- [ ] [Terraform & IaC](../topics/terraform.md)
+
+## Also useful
+
+[AWS](../topics/aws.md)
 
 ## Also needed
 
-Python, HCL, CIS Benchmarks, Zero Trust, Azure Defender, Wiz, Prisma Cloud
+CIS Benchmarks, Zero Trust, Azure Defender, Wiz, Prisma Cloud
 
 ## Where it leads
 

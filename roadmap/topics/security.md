@@ -100,12 +100,15 @@
 3. [What is the difference between SAST, DAST and penetration testing?](../../interview/security/01-Web-Security-OWASP.md)
 4. [What does "least privilege" mean in practice?](../../interview/security/01-Web-Security-OWASP.md)
 
-## 12. Security: TLS, Keys and Certificates
+## 12. How data travels: packets, layers and DNS (networking, all languages)
 
-1. [How does HTTPS and the TLS Handshake work?](../../interview/under-the-hood/07-Networking-Internals.md)
-2. [How do Public-Key and Private-Key cryptography work?](../../interview/under-the-hood/07-Networking-Internals.md)
-3. [How does a receiver verify that the sender possesses the legitimate private key?](../../interview/under-the-hood/07-Networking-Internals.md)
-4. [How do Digital Certificates and Certificate Authorities establish trust?](../../interview/under-the-hood/07-Networking-Internals.md)
+1. [How does data travel from one computer to another?](../../interview/under-the-hood/08-How-Data-Travels.md)
+2. [How does DNS find a website's IP address?](../../interview/under-the-hood/08-How-Data-Travels.md)
+
+## 13. TCP, UDP and HTTPS (networking, all languages)
+
+1. [What is the difference between TCP and UDP?](../../interview/under-the-hood/08-How-Data-Travels.md)
+2. [How does HTTPS keep data private (the TLS handshake)?](../../interview/under-the-hood/08-How-Data-Travels.md)
 
 ## Diagrams
 
@@ -113,5 +116,5 @@
 
 ## Related roles
 
-[AI Red Teamer / AI Safety Engineer](../roles/ai-red-teamer-ai-safety-engineer.md) · [Application Security / DevSecOps Engineer](../roles/application-security-devsecops-engineer.md) · [Penetration Tester / Ethical Hacker](../roles/penetration-tester-ethical-hacker.md)
+[AI Red Teamer / AI Safety Engineer](../roles/ai-red-teamer-ai-safety-engineer.md) · [Application Security / DevSecOps Engineer](../roles/application-security-devsecops-engineer.md) · [GRC / Compliance Analyst](../roles/grc-compliance-analyst.md) · [IAM Engineer](../roles/iam-engineer.md) · [Penetration Tester / Ethical Hacker](../roles/penetration-tester-ethical-hacker.md) · [Security Analyst](../roles/security-analyst.md)
 

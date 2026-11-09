@@ -17,7 +17,7 @@ import { dirname, posix, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { QuestionEntry } from "./question-index-contracts.js";
 import { buildQuestionIndex, REPOSITORY_ROOT } from "./question-indexer.js";
-import { entityKey, loadVocabulary } from "./question-search.js";
+import { entityKey, loadVocabulary, roleLinkAliases } from "./question-search.js";
 import { TOPIC_LABELS } from "./topic-labels.js";
 import { byText, replaceParenGroups } from "./text-utils.js";
 
@@ -59,6 +59,9 @@ export const PREREQUISITES: Record<string, string[]> = {
   networking: [],
   behavioral: [],
   salary: [],
+  "terraform": ["devops"],
+  "leadership": ["system-design"],
+  "python": [],
   "linux": [],
   "security": ["rest-api"],
   "observability": ["devops"],
@@ -70,8 +73,9 @@ export const PREREQUISITES: Record<string, string[]> = {
 export const TRACKS: Array<{ name: string; description: string; topics: string[] }> = [
   { name: "Frontend", description: "Build user interfaces for the browser.", topics: ["html", "css", "javascript", "typescript", "web-vitals", "react", "angular", "rxjs"] },
   { name: "Backend with Java", description: "Build services with Java and Spring.", topics: ["java", "database/sql", "rest-api", "spring", "spring-security", "microservices", "spring-cloud"] },
+  { name: "Backend and data with Python", description: "Build APIs, scripts and data tools in Python.", topics: ["python", "rest-api", "database/sql", "data-engineering"] },
   { name: "Backend with Node.js", description: "Build services with JavaScript on the server.", topics: ["javascript", "nodejs", "rest-api", "database/sql", "web-architecture"] },
-  { name: "DevOps and cloud", description: "Ship, run and scale applications.", topics: ["linux", "git", "devops", "aws", "observability", "microservices", "messaging"] },
+  { name: "DevOps and cloud", description: "Ship, run and scale applications.", topics: ["linux", "git", "devops", "terraform", "aws", "observability", "microservices", "messaging"] },
   { name: "System design", description: "Design systems that scale and stay up.", topics: ["networking", "database/sql", "rest-api", "system-design", "caching", "microservices", "messaging"] },
   { name: "Coding interviews and AI", description: "Crack coding rounds and build with AI.", topics: ["dsa", "design-patterns", "testing", "ai"] },
   { name: "Under the hood", description: "Understand how code really runs: compilers, runtimes, CPU and memory.", topics: ["under-the-hood"] },
@@ -356,7 +360,7 @@ function gapReport(plans: RolePlan[], skipped: QuestionEntry[], topics: string[]
 export function generateRoadmaps(): Map<string, string> {
   const index = buildQuestionIndex("roadmaps");
   const entries = index.entries.filter(entry => !entry.source.path.startsWith("roadmap/"));
-  const aliases = loadVocabulary().topicAliases;
+  const aliases = roleLinkAliases(loadVocabulary());
   const counts = new Map<string, number>();
   for (const entry of entries) {
     if (entry.contentType !== "interview" && entry.contentType !== "practice") continue;

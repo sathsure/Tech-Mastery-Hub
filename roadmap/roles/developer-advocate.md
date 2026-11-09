@@ -8,6 +8,7 @@ Helps developers succeed with a platform through content, demos and community.
 ## Prerequisites
 
 - [HTML](../topics/html.md)
+- [Python](../topics/python.md)
 - Usually 3+ years of experience when hired
 
 ## Learning stages
@@ -22,7 +23,7 @@ Helps developers succeed with a platform through content, demos and community.
 
 ## Also needed
 
-Python, Platform SDKs, Docs-as-code, GitHub, YouTube, Discord, Docusaurus
+Platform SDKs, Docs-as-code, GitHub, YouTube, Discord, Docusaurus
 
 ## Where it leads
 

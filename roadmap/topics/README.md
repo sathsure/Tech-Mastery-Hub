@@ -28,6 +28,15 @@ Build services with Java and Spring.
 6. [ ] [Microservices](../topics/microservices.md)
 7. [ ] [Spring Cloud](../topics/spring-cloud.md)
 
+## Backend and data with Python
+
+Build APIs, scripts and data tools in Python.
+
+1. [ ] [Python](../topics/python.md)
+2. [ ] [REST API](../topics/rest-api.md)
+3. [ ] [SQL](../topics/database-sql.md)
+4. [ ] [Data Engineering](../topics/data-engineering.md)
+
 ## Backend with Node.js
 
 Build services with JavaScript on the server.
@@ -45,10 +54,11 @@ Ship, run and scale applications.
 1. [ ] [Linux & Shell](../topics/linux.md)
 2. [ ] [Git](../topics/git.md)
 3. [ ] [DevOps](../topics/devops.md)
-4. [ ] [AWS](../topics/aws.md)
-5. [ ] [Observability & SRE](../topics/observability.md)
-6. [ ] [Microservices](../topics/microservices.md)
-7. [ ] [Kafka & RabbitMQ](../topics/messaging.md)
+4. [ ] [Terraform & IaC](../topics/terraform.md)
+5. [ ] [AWS](../topics/aws.md)
+6. [ ] [Observability & SRE](../topics/observability.md)
+7. [ ] [Microservices](../topics/microservices.md)
+8. [ ] [Kafka & RabbitMQ](../topics/messaging.md)
 
 ## System design
 

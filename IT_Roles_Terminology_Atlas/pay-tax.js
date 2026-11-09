@@ -215,7 +215,10 @@
     } else if (country.calc === "japan") {
       const socialTotal0 = social.reduce((sum, s) => sum + s.amount, 0);
       const employment = jpEmploymentDeduction(gross);
-      const basic = gross <= 6650000 ? 1040000 : 620000;
+      // 2026 basic deduction by total income (salary after the employment deduction), per NTA guidance.
+      const totalIncome = gross - employment;
+      const basic = totalIncome <= 4890000 ? 1040000 : totalIncome <= 6550000 ? 670000 : totalIncome <= 23500000 ? 620000
+        : totalIncome <= 24000000 ? 480000 : totalIncome <= 24500000 ? 320000 : totalIncome <= 25000000 ? 160000 : 0;
       taxable = Math.max(0, Math.floor((gross - employment - socialTotal0 - basic) / 1000) * 1000);
       tax = bracketTax(taxable, regime.brackets) * 1.021; // + 2.1% reconstruction surtax
       // Resident tax: about 10% with its own ¥430,000 basic deduction, plus a small flat charge; paid a year later.

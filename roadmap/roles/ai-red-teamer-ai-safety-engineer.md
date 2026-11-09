@@ -7,6 +7,7 @@ Attacks and stress-tests AI systems to find harmful, unsafe or insecure behaviou
 
 ## Prerequisites
 
+- [Python](../topics/python.md)
 - [REST API](../topics/rest-api.md)
 - Usually 3+ years of experience when hired
 
@@ -19,7 +20,7 @@ Attacks and stress-tests AI systems to find harmful, unsafe or insecure behaviou
 
 ## Also needed
 
-Python, MITRE ATLAS, NIST AI RMF, Garak, PyRIT, promptfoo, Guardrails AI, NeMo Guardrails
+MITRE ATLAS, Garak, PyRIT, promptfoo, Guardrails AI, NeMo Guardrails
 
 ## Where it leads
 

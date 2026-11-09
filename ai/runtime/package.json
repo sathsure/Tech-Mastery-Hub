@@ -34,7 +34,7 @@
         "chat-check": "node dist/chat-test.js",
         "roadmaps": "node dist/roadmap-generator.js && node dist/question-indexer.js",
         "roadmaps-check": "node dist/roadmap-generator.js --check",
-        "atlas-check": "node ../../IT_Roles_Terminology_Atlas/pay-tax.test.js"
+        "atlas-check": "node ../../IT_Roles_Terminology_Atlas/pay-tax.test.js && node ../../IT_Roles_Terminology_Atlas/role-test.test.js"
     },
     "devDependencies": {
         "@types/node": "^22.0.0",

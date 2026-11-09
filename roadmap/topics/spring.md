@@ -165,35 +165,22 @@
    - [`@Mock` vs `@MockBean`/`@MockitoBean`?](../../interview/testing/01-Testing.md)
 2. [What is Testcontainers?](../../interview/testing/01-Testing.md)
 
-## 13. Servers, Localhost and Ports
+## 13. Servers, localhost and ports (all backends)
 
-1. [What exactly is a Server? Is it hardware, software, a process or a computer?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
-2. [What is Localhost? How is it different from a physical server or virtual machine?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
-3. [How does a server listen for incoming requests using IP addresses and ports?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
-4. [What is the difference between Web Server, Application Server and Reverse Proxy?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
+1. [What exactly is a server — hardware or software?](../../interview/under-the-hood/07-Inside-a-Web-Server.md)
+2. [What is the difference between a web server, an application server and a reverse proxy?](../../interview/under-the-hood/07-Inside-a-Web-Server.md)
 
-## 14. Tomcat and Spring Boot
+## 14. What happens inside Spring Boot when a request arrives (Java / Spring)
 
-1. [How does Tomcat work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
-2. [How is Tomcat different from the computer's localhost?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
-3. [How does Spring Boot start its embedded Tomcat server?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
-4. [What happens internally when an HTTP request reaches Spring Boot?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
-
-## 15. Spring Container and Request Processing
-
-1. [How does Spring Dependency Injection create and manage objects?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
-2. [How do Spring AOP, Proxies and @Transactional work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
-3. [How does a backend application manage concurrent requests and threads?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
-4. [How does Connection Pooling work?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
-5. [How do Authentication and Authorization work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
-6. [How do Exception Handling, Retries and Timeouts work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
+1. [What happens when an HTTP request reaches a Spring Boot app?](../../interview/under-the-hood/07-Inside-a-Web-Server.md)
+2. [How does Spring's dependency injection (inversion of control) create and connect objects?](../../interview/under-the-hood/07-Inside-a-Web-Server.md)
+3. [How does a database connection pool work?](../../interview/under-the-hood/07-Inside-a-Web-Server.md)
 
 ## Diagrams
 
 - [SpringActuator](../../knowledge/visual-notes/backend/spring-actuator.png)
 - [ModularDesign](../../knowledge/visual-notes/backend/spring-modular-design.png)
 - [SpringAnnotations](../../knowledge/visual-notes/backend/spring-annotations.png)
-- [Spring bean life cycle](../../knowledge/visual-notes/backend/spring-bean-life-cycle.png)
 
 ## Related roles
 

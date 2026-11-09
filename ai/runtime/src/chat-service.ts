@@ -16,7 +16,8 @@ import type { AnswerMode, AnswerView, ChatEvent, ChatRequest, Evidence } from ".
 import { buildEvidence, checkGrounding, composeRepositoryAnswer, MAX_EVIDENCE, suggestFollowUps, withoutTrailingParentheses } from "./chat-evidence.js";
 import { cardsBlock, conciseTitle, countryCard, isCountryNote, roleCard } from "./chat-cards.js";
 import type { QuestionEntry } from "./question-index-contracts.js";
-import { buildCareerAtlas, buildInterviewHub, buildLearningPlan, buildOverview, buildTopicList, CAREER_ATLAS, INTERVIEW_HUB, learningResources, LEARN_MORE_HEADING } from "./chat-guidance.js";
+import { buildCareerAtlas, buildInterviewHub, buildLearningPlan, buildOverview, buildRoadmapsHub, buildTopicList, buildTopicsHub, CAREER_ATLAS, INTERVIEW_HUB, learningResources, LEARN_MORE_HEADING, ROADMAPS_HUB, TOPICS_HUB } from "./chat-guidance.js";
+import { TRACKS } from "./roadmap-generator.js";
 import { composeFollowUpAnswer, looksLikeFollowUp, previousTurn } from "./chat-followup.js";
 import { TOPIC_DESCRIPTIONS, topicLabel } from "./topic-labels.js";
 import { getFollowUps, getNextQuestions, getQuestionsByTopic, isContextQuestion, loadQuestionIndex } from "./question-index.js";
@@ -164,10 +165,10 @@ function emptySearch(overrides: Partial<SearchResult>): SearchResult {
 }
 
 /** A learning plan or a topic overview asked for directly, or null when the request needs a search. */
-async function directAnswer(request: ChatRequest): Promise<AsyncGenerator<ChatEvent> | null> {
+async function directAnswer(request: ChatRequest, model: AnswerModel | null = null, signal?: AbortSignal): Promise<AsyncGenerator<ChatEvent> | null> {
   // A mock interview in progress: this message is the answer to the current question.
   if (request.mock && request.mock.index < request.mock.ids.length) {
-    const turn = await continueMock(request.message, request.mock);
+    const turn = await continueMock(request.message, request.mock, model, signal);
     return builtAnswer(request, emptySearch({ intents: ["quiz"] }), "mock", turn.markdown, turn.followUps, [], turn.state);
   }
   if (!request.plan && !request.overview && isMockRequest(request.message)) {
@@ -195,6 +196,12 @@ async function directAnswer(request: ChatRequest): Promise<AsyncGenerator<ChatEv
     return builtAnswer(request, emptySearch({ intents: ["roadmap"] }), "plan", buildLearningPlan(request.plan), followUps);
   }
   if (!request.overview || request.overview === "roadmaps") return null;
+  if (request.overview === TOPICS_HUB) {
+    return builtAnswer(request, emptySearch({ mode: "browse" }), "overview", await buildTopicsHub(), ["Explore Java", "Explore System Design", "Where do I start?"]);
+  }
+  if (request.overview === ROADMAPS_HUB) {
+    return builtAnswer(request, emptySearch({ mode: "browse", intents: ["roadmap"] }), "overview", await buildRoadmapsHub(TRACKS), ["Roadmap to become a Full Stack Developer", "Java study path", "Where do I start?"]);
+  }
   if (request.overview === CAREER_ATLAS) {
     const followUps = ["What does a DevOps engineer do?", "Full Stack Developer salary in India (LPA)", "Which countries can I work in from India?"];
     return builtAnswer(request, emptySearch({ mode: "browse" }), "overview", await buildCareerAtlas(), followUps);
@@ -382,7 +389,7 @@ function closingPieces(
 
 export async function* runChat(request: ChatRequest, options: ChatOptions = {}): AsyncGenerator<ChatEvent> {
   const model = options.model === undefined ? createAnswerModel() : options.model;
-  const direct = await directAnswer(request);
+  const direct = await directAnswer(request, model, options.signal);
   if (direct) {
     yield* direct;
     return;

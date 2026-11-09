@@ -15,10 +15,11 @@ Designs and maintains networks, routers, firewalls and VPNs.
 
 - [ ] [Linux & Shell](../topics/linux.md)
 - [ ] [Networking & HTTP](../topics/networking.md)
+- [ ] [Python](../topics/python.md)
 
 ## Also needed
 
-Python, BGP, OSPF, SD-WAN, Cisco IOS, Wireshark, Palo Alto, Juniper
+BGP, OSPF, SD-WAN, Cisco IOS, Wireshark, Palo Alto, Juniper
 
 ## Where it leads
 

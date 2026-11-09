@@ -200,8 +200,19 @@ function allowedTypos(word: string): number {
 
 interface Vocabulary {
   topicAliases: Record<string, string[]>;
+  /** Extra skill names that link job roles to a topic; never used to parse searches. */
+  roleSkillAliases?: Record<string, string[]>;
   termSynonyms: string[][];
   domainAliases: Record<string, string[]>;
+}
+
+/** Topic words for linking roles to topics: the search aliases plus the role-only skill names. */
+export function roleLinkAliases(vocabulary: Pick<Vocabulary, "topicAliases" | "roleSkillAliases">): Record<string, string[]> {
+  const merged: Record<string, string[]> = {};
+  for (const source of [vocabulary.topicAliases, vocabulary.roleSkillAliases ?? {}]) {
+    for (const [topic, words] of Object.entries(source)) merged[topic] = [...(merged[topic] ?? []), ...words];
+  }
+  return merged;
 }
 
 export function loadVocabulary(path = VOCABULARY_FILE): Vocabulary {

@@ -2732,7 +2732,7 @@ National income tax 5–45% plus 2.1% reconstruction surtax, a flat 10% resident
 | ¥18,000,000 – ¥40,000,000 | 40% |
 | Above ¥40,000,000 | 45% |
 
-Applied after deductions. 2026 reform: employment income deduction at least ¥740,000 (¥690,000 + ¥50,000 temporary), basic deduction ¥620,000 plus ¥420,000 for salaries up to ¥6.65 million — so no income tax up to about ¥1.78 million.
+Applied after deductions. 2026 reform (applied from the December 2026 year-end adjustment): employment income deduction at least ¥740,000 (¥690,000 + ¥50,000 temporary); basic deduction ¥1,040,000 when income after that deduction is up to ¥4.89 million, ¥670,000 up to ¥6.55 million, ¥620,000 up to ¥23.5 million — so no income tax on salaries up to about ¥1.78 million.
 
 **Employee contributions:**
 
@@ -2749,6 +2749,7 @@ Applied after deductions. 2026 reform: employment income deduction at least ¥74
 
 - [National Tax Agency: income tax rates](https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/2260.htm)
 - [NTA English site](https://www.nta.go.jp/english/)
+- [NTA: 2026 basic deduction changes (Japanese)](https://www.nta.go.jp/users/gensen/2026kiso/index.htm)
 - [2026 Japan tax reform outline (EY)](https://www.ey.com/en_jp/technical/ey-japan-tax-library/tax-alerts/2025/tax-alerts-12-24)
 
 ### Income tax in Australia

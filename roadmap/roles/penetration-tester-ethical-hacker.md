@@ -8,6 +8,7 @@ Legally attacks systems to find weaknesses before criminals do.
 ## Prerequisites
 
 - [Linux & Shell](../topics/linux.md)
+- [Python](../topics/python.md)
 - [REST API](../topics/rest-api.md)
 - Usually 2+ years of experience when hired
 
@@ -19,7 +20,7 @@ Legally attacks systems to find weaknesses before criminals do.
 
 ## Also needed
 
-Python, PowerShell, PTES, Burp Suite, Metasploit, Nmap
+PowerShell, PTES, Burp Suite, Metasploit, Nmap
 
 ## Where it leads
 

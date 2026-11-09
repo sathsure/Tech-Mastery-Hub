@@ -193,3 +193,124 @@ Yes. `@Controller` is the most common way, but not the only one:
    }
    ```
 3. **A plain servlet** — extend `HttpServlet` and register it (low level, rarely needed).
+
+---
+
+## REST API Design
+
+### ❓ What makes an API RESTful?
+
+REST is an architectural style where everything is a **resource** with a URL, and standard HTTP methods say what to do with it. Key ideas:
+
+- **Resources, not actions:** `/orders/42`, not `/getOrder?id=42`.
+- **Standard methods:** GET reads, POST creates, PUT replaces, PATCH updates part, DELETE removes.
+- **Stateless:** each request carries everything needed (e.g. a token); the server keeps no session between calls, so any server can handle it.
+- **Standard status codes and representations** (usually JSON), and cacheable responses where possible.
+
+**Example:** `GET /customers/7/orders?status=PAID` → `200 OK` with a JSON list.
+
+---
+
+### ❓ What is the difference between PUT, PATCH and POST? Which are idempotent?
+
+| Method | Meaning | Idempotent? | Safe (read-only)? |
+|---|---|---|---|
+| GET | Read | Yes | Yes |
+| POST | Create / trigger an action | **No** | No |
+| PUT | Replace the whole resource | Yes | No |
+| PATCH | Change some fields | Not guaranteed | No |
+| DELETE | Remove | Yes | No |
+
+**Idempotent** = sending the same request twice leaves the same result as once — safe to retry after a timeout. To make POST retry-safe (e.g. payments), accept an **`Idempotency-Key`** header and return the first result for repeats.
+
+---
+
+### ❓ How do you name REST endpoints well?
+
+- Plural nouns for collections: `/orders`, `/orders/{id}`.
+- Nest only for clear ownership, one level deep: `/customers/{id}/orders`.
+- Lowercase with hyphens: `/payment-methods`.
+- Filters, sorting and paging as query parameters: `/orders?status=PAID&sort=-createdAt&page=2`.
+- Actions that don't fit CRUD become sub-resources: `POST /orders/{id}/cancel`.
+
+---
+
+### ❓ How do you paginate large lists?
+
+| Style | Request | Pros | Cons |
+|---|---|---|---|
+| **Offset** | `?page=3&size=20` | Simple, can jump to any page | Slow on deep pages; items shift when data changes |
+| **Cursor (keyset)** | `?after=eyJpZCI6MTAwfQ&limit=20` | Fast at any depth, stable | Only next/previous, no page numbers |
+
+Return metadata so clients know what's next:
+
+```json
+{ "items": [], "nextCursor": "eyJpZCI6MTIwfQ", "hasMore": true }
+```
+
+Use cursor pagination for feeds and big tables; offset is fine for small admin lists. Always cap the page size.
+
+---
+
+### ❓ How do you version a REST API?
+
+Version only for **breaking changes** (removing or renaming fields, changing meaning). Adding optional fields is not breaking.
+
+- **URL path:** `/api/v1/orders` — the most common, and the easiest to see and route.
+- **Header:** `Accept: application/vnd.shop.v2+json` or a custom header — cleaner URLs, harder to test.
+- Run old and new versions side by side, announce a deprecation date (`Deprecation` / `Sunset` headers), and watch traffic before removing the old one.
+
+---
+
+### ❓ What should an API error response look like?
+
+A consistent JSON body with the right status code. A common standard is **Problem Details** (RFC 9457, `application/problem+json`):
+
+```json
+{
+  "type": "https://api.shop.com/errors/insufficient-stock",
+  "title": "Insufficient stock",
+  "status": 409,
+  "detail": "Only 2 units of SKU-881 are left.",
+  "instance": "/orders/A1043"
+}
+```
+
+- 400 bad input (list which fields), 401 not logged in, 403 not allowed, 404 not found, 409 conflict, 422 validation failed, 429 too many requests, 500 server error.
+- Never expose stack traces or SQL errors to clients. Spring Boot 3 supports Problem Details through `ProblemDetail`.
+
+---
+
+### ❓ How do you cache REST responses?
+
+- **`Cache-Control`** tells clients and CDNs how long to keep a response: `Cache-Control: public, max-age=300`.
+- **`ETag`** + **`If-None-Match`**: the client sends the version it has; if nothing changed, the server replies **304 Not Modified** with no body, saving bandwidth.
+- Cache only safe GETs; never cache personal data publicly (use `private` or `no-store`).
+
+**Example:** a product catalogue cached at the CDN for 5 minutes takes most of the load off the database during a sale.
+
+---
+
+### ❓ How do you secure a REST API?
+
+- **HTTPS only.**
+- **Authentication:** OAuth 2.0 / OpenID Connect with short-lived JWT access tokens for users; API keys or client credentials for server-to-server calls.
+- **Authorization on every endpoint** — check the caller owns the resource (prevents IDOR).
+- **Validate input** and limit request size; use parameterised queries.
+- **Rate limiting** per client (return 429 with `Retry-After`).
+- Don't put secrets or tokens in URLs (they end up in logs); allow CORS only for known origins.
+
+See also: [Web application security (OWASP)](../../security/01-Web-Security-OWASP.md)
+
+---
+
+### ❓ REST vs GraphQL vs gRPC — when would you use each?
+
+| | REST | GraphQL | gRPC |
+|---|---|---|---|
+| Shape | Many URLs, fixed responses | One endpoint, client chooses fields | Methods from a `.proto` contract |
+| Format | JSON over HTTP | JSON over HTTP | Binary (Protocol Buffers) over HTTP/2 |
+| Best for | Public APIs, simple CRUD, caching | Many UIs needing different data shapes | Fast service-to-service calls, streaming |
+| Watch out | Over- or under-fetching | Caching, query cost limits | Browsers need a proxy; harder to debug by hand |
+
+Many systems use **REST outside, gRPC inside**.

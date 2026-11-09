@@ -6,264 +6,104 @@
 - None. This is a starting point.
 - Overview: [Under the Hood concepts](../../knowledge/concepts/under-the-hood/README.md)
 
-## 1. Source Code to Machine Code
+## 1. How code becomes something the CPU can run (all languages)
 
-1. [How does human-readable source code eventually become machine instructions?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)
-2. [What are the differences between Compiler, Interpreter, Assembler, Linker and Runtime?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)
-3. [What are Bytecode, Intermediate Representation (IR), Assembly Language and Machine Code?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)
-4. [What are AOT, JIT and interpretation? How do they differ?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)
-5. [How do JVM, CLR and JavaScript engines execute programs internally?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)
-6. [How do programming languages interact with the CPU and memory?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)
-7. [How does frontend code (JavaScript, TypeScript, Dart, WebAssembly) become machine code in the browser?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)
-8. [How do frontend frameworks (Angular, React, Vue, Svelte, Next.js) get from source code to running in the browser?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)
-9. [How do different programming languages implement compilation, execution and memory management?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)
-10. [Do backend frameworks (Spring Boot, Django, Express, ASP.NET Core) compile code themselves?](../../interview/under-the-hood/01-Languages-Compilers-Execution.md)
+1. [What happens between writing code and the computer running it?](../../interview/under-the-hood/01-How-Code-Runs.md)
+   - [Is Java compiled or interpreted?](../../interview/under-the-hood/01-How-Code-Runs.md)
+2. [What is the difference between AOT and JIT compilation?](../../interview/under-the-hood/01-How-Code-Runs.md)
 
-## 2. CPU and Memory Hierarchy
+## 2. Language runtimes: the JVM and JavaScript engines (Java & JavaScript)
 
-1. [How does a CPU execute instructions?](../../interview/under-the-hood/02-OS-CPU-Memory.md)
-2. [How do CPU registers, L1/L2/L3 cache, RAM and disk interact?](../../interview/under-the-hood/02-OS-CPU-Memory.md)
-3. [What exactly is stored in Stack and Heap memory?](../../interview/under-the-hood/02-OS-CPU-Memory.md)
-4. [Can the CPU directly access heap memory? How does a program access objects in RAM?](../../interview/under-the-hood/02-OS-CPU-Memory.md)
-5. [How does memory allocation and deallocation work?](../../interview/under-the-hood/02-OS-CPU-Memory.md)
-6. [How does Garbage Collection identify unused objects?](../../interview/under-the-hood/02-OS-CPU-Memory.md)
+1. [How does the JVM run a Java program?](../../interview/under-the-hood/01-How-Code-Runs.md)
+2. [How does a JavaScript engine like V8 run code?](../../interview/under-the-hood/01-How-Code-Runs.md)
 
-## 3. Processes, Threads and Scheduling
+## 3. Where data lives: RAM, disk and many servers (the big picture)
 
-1. [How do Processes and Threads work internally?](../../interview/under-the-hood/02-OS-CPU-Memory.md)
-2. [How does Context Switching happen?](../../interview/under-the-hood/02-OS-CPU-Memory.md)
-3. [How does an operating system execute multiple applications simultaneously?](../../interview/under-the-hood/02-OS-CPU-Memory.md)
+1. [What is the difference between data structures, a database and a data warehouse?](../../interview/under-the-hood/02-Memory-and-Data.md)
+2. [What is the difference between CPU cache, RAM and disk?](../../interview/under-the-hood/02-Memory-and-Data.md)
 
-## 4. Virtual Memory
+## 4. Stack and heap: memory inside a running program (all languages)
 
-1. [How do Virtual Memory, Paging and Memory Protection work?](../../interview/under-the-hood/02-OS-CPU-Memory.md)
+1. [What are stack and heap memory?](../../interview/under-the-hood/02-Memory-and-Data.md)
+2. [How does garbage collection work?](../../interview/under-the-hood/02-Memory-and-Data.md)
+3. [What is virtual memory?](../../interview/under-the-hood/02-Memory-and-Data.md)
 
-## 5. Loading and Rendering a Page
+## 5. Processes and threads (operating system, all languages)
 
-1. [What happens internally when we enter a URL and open a website?](../../interview/under-the-hood/03a-Browser-Internals.md)
-2. [How does a browser convert HTML, CSS and JavaScript into a rendered webpage?](../../interview/under-the-hood/03a-Browser-Internals.md)
-3. [How do DOM, CSSOM, Render Tree, Layout and Paint work together?](../../interview/under-the-hood/03a-Browser-Internals.md)
+1. [What is the difference between a process and a thread?](../../interview/under-the-hood/03-Processes-and-Threads.md)
+2. [What is context switching?](../../interview/under-the-hood/03-Processes-and-Threads.md)
+3. [What is the difference between concurrency and parallelism?](../../interview/under-the-hood/03-Processes-and-Threads.md)
+4. [What is a race condition, and how do you prevent it?](../../interview/under-the-hood/03-Processes-and-Threads.md)
 
-## 6. JavaScript in the Browser
+## 6. Inside common data structures (ideas apply to every language; Java examples)
 
-1. [How does JavaScript execute inside a browser?](../../interview/under-the-hood/03a-Browser-Internals.md)
-2. [How do Call Stack, Event Loop, Microtask Queue and Task Queue work?](../../interview/under-the-hood/03a-Browser-Internals.md)
-3. [How does asynchronous JavaScript execute without blocking the UI?](../../interview/under-the-hood/03a-Browser-Internals.md)
-4. [How does a browser determine which UI elements need updating?](../../interview/under-the-hood/03a-Browser-Internals.md)
-5. [How do Angular, React and Vue detect changes and update the DOM?](../../interview/under-the-hood/03a-Browser-Internals.md)
+1. [How does a HashMap work internally?](../../interview/under-the-hood/04-Inside-Data-Structures.md)
+   - [Why can't you get the key back from its hash?](../../interview/under-the-hood/04-Inside-Data-Structures.md)
+2. [How do ArrayList and LinkedList store data differently?](../../interview/under-the-hood/04-Inside-Data-Structures.md)
+3. [How do stacks, queues and heaps work?](../../interview/under-the-hood/04-Inside-Data-Structures.md)
+4. [How do trees like the B+ tree speed up searching?](../../interview/under-the-hood/04-Inside-Data-Structures.md)
 
-## 7. Network, Build and Storage
+## 7. Inside a SQL database: storage, indexes and transactions (MySQL, PostgreSQL, Oracle…)
 
-1. [How does a frontend application communicate with a backend?](../../interview/under-the-hood/03a-Browser-Internals.md)
-2. [How do bundlers, Tree Shaking and Code Splitting work?](../../interview/under-the-hood/03a-Browser-Internals.md)
-3. [How do Browser Cache, Cookies, LocalStorage, SessionStorage and IndexedDB work?](../../interview/under-the-hood/03a-Browser-Internals.md)
-4. [How do Browser Tabs and Web Workers work internally?](../../interview/under-the-hood/03a-Browser-Internals.md)
+1. [How does a database store data on disk?](../../interview/under-the-hood/05-Inside-a-Database.md)
+2. [How does a database index work?](../../interview/under-the-hood/05-Inside-a-Database.md)
+3. [How do transactions keep data safe (ACID)?](../../interview/under-the-hood/05-Inside-a-Database.md)
+4. [How does a database let many users read and write at the same time?](../../interview/under-the-hood/05-Inside-a-Database.md)
+5. [What is the difference between replication and sharding?](../../interview/under-the-hood/05-Inside-a-Database.md)
 
-## 8. Angular Internals
+## 8. Inside the browser: from a URL to pixels on screen (frontend)
 
-1. [How do Angular application bootstrap and compilation work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)
-2. [How does Angular Dependency Injection work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)
-3. [How does the Angular component lifecycle work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)
-4. [What are Signals in Angular, and how does Angular change detection work?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)
-5. [How do the Angular Router and lazy loading work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)
-6. [How do Angular HttpClient and HTTP Interceptors work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)
+1. [What happens when you type a URL and press Enter?](../../interview/under-the-hood/06-Inside-the-Browser.md)
+2. [How does a browser turn HTML, CSS and JavaScript into a page?](../../interview/under-the-hood/06-Inside-the-Browser.md)
+3. [How does the JavaScript event loop work?](../../interview/under-the-hood/06-Inside-the-Browser.md)
+4. [How do frameworks like Angular and React update the screen efficiently?](../../interview/under-the-hood/06-Inside-the-Browser.md)
+5. [How do cookies, localStorage, sessionStorage and IndexedDB differ?](../../interview/under-the-hood/06-Inside-the-Browser.md)
 
-## 9. React Internals
+## 9. Servers, localhost and ports (all backends)
 
-1. [How do React's Virtual DOM and Reconciliation work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)
-2. [How does React's Fiber architecture work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)
-3. [How do React Hooks and component rendering work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)
+1. [What exactly is a server — hardware or software?](../../interview/under-the-hood/07-Inside-a-Web-Server.md)
+2. [What is the difference between a web server, an application server and a reverse proxy?](../../interview/under-the-hood/07-Inside-a-Web-Server.md)
 
-## 10. Vue Internals
+## 10. What happens inside Spring Boot when a request arrives (Java / Spring)
 
-1. [How does Vue's reactivity system work internally (dependency tracking and Proxies)?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)
-2. [How do Vue's template compiler and Virtual DOM work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)
+1. [What happens when an HTTP request reaches a Spring Boot app?](../../interview/under-the-hood/07-Inside-a-Web-Server.md)
+2. [How does Spring's dependency injection (inversion of control) create and connect objects?](../../interview/under-the-hood/07-Inside-a-Web-Server.md)
+3. [How does a database connection pool work?](../../interview/under-the-hood/07-Inside-a-Web-Server.md)
 
-## 11. Servers, Localhost and Ports
+## 11. How data travels: packets, layers and DNS (networking, all languages)
 
-1. [What exactly is a Server? Is it hardware, software, a process or a computer?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
-2. [What is Localhost? How is it different from a physical server or virtual machine?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
-3. [How does a server listen for incoming requests using IP addresses and ports?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
-4. [What is the difference between Web Server, Application Server and Reverse Proxy?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
+1. [How does data travel from one computer to another?](../../interview/under-the-hood/08-How-Data-Travels.md)
+2. [How does DNS find a website's IP address?](../../interview/under-the-hood/08-How-Data-Travels.md)
 
-## 12. Tomcat and Spring Boot
+## 12. TCP, UDP and HTTPS (networking, all languages)
 
-1. [How does Tomcat work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
-2. [How is Tomcat different from the computer's localhost?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
-3. [How does Spring Boot start its embedded Tomcat server?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
-4. [What happens internally when an HTTP request reaches Spring Boot?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
+1. [What is the difference between TCP and UDP?](../../interview/under-the-hood/08-How-Data-Travels.md)
+2. [How does HTTPS keep data private (the TLS handshake)?](../../interview/under-the-hood/08-How-Data-Travels.md)
 
-## 13. Spring Container and Request Processing
+## 13. Virtual machines and containers (cloud & DevOps, any language)
 
-1. [How does Spring Dependency Injection create and manage objects?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
-2. [How do Spring AOP, Proxies and @Transactional work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
-3. [How does a backend application manage concurrent requests and threads?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
-4. [How does Connection Pooling work?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
-5. [How do Authentication and Authorization work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
-6. [How do Exception Handling, Retries and Timeouts work internally?](../../interview/under-the-hood/04-Backend-Server-Internals.md)
+1. [What is the difference between a virtual machine and a container?](../../interview/under-the-hood/09-Virtual-Machines-and-Containers.md)
+2. [How does Docker build and run an image?](../../interview/under-the-hood/09-Virtual-Machines-and-Containers.md)
+3. [How does Kubernetes keep applications running?](../../interview/under-the-hood/09-Virtual-Machines-and-Containers.md)
+4. [How does code get from a developer's laptop to production?](../../interview/under-the-hood/09-Virtual-Machines-and-Containers.md)
 
-## 14. Storage on Disk
+## 14. Scaling: serving more users with more servers (system design, any language)
 
-1. [How does a database physically store records on disk?](../../interview/under-the-hood/05-Database-Internals.md)
-2. [What are Database Pages, Blocks and Rows?](../../interview/under-the-hood/05-Database-Internals.md)
+1. [Why do large systems run on many servers instead of one big one?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)
+2. [How does a cache like Redis make systems faster?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)
+3. [Why use a message queue like Kafka or RabbitMQ?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)
 
-## 15. Indexes
+## 15. Resilience: surviving failures (any language; Java examples)
 
-1. [How does Database Indexing work internally?](../../interview/under-the-hood/05-Database-Internals.md)
-2. [How do B-Tree and B+ Tree work? Why are B+ Trees commonly used?](../../interview/under-the-hood/05-Database-Internals.md)
-3. [How do Clustered, Non-Clustered and Composite Indexes work?](../../interview/under-the-hood/05-Database-Internals.md)
-4. [How does a database decide between Index Seek and Table Scan?](../../interview/under-the-hood/05-Database-Internals.md)
-
-## 16. Query Processing
-
-1. [How does the SQL Query Optimizer select an execution plan?](../../interview/under-the-hood/05-Database-Internals.md)
-2. [How do JOIN operations work internally?](../../interview/under-the-hood/05-Database-Internals.md)
-3. [How do Nested Loop, Hash Join and Merge Join differ?](../../interview/under-the-hood/05-Database-Internals.md)
-
-## 17. Transactions, Logging and Recovery
-
-1. [How does a database manage concurrent transactions?](../../interview/under-the-hood/05-Database-Internals.md)
-2. [How do ACID, Locks and MVCC work internally?](../../interview/under-the-hood/05-Database-Internals.md)
-3. [How does Write-Ahead Logging (WAL) work?](../../interview/under-the-hood/05-Database-Internals.md)
-4. [How does a database recover after a crash?](../../interview/under-the-hood/05-Database-Internals.md)
-
-## 18. Caching and Scaling
-
-1. [How does Database Caching work?](../../interview/under-the-hood/05-Database-Internals.md)
-2. [How do Replication, Partitioning and Sharding work?](../../interview/under-the-hood/05-Database-Internals.md)
-
-## 19. Hashing
-
-1. [How does HashMap work internally, including hashing, buckets and collision handling?](../../interview/under-the-hood/06-Data-Structures-Internals.md)
-2. [Why is HashMap not reversible? Why can't the original key be reconstructed from its hash?](../../interview/under-the-hood/06-Data-Structures-Internals.md)
-
-## 20. Lists, Stacks, Queues and Heaps
-
-1. [How do ArrayList, LinkedList and Arrays store and retrieve elements differently?](../../interview/under-the-hood/06-Data-Structures-Internals.md)
-2. [How do Stack, Queue, Heap and Priority Queue work?](../../interview/under-the-hood/06-Data-Structures-Internals.md)
-
-## 21. Trees and Sets
-
-1. [How do Binary Search Trees, AVL Trees, Red-Black Trees and B+ Trees differ?](../../interview/under-the-hood/06-Data-Structures-Internals.md)
-2. [How does HashSet ensure uniqueness?](../../interview/under-the-hood/06-Data-Structures-Internals.md)
-
-## 22. Algorithms and Performance
-
-1. [How do searching and sorting algorithms work internally?](../../interview/under-the-hood/06-Data-Structures-Internals.md)
-2. [How do time and space complexities affect actual application performance?](../../interview/under-the-hood/06-Data-Structures-Internals.md)
-
-## 23. How Data Travels
-
-1. [How does data travel from one computer to another?](../../interview/under-the-hood/07-Networking-Internals.md)
-2. [How do IP Addresses, MAC Addresses, DNS, Ports and Routing work together?](../../interview/under-the-hood/07-Networking-Internals.md)
-
-## 24. TCP, UDP and HTTP
-
-1. [How do TCP and UDP work internally?](../../interview/under-the-hood/07-Networking-Internals.md)
-2. [How does TCP establish and maintain connections?](../../interview/under-the-hood/07-Networking-Internals.md)
-3. [How do HTTP/1.1, HTTP/2 and HTTP/3 differ internally?](../../interview/under-the-hood/07-Networking-Internals.md)
-
-## 25. Security: TLS, Keys and Certificates
-
-1. [How does HTTPS and the TLS Handshake work?](../../interview/under-the-hood/07-Networking-Internals.md)
-2. [How do Public-Key and Private-Key cryptography work?](../../interview/under-the-hood/07-Networking-Internals.md)
-3. [How does a receiver verify that the sender possesses the legitimate private key?](../../interview/under-the-hood/07-Networking-Internals.md)
-4. [How do Digital Certificates and Certificate Authorities establish trust?](../../interview/under-the-hood/07-Networking-Internals.md)
-
-## 26. Persistent Connections and Traffic Routing
-
-1. [How do WebSockets establish persistent connections?](../../interview/under-the-hood/07-Networking-Internals.md)
-2. [How do Load Balancers, Reverse Proxies and API Gateways work?](../../interview/under-the-hood/07-Networking-Internals.md)
-
-## 27. Virtual Machines
-
-1. [What is a Virtual Machine? How can one physical computer run multiple VMs?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)
-2. [How does a Hypervisor allocate CPU, Memory and Storage?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)
-
-## 28. Containers
-
-1. [How does Docker work internally?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)
-2. [How are Containers (like Docker) different from Virtual Machines?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)
-3. [How do Docker Images and Containers work?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)
-
-## 29. Orchestration and Delivery
-
-1. [How does Kubernetes schedule and manage containers?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)
-2. [How does an application move from source code to a running production environment?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)
-3. [How do CI/CD pipelines build, test and deploy applications?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)
-4. [How do cloud platforms allocate computing resources?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)
-5. [How do Auto Scaling and Load Balancing work?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)
-6. [How are Secrets and Environment Configurations managed?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)
-
-## 30. Storage Hardware and File Systems
-
-1. [How do HDD, SSD and RAM store and retrieve data differently?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)
-2. [How does a File System organize files and directories on disk?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)
-
-## 31. Redis and Caching Patterns
-
-1. [How does Redis store and retrieve data internally?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)
-2. [How do Cache-Aside, Write-Through and Write-Behind work?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)
-
-## 32. Kafka and RabbitMQ
-
-1. [How does Kafka store messages and achieve high throughput?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)
-2. [How do Kafka Partitions, Offsets and Consumer Groups work?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)
-3. [How does RabbitMQ route messages using Exchanges, Queues and Bindings?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)
-4. [How do Message Acknowledgements, Retries and Dead Letter Queues work?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)
-
-## 33. Ordering and Reliability
-
-1. [How does message ordering work?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)
-2. [How does a distributed application achieve reliable message processing?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)
-
-## 34. Service Communication
-
-1. [How do microservices communicate with each other?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)
-2. [How does Service Discovery work?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)
-
-## 35. Resilience
-
-1. [How do Circuit Breakers, Retries and Timeouts prevent cascading failures?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)
-2. [How does Idempotency prevent duplicate processing?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)
-
-## 36. Transactions and Consistency
-
-1. [How do Distributed Transactions work?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)
-2. [How does the Saga Pattern work?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)
-3. [How do distributed systems maintain consistency?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)
-
-## 37. Coordination
-
-1. [How do Replication and Leader Election work?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)
-2. [How does Distributed Locking work?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)
-
-## 38. Observability
-
-1. [How does Distributed Tracing track a request across multiple services?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)
-
-## 39. Runtime Behaviour Across Languages
-
-1. [How do Java, JavaScript, Python, Go, Rust and C# implement concurrency differently?](../../interview/under-the-hood/11-Language-Implementation-Comparisons.md)
-2. [How do Java, C++, Python and JavaScript create objects internally?](../../interview/under-the-hood/11-Language-Implementation-Comparisons.md)
-3. [How do Spring, ASP.NET Core and Angular implement Dependency Injection differently?](../../interview/under-the-hood/11-Language-Implementation-Comparisons.md)
-4. [How do Java, JavaScript, Python, C# and Kotlin implement asynchronous execution?](../../interview/under-the-hood/11-Language-Implementation-Comparisons.md)
-5. [How do Java, Python, C++, C# and JavaScript implement exception handling internally?](../../interview/under-the-hood/11-Language-Implementation-Comparisons.md)
-
-## 40. Observing Internals in Practice
-
-1. [Which tools can I use to observe software internals, and what should I look for?](../../interview/under-the-hood/11-Language-Implementation-Comparisons.md)
+1. [What is resilience, and is it Java-specific?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)
+2. [How does a circuit breaker work?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)
+3. [What does the CAP theorem mean in practice?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)
 
 ## Diagrams
 
-- [Frontend programming languages: source to machine code](../../knowledge/visual-notes/01_frontend_programming_languages.png)
-- [Frontend frameworks and libraries: build and execution path](../../knowledge/visual-notes/02_frontend_frameworks.png)
-- [Backend programming languages: source, artifact, runtime and execution](../../knowledge/visual-notes/03_backend_programming_languages.png)
-- [Backend frameworks and platforms: source, compiler and runtime](../../knowledge/visual-notes/04_backend_frameworks.png)
-- [How a browser renders a page](../../knowledge/visual-notes/browser-render.png)
-- [JavaScript event loop](../../knowledge/visual-notes/event-loop.png)
-- [Angular lifecycle hooks](../../knowledge/visual-notes/angular-lifecycle.png)
-- [Spring bean life cycle](../../knowledge/visual-notes/backend/spring-bean-life-cycle.png)
+- [Browser rendering: HTML and CSS are parsed into trees, combined, laid out and painted](../../knowledge/visual-notes/browser-render.png)
+- [Event loop: the call stack, Web APIs, the microtask queue and the task queue](../../knowledge/visual-notes/event-loop.png)
+- [Angular component lifecycle hooks, from constructor to ngOnDestroy](../../knowledge/visual-notes/angular-lifecycle.png)
 
 ## Related roles
 

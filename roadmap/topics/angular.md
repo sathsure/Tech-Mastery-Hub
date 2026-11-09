@@ -126,25 +126,13 @@
 8. [Example: How to debounce a search input in Angular?](../../interview/frontend/06-RxJS.md)
 9. [How does RxJS fit into NgRx?](../../interview/frontend/06-RxJS.md)
 
-## 18. Angular Internals
+## 18. Inside the browser: from a URL to pixels on screen (frontend)
 
-1. [How do Angular application bootstrap and compilation work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)
-2. [How does Angular Dependency Injection work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)
-3. [How does the Angular component lifecycle work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)
-4. [What are Signals in Angular, and how does Angular change detection work?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)
-5. [How do the Angular Router and lazy loading work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)
-6. [How do Angular HttpClient and HTTP Interceptors work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)
-
-## 19. React Internals
-
-1. [How do React's Virtual DOM and Reconciliation work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)
-2. [How does React's Fiber architecture work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)
-3. [How do React Hooks and component rendering work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)
-
-## 20. Vue Internals
-
-1. [How does Vue's reactivity system work internally (dependency tracking and Proxies)?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)
-2. [How do Vue's template compiler and Virtual DOM work internally?](../../interview/under-the-hood/03b-Frontend-Framework-Internals.md)
+1. [What happens when you type a URL and press Enter?](../../interview/under-the-hood/06-Inside-the-Browser.md)
+2. [How does a browser turn HTML, CSS and JavaScript into a page?](../../interview/under-the-hood/06-Inside-the-Browser.md)
+3. [How does the JavaScript event loop work?](../../interview/under-the-hood/06-Inside-the-Browser.md)
+4. [How do frameworks like Angular and React update the screen efficiently?](../../interview/under-the-hood/06-Inside-the-Browser.md)
+5. [How do cookies, localStorage, sessionStorage and IndexedDB differ?](../../interview/under-the-hood/06-Inside-the-Browser.md)
 
 ## Practice
 
@@ -154,7 +142,9 @@
 
 ## Diagrams
 
-- [Angular lifecycle hooks](../../knowledge/visual-notes/angular-lifecycle.png)
+- [Angular component lifecycle hooks, from constructor to ngOnDestroy](../../knowledge/visual-notes/angular-lifecycle.png)
+- [Browser rendering: HTML and CSS are parsed into trees, combined, laid out and painted](../../knowledge/visual-notes/browser-render.png)
+- [Event loop: the call stack, Web APIs, the microtask queue and the task queue](../../knowledge/visual-notes/event-loop.png)
 
 ## Related roles
 

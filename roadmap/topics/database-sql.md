@@ -142,35 +142,24 @@
 3. [Tricky: What does `SELECT NULL = NULL` return?](../../interview/database/03-SQL-Interview-Queries.md)
 4. [Tricky: Can you use a column alias in WHERE?](../../interview/database/03-SQL-Interview-Queries.md)
 
-## 18. Storage on Disk
+## 18. Where data lives: RAM, disk and many servers (the big picture)
 
-1. [How does a database physically store records on disk?](../../interview/under-the-hood/05-Database-Internals.md)
-2. [What are Database Pages, Blocks and Rows?](../../interview/under-the-hood/05-Database-Internals.md)
+1. [What is the difference between data structures, a database and a data warehouse?](../../interview/under-the-hood/02-Memory-and-Data.md)
+2. [What is the difference between CPU cache, RAM and disk?](../../interview/under-the-hood/02-Memory-and-Data.md)
 
-## 19. Indexes
+## 19. Stack and heap: memory inside a running program (all languages)
 
-1. [How does Database Indexing work internally?](../../interview/under-the-hood/05-Database-Internals.md)
-2. [How do B-Tree and B+ Tree work? Why are B+ Trees commonly used?](../../interview/under-the-hood/05-Database-Internals.md)
-3. [How do Clustered, Non-Clustered and Composite Indexes work?](../../interview/under-the-hood/05-Database-Internals.md)
-4. [How does a database decide between Index Seek and Table Scan?](../../interview/under-the-hood/05-Database-Internals.md)
+1. [What are stack and heap memory?](../../interview/under-the-hood/02-Memory-and-Data.md)
+2. [How does garbage collection work?](../../interview/under-the-hood/02-Memory-and-Data.md)
+3. [What is virtual memory?](../../interview/under-the-hood/02-Memory-and-Data.md)
 
-## 20. Query Processing
+## 20. Inside a SQL database: storage, indexes and transactions (MySQL, PostgreSQL, Oracle…)
 
-1. [How does the SQL Query Optimizer select an execution plan?](../../interview/under-the-hood/05-Database-Internals.md)
-2. [How do JOIN operations work internally?](../../interview/under-the-hood/05-Database-Internals.md)
-3. [How do Nested Loop, Hash Join and Merge Join differ?](../../interview/under-the-hood/05-Database-Internals.md)
-
-## 21. Transactions, Logging and Recovery
-
-1. [How does a database manage concurrent transactions?](../../interview/under-the-hood/05-Database-Internals.md)
-2. [How do ACID, Locks and MVCC work internally?](../../interview/under-the-hood/05-Database-Internals.md)
-3. [How does Write-Ahead Logging (WAL) work?](../../interview/under-the-hood/05-Database-Internals.md)
-4. [How does a database recover after a crash?](../../interview/under-the-hood/05-Database-Internals.md)
-
-## 22. Caching and Scaling
-
-1. [How does Database Caching work?](../../interview/under-the-hood/05-Database-Internals.md)
-2. [How do Replication, Partitioning and Sharding work?](../../interview/under-the-hood/05-Database-Internals.md)
+1. [How does a database store data on disk?](../../interview/under-the-hood/05-Inside-a-Database.md)
+2. [How does a database index work?](../../interview/under-the-hood/05-Inside-a-Database.md)
+3. [How do transactions keep data safe (ACID)?](../../interview/under-the-hood/05-Inside-a-Database.md)
+4. [How does a database let many users read and write at the same time?](../../interview/under-the-hood/05-Inside-a-Database.md)
+5. [What is the difference between replication and sharding?](../../interview/under-the-hood/05-Inside-a-Database.md)
 
 ## Practice
 
@@ -183,5 +172,5 @@
 
 ## Related roles
 
-[AI Evaluation Engineer](../roles/ai-evaluation-engineer.md) · [AI Infrastructure / LLMOps Engineer](../roles/ai-infrastructure-llmops-engineer.md) · [AI Product Manager](../roles/ai-product-manager.md) · [AI Solutions Architect](../roles/ai-solutions-architect.md) · [Analytics Engineer](../roles/analytics-engineer.md) · [Backend Developer](../roles/backend-developer.md) · [BI Developer](../roles/bi-developer.md) · [Business Analyst](../roles/business-analyst.md) · [Customer Success Engineer](../roles/customer-success-engineer.md) · [Data Analyst](../roles/data-analyst.md) · [Data Architect](../roles/data-architect.md) · [Data Engineer](../roles/data-engineer.md) · [Data Scientist](../roles/data-scientist.md) · [Database Administrator](../roles/database-administrator.md) · [FinOps Engineer / Analyst](../roles/finops-engineer-analyst.md) · [Forward Deployed Engineer](../roles/forward-deployed-engineer.md) · [Full Stack Developer](../roles/full-stack-developer.md) · [Mainframe Developer](../roles/mainframe-developer.md) · [Manual QA / Test Engineer](../roles/manual-qa-test-engineer.md) · [MLOps Engineer](../roles/mlops-engineer.md) · [Product Manager](../roles/product-manager.md) · [Production / Application Support](../roles/production-application-support.md) · [Solution Architect](../roles/solution-architect.md) · [Solutions / Sales Engineer](../roles/solutions-sales-engineer.md)
+[AI Evaluation Engineer](../roles/ai-evaluation-engineer.md) · [AI Infrastructure / LLMOps Engineer](../roles/ai-infrastructure-llmops-engineer.md) · [AI Product Manager](../roles/ai-product-manager.md) · [AI Solutions Architect](../roles/ai-solutions-architect.md) · [Analytics Engineer](../roles/analytics-engineer.md) · [Backend Developer](../roles/backend-developer.md) · [BI Developer](../roles/bi-developer.md) · [Business Analyst](../roles/business-analyst.md) · [Customer Success Engineer](../roles/customer-success-engineer.md) · [Data Analyst](../roles/data-analyst.md) · [Data Architect](../roles/data-architect.md) · [Data Engineer](../roles/data-engineer.md) · [Data Scientist](../roles/data-scientist.md) · [Database Administrator](../roles/database-administrator.md) · [Enterprise Architect](../roles/enterprise-architect.md) · [FinOps Engineer / Analyst](../roles/finops-engineer-analyst.md) · [Forward Deployed Engineer](../roles/forward-deployed-engineer.md) · [Full Stack Developer](../roles/full-stack-developer.md) · [Mainframe Developer](../roles/mainframe-developer.md) · [Manual QA / Test Engineer](../roles/manual-qa-test-engineer.md) · [MLOps Engineer](../roles/mlops-engineer.md) · [Product Manager](../roles/product-manager.md) · [Production / Application Support](../roles/production-application-support.md) · [Solution Architect](../roles/solution-architect.md) · [Solutions / Sales Engineer](../roles/solutions-sales-engineer.md) · [Tech Lead](../roles/tech-lead.md)
 
