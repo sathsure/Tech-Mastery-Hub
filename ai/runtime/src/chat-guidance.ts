@@ -112,7 +112,7 @@ function prerequisiteBadge(topic: string): string {
 }
 
 /** Several topics at once ("Explore frontend"): one card per topic, with its main sections. */
-export async function buildTopicList(topics: string[]): Promise<string> {
+export async function buildTopicList(topics: string[], intro = "This covers several topics. Pick one to start:"): Promise<string> {
   const index = await loadQuestionIndex();
   const cards: TopicCard[] = topics.map(topic => {
     const label = topicLabel(topic);
@@ -128,7 +128,69 @@ export async function buildTopicList(topics: string[]): Promise<string> {
       actions,
     };
   });
-  return ["This covers several topics. Pick one to start:", "", cardsBlock(cards)].join("\n");
+  return [intro, "", cardsBlock(cards)].join("\n");
+}
+
+// ---------- Home page hubs ----------
+
+/** Overview ids of the home page's "Career atlas" and "Interview prep" cards. */
+export const CAREER_ATLAS = "career-atlas";
+export const INTERVIEW_HUB = "interview-prep";
+
+/** The whole Career Atlas: roles, salaries, glossary and tech stack, one card each. */
+export function buildCareerAtlas(): Promise<string> {
+  return buildTopicList(
+    ["it-roles", "it-careers", "it-terminology", "tech-stack"],
+    "**Career atlas** — a map of the IT industry. See what each job involves, what it pays in India, the terms people use at work, and which tools are used where. Pick a part to open:",
+  );
+}
+
+/** Popular target jobs offered on the interview hub; each opens that role's stack checklist. */
+const HUB_ROLES = [
+  "Full Stack Developer", "Frontend Developer", "Backend Developer", "DevOps Engineer", "Cloud Engineer",
+  "Data Engineer", "Data Analyst", "AI / LLM Engineer", "Automation Test Engineer", "Mobile Developer",
+];
+
+/**
+ * Interview prep hub: prepare for a target role (a checklist of its stacks, then key questions),
+ * or practise one topic. `layers` are the picker groups from chat-interview, so both lists match.
+ */
+export async function buildInterviewHub(layers: Array<[string, string[]]>, hasRole: (name: string) => boolean): Promise<string> {
+  const index = await loadQuestionIndex();
+  const covered = new Set(index.entries.filter(entry => entry.kind === "question").flatMap(entry => entry.topics));
+  const roles = HUB_ROLES.filter(hasRole);
+  const cards: TopicCard[] = [];
+  if (roles.length) {
+    cards.push({
+      type: "topic",
+      title: "Prepare for a job role",
+      description: "Pick your target job. You tick the stacks it needs, then get the key questions for each, in order.",
+      chips: true,
+      items: roles.map(role => ({ label: role, ask: `Interview prep: ${role}` })),
+      actions: [{ label: "See all roles", ask: "Explore IT Roles", overview: "it-roles" }],
+    });
+  }
+  for (const [layer, topics] of layers) {
+    const here = topics.filter(topic => covered.has(topic));
+    if (!here.length) continue;
+    cards.push({
+      type: "topic",
+      title: layer === "HR round" ? "HR & behavioral round" : `${layer} topics`,
+      description: null,
+      chips: true,
+      items: here.map(topic => ({ label: topicLabel(topic), ask: `${topicLabel(topic)} interview questions` })),
+      actions: [],
+    });
+  }
+  return [
+    "**Interview prep** — model answers, key points and likely follow-ups from your notes.",
+    "",
+    "Two ways to start: pick the **job** you are applying for, or practise one **topic**.",
+    "",
+    cardsBlock(cards),
+    "",
+    "_Tip: answer each question out loud in 2–3 minutes: what it is → how it works → a real example → a trade-off._",
+  ].join("\n");
 }
 
 // ---------- Outside resources ----------

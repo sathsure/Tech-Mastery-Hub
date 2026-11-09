@@ -194,11 +194,17 @@ Design points:
 
 No. Only a valid refresh token can. Otherwise anyone holding an old, leaked access token could stay logged in forever.
 
+- The expiry is part of the signed token (the `exp` claim), so the server rejects it once that time has passed.
+- That is why access tokens are short-lived (for example, 15 minutes): a leaked one stops working soon.
+
 ---
 
 ### ❓ Does the refresh API need a valid access token?
 
 No. It authenticates with the refresh token — the access token is usually already expired when refresh is called.
+
+- Example call: `POST /auth/refresh` with the refresh token in an **HttpOnly cookie** (safer than JavaScript-readable storage).
+- So the security config must allow `/auth/refresh` without an access token; the endpoint checks the refresh token itself.
 
 ---
 
@@ -230,6 +236,10 @@ Revoke the refresh token on the server (delete it or mark it revoked), clear the
 
 `401 Unauthorized` = not authenticated (missing, invalid or expired token). `403 Forbidden` = authenticated but not allowed to perform this action.
 
+- **401:** "Who are you?" — the client should log in or refresh the token, then retry.
+- **403:** "I know who you are, but no." — retrying with the same user won't help.
+- Example: no token on `DELETE /users/5` → 401; a normal user's valid token on an admin-only endpoint → 403.
+
 ---
 
 ### ❓ What happens if a user's role changes while their JWT is still valid?
@@ -254,11 +264,18 @@ With rotation, no — the second finds the token already used and fails (or trig
 
 Refresh must fail. Always check the account status during refresh, not only at login.
 
+- The refresh endpoint loads the user and checks flags like `enabled` or `locked` before issuing a new access token.
+- Also revoke the user's refresh tokens when the account is disabled, so they stop working immediately.
+- Access tokens already issued stay valid until they expire — another reason to keep them short.
+
 ---
 
 ### ❓ What if a refresh token is revoked before its expiry date?
 
 The backend rejects it. Revocation is checked in the database, independently of the expiry date.
+
+- Example: on logout or "log out of all devices", the server marks the token as revoked (or deletes it) in the database.
+- This is why refresh tokens are stored on the server: a JWT access token alone can't be revoked before it expires.
 
 ---
 
@@ -266,11 +283,17 @@ The backend rejects it. Revocation is checked in the database, independently of 
 
 Yes — sliding expiration. Enforce an **absolute maximum** session lifetime as well, so a stolen token can't be kept alive forever.
 
+- Example: the session extends by 7 days on each use, but never past 30 days from the original login.
+- **Refresh token rotation** helps too: each refresh returns a new refresh token and invalidates the old one, so a reused old token reveals theft.
+
 ---
 
 ### ❓ What happens if the access token expires while a long request is running?
 
 Nothing. The token is validated when the request enters the API; a request already authorized is not cancelled midway.
+
+- Example: a 2-minute report starts with a token that expires after 30 seconds — the report still finishes.
+- But if that request calls other services with the same token, those calls may fail with 401, so pass a fresh token or use a service-to-service token.
 
 ---
 
@@ -283,6 +306,9 @@ It doesn't read it at all — the browser attaches the cookie automatically to r
 ### ❓ What if the refresh token expires while the user is actively using the app?
 
 The next refresh attempt fails with 401, and the user has to log in again. Sliding expiration or a warning before the session ends improves the experience.
+
+- The frontend should catch that 401, clear the stored tokens and redirect to login, saving the current page so the user returns to it.
+- Save unsent form data (for example, a draft) before redirecting, so the user does not lose their work.
 
 ---
 

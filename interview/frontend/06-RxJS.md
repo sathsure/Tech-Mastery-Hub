@@ -310,6 +310,16 @@ r$.subscribe(v => console.log(v));  // ✅ Receives 2, 3
 
 **Yes** — synchronously, the moment you subscribe.
 
+- It always has a value: the initial value you passed in, or the latest `next()`.
+
+```ts
+const user$ = new BehaviorSubject<string>('guest');
+user$.next('sam');
+user$.subscribe(v => console.log(v)); // 'sam', right away
+```
+
+- That is why it suits "current state" like the logged-in user; a plain `Subject` gives a new subscriber nothing until the next `next()`.
+
 ---
 
 ### ❓ 🪤 Trick: Can a `Subject` emit values before anyone subscribes?
@@ -317,6 +327,15 @@ r$.subscribe(v => console.log(v));  // ✅ Receives 2, 3
 ### 📝 Answer
 
 Yes — it can. But those values are **lost** (no replay). Future subscribers will only see emissions that happen *after* they subscribe.
+
+```ts
+const s$ = new Subject<number>();
+s$.next(1);                        // nobody is listening → lost
+s$.subscribe(v => console.log(v));
+s$.next(2);                        // logs 2
+```
+
+- Need earlier values? Use `BehaviorSubject` (the latest one) or `ReplaySubject` (the last N).
 
 ---
 
@@ -674,6 +693,9 @@ http.get('/data').pipe(
 
 **Yes.** `EMPTY` is an Observable that completes immediately with no emissions.
 
+- So subscribers get `complete`, not `error`, and nothing more is emitted after the failure.
+- Inside a long-lived stream (for example, one built with `switchMap` from button clicks), put `catchError` **inside** the inner observable; otherwise one failure ends the whole stream and later clicks do nothing.
+
 ---
 
 ### ❓ 🪤 Trick: Can `catchError` swallow an error and keep the outer stream alive?
@@ -965,6 +987,14 @@ const value = await firstValueFrom(this.http.get('/data'));
 
 **No.** Operators are lazy — they only run when there's an active subscription.
 
+```ts
+const n$ = of(1, 2).pipe(map(x => { console.log('mapping', x); return x * 2; }));
+// nothing is logged yet
+n$.subscribe(); // now 'mapping 1', 'mapping 2'
+```
+
+- Same for HTTP: `http.get()` sends no request until something subscribes (or the `async` pipe does).
+
 ---
 
 ### ❓ 🪤 Trick: Does `tap` change the emitted values?
@@ -972,6 +1002,10 @@ const value = await firstValueFrom(this.http.get('/data'));
 ### 📝 Answer
 
 **No.** It's strictly for side effects; the original values pass through unchanged.
+
+- Typical uses: logging, debugging, or setting a loading flag: `tap(() => this.loading = false)`.
+- Whatever `tap` returns is ignored; to change values use `map`.
+- Careful: mutating an object inside `tap` (`tap(u => u.name = 'x')`) does change it for everyone — avoid that.
 
 ---
 
@@ -981,6 +1015,9 @@ const value = await firstValueFrom(this.http.get('/data'));
 
 **No.** `take(0)` completes immediately with zero emissions.
 
+- It completes as soon as you subscribe, so `interval` never even starts its timer.
+- `take(n)` emits the first n values and then completes, which also stops endless sources like `interval`: `take(3)` gives 0, 1, 2 and ends.
+
 ---
 
 ### ❓ 🪤 Trick: `from([1,2,3]).pipe(switchMap(x => of(x)))` — can any values be cancelled?
@@ -988,6 +1025,9 @@ const value = await firstValueFrom(this.http.get('/data'));
 ### 📝 Answer
 
 **No.** `of(x)` completes synchronously, so `switchMap` doesn't have time to cancel — every value emerges.
+
+- `switchMap` cancels only an inner observable that is **still running** when the next value arrives.
+- With async inner work it does cancel: `switchMap(x => timer(100).pipe(map(() => x)))` emits only 3, because 1 and 2 are cancelled before their timers fire.
 
 ---
 

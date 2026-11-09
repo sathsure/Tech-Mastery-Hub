@@ -16,11 +16,11 @@ import type { AnswerMode, AnswerView, ChatEvent, ChatRequest, Evidence } from ".
 import { buildEvidence, checkGrounding, composeRepositoryAnswer, MAX_EVIDENCE, suggestFollowUps, withoutTrailingParentheses } from "./chat-evidence.js";
 import { cardsBlock, conciseTitle, countryCard, isCountryNote, roleCard } from "./chat-cards.js";
 import type { QuestionEntry } from "./question-index-contracts.js";
-import { buildLearningPlan, buildOverview, buildTopicList, learningResources, LEARN_MORE_HEADING } from "./chat-guidance.js";
+import { buildCareerAtlas, buildInterviewHub, buildLearningPlan, buildOverview, buildTopicList, CAREER_ATLAS, INTERVIEW_HUB, learningResources, LEARN_MORE_HEADING } from "./chat-guidance.js";
 import { composeFollowUpAnswer, looksLikeFollowUp, previousTurn } from "./chat-followup.js";
 import { TOPIC_DESCRIPTIONS, topicLabel } from "./topic-labels.js";
 import { getFollowUps, getNextQuestions, getQuestionsByTopic, isContextQuestion, loadQuestionIndex } from "./question-index.js";
-import { buildInterviewPrep, findRole, interviewPicker, interviewPrepRole, interviewTopics, PICKER_PREFIX } from "./chat-interview.js";
+import { buildInterviewPrep, findRole, interviewPicker, LAYERS, interviewPrepRole, interviewTopics, PICKER_PREFIX } from "./chat-interview.js";
 import { searchQuestions, type SearchConfidence, type SearchResult } from "./question-search.js";
 
 export const MAX_HISTORY_TURNS = 8;
@@ -173,6 +173,16 @@ async function directAnswer(request: ChatRequest): Promise<AsyncGenerator<ChatEv
     return builtAnswer(request, emptySearch({ intents: ["roadmap"] }), "plan", buildLearningPlan(request.plan), followUps);
   }
   if (!request.overview || request.overview === "roadmaps") return null;
+  if (request.overview === CAREER_ATLAS) {
+    const followUps = ["What does a DevOps engineer do?", "Full Stack Developer salary in India (LPA)", "Which countries can I work in from India?"];
+    return builtAnswer(request, emptySearch({ mode: "browse" }), "overview", await buildCareerAtlas(), followUps);
+  }
+  if (request.overview === INTERVIEW_HUB) {
+    const { entries } = await loadQuestionIndex();
+    const markdown = await buildInterviewHub(LAYERS, name => findRole(name, entries) !== null);
+    const followUps = ["Interview prep: Full Stack Developer", "Prepare me for a Java interview"];
+    return builtAnswer(request, emptySearch({ mode: "browse", intents: ["interview-prep"] }), "overview", markdown, followUps);
+  }
   const overview = await buildOverview(request.overview);
   if (!overview) return null;
   return builtAnswer(request, emptySearch({ mode: "browse" }), "overview", overview.markdown, await topicFollowUps(request.overview));

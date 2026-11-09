@@ -6,6 +6,9 @@
 
 Machines performing tasks that normally need human intelligence: understanding language, recognising images, making decisions, learning from examples.
 
+- Examples you use daily: spam filters, Google Maps traffic predictions, face unlock, and chatbots like ChatGPT or Claude.
+- Older AI followed hand-written rules; modern AI mostly **learns patterns from data** (machine learning).
+
 ---
 
 ### ❓ What is the difference between AI, Machine Learning and Deep Learning?
@@ -99,6 +102,9 @@ The maximum number of tokens (prompt + conversation history + retrieved document
 ### ❓ What is temperature?
 
 A setting that controls randomness. Low (≈0) → focused, repeatable answers (good for extraction, code, factual Q&A). High (≈1) → more varied, creative output.
+
+- How it works: the model picks the next token from a list of probabilities. Low temperature almost always picks the top one; high temperature gives less likely tokens a chance.
+- Example: "Write a product tagline" at 0.9 gives a new idea each time; "Extract the invoice total" should use 0, so the same input gives the same answer.
 
 ---
 
