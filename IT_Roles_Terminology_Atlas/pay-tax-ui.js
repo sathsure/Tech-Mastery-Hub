@@ -22,7 +22,7 @@
 
   // ---------- Sub-views ----------
   const VIEWS = [["calc", "Take-home calculator"], ["offers", "Compare offers"], ["world", "Income tax by country"]];
-  $("#ptTabs").innerHTML = VIEWS.map(([id, label]) => `<button type="button" class="chip" role="tab" data-pt="${id}">${label}</button>`).join("");
+  $("#ptTabs").innerHTML = VIEWS.map(([id, label]) => `<button type="button" role="tab" data-pt="${id}">${label}</button>`).join("");
   function showView(id) {
     saved.view = id; store();
     panel.querySelectorAll("[data-pt]").forEach((b) => { const on = b.dataset.pt === id; b.classList.toggle("active", on); b.setAttribute("aria-selected", on); });
@@ -276,7 +276,7 @@
         const est = pay && T.countryEstimate(c, pay.gross);
         if (est) { eff = pct(est.effective); inHand = inr(est.monthly * pay.fx); }
       }
-      return `<tr><td><button type="button" class="btn-link" data-country="${i}">${c.flag} ${esc(c.c)}</button></td><td>${top}%</td><td>${eff}</td><td>${inHand}</td></tr>`;
+      return `<tr><td><button type="button" class="btn-link" data-country="${i}">${esc(c.c)}</button></td><td>${top}%</td><td>${eff}</td><td>${inHand}</td></tr>`;
     }).join("");
     return `<div class="table-wrap"><table class="gloss pt-table">
       <thead><tr><th>Country</th><th>Top income-tax rate</th><th>Tax + social on typical pay*</th><th>Take-home ≈ ₹/month*</th></tr></thead><tbody>${rows}</tbody></table></div>
@@ -297,7 +297,7 @@
       estimator = `<div class="pt-estimator"><label class="inline-select">Yearly gross salary (${esc(c.cur)}) <input id="ptAbroadGross" type="number" min="0" step="1000" value="${gross}"></label>${ruling}<div id="ptAbroadOut" aria-live="polite"></div></div>`;
     } else estimator = `<p class="pt-note"><b>No estimate here:</b> tax credits and deductions change the result too much for a simple estimate — use the official calculator linked below.</p>`;
     return `<article class="card-block pt-country">
-      <header><h3 class="h3 tight">${c.flag} ${esc(c.c)}</h3><small class="muted">${esc(c.year)}</small></header>
+      <header><h3 class="h3 tight">${esc(c.c)}</h3><small class="muted">${esc(c.year)}</small></header>
       <p>${esc(c.summary)}</p>
       ${estimator}
       <div class="pt-bracket-grid">${regimes}</div>
@@ -330,7 +330,7 @@
       <p class="pt-note">${esc(A.taxes.note)}</p>
       <div class="pt-offer-top"><label class="inline-select">Experience (yrs) <input id="ptWorldExp" type="number" min="0" max="40" step="1" value="${worldExp}"></label><small class="muted">Rules checked ${esc(A.taxes.asOf)}</small></div>
       ${glanceTable()}
-      <div class="chips pt-country-chips" role="tablist">${A.taxes.countries.map((x, i) => `<button type="button" class="chip${i === countryIndex ? " active" : ""}" data-country="${i}">${x.flag} ${esc(x.c)}</button>`).join("")}</div>
+      <div class="chips pt-country-chips" role="tablist">${A.taxes.countries.map((x, i) => `<button type="button" class="chip${i === countryIndex ? " active" : ""}" data-country="${i}">${esc(x.c)}</button>`).join("")}</div>
       ${countryCard(c)}`;
     renderAbroadEstimate(c);
   }
