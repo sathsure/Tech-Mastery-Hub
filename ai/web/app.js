@@ -194,7 +194,7 @@ const NAV_ICONS = {
   nodejs: "server", java: "coffee", spring: "leaf", "spring-security": "lock", "spring-cloud": "cloud", microservices: "boxes",
   "rest-api": "plug", "database/sql": "database", devops: "infinity", aws: "cloud", "web-architecture": "network", "web-vitals": "gauge",
   dsa: "graduation", messaging: "route", ai: "sparkles",
-  "system-design": "compass", "design-patterns": "puzzle", testing: "flask", git: "branch", caching: "zap", networking: "globe", behavioral: "users", salary: "wallet",
+  "system-design": "compass", "design-patterns": "puzzle", testing: "flask", git: "branch", caching: "zap", networking: "globe", behavioral: "users", salary: "wallet", "terraform": "boxes", "leadership": "compass", "python": "code",
   "linux": "terminal", "security": "lock", "observability": "eye", "agile": "refresh", "job-search": "target", "data-engineering": "filter",
   "it-roles": "briefcase", "it-terminology": "book", "tech-stack": "layers", "it-careers": "trend", roadmaps: "map",
 };
@@ -238,10 +238,12 @@ function renderSidebar() {
   // Names only, alphabetical: the sidebar is navigation, not statistics.
   const topics = [...state.catalog.topics].sort((a, b) => a.label.localeCompare(b.label));
   // Each item opens an overview: what the section covers, then its parts to pick from.
-  const navItem = item => `<li><button type="button" class="nav-item" data-ask="${item.id === "roadmaps" ? "Where do I start?" : `Explore ${escapeHtml(item.label)}`}" ${item.id === "roadmaps" ? "" : `data-overview="${escapeHtml(item.id)}"`} title="${escapeHtml(item.description ?? item.label)}">${icon(NAV_ICONS[item.id] ?? "book", "nav-ic")}<span>${escapeHtml(item.label)}</span></button></li>`;
+  const navItem = item => `<li><button type="button" class="nav-item" data-ask="${item.id === "roadmaps" ? "Roadmaps" : `Explore ${escapeHtml(item.label)}`}" data-overview="${item.id === "roadmaps" ? "roadmaps-hub" : escapeHtml(item.id)}" title="${escapeHtml(item.description ?? item.label)}">${icon(NAV_ICONS[item.id] ?? "book", "nav-ic")}<span>${escapeHtml(item.label)}</span></button></li>`;
   // The glossary and the learning roadmap are the main ways in, so they lead the sidebar.
   const primary = ["it-terminology", "roadmaps"].map(id => atlas.find(item => item.id === id)).filter(Boolean);
-  $("#primary-list").innerHTML = primary.map(navItem).join("");
+  // The Role Readiness Test lives in the Atlas, served by this tutor under /atlas/.
+  const roleTest = `<li><a class="nav-item" href="/atlas/IT_Roles_Terminology_Atlas.html#roletest" target="_blank" rel="noopener" title="Score how ready you are for a role, topic by topic">${icon("target", "nav-ic")}<span>Role Readiness Test</span></a></li>`;
+  $("#primary-list").innerHTML = primary.map(navItem).join("") + roleTest;
   $("#topic-list").innerHTML = topics.map(navItem).join("");
   $("#atlas-list").innerHTML = atlas.filter(item => !primary.includes(item)).map(navItem).join("");
   topicFilter.innerHTML = `<option value="">All notes</option>` + [...topics, ...atlas].map(topic => `<option value="${escapeHtml(topic.id)}">${escapeHtml(topic.label)}</option>`).join("");
@@ -306,9 +308,9 @@ function toggleTheme() {
 function renderWelcome() {
   // A short hero, four ways in, and a few starter questions.
   const features = [
-    { icon: "layers", title: "Explore topics", text: "Java, React, SQL and more: see the sections first, then dive in.", ask: "Explore Java", overview: "java" },
+    { icon: "layers", title: "Explore topics", text: "Frontend, backend, data, cloud and more: pick an area, then a topic.", ask: "Explore topics", overview: "topics" },
     { icon: "graduation", title: "Interview prep", text: "Model answers, key points and likely follow-ups.", ask: "Interview prep", overview: "interview-prep" },
-    { icon: "map", title: "Roadmaps", text: "Pick topics and get a learning plan in the right order.", ask: "Roadmap to become a Forward Deployed Engineer" },
+    { icon: "map", title: "Roadmaps", text: "Follow a learning track, or get a full roadmap for a job role.", ask: "Roadmaps", overview: "roadmaps-hub" },
     { icon: "briefcase", title: "Career atlas", text: "IT roles, a glossary of terms, and salaries in India.", ask: "Explore the Career Atlas", overview: "career-atlas" },
   ];
   const starters = ["How does the event loop work?", "What does a DevOps engineer do?", "How does HashMap work internally?", "Where do I start?"];

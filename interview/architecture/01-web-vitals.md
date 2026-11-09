@@ -202,3 +202,60 @@ Don't download code until it's needed: on **user action**, when it **scrolls int
 ```
 
 In frameworks: React `lazy()` + `Suspense`, Angular `loadComponent` / `@defer` blocks.
+
+---
+
+### ❓ How do you measure Core Web Vitals — lab vs field data?
+
+- **Lab data** comes from a test you run (Lighthouse, the lab section of PageSpeed Insights, the Chrome DevTools Performance panel) on one device and network. Good for debugging and for catching regressions in CI.
+- **Field data** comes from real users (the Chrome UX Report / CrUX, or your own RUM with the `web-vitals` library). This is what Google uses for ranking, measured at the **75th percentile** of visits.
+
+```js
+import { onLCP, onINP, onCLS } from "web-vitals";
+onLCP(sendToAnalytics);
+onINP(sendToAnalytics);
+onCLS(sendToAnalytics);
+```
+
+Lab and field results often disagree — real users have slower phones and networks — so trust field data for decisions.
+
+---
+
+### ❓ What are TTFB and FCP?
+
+- **TTFB (Time to First Byte):** time until the first byte of the HTML arrives. Good: ≤ 0.8 s. Improve it with a CDN, caching, faster server code and fewer redirects.
+- **FCP (First Contentful Paint):** time until anything (text or an image) first appears. Good: ≤ 1.8 s.
+
+They are not Core Web Vitals themselves, but a slow TTFB or FCP makes a good **LCP** almost impossible.
+
+---
+
+### ❓ How do you stop CSS and fonts from slowing down the first render?
+
+- **CSS blocks rendering:** inline the small "critical" CSS for above-the-fold content, load the rest asynchronously, and remove unused CSS.
+- **Scripts:** use `defer` or `type="module"` so scripts don't block parsing; use `async` only for independent scripts such as analytics.
+- **Fonts:** `font-display: swap` shows fallback text immediately; preload the main font; self-host and subset fonts; size the fallback font to match (`size-adjust`) to avoid layout shift.
+
+```html
+<link rel="preload" href="/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+```
+
+---
+
+### ❓ How do third-party scripts hurt performance, and how do you control them?
+
+Chat widgets, ads, tag managers and A/B testing tools often add hundreds of KB of JavaScript and long tasks that hurt **INP** and **LCP**.
+
+- Audit them (DevTools coverage, Lighthouse's third-party summary) and remove unused ones.
+- Load them late: after user interaction or when the browser is idle; use a facade (a static placeholder) for heavy embeds like YouTube or chat.
+- Use `preconnect` for the few critical third-party origins.
+
+---
+
+### ❓ How do you reduce JavaScript bundle size?
+
+- **Code splitting:** split by route and load features on demand (`import()`, React `lazy`, Angular `@defer`).
+- **Tree shaking:** import only what you use (`import { debounce } from "lodash-es"`, not the whole library).
+- Find heavy dependencies with a bundle analyzer and replace them (for example `date-fns` instead of `moment`).
+- Serve modern JavaScript, minify, and compress with Brotli.
+- Set a **performance budget** in CI that fails the build when the main bundle grows past a limit.

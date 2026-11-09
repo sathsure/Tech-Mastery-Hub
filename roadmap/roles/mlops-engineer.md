@@ -10,6 +10,7 @@ Automates training, deployment and monitoring of ML models.
 - [SQL](../topics/database-sql.md)
 - [DevOps](../topics/devops.md)
 - [Linux & Shell](../topics/linux.md)
+- [Python](../topics/python.md)
 - Usually 3+ years of experience when hired
 
 ## Learning stages
@@ -17,10 +18,11 @@ Automates training, deployment and monitoring of ML models.
 ### Stage 1: Core skills
 
 - [ ] [Data Engineering](../topics/data-engineering.md)
+- [ ] [Terraform & IaC](../topics/terraform.md)
 
 ## Also needed
 
-Python, YAML, Kubeflow, MLflow, SageMaker, Weights & Biases
+YAML, Kubeflow, MLflow, SageMaker, Weights & Biases
 
 ## Where it leads
 

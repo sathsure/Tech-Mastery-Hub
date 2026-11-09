@@ -49,11 +49,7 @@
 6. [How do you protect frontend applications?](../../interview/frontend/09-Web_Architecture.md)
 7. [How do you design for traffic spikes?](../../interview/frontend/09-Web_Architecture.md)
 
-## 7. Observability
-
-1. [How does Distributed Tracing track a request across multiple services?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)
-
 ## Related roles
 
-[Site Reliability Engineer](../roles/site-reliability-engineer.md)
+[Cloud Security Engineer](../roles/cloud-security-engineer.md) · [Production / Application Support](../roles/production-application-support.md) · [Security Analyst](../roles/security-analyst.md) · [Site Reliability Engineer](../roles/site-reliability-engineer.md)
 

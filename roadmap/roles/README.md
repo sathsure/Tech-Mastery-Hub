@@ -22,15 +22,23 @@
 - [AI Product Manager](../roles/ai-product-manager.md)
 - [AI Red Teamer / AI Safety Engineer](../roles/ai-red-teamer-ai-safety-engineer.md)
 - [AI Solutions Architect](../roles/ai-solutions-architect.md)
+- [AI Trainer / Data Annotation Specialist](../roles/ai-trainer-data-annotation-specialist.md)
 - [Context / Prompt Engineer](../roles/context-prompt-engineer.md)
+- [Conversational AI Designer](../roles/conversational-ai-designer.md)
 - [Developer Advocate](../roles/developer-advocate.md)
 - [Forward Deployed Engineer](../roles/forward-deployed-engineer.md)
+- [Physical AI / Robotics Engineer](../roles/physical-ai-robotics-engineer.md)
+- [Quantum Software Engineer](../roles/quantum-software-engineer.md)
+- [Responsible AI / AI Governance Lead](../roles/responsible-ai-ai-governance-lead.md)
 
 ## Security
 
 - [Application Security / DevSecOps Engineer](../roles/application-security-devsecops-engineer.md)
 - [Cloud Security Engineer](../roles/cloud-security-engineer.md)
+- [GRC / Compliance Analyst](../roles/grc-compliance-analyst.md)
+- [IAM Engineer](../roles/iam-engineer.md)
 - [Penetration Tester / Ethical Hacker](../roles/penetration-tester-ethical-hacker.md)
+- [Security Analyst](../roles/security-analyst.md)
 
 ## Quality & Testing
 
@@ -46,6 +54,7 @@
 - [ERP / CRM Developer](../roles/erp-crm-developer.md)
 - [Frontend Developer](../roles/frontend-developer.md)
 - [Full Stack Developer](../roles/full-stack-developer.md)
+- [Low-Code / RPA Developer](../roles/low-code-rpa-developer.md)
 - [Mainframe Developer](../roles/mainframe-developer.md)
 - [Mobile Developer](../roles/mobile-developer.md)
 
@@ -53,6 +62,7 @@
 
 - [Business Analyst](../roles/business-analyst.md)
 - [Customer Success Engineer](../roles/customer-success-engineer.md)
+- [Delivery / Program Manager](../roles/delivery-program-manager.md)
 - [Project Manager](../roles/project-manager.md)
 - [Scrum Master / Agile Coach](../roles/scrum-master-agile-coach.md)
 - [Solutions / Sales Engineer](../roles/solutions-sales-engineer.md)
@@ -63,7 +73,9 @@
 - [Cloud Architect](../roles/cloud-architect.md)
 - [Data Architect](../roles/data-architect.md)
 - [Engineering Manager](../roles/engineering-manager.md)
+- [Enterprise Architect](../roles/enterprise-architect.md)
 - [Solution Architect](../roles/solution-architect.md)
+- [Tech Lead](../roles/tech-lead.md)
 
 ## Cloud, DevOps & Infrastructure
 

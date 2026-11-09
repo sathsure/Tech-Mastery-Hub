@@ -7,19 +7,21 @@ Keeps live business apps running and fixes production issues.
 
 ## Prerequisites
 
-- None. Start with Stage 1.
+- [SQL](../topics/database-sql.md)
+- [DevOps](../topics/devops.md)
+- [Linux & Shell](../topics/linux.md)
+- [Python](../topics/python.md)
 - Usually 1+ years of experience when hired
 
 ## Learning stages
 
 ### Stage 1: Core skills
 
-- [ ] [SQL](../topics/database-sql.md)
-- [ ] [Linux & Shell](../topics/linux.md)
+- [ ] [Observability & SRE](../topics/observability.md)
 
 ## Also needed
 
-Python, ITIL, Runbooks, Splunk, ServiceNow, Dynatrace, AppDynamics
+ITIL, Runbooks, ServiceNow, Dynatrace, AppDynamics
 
 ## Where it leads
 

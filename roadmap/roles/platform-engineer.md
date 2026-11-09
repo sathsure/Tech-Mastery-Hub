@@ -9,6 +9,7 @@ Builds internal platforms so developers can ship without friction.
 
 - [DevOps](../topics/devops.md)
 - [HTML](../topics/html.md)
+- [Python](../topics/python.md)
 - [Under the Hood](../topics/under-the-hood.md)
 - Usually 4+ years of experience when hired
 
@@ -22,9 +23,13 @@ Builds internal platforms so developers can ship without friction.
 
 - [ ] [TypeScript](../topics/typescript.md)
 
+## Also useful
+
+[Terraform & IaC](../topics/terraform.md)
+
 ## Also needed
 
-Go, Python, Backstage, Crossplane, Terraform, Argo CD, Helm
+Go, Backstage, Crossplane, Argo CD, Helm
 
 ## Where it leads
 

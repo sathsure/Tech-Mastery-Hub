@@ -14,10 +14,11 @@ Manages servers, OS, users and patches.
 ### Stage 1: Core skills
 
 - [ ] [Linux & Shell](../topics/linux.md)
+- [ ] [Python](../topics/python.md)
 
 ## Also needed
 
-PowerShell, Python, Windows Server, Active Directory, VMware, Ansible, Nagios
+PowerShell, Windows Server, Active Directory, VMware, Ansible, Nagios
 
 ## Where it leads
 

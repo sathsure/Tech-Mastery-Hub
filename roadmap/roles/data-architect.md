@@ -8,6 +8,7 @@ Designs how data is stored, connected and governed.
 ## Prerequisites
 
 - [SQL](../topics/database-sql.md)
+- [Python](../topics/python.md)
 - Usually 8+ years of experience when hired
 
 ## Learning stages
@@ -18,7 +19,7 @@ Designs how data is stored, connected and governed.
 
 ## Also needed
 
-Python, Data Mesh, Kimball / Inmon, ERwin, Snowflake, Databricks
+Data Mesh, Kimball / Inmon, ERwin, Snowflake, Databricks
 
 ## Where it leads
 

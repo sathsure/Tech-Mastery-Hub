@@ -70,25 +70,13 @@
 1. [How do you approach a coding problem you haven't seen before?](../../interview/coding/02-DSA-Patterns.md)
 2. [Tricky: What is the time complexity of `x in my_list` vs `x in my_set`?](../../interview/coding/02-DSA-Patterns.md)
 
-## 8. Hashing
+## 8. Inside common data structures (ideas apply to every language; Java examples)
 
-1. [How does HashMap work internally, including hashing, buckets and collision handling?](../../interview/under-the-hood/06-Data-Structures-Internals.md)
-2. [Why is HashMap not reversible? Why can't the original key be reconstructed from its hash?](../../interview/under-the-hood/06-Data-Structures-Internals.md)
-
-## 9. Lists, Stacks, Queues and Heaps
-
-1. [How do ArrayList, LinkedList and Arrays store and retrieve elements differently?](../../interview/under-the-hood/06-Data-Structures-Internals.md)
-2. [How do Stack, Queue, Heap and Priority Queue work?](../../interview/under-the-hood/06-Data-Structures-Internals.md)
-
-## 10. Trees and Sets
-
-1. [How do Binary Search Trees, AVL Trees, Red-Black Trees and B+ Trees differ?](../../interview/under-the-hood/06-Data-Structures-Internals.md)
-2. [How does HashSet ensure uniqueness?](../../interview/under-the-hood/06-Data-Structures-Internals.md)
-
-## 11. Algorithms and Performance
-
-1. [How do searching and sorting algorithms work internally?](../../interview/under-the-hood/06-Data-Structures-Internals.md)
-2. [How do time and space complexities affect actual application performance?](../../interview/under-the-hood/06-Data-Structures-Internals.md)
+1. [How does a HashMap work internally?](../../interview/under-the-hood/04-Inside-Data-Structures.md)
+   - [Why can't you get the key back from its hash?](../../interview/under-the-hood/04-Inside-Data-Structures.md)
+2. [How do ArrayList and LinkedList store data differently?](../../interview/under-the-hood/04-Inside-Data-Structures.md)
+3. [How do stacks, queues and heaps work?](../../interview/under-the-hood/04-Inside-Data-Structures.md)
+4. [How do trees like the B+ tree speed up searching?](../../interview/under-the-hood/04-Inside-Data-Structures.md)
 
 ## Practice
 
@@ -117,6 +105,12 @@
 23. [Maximum Subarray (LeetCode 53)](../../practice/coding/python/01-LeetCode-Python.md)
 24. [Coin Change (LeetCode 322)](../../practice/coding/python/01-LeetCode-Python.md)
 25. [Which problem-solving pattern fits which kind of question?](../../practice/coding/python/01-LeetCode-Python.md)
+
+## Diagrams
+
+- [Hash table: keys are hashed to bucket indexes; colliding keys share a bucket](../../knowledge/visual-notes/under-the-hood/hash-table.svg)
+- [Linked list: each node holds a value and a pointer to the next node](../../knowledge/visual-notes/under-the-hood/singly-linked-list.svg)
+- [B+ tree: internal nodes guide the search; the leaves hold the values and link to each other](../../knowledge/visual-notes/under-the-hood/b-plus-tree.png)
 
 ## Related roles
 

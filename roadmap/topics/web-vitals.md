@@ -19,6 +19,25 @@
 6. [How to implement image optimization?](../../interview/architecture/01-web-vitals.md)
 7. [Server-side rendering vs client-side rendering performance.](../../interview/architecture/01-web-vitals.md)
 8. [Lazy loading non-critical JS.](../../interview/architecture/01-web-vitals.md)
+9. [How do you measure Core Web Vitals — lab vs field data?](../../interview/architecture/01-web-vitals.md)
+10. [What are TTFB and FCP?](../../interview/architecture/01-web-vitals.md)
+11. [How do you stop CSS and fonts from slowing down the first render?](../../interview/architecture/01-web-vitals.md)
+12. [How do third-party scripts hurt performance, and how do you control them?](../../interview/architecture/01-web-vitals.md)
+13. [How do you reduce JavaScript bundle size?](../../interview/architecture/01-web-vitals.md)
+
+## 2. Inside the browser: from a URL to pixels on screen (frontend)
+
+1. [What happens when you type a URL and press Enter?](../../interview/under-the-hood/06-Inside-the-Browser.md)
+2. [How does a browser turn HTML, CSS and JavaScript into a page?](../../interview/under-the-hood/06-Inside-the-Browser.md)
+3. [How does the JavaScript event loop work?](../../interview/under-the-hood/06-Inside-the-Browser.md)
+4. [How do frameworks like Angular and React update the screen efficiently?](../../interview/under-the-hood/06-Inside-the-Browser.md)
+5. [How do cookies, localStorage, sessionStorage and IndexedDB differ?](../../interview/under-the-hood/06-Inside-the-Browser.md)
+
+## Diagrams
+
+- [Browser rendering: HTML and CSS are parsed into trees, combined, laid out and painted](../../knowledge/visual-notes/browser-render.png)
+- [Event loop: the call stack, Web APIs, the microtask queue and the task queue](../../knowledge/visual-notes/event-loop.png)
+- [Angular component lifecycle hooks, from constructor to ngOnDestroy](../../knowledge/visual-notes/angular-lifecycle.png)
 
 ## Related roles
 

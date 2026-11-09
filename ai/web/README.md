@@ -58,6 +58,9 @@ the visitor address comes from headers the proxy sets itself, never from a value
   `/diagram`, `/compare`, `/debug`, `/roadmap`, `/role`); topic filter
 - Chats are saved in this browser (localStorage); download any chat as Markdown
 - Links like `/?q=closures` ask a question directly
+- **The Atlas is served too**, at `/atlas/` (open http://127.0.0.1:8787/atlas). Role cards in the chat offer
+  **Take the readiness test** for the 15 roles that have one, and the test's "Study next" cards open the study path or
+  start a mock interview in the tutor. The Atlas page gets its own security policy so its live job feeds still load
 
 ## Files
 

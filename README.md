@@ -57,6 +57,7 @@ Apply the concepts through [real-world projects](./projects/): beginner, interme
 An offline-capable web page ([IT_Roles_Terminology_Atlas](./IT_Roles_Terminology_Atlas/IT_Roles_Terminology_Atlas.html)) with:
 
 - 74 IT roles, career ladders and "my path" recommendations
+- **Role readiness test** — pick a role, answer 12–30 questions, and get a % score, a topic-by-topic breakdown, misconceptions and what to study next. 15 roles available: Full Stack, Backend, Frontend, DevOps, Cloud, SRE, Data, AI/LLM, Automation QA (SDET), Manual QA, Tech Lead, Forward Deployed Engineer, Product Manager, Product Owner and Scrum Master; other roles will be added in a future update. Opened through the AI Tutor (`/atlas/`), its "Study next" cards start a mock interview in the chat
 - A glossary of 258 terms, each explained in 2–3 simple lines, with **flashcards and a quiz** (spaced repetition, saved in your browser)
 - Salary ranges in India by role and experience, and working abroad by country
 - **Pay & Tax** — a take-home calculator (old vs new regime), a side-by-side offer comparison, and income tax for India plus 10 countries with take-home estimates and official links

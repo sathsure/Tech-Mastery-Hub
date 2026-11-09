@@ -100,18 +100,25 @@
 3. [What is the difference between SAST, DAST and penetration testing?](../../interview/security/01-Web-Security-OWASP.md)
 4. [What does "least privilege" mean in practice?](../../interview/security/01-Web-Security-OWASP.md)
 
-## 12. Security: TLS, Keys and Certificates
+## 12. How data travels: packets, layers and DNS (networking, all languages)
 
-1. [How does HTTPS and the TLS Handshake work?](../../interview/under-the-hood/07-Networking-Internals.md)
-2. [How do Public-Key and Private-Key cryptography work?](../../interview/under-the-hood/07-Networking-Internals.md)
-3. [How does a receiver verify that the sender possesses the legitimate private key?](../../interview/under-the-hood/07-Networking-Internals.md)
-4. [How do Digital Certificates and Certificate Authorities establish trust?](../../interview/under-the-hood/07-Networking-Internals.md)
+1. [How does data travel from one computer to another?](../../interview/under-the-hood/08-How-Data-Travels.md)
+2. [How does DNS find a website's IP address?](../../interview/under-the-hood/08-How-Data-Travels.md)
+
+## 13. TCP, UDP and HTTPS (networking, all languages)
+
+1. [What is the difference between TCP and UDP?](../../interview/under-the-hood/08-How-Data-Travels.md)
+2. [How does HTTPS keep data private (the TLS handshake)?](../../interview/under-the-hood/08-How-Data-Travels.md)
 
 ## Diagrams
 
 - [AWS_Compliance](../../knowledge/visual-notes/aws-compliance.png)
+- [Packets flow down the layers on the sender, across routers, and up the layers on the receiver](../../knowledge/visual-notes/under-the-hood/tcp-ip-layers.svg)
+- [DNS resolution: the resolver asks the root, then the .com server, then the domain's own name server](../../knowledge/visual-notes/under-the-hood/dns-resolution.svg)
+- [TCP three-way handshake: SYN, SYN-ACK, ACK before any data is sent](../../knowledge/visual-notes/under-the-hood/tcp-handshake.svg)
+- [TLS handshake: hello messages, certificate, key exchange, then encrypted application data](../../knowledge/visual-notes/under-the-hood/tls-handshake.svg)
 
 ## Related roles
 
-[AI Red Teamer / AI Safety Engineer](../roles/ai-red-teamer-ai-safety-engineer.md) · [Application Security / DevSecOps Engineer](../roles/application-security-devsecops-engineer.md) · [Penetration Tester / Ethical Hacker](../roles/penetration-tester-ethical-hacker.md)
+[AI Red Teamer / AI Safety Engineer](../roles/ai-red-teamer-ai-safety-engineer.md) · [Application Security / DevSecOps Engineer](../roles/application-security-devsecops-engineer.md) · [GRC / Compliance Analyst](../roles/grc-compliance-analyst.md) · [IAM Engineer](../roles/iam-engineer.md) · [Penetration Tester / Ethical Hacker](../roles/penetration-tester-ethical-hacker.md) · [Security Analyst](../roles/security-analyst.md)
 

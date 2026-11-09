@@ -10,6 +10,7 @@ Runs and scales model serving, GPUs and AI pipelines in production.
 - [SQL](../topics/database-sql.md)
 - [DevOps](../topics/devops.md)
 - [Linux & Shell](../topics/linux.md)
+- [Python](../topics/python.md)
 - [REST API](../topics/rest-api.md)
 - Usually 3+ years of experience when hired
 
@@ -26,7 +27,7 @@ Runs and scales model serving, GPUs and AI pipelines in production.
 
 ## Also needed
 
-Python, Go, C++/CUDA (advanced), vLLM, Text Generation Inference, Ray, NVIDIA GPUs, Ollama, Triton Inference Server, Prometheus, LiteLLM gateway
+Go, C++/CUDA (advanced), vLLM, Text Generation Inference, Ray, NVIDIA GPUs, Ollama, Triton Inference Server, Prometheus, LiteLLM gateway
 
 ## Where it leads
 

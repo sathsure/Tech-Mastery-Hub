@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0.0",
-  "description": "Search vocabulary for the AI tutor. topicAliases: words that name a topic (used to narrow the search). termSynonyms: equivalent terms (used to widen the query). Edit freely, then run: npm run search-check",
+  "description": "Search vocabulary for the AI tutor. topicAliases: words that name a topic (used to narrow the search). roleSkillAliases: extra skill names that link job roles to a topic (used only for role roadmaps, never for search). termSynonyms: equivalent terms (used to widen the query). Edit freely, then run: npm run search-check",
   "topicAliases": {
     "dsa": ["dsa", "data structures", "data structure", "data structures and algorithms", "leetcode"],
     "messaging": ["message queue", "message broker", "event streaming", "messaging"],
@@ -19,6 +19,9 @@
     "agile": ["agile", "scrum", "scrum master", "sprint planning", "user story", "user stories"],
     "job-search": ["job search", "resume", "cv", "job switch", "switch jobs", "linkedin profile", "background verification"],
     "data-engineering": ["data pipeline", "data pipelines", "apache spark", "pyspark", "airflow", "dbt", "lakehouse"],
+    "python": ["python", "python3"],
+    "leadership": ["engineering leadership", "technical leadership", "tech leadership"],
+    "terraform": ["terraform", "opentofu", "infrastructure as code"],
     "behavioral": ["behavioral", "behavioural", "hr interview", "hr round", "hr questions", "behavioral interview", "behavioural interview"],
     "javascript": ["javascript", "js", "ecmascript", "es6", "vanilla js"],
     "typescript": ["typescript", "ts"],
@@ -79,5 +82,15 @@
     "backend": ["backend", "back end", "back-end", "server side"],
     "architecture": ["architecture", "system design", "design"],
     "coding": ["coding", "coding round", "programming problem", "dsa", "leetcode"]
+  },
+  "roleSkillAliases": {
+    "terraform": ["hcl", "pulumi", "cloudformation", "bicep", "terragrunt"],
+    "leadership": ["design reviews", "mentoring", "task breakdown", "code quality standards", "technical decisions", "production ownership", "unblocking"],
+    "python": ["fastapi", "django", "flask", "pandas", "pytest", "pydantic", "numpy"],
+    "security": ["oauth 2.0", "oidc", "saml", "scim", "sso", "mfa", "role-based access", "privileged access", "access reviews", "mitre att&ck", "threat detection", "phishing analysis", "iso 27001", "soc 2", "pci-dss", "vendor risk"],
+    "observability": ["log analysis", "incident response", "splunk", "microsoft sentinel", "kql", "spl"],
+    "agile": ["safe"],
+    "system-design": ["togaf", "archimate", "capability mapping", "technology roadmaps"],
+    "ai": ["rlhf", "prompt writing", "rating model responses", "spotting errors & hallucinations", "eu ai act", "nist ai rmf", "iso/iec 42001", "bias & fairness review", "ai risk assessment", "pytorch", "computer vision", "reinforcement learning", "conversation design"]
   }
 }

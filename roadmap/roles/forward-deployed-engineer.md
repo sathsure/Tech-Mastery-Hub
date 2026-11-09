@@ -10,6 +10,7 @@ Engineer embedded with a customer to build and deploy the company's product (oft
 - [SQL](../topics/database-sql.md)
 - [HTML](../topics/html.md)
 - [Java](../topics/java.md)
+- [Python](../topics/python.md)
 - [REST API](../topics/rest-api.md)
 - Usually 3+ years of experience when hired
 
@@ -31,7 +32,7 @@ Engineer embedded with a customer to build and deploy the company's product (oft
 
 ## Also needed
 
-Python, FastAPI, LangGraph, Palantir Foundry/AIP, Jupyter, Postman, Customer data platforms
+LangGraph, Palantir Foundry/AIP, Jupyter, Postman, Customer data platforms
 
 ## Where it leads
 

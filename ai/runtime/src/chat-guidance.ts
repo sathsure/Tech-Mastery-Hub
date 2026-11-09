@@ -135,6 +135,55 @@ export async function buildTopicList(topics: string[], intro = "This covers seve
 
 /** Overview ids of the home page's "Career atlas" and "Interview prep" cards. */
 export const CAREER_ATLAS = "career-atlas";
+export const TOPICS_HUB = "topics";
+export const ROADMAPS_HUB = "roadmaps-hub";
+
+/** Every learning topic, grouped the way people think about them. */
+const TOPIC_GROUPS: Array<[string, string, string[]]> = [
+  ["Frontend", "What runs in the browser: pages, styling, JavaScript and UI frameworks.", ["html", "css", "javascript", "typescript", "angular", "react", "rxjs", "web-vitals"]],
+  ["Backend", "Server-side languages, frameworks and APIs.", ["java", "spring", "spring-security", "spring-cloud", "python", "nodejs", "rest-api", "microservices", "messaging"]],
+  ["Data", "Storing, querying and moving data.", ["database/sql", "caching", "data-engineering"]],
+  ["Cloud & DevOps", "Shipping, running and watching software in production.", ["linux", "git", "devops", "terraform", "aws", "observability"]],
+  ["AI", "LLMs, RAG and agents for developers.", ["ai"]],
+  ["Computer science & design", "Fundamentals every engineer is asked about, in any language.", ["dsa", "design-patterns", "system-design", "web-architecture", "networking", "security", "testing", "under-the-hood"]],
+  ["Career & soft skills", "Interviews, teamwork, leadership, job search and pay.", ["behavioral", "agile", "leadership", "job-search", "salary"]],
+];
+
+/** "Explore topics": one card per area, each topic a chip that opens its overview. */
+export async function buildTopicsHub(): Promise<string> {
+  const index = await loadQuestionIndex();
+  const covered = new Set(index.entries.filter(entry => entry.kind === "question").flatMap(entry => entry.topics));
+  const cards: TopicCard[] = TOPIC_GROUPS.map(([title, description, topics]) => {
+    const here = topics.filter(topic => covered.has(topic));
+    return { type: "topic" as const, title, badge: `${here.length} topics`, description, chips: true, items: here.map(topic => ({ label: topicLabel(topic), ask: `Explore ${topicLabel(topic)}`, overview: topic })), actions: [] };
+  }).filter(card => card.items.length);
+  return ["**Explore topics** — pick an area, then a topic. Each topic opens with its main sections, so you can choose where to start.", "", cardsBlock(cards)].join("\n");
+}
+
+/** Popular job roadmaps shown first on the roadmaps hub. */
+const HUB_ROADMAP_ROLES = ["Full Stack Developer", "Backend Developer", "Frontend Developer", "DevOps Engineer", "Cloud Engineer", "Data Engineer", "Data Analyst", "AI / LLM Engineer", "Automation Test Engineer (SDET)", "Site Reliability Engineer (SRE)", "Tech Lead", "Solution Architect"];
+
+/** "Roadmaps": learning tracks (study paths in order) and roadmaps for job roles. */
+export async function buildRoadmapsHub(tracks: Array<{ name: string; description: string; topics: string[] }>): Promise<string> {
+  const index = await loadQuestionIndex();
+  const roadmaps = new Set(index.entries.filter(entry => entry.kind === "roadmap").map(entry => entry.question.replace(/^Roadmap:\s*/, "")));
+  const trackCards: TopicCard[] = tracks.map(track => ({
+    type: "topic", title: track.name, badge: `${track.topics.length} steps`, description: track.description, chips: true,
+    items: track.topics.map((topic, i) => ({ label: `${i + 1}. ${topicLabel(topic)}`, ask: `${topicLabel(topic)} study path` })),
+    actions: [],
+  }));
+  const roles = HUB_ROADMAP_ROLES.filter(role => roadmaps.has(role));
+  const roleCard: TopicCard = {
+    type: "topic", title: "Roadmap for a job role", badge: "By role", description: "Everything a role needs, in learning order — from basics to advanced.", chips: true,
+    items: roles.map(role => ({ label: role, ask: `Roadmap to become ${/^[AEIOU]/.test(role) ? "an" : "a"} ${role}` })),
+    actions: [{ label: "See all roles", ask: "Explore IT Roles", overview: "it-roles" }],
+  };
+  return [
+    "**Roadmaps** — two ways to plan your learning. Follow a **learning track** (topics in the right order), or pick a **job role** and get its full roadmap.",
+    "",
+    cardsBlock([roleCard, ...trackCards]),
+  ].join("\n");
+}
 export const INTERVIEW_HUB = "interview-prep";
 
 /** The whole Career Atlas: roles, salaries, glossary and tech stack, one card each. */
@@ -228,6 +277,9 @@ const DOCS: Record<string, { name: string; url: string }> = {
   "agile": { name: "The Scrum Guide", url: "https://scrumguides.org/scrum-guide.html" },
   "job-search": { name: "Tech Interview Handbook: resume", url: "https://www.techinterviewhandbook.org/resume/" },
   "data-engineering": { name: "Apache Spark documentation", url: "https://spark.apache.org/docs/latest/" },
+  "python": { name: "Official Python tutorial", url: "https://docs.python.org/3/tutorial/" },
+  "leadership": { name: "Staff Engineer: Leadership beyond the management track", url: "https://staffeng.com/guides/" },
+  "terraform": { name: "Terraform documentation", url: "https://developer.hashicorp.com/terraform/docs" },
   salary: { name: "Income Tax Department e-filing portal", url: "https://www.incometax.gov.in/iec/foportal/" },
 };
 

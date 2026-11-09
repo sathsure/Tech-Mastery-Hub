@@ -8,6 +8,7 @@ import type { AddressInfo } from "node:net";
 import { ClaudeAnswerModel, createAnswerModel, type AnswerModel, type AnswerModelEvent, type AnswerModelInput } from "./answer-model.js";
 import { renderUserTurn, SYSTEM_PROMPT } from "./answer-prompt.js";
 import { chatAllowed, clientAddress, createTutorApiServer, hostAllowed, validateChatRequest } from "./api-server.js";
+import { roleTestHref } from "./role-test-link.js";
 import { GENERATED_HEADING, type ChatEvent, type ChatRequest, type Evidence } from "./chat-contracts.js";
 import { buildEvidence, checkGrounding } from "./chat-evidence.js";
 import type { Card } from "./chat-cards.js";
@@ -212,6 +213,11 @@ await check("interview prep: role card → stack picker → prep plan with key q
   const json = /```tmh-cards\n([\s\S]*?)```/.exec(card.answer)?.[1] ?? "[]";
   const action = (JSON.parse(json)[0]?.actions ?? []).find((item: { label: string }) => item.label === "Interview Prep");
   assert.equal(action?.ask, "Interview prep: Full Stack Developer");
+  const test = (JSON.parse(json)[0]?.actions ?? []).find((item: { label: string }) => item.label === "Take the readiness test");
+  assert.equal(test?.href, "/atlas/IT_Roles_Terminology_Atlas.html#roletest/full-stack-developer");
+  assert.equal(roleTestHref("Forward Deployed Engineer"), "/atlas/IT_Roles_Terminology_Atlas.html#roletest/forward-deployed-engineer-fde");
+  assert.equal(roleTestHref("Scrum Master / Agile Coach"), "/atlas/IT_Roles_Terminology_Atlas.html#roletest/scrum-master-agile-coach");
+  assert.equal(roleTestHref("Mainframe Developer"), null, "roles without a test get no link");
 
   const picker = await collect({ message: action.ask }, null);
   assert.equal(picker.done?.view, "pick");
@@ -279,6 +285,41 @@ await check("mock interview: asks one question at a time, scores answers, and en
   const picker = await collect({ message: "Mock interview" }, null);
   assert.ok(/Pick a topic/.test(picker.answer) && picker.done?.mock === null);
   assert.equal(validateChatRequest({ message: "x", mock: { topic: "java", ids: [], index: 0, scores: [] } }).ok, false);
+});
+
+await check("mock interview: Claude grades answers when available, and key-point matching is the fallback", async () => {
+  const start = await collect({ message: "Mock interview on SQL" }, null);
+  const mock = start.done!.mock!;
+  const grader = new FakeModel(async function* () {
+    yield { type: "text", text: 'Here you go: {"score": 4, "covered": ["Explains the trade-off"], "missed": [], "feedback": "Clear and complete — nice use of an example."}' };
+    yield final();
+  });
+  const graded = await collect({ message: "My answer in my own words, with an example and a trade-off.", mock }, grader);
+  assert.match(graded.answer, /\*\*Score: 4\/4\*\* — Clear and complete/);
+  assert.match(graded.answer, /Graded by Claude/);
+  const sent = String(grader.inputs[0].messages[0].content);
+  assert.ok(sent.includes("<candidate_answer>") && sent.includes("<model_answer>"), "the grader gets the model answer and the candidate's answer");
+  const broken = new FakeModel(async function* () {
+    yield { type: "text", text: "I think this is pretty good!" };
+    yield final();
+  });
+  const fallback = await collect({ message: "Another answer.", mock }, broken);
+  assert.match(fallback.answer, /\*\*Score: [1-4]\/4\*\*/);
+  assert.match(fallback.answer, /Graded by matching the key points/, "bad JSON falls back to the free grader");
+});
+
+await check("home page hubs: Explore topics and Roadmaps list choices instead of opening one item", async () => {
+  const topics = await collect({ message: "Explore topics", overview: "topics" }, null);
+  assert.equal(topics.done?.view, "overview");
+  const areas = cardsIn(topics.answer);
+  assert.deepEqual(areas.map(card => card.title).slice(0, 3), ["Frontend", "Backend", "Data"]);
+  const backend = areas.find(card => card.title === "Backend");
+  assert.ok(backend?.type === "topic" && backend.items.some(item => item.label === "Java" && item.overview === "java"), "each topic chip opens its overview");
+  const roadmaps = await collect({ message: "Roadmaps", overview: "roadmaps-hub" }, null);
+  const cards = cardsIn(roadmaps.answer);
+  assert.equal(cards[0].title, "Roadmap for a job role");
+  assert.ok(cards[0].type === "topic" && cards[0].items.some(item => item.label === "Full Stack Developer"));
+  assert.ok(cards.some(card => card.title === "Backend with Java"), "learning tracks are listed too");
 });
 
 await check("home page hubs: Career atlas shows all four parts, Interview prep offers roles and topics", async () => {
@@ -353,11 +394,11 @@ await check("follow-ups: only what is new, never the previous explanation again"
   assert.doesNotMatch(cicd.answer, /beyond the previous answer/);
   assert.match(cicd.answer, /```mermaid/, "the note's diagram is shown");
 
-  // "Show me a diagram" finds Mermaid diagrams written in the notes, not just image files.
+  // "Show me a diagram" finds the notes' diagrams: Mermaid or an image.
   const dns = await collect({ message: "How does DNS work?", history: [] }, null);
   const dnsDiagram = await collect({ message: "show me a diagram", history: [{ role: "user" as const, content: "How does DNS work?" }, { role: "assistant" as const, content: dns.answer }] }, null);
   assert.match(dnsDiagram.answer, /^\*\*Diagram\*\*/);
-  assert.match(dnsDiagram.answer, /```mermaid/);
+  assert.match(dnsDiagram.answer, /```mermaid|!\[/);
 
   // Claude is told the question builds on the previous answer.
   const model = new FakeModel(async function* () {
@@ -568,6 +609,18 @@ await check("API: /chat streams events, JSON mode, validation, and /visuals", as
     assert.equal(image.headers.get("content-type"), "image/png");
     assert.equal((await fetch(`${base}/visuals/..%2F..%2Fai%2Fruntime%2Fpackage.json`)).status, 404);
     assert.equal((await fetch(`${base}/visuals/missing.png`)).status, 404);
+
+    // The Atlas (with the Role Test) is served under /atlas/, with its live job feeds allowed.
+    const atlas = await fetch(`${base}/atlas/IT_Roles_Terminology_Atlas.html`);
+    assert.equal(atlas.status, 200);
+    assert.match(atlas.headers.get("content-security-policy") ?? "", /connect-src 'self' https:\/\/www\.arbeitnow\.com/);
+    assert.match(await atlas.text(), /role-test-data-5\.js/);
+    assert.equal((await fetch(`${base}/atlas/role-test-ui.js`)).status, 200);
+    const redirect = await fetch(`${base}/atlas`, { redirect: "manual" });
+    assert.equal(redirect.headers.get("location"), "/atlas/IT_Roles_Terminology_Atlas.html");
+    assert.equal((await fetch(`${base}/atlas/role-test.test.js`)).status, 404, "tests are not served");
+    assert.equal((await fetch(`${base}/atlas/..%2Fai%2Fruntime%2Fpackage.json`)).status, 404, "no way out of the Atlas folder");
+    assert.doesNotMatch((await fetch(`${base}/`)).headers.get("content-security-policy") ?? "", /arbeitnow/, "the tutor keeps its strict policy");
   } finally {
     await new Promise<void>(done => server.close(() => done()));
   }

@@ -8,6 +8,7 @@ Automates business processes using AI plus workflow tools.
 ## Prerequisites
 
 - [HTML](../topics/html.md)
+- [Python](../topics/python.md)
 - Usually 1+ years of experience when hired
 
 ## Learning stages
@@ -18,7 +19,7 @@ Automates business processes using AI plus workflow tools.
 
 ## Also needed
 
-Python, n8n, Make, Zapier, Power Automate + Copilot, UiPath (Agentic), Claude / OpenAI APIs, Google/Microsoft 365 APIs, Airtable, Webhooks
+n8n, Make, Zapier, Power Automate + Copilot, UiPath (Agentic), Claude / OpenAI APIs, Google/Microsoft 365 APIs, Airtable, Webhooks
 
 ## Where it leads
 

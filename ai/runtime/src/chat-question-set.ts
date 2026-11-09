@@ -385,7 +385,7 @@ function levelOf(entry: QuestionEntry): Level {
   const where = `${entry.section.join(" ")} ${entry.source.path}`.toLowerCase();
   // LeetCode sets run from warm-up (arrays, hashing) to hard (graphs, dynamic programming).
   if (/leetcode/.test(where)) return /dynamic programming|trees and graphs|heaps|patterns/.test(where) ? 3 : /arrays and hashing|binary search/.test(where) ? 1 : 2;
-  if (/tricky|trick|deep dive|internals|under-the-hood|advanced|concurrency|jvm|production|architect|judgment|performance|scalab|distributed|consistency|incident|mock|real-world|scenario|managerial/.test(where)) return 3;
+  if (/tricky|trick|deep dive|internals|under-the-hood|advanced|concurrency|jvm|production|architect|judgment|performance|scalab|distributed|consistency|incident|mock|real-world|scenario|managerial|interview\/leadership/.test(where)) return 3;
   if (/basic|fundamental|part 1 |must-know|how to answer|quick revision|getting started/.test(where)) return 1;
   return 2;
 }
@@ -402,8 +402,11 @@ const SOURCES: Record<CategoryId, (entry: QuestionEntry) => boolean> = {
   design: entry => /04-System-Design\.md$/.test(entry.source.path) ? /classic|tricky|reliability/i.test(entry.section.join(" ")) : /05-Distributed-Systems|microservice-architecture|09-Web_Architecture/.test(entry.source.path) && /final system design|walkthrough|consistency|transactions across/i.test(entry.section.join(" ")),
   architecture: entry => /10-Design-Patterns-SOLID/.test(entry.source.path) || (/08-Architecture|06-Spring-Cloud/.test(entry.source.path) && /architect|design decision|end-to-end|api design|fundamentals|service boundaries/i.test(entry.section.join(" "))),
   debugging: entry => /production issues|incident|configuration & environment|troubleshooting|jpa \/ hibernate performance|memory leaks/i.test(entry.section.join(" ")),
-  scenarios: entry => /scenario|mock|real-world|concurrent users|performance & scalability|state, caching|data safety|security & data exposure|deployment & release/i.test(entry.section.join(" ")),
-  behavioural: entry => entry.source.path.startsWith("interview/behavioral/") ? !/how to answer/i.test(entry.section.join(" ")) : /team & ownership|managerial & design decisions/i.test(entry.section.join(" ")),
+  scenarios: entry => /scenario|mock interview|real-world|concurrent users|performance & scalability|state, caching|data safety|security & data exposure|deployment & release/i.test(entry.section.join(" ")),
+  behavioural: entry =>
+    entry.source.path.startsWith("interview/behavioral/") ? !/how to answer/i.test(entry.section.join(" "))
+    : entry.source.path.startsWith("interview/leadership/") ? /people|delivery|production/i.test(entry.section.join(" "))
+    : /team & ownership|managerial & design decisions/i.test(entry.section.join(" ")),
 };
 
 /** Coding practice files per language, so a Java interview doesn't get JavaScript exercises. */
@@ -418,7 +421,7 @@ function codingFits(entry: QuestionEntry, settings: Settings): boolean {
 }
 
 /** Skills every engineer is asked about, whatever the stack. */
-const GENERAL_TOPICS = new Set(["dsa", "system-design", "design-patterns", "behavioral", "testing", "networking", "microservices", "rest-api", "web-architecture", "database/sql", "under-the-hood", "caching"]);
+const GENERAL_TOPICS = new Set(["dsa", "leadership", "agile", "system-design", "design-patterns", "behavioral", "testing", "networking", "microservices", "rest-api", "web-architecture", "database/sql", "under-the-hood", "caching"]);
 
 /** An entry fits the stack when it is about a chosen topic, or only about general skills any engineer needs. */
 function stackFits(entry: QuestionEntry, settings: Settings, category: CategoryId): boolean {
@@ -449,8 +452,11 @@ function chooseQuestions(entries: QuestionEntry[], slots: Slot[], settings: Sett
       .filter(entry => SOURCES[id](entry) && stackFits(entry, settings, id) && levelRank(entry, settings.level) < 9)
       .sort((a, b) => levelRank(a, settings.level) - levelRank(b, settings.level) || a.source.path.localeCompare(b.source.path) || a.source.startLine - b.source.startLine);
     const picks: QuestionEntry[] = [];
-    // Core questions rotate through the chosen stacks, so every stack gets asked about.
-    const groups = id === "core" ? settings.topics.map(topic => candidates.filter(entry => entry.topics[0] === topic)).filter(group => group.length) : [candidates];
+    // Core questions rotate through the chosen stacks; other categories through their source files, so a set mixes material.
+    const byFile = [...new Set(candidates.map(entry => entry.source.path))].map(path => candidates.filter(entry => entry.source.path === path));
+    // When leadership is a focus, the leadership notes lead the behavioural section.
+    if (settings.focus.includes("Technical leadership")) byFile.sort((a, b) => Number(b[0].source.path.startsWith("interview/leadership/")) - Number(a[0].source.path.startsWith("interview/leadership/")));
+    const groups = id === "core" ? settings.topics.map(topic => candidates.filter(entry => entry.topics[0] === topic)).filter(group => group.length) : byFile;
     for (let round = 0; picks.length < slot.count && groups.some(group => group.length > round); round++) {
       for (const group of groups) {
         const next = group.filter(entry => !used.has(entry.id) && !used.has(entry.question))[0];

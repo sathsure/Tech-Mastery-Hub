@@ -19,27 +19,17 @@
 2. [When should you use Kafka (use cases)?](../../interview/architecture/messaging-rabbitmq-kafka.md)
 3. [How do you choose between RabbitMQ and Kafka for a requirement?](../../interview/architecture/messaging-rabbitmq-kafka.md)
 
-## 3. Storage Hardware and File Systems
+## 3. Scaling: serving more users with more servers (system design, any language)
 
-1. [How do HDD, SSD and RAM store and retrieve data differently?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)
-2. [How does a File System organize files and directories on disk?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)
+1. [Why do large systems run on many servers instead of one big one?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)
+2. [How does a cache like Redis make systems faster?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)
+3. [Why use a message queue like Kafka or RabbitMQ?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)
 
-## 4. Redis and Caching Patterns
+## 4. Resilience: surviving failures (any language; Java examples)
 
-1. [How does Redis store and retrieve data internally?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)
-2. [How do Cache-Aside, Write-Through and Write-Behind work?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)
-
-## 5. Kafka and RabbitMQ
-
-1. [How does Kafka store messages and achieve high throughput?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)
-2. [How do Kafka Partitions, Offsets and Consumer Groups work?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)
-3. [How does RabbitMQ route messages using Exchanges, Queues and Bindings?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)
-4. [How do Message Acknowledgements, Retries and Dead Letter Queues work?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)
-
-## 6. Ordering and Reliability
-
-1. [How does message ordering work?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)
-2. [How does a distributed application achieve reliable message processing?](../../interview/under-the-hood/09-Storage-Caching-Messaging.md)
+1. [What is resilience, and is it Java-specific?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)
+2. [How does a circuit breaker work?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)
+3. [What does the CAP theorem mean in practice?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)
 
 ## Related roles
 

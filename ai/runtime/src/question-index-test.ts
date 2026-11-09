@@ -71,7 +71,7 @@ await check("closures question keeps its code and summary", () => {
 });
 
 await check("web-vitals questions are split", () => {
-  assert.equal(index.files.find(file => file.path === "interview/architecture/01-web-vitals.md")?.questions, 8);
+  assert.equal(index.files.find(file => file.path === "interview/architecture/01-web-vitals.md")?.questions, 13);
   assert.ok(find("interview/architecture/01-web-vitals.md", "CLS"));
 });
 

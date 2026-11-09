@@ -102,32 +102,19 @@
 
 1. [Final Question: Design a MEAN system for 1 million users](../../interview/frontend/09-Web_Architecture.md)
 
-## 10. Service Communication
+## 10. Scaling: serving more users with more servers (system design, any language)
 
-1. [How do microservices communicate with each other?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)
-2. [How does Service Discovery work?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)
+1. [Why do large systems run on many servers instead of one big one?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)
+2. [How does a cache like Redis make systems faster?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)
+3. [Why use a message queue like Kafka or RabbitMQ?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)
 
-## 11. Resilience
+## 11. Resilience: surviving failures (any language; Java examples)
 
-1. [How do Circuit Breakers, Retries and Timeouts prevent cascading failures?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)
-2. [How does Idempotency prevent duplicate processing?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)
-
-## 12. Transactions and Consistency
-
-1. [How do Distributed Transactions work?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)
-2. [How does the Saga Pattern work?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)
-3. [How do distributed systems maintain consistency?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)
-
-## 13. Coordination
-
-1. [How do Replication and Leader Election work?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)
-2. [How does Distributed Locking work?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)
-
-## 14. Observability
-
-1. [How does Distributed Tracing track a request across multiple services?](../../interview/under-the-hood/10-Distributed-Systems-Internals.md)
+1. [What is resilience, and is it Java-specific?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)
+2. [How does a circuit breaker work?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)
+3. [What does the CAP theorem mean in practice?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)
 
 ## Related roles
 
-[AI Infrastructure / LLMOps Engineer](../roles/ai-infrastructure-llmops-engineer.md) · [AI Solutions Architect](../roles/ai-solutions-architect.md) · [Backend Developer](../roles/backend-developer.md) · [Solution Architect](../roles/solution-architect.md)
+[AI Infrastructure / LLMOps Engineer](../roles/ai-infrastructure-llmops-engineer.md) · [AI Solutions Architect](../roles/ai-solutions-architect.md) · [Backend Developer](../roles/backend-developer.md) · [Enterprise Architect](../roles/enterprise-architect.md) · [Solution Architect](../roles/solution-architect.md) · [Tech Lead](../roles/tech-lead.md)
 

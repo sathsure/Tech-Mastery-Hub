@@ -8,6 +8,7 @@ Designs secure, scalable, cost-effective cloud systems.
 ## Prerequisites
 
 - [DevOps](../topics/devops.md)
+- [Python](../topics/python.md)
 - Usually 7+ years of experience when hired
 
 ## Learning stages
@@ -15,10 +16,11 @@ Designs secure, scalable, cost-effective cloud systems.
 ### Stage 1: Core skills
 
 - [ ] [AWS](../topics/aws.md)
+- [ ] [Terraform & IaC](../topics/terraform.md)
 
 ## Also needed
 
-HCL, Python, Azure Well-Architected, Azure, GCP, Terraform
+Azure Well-Architected, Azure, GCP
 
 ## Where it leads
 

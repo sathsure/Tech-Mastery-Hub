@@ -9,6 +9,7 @@ Builds apps on top of large language models — chatbots, agents, RAG.
 
 - [HTML](../topics/html.md)
 - [Java](../topics/java.md)
+- [Python](../topics/python.md)
 - [REST API](../topics/rest-api.md)
 - Usually 2+ years of experience when hired
 
@@ -26,7 +27,7 @@ Builds apps on top of large language models — chatbots, agents, RAG.
 
 ## Also needed
 
-Python, LangChain, LlamaIndex, Semantic Kernel, Vercel AI SDK, Claude / OpenAI / Gemini APIs, Langfuse / LangSmith
+LangChain, LlamaIndex, Semantic Kernel, Vercel AI SDK, Claude / OpenAI / Gemini APIs, Langfuse / LangSmith
 
 ## Where it leads
 

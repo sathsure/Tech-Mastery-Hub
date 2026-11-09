@@ -9,6 +9,7 @@ Builds pipelines that move and transform data into warehouses and lakes.
 
 - [SQL](../topics/database-sql.md)
 - [Java](../topics/java.md)
+- [Python](../topics/python.md)
 
 ## Learning stages
 
@@ -22,7 +23,7 @@ Builds pipelines that move and transform data into warehouses and lakes.
 
 ## Also needed
 
-Python, Scala, Kafka, Flink, Delta Lake / Iceberg, Snowflake, Databricks, BigQuery, Redshift
+Scala, Kafka, Flink, Delta Lake / Iceberg, Snowflake, Databricks, BigQuery, Redshift
 
 ## Where it leads
 

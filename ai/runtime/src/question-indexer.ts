@@ -209,6 +209,8 @@ export interface Lookups {
   visualsByName: Map<string, string>;
   /** topic → alias words, from search-vocabulary.json; used to link Atlas roles to learning topics. */
   topicAliases: Record<string, string[]>;
+  /** topicAliases plus roleSkillAliases: links job roles to learning topics. */
+  roleAliases: Record<string, string[]>;
 }
 
 function loadLookups(): Lookups {
@@ -220,10 +222,13 @@ function loadLookups(): Lookups {
     const name = posix.basename(path).toLowerCase();
     if (!visualsByName.has(name)) visualsByName.set(name, path);
   }
-  const topicAliases = existsSync(resolve(REPOSITORY_ROOT, VOCABULARY_PATH))
-    ? ((JSON.parse(readText(VOCABULARY_PATH)) as { topicAliases?: Record<string, string[]> }).topicAliases ?? {})
+  const vocabulary = existsSync(resolve(REPOSITORY_ROOT, VOCABULARY_PATH))
+    ? (JSON.parse(readText(VOCABULARY_PATH)) as { topicAliases?: Record<string, string[]>; roleSkillAliases?: Record<string, string[]> })
     : {};
-  return { documents, concepts, visualsByName, topicAliases };
+  const topicAliases = vocabulary.topicAliases ?? {};
+  const roleAliases: Record<string, string[]> = {};
+  for (const source of [topicAliases, vocabulary.roleSkillAliases ?? {}]) for (const [topic, words] of Object.entries(source)) roleAliases[topic] = [...(roleAliases[topic] ?? []), ...words];
+  return { documents, concepts, visualsByName, topicAliases, roleAliases };
 }
 
 function resolveVisual(reference: string, sourcePath: string, lookups: Lookups): { path: string | null; exists: boolean } {
@@ -565,7 +570,7 @@ export function buildQuestionIndex(generatedAt = new Date().toISOString()): Ques
   fingerprint.update(readFileSync(fileURLToPath(new URL("./atlas-indexer.js", import.meta.url))));
   fingerprint.update(readFileSync(fileURLToPath(new URL("./roadmap-indexer.js", import.meta.url))));
   linkRoadmapsToRoles(entries);
-  fingerprint.update(JSON.stringify(lookups.topicAliases));
+  fingerprint.update(JSON.stringify(lookups.roleAliases));
 
   const visuals = entries.flatMap(entry => entry.visuals);
   return {

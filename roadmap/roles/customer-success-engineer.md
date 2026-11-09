@@ -15,10 +15,11 @@ Helps customers adopt and get value from a product after purchase.
 ### Stage 1: Core skills
 
 - [ ] [SQL](../topics/database-sql.md)
+- [ ] [Python](../topics/python.md)
 
 ## Also needed
 
-Python (basic), Onboarding playbooks, Zendesk, Gainsight, Jira
+Onboarding playbooks, Zendesk, Gainsight, Jira
 
 ## Where it leads
 

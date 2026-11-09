@@ -284,6 +284,10 @@ To **override styles of child or third-party components** that use Emulated enca
 
 ### 📝 Answer
 
+The hooks run in this order: constructor → `ngOnChanges` → `ngOnInit` → `ngDoCheck` → content hooks → view hooks → `ngOnDestroy`.
+
+![Angular component lifecycle hooks, from constructor to ngOnDestroy](../../knowledge/visual-notes/angular-lifecycle.png)
+
 **`child.component.ts`**
 
 ```ts

@@ -209,25 +209,54 @@
 4. [Tricky: Why is `ConcurrentModificationException` thrown in a single-threaded loop?](../../interview/backend/java/11-Java-Concurrency.md)
 5. [Tricky: Concurrency vs parallelism?](../../interview/backend/java/11-Java-Concurrency.md)
 
-## 22. Hashing
+## 22. How code becomes something the CPU can run (all languages)
 
-1. [How does HashMap work internally, including hashing, buckets and collision handling?](../../interview/under-the-hood/06-Data-Structures-Internals.md)
-2. [Why is HashMap not reversible? Why can't the original key be reconstructed from its hash?](../../interview/under-the-hood/06-Data-Structures-Internals.md)
+1. [What happens between writing code and the computer running it?](../../interview/under-the-hood/01-How-Code-Runs.md)
+   - [Is Java compiled or interpreted?](../../interview/under-the-hood/01-How-Code-Runs.md)
+2. [What is the difference between AOT and JIT compilation?](../../interview/under-the-hood/01-How-Code-Runs.md)
 
-## 23. Lists, Stacks, Queues and Heaps
+## 23. Language runtimes: the JVM and JavaScript engines (Java & JavaScript)
 
-1. [How do ArrayList, LinkedList and Arrays store and retrieve elements differently?](../../interview/under-the-hood/06-Data-Structures-Internals.md)
-2. [How do Stack, Queue, Heap and Priority Queue work?](../../interview/under-the-hood/06-Data-Structures-Internals.md)
+1. [How does the JVM run a Java program?](../../interview/under-the-hood/01-How-Code-Runs.md)
+2. [How does a JavaScript engine like V8 run code?](../../interview/under-the-hood/01-How-Code-Runs.md)
 
-## 24. Trees and Sets
+## 24. Where data lives: RAM, disk and many servers (the big picture)
 
-1. [How do Binary Search Trees, AVL Trees, Red-Black Trees and B+ Trees differ?](../../interview/under-the-hood/06-Data-Structures-Internals.md)
-2. [How does HashSet ensure uniqueness?](../../interview/under-the-hood/06-Data-Structures-Internals.md)
+1. [What is the difference between data structures, a database and a data warehouse?](../../interview/under-the-hood/02-Memory-and-Data.md)
+2. [What is the difference between CPU cache, RAM and disk?](../../interview/under-the-hood/02-Memory-and-Data.md)
 
-## 25. Algorithms and Performance
+## 25. Stack and heap: memory inside a running program (all languages)
 
-1. [How do searching and sorting algorithms work internally?](../../interview/under-the-hood/06-Data-Structures-Internals.md)
-2. [How do time and space complexities affect actual application performance?](../../interview/under-the-hood/06-Data-Structures-Internals.md)
+1. [What are stack and heap memory?](../../interview/under-the-hood/02-Memory-and-Data.md)
+2. [How does garbage collection work?](../../interview/under-the-hood/02-Memory-and-Data.md)
+3. [What is virtual memory?](../../interview/under-the-hood/02-Memory-and-Data.md)
+
+## 26. Processes and threads (operating system, all languages)
+
+1. [What is the difference between a process and a thread?](../../interview/under-the-hood/03-Processes-and-Threads.md)
+2. [What is context switching?](../../interview/under-the-hood/03-Processes-and-Threads.md)
+3. [What is the difference between concurrency and parallelism?](../../interview/under-the-hood/03-Processes-and-Threads.md)
+4. [What is a race condition, and how do you prevent it?](../../interview/under-the-hood/03-Processes-and-Threads.md)
+
+## 27. Inside common data structures (ideas apply to every language; Java examples)
+
+1. [How does a HashMap work internally?](../../interview/under-the-hood/04-Inside-Data-Structures.md)
+   - [Why can't you get the key back from its hash?](../../interview/under-the-hood/04-Inside-Data-Structures.md)
+2. [How do ArrayList and LinkedList store data differently?](../../interview/under-the-hood/04-Inside-Data-Structures.md)
+3. [How do stacks, queues and heaps work?](../../interview/under-the-hood/04-Inside-Data-Structures.md)
+4. [How do trees like the B+ tree speed up searching?](../../interview/under-the-hood/04-Inside-Data-Structures.md)
+
+## 28. What happens inside Spring Boot when a request arrives (Java / Spring)
+
+1. [What happens when an HTTP request reaches a Spring Boot app?](../../interview/under-the-hood/07-Inside-a-Web-Server.md)
+2. [How does Spring's dependency injection (inversion of control) create and connect objects?](../../interview/under-the-hood/07-Inside-a-Web-Server.md)
+3. [How does a database connection pool work?](../../interview/under-the-hood/07-Inside-a-Web-Server.md)
+
+## 29. Resilience: surviving failures (any language; Java examples)
+
+1. [What is resilience, and is it Java-specific?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)
+2. [How does a circuit breaker work?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)
+3. [What does the CAP theorem mean in practice?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)
 
 ## Practice
 
@@ -294,6 +323,17 @@
 
 - [CompositionVsInheritance](../../knowledge/visual-notes/backend/composition-vs-inheritance.png)
 - [Collections](../../knowledge/visual-notes/backend/java-collections.png)
+- [How a compiler works: source code is analysed and translated into machine code](../../knowledge/visual-notes/under-the-hood/compiler.svg)
+- [A data warehouse collects data from many operational systems and serves reports and analysis](../../knowledge/visual-notes/under-the-hood/data-warehouse-overview.jpg)
+- [Memory hierarchy: registers and cache at the top are fastest and smallest; disks at the bottom are slowest and largest](../../knowledge/visual-notes/under-the-hood/memory-hierarchy.svg)
+- [The call stack: each method call gets a frame with its local variables and return address](../../knowledge/visual-notes/under-the-hood/call-stack.svg)
+- [Mark and sweep: reachable objects are marked, the rest are swept away](../../knowledge/visual-notes/under-the-hood/mark-and-sweep-gc.gif)
+- [Virtual memory: each process's addresses map to pages in physical RAM or on disk](../../knowledge/visual-notes/under-the-hood/virtual-memory.svg)
+- [A process with several threads: each thread has its own registers and stack but they share code, data and files](../../knowledge/visual-notes/under-the-hood/multithreaded-process.svg)
+- [Process states: a process moves between ready, running and waiting as the scheduler switches](../../knowledge/visual-notes/under-the-hood/process-states.svg)
+- [Hash table: keys are hashed to bucket indexes; colliding keys share a bucket](../../knowledge/visual-notes/under-the-hood/hash-table.svg)
+- [Linked list: each node holds a value and a pointer to the next node](../../knowledge/visual-notes/under-the-hood/singly-linked-list.svg)
+- [B+ tree: internal nodes guide the search; the leaves hold the values and link to each other](../../knowledge/visual-notes/under-the-hood/b-plus-tree.png)
 
 ## Related roles
 

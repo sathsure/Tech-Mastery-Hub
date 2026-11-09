@@ -16,10 +16,11 @@ Decides which AI features to build and how to measure their value and risks.
 
 - [ ] [Agile & Scrum](../topics/agile.md)
 - [ ] [SQL](../topics/database-sql.md)
+- [ ] [Python](../topics/python.md)
 
 ## Also needed
 
-Python (helpful), OKRs, AI evaluation basics, Responsible AI, Jira, Claude / ChatGPT, Model playgrounds, Amplitude, Figma
+OKRs, AI evaluation basics, Responsible AI, Jira, Claude / ChatGPT, Model playgrounds, Amplitude, Figma
 
 ## Where it leads
 

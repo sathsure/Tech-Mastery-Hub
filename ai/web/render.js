@@ -70,6 +70,10 @@ function cardButton(action, primary) {
   if (action.href && /^https:\/\//.test(action.href)) {
     return `<a class="${cls}" href="${escapeHtml(action.href)}" target="_blank" rel="noopener noreferrer">${escapeHtml(action.label)}${icon("external")}</a>`;
   }
+  // Same-server pages (the Atlas Role Test) open in a new tab too.
+  if (action.href && /^\/atlas\/[\w./#-]+$/.test(action.href)) {
+    return `<a class="${cls}" href="${escapeHtml(action.href)}" target="_blank" rel="noopener">${escapeHtml(action.label)}${icon("external")}</a>`;
+  }
   if (!action.ask) return "";
   const overview = action.overview ? ` data-overview="${escapeHtml(action.overview)}"` : "";
   return `<button type="button" class="${cls}" data-ask="${escapeHtml(action.ask)}"${overview}>${escapeHtml(action.label)}</button>`;
@@ -144,7 +148,8 @@ function countryCardHtml(card) {
 
 function itemHtml(item, asChip) {
   const cls = asChip ? "chip-link" : "card-link";
-  const inner = item.ask ? `<button type="button" class="${cls}" data-ask="${escapeHtml(item.ask)}">${escapeHtml(item.label)}</button>` : escapeHtml(item.label);
+  const overview = item.overview ? ` data-overview="${escapeHtml(item.overview)}"` : "";
+  const inner = item.ask ? `<button type="button" class="${cls}" data-ask="${escapeHtml(item.ask)}"${overview}>${escapeHtml(item.label)}</button>` : escapeHtml(item.label);
   return asChip ? inner : `<li>${inner}</li>`;
 }
 

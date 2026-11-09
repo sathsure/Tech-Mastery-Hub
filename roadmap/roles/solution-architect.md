@@ -9,6 +9,7 @@ Designs the technical solution for a specific business problem or project.
 
 - [SQL](../topics/database-sql.md)
 - [Java](../topics/java.md)
+- [Python](../topics/python.md)
 - [REST API](../topics/rest-api.md)
 - Usually 8+ years of experience when hired
 
@@ -21,7 +22,7 @@ Designs the technical solution for a specific business problem or project.
 
 ## Also needed
 
-Event-driven, TOGAF (optional), Draw.io, Lucidchart, C4 model, ArchiMate
+Event-driven, Draw.io, Lucidchart, C4 model
 
 ## Where it leads
 

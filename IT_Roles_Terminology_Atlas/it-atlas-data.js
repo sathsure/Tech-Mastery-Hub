@@ -1525,12 +1525,12 @@ const ATLAS = {
         c: "Japan", flag: "🇯🇵", cur: "JPY", sym: "¥", year: "Tax year 2026 (calendar year)", calc: "japan",
         summary: "National income tax 5–45% plus 2.1% reconstruction surtax, a flat 10% resident tax (charged from the second year), and social insurance of about 15%.",
         regimes: [{ name: "National income tax", deduction: 0, brackets: [[0, 1950000, 5], [1950000, 3300000, 10], [3300000, 6950000, 20], [6950000, 9000000, 23], [9000000, 18000000, 33], [18000000, 40000000, 40], [40000000, null, 45]],
-          extra: "Applied after deductions. 2026 reform: employment income deduction at least ¥740,000 (¥690,000 + ¥50,000 temporary), basic deduction ¥620,000 plus ¥420,000 for salaries up to ¥6.65 million — so no income tax up to about ¥1.78 million." }],
+          extra: "Applied after deductions. 2026 reform (applied from the December 2026 year-end adjustment): employment income deduction at least ¥740,000 (¥690,000 + ¥50,000 temporary); basic deduction ¥1,040,000 when income after that deduction is up to ¥4.89 million, ¥670,000 up to ¥6.55 million, ¥620,000 up to ¥23.5 million — so no income tax on salaries up to about ¥1.78 million." }],
         social: ["Health ~5% (varies by insurer and prefecture), pension 9.15% (capped at ¥650,000 monthly pay), employment insurance ~0.5% — about 15% in total", "Resident tax ~10% of last year's income, charged from your second year"],
         socialBands: [{ n: "Health insurance (approx.)", bands: [[0, 16680000, 4.95]] }, { n: "Pension (kosei nenkin)", bands: [[0, 7800000, 9.15]] }, { n: "Employment insurance (approx.)", bands: [[0, null, 0.5]] }],
         excludes: "Nursing-care insurance (age 40+), bonus-specific caps, and spouse or dependant deductions",
         notes: ["Reconstruction surtax (2.1% of national tax) runs until 2037.", "The 2026 deduction changes apply to income tax from 2026 and to resident tax from 2027."],
-        links: [{ t: "National Tax Agency: income tax rates", u: "https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/2260.htm" }, { t: "NTA English site", u: "https://www.nta.go.jp/english/" }, { t: "2026 Japan tax reform outline (EY)", u: "https://www.ey.com/en_jp/technical/ey-japan-tax-library/tax-alerts/2025/tax-alerts-12-24" }]
+        links: [{ t: "National Tax Agency: income tax rates", u: "https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/2260.htm" }, { t: "NTA English site", u: "https://www.nta.go.jp/english/" }, { t: "NTA: 2026 basic deduction changes (Japanese)", u: "https://www.nta.go.jp/users/gensen/2026kiso/index.htm" }, { t: "2026 Japan tax reform outline (EY)", u: "https://www.ey.com/en_jp/technical/ey-japan-tax-library/tax-alerts/2025/tax-alerts-12-24" }]
       },
       {
         c: "Australia", flag: "🇦🇺", cur: "AUD", sym: "A$", year: "Financial year 2026-27 (1 Jul 2026 – 30 Jun 2027)", calc: "brackets",

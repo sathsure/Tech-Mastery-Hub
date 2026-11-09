@@ -93,27 +93,19 @@
 2. [Tricky: Why does my Java app get OOMKilled although the heap is smaller than the limit?](../../interview/architecture/07-Docker-Kubernetes.md)
 3. [Tricky: A Pod is running but users get 503 errors. Why?](../../interview/architecture/07-Docker-Kubernetes.md)
 
-## 10. Virtual Machines
+## 10. Virtual machines and containers (cloud & DevOps, any language)
 
-1. [What is a Virtual Machine? How can one physical computer run multiple VMs?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)
-2. [How does a Hypervisor allocate CPU, Memory and Storage?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)
+1. [What is the difference between a virtual machine and a container?](../../interview/under-the-hood/09-Virtual-Machines-and-Containers.md)
+2. [How does Docker build and run an image?](../../interview/under-the-hood/09-Virtual-Machines-and-Containers.md)
+3. [How does Kubernetes keep applications running?](../../interview/under-the-hood/09-Virtual-Machines-and-Containers.md)
+4. [How does code get from a developer's laptop to production?](../../interview/under-the-hood/09-Virtual-Machines-and-Containers.md)
 
-## 11. Containers
+## Diagrams
 
-1. [How does Docker work internally?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)
-2. [How are Containers (like Docker) different from Virtual Machines?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)
-3. [How do Docker Images and Containers work?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)
-
-## 12. Orchestration and Delivery
-
-1. [How does Kubernetes schedule and manage containers?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)
-2. [How does an application move from source code to a running production environment?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)
-3. [How do CI/CD pipelines build, test and deploy applications?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)
-4. [How do cloud platforms allocate computing resources?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)
-5. [How do Auto Scaling and Load Balancing work?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)
-6. [How are Secrets and Environment Configurations managed?](../../interview/under-the-hood/08-Cloud-Virtualization-Deployment.md)
+- [Containers share one OS kernel through the container engine; each VM carries its own guest operating system](../../knowledge/visual-notes/under-the-hood/containers-vs-vms.png)
+- [Kubernetes architecture: the control plane manages worker nodes that run pods](../../knowledge/visual-notes/under-the-hood/kubernetes-architecture.png)
 
 ## Related roles
 
-[AI Infrastructure / LLMOps Engineer](../roles/ai-infrastructure-llmops-engineer.md) · [AI Solutions Architect](../roles/ai-solutions-architect.md) · [Application Security / DevSecOps Engineer](../roles/application-security-devsecops-engineer.md) · [Cloud Architect](../roles/cloud-architect.md) · [Cloud Security Engineer](../roles/cloud-security-engineer.md) · [DevOps Engineer](../roles/devops-engineer.md) · [Full Stack Developer](../roles/full-stack-developer.md) · [MLOps Engineer](../roles/mlops-engineer.md) · [Platform Engineer](../roles/platform-engineer.md) · [Release / Build Engineer](../roles/release-build-engineer.md) · [Site Reliability Engineer](../roles/site-reliability-engineer.md)
+[AI Infrastructure / LLMOps Engineer](../roles/ai-infrastructure-llmops-engineer.md) · [AI Solutions Architect](../roles/ai-solutions-architect.md) · [Application Security / DevSecOps Engineer](../roles/application-security-devsecops-engineer.md) · [Cloud Architect](../roles/cloud-architect.md) · [Cloud Engineer](../roles/cloud-engineer.md) · [Cloud Security Engineer](../roles/cloud-security-engineer.md) · [DevOps Engineer](../roles/devops-engineer.md) · [Full Stack Developer](../roles/full-stack-developer.md) · [MLOps Engineer](../roles/mlops-engineer.md) · [Platform Engineer](../roles/platform-engineer.md) · [Production / Application Support](../roles/production-application-support.md) · [Release / Build Engineer](../roles/release-build-engineer.md) · [Security Analyst](../roles/security-analyst.md) · [Site Reliability Engineer](../roles/site-reliability-engineer.md)
 

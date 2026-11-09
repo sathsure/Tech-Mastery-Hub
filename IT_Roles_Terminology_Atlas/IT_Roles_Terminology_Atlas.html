@@ -27,6 +27,7 @@
     <button data-tab="mypath">My Path</button>
     <button data-tab="ladder">Career Ladder</button>
     <button data-tab="roles">Roles</button>
+    <button data-tab="roletest">Role Test</button>
     <button data-tab="glossary">Glossary</button>
     <button data-tab="stack">Tech Stack</button>
     <button data-tab="salary">Salary (India)</button>
@@ -46,6 +47,7 @@
     </div>
     <div class="quick">
       <button class="quick-card" data-tab="salary"><b>Check my salary</b><span>Build your skill list, see your LPA range</span></button>
+      <button class="quick-card quick-test" data-tab="roletest"><b>Role readiness test</b><span>How ready are you for Full Stack, DevOps, Data…? Get a % score</span></button>
       <button class="quick-card" data-tab="pay"><b>Take-home &amp; tax</b><span>CTC → monthly in-hand, compare offers, tax abroad</span></button>
       <button class="quick-card" data-tab="abroad"><b>Work abroad</b><span>Visa odds by country + live jobs &amp; news</span></button>
       <button class="quick-card quick-path" data-tab="mypath"><b>My path</b><span id="quickPath">Match your skills to roles, plan a switch</span></button>
@@ -116,6 +118,9 @@
     <p id="roleCount" class="count"></p>
     <div id="roleGrid" class="role-grid"></div>
   </section>
+
+  <!-- Role readiness test -->
+  <section id="roletest" class="panel"><div id="rtRoot" class="rt"></div></section>
 
   <!-- Glossary -->
   <section id="glossary" class="panel">
@@ -315,5 +320,12 @@
 <script src="pay-tax.js"></script>
 <script src="pay-tax-ui.js"></script>
 <script src="glossary-cards.js"></script>
+<script src="role-test-data.js"></script>
+<script src="role-test-data-2.js"></script>
+<script src="role-test-data-3.js"></script>
+<script src="role-test-data-4.js"></script>
+<script src="role-test-data-5.js"></script>
+<script src="role-test-engine.js"></script>
+<script src="role-test-ui.js"></script>
 </body>
 </html>

@@ -5,6 +5,7 @@
  *   GET /vendor/<name>    browser libraries from node_modules (fixed list)
  *   GET /catalog          topics, Atlas sections and role families for the sidebar
  *   GET /entry?id=...     one full source entry for the source viewer
+ *   GET /atlas/<file>     the IT Roles & Terminology Atlas (incl. the Role Readiness Test)
  */
 import type { IncomingMessage, ServerResponse } from "node:http";
 import { readFile } from "node:fs/promises";
@@ -18,6 +19,8 @@ import { TOPIC_DESCRIPTIONS, TOPIC_LABELS } from "./topic-labels.js";
 
 const RUNTIME_DIR = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const WEB_DIR = resolve(REPOSITORY_ROOT, "ai/web");
+const ATLAS_DIR = resolve(REPOSITORY_ROOT, "IT_Roles_Terminology_Atlas");
+export const ATLAS_HOME = "/atlas/IT_Roles_Terminology_Atlas.html";
 const VENDOR: Record<string, string> = {
   "marked.js": "marked/lib/marked.esm.js",
   "purify.js": "dompurify/dist/purify.es.mjs",
@@ -45,6 +48,8 @@ const CSP = [
   "base-uri 'none'",
   "frame-ancestors 'none'",
 ].join("; ");
+/** The Atlas also reads live job and tech-news feeds from these public APIs. */
+const ATLAS_CSP = CSP.replace("connect-src 'self'", "connect-src 'self' https://www.arbeitnow.com https://remotive.com https://jobicy.com https://hn.algolia.com");
 
 export { TOPIC_LABELS };
 const ATLAS_TOPICS = ["roadmaps", "it-roles", "it-terminology", "tech-stack", "it-careers"];
@@ -52,9 +57,9 @@ const ATLAS_TOPICS = ["roadmaps", "it-roles", "it-terminology", "tech-stack", "i
 const GITHUB_REPO = /^[\w.-]+\/[\w.-]+$/.test(process.env.TUTOR_GITHUB_REPO ?? "") ? process.env.TUTOR_GITHUB_REPO! : "sathsure/Tech-Mastery-Hub";
 const GITHUB_BRANCH = /^[\w./-]+$/.test(process.env.TUTOR_GITHUB_BRANCH ?? "") ? process.env.TUTOR_GITHUB_BRANCH! : "main";
 
-function sendFile(response: ServerResponse, status: number, body: Buffer | string, type: string, cache: string): void {
+function sendFile(response: ServerResponse, status: number, body: Buffer | string, type: string, cache: string, csp = CSP): void {
   const headers: Record<string, string> = { "content-type": type, "cache-control": cache, "x-content-type-options": "nosniff", "referrer-policy": "no-referrer" };
-  if (type.startsWith("text/html")) headers["content-security-policy"] = CSP;
+  if (type.startsWith("text/html")) headers["content-security-policy"] = csp;
   response.writeHead(status, headers);
   response.end(body);
 }
@@ -76,11 +81,11 @@ function inside(root: string, encodedName: string): string | null {
   return !path || path.startsWith("..") || isAbsolute(path) ? null : target;
 }
 
-async function serveStatic(response: ServerResponse, file: string | null, cache: string): Promise<void> {
+async function serveStatic(response: ServerResponse, file: string | null, cache: string, csp = CSP): Promise<void> {
   const type = file ? TYPES[extname(file).toLowerCase()] : undefined;
   if (!file || !type) return sendJson(response, 404, { error: { code: "NOT_FOUND", message: "Not found." } });
   try {
-    sendFile(response, 200, await readFile(file), type, cache);
+    sendFile(response, 200, await readFile(file), type, cache, csp);
   } catch {
     sendJson(response, 404, { error: { code: "NOT_FOUND", message: "Not found." } });
   }
@@ -163,6 +168,17 @@ export async function handleWebRoute(request: IncomingMessage, response: ServerR
   if (path.startsWith("/vendor/")) {
     const target = VENDOR[path.slice("/vendor/".length)];
     await serveStatic(response, target ? resolve(RUNTIME_DIR, "node_modules", target) : null, "public, max-age=86400");
+    return true;
+  }
+  if (path === "/atlas" || path === "/atlas/") {
+    response.writeHead(302, { location: ATLAS_HOME, "cache-control": "no-cache" });
+    response.end();
+    return true;
+  }
+  if (path.startsWith("/atlas/")) {
+    // Test files stay private; everything else is the static Atlas page and its scripts.
+    const file = path.endsWith(".test.js") ? null : inside(ATLAS_DIR, path.slice("/atlas/".length));
+    await serveStatic(response, file, "no-cache", ATLAS_CSP);
     return true;
   }
   if (path === "/catalog") {

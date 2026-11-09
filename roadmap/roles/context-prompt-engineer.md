@@ -7,6 +7,7 @@ Designs the prompts, instructions, examples and retrieved context an AI model se
 
 ## Prerequisites
 
+- [Python](../topics/python.md)
 - [REST API](../topics/rest-api.md)
 - Usually 1+ years of experience when hired
 
@@ -18,7 +19,7 @@ Designs the prompts, instructions, examples and retrieved context an AI model se
 
 ## Also needed
 
-Python, Markdown, JSON / YAML, Few-shot prompting, Chain-of-thought, Structured outputs (JSON Schema), DSPy, Model playgrounds / Workbench, promptfoo, Langfuse
+Markdown, JSON / YAML, Few-shot prompting, Chain-of-thought, Structured outputs (JSON Schema), DSPy, Model playgrounds / Workbench, promptfoo, Langfuse
 
 ## Where it leads
 
