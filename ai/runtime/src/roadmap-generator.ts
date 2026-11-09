@@ -58,17 +58,26 @@ export const PREREQUISITES: Record<string, string[]> = {
   caching: ["system-design"],
   networking: [],
   behavioral: [],
+  salary: [],
+  "linux": [],
+  "security": ["rest-api"],
+  "observability": ["devops"],
+  "agile": [],
+  "job-search": [],
+  "data-engineering": ["database/sql"],
 };
 
 export const TRACKS: Array<{ name: string; description: string; topics: string[] }> = [
   { name: "Frontend", description: "Build user interfaces for the browser.", topics: ["html", "css", "javascript", "typescript", "web-vitals", "react", "angular", "rxjs"] },
   { name: "Backend with Java", description: "Build services with Java and Spring.", topics: ["java", "database/sql", "rest-api", "spring", "spring-security", "microservices", "spring-cloud"] },
   { name: "Backend with Node.js", description: "Build services with JavaScript on the server.", topics: ["javascript", "nodejs", "rest-api", "database/sql", "web-architecture"] },
-  { name: "DevOps and cloud", description: "Ship, run and scale applications.", topics: ["git", "devops", "aws", "microservices", "messaging"] },
+  { name: "DevOps and cloud", description: "Ship, run and scale applications.", topics: ["linux", "git", "devops", "aws", "observability", "microservices", "messaging"] },
   { name: "System design", description: "Design systems that scale and stay up.", topics: ["networking", "database/sql", "rest-api", "system-design", "caching", "microservices", "messaging"] },
   { name: "Coding interviews and AI", description: "Crack coding rounds and build with AI.", topics: ["dsa", "design-patterns", "testing", "ai"] },
   { name: "Under the hood", description: "Understand how code really runs: compilers, runtimes, CPU and memory.", topics: ["under-the-hood"] },
-  { name: "Interview day", description: "Prepare for the non-technical rounds.", topics: ["behavioral"] },
+  { name: "Security", description: "Build applications that resist common attacks.", topics: ["rest-api", "security"] },
+  { name: "Data engineering", description: "Move and shape data for analytics.", topics: ["database/sql", "data-engineering"] },
+  { name: "Interview day", description: "Prepare for the non-technical rounds and the job switch.", topics: ["behavioral", "agile", "job-search", "salary"] },
 ];
 
 const STAGE_NAMES = ["Foundations", "Core skills", "Frameworks and depth", "Specialisation", "Architecture"];

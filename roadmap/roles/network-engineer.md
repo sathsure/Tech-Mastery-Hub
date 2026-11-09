@@ -13,11 +13,12 @@ Designs and maintains networks, routers, firewalls and VPNs.
 
 ### Stage 1: Core skills
 
+- [ ] [Linux & Shell](../topics/linux.md)
 - [ ] [Networking & HTTP](../topics/networking.md)
 
 ## Also needed
 
-Python, Bash, BGP, OSPF, SD-WAN, Cisco IOS, Wireshark, Palo Alto, Juniper
+Python, BGP, OSPF, SD-WAN, Cisco IOS, Wireshark, Palo Alto, Juniper
 
 ## Where it leads
 

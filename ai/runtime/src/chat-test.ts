@@ -231,6 +231,56 @@ await check("interview prep: role card → stack picker → prep plan with key q
   assert.ok((plan.answer.match(/\(#ask:/g) ?? []).length >= 10, "key questions are listed as links");
 });
 
+await check("interviewer question set: asks for the details first, then builds a timed set from the notes", async () => {
+  const message = "Prepare an interview question set to interview a Full Stack Java Developer with 10+ years of experience, 60 minutes";
+  const setup = await collect({ message }, null);
+  assert.equal(setup.done?.view, "setup", "the first answer is a setup checklist, not a list of questions");
+  assert.match(setup.answer, /^\*\*Interview question set: Full Stack Developer · 10\+ years\*\*/);
+  for (const ticked of ["10+ years", "Full Stack Developer", "Java", "60 minutes", "Expert"]) assert.ok(setup.answer.includes(`- [x] ${ticked}`), `${ticked} is ticked from the request`);
+  assert.ok(setup.answer.includes("- [ ] React"), "options the request didn't name stay unticked");
+  // The candidate-side prep still gets the stack picker.
+  const prep = await collect({ message: "Prepare me for a Full Stack Developer interview" }, null);
+  assert.notEqual(prep.done?.view, "setup");
+
+  const title = /\*\*(.+?)\*\*/.exec(setup.answer)![1];
+  const items = [...setup.answer.matchAll(/- \[x\] (.+)/g)].map(match => ({ label: match[1] }));
+  const built = await collect({ message: "Build the interview question set", plan: { title, items, kind: "question-set" } }, null);
+  assert.equal(built.done?.view, "plan");
+  const plan = /\| Intro[^|]*\| (\d+) min[\s\S]*?\| Candidate's questions \+ wrap-up \| (\d+) min/.exec(built.answer);
+  assert.ok(plan, "has a time plan");
+  const minutes = [...built.answer.matchAll(/^\| (?!Intro|Candidate|Part|Setting|---)[^|]+\| (\d+) min \|/gm)].reduce((sum, match) => sum + Number(match[1]), 0);
+  assert.equal(minutes + Number(plan[1]) + Number(plan[2]), 60, "the time plan adds up to the interview length");
+  const questions = built.answer.match(/^\*\*Q\d+\. /gm) ?? [];
+  assert.ok(questions.length >= 4, `questions: ${questions.length}`);
+  assert.ok(/\*\*Expected answer:\*\*/.test(built.answer) && /\*\*Follow-ups:\*\*/.test(built.answer), "each question has an expected answer and follow-ups");
+  assert.ok(/System design/.test(built.answer) && /How to score/.test(built.answer), "senior sets include design and a scoring guide");
+  assert.ok(!/kubectl|LLM|RAG/.test(built.answer), "no questions from stacks that weren't picked");
+});
+
+await check("mock interview: asks one question at a time, scores answers, and ends with a summary", async () => {
+  const start = await collect({ message: "Quiz me on Java" }, null);
+  assert.equal(start.done?.view, "mock");
+  const mock = start.done?.mock;
+  assert.ok(mock && mock.topic === "java" && mock.ids.length === 5 && mock.index === 0, JSON.stringify(mock));
+  assert.match(start.answer, /\*\*Question 1 of 5\*\*/);
+  // A strong answer (the notes' own key points) scores higher than a one-liner.
+  const { getQuestionById } = await import("./question-index.js");
+  const { keyPoints } = await import("./chat-question-set.js");
+  const first = (await getQuestionById(mock.ids[0]))!;
+  const good = await collect({ message: `${first.summary} ${keyPoints(first).join(". ")}`, mock }, null);
+  assert.match(good.answer, /\*\*Score: [34]\/4\*\*/, good.answer.slice(0, 200));
+  assert.equal(good.done?.mock?.index, 1);
+  const weak = await collect({ message: "Not sure, something about objects.", mock: good.done!.mock! }, null);
+  assert.match(weak.answer, /\*\*Score: [12]\/4\*\*/);
+  const end = await collect({ message: "End the mock interview", mock: weak.done!.mock! }, null);
+  assert.match(end.answer, /Mock interview result: Java/);
+  assert.equal(end.done?.mock?.index, 5, "the interview is over");
+  // Without a topic it asks which one; an invalid mock state is rejected by the API.
+  const picker = await collect({ message: "Mock interview" }, null);
+  assert.ok(/Pick a topic/.test(picker.answer) && picker.done?.mock === null);
+  assert.equal(validateChatRequest({ message: "x", mock: { topic: "java", ids: [], index: 0, scores: [] } }).ok, false);
+});
+
 await check("home page hubs: Career atlas shows all four parts, Interview prep offers roles and topics", async () => {
   const cardsOf = (answer: string): Card[] => JSON.parse(/```tmh-cards\n([\s\S]*?)```/.exec(answer)?.[1] ?? "[]");
   const atlas = await collect({ message: "Explore the Career Atlas", overview: "career-atlas" }, null);

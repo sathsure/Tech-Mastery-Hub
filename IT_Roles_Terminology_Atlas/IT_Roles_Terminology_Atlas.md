@@ -1413,329 +1413,329 @@ Role multipliers vs a generic software engineer: Full Stack Developer ×1, Front
 
 | Term | Meaning |
 |---|---|
-| **SDLC** (Software Development Life Cycle) | Phases to build software: plan → design → build → test → deploy → maintain. |
-| **STLC** (Software Testing Life Cycle) | Phases of testing: requirement analysis → test plan → test cases → execution → closure. |
-| **Environment** | A copy of the system for a purpose: DEV, QA/TEST, UAT, STAGING, PROD. |
-| **Production (Prod)** | The live system real users use. |
-| **UAT** (User Acceptance Testing) | Business users confirm the software meets their needs before release. |
-| **POC** (Proof of Concept) | Small experiment to prove an idea works technically. |
-| **MVP** (Minimum Viable Product) | Smallest usable version of a product released to learn from users. |
-| **Hotfix / Patch** | Urgent fix released directly to production. |
-| **Semantic Versioning** (SemVer) | MAJOR.MINOR.PATCH — breaking.feature.fix (e.g. 2.4.1). |
+| **SDLC** (Software Development Life Cycle) | A structured process for building and maintaining software, in stages: requirements → design → development → testing → deployment → maintenance. It helps teams plan work, keep quality high and deliver predictably. Example: a banking app goes through all six stages before and after each release. |
+| **STLC** (Software Testing Life Cycle) | The testing side of the SDLC: requirement analysis → test planning → test case design → environment setup → execution → closure. It makes testing planned and measurable instead of ad hoc. Example: QA writes test cases from the login story before developers finish coding it. |
+| **Environment** | A separate copy of the system used for one purpose, so work in progress never breaks what real users see. Code moves step by step: DEV (developers) → QA/TEST (testers) → UAT (business users) → STAGING (production-like rehearsal) → PROD (live). Each has its own database and settings. |
+| **Production (Prod)** | The live system that real customers use, with real data and money. Changes reach it only after testing in lower environments, usually through an approved release. Example: a bug in PROD affects every user, so teams fix it with a hotfix and a postmortem. |
+| **UAT** (User Acceptance Testing) | The final testing stage, where business users check that the software solves their real problem before release. Developers and QA confirm it works; UAT confirms it is what the business wanted. Example: the finance team runs month-end reports in UAT and signs off before go-live. |
+| **POC** (Proof of Concept) | A small, quick experiment to prove an idea or technology works before investing in it. It is thrown away or rebuilt properly afterwards; it is not meant for users. Example: a 2-week POC checks whether an LLM can read invoices accurately before the full project is approved. |
+| **MVP** (Minimum Viable Product) | The smallest version of a product with just enough features for real users to use and give feedback. It lets a team learn what customers want before building everything. Example: a food-delivery MVP has ordering and payment only — no ratings, offers or tracking yet. |
+| **Hotfix / Patch** | An urgent fix released straight to production, outside the normal release schedule, for a serious bug or security issue. It is kept small to reduce risk and then merged back into the main branch. Example: a payment failure on sale day gets a same-day hotfix. |
+| **Semantic Versioning** (SemVer) | A version number format MAJOR.MINOR.PATCH that tells users how risky an upgrade is. MAJOR = breaking change, MINOR = new feature that is backward compatible, PATCH = bug fix. Example: 2.4.1 → 2.5.0 is safe to upgrade; 2.x → 3.0.0 may need code changes. |
 
 ### Git & Version Control
 
 | Term | Meaning |
 |---|---|
-| **Version Control / Git** | Tracks code changes over time. Git is the standard tool. |
-| **Branch / Merge / PR** | Branch = separate line of work; PR (Pull Request) = request to merge it after review. |
-| **Commit** | A saved snapshot of changes with a message, author and unique ID (hash). |
-| **Clone / Fork** | Clone = local copy of a repository. Fork = your own server-side copy of someone else's repository, used to propose changes. |
-| **Rebase** | Replays your commits on top of another branch for a linear history. Avoid rebasing commits others already use. |
-| **Merge Conflict** | Two branches changed the same lines; Git can't combine them automatically, so you resolve them by hand. |
-| **Tag** | A named pointer to a specific commit, typically used to mark releases (e.g. v1.4.0). |
+| **Version Control / Git** | A system that records every change to code over time, so a team can work together, see history and undo mistakes. Git is the standard tool, and GitHub, GitLab and Bitbucket host Git repositories online. Example: git log shows who changed a file, when and why. |
+| **Branch / Merge / PR** | A branch is a separate line of work so you can change code without disturbing others; a merge combines it back. A PR (Pull Request) asks teammates to review the branch before merging. Example: feature/login branch → PR → review and tests pass → merge into main. |
+| **Commit** | A saved snapshot of your changes in Git, with a message, author, time and a unique ID (hash). Small commits with clear messages make history easy to read and changes easy to undo. Example: git commit -m "Fix tax rounding on payslip". |
+| **Clone / Fork** | Clone makes a full local copy of a repository on your machine. Fork makes your own copy of someone else's repository on the server, so you can change it and send back a pull request. Example: fork an open-source library on GitHub, clone your fork, fix a bug, open a PR. |
+| **Rebase** | Moves your commits so they sit on top of the latest version of another branch, giving a straight, linear history. It rewrites commit IDs, so never rebase commits others are already using. Example: git rebase main updates your feature branch with the newest main before a PR. |
+| **Merge Conflict** | Happens when two branches changed the same lines and Git cannot decide which version to keep. You open the file, pick or combine the changes, then commit. Example: two developers both edit the same price formula — Git marks both versions for you to resolve. |
+| **Tag** | A permanent name attached to one commit, usually to mark a release. Unlike a branch it doesn't move, so you can always rebuild exactly what shipped. Example: tag v1.4.0 marks the commit deployed to production on release day. |
 
 ### Programming Basics
 
 | Term | Meaning |
 |---|---|
-| **Legacy System** | Old system still in use, usually hard to change. |
-| **Technical Debt** | Future cost of shortcuts taken today in code or design. |
-| **Refactoring** | Improving code structure without changing behaviour. |
-| **IDE** (Integrated Development Environment) | Code editor with build/debug tools. E.g. IntelliJ, VS Code, Eclipse. |
-| **SDK** (Software Development Kit) | Package of libraries and tools to build for a platform. |
-| **Library vs Framework** | You call a library; a framework calls your code (inversion of control). |
-| **Open Source** | Software with public source code anyone can use under a licence. |
-| **Compiled vs Interpreted** | Compiled turns code into machine code before running (C, Go); interpreted runs line by line (Python, JS). Java compiles to bytecode for the JVM. |
-| **Runtime** | Environment that executes code: JVM, Node.js, .NET CLR, browser. |
+| **Legacy System** | An old system still running important business work, often built with outdated technology and few people who understand it. It is risky to change but too critical to switch off. Example: a 25-year-old COBOL mainframe that still processes a bank's daily transactions. |
+| **Technical Debt** | The future cost of taking shortcuts today — quick fixes, missing tests or messy design that slow every later change. Like financial debt, it grows 'interest' until you pay it back by refactoring. Example: copying the same validation into 10 places means a rule change now needs 10 edits. |
+| **Refactoring** | Improving the internal structure of code without changing what it does for users. It makes code easier to read, test and change, and is safest with good tests in place. Example: splitting a 500-line method into small named methods with the same output. |
+| **IDE** (Integrated Development Environment) | A code editor with built-in tools to write, run, debug and refactor code in one place. It adds autocomplete, error highlighting and Git integration to save time. Examples: IntelliJ IDEA for Java, VS Code for web, Eclipse, Android Studio. |
+| **SDK** (Software Development Kit) | A ready-made kit of libraries, tools and docs for building software on a particular platform or service. It saves you from writing low-level code yourself. Example: the AWS SDK for Java lets you upload a file to S3 with one method call. |
+| **Library vs Framework** | With a library, your code is in charge and calls it when needed. With a framework, the framework is in charge and calls your code at the right time (inversion of control). Example: you call Lodash functions yourself; Spring Boot calls your @RestController methods when requests arrive. |
+| **Open Source** | Software whose source code is public, so anyone can use, study and improve it under its licence. Licences differ — MIT/Apache allow almost anything, GPL requires sharing your changes. Examples: Linux, Kubernetes, React, PostgreSQL. |
+| **Compiled vs Interpreted** | Compiled languages are turned into machine code before running, so they start and run fast (C, Go, Rust). Interpreted languages are run by another program as they go (Python, classic JavaScript). Java and C# are in between: compiled to bytecode, then run and optimised by a virtual machine (JIT). |
+| **Runtime** | The environment that actually runs your program and provides memory management, threads and standard libraries. Your code needs the right runtime installed to run. Examples: JVM for Java, Node.js for server JavaScript, .NET CLR for C#, the browser for front-end JavaScript. |
 
 ### Frontend
 
 | Term | Meaning |
 |---|---|
-| **DOM** (Document Object Model) | Tree representation of a web page that JavaScript can change. |
-| **SPA** (Single Page Application) | Web app that loads once and updates content without full page reloads (Angular, React). |
-| **SSR / CSR / SSG** | Server-Side Rendering, Client-Side Rendering, Static Site Generation — where/when HTML is built. |
-| **Responsive Design** | Layouts that adapt to phone, tablet and desktop screens. |
-| **Component** | Reusable UI building block with its own template, style and logic. |
-| **State Management** | Keeping shared UI data consistent. Tools: NgRx, Redux, Signals, Zustand. |
-| **Accessibility (a11y)** | Making apps usable by everyone, including disabled users. Standard: WCAG. |
-| **Core Web Vitals** | Google page-quality metrics: LCP (load), INP (interactivity), CLS (layout shift). |
-| **Bundler** | Combines and optimises JS/CSS files. E.g. Vite, Webpack, esbuild. |
-| **PWA** (Progressive Web App) | Website that works offline and installs like an app. |
-| **Design System** | Shared set of UI components, colours and rules. E.g. Material Design. |
-| **Lazy Loading** | Load code or images only when needed. |
+| **DOM** (Document Object Model) | The browser's tree of objects built from a page's HTML; each tag becomes a node JavaScript can read and change. Changing the DOM updates what the user sees without reloading. Example: document.getElementById('total').textContent = '₹500' updates the price on screen. |
+| **SPA** (Single Page Application) | A web app that loads one HTML page once and then swaps content with JavaScript instead of reloading pages. It feels fast like a desktop app, but needs extra work for SEO and first load. Examples: Gmail, and most Angular or React apps. |
+| **SSR / CSR / SSG** | Three ways to build a page's HTML. CSR: the browser builds it with JavaScript; SSR: the server builds it per request (faster first view, better SEO); SSG: HTML is built once at deploy time (fastest, for content that rarely changes). Example: blog → SSG, dashboard → CSR, e-commerce product page → SSR. |
+| **Responsive Design** | Designing one website that adjusts its layout to any screen size — phone, tablet or desktop. It uses flexible grids, relative units and CSS media queries. Example: a three-column desktop layout becomes a single column on a phone. |
+| **Component** | A reusable, self-contained piece of UI with its own template, styles and logic. Pages are built by combining components, so a fix in one place applies everywhere it is used. Example: one <product-card> component used on the home, search and wishlist pages. |
+| **State Management** | Keeping data shared by many parts of the UI (logged-in user, cart, filters) in one predictable place. It prevents screens showing different values for the same data. Tools: NgRx or Signals (Angular), Redux or Zustand (React). Example: adding an item updates the cart badge and the cart page together. |
+| **Accessibility (a11y)** | Making apps usable by everyone, including people using screen readers, keyboards only or with low vision. It follows the WCAG standard and is a legal requirement in many countries. Example: alt text on images, visible focus outlines and enough colour contrast. |
+| **Core Web Vitals** | Google's three metrics for real user experience: LCP (main content loads in under 2.5 s), INP (page responds to clicks in under 200 ms) and CLS (layout doesn't jump, under 0.1). They affect search ranking. Example: reserving space for images stops content jumping and improves CLS. |
+| **Bundler** | A build tool that combines many JavaScript/CSS files and packages into a few optimised files for the browser. It also minifies code, removes unused code and splits bundles for faster loading. Examples: Vite, Webpack, esbuild (Angular's build uses esbuild). |
+| **PWA** (Progressive Web App) | A website that behaves like an installed app — it can work offline, be added to the home screen and send notifications. It uses a service worker and a web manifest. Example: Starbucks and Twitter/X offer PWAs that work on slow or no network. |
+| **Design System** | A shared library of UI components, colours, fonts and usage rules that keeps every screen consistent. Designers and developers build from the same parts, so work is faster and the product looks unified. Examples: Google's Material Design, IBM Carbon. |
+| **Lazy Loading** | Loading code, images or data only when they are actually needed, instead of everything at startup. It makes the first page load faster and saves data. Example: an Angular admin module or below-the-fold images load only when the user navigates or scrolls to them. |
 
 ### Backend & APIs
 
 | Term | Meaning |
 |---|---|
-| **API** (Application Programming Interface) | Contract that lets one program talk to another. |
-| **REST** (Representational State Transfer) | API style using HTTP methods (GET, POST, PUT, DELETE) on resources/URLs. |
-| **GraphQL** | API query language where clients ask for exactly the fields they need. |
-| **gRPC** | Fast binary API protocol using Protocol Buffers; common between microservices. |
-| **Webhook** | A server calls your URL when an event happens (push instead of polling). |
-| **WebSocket** | Two-way live connection for chat, notifications, live data. |
-| **JSON / XML / YAML** | Text data formats. JSON for APIs, XML for older systems, YAML for config. |
-| **HTTP Status Codes** | 2xx success, 3xx redirect, 4xx client error (404, 401), 5xx server error (500). |
-| **Endpoint** | A specific API URL, e.g. GET /api/orders/42. |
-| **Middleware** | Code that runs between request and response (logging, auth) — or software linking systems. |
-| **ORM** (Object-Relational Mapping) | Maps database tables to code objects. E.g. Hibernate/JPA, Entity Framework, Prisma. |
-| **Dependency Injection (DI)** | Framework supplies an object's dependencies instead of the object creating them (Spring, Angular). |
-| **OOP** (Object-Oriented Programming) | Code organised as objects. Pillars: encapsulation, abstraction, inheritance, polymorphism. |
-| **SOLID** | Five design principles for maintainable OOP code. |
-| **Design Patterns** | Reusable solutions: Singleton, Factory, Builder, Strategy, Observer, Adapter. |
-| **Concurrency / Multithreading** | Doing multiple tasks at the same time safely. |
-| **Idempotency** | Repeating the same request gives the same result — e.g. no double payment on retry. |
-| **Rate Limiting** | Capping how many requests a client can make in a time window. |
-| **Swagger / OpenAPI** | Standard to describe and document REST APIs. |
-| **Big-O Notation** | How work grows with input size: O(1), O(log n), O(n), O(n log n), O(n²). |
-| **DSA** (Data Structures & Algorithms) | Arrays, lists, maps, trees, graphs + sorting/searching techniques. |
+| **API** (Application Programming Interface) | A defined contract that lets one program request data or actions from another without knowing how it works inside. It specifies the requests you can make and the responses you get. Example: a weather app calls GET /weather?city=Chennai and receives JSON with the temperature. |
+| **REST** (Representational State Transfer) | A popular style for web APIs where everything is a resource with a URL, and HTTP methods say what to do: GET read, POST create, PUT/PATCH update, DELETE remove. It is simple, stateless and works over plain HTTP with JSON. Example: GET /api/orders/42 returns order 42. |
+| **GraphQL** | An API query language where the client asks for exactly the fields it needs in one request, through a single endpoint. It avoids over-fetching and multiple round trips, but caching and security need more care. Example: a mobile app requests just a user's name and last 3 orders in one query. |
+| **gRPC** | A fast API framework from Google that sends compact binary messages (Protocol Buffers) over HTTP/2. It generates client and server code from a .proto contract and supports streaming. Common for service-to-service calls where speed matters; browsers need a proxy to use it. |
+| **Webhook** | A callback where a service sends an HTTP request to your URL as soon as an event happens, instead of you checking repeatedly (polling). You register the URL once and verify each call's signature. Example: Razorpay calls your /payment-webhook when a payment succeeds. |
+| **WebSocket** | A connection that stays open so the server and browser can send messages to each other at any time. Unlike normal HTTP, the server can push updates without being asked. Used for chat, live scores, trading prices and multiplayer games. |
+| **JSON / XML / YAML** | Text formats for structured data. JSON is light and the default for APIs; XML is verbose with tags, still used in banking, SOAP and older systems; YAML is indentation-based and used for config files. Example: {"id": 1} in JSON; a Kubernetes deployment written in YAML. |
+| **HTTP Status Codes** | Three-digit codes in every HTTP response that say what happened. 2xx success (200 OK, 201 Created), 3xx redirect, 4xx client error (400 bad request, 401 not logged in, 403 forbidden, 404 not found), 5xx server error (500, 503). Correct codes help clients and monitoring react properly. |
+| **Endpoint** | One specific URL plus HTTP method that an API exposes for one operation. An API is a collection of endpoints. Example: GET /api/orders lists orders, POST /api/orders creates one, GET /api/orders/42 fetches order 42. |
+| **Middleware** | Code that runs between receiving a request and sending the response, to handle common work like logging, authentication or compression. The term also means software that connects separate systems (message brokers, integration tools). Example: an Express middleware that checks the JWT before every route. |
+| **ORM** (Object-Relational Mapping) | A library that maps database tables to classes and rows to objects, so you work with objects instead of writing most SQL by hand. It saves code but can hide slow queries (like the N+1 problem). Examples: Hibernate/JPA (Java), Entity Framework (.NET), Prisma (Node.js). |
+| **Dependency Injection (DI)** | A design where an object receives the things it needs (its dependencies) from outside instead of creating them itself. This makes code loosely coupled and easy to test with mocks. Example: Spring passes a PaymentService into OrderService's constructor; in tests you pass a fake one. |
+| **OOP** (Object-Oriented Programming) | A way of organising code as objects that bundle data with the methods that work on it. Its four pillars are encapsulation (protect data), abstraction (hide details), inheritance (reuse) and polymorphism (one interface, many forms). Example: a BankAccount class keeps balance private and changes it only through deposit() and withdraw(). |
+| **SOLID** | Five principles for code that is easy to change: Single responsibility, Open/closed, Liskov substitution, Interface segregation, Dependency inversion. Following them keeps classes small, focused and loosely coupled. Example: adding a new payment type by adding a class, without editing existing ones (open/closed). |
+| **Design Patterns** | Proven, named solutions to common design problems, so teams don't reinvent them and can talk in shared terms. Examples: Singleton (one instance), Factory (create objects), Builder (step-by-step construction), Strategy (swap algorithms), Observer (notify listeners), Adapter (make interfaces fit). |
+| **Concurrency / Multithreading** | Running several tasks at overlapping times, often on multiple threads, to use CPUs fully and keep apps responsive. The hard part is shared data — without locks or thread-safe structures you get race conditions. Example: a server handles 200 requests at once, each on its own thread. |
+| **Idempotency** | An operation is idempotent if doing it once or many times has the same effect. It makes retries safe after timeouts and network errors. Example: a payment API takes an idempotency key, so a retried 'pay ₹500' request charges the customer only once. |
+| **Rate Limiting** | Limiting how many requests a client can make in a time window, to protect a service from overload and abuse. Extra requests get HTTP 429 Too Many Requests. Example: a public API allows 100 requests per minute per API key. |
+| **Swagger / OpenAPI** | OpenAPI is a standard format (YAML/JSON) for describing a REST API's endpoints, inputs and outputs; Swagger is the popular toolset around it. From one spec you get interactive docs, client code and contract tests. Example: Spring Boot with springdoc shows a Swagger UI at /swagger-ui.html. |
+| **Big-O Notation** | Describes how an algorithm's time or memory grows as the input grows, ignoring constants. Common classes, fastest to slowest: O(1), O(log n), O(n), O(n log n), O(n²). Example: finding an item in a HashMap is O(1); searching an unsorted list is O(n). |
+| **DSA** (Data Structures & Algorithms) | Data structures (arrays, lists, stacks, queues, hash maps, trees, graphs) are ways to store data; algorithms (sorting, searching, traversal, dynamic programming) are ways to process it. Choosing the right pair makes programs fast, and DSA is the core of coding interviews. Example: use a HashSet to find duplicates in O(n). |
 
 ### Architecture
 
 | Term | Meaning |
 |---|---|
-| **Monolith** | Whole application built and deployed as one unit. |
-| **Microservices** | System split into small, independently deployable services. |
-| **Modular Monolith** | One deployable app with strict internal module boundaries. |
-| **Serverless** | Run code without managing servers; pay per use. E.g. AWS Lambda, Azure Functions. |
-| **Event-Driven Architecture** | Services react to events via a broker (Kafka, RabbitMQ, SQS). |
-| **Message Queue / Broker** | Holds messages between services for async processing. E.g. Kafka, RabbitMQ, SQS. |
-| **API Gateway** | Single entry point that routes, authenticates and rate-limits API calls. |
-| **Load Balancer** | Spreads traffic across multiple servers. |
-| **Caching** | Storing frequent data in fast memory. E.g. Redis, CDN. |
-| **CDN** (Content Delivery Network) | Servers worldwide that deliver static content close to users. E.g. CloudFront, Cloudflare. |
-| **Scalability (Horizontal / Vertical)** | Handle more load by adding machines (horizontal) or bigger machines (vertical). |
-| **High Availability (HA)** | System stays up despite failures, often measured as 99.9% uptime. |
-| **Fault Tolerance / Resilience** | Keep working when parts fail: retries, timeouts, circuit breakers. |
-| **Circuit Breaker** | Stops calling a failing service for a while to prevent cascade failures. |
-| **CAP Theorem** | A distributed system can guarantee only two of: Consistency, Availability, Partition tolerance. |
-| **Saga Pattern** | Manages a multi-service transaction as steps with compensating actions. |
-| **CQRS** (Command Query Responsibility Segregation) | Separate models for writing and reading data. |
-| **DDD** (Domain-Driven Design) | Design software around business domains and their language. |
-| **Hexagonal / Clean Architecture** | Keep business logic independent of frameworks, UI and databases. |
-| **Service Mesh** | Infrastructure layer handling service-to-service traffic, security and metrics. E.g. Istio. |
-| **Non-Functional Requirements (NFRs)** | Qualities like performance, security, scalability, availability — not features. |
-| **ADR** (Architecture Decision Record) | Short document recording a design decision and why. |
+| **Monolith** | An application built, tested and deployed as one single unit, with all features in one codebase. It is simple to start and debug, but becomes slow to change and scale as teams and code grow. Example: one Spring Boot app containing users, orders, payments and reports. |
+| **Microservices** | An architecture where a system is split into small services, each owning one business area and its own data, deployed independently. Teams can release and scale services separately, at the cost of network calls, distributed data and more operations work. Example: separate order, payment and inventory services. |
+| **Modular Monolith** | A single deployable application divided into strict modules that communicate only through clear interfaces. You get most of the clean boundaries of microservices without the network and operations overhead, and can split a module out later. Example: one app with separate billing, catalog and user modules. |
+| **Serverless** | Running code without managing servers — the cloud provider starts it on demand, scales it and bills per request or millisecond. Great for spiky or event-driven work, but has cold starts and time limits. Examples: AWS Lambda, Azure Functions, Google Cloud Functions. |
+| **Event-Driven Architecture** | A design where services announce events ("OrderPlaced") and other services react to them, instead of calling each other directly. It decouples services and handles spikes well, but makes flows harder to trace. Example: OrderPlaced → payment, email and inventory services each react on their own. |
+| **Message Queue / Broker** | A middleman that stores messages from producers until consumers process them, so services can work asynchronously. It smooths traffic spikes and survives a consumer being down. Examples: RabbitMQ (task queues), Kafka (event streams), AWS SQS. |
+| **API Gateway** | A single entry point in front of many backend services that routes each request and handles shared concerns: authentication, rate limiting, logging and SSL. Clients call one URL instead of many services. Examples: Spring Cloud Gateway, Kong, AWS API Gateway. |
+| **Load Balancer** | A component that spreads incoming traffic across several servers so none is overloaded, and stops sending traffic to unhealthy ones. It enables both scaling and high availability. Examples: AWS ALB, Nginx, HAProxy. |
+| **Caching** | Keeping frequently used data in fast storage (memory) so later requests don't have to hit the slow source again. It cuts latency and database load, but cached data can go stale, so it needs expiry rules. Example: storing product details in Redis for 10 minutes. |
+| **CDN** (Content Delivery Network) | A network of servers around the world that keeps copies of static content (images, JS, CSS, videos) close to users. Pages load faster and the origin server gets less traffic. Examples: Cloudflare, AWS CloudFront, Akamai. |
+| **Scalability (Horizontal / Vertical)** | A system's ability to handle more load. Vertical scaling uses a bigger machine (more CPU/RAM) — simple but limited; horizontal scaling adds more machines behind a load balancer — needs stateless apps but grows much further. Example: going from 2 to 10 app servers during a sale. |
+| **High Availability (HA)** | Designing a system to stay up even when parts fail, by removing single points of failure with redundancy. It is measured in uptime: 99.9% allows about 8.8 hours of downtime a year, 99.99% about 53 minutes. Example: running servers in two availability zones with automatic failover. |
+| **Fault Tolerance / Resilience** | The ability to keep working, perhaps in a reduced way, when some parts fail. Techniques include timeouts, retries with backoff, circuit breakers, fallbacks and redundancy. Example: if the recommendation service is down, the shop page still loads without recommendations. |
+| **Circuit Breaker** | A pattern that stops calling a failing service for a while after repeated errors, returning a fallback instead. This prevents threads piling up and failures spreading; after a pause it lets a few test calls through. Example: Resilience4j opens the circuit after 50% of calls to the payment API fail. |
+| **CAP Theorem** | In a distributed system, when the network splits (a partition), you must choose between consistency (everyone sees the same latest data) and availability (every request gets an answer). Partitions can't be avoided, so the real choice is C or A during one. Example: a bank balance favours consistency; a social feed favours availability. |
+| **Saga Pattern** | A way to keep data consistent across microservices without one big transaction: each service does its local step, and if a later step fails, earlier steps are undone with compensating actions. Example: order created → payment taken → stock fails → refund payment and cancel order. |
+| **CQRS** (Command Query Responsibility Segregation) | Using separate models (and often separate databases) for writes (commands) and reads (queries). Each side can be optimised and scaled on its own, at the cost of extra complexity and slightly delayed reads. Example: orders are written to PostgreSQL and copied to Elasticsearch for fast search. |
+| **DDD** (Domain-Driven Design) | An approach that designs software around the business domain, using the same language as business experts. It splits a large system into bounded contexts, each with its own model. Example: 'customer' means different things in Billing and Shipping, so each context has its own Customer model. |
+| **Hexagonal / Clean Architecture** | Architectures that keep core business logic at the centre, independent of frameworks, UI and databases, which plug in through interfaces (ports and adapters). This makes the core easy to test and technology easy to swap. Example: switching MySQL to MongoDB changes only an adapter, not the business rules. |
+| **Service Mesh** | An infrastructure layer, usually sidecar proxies next to each service, that handles service-to-service traffic: encryption (mTLS), retries, routing and metrics — without changing application code. Useful when you run many microservices. Examples: Istio, Linkerd. |
+| **Non-Functional Requirements (NFRs)** | Requirements about how well the system works rather than what it does: performance, scalability, availability, security, usability, maintainability. They drive architecture choices and must be measurable. Example: 'search must respond in under 300 ms for 5,000 concurrent users'. |
+| **ADR** (Architecture Decision Record) | A short document that records one important architecture decision: the context, the options considered, the choice and its consequences. It tells future team members why things are the way they are. Example: 'ADR-007: Use Kafka instead of RabbitMQ for order events because we need replay'. |
 
 ### Data & Databases
 
 | Term | Meaning |
 |---|---|
-| **RDBMS / SQL** | Table-based databases queried with SQL. E.g. PostgreSQL, MySQL, Oracle, SQL Server. |
-| **NoSQL** | Non-table databases: document (MongoDB), key-value (Redis, DynamoDB), column (Cassandra), graph (Neo4j). |
-| **ACID** | Transaction guarantees: Atomicity, Consistency, Isolation, Durability. |
-| **Transaction** | Group of DB operations that all succeed or all fail. |
-| **Index** | Data structure that speeds up lookups, like a book index. |
-| **Normalization** | Organising tables to avoid duplicate data. |
-| **Primary / Foreign Key** | Primary key uniquely identifies a row; foreign key links to another table. |
-| **Join** | Combines rows from tables: INNER, LEFT, RIGHT, FULL. |
-| **Stored Procedure** | Saved SQL program that runs inside the database. |
-| **Sharding / Partitioning** | Splitting data across machines or segments to scale. |
-| **Replication** | Copying data to other servers for availability and read scaling. |
-| **ETL / ELT** | Extract, Transform, Load — moving data into a warehouse (ELT transforms after loading). |
-| **Data Warehouse** | Structured store for analytics. E.g. Snowflake, BigQuery, Redshift. |
-| **Data Lake / Lakehouse** | Store of raw data in any format (lake); lakehouse adds warehouse features. E.g. Databricks. |
-| **Data Pipeline** | Automated flow that moves and transforms data. |
-| **Batch vs Streaming** | Process data in scheduled chunks vs continuously in real time. |
-| **Big Data** | Data too large/fast for one machine. Tools: Spark, Hadoop, Kafka. |
-| **OLTP vs OLAP** | OLTP = day-to-day transactions; OLAP = analytics and reporting. |
-| **BI** (Business Intelligence) | Dashboards and reports for business decisions. E.g. Power BI, Tableau. |
-| **Schema Migration** | Versioned DB structure changes. Tools: Flyway, Liquibase. |
+| **RDBMS / SQL** | A relational database stores data in tables of rows and columns linked by keys, and you query it with SQL. It gives strong consistency through transactions and is the default choice for business data. Examples: PostgreSQL, MySQL, Oracle, SQL Server. |
+| **NoSQL** | Databases that don't use fixed relational tables, built for flexible schemas or huge scale. Main types: document (MongoDB), key-value (Redis, DynamoDB), wide-column (Cassandra), graph (Neo4j). Example: a product catalogue with varying attributes fits a document store well. |
+| **ACID** | Four guarantees of a database transaction. Atomicity: all or nothing; Consistency: rules always hold; Isolation: concurrent transactions don't interfere; Durability: committed data survives crashes. Example: a money transfer never debits one account without crediting the other. |
+| **Transaction** | A group of database operations treated as one unit — either all succeed (commit) or all are undone (rollback). It protects data from half-finished changes. Example: placing an order inserts the order, reduces stock and records payment in one transaction. |
+| **Index** | An extra data structure (usually a B+ tree) that lets the database find rows without scanning the whole table, like a book's index. It makes reads much faster but slows writes and uses storage. Example: an index on email makes WHERE email = ? instant on a million users. |
+| **Normalization** | Organising tables so each fact is stored once, by splitting data into related tables (1NF, 2NF, 3NF). It avoids duplicate data and update mistakes. Example: store the customer's address in a customers table instead of repeating it on every order; reporting databases sometimes denormalise for speed. |
+| **Primary / Foreign Key** | A primary key uniquely identifies each row in a table (like an ID). A foreign key in another table points to that primary key, linking the tables and preventing orphan data. Example: orders.customer_id is a foreign key to customers.id. |
+| **Join** | Combines rows from two or more tables using a related column. INNER returns only matching rows, LEFT keeps all left rows (nulls where there is no match), RIGHT is the reverse, FULL keeps all rows from both. Example: customers LEFT JOIN orders lists every customer, even those with no orders. |
+| **Stored Procedure** | A named block of SQL logic saved inside the database and called like a function. It cuts network round trips and keeps data logic close to the data, but is harder to version and test than application code. Example: CALL calculate_monthly_interest(); run by a nightly job. |
+| **Sharding / Partitioning** | Splitting large data into smaller pieces. Partitioning divides a table inside one database (e.g. by month); sharding spreads data across multiple database servers (e.g. by customer ID) so each holds a part. It scales storage and writes but makes cross-shard queries harder. |
+| **Replication** | Keeping copies of the same data on multiple database servers. It adds availability (a replica takes over on failure) and lets reads spread across replicas, but replicas can lag a little behind. Example: one primary MySQL handles writes; two read replicas serve reports. |
+| **ETL / ELT** | Ways to move data into a warehouse. ETL: Extract from sources, Transform (clean, join), then Load. ELT: Load raw data first, then transform inside the warehouse — the modern cloud approach. Example: nightly ELT copies sales data into Snowflake and dbt models clean it. |
+| **Data Warehouse** | A central database designed for analytics and reporting on large amounts of historical, cleaned data from many sources. It is optimised for big read queries, not for app transactions. Examples: Snowflake, Google BigQuery, Amazon Redshift. |
+| **Data Lake / Lakehouse** | A data lake stores huge amounts of raw data in any format (files, logs, images) cheaply, usually in object storage. A lakehouse adds warehouse features on top — tables, transactions and fast SQL. Examples: S3 data lake; Databricks with Delta Lake. |
+| **Data Pipeline** | An automated series of steps that moves data from sources to a destination and transforms it along the way, on a schedule or in real time. It replaces manual exports and keeps reports up to date. Example: app DB → Kafka → Spark job → warehouse → Power BI dashboard, orchestrated by Airflow. |
+| **Batch vs Streaming** | Batch processing handles data in large chunks on a schedule (hourly or nightly) — simple and efficient. Streaming processes each event as it arrives, within seconds — needed for real-time use. Example: monthly payroll is batch; card fraud detection is streaming. |
+| **Big Data** | Data too large, fast or varied for one machine or traditional database — often described by volume, velocity and variety. It is processed across clusters of machines. Tools: Apache Spark, Hadoop, Kafka, Flink. |
+| **OLTP vs OLAP** | OLTP systems handle many small, fast transactions for running the business (orders, payments). OLAP systems run large analytical queries over history for reporting. Example: placing an order hits the OLTP database; 'sales by region for 5 years' runs on an OLAP warehouse. |
+| **BI** (Business Intelligence) | Business Intelligence turns business data into dashboards and reports that help managers make decisions. It sits on top of data warehouses. Examples: Power BI, Tableau, Looker — e.g. a dashboard showing daily revenue by city. |
+| **Schema Migration** | Versioned, scripted changes to a database's structure (add a column, create an index), applied in order in every environment. It keeps all databases in sync with the code and makes changes repeatable. Tools: Flyway, Liquibase — e.g. V12__add_phone_to_users.sql. |
 
 ### Cloud & DevOps
 
 | Term | Meaning |
 |---|---|
-| **Cloud Computing** | Renting computing resources over the internet. Big 3: AWS, Azure, GCP. |
-| **IaaS / PaaS / SaaS** | Infrastructure (EC2), Platform (Heroku, App Service), Software (Gmail, Salesforce) as a Service. |
-| **Public / Private / Hybrid Cloud** | Shared provider cloud / company-only cloud / mix of both. |
-| **Region / Availability Zone** | Region = geographic area; AZ = isolated data centre within it. |
-| **VM** (Virtual Machine) | Software-emulated computer running its own OS. |
-| **Container / Docker** | Lightweight package of an app and its dependencies that runs anywhere. |
-| **Kubernetes (K8s)** | Runs and scales containers across many machines. Terms: pod, deployment, service. |
-| **DevOps** | Culture and practices joining development and operations to ship faster and safer. |
-| **CI/CD** | Continuous Integration (auto build+test) and Continuous Delivery/Deployment (auto release). |
-| **Pipeline** | Automated steps: build → test → scan → deploy. E.g. Jenkins, GitHub Actions. |
-| **IaC** (Infrastructure as Code) | Define servers and networks in code files. E.g. Terraform, CloudFormation. |
-| **Configuration Management** | Automate server setup. E.g. Ansible, Chef, Puppet. |
-| **GitOps** | Git is the source of truth for deployments. E.g. Argo CD, Flux. |
-| **Blue-Green / Canary Deployment** | Release strategies: switch between two environments / release to a small % first. |
-| **Feature Flag** | Turn features on/off without redeploying. |
-| **Observability** | Understand system state via logs, metrics and traces. Tools: Grafana, Datadog, OpenTelemetry. |
-| **SLA / SLO / SLI** | Agreement with customer / internal target / actual measurement (e.g. 99.9% uptime). |
-| **Auto Scaling** | Automatically add/remove servers based on load. |
-| **FinOps** | Managing and reducing cloud costs. |
-| **Artifact / Registry** | Built output (JAR, Docker image) stored in a repo like Nexus, Artifactory, ECR. |
+| **Cloud Computing** | Renting computing resources — servers, storage, databases, AI — over the internet and paying for what you use, instead of buying hardware. You can scale up or down in minutes. The big three providers are AWS, Microsoft Azure and Google Cloud. |
+| **IaaS / PaaS / SaaS** | Three levels of cloud service. IaaS: you rent raw servers and manage the OS (AWS EC2); PaaS: you just deploy code and the platform runs it (Azure App Service, Heroku); SaaS: ready-to-use software (Gmail, Salesforce). Moving up, you manage less but control less. |
+| **Public / Private / Hybrid Cloud** | Public cloud is shared infrastructure from a provider like AWS, rented by many customers. Private cloud is dedicated to one organisation, often on-premises. Hybrid mixes both — e.g. a bank keeps sensitive data on-premises and runs customer apps on AWS. |
+| **Region / Availability Zone** | A region is a geographic area with cloud data centres (e.g. AWS Mumbai ap-south-1). An availability zone is a separate data centre inside a region, with its own power and network. Running across 2–3 zones protects you if one fails; using a nearby region reduces latency. |
+| **VM** (Virtual Machine) | A software-based computer running its own full operating system on shared physical hardware, managed by a hypervisor. It isolates workloads but is heavier and slower to start than a container. Example: an AWS EC2 instance running Ubuntu. |
+| **Container / Docker** | A lightweight package containing an app with all its dependencies, so it runs the same on a laptop, test server or cloud. Containers share the host's OS kernel, so they start in seconds. Docker is the common tool: you write a Dockerfile, build an image and run containers from it. |
+| **Kubernetes (K8s)** | A platform that runs and manages containers across many machines — scheduling, scaling, restarting failed ones and rolling out updates. Key terms: pod (running container group), deployment (desired copies), service (stable network address). Managed versions: EKS, AKS, GKE. |
+| **DevOps** | A culture and set of practices that bring development and operations together to deliver software faster and more reliably. It relies on automation (CI/CD, IaC), monitoring and shared ownership of production. Result: frequent, small, low-risk releases instead of rare big ones. |
+| **CI/CD** | Continuous Integration: every code push is automatically built and tested, catching problems early. Continuous Delivery keeps the code always ready to release with one click; Continuous Deployment releases every passing change automatically. Example: a push to main → build → tests → deploy to staging. |
+| **Pipeline** | An automated sequence of steps that takes code from commit to deployment: build → test → security scan → package → deploy. It makes releases repeatable and stops bad code early. Tools: Jenkins, GitHub Actions, GitLab CI, Azure DevOps. |
+| **IaC** (Infrastructure as Code) | Defining servers, networks and other infrastructure in code files instead of clicking in consoles. The code is versioned in Git, reviewed and applied the same way every time, so environments are repeatable. Tools: Terraform, AWS CloudFormation, Pulumi. |
+| **Configuration Management** | Automating how servers are set up and kept in a desired state — installed software, config files, users — across many machines. It prevents 'works on one server only' drift. Tools: Ansible, Chef, Puppet — e.g. one Ansible playbook installs Java on 50 servers. |
+| **GitOps** | Running deployments where Git is the single source of truth for what should run; a tool in the cluster keeps the live state matching the repository. Changes happen by pull request, so every release is reviewed and can be undone with git revert. Tools: Argo CD, Flux. |
+| **Blue-Green / Canary Deployment** | Safer release strategies. Blue-green runs two identical environments and switches all traffic to the new one, with instant rollback. Canary sends a small share of users (e.g. 5%) to the new version first and grows it if metrics stay healthy. |
+| **Feature Flag** | A switch in code or config that turns a feature on or off at runtime without redeploying. It allows gradual rollouts, A/B tests and an instant kill switch. Example: enable the new checkout for 10% of users, then everyone. Tools: LaunchDarkly, Unleash. |
+| **Observability** | Being able to understand what is happening inside a running system from its outputs: logs (events), metrics (numbers over time) and traces (a request's path through services). It helps find the cause of problems quickly. Tools: OpenTelemetry, Prometheus, Grafana, Datadog. |
+| **SLA / SLO / SLI** | SLI is what you measure (e.g. % of successful requests). SLO is your internal target for it (99.9%). SLA is the promise to customers in a contract, often with penalties if missed (99.5%). Keeping SLOs stricter than SLAs gives a safety margin. |
+| **Auto Scaling** | Automatically adding or removing servers or containers based on load, such as CPU usage or queue length. You handle peaks without paying for idle capacity at quiet times. Example: an AWS Auto Scaling group grows from 2 to 8 instances during a sale. |
+| **FinOps** | A practice that brings finance, engineering and business together to understand and control cloud spending. It covers cost visibility, tagging, budgets, rightsizing and discounts like reserved instances. Example: finding and deleting unused volumes saves ₹2 lakh a month. |
+| **Artifact / Registry** | An artifact is the built output of a build — a JAR, npm package or Docker image. A registry stores versioned artifacts so the same tested build is deployed everywhere. Examples: Nexus, JFrog Artifactory, Docker Hub, AWS ECR. |
 
 ### AI & ML
 
 | Term | Meaning |
 |---|---|
-| **AI** (Artificial Intelligence) | Machines performing tasks that need human-like intelligence. |
-| **Machine Learning (ML)** | Systems learn patterns from data instead of hard-coded rules. |
-| **Deep Learning** | ML using multi-layer neural networks; powers vision, speech and LLMs. |
-| **Supervised / Unsupervised Learning** | Learn from labelled examples / find patterns in unlabelled data. |
-| **Model / Training / Inference** | Model = learned function; training = learning it; inference = using it to predict. |
-| **Generative AI (GenAI)** | AI that creates text, images, code or audio. |
-| **LLM** (Large Language Model) | Model trained on huge text to understand and generate language. E.g. Claude, GPT, Gemini, Llama. |
-| **Token / Context Window** | Token = chunk of text a model reads; context window = max tokens it can consider at once. |
-| **Prompt Engineering** | Writing clear instructions and examples to get better model output. |
-| **Embedding** | Numeric vector representing meaning of text, used for similarity search. |
-| **Vector Database** | Stores embeddings for semantic search. E.g. pgvector, Pinecone, Weaviate. |
-| **RAG** (Retrieval-Augmented Generation) | Fetch relevant documents first, then let the LLM answer using them. |
-| **Fine-tuning** | Further training a model on specific data for a task. |
-| **Hallucination** | When a model confidently generates incorrect information. |
-| **AI Agent** | LLM that plans and uses tools in steps to complete a task. |
-| **Tool / Function Calling** | Model requests a defined function/API call with structured arguments. |
-| **MCP** (Model Context Protocol) | Open standard for connecting AI apps to tools and data sources. |
-| **Guardrails** | Rules and checks that keep AI output safe and on-topic. |
-| **MLOps / LLMOps** | Practices to deploy, monitor and update ML/LLM systems in production. |
-| **NLP / Computer Vision** | AI for language / AI for images and video. |
-| **Agentic AI** | AI systems that act on their own — plan, use tools and take multi-step actions toward a goal. |
-| **Multi-Agent System** | Several specialised agents cooperating (e.g. planner, researcher, coder). |
-| **Context Engineering** | Choosing what instructions, data, tools and memory go into a model's context window. |
-| **Evals** (Evaluations) | Automated tests that score AI output quality before and after changes. |
-| **LLM-as-a-Judge** | Using one model to grade another model's answers. |
-| **Grounding** | Tying AI answers to trusted sources to reduce hallucination. |
-| **Human-in-the-Loop (HITL)** | A person reviews or approves AI actions at key steps. |
-| **Prompt Injection / Jailbreak** | Malicious text that tricks a model into ignoring its rules / bypassing safety. |
-| **Foundation Model** | Large general-purpose model adapted to many tasks (Claude, GPT, Gemini, Llama). |
-| **Multimodal** | Model that handles text, images, audio and/or video together. |
-| **Reasoning Model** | Model that 'thinks' step by step before answering, for harder problems. |
-| **SLM** (Small Language Model) | Compact model that runs cheaply or on-device (Phi, Gemma, Llama small). |
-| **Open-Weight Model** | Model whose weights are downloadable to self-host (Llama, Mistral, Qwen, DeepSeek). |
-| **Temperature** | Setting controlling randomness: low = focused, high = creative. |
-| **Structured Output** | Forcing the model to return valid JSON matching a schema. |
-| **RLHF** (Reinforcement Learning from Human Feedback) | Training models using human ratings of their answers. |
-| **LoRA / PEFT** | Cheap fine-tuning methods that train only small added weights. |
-| **Quantization** | Shrinking model precision (e.g. 16-bit → 4-bit) to run faster on less memory. |
-| **Distillation** | Training a small model to copy a large model's behaviour. |
-| **MoE** (Mixture of Experts) | Model architecture that activates only some sub-networks per token for efficiency. |
-| **Inference Serving / GPU** | Running models for users on GPUs; tools: vLLM, TensorRT-LLM, Ollama. |
-| **TTFT / Tokens per Second** | Time-to-first-token and generation speed — key LLM latency metrics. |
-| **Semantic Caching** | Reusing answers for similar (not identical) questions to save cost. |
-| **Model Router / AI Gateway** | Layer that picks a model per request and handles keys, limits and logging (e.g. LiteLLM). |
-| **A2A** (Agent-to-Agent Protocol) | Open protocol for agents from different vendors to communicate. |
-| **AI Copilot / Assistant** | AI embedded in a tool to help a human (GitHub Copilot, Microsoft 365 Copilot). |
-| **Vibe Coding** | Building software mainly by prompting AI and accepting its code with light review. |
-| **Spec-Driven Development** | Writing clear specs first so AI coding agents can implement them reliably. |
-| **Synthetic Data** | Artificially generated data used for training or testing. |
-| **Edge AI / TinyML** | Running AI on devices (phones, sensors) instead of the cloud. |
-| **Responsible AI** | Building AI that is fair, transparent, private, safe and accountable. |
-| **EU AI Act / ISO 42001** | EU law classifying AI by risk / international AI management-system standard. |
-| **AGI** (Artificial General Intelligence) | Hypothetical AI matching humans across most tasks. |
+| **AI** (Artificial Intelligence) | Machines doing tasks that normally need human intelligence — understanding language, recognising images, making decisions. Older AI used hand-written rules; modern AI mostly learns from data. Everyday examples: spam filters, face unlock, maps traffic prediction, chatbots like Claude. |
+| **Machine Learning (ML)** | A branch of AI where systems learn patterns from example data instead of following hand-written rules, and use them to predict new cases. The more good data, the better the model usually gets. Example: a model trained on past transactions flags new ones as likely fraud. |
+| **Deep Learning** | Machine learning using neural networks with many layers, which learn complex patterns directly from raw data such as pixels, audio or text. It needs lots of data and GPUs. It powers image recognition, speech-to-text and large language models. |
+| **Supervised / Unsupervised Learning** | Supervised learning trains on labelled examples (input plus correct answer) to predict labels — e.g. emails marked spam or not spam. Unsupervised learning finds structure in unlabelled data — e.g. grouping customers into segments by buying behaviour. |
+| **Model / Training / Inference** | A model is the learned function that makes predictions. Training is the expensive phase where it learns from data; inference is using the trained model to answer new inputs. Example: training an LLM takes months on GPUs; inference is each answer it gives you. |
+| **Generative AI (GenAI)** | AI that creates new content — text, code, images, audio or video — from a prompt, instead of only classifying or predicting. It is built mostly on large foundation models. Examples: Claude or ChatGPT writing code, Midjourney creating images. |
+| **LLM** (Large Language Model) | A very large neural network trained on huge amounts of text to predict the next token, which lets it understand and generate language, answer questions and write code. Its knowledge has a cutoff date and it can make mistakes. Examples: Claude, GPT, Gemini, Llama. |
+| **Token / Context Window** | A token is a small chunk of text a model reads — roughly ¾ of an English word. The context window is the maximum number of tokens the model can consider at once (prompt plus answer). Pricing and limits are counted in tokens; very long documents may need to be split. |
+| **Prompt Engineering** | Writing clear instructions, context and examples so a model gives better, more reliable output. Good prompts state the role, task, format and constraints. Example: 'Return only JSON with fields name and city' instead of 'extract the details'. |
+| **Embedding** | A list of numbers (a vector) that represents the meaning of text, images or code, so similar meanings have nearby vectors. It powers semantic search and recommendations. Example: 'reset my password' and 'forgot login' get close embeddings even though they share no words. |
+| **Vector Database** | A database that stores embeddings and quickly finds the ones most similar to a query vector. It is the retrieval engine behind RAG and semantic search. Examples: pgvector (PostgreSQL), Pinecone, Weaviate, Milvus. |
+| **RAG** (Retrieval-Augmented Generation) | Retrieval-Augmented Generation: first search your own documents for relevant passages, then give them to the LLM so it answers from that material. It gives up-to-date, source-backed answers without retraining the model. Example: an HR chatbot answering leave-policy questions from the company handbook. |
+| **Fine-tuning** | Further training an existing model on your own examples so it learns a specific style, format or task. Use it for consistent behaviour; use RAG instead when the model needs fresh facts. Example: fine-tuning a small model on 5,000 support tickets to classify new ones. |
+| **Hallucination** | When an AI model confidently produces information that is false or made up, such as fake citations or wrong numbers. It happens because models predict likely text, not verified facts. Reduce it with grounding (RAG), asking for sources, and checking important answers. |
+| **AI Agent** | An AI system where an LLM works in a loop — plans steps, calls tools (search, code, APIs), looks at results and decides the next step — until the goal is done. It can handle multi-step tasks, not just single answers. Example: a coding agent that reads a bug report, edits files and runs tests. |
+| **Tool / Function Calling** | A feature where the model, instead of plain text, returns a structured request to call a function you defined, with arguments. Your code runs the function and sends the result back. Example: the model returns get_weather(city="Pune"); your app calls the weather API. |
+| **MCP** (Model Context Protocol) | Model Context Protocol: an open standard for connecting AI apps to tools and data sources through one common interface. Build an MCP server once, and any MCP-compatible client (Claude, IDEs, agents) can use it. Example: an MCP server that lets an assistant query your Jira or database. |
+| **Guardrails** | Checks around an AI system that keep inputs and outputs safe, on-topic and in the right format. They can block harmful requests, remove personal data and validate answers. Example: a banking chatbot refuses to give investment advice and masks card numbers. |
+| **MLOps / LLMOps** | Practices and tools to deploy, monitor, version and update ML or LLM systems in production reliably — like DevOps for models. They cover data and model versioning, evaluation, drift monitoring and cost tracking. Tools: MLflow, SageMaker, Langfuse. |
+| **NLP / Computer Vision** | Two big AI fields. NLP (Natural Language Processing) works with human language — translation, sentiment, chatbots. Computer Vision works with images and video — face recognition, defect detection, self-driving cars. |
+| **Agentic AI** | AI systems that act with some independence — they plan, use tools and take multiple steps toward a goal, instead of only answering one prompt. They need limits and oversight because their actions have real effects. Example: an agent that books travel within a budget and asks before paying. |
+| **Multi-Agent System** | Several specialised AI agents working together, each with its own role and tools, coordinated by an orchestrator. Splitting the work can improve quality on complex tasks but adds cost and coordination issues. Example: a planner agent, a research agent and a writer agent producing a report. |
+| **Context Engineering** | Deciding exactly what goes into a model's context window — instructions, retrieved documents, tool definitions, memory and history — and in what form. Models answer only from what they see, so good context matters more than clever wording. Example: giving an agent only the 3 relevant files instead of the whole repository. |
+| **Evals** (Evaluations) | Automated tests that measure AI output quality on a fixed set of examples, run before and after every change. They catch regressions when you change prompts, models or retrieval. Example: 200 support questions with expected answers, scored on accuracy after each prompt edit. |
+| **LLM-as-a-Judge** | Using an LLM with a clear scoring guide to grade another model's answers for qualities like correctness, relevance or tone. It scales evaluation beyond what humans can review, but should be checked against human ratings. Example: a judge model rates chatbot answers 1–5 for helpfulness. |
+| **Grounding** | Making an AI answer from trusted, provided sources instead of its general memory, often with citations. It reduces hallucination and lets users verify answers. Example: a support bot that answers only from the product manual and links the page it used. |
+| **Human-in-the-Loop (HITL)** | A design where a person reviews, corrects or approves AI work at key steps, especially before risky or irreversible actions. It combines AI speed with human judgement. Example: an AI drafts refund decisions, and an agent approves any refund over ₹10,000. |
+| **Prompt Injection / Jailbreak** | Attacks on AI systems. Prompt injection hides malicious instructions in content the model reads (a web page or email) to make it ignore its rules. A jailbreak is a crafted prompt that tricks the model into bypassing its safety limits. Defences: treat input as data, limit tool permissions, add guardrails. |
+| **Foundation Model** | A large model trained on broad data that can be adapted to many tasks through prompting, RAG or fine-tuning, instead of training a new model per task. Most GenAI products are built on one. Examples: Claude, GPT, Gemini, Llama. |
+| **Multimodal** | A model that understands and/or generates more than one type of data — text, images, audio or video — in the same conversation. Example: upload a photo of a whiteboard diagram and ask the model to turn it into code or a written summary. |
+| **Reasoning Model** | A model that works through a problem step by step internally before giving the final answer. It is better at maths, coding and multi-step logic, but slower and more costly per answer. Use it for hard problems and a faster model for simple ones. |
+| **SLM** (Small Language Model) | A Small Language Model with far fewer parameters than a frontier LLM, so it is cheap, fast and can run on a laptop or phone. It suits narrow tasks such as classification or on-device assistants. Examples: Microsoft Phi, Google Gemma, small Llama models. |
+| **Open-Weight Model** | A model whose trained weights are published so you can download, run and fine-tune it on your own hardware. It gives control over data privacy and cost, but you handle hosting and safety. Examples: Llama, Mistral, Qwen, DeepSeek. |
+| **Temperature** | A setting that controls how random a model's output is. Low temperature (0–0.3) gives focused, repeatable answers for facts, code and extraction; higher (0.7–1) gives more varied, creative text. Example: use temperature 0 to extract invoice fields reliably. |
+| **Structured Output** | Making a model return data in an exact format, usually JSON that matches a schema, instead of free text. Your code can then parse it safely. Example: asking for {"name": string, "amount": number} from an invoice and getting valid JSON every time. |
+| **RLHF** (Reinforcement Learning from Human Feedback) | A training step where humans rank a model's answers and the model is tuned to prefer the highly ranked ones. It makes models more helpful, honest and safe in conversation. It is one reason chat models follow instructions better than raw pretrained ones. |
+| **LoRA / PEFT** | PEFT (Parameter-Efficient Fine-Tuning) methods adapt a big model by training only a small number of extra weights. LoRA, the most popular, adds small low-rank matrices to the layers. This makes fine-tuning possible on one GPU, and adapters are only megabytes in size. |
+| **Quantization** | Storing a model's numbers with fewer bits (e.g. 16-bit → 8-bit or 4-bit) so it uses less memory and runs faster, with a small loss in quality. It is how large open models run on laptops and cheaper GPUs. Example: a 4-bit 8B model fits in about 5 GB of memory. |
+| **Distillation** | Training a smaller 'student' model to copy the outputs of a larger 'teacher' model. The student keeps much of the teacher's quality at a fraction of the cost and speed. Example: a small model distilled from a large one to run customer-support replies cheaply. |
+| **MoE** (Mixture of Experts) | Mixture of Experts: a model with many expert sub-networks where a router activates only a few for each token. It gives the knowledge of a huge model while using the compute of a smaller one per token. Examples: Mixtral, and several large frontier models. |
+| **Inference Serving / GPU** | Running trained models to answer user requests, usually on GPUs, with batching and caching to serve many users quickly and cheaply. Serving engines manage memory and throughput. Tools: vLLM, TensorRT-LLM, Ollama (local), or managed APIs like Amazon Bedrock. |
+| **TTFT / Tokens per Second** | Two LLM speed metrics. TTFT (time to first token) is how long before the answer starts appearing — key for chat feeling responsive. Tokens per second is how fast the rest streams out. Example: TTFT 400 ms and 60 tokens/s feels instant to a user. |
+| **Semantic Caching** | Caching LLM answers and reusing them when a new question means the same thing, found by comparing embeddings, not exact text. It cuts cost and response time for repeated questions. Example: 'how do I reset my password?' and 'forgot password steps' return the same cached answer. |
+| **Model Router / AI Gateway** | A layer between your apps and AI providers that picks a model for each request (cheap for simple, strong for hard) and handles API keys, rate limits, fallbacks, logging and cost tracking in one place. Examples: LiteLLM, Portkey, cloud AI gateways. |
+| **A2A** (Agent-to-Agent Protocol) | Agent-to-Agent Protocol: an open protocol that lets AI agents built by different vendors discover each other's skills and hand off tasks in a standard way. MCP connects an agent to tools; A2A connects agents to other agents. Example: a travel agent asking a separate payments agent to complete a booking. |
+| **AI Copilot / Assistant** | AI built into a tool you already use, helping you while you stay in control — suggesting, drafting and answering questions. It speeds up work but its output still needs review. Examples: GitHub Copilot suggesting code, Microsoft 365 Copilot drafting emails. |
+| **Vibe Coding** | Building software mostly by describing what you want to an AI and accepting its code with little line-by-line review. It is fast for prototypes and personal tools but risky for production, where bugs and security issues can slip in. Good practice: add tests and review before shipping. |
+| **Spec-Driven Development** | Writing a clear specification first — requirements, inputs and outputs, edge cases, acceptance tests — and then letting AI coding agents implement it. The spec becomes the source of truth and the way to check the AI's work. Example: a markdown spec plus tests, which the agent must make pass. |
+| **Synthetic Data** | Artificially generated data that mimics real data's patterns, used when real data is scarce, sensitive or expensive. It is used for training models and testing systems without exposing personal data. Example: generating fake but realistic patient records to test a hospital app. |
+| **Edge AI / TinyML** | Running AI models directly on devices — phones, cameras, sensors — instead of sending data to the cloud. It gives low latency, works offline and keeps data private. Example: a phone recognising your face, or a factory sensor detecting faults on a microcontroller (TinyML). |
+| **Responsible AI** | Building and using AI that is fair, transparent, private, safe and accountable. It includes testing for bias, explaining decisions, protecting data and having humans responsible for outcomes. Example: checking a loan-approval model gives similar results across genders and regions. |
+| **EU AI Act / ISO 42001** | The EU AI Act is a law that classifies AI systems by risk (banned, high, limited, minimal) and sets rules for each, including for companies outside the EU serving EU users. ISO/IEC 42001 is an international standard for running an AI management system. Both shape AI compliance work. |
+| **AGI** (Artificial General Intelligence) | Artificial General Intelligence: a hypothetical AI that could learn and perform most intellectual tasks as well as a human, across domains. Today's systems are strong in many areas but not considered AGI. Its definition and timeline are widely debated. |
 
 ### Testing & Quality
 
 | Term | Meaning |
 |---|---|
-| **Unit Test** | Tests one function/class in isolation. E.g. JUnit, Jest, pytest. |
-| **Integration Test** | Tests components working together (API + DB). |
-| **E2E Test** (End-to-End) | Tests a full user journey in a real browser. E.g. Playwright, Cypress, Selenium. |
-| **Regression Test** | Re-tests old features to ensure new changes didn't break them. |
-| **Smoke / Sanity Test** | Quick check that the main features work after a build/deploy. |
-| **Performance / Load Test** | Measures speed and stability under traffic. E.g. JMeter, k6. |
-| **TDD / BDD** | Test-Driven Dev (write test first) / Behaviour-Driven Dev (Given-When-Then, Cucumber). |
-| **Mocking** | Fake dependencies in tests. E.g. Mockito, Jest mocks. |
-| **Code Coverage** | % of code executed by tests. Tools: JaCoCo, Istanbul. |
-| **Static Code Analysis** | Finds bugs/smells without running code. E.g. SonarQube, ESLint. |
-| **Code Review** | Teammates check code before it is merged. |
-| **Bug / Defect Severity vs Priority** | Severity = impact on system; priority = how soon to fix. |
+| **Unit Test** | A small automated test that checks one function or class on its own, with its dependencies replaced by mocks. Unit tests run in milliseconds, so you run hundreds on every change. Example: a JUnit test checking calculateTax(1500000) returns the expected amount. Tools: JUnit, Jest, pytest. |
+| **Integration Test** | A test that checks several parts working together for real — such as an API with its database, or two services. It catches problems unit tests miss, like wrong SQL or bad configuration. Example: a Spring Boot test that calls POST /orders and checks the row in a Testcontainers MySQL database. |
+| **E2E Test** (End-to-End) | A test that runs a full user journey through the real UI in a browser, from start to finish, like a user would. It gives the most confidence but is slowest and most fragile, so keep only key flows. Example: log in → add to cart → pay → see confirmation. Tools: Playwright, Cypress, Selenium. |
+| **Regression Test** | Re-running existing tests after a change to make sure features that used to work still work. Automating it lets you release often without fear. Example: after changing the discount logic, the full checkout test suite runs again to confirm nothing else broke. |
+| **Smoke / Sanity Test** | Quick checks after a build or deployment. A smoke test confirms the main features work at all (app starts, login works) before deeper testing. A sanity test checks that one specific fix or change works. Example: after deploying, hit /health and log in once. |
+| **Performance / Load Test** | Tests that measure how fast and stable a system is under traffic. Load tests use expected traffic; stress tests push beyond it to find the breaking point. Example: simulating 5,000 users checking out to confirm response time stays under 2 s. Tools: JMeter, k6, Gatling. |
+| **TDD / BDD** | TDD (Test-Driven Development): write a failing test first, write just enough code to pass, then refactor (red → green → refactor). BDD (Behaviour-Driven Development): describe behaviour in plain Given-When-Then scenarios that business and developers share. Example BDD tool: Cucumber. |
+| **Mocking** | Replacing a real dependency (database, API, email service) with a fake that returns controlled answers during a test. It keeps tests fast and focused on the code under test. Example: Mockito makes PaymentGateway.charge() return 'success' so OrderService can be tested without a real payment. |
+| **Code Coverage** | The percentage of code lines or branches that run during your tests. It shows untested areas, but high coverage doesn't prove tests check the right things. Many teams aim for 70–80% on business logic. Tools: JaCoCo (Java), Istanbul/nyc (JavaScript). |
+| **Static Code Analysis** | Tools that scan source code without running it to find bugs, security issues, code smells and style problems. It runs in the IDE and in CI so problems are caught before review. Examples: SonarQube, ESLint, Checkstyle, SpotBugs. |
+| **Code Review** | Teammates read and comment on code changes, usually in a pull request, before they are merged. It catches bugs, spreads knowledge and keeps code consistent. Good reviews are small, quick and focused on correctness and clarity, not personal style. |
+| **Bug / Defect Severity vs Priority** | Severity is how badly a bug affects the system (set by QA); priority is how soon it must be fixed (set by the business). They don't always match. Example: a typo in the company name on the home page is low severity but high priority; a crash in a rarely used report may be high severity but lower priority. |
 
 ### Security
 
 | Term | Meaning |
 |---|---|
-| **Authentication (AuthN)** | Verifying who you are (login, password, MFA). |
-| **Authorization (AuthZ)** | Deciding what you are allowed to do. |
-| **OAuth 2.0 / OIDC** | Standards for delegated access (OAuth) and login identity (OpenID Connect). |
-| **JWT** (JSON Web Token) | Signed token carrying user identity/claims between systems. |
-| **SSO** (Single Sign-On) | Log in once to access many apps. E.g. Okta, Entra ID. |
-| **MFA / 2FA** | Multi-factor authentication: password + phone/app/key. |
-| **RBAC** (Role-Based Access Control) | Permissions assigned by role (admin, editor, viewer). |
-| **Encryption (at rest / in transit)** | Scrambling data on disk / over the network (TLS/HTTPS). |
-| **Hashing** | One-way conversion used to store passwords safely (bcrypt, SHA-256). |
-| **OWASP Top 10** | Most critical web app risks: injection, broken access control, XSS, etc. |
-| **SQL Injection / XSS / CSRF** | Common attacks: malicious SQL input / injected scripts / forged requests. |
-| **Firewall / WAF** | Blocks unwanted network traffic / web-specific attacks. |
-| **Zero Trust** | Never trust by default; verify every user and device every time. |
-| **Vulnerability / CVE** | Security weakness / its public ID (e.g. CVE-2021-44228 Log4Shell). |
-| **SAST / DAST** | Static (code) / Dynamic (running app) security testing. |
-| **Secrets Management** | Store passwords/keys safely. E.g. HashiCorp Vault, AWS Secrets Manager. |
-| **SIEM / SOC** | Security log analysis platform (Splunk) / team that monitors threats. |
-| **Penetration Testing** | Authorised simulated attack to find weaknesses. |
+| **Authentication (AuthN)** | Proving who you are to a system — with a password, OTP, fingerprint or security key. It happens before the system decides what you may do. Example: logging in with email + password + an OTP; the server then issues a session or token. |
+| **Authorization (AuthZ)** | Deciding what an already-authenticated user is allowed to do or see. It is checked on every request, usually by roles or permissions. Example: an employee can view their own payslip, but only HR can view everyone's (otherwise HTTP 403 Forbidden). |
+| **OAuth 2.0 / OIDC** | OAuth 2.0 lets an app access your data on another service without your password, using limited, revocable tokens (delegated access). OpenID Connect (OIDC) adds a standard login layer on top that tells the app who you are. Example: 'Sign in with Google' uses OIDC. |
+| **JWT** (JSON Web Token) | A compact, signed token that carries claims such as user ID, roles and expiry, so a server can verify the user without a session lookup. It is signed, not encrypted — don't put secrets in it — and should be short-lived with refresh tokens. Format: header.payload.signature. |
+| **SSO** (Single Sign-On) | Logging in once with one identity and getting access to many applications without signing in again. It improves user experience and lets IT control access centrally. Example: one company login opens email, Jira and payroll. Providers: Okta, Microsoft Entra ID, Google. |
+| **MFA / 2FA** | Requiring two or more kinds of proof to log in: something you know (password), something you have (phone OTP, authenticator app, security key) or something you are (fingerprint). Even a stolen password isn't enough. Example: bank login with password plus an OTP. |
+| **RBAC** (Role-Based Access Control) | Giving permissions to roles (admin, editor, viewer) and then assigning roles to users, instead of setting permissions per person. It is simple to manage and audit. Example: in Jira, a 'Project Admin' role can change workflows; 'Developer' can only edit issues. |
+| **Encryption (at rest / in transit)** | Scrambling data so only holders of the key can read it. At rest protects stored data (disks, databases, backups); in transit protects data moving over networks, using TLS (HTTPS). Example: a stolen database backup is useless without the encryption key. |
+| **Hashing** | A one-way function that turns data into a fixed-length value that can't be turned back into the original. Passwords are stored as slow, salted hashes so even a leaked database doesn't reveal them. Use bcrypt or Argon2 for passwords; SHA-256 for checking file integrity. |
+| **OWASP Top 10** | A regularly updated list of the ten most critical web application security risks, published by the OWASP foundation. It is the common checklist for secure coding and security testing. Examples: broken access control, injection, security misconfiguration, vulnerable components. |
+| **SQL Injection / XSS / CSRF** | Three common web attacks. SQL injection: input changes your database query (prevent with parameterised queries). XSS: attackers inject scripts into pages others view (prevent by escaping output). CSRF: a malicious site makes your browser send unwanted requests (prevent with CSRF tokens or SameSite cookies). |
+| **Firewall / WAF** | A firewall allows or blocks network traffic by rules on IP addresses, ports and protocols. A WAF (Web Application Firewall) inspects HTTP requests and blocks web attacks like SQL injection and XSS before they reach your app. Examples: AWS Security Groups (firewall), AWS WAF, Cloudflare WAF. |
+| **Zero Trust** | A security model that trusts no user or device by default, even inside the office network. Every request must prove identity, device health and permission, with least-privilege access. Example: staff need SSO with MFA and a managed laptop to reach internal apps, even on office Wi-Fi. |
+| **Vulnerability / CVE** | A vulnerability is a weakness attackers can exploit. A CVE is the public ID given to a known vulnerability so everyone can track and patch it, usually with a severity score (CVSS). Example: CVE-2021-44228 (Log4Shell) in Log4j forced companies worldwide to upgrade urgently. |
+| **SAST / DAST** | Two kinds of automated security testing. SAST scans source code for insecure patterns without running it, early in CI. DAST attacks the running application from outside, like a hacker would. Examples: SonarQube or Checkmarx (SAST), OWASP ZAP or Burp Suite (DAST). |
+| **Secrets Management** | Storing passwords, API keys and certificates securely in a dedicated vault instead of in code or config files, with access control, audit logs and rotation. Apps fetch secrets at runtime. Tools: HashiCorp Vault, AWS Secrets Manager, Azure Key Vault. |
+| **SIEM / SOC** | A SIEM is a platform that collects and analyses security logs from across an organisation to detect threats and raise alerts. A SOC (Security Operations Centre) is the team that watches those alerts 24×7 and responds to incidents. Example SIEMs: Splunk, Microsoft Sentinel. |
+| **Penetration Testing** | An authorised, simulated attack on a system by security experts to find weaknesses before real attackers do. It ends with a report of findings and fixes, and is often required for compliance. Example: a yearly pen test of a banking app before an audit. |
 
 ### Networking
 
 | Term | Meaning |
 |---|---|
-| **IP Address** | Unique address of a device on a network (IPv4/IPv6). |
-| **DNS** (Domain Name System) | Translates names like google.com into IP addresses. |
-| **HTTP / HTTPS** | Web protocol; HTTPS is encrypted with TLS. |
-| **TCP / UDP** | Reliable ordered delivery / fast delivery without guarantees (video, gaming). |
-| **Port** | Numbered channel on a machine: 80 HTTP, 443 HTTPS, 22 SSH, 5432 PostgreSQL. |
-| **VPN** (Virtual Private Network) | Encrypted tunnel into a private network. |
-| **VPC / Subnet** | Private cloud network / smaller segment of it (public or private). |
-| **Proxy / Reverse Proxy** | Forwards client requests out / receives requests for servers (Nginx). |
-| **Latency / Bandwidth / Throughput** | Delay / max capacity / actual data moved per second. |
-| **OSI Model** | 7 network layers: Physical, Data Link, Network, Transport, Session, Presentation, Application. |
-| **SSH** (Secure Shell) | Encrypted remote login to servers. |
+| **IP Address** | A numeric address that identifies a device on a network so data can be delivered to it. IPv4 looks like 192.168.1.10 (addresses are running out); IPv6 is much longer (2001:db8::1). Private IPs work inside a network; public IPs are reachable on the internet. |
+| **DNS** (Domain Name System) | The internet's phone book: it translates names like google.com into IP addresses computers use. Results are cached to keep lookups fast. Example: typing a site name triggers a DNS lookup first; wrong DNS records are a common cause of 'site not reachable'. |
+| **HTTP / HTTPS** | HTTP is the request-response protocol browsers and APIs use to exchange data. HTTPS is HTTP encrypted with TLS, which hides the data from eavesdroppers and proves the site's identity with a certificate. Today every site and API should use HTTPS. |
+| **TCP / UDP** | Two transport protocols. TCP sets up a connection and guarantees ordered, complete delivery (web pages, APIs, email). UDP just sends packets with no guarantee — faster, for cases where speed matters more than every packet (video calls, gaming, DNS). |
+| **Port** | A number that identifies which program on a machine should receive network traffic, so one server can run many services. Common ports: 80 HTTP, 443 HTTPS, 22 SSH, 3306 MySQL, 5432 PostgreSQL, 8080 dev servers. Example: localhost:8080 means port 8080 on your own machine. |
+| **VPN** (Virtual Private Network) | An encrypted tunnel over the internet into a private network, making your device act as if it were inside that network. Companies use it so staff can reach internal systems safely from home. Example: connecting to the office VPN to open an internal Jenkins server. |
+| **VPC / Subnet** | A VPC is your own isolated private network inside a cloud provider. Subnets divide it: public subnets for internet-facing resources (load balancers), private subnets for things that shouldn't be reachable directly (databases). Example: an app server in a public subnet talks to RDS in a private subnet. |
+| **Proxy / Reverse Proxy** | A forward proxy sits in front of clients and sends their requests out to the internet (e.g. a company web filter). A reverse proxy sits in front of servers and receives requests for them — handling SSL, caching, load balancing and routing. Example: Nginx as a reverse proxy in front of Node.js apps. |
+| **Latency / Bandwidth / Throughput** | Latency is the delay for one request to travel and get a response (milliseconds). Bandwidth is the maximum data a link can carry. Throughput is how much data or how many requests actually get through per second. Example: a road's speed limit is like latency, its number of lanes like bandwidth. |
+| **OSI Model** | A 7-layer reference model of how network communication works: Physical, Data Link, Network (IP), Transport (TCP/UDP), Session, Presentation, Application (HTTP). It helps people describe where a problem is. Example: 'it's a layer 7 issue' means the application, not the network. |
+| **SSH** (Secure Shell) | A secure, encrypted way to log in to and run commands on a remote server, usually using key pairs instead of passwords. It is also used to copy files securely and by Git. Example: ssh ubuntu@10.0.1.5 to open a terminal on a cloud server. |
 
 ### Agile & Process
 
 | Term | Meaning |
 |---|---|
-| **Agile** | Deliver in small iterations with frequent feedback. |
-| **Waterfall** | Sequential phases; each finishes before the next starts. |
-| **Scrum** | Agile framework with sprints, roles (PO, SM, Dev team) and ceremonies. |
-| **Kanban** | Visual board with work-in-progress limits; continuous flow. |
-| **Sprint** | Fixed time box (usually 2 weeks) to deliver work. |
-| **Scrum Ceremonies** | Sprint Planning, Daily Stand-up, Sprint Review (demo), Retrospective. |
-| **Backlog** | Prioritised list of work items. |
-| **Epic / Story / Task / Bug** | Large goal / user-facing requirement / technical step / defect. |
-| **User Story** | "As a <user>, I want <goal>, so that <benefit>." |
-| **Acceptance Criteria** | Conditions a story must meet to be accepted. |
-| **Definition of Done (DoD)** | Team checklist for when work is truly complete. |
-| **Story Points / Velocity** | Relative effort estimate / points a team completes per sprint. |
-| **SAFe** (Scaled Agile Framework) | Agile for many teams; uses PI (Program Increment) planning. |
-| **ITIL** | IT service management framework: incidents, problems, changes. |
-| **Incident / Problem / Change** | Outage to fix now / its root cause / controlled update (ITIL). |
-| **RCA** (Root Cause Analysis) | Finding the real cause of an issue (e.g. 5 Whys). |
-| **Postmortem** | Blameless review after an incident with action items. |
-| **On-Call** | Rotation where an engineer responds to production alerts. |
-| **Runbook / Playbook** | Step-by-step guide for operational tasks or incidents. |
+| **Agile** | A way of working that delivers software in small increments with frequent feedback, instead of one big release at the end. Teams adapt plans as they learn. Scrum and Kanban are the most common Agile methods. Example: shipping a usable feature every two weeks and adjusting from user feedback. |
+| **Waterfall** | A sequential approach where each phase — requirements, design, build, test, deploy — finishes completely before the next starts. It suits fixed, well-understood requirements but makes late changes costly. Still used in some government, regulated and fixed-price projects. |
+| **Scrum** | An Agile framework where a small team delivers work in fixed sprints. It has three roles — Product Owner (what to build), Scrum Master (process coach) and Developers — plus regular events and artifacts like the backlog. It gives a steady rhythm of planning, delivery and improvement. |
+| **Kanban** | An Agile method that shows work on a board (To Do → In Progress → Done) and limits how many items can be in progress at once. Work flows continuously instead of in sprints, which suits support and operations teams. Key metric: lead time from request to done. |
+| **Sprint** | A fixed time box, usually two weeks, in which a Scrum team commits to and delivers a set of backlog items. Each sprint ends with a potentially releasable increment and a review. Example: Sprint 14 (1–14 March) delivers the new payslip download feature. |
+| **Scrum Ceremonies** | The regular meetings in Scrum: Sprint Planning (choose the work), Daily Stand-up (15 minutes on progress and blockers), Sprint Review (demo to stakeholders) and Retrospective (how to work better). Together they keep the team aligned and improving. |
+| **Backlog** | An ordered list of everything the product might need — features, bugs, improvements — with the most important items at the top. The Product Owner keeps it prioritised; the team pulls the top items into each sprint. Items near the top are detailed; items lower down can stay rough. |
+| **Epic / Story / Task / Bug** | Ways to split work in tools like Jira. An epic is a large goal spanning sprints; a story is a user-facing piece of it; a task is a technical step; a bug is a defect. Example: Epic 'Online payments' → Story 'Pay by UPI' → Tasks 'Add Razorpay SDK', 'Write webhook'. |
+| **User Story** | A short requirement written from the user's point of view: 'As a <user>, I want <goal>, so that <benefit>.' It keeps the focus on value and starts a conversation rather than being a full spec. Example: 'As an employee, I want to download my payslip, so that I can apply for a loan.' |
+| **Acceptance Criteria** | Specific, testable conditions a user story must meet to be accepted as done. They remove ambiguity between business, developers and testers, often written as Given-When-Then. Example: 'Given I am logged in, when I click Download, then the payslip PDF for the chosen month downloads.' |
+| **Definition of Done (DoD)** | A checklist the whole team agrees every item must meet before it counts as done. It keeps quality consistent and avoids 'done but not tested'. Example: code reviewed, unit tests passing, documentation updated, deployed to QA and accepted by the PO. |
+| **Story Points / Velocity** | Story points estimate relative effort and complexity (often 1, 2, 3, 5, 8, 13), not hours. Velocity is the average number of points a team completes per sprint, used to plan future sprints. Example: a team with velocity 30 plans about 30 points next sprint. Don't compare velocity across teams. |
+| **SAFe** (Scaled Agile Framework) | The Scaled Agile Framework: a structured way to run Agile across many teams working on one large product. Teams are grouped into Agile Release Trains that plan together in PI (Program Increment) Planning every 8–12 weeks. Common in large enterprises and banks. |
+| **ITIL** | A widely used framework of best practices for IT service management — running IT services reliably for the business. It defines processes such as incident, problem, change and service request management. Tools like ServiceNow and Jira Service Management follow ITIL. |
+| **Incident / Problem / Change** | ITIL terms. An incident is an unplanned outage or degradation to restore fast. A problem is the underlying cause of one or more incidents, investigated to stop repeats. A change is a planned, approved modification to production. Example: checkout down (incident) → memory leak found (problem) → fix deployed (change). |
+| **RCA** (Root Cause Analysis) | Root Cause Analysis: investigating an issue until you find the real underlying cause, not just the symptom, so it doesn't happen again. Common methods: 5 Whys and fishbone diagrams. Example: 'site down' → disk full → logs not rotated → missing log-rotation config (root cause). |
+| **Postmortem** | A written, blameless review after an incident: what happened, the timeline, impact, root cause and action items to prevent a repeat. 'Blameless' means focusing on systems and processes, not punishing people, so teams share honestly. Example: a postmortem after a 2-hour payment outage. |
+| **On-Call** | A rotation where an engineer is responsible for responding to production alerts outside normal hours, for a set period such as a week. They triage, fix or escalate issues following runbooks. Often paid with an on-call allowance. Tools: PagerDuty, Opsgenie. |
+| **Runbook / Playbook** | A step-by-step guide for handling a known operational task or incident, so anyone on call can follow it under pressure. Runbooks are specific procedures; playbooks cover broader scenarios and decisions. Example: 'Database CPU above 90%: check slow queries → kill long-running query → scale up'. |
 
 ### Business & Company
 
 | Term | Meaning |
 |---|---|
-| **Forward Deployed Engineering** | Model where engineers work inside customer teams to deploy the product; see FDE role. |
-| **AI-Native Company** | Company whose product and workflows are built around AI from day one. |
-| **CAIO** (Chief AI Officer) | Executive responsible for AI strategy and governance. |
-| **Product Company vs Service Company** | Builds its own product (Google, Zoho) vs builds for clients (TCS, Infosys, Accenture). |
-| **Startup / MNC / GCC** | Early-stage company / multinational / Global Capability Centre (offshore in-house unit). |
-| **Onsite / Offshore** | Working at client location / from a remote delivery centre. |
-| **Client / Stakeholder** | Who pays / anyone affected by or influencing the project. |
-| **BRD / FRD / SRS** | Business / Functional / Software Requirements documents. |
-| **SOW** (Statement of Work) | Contract describing scope, deliverables and timelines. |
-| **RFP / RFI / RFQ** | Request for Proposal / Information / Quotation from vendors. |
-| **T&M vs Fixed Price** | Billing by time spent vs fixed cost for fixed scope. |
-| **KPI / OKR** | Key metric / Objectives & Key Results goal framework. |
-| **ROI** (Return on Investment) | Benefit gained compared to cost. |
-| **Bench** | Service-company term: employee not yet assigned to a project. |
-| **Appraisal / Hike / Band** | Performance review / salary increase / salary-grade level. |
-| **CTC** (Cost to Company) | Total yearly cost of an employee (salary + benefits). |
-| **LPA** (Lakhs Per Annum) | Indian salary unit: 1 LPA = ₹1,00,000 per year. 100 LPA = 1 Crore. |
-| **Fixed vs Variable Pay** | Guaranteed salary vs performance bonus that may not be paid in full. |
-| **In-Hand Salary** | Monthly amount after tax, PF and deductions — roughly 65–80% of fixed CTC ÷ 12. |
-| **ESOP / RSU** | Stock options (startups) / restricted stock units (listed companies) given as part of pay. |
-| **Joining Bonus / Notice Buyout** | One-time payment on joining / employer pays to cut your notice period short. |
-| **Notice Period** | Time you must serve after resigning — typically 30–90 days in India. |
-| **B2B / B2C** | Business sells to businesses / to consumers. |
-| **Go-Live** | The moment a system is released to real users. |
-| **Hypercare** | Intensive support period right after go-live. |
+| **Forward Deployed Engineering** | A model where engineers work directly with a customer's team to understand their problems and deploy, customise and integrate the product on site. It blends software engineering, consulting and solutions work. Popularised by Palantir and now common at AI companies; see the FDE role. |
+| **AI-Native Company** | A company whose product and internal workflows are built around AI from day one, rather than adding AI to an existing product. Small teams use AI agents for coding, support and operations. Example: a startup whose whole product is an AI agent, with AI handling most first-line support. |
+| **CAIO** (Chief AI Officer) | Chief AI Officer: the executive responsible for an organisation's AI strategy — where to use AI, which platforms to adopt, governance, risk and return on investment. The role is growing as AI moves from experiments to core business. They usually work with the CTO, CIO and legal teams. |
+| **Product Company vs Service Company** | A product company builds and sells its own software (Google, Zoho, Freshworks), so engineers own one product long-term. A service company builds software for clients (TCS, Infosys, Accenture), so engineers work on different client projects. Product companies usually pay more; service companies offer variety and scale. |
+| **Startup / MNC / GCC** | A startup is an early-stage company growing fast, with more risk and ownership. An MNC is a large multinational with established processes. A GCC (Global Capability Centre) is an in-house offshore unit of a global company, e.g. a US bank's technology centre in Bengaluru, doing core work rather than outsourced projects. |
+| **Onsite / Offshore** | Delivery terms in IT services. Onsite means working at the client's location, often abroad; offshore means working from the vendor's delivery centre, usually in India. Projects often mix both: a few onsite coordinators with a larger offshore team. |
+| **Client / Stakeholder** | The client is the organisation paying for the work. A stakeholder is anyone affected by or able to influence the project — users, managers, other teams, regulators. Identifying stakeholders early avoids surprises late. Example: for a payroll system, stakeholders include HR, finance, employees and auditors. |
+| **BRD / FRD / SRS** | Requirement documents at different levels. BRD (Business Requirements Document): what the business needs and why. FRD (Functional Requirements Document): how the system should behave to meet it. SRS (Software Requirements Specification): detailed functional and non-functional requirements for builders. |
+| **SOW** (Statement of Work) | Statement of Work: a contract document that defines a project's scope, deliverables, timelines, milestones, acceptance criteria and payment terms between client and vendor. Anything outside it is a change request. Example: an SOW for building a mobile app in 6 months for a fixed fee. |
+| **RFP / RFI / RFQ** | Documents a company sends to vendors when buying. RFI (Request for Information): learn what vendors offer. RFP (Request for Proposal): ask for a detailed solution and price for a defined need. RFQ (Request for Quotation): ask for prices when the exact requirement is already known. |
+| **T&M vs Fixed Price** | Two ways to bill a project. Time & Material: the client pays for actual hours or days worked — flexible when scope changes. Fixed price: one agreed cost for a fixed scope — predictable for the client but risky for the vendor if estimates are wrong. |
+| **KPI / OKR** | A KPI (Key Performance Indicator) is a metric you track continuously to see how something is performing, e.g. uptime or monthly active users. OKRs (Objectives and Key Results) set an ambitious goal plus 3–5 measurable results for a quarter. Example OKR: 'Make checkout faster' → 'cut p95 latency from 3 s to 1 s'. |
+| **ROI** (Return on Investment) | Return on Investment: how much benefit you get compared to what you spent, usually as a percentage — (gain − cost) ÷ cost × 100. It is used to justify projects and tools. Example: automation costing ₹10 lakh that saves ₹25 lakh a year has 150% first-year ROI. |
+| **Bench** | A service-company term for employees who are not currently assigned to a billable client project. Bench time is used for training and internal work while waiting for the next project; long bench periods can affect appraisals. Example: 'I've been on the bench for 3 weeks since my project ended.' |
+| **Appraisal / Hike / Band** | An appraisal is the yearly (sometimes half-yearly) performance review that sets your rating. A hike is the salary increase that follows, as a % of current pay. A band or grade is your level, with a salary range for it. Example: a rating of 'Exceeds' in band L4 gets a 12% hike. |
+| **CTC** (Cost to Company) | Cost to Company: the total yearly amount a company spends on you — fixed salary, variable pay, employer PF, gratuity and benefits. It is the headline number in offer letters, but your take-home is lower because part of it is never paid monthly. Example: ₹15 LPA CTC gives roughly ₹96,000 a month in hand (new regime). See Salary & Payslips. |
+| **LPA** (Lakhs Per Annum) | Lakhs Per Annum — the usual way Indian salaries are quoted: 1 LPA = ₹1,00,000 a year, and 100 LPA = ₹1 crore. It almost always refers to CTC, not take-home. Example: '12 LPA' means ₹12,00,000 CTC a year, or ₹1 lakh a month before deductions. |
+| **Fixed vs Variable Pay** | Fixed pay is the guaranteed part of salary paid every month. Variable pay is a performance-linked bonus, usually paid yearly or quarterly, that may be paid only partly or not at all. Example: ₹20 LPA with 10% variable = ₹18 L guaranteed + up to ₹2 L bonus. Compare offers on fixed pay first. |
+| **In-Hand Salary** | The amount actually credited to your bank account each month after employee PF, professional tax and income tax are deducted. Because CTC also includes variable pay, employer PF and gratuity, in-hand is usually around 70–90% of fixed CTC ÷ 12, lower at higher tax slabs. Example: ₹15 LPA CTC → about ₹96,000 a month. |
+| **ESOP / RSU** | Two ways companies share ownership. ESOPs (common in startups) give the right to buy shares later at a low fixed price; RSUs (common at listed companies) give shares free as they vest. Both usually vest over about 4 years and are taxed as salary when you exercise (ESOP) or when they vest (RSU). |
+| **Joining Bonus / Notice Buyout** | A joining bonus is a one-time payment for accepting an offer, often to cover a bonus you lose by leaving, and usually must be repaid if you quit within a year. A notice buyout is paying your current employer (often the new employer reimburses it) so you can leave before finishing your notice period. |
+| **Notice Period** | The time you must keep working after resigning before your last day, as written in your contract — typically 30–90 days in India. It lets the company hand over your work and hire a replacement. You can sometimes shorten it with leave adjustment or a buyout. |
+| **B2B / B2C** | Business models by who the customer is. B2B companies sell to other businesses (Salesforce, Zoho, AWS) — fewer, larger customers with longer sales cycles. B2C companies sell directly to consumers (Swiggy, Flipkart) — many customers and a focus on user experience and scale. |
+| **Go-Live** | The moment a new system or major release is switched on for real users in production. It is usually planned with a checklist, a rollback plan and extra support standing by. Example: the new payroll system goes live on 1 April, the start of the financial year. |
+| **Hypercare** | A short period of intensive support right after go-live, typically 2–6 weeks, when the project team watches the system closely and fixes issues fast. After hypercare, support moves to the normal support team. Example: developers stay on daily calls with users in the first month after launch. |
 
 ## Technology Stack Map
 
@@ -2473,6 +2473,340 @@ Ordered from most realistic to hardest for Indian IT professionals.
 8. Never pay an agent for a job offer. That's a scam, every time.
 
 > Live job and news feeds are only available in the interactive page (Arbeitnow, Remotive, Jobicy, Hacker News search).
+
+## Income Tax by Country
+
+> Checked November 2026. Rules for a single employee who is tax resident there, with salary as the only income. Local taxes, family allowances and many credits are left out, so treat estimates as a guide and use the official calculator linked on each card for exact numbers.
+
+The Atlas's **Pay & Tax** tab turns these tax rules into a take-home calculator, an offer comparison and rough estimates.
+
+### Income tax in United States
+
+**Tax year:** Tax year 2026 (calendar year)
+
+Federal income tax plus Social Security and Medicare (FICA). Most states add their own income tax (none in Texas, Washington or Florida; up to about 13% in California).
+
+**Federal, single filer**
+
+| Taxable income | Rate |
+|---|---|
+| Up to $12,400 | 10% |
+| $12,400 – $50,400 | 12% |
+| $50,400 – $105,700 | 22% |
+| $105,700 – $201,775 | 24% |
+| $201,775 – $256,225 | 32% |
+| $256,225 – $640,600 | 35% |
+| Above $640,600 | 37% |
+
+Standard deduction $16,100 (2026, after the One Big Beautiful Bill Act).
+
+**Employee contributions:**
+
+- Social Security 6.2% up to $184,500 of wages
+- Medicare 1.45% on all wages, plus 0.9% above $200,000
+
+**Good to know:**
+
+- H-1B holders are taxed like residents once they pass the substantial-presence test.
+- 401(k) contributions (up to the yearly limit) reduce taxable income — not included here.
+- Not in the Atlas estimate: State and city income tax.
+
+**Official sources:**
+
+- [IRS: federal income tax rates and brackets](https://www.irs.gov/filing/federal-income-tax-rates-and-brackets)
+- [SSA: contribution and benefit base](https://www.ssa.gov/oact/cola/cbb.html)
+
+### Income tax in United Kingdom
+
+**Tax year:** Tax year 2026/27 (6 Apr 2026 – 5 Apr 2027)
+
+Income tax above a £12,570 personal allowance, plus National Insurance. Rates shown are for England, Wales and Northern Ireland; Scotland has its own bands.
+
+**England, Wales & NI**
+
+| Taxable income | Rate |
+|---|---|
+| Up to £37,700 | 20% |
+| £37,700 – £125,140 | 40% |
+| Above £125,140 | 45% |
+
+Bands apply to income above the personal allowance. The allowance shrinks by £1 for every £2 earned above £100,000, and is zero from £125,140.
+
+**Employee contributions:**
+
+- National Insurance (Class 1): 8% on £12,570–£50,270, 2% above
+
+**Good to know:**
+
+- Thresholds are frozen until April 2031.
+- Skilled Worker visa holders pay the same tax as residents.
+- Not in the Atlas estimate: Student loan repayments and pension contributions.
+
+**Official sources:**
+
+- [GOV.UK: Income Tax rates](https://www.gov.uk/income-tax-rates)
+- [GOV.UK: rates and thresholds 2026 to 2027](https://www.gov.uk/guidance/rates-and-thresholds-for-employers-2026-to-2027)
+
+### Income tax in Canada
+
+**Tax year:** Tax year 2026 (calendar year)
+
+Federal income tax plus provincial income tax (each province has its own brackets, roughly 5–21%), CPP pension and EI insurance.
+
+**Federal**
+
+| Taxable income | Rate |
+|---|---|
+| Up to C$58,523 | 14% |
+| C$58,523 – C$117,045 | 20.5% |
+| C$117,045 – C$181,440 | 26% |
+| C$181,440 – C$258,482 | 29% |
+| Above C$258,482 | 33% |
+
+Basic personal amount $16,452 (a 14% credit, about $2,303). The lowest rate was cut from 15% to 14% from July 2025.
+
+**Employee contributions:**
+
+- CPP 5.95% on earnings from $3,500 to $74,600 (max $4,230.45), plus CPP2 4% up to about $85,000
+- EI 1.63% up to $68,900 (max $1,123.07)
+
+**Good to know:**
+
+- Quebec has its own pension plan and EI rate.
+- RRSP contributions reduce taxable income — not included here.
+- Not in the Atlas estimate: Provincial income tax (e.g. Ontario adds about 5–13%).
+
+**Official sources:**
+
+- [CRA: income tax rates](https://www.canada.ca/en/revenue-agency/services/tax/individuals/frequently-asked-questions-individuals/canadian-income-tax-rates-individuals-current-previous-years.html)
+- [CRA: payroll deductions 2026 (T4032)](https://www.canada.ca/en/revenue-agency/services/forms-publications/payroll/t4032-payroll-deductions-tables/t4032oc-jan/t4032oc-january-general-information.html)
+
+### Income tax in Germany
+
+**Tax year:** Tax year 2026 (calendar year)
+
+Income tax rises smoothly from 14% to 42% (45% for very high incomes), plus social insurance of about 21% of pay up to the ceilings. Tax class I (single) shown.
+
+**Income tax (§32a EStG)**
+
+| Taxable income | Rate |
+|---|---|
+| Up to €12,348 | 0% |
+| €12,348 – €69,879 | 14% rising to 42% |
+| €69,879 – €277,826 | 42% |
+| Above €277,826 | 45% |
+
+Tax-free allowance €12,348. Between €12,348 and €69,878 the rate climbs gradually from 14% to 42% (a formula, not fixed steps).
+
+**Employee contributions:**
+
+- Pension 9.3% and unemployment 1.3% up to €101,400 a year
+- Health 7.3% + half the fund's extra rate (average 2.9% → about 8.75%) and long-term care 1.8% (2.4% if childless, 23+) up to €69,750 a year
+
+**Good to know:**
+
+- Solidarity surcharge (5.5%) now applies only to high incomes.
+- EU Blue Card holders are taxed like residents.
+- Not in the Atlas estimate: Church tax (8–9% of income tax, if a member).
+
+**Official sources:**
+
+- [BMF official tax calculator](https://www.bmf-steuerrechner.de/)
+- [Social insurance rates 2026 (TK)](https://www.tk.de/firmenkunden/versicherung/beitraege-faq/beitragssaetze/aktuelle-beitragssaetze-in-der-sozialversicherung-2031554)
+
+### Income tax in Netherlands
+
+**Tax year:** Tax year 2026
+
+Box 1 tax on wages already includes national insurance in the first bracket. Two tax credits — the general credit and the labour credit — lower the bill a lot at middle incomes; the estimate includes both.
+
+**Box 1, below state-pension age**
+
+| Taxable income | Rate |
+|---|---|
+| Up to €38,883 | 35.75% |
+| €38,883 – €78,426 | 37.56% |
+| Above €78,426 | 49.5% |
+
+General tax credit: €3,115, reduced by 6.398% of income above €29,736 (zero from €78,426). Labour credit: up to €5,685, reduced by 6.51% of income above €45,592 (zero from €132,921). Credits can't make tax negative.
+
+**Employee contributions:**
+
+- National insurance is inside the first-bracket rate
+- Health insurance is bought privately (about €150/month)
+
+**Good to know:**
+
+- 30% ruling for skilled migrants: up to 30% of salary tax-free in 2026, falling to 27% from 2027 (minimum salary rules apply). Tick it in the estimator to see the effect.
+- Not in the Atlas estimate: Private health insurance (about €1,800 a year) and employee pension contributions.
+
+**Official sources:**
+
+- [Belastingdienst (official)](https://www.belastingdienst.nl/wps/wcm/connect/en/individuals/individuals)
+- [Belastingdienst: labour credit table 2026](https://www.belastingdienst.nl/wps/wcm/connect/bldcontentnl/belastingdienst/prive/inkomstenbelasting/heffingskortingen_boxen_tarieven/heffingskortingen/arbeidskorting/tabel-arbeidskorting-2026)
+- [Dutch tax system for expats (IamExpat)](https://www.iamexpat.nl/expat-info/taxation/dutch-tax-system)
+
+### Income tax in Ireland
+
+**Tax year:** Tax year 2026 (calendar year)
+
+Income tax at 20% and 40%, reduced by tax credits, plus USC and PRSI on gross pay.
+
+**Single person**
+
+| Taxable income | Rate |
+|---|---|
+| Up to €44,000 | 20% |
+| Above €44,000 | 40% |
+
+Personal credit €2,000 + employee (PAYE) credit €2,000 are subtracted from the tax.
+
+**Employee contributions:**
+
+- USC: 0.5% to €12,012, 2% to €28,700, 3% to €70,044, 8% above (none if income is €13,000 or less)
+- PRSI: 4.2% Jan–Sep 2026, 4.35% from 1 Oct 2026
+
+**Good to know:**
+
+- Critical Skills Employment Permit holders are taxed like residents.
+
+**Official sources:**
+
+- [Revenue: tax rates, bands and reliefs](https://www.revenue.ie/en/personal-tax-credits-reliefs-and-exemptions/tax-relief-charts/index.aspx)
+- [gov.ie: PRSI Class A rates](https://www.gov.ie/en/publication/ffa563-prsi-class-a-rates)
+- [Budget 2026 income tax measures (Chartered Accountants Ireland)](https://www.charteredaccountants.ie/News/income-tax-measures-budget-2026)
+
+### Income tax in Singapore
+
+**Tax year:** Year of Assessment 2026 (income earned in 2025)
+
+Low progressive tax from 0% to 24% for residents. Foreigners on an Employment Pass don't pay CPF.
+
+**Tax resident**
+
+| Taxable income | Rate |
+|---|---|
+| Up to S$20,000 | 0% |
+| S$20,000 – S$30,000 | 2% |
+| S$30,000 – S$40,000 | 3.5% |
+| S$40,000 – S$80,000 | 7% |
+| S$80,000 – S$120,000 | 11.5% |
+| S$120,000 – S$160,000 | 15% |
+| S$160,000 – S$200,000 | 18% |
+| S$200,000 – S$240,000 | 19% |
+| S$240,000 – S$280,000 | 19.5% |
+| S$280,000 – S$320,000 | 20% |
+| S$320,000 – S$500,000 | 22% |
+| S$500,000 – S$1,000,000 | 23% |
+| Above S$1,000,000 | 24% |
+
+Earned income relief $1,000 applied. Resident = in Singapore 183+ days in the year.
+
+**Employee contributions:**
+
+- CPF (about 20% employee) applies only to citizens and permanent residents
+
+**Good to know:**
+
+- Non-residents pay 15% flat or resident rates, whichever is higher.
+
+**Official sources:**
+
+- [IRAS: individual income tax rates](https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-residency-and-tax-rates/individual-income-tax-rates)
+
+### Income tax in Japan
+
+**Tax year:** Tax year 2026 (calendar year)
+
+National income tax 5–45% plus 2.1% reconstruction surtax, a flat 10% resident tax (charged from the second year), and social insurance of about 15%.
+
+**National income tax**
+
+| Taxable income | Rate |
+|---|---|
+| Up to ¥1,950,000 | 5% |
+| ¥1,950,000 – ¥3,300,000 | 10% |
+| ¥3,300,000 – ¥6,950,000 | 20% |
+| ¥6,950,000 – ¥9,000,000 | 23% |
+| ¥9,000,000 – ¥18,000,000 | 33% |
+| ¥18,000,000 – ¥40,000,000 | 40% |
+| Above ¥40,000,000 | 45% |
+
+Applied after deductions. 2026 reform: employment income deduction at least ¥740,000 (¥690,000 + ¥50,000 temporary), basic deduction ¥620,000 plus ¥420,000 for salaries up to ¥6.65 million — so no income tax up to about ¥1.78 million.
+
+**Employee contributions:**
+
+- Health ~5% (varies by insurer and prefecture), pension 9.15% (capped at ¥650,000 monthly pay), employment insurance ~0.5% — about 15% in total
+- Resident tax ~10% of last year's income, charged from your second year
+
+**Good to know:**
+
+- Reconstruction surtax (2.1% of national tax) runs until 2037.
+- The 2026 deduction changes apply to income tax from 2026 and to resident tax from 2027.
+- Not in the Atlas estimate: Nursing-care insurance (age 40+), bonus-specific caps, and spouse or dependant deductions.
+
+**Official sources:**
+
+- [National Tax Agency: income tax rates](https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/2260.htm)
+- [NTA English site](https://www.nta.go.jp/english/)
+- [2026 Japan tax reform outline (EY)](https://www.ey.com/en_jp/technical/ey-japan-tax-library/tax-alerts/2025/tax-alerts-12-24)
+
+### Income tax in Australia
+
+**Tax year:** Financial year 2026-27 (1 Jul 2026 – 30 Jun 2027)
+
+Progressive tax with a $18,200 tax-free threshold, plus a 2% Medicare levy. Employers pay 12% superannuation on top of salary.
+
+**Resident**
+
+| Taxable income | Rate |
+|---|---|
+| Up to A$18,200 | 0% |
+| A$18,200 – A$45,000 | 15% |
+| A$45,000 – A$135,000 | 30% |
+| A$135,000 – A$190,000 | 37% |
+| Above A$190,000 | 45% |
+
+The 16% rate fell to 15% from 1 July 2026, and is due to fall to 14% from 1 July 2027.
+
+**Employee contributions:**
+
+- Medicare levy 2% (reduced for low incomes)
+- Superannuation 12% is paid by the employer, not deducted
+
+**Good to know:**
+
+- Temporary visa holders who are residents for tax pay the same rates.
+
+**Official sources:**
+
+- [ATO: tax rates for Australian residents](https://www.ato.gov.au/tax-rates-and-codes/tax-rates-australian-residents)
+
+### Income tax in UAE (Dubai/Abu Dhabi)
+
+**Tax year:** 2026
+
+No personal income tax on salary. Expat employees pay no social security (it applies only to UAE and GCC nationals).
+
+**Salary income**
+
+| Taxable income | Rate |
+|---|---|
+| Above AED 0 | 0% |
+
+No income tax on employment income. 5% VAT applies to most spending.
+
+**Employee contributions:**
+
+- None for expats
+
+**Good to know:**
+
+- Living in the UAE most of the year can end your tax residency back home — check the 182-day rule and the deemed-resident rule for high earners.
+
+**Official sources:**
+
+- [UAE government: taxation](https://u.ae/en/information-and-services/finance-and-investment/taxation)
 
 ## Who Does What in a Project
 

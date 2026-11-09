@@ -30,6 +30,7 @@
 
 - [Application Security / DevSecOps Engineer](../roles/application-security-devsecops-engineer.md)
 - [Cloud Security Engineer](../roles/cloud-security-engineer.md)
+- [Penetration Tester / Ethical Hacker](../roles/penetration-tester-ethical-hacker.md)
 
 ## Quality & Testing
 
@@ -41,6 +42,7 @@
 
 - [Backend Developer](../roles/backend-developer.md)
 - [Blockchain Developer](../roles/blockchain-developer.md)
+- [Embedded / Firmware Engineer](../roles/embedded-firmware-engineer.md)
 - [ERP / CRM Developer](../roles/erp-crm-developer.md)
 - [Frontend Developer](../roles/frontend-developer.md)
 - [Full Stack Developer](../roles/full-stack-developer.md)
@@ -51,6 +53,8 @@
 
 - [Business Analyst](../roles/business-analyst.md)
 - [Customer Success Engineer](../roles/customer-success-engineer.md)
+- [Project Manager](../roles/project-manager.md)
+- [Scrum Master / Agile Coach](../roles/scrum-master-agile-coach.md)
 - [Solutions / Sales Engineer](../roles/solutions-sales-engineer.md)
 - [Technical Writer](../roles/technical-writer.md)
 
@@ -58,6 +62,7 @@
 
 - [Cloud Architect](../roles/cloud-architect.md)
 - [Data Architect](../roles/data-architect.md)
+- [Engineering Manager](../roles/engineering-manager.md)
 - [Solution Architect](../roles/solution-architect.md)
 
 ## Cloud, DevOps & Infrastructure
@@ -69,14 +74,17 @@
 - [Platform Engineer](../roles/platform-engineer.md)
 - [Release / Build Engineer](../roles/release-build-engineer.md)
 - [Site Reliability Engineer](../roles/site-reliability-engineer.md)
+- [System Administrator](../roles/system-administrator.md)
+
+## IT Support & Operations
+
+- [NOC Engineer](../roles/noc-engineer.md)
+- [Production / Application Support](../roles/production-application-support.md)
 
 ## Product & Design
 
 - [Product Manager](../roles/product-manager.md)
+- [Product Owner](../roles/product-owner.md)
 - [UI/UX Designer](../roles/ui-ux-designer.md)
-
-## IT Support & Operations
-
-- [Production / Application Support](../roles/production-application-support.md)
 
 New to tech? Start with the [learning tracks](../topics/README.md).

@@ -7,14 +7,14 @@ Builds clean, tested data models that analysts and BI tools use.
 
 ## Prerequisites
 
-- None. Start with Stage 1.
+- [SQL](../topics/database-sql.md)
 - Usually 2+ years of experience when hired
 
 ## Learning stages
 
 ### Stage 1: Core skills
 
-- [ ] [SQL](../topics/database-sql.md)
+- [ ] [Data Engineering](../topics/data-engineering.md)
 
 ## Also useful
 
@@ -22,7 +22,7 @@ Builds clean, tested data models that analysts and BI tools use.
 
 ## Also needed
 
-Python, Jinja, dbt, Dimensional modelling, Snowflake, BigQuery, Databricks, Looker
+Python, Jinja, Dimensional modelling, Snowflake, BigQuery, Databricks, Looker
 
 ## Where it leads
 

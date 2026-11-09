@@ -645,3 +645,41 @@ html.theming .thread { view-transition-name: none; }
 @media (prefers-reduced-motion: reduce) {
   .skeleton span, .skeleton-card { animation: none; }
 }
+
+/* ---------- Interview scoring sheet ---------- */
+.md.scoring .score-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: -4px 0 18px; padding: 8px 10px; border: 1px solid var(--border-muted); border-radius: 10px; background: var(--bg-subtle); }
+.score-label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
+.score-btns { display: inline-flex; gap: 4px; }
+.score-btn { width: 32px; height: 30px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg); color: var(--text-2); font: inherit; font-weight: 700; cursor: pointer; }
+.score-btn:hover { border-color: var(--accent); color: var(--accent); }
+.score-btn.on { color: #fff; border-color: transparent; }
+.score-btn.s1.on { background: var(--danger); }
+.score-btn.s2.on { background: var(--attention); }
+.score-btn.s3.on { background: #65a30d; }
+.score-btn.s4.on { background: var(--success); }
+.score-note { flex: 1 1 220px; min-width: 0; padding: 6px 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font: inherit; font-size: 0.9rem; }
+.score-note:focus, .score-candidate:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-subtle); }
+.scorecard { margin: 20px 0; padding: 16px; border: 1px solid var(--accent); border-radius: 14px; background: var(--accent-subtle); }
+.score-head { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+.score-head strong { font-size: 1.05rem; }
+.score-candidate { flex: 0 1 260px; padding: 6px 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font: inherit; }
+.score-stats { display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 10px 0; color: var(--text-2); }
+.score-sections { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.score-sections li { display: grid; grid-template-columns: minmax(0, 1fr) 120px 32px 40px; gap: 10px; align-items: center; font-size: 0.9rem; }
+.score-meter { height: 8px; border-radius: 99px; background: var(--bg-muted); overflow: hidden; }
+.score-meter i { display: block; height: 100%; background: var(--accent); border-radius: 99px; }
+.score-sections small { color: var(--muted); text-align: right; }
+.score-verdict { margin: 12px 0 4px; padding: 8px 12px; border-radius: 10px; background: var(--bg); font-weight: 600; }
+.score-verdict.good { color: var(--success); }
+.score-verdict.warn { color: var(--attention); }
+.score-verdict.bad { color: var(--danger); }
+.score-bar-note { margin: 4px 0 0; color: var(--muted); font-size: 0.85rem; }
+.score-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+@media (max-width: 560px) {
+  .score-sections li { grid-template-columns: minmax(0, 1fr) 70px 28px 34px; }
+}
+@media print {
+  body.print-one .sidebar, body.print-one .topbar, body.print-one .composer, body.print-one .msg:not(.print-target),
+  body.print-one .msg-foot, body.print-one .followups, body.print-one .score-actions { display: none !important; }
+  body.print-one .score-btn:not(.on) { opacity: 0.35; }
+}

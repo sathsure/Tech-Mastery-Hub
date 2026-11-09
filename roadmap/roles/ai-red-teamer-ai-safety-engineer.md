@@ -15,6 +15,7 @@ Attacks and stress-tests AI systems to find harmful, unsafe or insecure behaviou
 ### Stage 1: Core skills
 
 - [ ] [AI & LLMs](../topics/ai.md)
+- [ ] [Security (OWASP)](../topics/security.md)
 
 ## Also needed
 

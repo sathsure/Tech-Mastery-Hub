@@ -2,6 +2,7 @@ import { fetchCatalog, fetchEntry, searchNotes, streamChat } from "./api.js";
 import { escapeHtml, icon, markdownToText, renderMarkdown, withCardsAsText } from "./render.js";
 import { deleteConversation, getConversation, listConversations, newConversation, saveConversation } from "./store.js";
 import { openZoom } from "./zoom.js";
+import { enhanceScoring, isQuestionSet, refreshScoring, scorecardText } from "./scoring.js";
 
 const $ = selector => document.querySelector(selector);
 const thread = $("#thread");
@@ -193,7 +194,8 @@ const NAV_ICONS = {
   nodejs: "server", java: "coffee", spring: "leaf", "spring-security": "lock", "spring-cloud": "cloud", microservices: "boxes",
   "rest-api": "plug", "database/sql": "database", devops: "infinity", aws: "cloud", "web-architecture": "network", "web-vitals": "gauge",
   dsa: "graduation", messaging: "route", ai: "sparkles",
-  "system-design": "compass", "design-patterns": "puzzle", testing: "flask", git: "branch", caching: "zap", networking: "globe", behavioral: "users",
+  "system-design": "compass", "design-patterns": "puzzle", testing: "flask", git: "branch", caching: "zap", networking: "globe", behavioral: "users", salary: "wallet",
+  "linux": "terminal", "security": "lock", "observability": "eye", "agile": "refresh", "job-search": "target", "data-engineering": "filter",
   "it-roles": "briefcase", "it-terminology": "book", "tech-stack": "layers", "it-careers": "trend", roadmaps: "map",
 };
 
@@ -335,7 +337,7 @@ function groundingHtml(message) {
   const done = message.done;
   if (!done) return "";
   // Overviews and plans are built from the notes' structure; there is nothing to verify.
-  if (done.view === "overview" || done.view === "plan") return "";
+  if (["overview", "plan", "pick", "setup", "mock"].includes(done.view)) return "";
   const g = done.grounding;
   const sources = message.meta?.evidence.length ?? 0;
   if (g.invalid.length) return `<span class="grounding warn">${icon("alert")}Refers to a source that doesn't exist</span>`;
@@ -379,9 +381,14 @@ function assistantView(message, index) {
 
 /** Is this answer the interview-prep stack picker (not a roadmap checklist)? */
 const isPrepPicker = message => message?.done?.view === "pick";
+/** Is this answer the setup checklist for an interviewer's question set? */
+const isSetSetup = message => message?.done?.view === "setup";
+/** What kind of checklist an answer is: "set", "prep" or a learning roadmap (false). */
+const checklistKind = message => (isSetSetup(message) ? "set" : isPrepPicker(message) ? "prep" : false);
 
 /** Text of the plan bar for `picked` selected items. */
 function planBarText(picked, prep = false) {
+  if (prep === "set") return `${picked ? `${picked} selected.` : "Select the options for your interview."} The tutor will build a timed question set with expected answers.`;
   if (prep) {
     const lead = picked ? `${picked} selected.` : "Select the stacks your interview will cover.";
     return `${lead} The tutor will list the key questions to practise for each.`;
@@ -392,7 +399,7 @@ function planBarText(picked, prep = false) {
 
 function planBarHtml(index, picked, prep = false) {
   const disabled = picked ? "" : "disabled";
-  const label = prep ? "Build my interview prep" : "Build my learning plan";
+  const label = prep === "set" ? "Build question set" : prep ? "Build my interview prep" : "Build my learning plan";
   return `<div class="plan-bar"><span>${planBarText(picked, prep)}</span><button type="button" class="btn btn-primary" data-plan="${index}" ${disabled}>${icon("list")}<span>${label}</span></button></div>`;
 }
 
@@ -410,9 +417,12 @@ function renderAnswerBody(element, message, final, index) {
   if (!final && message.content) body.insertAdjacentHTML("beforeend", `<span class="caret"></span>`);
   // A checklist (roadmap or study path) can be turned into a learning plan.
   if (final && tasks && message.done?.view !== "plan") {
-    const picked = Object.values(message.checks ?? {}).filter(Boolean).length;
-    body.insertAdjacentHTML("beforeend", planBarHtml(index, picked, isPrepPicker(message)));
+    // Count the ticked boxes on screen: some checklists arrive with options already ticked.
+    const picked = body.querySelectorAll("input[data-check]:checked").length;
+    body.insertAdjacentHTML("beforeend", planBarHtml(index, picked, checklistKind(message)));
   }
+  // An interviewer's question set becomes a live scoring sheet.
+  if (final && isQuestionSet(message)) enhanceScoring(body, message);
 }
 
 const retryButton = (index, label) =>
@@ -440,7 +450,7 @@ function renderFollowUps(element, message, final) {
   const chips = final && message.done ? message.done.followUps.slice(0, 3) : [];
   const buttons = chips.map(text => `<button type="button" class="followup" data-ask="${escapeHtml(text)}"><span>${escapeHtml(text)}</span>${icon("arrow")}</button>`);
   element.querySelector(".followups").innerHTML = chips.length
-    ? `<span class="followups-label">Related questions</span><div class="followup-list">${buttons.join("")}</div>`
+    ? `<span class="followups-label">${message.done?.view === "mock" ? "Interview options" : "Related questions"}</span><div class="followup-list">${buttons.join("")}</div>`
     : "";
 }
 
@@ -464,10 +474,12 @@ function renderThread({ scrollTop } = {}) {
   $("#chat-title").textContent = state.conversation.title;
   if (!messages.length) {
     renderWelcome();
+    updateComposerHint();
     return;
   }
   thread.innerHTML = "";
   messages.forEach((message, index) => thread.append(message.role === "user" ? userView(message) : assistantView(message, index)));
+  updateComposerHint();
   // Reopened chats show the last question at the top, with its answer below.
   const questions = thread.querySelectorAll(".msg.user");
   requestAnimationFrame(() => {
@@ -636,12 +648,14 @@ function failureMessage(error, assistant) {
  * Ask a question. options: replaceFrom (regenerate from this message), plan (items picked from a
  * checklist), overview (a topic id from the sidebar).
  */
-async function send(rawText, { replaceFrom, plan, overview } = {}) {
+async function send(rawText, { replaceFrom, plan, overview, mock } = {}) {
   const text = expandCommand(rawText);
   if (!text) return;
   // One answer at a time: a second click or Enter while answering does not send again.
   if (state.controller) return toast("Wait for this answer to finish, or press Stop");
   const conversation = state.conversation;
+  // During a mock interview, the next message is the answer to its current question.
+  if (replaceFrom === undefined && !plan && !overview) mock = activeMock(conversation.messages);
   // A new question is a new screen; Back returns to the answer you were reading.
   if (replaceFrom === undefined && conversation.messages.length) pushScreen(conversation.id);
   if (replaceFrom !== undefined) conversation.messages.splice(replaceFrom);
@@ -651,7 +665,7 @@ async function send(rawText, { replaceFrom, plan, overview } = {}) {
     thread.innerHTML = "";
   }
   $("#chat-title").textContent = conversation.title;
-  const user = { role: "user", content: text, ...(plan ? { plan } : {}), ...(overview ? { overview } : {}) };
+  const user = { role: "user", content: text, ...(plan ? { plan } : {}), ...(overview ? { overview } : {}), ...(mock ? { mock } : {}) };
   const assistant = { role: "assistant", content: "", meta: null, done: null, checks: {} };
   conversation.messages.push(user, assistant);
   const index = conversation.messages.length - 1;
@@ -680,7 +694,7 @@ async function send(rawText, { replaceFrom, plan, overview } = {}) {
   };
 
   try {
-    const request = { message: text, history: turns, topic: conversation.topic, plan, overview };
+    const request = { message: text, history: turns, topic: conversation.topic, plan, overview, ...(mock ? { mock } : {}) };
     await streamChat(request, event => {
       const next = applyEvent(assistant, event);
       if (next === undefined) return;
@@ -699,7 +713,21 @@ async function send(rawText, { replaceFrom, plan, overview } = {}) {
     renderRecent();
     // Only if the reader is still on this chat (Back may have taken them to another one).
     if (state.conversation === conversation) replaceScreen(conversation.id);
+    updateComposerHint();
   }
+}
+
+/** The mock interview still waiting for an answer in this chat, if any. */
+function activeMock(messages) {
+  const last = [...messages].reverse().find(message => message.role === "assistant");
+  const mock = last?.done?.mock;
+  return mock && mock.index < mock.ids.length ? mock : undefined;
+}
+
+/** The composer says when the next message is an interview answer. */
+function updateComposerHint() {
+  const mock = activeMock(state.conversation.messages);
+  input.placeholder = mock ? `Your answer to question ${mock.index + 1} of ${mock.ids.length}… (Shift+Enter for a new line)` : "Ask a question…";
 }
 
 /** Open a saved chat (or a new one). `animate: false` at startup, where later code needs the DOM at once. */
@@ -777,7 +805,7 @@ function deleteChat(id) {
 function retryAnswer(value) {
   const at = Number(value);
   const question = state.conversation.messages[at - 1];
-  if (question?.content) send(question.content, { replaceFrom: at - 1, plan: question.plan, overview: question.overview });
+  if (question?.content) send(question.content, { replaceFrom: at - 1, plan: question.plan, overview: question.overview, mock: question.mock });
 }
 
 /** Buttons identified by a data attribute, checked in this order: [dataset key, handler(value, button)]. */
@@ -835,10 +863,10 @@ function submitPlan(index) {
   // The roadmap's own title ("Roadmap: Forward Deployed Engineer"), else the answer's first heading.
   const title = message.meta?.evidence[0]?.kind === "roadmap" ? message.meta.evidence[0].question : (view.querySelector(".md h1, .md h2, .md strong")?.textContent ?? "").trim();
   const names = items.map(item => item.label);
-  const prep = isPrepPicker(message);
+  const kind = checklistKind(message);
   const list = `${names.slice(0, 6).join(", ")}${names.length > 6 ? ` and ${names.length - 6} more` : ""}`;
-  const text = prep ? `Build my interview prep: ${list}` : `Build my learning plan: ${list}`;
-  const plan = { title: title.slice(0, 200), items: items.slice(0, 60).map(item => ({ ...item, label: item.label.slice(0, 200) })), ...(prep ? { kind: "interview" } : {}) };
+  const text = kind === "set" ? `Build the interview question set: ${list}` : kind ? `Build my interview prep: ${list}` : `Build my learning plan: ${list}`;
+  const plan = { title: title.slice(0, 200), items: items.slice(0, 60).map(item => ({ ...item, label: item.label.slice(0, 200) })), ...(kind === "set" ? { kind: "question-set" } : kind ? { kind: "interview" } : {}) };
   send(text, { plan });
 }
 
@@ -873,7 +901,7 @@ document.addEventListener("change", event => {
   const bar = view.querySelector(".plan-bar");
   if (bar) {
     const picked = view.querySelectorAll("input[data-check]:checked").length;
-    bar.querySelector("span").textContent = planBarText(picked, isPrepPicker(message));
+    bar.querySelector("span").textContent = planBarText(picked, checklistKind(message));
     bar.querySelector("[data-plan]").disabled = !picked;
   }
 });
@@ -1028,3 +1056,55 @@ async function start() {
 }
 
 start();
+
+// ---------- Interview scoring sheet ----------
+
+/** The message and answer body an element of a scoring sheet belongs to. */
+function scoringContext(element) {
+  const view = element.closest(".msg.assistant");
+  const message = state.conversation.messages[Number(view?.dataset.index)];
+  return view && message ? { view, message, body: view.querySelector(".md") } : null;
+}
+
+document.addEventListener("click", event => {
+  const target = event.target.closest("[data-score], [data-score-copy], [data-score-print], [data-score-clear]");
+  if (!target) return;
+  const context = scoringContext(target);
+  if (!context) return;
+  const { view, message, body } = context;
+  if (target.dataset.score) {
+    const n = target.dataset.score;
+    const value = Number(target.dataset.value);
+    const scores = { ...(message.scores ?? {}) };
+    // Clicking the chosen score again clears it.
+    scores[n] = { ...(scores[n] ?? {}), s: scores[n]?.s === value ? null : value };
+    message.scores = scores;
+    saveConversation(state.conversation);
+    refreshScoring(body, message, n);
+  } else if (target.dataset.scoreCopy !== undefined) {
+    copyText(scorecardText(body, message), "Scorecard copied");
+  } else if (target.dataset.scorePrint !== undefined) {
+    document.body.classList.add("print-one");
+    view.classList.add("print-target");
+    const done = () => { document.body.classList.remove("print-one"); view.classList.remove("print-target"); removeEventListener("afterprint", done); };
+    addEventListener("afterprint", done);
+    print();
+  } else if (target.dataset.scoreClear !== undefined) {
+    if (!confirm("Clear all scores and notes for this question set?")) return;
+    message.scores = {};
+    saveConversation(state.conversation);
+    updateAssistant(view, message, { final: true });
+  }
+});
+
+document.addEventListener("input", event => {
+  const field = event.target.closest("[data-score-note], [data-score-candidate]");
+  if (!field) return;
+  const context = scoringContext(field);
+  if (!context) return;
+  const scores = { ...(context.message.scores ?? {}) };
+  if (field.dataset.scoreNote) scores[field.dataset.scoreNote] = { ...(scores[field.dataset.scoreNote] ?? {}), note: field.value };
+  else scores._candidate = field.value;
+  context.message.scores = scores;
+  saveConversation(state.conversation);
+});

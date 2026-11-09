@@ -7,14 +7,14 @@ Builds pipelines that move and transform data into warehouses and lakes.
 
 ## Prerequisites
 
-- None. Start with Stage 1.
+- [SQL](../topics/database-sql.md)
+- [Java](../topics/java.md)
 
 ## Learning stages
 
 ### Stage 1: Core skills
 
-- [ ] [SQL](../topics/database-sql.md)
-- [ ] [Java](../topics/java.md)
+- [ ] [Data Engineering](../topics/data-engineering.md)
 
 ## Also useful
 
@@ -22,7 +22,7 @@ Builds pipelines that move and transform data into warehouses and lakes.
 
 ## Also needed
 
-Python, Scala, Apache Spark, Kafka, Airflow, dbt, Flink, Delta Lake / Iceberg, Snowflake, Databricks, BigQuery, Redshift
+Python, Scala, Kafka, Flink, Delta Lake / Iceberg, Snowflake, Databricks, BigQuery, Redshift
 
 ## Where it leads
 

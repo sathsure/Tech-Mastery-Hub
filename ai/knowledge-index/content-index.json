@@ -2276,6 +2276,188 @@
                           "related_concepts":  [
 
                                                ]
+                      },
+                      {
+                          "id":  "interview.career.01-salary-compensation-india.md",
+                          "path":  "interview/career/01-Salary-Compensation-India.md",
+                          "content_type":  "interview",
+                          "domain":  "salary",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  45868,
+                          "source_of_truth":  false,
+                          "related_concepts":  [
+                                                   "salary"
+                                               ]
+                      },
+                      {
+                          "id":  "knowledge.concepts.salary.readme.md",
+                          "path":  "knowledge/concepts/salary/README.md",
+                          "content_type":  "concept",
+                          "domain":  "salary",
+                          "canonical_concept":  "salary",
+                          "extension":  ".md",
+                          "size_bytes":  1161,
+                          "source_of_truth":  true,
+                          "related_concepts":  [
+
+                                               ]
+                      },
+                      {
+                          "id":  "interview.devops.02-linux-shell.md",
+                          "path":  "interview/devops/02-Linux-Shell.md",
+                          "content_type":  "interview",
+                          "domain":  "linux",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  9399,
+                          "source_of_truth":  false,
+                          "related_concepts":  [
+                                                   "linux"
+                                               ]
+                      },
+                      {
+                          "id":  "knowledge.concepts.linux.readme.md",
+                          "path":  "knowledge/concepts/linux/README.md",
+                          "content_type":  "concept",
+                          "domain":  "linux",
+                          "canonical_concept":  "linux",
+                          "extension":  ".md",
+                          "size_bytes":  594,
+                          "source_of_truth":  true,
+                          "related_concepts":  [
+
+                                               ]
+                      },
+                      {
+                          "id":  "interview.security.01-web-security-owasp.md",
+                          "path":  "interview/security/01-Web-Security-OWASP.md",
+                          "content_type":  "interview",
+                          "domain":  "security",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  9024,
+                          "source_of_truth":  false,
+                          "related_concepts":  [
+                                                   "security"
+                                               ]
+                      },
+                      {
+                          "id":  "knowledge.concepts.security.readme.md",
+                          "path":  "knowledge/concepts/security/README.md",
+                          "content_type":  "concept",
+                          "domain":  "security",
+                          "canonical_concept":  "security",
+                          "extension":  ".md",
+                          "size_bytes":  566,
+                          "source_of_truth":  true,
+                          "related_concepts":  [
+
+                                               ]
+                      },
+                      {
+                          "id":  "interview.devops.03-observability-sre.md",
+                          "path":  "interview/devops/03-Observability-SRE.md",
+                          "content_type":  "interview",
+                          "domain":  "observability",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  7974,
+                          "source_of_truth":  false,
+                          "related_concepts":  [
+                                                   "observability"
+                                               ]
+                      },
+                      {
+                          "id":  "knowledge.concepts.observability.readme.md",
+                          "path":  "knowledge/concepts/observability/README.md",
+                          "content_type":  "concept",
+                          "domain":  "observability",
+                          "canonical_concept":  "observability",
+                          "extension":  ".md",
+                          "size_bytes":  547,
+                          "source_of_truth":  true,
+                          "related_concepts":  [
+
+                                               ]
+                      },
+                      {
+                          "id":  "interview.process.01-agile-scrum.md",
+                          "path":  "interview/process/01-Agile-Scrum.md",
+                          "content_type":  "interview",
+                          "domain":  "agile",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  6954,
+                          "source_of_truth":  false,
+                          "related_concepts":  [
+                                                   "agile"
+                                               ]
+                      },
+                      {
+                          "id":  "knowledge.concepts.agile.readme.md",
+                          "path":  "knowledge/concepts/agile/README.md",
+                          "content_type":  "concept",
+                          "domain":  "agile",
+                          "canonical_concept":  "agile",
+                          "extension":  ".md",
+                          "size_bytes":  443,
+                          "source_of_truth":  true,
+                          "related_concepts":  [
+
+                                               ]
+                      },
+                      {
+                          "id":  "interview.career.02-job-search-resume.md",
+                          "path":  "interview/career/02-Job-Search-Resume.md",
+                          "content_type":  "interview",
+                          "domain":  "job-search",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  6087,
+                          "source_of_truth":  false,
+                          "related_concepts":  [
+                                                   "job-search"
+                                               ]
+                      },
+                      {
+                          "id":  "knowledge.concepts.job-search.readme.md",
+                          "path":  "knowledge/concepts/job-search/README.md",
+                          "content_type":  "concept",
+                          "domain":  "job-search",
+                          "canonical_concept":  "job-search",
+                          "extension":  ".md",
+                          "size_bytes":  512,
+                          "source_of_truth":  true,
+                          "related_concepts":  [
+
+                                               ]
+                      },
+                      {
+                          "id":  "interview.data.01-data-engineering.md",
+                          "path":  "interview/data/01-Data-Engineering.md",
+                          "content_type":  "interview",
+                          "domain":  "data-engineering",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  8505,
+                          "source_of_truth":  false,
+                          "related_concepts":  [
+                                                   "data-engineering"
+                                               ]
+                      },
+                      {
+                          "id":  "knowledge.concepts.data-engineering.readme.md",
+                          "path":  "knowledge/concepts/data-engineering/README.md",
+                          "content_type":  "concept",
+                          "domain":  "data-engineering",
+                          "canonical_concept":  "data-engineering",
+                          "extension":  ".md",
+                          "size_bytes":  486,
+                          "source_of_truth":  true,
+                          "related_concepts":  [
+
+                                               ]
                       }
                   ]
 }

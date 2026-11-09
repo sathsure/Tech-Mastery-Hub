@@ -14,6 +14,7 @@ const PART_TOPICS: Record<string, string> = {
   "Who Does What in a Project": "it-roles",
   Glossary: "it-terminology",
   "Technology Stack Map": "tech-stack",
+  "Income Tax by Country": "salary",
 };
 const DEFAULT_TOPIC = "it-careers";
 

@@ -15,10 +15,11 @@ Keeps live business apps running and fixes production issues.
 ### Stage 1: Core skills
 
 - [ ] [SQL](../topics/database-sql.md)
+- [ ] [Linux & Shell](../topics/linux.md)
 
 ## Also needed
 
-Bash, Python, ITIL, Runbooks, Splunk, ServiceNow, Dynatrace, AppDynamics
+Python, ITIL, Runbooks, Splunk, ServiceNow, Dynatrace, AppDynamics
 
 ## Where it leads
 

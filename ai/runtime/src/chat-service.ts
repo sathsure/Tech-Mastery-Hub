@@ -21,6 +21,9 @@ import { composeFollowUpAnswer, looksLikeFollowUp, previousTurn } from "./chat-f
 import { TOPIC_DESCRIPTIONS, topicLabel } from "./topic-labels.js";
 import { getFollowUps, getNextQuestions, getQuestionsByTopic, isContextQuestion, loadQuestionIndex } from "./question-index.js";
 import { buildInterviewPrep, findRole, interviewPicker, LAYERS, interviewPrepRole, interviewTopics, PICKER_PREFIX } from "./chat-interview.js";
+import { buildQuestionSet, isQuestionSetRequest, questionSetSetup } from "./chat-question-set.js";
+import { continueMock, isMockRequest, startMock } from "./chat-mock.js";
+import type { MockState } from "./chat-contracts.js";
 import { searchQuestions, type SearchConfidence, type SearchResult } from "./question-search.js";
 
 export const MAX_HISTORY_TURNS = 8;
@@ -114,6 +117,7 @@ async function* builtAnswer(
   text: string,
   followUps: string[],
   evidence: Evidence[] = [],
+  mock?: MockState | null,
 ): AsyncGenerator<ChatEvent> {
   yield {
     type: "meta",
@@ -138,6 +142,7 @@ async function* builtAnswer(
     suggestions: { topics: [], questions: [] },
     notice: null,
     usage: null,
+    ...(mock !== undefined ? { mock } : {}),
   };
 }
 
@@ -160,6 +165,23 @@ function emptySearch(overrides: Partial<SearchResult>): SearchResult {
 
 /** A learning plan or a topic overview asked for directly, or null when the request needs a search. */
 async function directAnswer(request: ChatRequest): Promise<AsyncGenerator<ChatEvent> | null> {
+  // A mock interview in progress: this message is the answer to the current question.
+  if (request.mock && request.mock.index < request.mock.ids.length) {
+    const turn = await continueMock(request.message, request.mock);
+    return builtAnswer(request, emptySearch({ intents: ["quiz"] }), "mock", turn.markdown, turn.followUps, [], turn.state);
+  }
+  if (!request.plan && !request.overview && isMockRequest(request.message)) {
+    const start = await startMock(request.message);
+    return builtAnswer(request, emptySearch({ intents: ["quiz"] }), "mock", start.markdown, start.followUps, [], start.state);
+  }
+  // An interviewer's question set: first ask for the details, then build the set from the ticked options.
+  if (request.plan?.kind === "question-set") {
+    const followUps = ["How do I evaluate a system design answer?", "Interview prep: Full Stack Developer"];
+    return builtAnswer(request, emptySearch({ intents: ["interview-prep"] }), "plan", await buildQuestionSet(request.plan), followUps);
+  }
+  if (!request.plan && !request.overview && isQuestionSetRequest(request.message)) {
+    return builtAnswer(request, emptySearch({ intents: ["interview-prep"] }), "setup", questionSetSetup(request.message), []);
+  }
   if (request.plan?.kind === "interview") {
     const role = request.plan.title.startsWith(PICKER_PREFIX) ? request.plan.title.slice(PICKER_PREFIX.length) : "";
     const followUps = role ? [`What does ${article(role)} ${role} do?`, `${role} salary in India (LPA)`] : [];
