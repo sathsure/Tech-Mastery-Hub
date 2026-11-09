@@ -231,6 +231,24 @@ await check("interview prep: role card → stack picker → prep plan with key q
   assert.ok((plan.answer.match(/\(#ask:/g) ?? []).length >= 10, "key questions are listed as links");
 });
 
+await check("home page hubs: Career atlas shows all four parts, Interview prep offers roles and topics", async () => {
+  const cardsOf = (answer: string): Card[] => JSON.parse(/```tmh-cards\n([\s\S]*?)```/.exec(answer)?.[1] ?? "[]");
+  const atlas = await collect({ message: "Explore the Career Atlas", overview: "career-atlas" }, null);
+  assert.equal(atlas.done?.view, "overview");
+  assert.deepEqual(cardsOf(atlas.answer).map(card => card.title), ["IT Roles", "Careers & Salary", "Glossary", "Tech Stack"]);
+
+  const hub = await collect({ message: "Interview prep", overview: "interview-prep" }, null);
+  assert.equal(hub.done?.view, "overview");
+  const [roles, ...topics] = cardsOf(hub.answer).filter(card => card.type === "topic");
+  assert.ok(roles.type === "topic" && roles.items.some(item => item.ask === "Interview prep: Full Stack Developer"), "offers role prep");
+  const asks = topics.flatMap(card => (card.type === "topic" ? card.items.map(item => item.ask) : []));
+  assert.ok(asks.includes("Java interview questions") && asks.includes("React interview questions"), "offers topic prep");
+  // Every role chip opens a real stack picker.
+  for (const item of roles.type === "topic" ? roles.items : []) {
+    assert.equal((await collect({ message: item.ask! }, null)).done?.view, "pick", `${item.label} has a picker`);
+  }
+});
+
 await check("FDE roadmap: only the six sections, no internal references, India salary follow-up", async () => {
   const { answer, done } = await collect({ message: "Roadmap to become a Forward Deployed Engineer" }, null);
   const headings = [...answer.matchAll(/^## (.+)$/gm)].map(match => match[1]);

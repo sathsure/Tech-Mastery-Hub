@@ -305,9 +305,9 @@ function renderWelcome() {
   // A short hero, four ways in, and a few starter questions.
   const features = [
     { icon: "layers", title: "Explore topics", text: "Java, React, SQL and more: see the sections first, then dive in.", ask: "Explore Java", overview: "java" },
-    { icon: "graduation", title: "Interview prep", text: "Model answers, key points and likely follow-ups.", ask: "Prepare me for a Java interview" },
+    { icon: "graduation", title: "Interview prep", text: "Model answers, key points and likely follow-ups.", ask: "Interview prep", overview: "interview-prep" },
     { icon: "map", title: "Roadmaps", text: "Pick topics and get a learning plan in the right order.", ask: "Roadmap to become a Forward Deployed Engineer" },
-    { icon: "briefcase", title: "Career atlas", text: "IT roles, a glossary of terms, and salaries in India.", ask: "Explore IT Roles", overview: "it-roles" },
+    { icon: "briefcase", title: "Career atlas", text: "IT roles, a glossary of terms, and salaries in India.", ask: "Explore the Career Atlas", overview: "career-atlas" },
   ];
   const starters = ["How does the event loop work?", "What does a DevOps engineer do?", "How does HashMap work internally?", "Where do I start?"];
   thread.innerHTML = `<div class="welcome">

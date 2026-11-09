@@ -366,6 +366,10 @@ Common causes and fixes:
 
 No — test them **through the public methods** that use them. If a private method feels like it needs its own tests, it probably belongs in its own class.
 
+- Tests that call private methods (through reflection) break whenever you refactor, even when the behaviour is still correct.
+- Example: `calculateDiscount()` is private inside `OrderService` — test `placeOrder()` with inputs that should get a discount and check the total.
+- If the logic is complex, move it to its own class (for example, `DiscountPolicy`) with public methods and test that directly.
+
 ---
 
 ### ❓ Tricky: Why can too many mocks be a problem?

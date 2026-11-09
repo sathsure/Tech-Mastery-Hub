@@ -1,8 +1,8 @@
 {
   "schema_version": "1.0.0",
   "repository": "Tech-Mastery-Hub",
-  "generated_at": "2026-11-08T17:49:18.458Z",
-  "source_fingerprint": "9b6617fc2c29260707881c82126feb766d7f5f9e51b2eb71b610d906d542390f",
+  "generated_at": "2026-11-09T03:09:47.687Z",
+  "source_fingerprint": "45ed76128e80a0449751f1e2c7bdb3f4046a1512a5a7b54e36c2b9f607273838",
   "stats": {
     "files": 153,
     "entries": 2091,
@@ -12,7 +12,7 @@
     "roles": 74,
     "terms": 378,
     "roadmaps": 80,
-    "codeBlocks": 1513,
+    "codeBlocks": 1522,
     "visuals": 86,
     "missingVisuals": 0
   },
@@ -1708,7 +1708,7 @@
       "parentId": null,
       "question": "What is AI?",
       "prompt": null,
-      "answer": "Machines performing tasks that normally need human intelligence: understanding language, recognising images, making decisions, learning from examples.",
+      "answer": "Machines performing tasks that normally need human intelligence: understanding language, recognising images, making decisions, learning from examples.\n\n- Examples you use daily: spam filters, Google Maps traffic predictions, face unlock, and chatbots like ChatGPT or Claude.\n- Older AI followed hand-written rules; modern AI mostly **learns patterns from data** (machine learning).",
       "summary": "Machines performing tasks that normally need human intelligence: understanding language, recognising images, making decisions, learning from examples.",
       "codeBlocks": [],
       "visuals": [],
@@ -1722,14 +1722,15 @@
       ],
       "difficulty": null,
       "keywords": [
-        "ai"
+        "ai",
+        "learns patterns from data"
       ],
       "source": {
         "path": "interview/ai/01-AI-LLM-RAG-Agents.md",
         "startLine": 5,
-        "endLine": 7
+        "endLine": 10
       },
-      "contentHash": "5eaba08407003b5e"
+      "contentHash": "3d38efd072cb642c"
     },
     {
       "id": "interview/ai/01-AI-LLM-RAG-Agents.md#what-is-the-difference-between-ai-machine-learning-and-deep",
@@ -1761,8 +1762,8 @@
       ],
       "source": {
         "path": "interview/ai/01-AI-LLM-RAG-Agents.md",
-        "startLine": 11,
-        "endLine": 20
+        "startLine": 14,
+        "endLine": 23
       },
       "contentHash": "263a9a6aabb7abc8"
     },
@@ -1791,8 +1792,8 @@
       ],
       "source": {
         "path": "interview/ai/01-AI-LLM-RAG-Agents.md",
-        "startLine": 24,
-        "endLine": 26
+        "startLine": 27,
+        "endLine": 29
       },
       "contentHash": "264937717375938d"
     },
@@ -1824,8 +1825,8 @@
       ],
       "source": {
         "path": "interview/ai/01-AI-LLM-RAG-Agents.md",
-        "startLine": 30,
-        "endLine": 32
+        "startLine": 33,
+        "endLine": 35
       },
       "contentHash": "64cdb462f9726f27"
     },
@@ -1854,8 +1855,8 @@
       ],
       "source": {
         "path": "interview/ai/01-AI-LLM-RAG-Agents.md",
-        "startLine": 36,
-        "endLine": 38
+        "startLine": 39,
+        "endLine": 41
       },
       "contentHash": "51b0380f958979e5"
     },
@@ -1885,8 +1886,8 @@
       ],
       "source": {
         "path": "interview/ai/01-AI-LLM-RAG-Agents.md",
-        "startLine": 42,
-        "endLine": 44
+        "startLine": 45,
+        "endLine": 47
       },
       "contentHash": "633b07a21eb1407a"
     },
@@ -1920,8 +1921,8 @@
       ],
       "source": {
         "path": "interview/ai/01-AI-LLM-RAG-Agents.md",
-        "startLine": 48,
-        "endLine": 56
+        "startLine": 51,
+        "endLine": 59
       },
       "contentHash": "03f93af4d693730c"
     },
@@ -1955,8 +1956,8 @@
       ],
       "source": {
         "path": "interview/ai/01-AI-LLM-RAG-Agents.md",
-        "startLine": 60,
-        "endLine": 62
+        "startLine": 63,
+        "endLine": 65
       },
       "contentHash": "4f79b272a5428530"
     },
@@ -1995,8 +1996,8 @@
       ],
       "source": {
         "path": "interview/ai/01-AI-LLM-RAG-Agents.md",
-        "startLine": 66,
-        "endLine": 83
+        "startLine": 69,
+        "endLine": 86
       },
       "contentHash": "af6c956f2058f4a7"
     },
@@ -2025,8 +2026,8 @@
       ],
       "source": {
         "path": "interview/ai/01-AI-LLM-RAG-Agents.md",
-        "startLine": 87,
-        "endLine": 89
+        "startLine": 90,
+        "endLine": 92
       },
       "contentHash": "87a0121c04048aa1"
     },
@@ -2056,8 +2057,8 @@
       ],
       "source": {
         "path": "interview/ai/01-AI-LLM-RAG-Agents.md",
-        "startLine": 93,
-        "endLine": 95
+        "startLine": 96,
+        "endLine": 98
       },
       "contentHash": "9787f82325733784"
     },
@@ -2067,7 +2068,7 @@
       "parentId": null,
       "question": "What is temperature?",
       "prompt": null,
-      "answer": "A setting that controls randomness. Low (≈0) → focused, repeatable answers (good for extraction, code, factual Q&A). High (≈1) → more varied, creative output.",
+      "answer": "A setting that controls randomness. Low (≈0) → focused, repeatable answers (good for extraction, code, factual Q&A). High (≈1) → more varied, creative output.\n\n- How it works: the model picks the next token from a list of probabilities. Low temperature almost always picks the top one; high temperature gives less likely tokens a chance.\n- Example: \"Write a product tagline\" at 0.9 gives a new idea each time; \"Extract the invoice total\" should use 0, so the same input gives the same answer.",
       "summary": "A setting that controls randomness. Low (≈0) → focused, repeatable answers (good for extraction, code, factual Q&A). High (≈1) → more varied, creative output.",
       "codeBlocks": [],
       "visuals": [],
@@ -2086,10 +2087,10 @@
       ],
       "source": {
         "path": "interview/ai/01-AI-LLM-RAG-Agents.md",
-        "startLine": 99,
-        "endLine": 101
+        "startLine": 102,
+        "endLine": 107
       },
-      "contentHash": "fdafdf8dc5c45f56"
+      "contentHash": "3bcd5744b6ff0c94"
     },
     {
       "id": "interview/ai/01-AI-LLM-RAG-Agents.md#what-is-hallucination",
@@ -2116,8 +2117,8 @@
       ],
       "source": {
         "path": "interview/ai/01-AI-LLM-RAG-Agents.md",
-        "startLine": 105,
-        "endLine": 107
+        "startLine": 111,
+        "endLine": 113
       },
       "contentHash": "5bfc0ed234a0bcc8"
     },
@@ -2147,8 +2148,8 @@
       ],
       "source": {
         "path": "interview/ai/01-AI-LLM-RAG-Agents.md",
-        "startLine": 111,
-        "endLine": 113
+        "startLine": 117,
+        "endLine": 119
       },
       "contentHash": "9125a19834c311d0"
     },
@@ -2178,8 +2179,8 @@
       ],
       "source": {
         "path": "interview/ai/01-AI-LLM-RAG-Agents.md",
-        "startLine": 117,
-        "endLine": 119
+        "startLine": 123,
+        "endLine": 125
       },
       "contentHash": "2bba8088f0e242c9"
     },
@@ -2217,8 +2218,8 @@
       ],
       "source": {
         "path": "interview/ai/01-AI-LLM-RAG-Agents.md",
-        "startLine": 123,
-        "endLine": 129
+        "startLine": 129,
+        "endLine": 135
       },
       "contentHash": "c32b4e004beb3f39"
     },
@@ -2248,8 +2249,8 @@
       ],
       "source": {
         "path": "interview/ai/01-AI-LLM-RAG-Agents.md",
-        "startLine": 133,
-        "endLine": 135
+        "startLine": 139,
+        "endLine": 141
       },
       "contentHash": "8223910dfaf968a5"
     },
@@ -2279,8 +2280,8 @@
       ],
       "source": {
         "path": "interview/ai/01-AI-LLM-RAG-Agents.md",
-        "startLine": 139,
-        "endLine": 141
+        "startLine": 145,
+        "endLine": 147
       },
       "contentHash": "a5432e353b5860af"
     },
@@ -2310,8 +2311,8 @@
       ],
       "source": {
         "path": "interview/ai/01-AI-LLM-RAG-Agents.md",
-        "startLine": 145,
-        "endLine": 147
+        "startLine": 151,
+        "endLine": 153
       },
       "contentHash": "290ce1363638d565"
     },
@@ -2342,8 +2343,8 @@
       ],
       "source": {
         "path": "interview/ai/01-AI-LLM-RAG-Agents.md",
-        "startLine": 151,
-        "endLine": 153
+        "startLine": 157,
+        "endLine": 159
       },
       "contentHash": "98b3084020b36884"
     },
@@ -2375,8 +2376,8 @@
       ],
       "source": {
         "path": "interview/ai/01-AI-LLM-RAG-Agents.md",
-        "startLine": 157,
-        "endLine": 165
+        "startLine": 163,
+        "endLine": 171
       },
       "contentHash": "42219fc5c7eee7c4"
     },
@@ -2405,8 +2406,8 @@
       ],
       "source": {
         "path": "interview/ai/01-AI-LLM-RAG-Agents.md",
-        "startLine": 169,
-        "endLine": 171
+        "startLine": 175,
+        "endLine": 177
       },
       "contentHash": "373efad1895e2efa"
     },
@@ -2435,8 +2436,8 @@
       ],
       "source": {
         "path": "interview/ai/01-AI-LLM-RAG-Agents.md",
-        "startLine": 175,
-        "endLine": 177
+        "startLine": 181,
+        "endLine": 183
       },
       "contentHash": "8a83d11cfe059775"
     },
@@ -2467,8 +2468,8 @@
       ],
       "source": {
         "path": "interview/ai/01-AI-LLM-RAG-Agents.md",
-        "startLine": 181,
-        "endLine": 183
+        "startLine": 187,
+        "endLine": 189
       },
       "contentHash": "1055f60e3b49e1bb"
     },
@@ -2499,8 +2500,8 @@
       ],
       "source": {
         "path": "interview/ai/01-AI-LLM-RAG-Agents.md",
-        "startLine": 187,
-        "endLine": 189
+        "startLine": 193,
+        "endLine": 195
       },
       "contentHash": "ad8516738db7411f"
     },
@@ -2533,8 +2534,8 @@
       ],
       "source": {
         "path": "interview/ai/01-AI-LLM-RAG-Agents.md",
-        "startLine": 193,
-        "endLine": 195
+        "startLine": 199,
+        "endLine": 201
       },
       "contentHash": "6ce2d591cce3e858"
     },
@@ -2564,8 +2565,8 @@
       ],
       "source": {
         "path": "interview/ai/01-AI-LLM-RAG-Agents.md",
-        "startLine": 199,
-        "endLine": 201
+        "startLine": 205,
+        "endLine": 207
       },
       "contentHash": "497da7ea6ae2fecd"
     },
@@ -2600,8 +2601,8 @@
       ],
       "source": {
         "path": "interview/ai/01-AI-LLM-RAG-Agents.md",
-        "startLine": 205,
-        "endLine": 217
+        "startLine": 211,
+        "endLine": 223
       },
       "contentHash": "0b928d46896750ac"
     },
@@ -2647,8 +2648,8 @@
       ],
       "source": {
         "path": "interview/ai/01-AI-LLM-RAG-Agents.md",
-        "startLine": 221,
-        "endLine": 248
+        "startLine": 227,
+        "endLine": 254
       },
       "contentHash": "930a9252641725cb"
     },
@@ -2682,8 +2683,8 @@
       ],
       "source": {
         "path": "interview/ai/01-AI-LLM-RAG-Agents.md",
-        "startLine": 252,
-        "endLine": 256
+        "startLine": 258,
+        "endLine": 262
       },
       "contentHash": "d38bb4483981a0cf"
     },
@@ -2727,8 +2728,8 @@
       ],
       "source": {
         "path": "interview/ai/01-AI-LLM-RAG-Agents.md",
-        "startLine": 260,
-        "endLine": 296
+        "startLine": 266,
+        "endLine": 302
       },
       "contentHash": "f333c08ca932a972"
     },
@@ -2765,8 +2766,8 @@
       ],
       "source": {
         "path": "interview/ai/01-AI-LLM-RAG-Agents.md",
-        "startLine": 300,
-        "endLine": 306
+        "startLine": 306,
+        "endLine": 312
       },
       "contentHash": "ee231e89dd6e4065"
     },
@@ -2803,8 +2804,8 @@
       ],
       "source": {
         "path": "interview/ai/01-AI-LLM-RAG-Agents.md",
-        "startLine": 310,
-        "endLine": 316
+        "startLine": 316,
+        "endLine": 322
       },
       "contentHash": "6c2c75ef6a9304d5"
     },
@@ -2842,8 +2843,8 @@
       ],
       "source": {
         "path": "interview/ai/01-AI-LLM-RAG-Agents.md",
-        "startLine": 320,
-        "endLine": 331
+        "startLine": 326,
+        "endLine": 337
       },
       "contentHash": "47906ff0cf1ccc65"
     },
@@ -2875,8 +2876,8 @@
       ],
       "source": {
         "path": "interview/ai/01-AI-LLM-RAG-Agents.md",
-        "startLine": 335,
-        "endLine": 337
+        "startLine": 341,
+        "endLine": 343
       },
       "contentHash": "0ba1cb80ce470a39"
     },
@@ -2911,8 +2912,8 @@
       ],
       "source": {
         "path": "interview/ai/01-AI-LLM-RAG-Agents.md",
-        "startLine": 341,
-        "endLine": 343
+        "startLine": 347,
+        "endLine": 349
       },
       "contentHash": "1ad4f835484bdc77"
     },
@@ -2945,8 +2946,8 @@
       ],
       "source": {
         "path": "interview/ai/01-AI-LLM-RAG-Agents.md",
-        "startLine": 347,
-        "endLine": 351
+        "startLine": 353,
+        "endLine": 357
       },
       "contentHash": "c4d3e9b3f25b245b"
     },
@@ -2981,8 +2982,8 @@
       ],
       "source": {
         "path": "interview/ai/01-AI-LLM-RAG-Agents.md",
-        "startLine": 355,
-        "endLine": 357
+        "startLine": 361,
+        "endLine": 363
       },
       "contentHash": "6529ef74401b98b0"
     },
@@ -3027,8 +3028,8 @@
       ],
       "source": {
         "path": "interview/ai/01-AI-LLM-RAG-Agents.md",
-        "startLine": 361,
-        "endLine": 372
+        "startLine": 367,
+        "endLine": 378
       },
       "contentHash": "1c3382ccd9306028"
     },
@@ -3064,8 +3065,8 @@
       ],
       "source": {
         "path": "interview/ai/01-AI-LLM-RAG-Agents.md",
-        "startLine": 376,
-        "endLine": 378
+        "startLine": 382,
+        "endLine": 384
       },
       "contentHash": "6576df199eb7f1dc"
     },
@@ -3099,8 +3100,8 @@
       ],
       "source": {
         "path": "interview/ai/01-AI-LLM-RAG-Agents.md",
-        "startLine": 382,
-        "endLine": 384
+        "startLine": 388,
+        "endLine": 390
       },
       "contentHash": "543e7ac82340feaf"
     },
@@ -3133,8 +3134,8 @@
       ],
       "source": {
         "path": "interview/ai/01-AI-LLM-RAG-Agents.md",
-        "startLine": 388,
-        "endLine": 390
+        "startLine": 394,
+        "endLine": 396
       },
       "contentHash": "a10ddaa4397d3171"
     },
@@ -3166,8 +3167,8 @@
       ],
       "source": {
         "path": "interview/ai/01-AI-LLM-RAG-Agents.md",
-        "startLine": 394,
-        "endLine": 396
+        "startLine": 400,
+        "endLine": 402
       },
       "contentHash": "96cc9a18e0a62084"
     },
@@ -21731,7 +21732,7 @@
       "parentId": null,
       "question": "Sorting and filtering freeze the UI for a moment. How would you fix this?",
       "prompt": null,
-      "answer": "I would move heavy operations like sorting and filtering to the backend or use `Web Workers`. On the UI side, I’d debounce inputs using `RxJS debounceTime`.",
+      "answer": "I would move heavy operations like sorting and filtering to the backend or use `Web Workers`. On the UI side, I’d debounce inputs using `RxJS debounceTime`.\n\n- **Why it freezes:** JavaScript runs on one main thread, so sorting 50,000 rows blocks clicks and scrolling until it finishes.\n- **Web Worker:** runs the sort on a background thread and posts the result back, so the UI stays responsive.\n- **Debounce:** `debounceTime(300)` waits until the user stops typing, so \"angular\" triggers 1 filter instead of 7.",
       "summary": "I would move heavy operations like sorting and filtering to the backend or use Web Workers. On the UI side, I’d debounce inputs using RxJS debounceTime.",
       "codeBlocks": [],
       "visuals": [],
@@ -21755,9 +21756,9 @@
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
         "startLine": 19,
-        "endLine": 23
+        "endLine": 27
       },
-      "contentHash": "673f6085e5767b40"
+      "contentHash": "63cf519cf0dac01f"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#after-adding-a-data-table-library-the-bundle-size-increased-a",
@@ -21791,8 +21792,8 @@
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 27,
-        "endLine": 31
+        "startLine": 31,
+        "endLine": 35
       },
       "contentHash": "6cba516205ec7bd8"
     },
@@ -21802,7 +21803,7 @@
       "parentId": null,
       "question": "The data table is not needed on the home page, but it still affects load time. How would you handle this?",
       "prompt": null,
-      "answer": "I’d use `lazy loading` so the table module loads only when the user navigates to that page. This keeps the initial bundle small.",
+      "answer": "I’d use `lazy loading` so the table module loads only when the user navigates to that page. This keeps the initial bundle small.\n\n- Example route: `{ path: 'reports', loadComponent: () => import('./reports.component') }` — the table code is downloaded only when `/reports` opens.\n- For a table lower down the same page, Angular's `@defer (on viewport)` delays it until the user scrolls to it.",
       "summary": "I’d use lazy loading so the table module loads only when the user navigates to that page. This keeps the initial bundle small.",
       "codeBlocks": [],
       "visuals": [],
@@ -21832,10 +21833,10 @@
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 35,
-        "endLine": 39
+        "startLine": 39,
+        "endLine": 46
       },
-      "contentHash": "fc1a9ca15d94ee71"
+      "contentHash": "68da91266b10f9a7"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#the-table-works-fine-locally-but-is-slow-in-production-how",
@@ -21868,8 +21869,8 @@
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 43,
-        "endLine": 47
+        "startLine": 50,
+        "endLine": 54
       },
       "contentHash": "d81546bec189a535"
     },
@@ -21879,7 +21880,7 @@
       "parentId": null,
       "question": "API responses are very large and slow down table loading. What would you suggest?",
       "prompt": null,
-      "answer": "I’d reduce payload size by sending only required fields and enable `GZip` compression. I’d also add `server-side pagination` to avoid sending all rows at once.",
+      "answer": "I’d reduce payload size by sending only required fields and enable `GZip` compression. I’d also add `server-side pagination` to avoid sending all rows at once.\n\n- Example: `GET /orders?page=0&size=50&sort=date,desc` returns 50 rows plus a total count, instead of 20,000 rows.\n- The table then asks the server for the next page, sort or filter, and stays fast however large the data grows.",
       "summary": "I’d reduce payload size by sending only required fields and enable GZip compression. I’d also add server-side pagination to avoid sending all rows at once.",
       "codeBlocks": [],
       "visuals": [],
@@ -21906,10 +21907,10 @@
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 51,
-        "endLine": 55
+        "startLine": 58,
+        "endLine": 65
       },
-      "contentHash": "9578f8c00fc2046c"
+      "contentHash": "c2226972014f1023"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#how-would-you-verify-if-gzip-compression-is-working",
@@ -21939,8 +21940,8 @@
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 59,
-        "endLine": 63
+        "startLine": 69,
+        "endLine": 73
       },
       "contentHash": "8246d303901699ca"
     },
@@ -21976,8 +21977,8 @@
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 67,
-        "endLine": 71
+        "startLine": 77,
+        "endLine": 81
       },
       "contentHash": "7ee0ae2b2e45a23e"
     },
@@ -21987,7 +21988,7 @@
       "parentId": null,
       "question": "Filters applied by one user should not affect another user. How would you ensure this?",
       "prompt": null,
-      "answer": "I’d keep filters in `component-level state` or `route query params`, not in shared services. Each user session should manage its own state.",
+      "answer": "I’d keep filters in `component-level state` or `route query params`, not in shared services. Each user session should manage its own state.\n\n- Each browser runs its own copy of the Angular app, so the real risk is **shared state on the server** (a static field or cache keyed without the user ID).\n- Query params also make filters shareable and survive refresh: `/orders?status=open&page=2`.",
       "summary": "I’d keep filters in component-level state or route query params, not in shared services. Each user session should manage its own state.",
       "codeBlocks": [],
       "visuals": [],
@@ -22009,14 +22010,15 @@
         "affect",
         "another",
         "ensure",
+        "shared state on the server",
         "angular"
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 75,
-        "endLine": 79
+        "startLine": 85,
+        "endLine": 92
       },
-      "contentHash": "98b238da76943faf"
+      "contentHash": "43ce5351678375bd"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#the-table-data-reloads-again-and-again-when-navigating-back-how",
@@ -22024,9 +22026,14 @@
       "parentId": null,
       "question": "The table data reloads again and again when navigating back. How would you optimize this?",
       "prompt": null,
-      "answer": "I’d cache data in a service using `RxJS shareReplay` or a state manager like `NgRx`. This avoids unnecessary API calls.",
+      "answer": "I’d cache data in a service using `RxJS shareReplay` or a state manager like `NgRx`. This avoids unnecessary API calls.\n\n- `shareReplay(1)` keeps the last API result, so returning to the page reuses it instead of calling the API again.\n- Add a way to refresh (a button or a short expiry), otherwise users may see stale data.\n\n```ts\norders$ = this.http.get<Order[]>('/api/orders').pipe(shareReplay(1));\n```",
       "summary": "I’d cache data in a service using RxJS shareReplay or a state manager like NgRx. This avoids unnecessary API calls.",
-      "codeBlocks": [],
+      "codeBlocks": [
+        {
+          "language": "ts",
+          "code": "orders$ = this.http.get<Order[]>('/api/orders').pipe(shareReplay(1));"
+        }
+      ],
       "visuals": [],
       "contentType": "interview",
       "domain": "backend",
@@ -22049,10 +22056,10 @@
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 83,
-        "endLine": 87
+        "startLine": 96,
+        "endLine": 107
       },
-      "contentHash": "1937bd5a98ce6706"
+      "contentHash": "2d1d3365c90a9368"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#how-would-you-decide-between-using-a-table-library-or-building",
@@ -22083,8 +22090,8 @@
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 91,
-        "endLine": 95
+        "startLine": 111,
+        "endLine": 115
       },
       "contentHash": "737416e53229a012"
     },
@@ -22094,7 +22101,7 @@
       "parentId": null,
       "question": "A table library causes performance issues but is used across the app. What would you do?",
       "prompt": null,
-      "answer": "I’d first profile it using `Angular DevTools`. If issues persist, I’d wrap it with `OnPush`, disable unused features, or plan a phased replacement.",
+      "answer": "I’d first profile it using `Angular DevTools`. If issues persist, I’d wrap it with `OnPush`, disable unused features, or plan a phased replacement.\n\n- **Profile first:** Angular DevTools shows which component re-renders most and how long change detection takes.\n- **Wrap it:** put the library behind your own `<app-table>` component, so you can swap it later in one place instead of 40 screens.",
       "summary": "I’d first profile it using Angular DevTools. If issues persist, I’d wrap it with OnPush, disable unused features, or plan a phased replacement.",
       "codeBlocks": [],
       "visuals": [],
@@ -22120,10 +22127,10 @@
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 99,
-        "endLine": 103
+        "startLine": 119,
+        "endLine": 126
       },
-      "contentHash": "f8c595781e241116"
+      "contentHash": "061f998ef4c342c8"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#the-table-shows-user-generated-content-how-would-you-keep-it",
@@ -22131,7 +22138,7 @@
       "parentId": null,
       "question": "The table shows user-generated content. How would you keep it secure?",
       "prompt": null,
-      "answer": "I’d rely on Angular’s built-in `XSS protection` and avoid using `innerHTML`. If needed, I’d carefully use `DomSanitizer`.",
+      "answer": "I’d rely on Angular’s built-in `XSS protection` and avoid using `innerHTML`. If needed, I’d carefully use `DomSanitizer`.\n\n- Angular escapes `{{ value }}` by default, so `<script>alert(1)</script>` shows as plain text instead of running.\n- `bypassSecurityTrustHtml` turns this protection off — use it only for HTML you trust.\n- The backend should also validate input; frontend protection alone is not enough.",
       "summary": "I’d rely on Angular’s built-in XSS protection and avoid using innerHTML. If needed, I’d carefully use DomSanitizer.",
       "codeBlocks": [],
       "visuals": [],
@@ -22155,10 +22162,10 @@
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 107,
-        "endLine": 111
+        "startLine": 130,
+        "endLine": 138
       },
-      "contentHash": "152683d6f3c8a263"
+      "contentHash": "0b64ef3e7b35d785"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#how-would-you-measure-table-performance-in-real-user",
@@ -22166,7 +22173,7 @@
       "parentId": null,
       "question": "How would you measure table performance in real user environments?",
       "prompt": null,
-      "answer": "I’d use `browser performance APIs`, add custom metrics, and monitor using tools like `Lighthouse` or real-user monitoring dashboards.",
+      "answer": "I’d use `browser performance APIs`, add custom metrics, and monitor using tools like `Lighthouse` or real-user monitoring dashboards.\n\n- **Lighthouse** tests in a lab (one machine); **real-user monitoring** (RUM) shows what actual users on slow phones experience.\n- Custom timing example: `performance.mark('table-start')` … `performance.measure('table-render', 'table-start')`, then send the result to your analytics.\n- Track Core Web Vitals like INP (how fast the page responds to clicks).",
       "summary": "I’d use browser performance APIs, add custom metrics, and monitor using tools like Lighthouse or real-user monitoring dashboards.",
       "codeBlocks": [],
       "visuals": [],
@@ -22185,14 +22192,16 @@
         "performance",
         "user",
         "environments",
+        "lighthouse",
+        "real-user monitoring",
         "angular"
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 115,
-        "endLine": 119
+        "startLine": 142,
+        "endLine": 150
       },
-      "contentHash": "0271f0bf61d904f0"
+      "contentHash": "565cb7708e93b233"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#a-fix-for-table-performance-needs-major-refactoring-how-would",
@@ -22200,7 +22209,7 @@
       "parentId": null,
       "question": "A fix for table performance needs major refactoring. How would you plan it?",
       "prompt": null,
-      "answer": "I’d break it into phases, start with high-impact fixes like `lazy loading` and `virtual scroll`, and align changes with business priorities to reduce risk.",
+      "answer": "I’d break it into phases, start with high-impact fixes like `lazy loading` and `virtual scroll`, and align changes with business priorities to reduce risk.\n\n- Measure before and after each phase (for example, render time from 4s → 1s), so the gains are visible.\n- Ship each phase separately behind a feature flag, so a problem can be switched off without a rollback.",
       "summary": "I’d break it into phases, start with high-impact fixes like lazy loading and virtual scroll, and align changes with business priorities to reduce risk.",
       "codeBlocks": [],
       "visuals": [],
@@ -22224,10 +22233,10 @@
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 123,
-        "endLine": 127
+        "startLine": 154,
+        "endLine": 161
       },
-      "contentHash": "ab1920a3e5e6cb58"
+      "contentHash": "0b0df83b5551b89b"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#our-rest-api-is-getting-hard-to-maintain-as-features-grow-how",
@@ -22235,7 +22244,7 @@
       "parentId": null,
       "question": "Our REST API is getting hard to maintain as features grow. How would you structure controllers better?",
       "prompt": null,
-      "answer": "I’d keep controllers thin and move logic to `Service` classes. Each controller should handle only request/response mapping using `@RestController`.",
+      "answer": "I’d keep controllers thin and move logic to `Service` classes. Each controller should handle only request/response mapping using `@RestController`.\n\n- Typical layers: **Controller** (HTTP in/out) → **Service** (business rules) → **Repository** (database).\n- Split controllers by resource (`OrderController`, `PaymentController`), not one giant controller.\n- Thin controllers are also easier to test, because the business logic in services can be tested without HTTP.",
       "summary": "I’d keep controllers thin and move logic to Service classes. Each controller should handle only request/response mapping using @RestController.",
       "codeBlocks": [],
       "visuals": [],
@@ -22259,14 +22268,17 @@
         "structure",
         "controllers",
         "better",
+        "controller",
+        "service",
+        "repository",
         "rest-api"
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 133,
-        "endLine": 137
+        "startLine": 167,
+        "endLine": 175
       },
-      "contentHash": "f8951807df479db2"
+      "contentHash": "72850c81fe2eca3f"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#multiple-controllers-are-returning-different-response-formats",
@@ -22274,7 +22286,7 @@
       "parentId": null,
       "question": "Multiple controllers are returning different response formats. How would you standardize this?",
       "prompt": null,
-      "answer": "I’d create a common response wrapper and use `ResponseEntity`. For errors, I’d centralize handling using `@ControllerAdvice`.",
+      "answer": "I’d create a common response wrapper and use `ResponseEntity`. For errors, I’d centralize handling using `@ControllerAdvice`.\n\n- Example error shape every endpoint returns: `{ \"status\": 404, \"error\": \"NOT_FOUND\", \"message\": \"Order 42 not found\" }`.\n- Spring Boot 3 supports the standard **ProblemDetail** (RFC 7807) format for errors out of the box.\n- One format means the frontend writes error handling once.",
       "summary": "I’d create a common response wrapper and use ResponseEntity. For errors, I’d centralize handling using @ControllerAdvice.",
       "codeBlocks": [],
       "visuals": [],
@@ -22294,14 +22306,15 @@
         "response",
         "formats",
         "standardize",
+        "problemdetail",
         "rest-api"
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 141,
-        "endLine": 145
+        "startLine": 179,
+        "endLine": 187
       },
-      "contentHash": "5c45ff2b611d8cd8"
+      "contentHash": "277f691952e82f30"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#one-controller-method-is-doing-validation-business-logic-and-db",
@@ -22309,9 +22322,14 @@
       "parentId": null,
       "question": "One controller method is doing validation, business logic, and DB calls. How would you fix this?",
       "prompt": null,
-      "answer": "I’d separate concerns: validation with `@Valid`, business logic in `Service`, and DB access in `Repository`. Controllers should stay lightweight.",
+      "answer": "I’d separate concerns: validation with `@Valid`, business logic in `Service`, and DB access in `Repository`. Controllers should stay lightweight.\n\n```java\n@PostMapping(\"/orders\")\npublic ResponseEntity<OrderDto> create(@Valid @RequestBody CreateOrderRequest req) {\n    return ResponseEntity.status(201).body(orderService.create(req)); // logic lives in the service\n}\n```\n\n- Each layer now has one reason to change, and each can be tested on its own.",
       "summary": "I’d separate concerns: validation with @Valid, business logic in Service, and DB access in Repository. Controllers should stay lightweight.",
-      "codeBlocks": [],
+      "codeBlocks": [
+        {
+          "language": "java",
+          "code": "@PostMapping(\"/orders\")\npublic ResponseEntity<OrderDto> create(@Valid @RequestBody CreateOrderRequest req) {\n    return ResponseEntity.status(201).body(orderService.create(req)); // logic lives in the service\n}"
+        }
+      ],
       "visuals": [],
       "contentType": "interview",
       "domain": "backend",
@@ -22336,10 +22354,10 @@
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 149,
-        "endLine": 153
+        "startLine": 191,
+        "endLine": 204
       },
-      "contentHash": "c4a454f14f9ff7b5"
+      "contentHash": "5be4f545f1e2932c"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#our-api-becomes-slow-when-traffic-increases-what-would-you",
@@ -22347,7 +22365,7 @@
       "parentId": null,
       "question": "Our API becomes slow when traffic increases. What would you check first?",
       "prompt": null,
-      "answer": "I’d check DB queries, add `indexes`, and monitor thread usage. I’d also review connection pooling using `HikariCP`.",
+      "answer": "I’d check DB queries, add `indexes`, and monitor thread usage. I’d also review connection pooling using `HikariCP`.\n\n- Under load the usual bottleneck is the **database**: slow queries or all pool connections busy (callers wait for a free one).\n- Use metrics, not guesses: Actuator/Prometheus show response times, active DB connections and thread counts.\n- If the app itself is the limit, scale out with more instances behind a load balancer and cache frequent reads.",
       "summary": "I’d check DB queries, add indexes, and monitor thread usage. I’d also review connection pooling using HikariCP.",
       "codeBlocks": [],
       "visuals": [],
@@ -22365,14 +22383,15 @@
         "traffic",
         "increases",
         "check",
-        "first"
+        "first",
+        "database"
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 159,
-        "endLine": 163
+        "startLine": 210,
+        "endLine": 218
       },
-      "contentHash": "5d5bef27f1e537be"
+      "contentHash": "f20878608eba1ad2"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#a-single-api-call-returns-a-very-large-response-and-affects",
@@ -22380,7 +22399,7 @@
       "parentId": null,
       "question": "A single API call returns a very large response and affects performance. How would you optimize it?",
       "prompt": null,
-      "answer": "I’d introduce `pagination`, return only required fields using DTOs, and enable `GZip` compression at the server level.",
+      "answer": "I’d introduce `pagination`, return only required fields using DTOs, and enable `GZip` compression at the server level.\n\n- Example: `GET /orders?page=0&size=20` instead of returning 50,000 orders at once.\n- In Spring Data, a `Pageable` parameter adds `LIMIT`/`OFFSET` to the query for you.\n- Smaller responses mean less memory on the server, faster transfer and quicker rendering in the UI.",
       "summary": "I’d introduce pagination, return only required fields using DTOs, and enable GZip compression at the server level.",
       "codeBlocks": [],
       "visuals": [],
@@ -22405,10 +22424,10 @@
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 167,
-        "endLine": 171
+        "startLine": 222,
+        "endLine": 230
       },
-      "contentHash": "0449fca4c4ebd8eb"
+      "contentHash": "e93b77c41902b253"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#how-would-you-reduce-repeated-database-calls-for-the-same-data",
@@ -22416,9 +22435,14 @@
       "parentId": null,
       "question": "How would you reduce repeated database calls for the same data?",
       "prompt": null,
-      "answer": "I’d add caching using `@Cacheable` with tools like `Redis` or in-memory cache to reduce DB load.",
+      "answer": "I’d add caching using `@Cacheable` with tools like `Redis` or in-memory cache to reduce DB load.\n\n```java\n@Cacheable(value = \"products\", key = \"#id\")\npublic Product getProduct(Long id) { return repo.findById(id).orElseThrow(); }\n```\n\n- The first call hits the DB; later calls with the same `id` come from the cache.\n- Clear the entry on updates with `@CacheEvict`, and enable caching with `@EnableCaching`.",
       "summary": "I’d add caching using @Cacheable with tools like Redis or in-memory cache to reduce DB load.",
-      "codeBlocks": [],
+      "codeBlocks": [
+        {
+          "language": "java",
+          "code": "@Cacheable(value = \"products\", key = \"#id\")\npublic Product getProduct(Long id) { return repo.findById(id).orElseThrow(); }"
+        }
+      ],
       "visuals": [],
       "contentType": "interview",
       "domain": "backend",
@@ -22437,10 +22461,10 @@
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 175,
-        "endLine": 179
+        "startLine": 234,
+        "endLine": 246
       },
-      "contentHash": "971d6afc2bf6e272"
+      "contentHash": "1cdfa9e3e2ca3ac2"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#our-application-behaves-differently-in-local-and-production",
@@ -22448,7 +22472,7 @@
       "parentId": null,
       "question": "Our application behaves differently in local and production environments. How would you manage this?",
       "prompt": null,
-      "answer": "I’d use `Spring Profiles` with separate configs like `application-dev.yml` and `application-prod.yml`.",
+      "answer": "I’d use `Spring Profiles` with separate configs like `application-dev.yml` and `application-prod.yml`.\n\n- Activate a profile with `spring.profiles.active=prod` (or the `SPRING_PROFILES_ACTIVE` environment variable).\n- Common settings stay in `application.yml`; each profile file overrides only what differs (DB URL, log level).\n- Keep secrets out of the files: pass them as environment variables or from a secret manager.",
       "summary": "I’d use Spring Profiles with separate configs like application-dev.yml and application-prod.yml.",
       "codeBlocks": [],
       "visuals": [],
@@ -22473,10 +22497,10 @@
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 185,
-        "endLine": 189
+        "startLine": 252,
+        "endLine": 260
       },
-      "contentHash": "0b68ef9fe35ddff7"
+      "contentHash": "50b8b9d79361900b"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#how-would-you-make-sure-debug-logs-don-t-affect-production",
@@ -22484,7 +22508,7 @@
       "parentId": null,
       "question": "How would you make sure debug logs don’t affect production performance?",
       "prompt": null,
-      "answer": "I’d control logging using `logback` levels and disable unnecessary logs in the `prod` profile.",
+      "answer": "I’d control logging using `logback` levels and disable unnecessary logs in the `prod` profile.\n\n- Example: `logging.level.root=INFO` in prod, `DEBUG` only for one package while investigating.\n- Use placeholders, `log.debug(\"Order {}\", id)`, so the message is not built when DEBUG is off.\n- Too many logs cost disk, network and log-tool money, not just CPU.",
       "summary": "I’d control logging using logback levels and disable unnecessary logs in the prod profile.",
       "codeBlocks": [],
       "visuals": [],
@@ -22510,10 +22534,10 @@
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 193,
-        "endLine": 197
+        "startLine": 264,
+        "endLine": 272
       },
-      "contentHash": "cfd6766bf0dcc519"
+      "contentHash": "0711177c98ca9615"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#the-app-startup-time-increased-after-adding-new-modules-how",
@@ -22521,7 +22545,7 @@
       "parentId": null,
       "question": "The app startup time increased after adding new modules. How would you improve it?",
       "prompt": null,
-      "answer": "I’d review unnecessary `@ComponentScan`, reduce auto-configurations, and enable `lazy initialization` if needed.",
+      "answer": "I’d review unnecessary `@ComponentScan`, reduce auto-configurations, and enable `lazy initialization` if needed.\n\n- `spring.main.lazy-initialization=true` creates beans only when first used, so startup is faster (but errors appear later).\n- The Actuator `/startup` endpoint (with `BufferingApplicationStartup` enabled) shows which beans take the longest to start.\n- For very fast startup (serverless, scale-to-zero), Spring Boot supports GraalVM native images.",
       "summary": "I’d review unnecessary @ComponentScan, reduce auto-configurations, and enable lazy initialization if needed.",
       "codeBlocks": [],
       "visuals": [],
@@ -22547,10 +22571,10 @@
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 201,
-        "endLine": 205
+        "startLine": 276,
+        "endLine": 284
       },
-      "contentHash": "d8849d826680367c"
+      "contentHash": "01c1b1f57660751f"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#how-do-you-protect-rest-apis-from-invalid-or-malicious-input",
@@ -22558,9 +22582,14 @@
       "parentId": null,
       "question": "How do you protect REST APIs from invalid or malicious input?",
       "prompt": null,
-      "answer": "I’d use `Bean Validation` with `@NotNull`, `@Size`, and `@Valid`. I’d also sanitize inputs and rely on Spring’s security filters.",
+      "answer": "I’d use `Bean Validation` with `@NotNull`, `@Size`, and `@Valid`. I’d also sanitize inputs and rely on Spring’s security filters.\n\n```java\npublic record CreateUserRequest(@NotBlank String name, @Email String email, @Size(max = 200) String bio) {}\n```\n\n- `@Valid` on the controller parameter rejects bad input with **400 Bad Request** before your code runs.\n- Use parameterized queries (JPA does this) to block SQL injection, and add rate limiting against abuse.",
       "summary": "I’d use Bean Validation with @NotNull, @Size, and @Valid. I’d also sanitize inputs and rely on Spring’s security filters.",
-      "codeBlocks": [],
+      "codeBlocks": [
+        {
+          "language": "java",
+          "code": "public record CreateUserRequest(@NotBlank String name, @Email String email, @Size(max = 200) String bio) {}"
+        }
+      ],
       "visuals": [],
       "contentType": "interview",
       "domain": "backend",
@@ -22575,14 +22604,15 @@
         "apis",
         "invalid",
         "malicious",
-        "input"
+        "input",
+        "400 bad request"
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 211,
-        "endLine": 215
+        "startLine": 290,
+        "endLine": 301
       },
-      "contentHash": "fc14ef146016009c"
+      "contentHash": "294d5f9ed6fca132"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#how-would-you-secure-apis-so-only-authorized-users-can-access",
@@ -22590,7 +22620,7 @@
       "parentId": null,
       "question": "How would you secure APIs so only authorized users can access them?",
       "prompt": null,
-      "answer": "I’d use `Spring Security` with `JWT` or `OAuth2`, and secure endpoints using `@PreAuthorize`.",
+      "answer": "I’d use `Spring Security` with `JWT` or `OAuth2`, and secure endpoints using `@PreAuthorize`.\n\n- **Authentication** checks who you are (a valid JWT); **authorization** checks what you may do (role or ownership).\n- Example: `@PreAuthorize(\"hasRole('ADMIN')\")` on a delete endpoint; enable it with `@EnableMethodSecurity`.\n- Always check ownership too: user 5 must not read `/orders/99` if order 99 belongs to user 7.",
       "summary": "I’d use Spring Security with JWT or OAuth2, and secure endpoints using @PreAuthorize.",
       "codeBlocks": [],
       "visuals": [],
@@ -22607,14 +22637,16 @@
         "only",
         "authorized",
         "users",
-        "access"
+        "access",
+        "authentication",
+        "authorization"
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 219,
-        "endLine": 223
+        "startLine": 305,
+        "endLine": 313
       },
-      "contentHash": "1730b3e95eab46f4"
+      "contentHash": "e9f03bfaaf9c4300"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#when-an-exception-happens-users-see-different-error-messages",
@@ -22622,9 +22654,14 @@
       "parentId": null,
       "question": "When an exception happens, users see different error messages. How would you fix this?",
       "prompt": null,
-      "answer": "I’d centralize exception handling using `@ControllerAdvice` and return consistent error responses.",
+      "answer": "I’d centralize exception handling using `@ControllerAdvice` and return consistent error responses.\n\n```java\n@RestControllerAdvice\nclass GlobalErrors {\n    @ExceptionHandler(OrderNotFoundException.class)\n    ResponseEntity<ProblemDetail> notFound(OrderNotFoundException e) {\n        return ResponseEntity.status(404).body(ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, e.getMessage()));\n    }\n}\n```\n\n- Never send stack traces to users; log them on the server instead.",
       "summary": "I’d centralize exception handling using @ControllerAdvice and return consistent error responses.",
-      "codeBlocks": [],
+      "codeBlocks": [
+        {
+          "language": "java",
+          "code": "@RestControllerAdvice\nclass GlobalErrors {\n    @ExceptionHandler(OrderNotFoundException.class)\n    ResponseEntity<ProblemDetail> notFound(OrderNotFoundException e) {\n        return ResponseEntity.status(404).body(ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, e.getMessage()));\n    }\n}"
+        }
+      ],
       "visuals": [],
       "contentType": "interview",
       "domain": "backend",
@@ -22643,10 +22680,10 @@
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 229,
-        "endLine": 233
+        "startLine": 319,
+        "endLine": 335
       },
-      "contentHash": "f8db053d2bb7ea39"
+      "contentHash": "7fd381e516a84576"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#how-would-you-handle-checked-and-unchecked-exceptions-in",
@@ -22654,7 +22691,7 @@
       "parentId": null,
       "question": "How would you handle checked and unchecked exceptions in services?",
       "prompt": null,
-      "answer": "I’d convert low-level exceptions into meaningful custom exceptions and handle them globally.",
+      "answer": "I’d convert low-level exceptions into meaningful custom exceptions and handle them globally.\n\n- Example: catch a low-level `SQLException` and throw `OrderNotFoundException` — the caller understands it.\n- Spring prefers **unchecked** exceptions; by default `@Transactional` rolls back only on unchecked ones.\n- Keep the original as the cause (`new MyException(\"msg\", e)`) so the real reason stays in the logs.",
       "summary": "I’d convert low-level exceptions into meaningful custom exceptions and handle them globally.",
       "codeBlocks": [],
       "visuals": [],
@@ -22674,10 +22711,10 @@
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 237,
-        "endLine": 241
+        "startLine": 339,
+        "endLine": 347
       },
-      "contentHash": "c36ce97f8fa84712"
+      "contentHash": "dc3167bd3abf87ae"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#two-users-update-the-same-record-at-the-same-time-how-would-you",
@@ -22685,7 +22722,7 @@
       "parentId": null,
       "question": "Two users update the same record at the same time. How would you handle this?",
       "prompt": null,
-      "answer": "I’d use `optimistic locking` with `@Version` to avoid data conflicts.",
+      "answer": "I’d use `optimistic locking` with `@Version` to avoid data conflicts.\n\n- A `@Version` column is checked on every update: `UPDATE ... WHERE id=1 AND version=3`.\n- If someone else saved first, the version no longer matches, and the second save fails with `OptimisticLockException`.\n- The app then tells the user \"this record changed, please reload\" instead of silently overwriting their work.",
       "summary": "I’d use optimistic locking with @Version to avoid data conflicts.",
       "codeBlocks": [],
       "visuals": [],
@@ -22707,10 +22744,10 @@
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 247,
-        "endLine": 251
+        "startLine": 353,
+        "endLine": 361
       },
-      "contentHash": "597fb18e47a2a4b8"
+      "contentHash": "8f69c88701aee281"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#how-do-you-ensure-thread-safety-in-a-spring-boot-application",
@@ -22718,7 +22755,7 @@
       "parentId": null,
       "question": "How do you ensure thread safety in a Spring Boot application?",
       "prompt": null,
-      "answer": "I’d keep beans `stateless`, avoid shared mutable data, and rely on Spring’s default singleton behavior carefully.",
+      "answer": "I’d keep beans `stateless`, avoid shared mutable data, and rely on Spring’s default singleton behavior carefully.\n\n- Spring beans are **singletons** by default: one instance shared by all request threads.\n- So never keep request data in a bean field; use local variables or method parameters instead.\n- When shared state is needed, use thread-safe types like `ConcurrentHashMap` or `AtomicInteger`.",
       "summary": "I’d keep beans stateless, avoid shared mutable data, and rely on Spring’s default singleton behavior carefully.",
       "codeBlocks": [],
       "visuals": [],
@@ -22735,14 +22772,15 @@
         "safety",
         "spring",
         "boot",
-        "application"
+        "application",
+        "singletons"
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 255,
-        "endLine": 259
+        "startLine": 365,
+        "endLine": 373
       },
-      "contentHash": "6e23cd8e39436c04"
+      "contentHash": "885effb091b5f02d"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#how-would-you-test-rest-controllers-properly",
@@ -22750,9 +22788,14 @@
       "parentId": null,
       "question": "How would you test REST controllers properly?",
       "prompt": null,
-      "answer": "I’d use `@WebMvcTest` with `MockMvc` to test controllers independently from services.",
+      "answer": "I’d use `@WebMvcTest` with `MockMvc` to test controllers independently from services.\n\n```java\n@WebMvcTest(OrderController.class)\nclass OrderControllerTest {\n    @Autowired MockMvc mvc;\n    @MockitoBean OrderService service;   // @MockBean before Spring Boot 3.4\n\n    @Test void returnsOrder() throws Exception {\n        when(service.find(1L)).thenReturn(new OrderDto(1L, \"OPEN\"));\n        mvc.perform(get(\"/orders/1\")).andExpect(status().isOk()).andExpect(jsonPath(\"$.status\").value(\"OPEN\"));\n    }\n}\n```\n\n- `@WebMvcTest` loads only the web layer, so tests are fast; check status codes, JSON and validation errors.",
       "summary": "I’d use @WebMvcTest with MockMvc to test controllers independently from services.",
-      "codeBlocks": [],
+      "codeBlocks": [
+        {
+          "language": "java",
+          "code": "@WebMvcTest(OrderController.class)\nclass OrderControllerTest {\n    @Autowired MockMvc mvc;\n    @MockitoBean OrderService service;   // @MockBean before Spring Boot 3.4\n\n    @Test void returnsOrder() throws Exception {\n        when(service.find(1L)).thenReturn(new OrderDto(1L, \"OPEN\"));\n        mvc.perform(get(\"/orders/1\")).andExpect(status().isOk()).andExpect(jsonPath(\"$.status\").value(\"OPEN\"));\n    }\n}"
+        }
+      ],
       "visuals": [],
       "contentType": "interview",
       "domain": "backend",
@@ -22772,10 +22815,10 @@
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 265,
-        "endLine": 269
+        "startLine": 379,
+        "endLine": 398
       },
-      "contentHash": "760e0aaa275fddbc"
+      "contentHash": "e6d5c0368941e08a"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#how-would-you-monitor-api-performance-in-production",
@@ -22783,7 +22826,7 @@
       "parentId": null,
       "question": "How would you monitor API performance in production?",
       "prompt": null,
-      "answer": "I’d use `Spring Actuator` for health and metrics, and integrate with monitoring tools like `Prometheus`.",
+      "answer": "I’d use `Spring Actuator` for health and metrics, and integrate with monitoring tools like `Prometheus`.\n\n- Add `micrometer-registry-prometheus`; Actuator then exposes `/actuator/prometheus` with request counts and timings.\n- **Grafana** draws dashboards from Prometheus and sends alerts (for example, when p95 latency > 500 ms).\n- Distributed tracing (OpenTelemetry) shows which service in a chain made a request slow.",
       "summary": "I’d use Spring Actuator for health and metrics, and integrate with monitoring tools like Prometheus.",
       "codeBlocks": [],
       "visuals": [],
@@ -22801,14 +22844,15 @@
         "api",
         "performance",
         "production",
+        "grafana",
         "testing"
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 273,
-        "endLine": 277
+        "startLine": 402,
+        "endLine": 410
       },
-      "contentHash": "9048a1a97f8cf665"
+      "contentHash": "13ea9db9b123fafa"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#the-team-is-divided-between-quick-fixes-and-long-term",
@@ -22816,7 +22860,7 @@
       "parentId": null,
       "question": "The team is divided between quick fixes and long-term refactoring. How would you decide?",
       "prompt": null,
-      "answer": "I’d prioritize business impact, fix critical issues first, and plan refactoring in phases to reduce risk.",
+      "answer": "I’d prioritize business impact, fix critical issues first, and plan refactoring in phases to reduce risk.\n\n- Use data: how often does this area cause bugs or slow down new features?\n- A common compromise: ship the quick fix now, and book refactoring time in the next sprints (for example, 20% of capacity).\n- Write the decision down so the team agrees and the debt is tracked.",
       "summary": "I’d prioritize business impact, fix critical issues first, and plan refactoring in phases to reduce risk.",
       "codeBlocks": [],
       "visuals": [],
@@ -22838,10 +22882,10 @@
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 283,
-        "endLine": 287
+        "startLine": 416,
+        "endLine": 424
       },
-      "contentHash": "1d33f41da899d734"
+      "contentHash": "086bf29f8285cb36"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#how-would-you-explain-a-rest-api-performance-issue-to-a-non",
@@ -22849,7 +22893,7 @@
       "parentId": null,
       "question": "How would you explain a REST API performance issue to a non-technical manager?",
       "prompt": null,
-      "answer": "I’d explain it in terms of slow data fetching and system load, then outline clear steps and timelines to fix it.",
+      "answer": "I’d explain it in terms of slow data fetching and system load, then outline clear steps and timelines to fix it.\n\n- Use simple impact: \"The orders page takes 8 seconds; 30% of users leave before it loads.\"\n- Use an analogy: \"Every request waits in one queue at the database, like a single billing counter.\"\n- End with a plan: what we fix, how long it takes, and the expected result (8s → under 1s).",
       "summary": "I’d explain it in terms of slow data fetching and system load, then outline clear steps and timelines to fix it.",
       "codeBlocks": [],
       "visuals": [],
@@ -22870,10 +22914,10 @@
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 291,
-        "endLine": 295
+        "startLine": 428,
+        "endLine": 436
       },
-      "contentHash": "51b22adb9a5f2d85"
+      "contentHash": "4560ca3195e383cd"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#if-a-breaking-change-is-required-in-an-api-how-would-you-manage",
@@ -22881,7 +22925,7 @@
       "parentId": null,
       "question": "If a breaking change is required in an API, how would you manage it?",
       "prompt": null,
-      "answer": "I’d version the API using `/v1` and `/v2`, communicate changes early, and support backward compatibility.",
+      "answer": "I’d version the API using `/v1` and `/v2`, communicate changes early, and support backward compatibility.\n\n- **Breaking** = removing or renaming a field, or changing its type; adding an optional field is not breaking.\n- Run `/v1` and `/v2` side by side, announce a deprecation date, and track which clients still call `/v1`.\n- The `Deprecation` and `Sunset` HTTP headers tell clients when the old version goes away.",
       "summary": "I’d version the API using /v1 and /v2, communicate changes early, and support backward compatibility.",
       "codeBlocks": [],
       "visuals": [],
@@ -22901,10 +22945,10 @@
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 299,
-        "endLine": 303
+        "startLine": 440,
+        "endLine": 448
       },
-      "contentHash": "6f7fa0b688e829f9"
+      "contentHash": "3172fa94dec3f57e"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#our-database-tables-are-growing-very-fast-and-queries-are",
@@ -22912,7 +22956,7 @@
       "parentId": null,
       "question": "Our database tables are growing very fast and queries are getting slow. What would you check first?",
       "prompt": null,
-      "answer": "I’d first analyze slow queries using `EXPLAIN` and add proper `indexes`. I’d also check if queries are fetching unnecessary columns.",
+      "answer": "I’d first analyze slow queries using `EXPLAIN` and add proper `indexes`. I’d also check if queries are fetching unnecessary columns.\n\n- In the `EXPLAIN` output, `type: ALL` means a full table scan — a sign of a missing index.\n- Avoid `SELECT *`; read only the columns you need.\n- For very large tables, archive old rows or partition by date (for example, one partition per month).",
       "summary": "I’d first analyze slow queries using EXPLAIN and add proper indexes. I’d also check if queries are fetching unnecessary columns.",
       "codeBlocks": [],
       "visuals": [],
@@ -22940,10 +22984,10 @@
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 309,
-        "endLine": 313
+        "startLine": 454,
+        "endLine": 462
       },
-      "contentHash": "ff5311873f056315"
+      "contentHash": "f7e287b0fc5c5a84"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#a-single-api-call-is-hitting-the-database-multiple-times-how",
@@ -22951,7 +22995,7 @@
       "parentId": null,
       "question": "A single API call is hitting the database multiple times. How would you optimize this?",
       "prompt": null,
-      "answer": "I’d check for `N+1 query` issues and fix them using `JOIN FETCH` or proper `@EntityGraph` usage.",
+      "answer": "I’d check for `N+1 query` issues and fix them using `JOIN FETCH` or proper `@EntityGraph` usage.\n\n- **N+1 example:** 1 query loads 100 orders, then 100 more queries load each order's customer.\n- Fix with one query: `SELECT o FROM Order o JOIN FETCH o.customer`.\n- Turn on SQL logging (`spring.jpa.show-sql=true`) in development to spot it early.",
       "summary": "I’d check for N+1 query issues and fix them using JOIN FETCH or proper @EntityGraph usage.",
       "codeBlocks": [],
       "visuals": [],
@@ -22977,10 +23021,10 @@
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 317,
-        "endLine": 321
+        "startLine": 466,
+        "endLine": 474
       },
-      "contentHash": "aedd38b6e4fdd9fe"
+      "contentHash": "610e3275b98f9269"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#the-same-data-is-being-read-again-and-again-from-mysql-how",
@@ -22988,7 +23032,7 @@
       "parentId": null,
       "question": "The same data is being read again and again from MySQL. How would you reduce DB load?",
       "prompt": null,
-      "answer": "I’d add caching using `@Cacheable` with tools like `Redis` or in-memory cache to avoid repeated DB hits.",
+      "answer": "I’d add caching using `@Cacheable` with tools like `Redis` or in-memory cache to avoid repeated DB hits.\n\n- Cache **read-heavy, rarely changing** data: product catalog, country list, configuration.\n- Set an expiry (TTL) and evict on update, so users don't see stale data for long.\n- Redis is shared by all app instances; an in-memory cache (Caffeine) is faster but separate on each instance.",
       "summary": "I’d add caching using @Cacheable with tools like Redis or in-memory cache to avoid repeated DB hits.",
       "codeBlocks": [],
       "visuals": [],
@@ -23011,14 +23055,15 @@
         "reduce",
         "db",
         "load",
+        "read-heavy, rarely changing",
         "spring"
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 325,
-        "endLine": 329
+        "startLine": 478,
+        "endLine": 486
       },
-      "contentHash": "1f3fe7ee536acacb"
+      "contentHash": "ae085d67e2f22410"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#our-api-is-slow-even-though-the-database-is-fast-what-could-be",
@@ -23026,7 +23071,7 @@
       "parentId": null,
       "question": "Our API is slow even though the database is fast. What could be the issue?",
       "prompt": null,
-      "answer": "It could be inefficient ORM usage. I’d review `lazy vs eager fetching`, unnecessary entity mappings, and excessive object creation by `Hibernate`.",
+      "answer": "It could be inefficient ORM usage. I’d review `lazy vs eager fetching`, unnecessary entity mappings, and excessive object creation by `Hibernate`.\n\n- Each query may be fast, but the app may run **too many** of them (N+1), or load whole object graphs when only a few fields are needed.\n- Other suspects: slow external calls, heavy JSON serialization, or waiting for a free pool connection.\n- Measure where the time goes with tracing or the Actuator timing metrics.",
       "summary": "It could be inefficient ORM usage. I’d review lazy vs eager fetching, unnecessary entity mappings, and excessive object creation by Hibernate.",
       "codeBlocks": [],
       "visuals": [],
@@ -23044,14 +23089,15 @@
         "though",
         "database",
         "fast",
-        "issue"
+        "issue",
+        "too many"
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 335,
-        "endLine": 339
+        "startLine": 492,
+        "endLine": 500
       },
-      "contentHash": "9ecb15ca9c9704ba"
+      "contentHash": "bd598a5ef28f544f"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#how-do-you-decide-between-lazy-and-eager-fetching",
@@ -23059,7 +23105,7 @@
       "parentId": null,
       "question": "How do you decide between `Lazy` and `Eager` fetching?",
       "prompt": null,
-      "answer": "I’d default to `FetchType.LAZY` and fetch data explicitly when needed to avoid loading unnecessary relations.",
+      "answer": "I’d default to `FetchType.LAZY` and fetch data explicitly when needed to avoid loading unnecessary relations.\n\n- **Lazy:** related data loads only when you access it. **Eager:** always loaded with the parent.\n- `@ManyToOne` is EAGER by default in JPA, so set `fetch = FetchType.LAZY` explicitly.\n- When a screen needs the relation, load it on purpose with `JOIN FETCH` or `@EntityGraph`.",
       "summary": "I’d default to FetchType.LAZY and fetch data explicitly when needed to avoid loading unnecessary relations.",
       "codeBlocks": [],
       "visuals": [],
@@ -23078,10 +23124,10 @@
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 343,
-        "endLine": 347
+        "startLine": 504,
+        "endLine": 512
       },
-      "contentHash": "587227820d92a01d"
+      "contentHash": "c468534f070e1a75"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#large-result-sets-are-causing-memory-issues-how-would-you",
@@ -23089,7 +23135,7 @@
       "parentId": null,
       "question": "Large result sets are causing memory issues. How would you handle this?",
       "prompt": null,
-      "answer": "I’d use `pagination` with `LIMIT / OFFSET` and stream results when possible instead of loading everything into memory.",
+      "answer": "I’d use `pagination` with `LIMIT / OFFSET` and stream results when possible instead of loading everything into memory.\n\n- Loading 1 million rows into a `List` can cause `OutOfMemoryError`.\n- For exports or batch jobs, process in chunks (for example, 1,000 rows at a time) or use a `Stream<T>` query inside a transaction.\n- For deep pages, keyset pagination (`WHERE id > :lastId LIMIT 50`) is faster than a large `OFFSET`.",
       "summary": "I’d use pagination with LIMIT / OFFSET and stream results when possible instead of loading everything into memory.",
       "codeBlocks": [],
       "visuals": [],
@@ -23111,10 +23157,10 @@
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 351,
-        "endLine": 355
+        "startLine": 516,
+        "endLine": 524
       },
-      "contentHash": "d8606ec040f74afa"
+      "contentHash": "4143dd9686b03ca9"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#multiple-db-operations-must-succeed-or-fail-together-how-would",
@@ -23122,7 +23168,7 @@
       "parentId": null,
       "question": "Multiple DB operations must succeed or fail together. How would you handle this?",
       "prompt": null,
-      "answer": "I’d wrap the logic in a `@Transactional` service method to ensure atomicity.",
+      "answer": "I’d wrap the logic in a `@Transactional` service method to ensure atomicity.\n\n- Example: in a money transfer, the debit and credit commit together, or both roll back.\n- `@Transactional` rolls back on unchecked exceptions by default; use `rollbackFor = Exception.class` for checked ones.\n- It works through a proxy: calling the method from **inside the same class** skips the transaction.",
       "summary": "I’d wrap the logic in a @Transactional service method to ensure atomicity.",
       "codeBlocks": [],
       "visuals": [],
@@ -23141,14 +23187,15 @@
         "succeed",
         "fail",
         "together",
-        "handle"
+        "handle",
+        "inside the same class"
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 361,
-        "endLine": 365
+        "startLine": 530,
+        "endLine": 538
       },
-      "contentHash": "5c895803fdb1a39b"
+      "contentHash": "92574ab116b7482e"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#two-users-update-the-same-record-at-the-same-time-how-do-you",
@@ -23156,7 +23203,7 @@
       "parentId": null,
       "question": "Two users update the same record at the same time. How do you prevent data conflicts?",
       "prompt": null,
-      "answer": "I’d use `optimistic locking` with `@Version` to detect concurrent updates.",
+      "answer": "I’d use `optimistic locking` with `@Version` to detect concurrent updates.\n\n- Add a `@Version private Long version;` field; JPA increments it on every update.\n- The second update fails with `OptimisticLockException`; retry it or ask the user to reload.\n- Best when conflicts are rare, because nothing is locked while users read.",
       "summary": "I’d use optimistic locking with @Version to detect concurrent updates.",
       "codeBlocks": [],
       "visuals": [],
@@ -23180,10 +23227,10 @@
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 369,
-        "endLine": 373
+        "startLine": 542,
+        "endLine": 550
       },
-      "contentHash": "6844189b369c6c5e"
+      "contentHash": "54b8a578272e3200"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#when-would-you-use-pessimistic-locking",
@@ -23191,7 +23238,7 @@
       "parentId": null,
       "question": "When would you use pessimistic locking?",
       "prompt": null,
-      "answer": "I’d use it only for critical updates where conflicts are costly, using `SELECT FOR UPDATE`.",
+      "answer": "I’d use it only for critical updates where conflicts are costly, using `SELECT FOR UPDATE`.\n\n- Example: booking the last seat or reducing stock, where two buyers must not both succeed.\n- In JPA: `@Lock(LockModeType.PESSIMISTIC_WRITE)` on the repository method; other transactions wait until the lock is released.\n- Keep these transactions short; long locks slow everyone down and can cause deadlocks.",
       "summary": "I’d use it only for critical updates where conflicts are costly, using SELECT FOR UPDATE.",
       "codeBlocks": [],
       "visuals": [],
@@ -23208,10 +23255,10 @@
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 377,
-        "endLine": 381
+        "startLine": 554,
+        "endLine": 562
       },
-      "contentHash": "ed1a664b2c7e8429"
+      "contentHash": "d0d90b48726e6fbe"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#under-high-traffic-db-connections-are-getting-exhausted-how",
@@ -23219,7 +23266,7 @@
       "parentId": null,
       "question": "Under high traffic, DB connections are getting exhausted. How would you fix this?",
       "prompt": null,
-      "answer": "I’d tune the connection pool using `HikariCP` and make sure connections are released properly.",
+      "answer": "I’d tune the connection pool using `HikariCP` and make sure connections are released properly.\n\n- A pool keeps a fixed set of open connections (HikariCP default: 10); requests wait when all are busy.\n- A bigger pool is not always better: the database can handle only so many connections well.\n- Usually the real fix is shorter transactions, faster queries, and no slow HTTP calls inside a transaction.",
       "summary": "I’d tune the connection pool using HikariCP and make sure connections are released properly.",
       "codeBlocks": [],
       "visuals": [],
@@ -23241,10 +23288,10 @@
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 387,
-        "endLine": 391
+        "startLine": 568,
+        "endLine": 576
       },
-      "contentHash": "484237428fb4c786"
+      "contentHash": "308b352e32f21e97"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#how-do-you-make-sure-multiple-users-don-t-affect-each-other-s",
@@ -23252,7 +23299,7 @@
       "parentId": null,
       "question": "How do you make sure multiple users don’t affect each other’s data?",
       "prompt": null,
-      "answer": "I’d enforce data isolation using proper `WHERE` clauses, user-level filters, and avoid shared mutable state.",
+      "answer": "I’d enforce data isolation using proper `WHERE` clauses, user-level filters, and avoid shared mutable state.\n\n- Take the user ID from the security context (the JWT), never from a request field the client can change.\n- Example: `SELECT * FROM orders WHERE id = ? AND user_id = ?`, so user 5 can't read user 7's order.\n- Hibernate filters or database row-level security can apply this rule everywhere automatically.",
       "summary": "I’d enforce data isolation using proper WHERE clauses, user-level filters, and avoid shared mutable state.",
       "codeBlocks": [],
       "visuals": [],
@@ -23274,10 +23321,10 @@
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 395,
-        "endLine": 399
+        "startLine": 580,
+        "endLine": 588
       },
-      "contentHash": "8aff9dc176e18540"
+      "contentHash": "d901513dcbba313d"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#entities-are-large-but-apis-need-only-a-few-fields-what-would",
@@ -23285,7 +23332,7 @@
       "parentId": null,
       "question": "Entities are large but APIs need only a few fields. What would you do?",
       "prompt": null,
-      "answer": "I’d use `DTO projections` or `JPQL constructor expressions` instead of returning full entities.",
+      "answer": "I’d use `DTO projections` or `JPQL constructor expressions` instead of returning full entities.\n\n- Example: `record OrderSummary(Long id, String status) {}` with `List<OrderSummary> findByUserId(Long userId);` — Spring Data selects only those columns.\n- Fewer columns mean less DB work, less memory and smaller JSON responses.",
       "summary": "I’d use DTO projections or JPQL constructor expressions instead of returning full entities.",
       "codeBlocks": [],
       "visuals": [],
@@ -23308,10 +23355,10 @@
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 405,
-        "endLine": 409
+        "startLine": 594,
+        "endLine": 601
       },
-      "contentHash": "eebe77cb54abb8da"
+      "contentHash": "42c800e4b7f32709"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#why-should-controllers-not-return-jpa-entities-directly",
@@ -23319,7 +23366,7 @@
       "parentId": null,
       "question": "Why should controllers not return JPA entities directly?",
       "prompt": null,
-      "answer": "Because entities can expose unwanted data and cause `lazy loading` issues. DTOs give better control and performance.",
+      "answer": "Because entities can expose unwanted data and cause `lazy loading` issues. DTOs give better control and performance.\n\n- **Data leaks:** fields like `passwordHash` get serialized to JSON by mistake.\n- **Errors:** lazy relations can throw `LazyInitializationException`, or loop forever in bidirectional mappings.\n- **Coupling:** renaming a DB column would silently break the API contract.",
       "summary": "Because entities can expose unwanted data and cause lazy loading issues. DTOs give better control and performance.",
       "codeBlocks": [],
       "visuals": [],
@@ -23340,10 +23387,10 @@
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 413,
-        "endLine": 417
+        "startLine": 605,
+        "endLine": 613
       },
-      "contentHash": "6d5191ce3e7eacf5"
+      "contentHash": "3bc60bc4773a93e9"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#queries-work-fine-locally-but-are-slow-in-production-how-would",
@@ -23351,7 +23398,7 @@
       "parentId": null,
       "question": "Queries work fine locally but are slow in production. How would you debug this?",
       "prompt": null,
-      "answer": "I’d check real data size, indexes, execution plans, and enable `slow query logs` in MySQL.",
+      "answer": "I’d check real data size, indexes, execution plans, and enable `slow query logs` in MySQL.\n\n- Local DBs have 100 rows; production has millions, so a missing index only hurts there.\n- MySQL: set `slow_query_log = ON` and `long_query_time = 1` to log queries slower than 1 second.\n- Run `EXPLAIN` on the slow query with production-like data to see if it uses an index.",
       "summary": "I’d check real data size, indexes, execution plans, and enable slow query logs in MySQL.",
       "codeBlocks": [],
       "visuals": [],
@@ -23373,10 +23420,10 @@
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 423,
-        "endLine": 427
+        "startLine": 619,
+        "endLine": 627
       },
-      "contentHash": "baf3f48edf6409a8"
+      "contentHash": "63b4f7f37bf2fb18"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#after-a-release-database-cpu-usage-increased-suddenly-what",
@@ -23384,7 +23431,7 @@
       "parentId": null,
       "question": "After a release, database CPU usage increased suddenly. What would you check?",
       "prompt": null,
-      "answer": "I’d review new queries, check missing indexes, and inspect Hibernate-generated SQL logs.",
+      "answer": "I’d review new queries, check missing indexes, and inspect Hibernate-generated SQL logs.\n\n- Compare top queries before and after the release (MySQL Performance Schema or `SHOW PROCESSLIST`).\n- Common causes: a new query without an index, an N+1 loop, or a removed cache.\n- If users are hurt, roll back first, then investigate.",
       "summary": "I’d review new queries, check missing indexes, and inspect Hibernate-generated SQL logs.",
       "codeBlocks": [],
       "visuals": [],
@@ -23407,10 +23454,10 @@
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 431,
-        "endLine": 435
+        "startLine": 631,
+        "endLine": 639
       },
-      "contentHash": "bf6f96ce08637a45"
+      "contentHash": "c4fefb955ee0517c"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#how-do-you-prevent-invalid-data-from-being-saved-in-mysql",
@@ -23418,7 +23465,7 @@
       "parentId": null,
       "question": "How do you prevent invalid data from being saved in MySQL?",
       "prompt": null,
-      "answer": "I’d use `Bean Validation` annotations and database constraints like `NOT NULL` and `UNIQUE`.",
+      "answer": "I’d use `Bean Validation` annotations and database constraints like `NOT NULL` and `UNIQUE`.\n\n- Validate in **two places**: Bean Validation gives friendly errors to users; DB constraints are the final safety net.\n- Example: `email VARCHAR(255) NOT NULL UNIQUE` blocks duplicates even if two requests arrive at the same moment.\n- `FOREIGN KEY` and `CHECK (amount > 0)` constraints also protect data written by other apps or scripts.",
       "summary": "I’d use Bean Validation annotations and database constraints like NOT NULL and UNIQUE.",
       "codeBlocks": [],
       "visuals": [],
@@ -23435,14 +23482,15 @@
         "data",
         "being",
         "saved",
-        "mysql"
+        "mysql",
+        "two places"
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 441,
-        "endLine": 445
+        "startLine": 645,
+        "endLine": 653
       },
-      "contentHash": "39fe8ebb2a97a42e"
+      "contentHash": "878f1449b24adc6d"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#how-do-you-handle-soft-deletes-instead-of-hard-deletes",
@@ -23450,7 +23498,7 @@
       "parentId": null,
       "question": "How do you handle soft deletes instead of hard deletes?",
       "prompt": null,
-      "answer": "I’d use a status flag like `is_deleted` and filter records at query level instead of deleting rows.",
+      "answer": "I’d use a status flag like `is_deleted` and filter records at query level instead of deleting rows.\n\n- Hibernate can apply it automatically: `@SQLDelete(sql = \"UPDATE users SET is_deleted = true WHERE id = ?\")` plus `@SQLRestriction(\"is_deleted = false\")`.\n- Soft delete keeps history and allows \"undo\", but unique constraints and table size need care.\n- Laws like GDPR may still require deleting personal data for real.",
       "summary": "I’d use a status flag like is_deleted and filter records at query level instead of deleting rows.",
       "codeBlocks": [],
       "visuals": [],
@@ -23470,10 +23518,10 @@
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 449,
-        "endLine": 453
+        "startLine": 657,
+        "endLine": 665
       },
-      "contentHash": "872f475b6fab3cdc"
+      "contentHash": "bb16cbfdbf46d8d2"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#how-do-you-manage-database-schema-changes-safely",
@@ -23481,7 +23529,7 @@
       "parentId": null,
       "question": "How do you manage database schema changes safely?",
       "prompt": null,
-      "answer": "I’d use `Flyway` or `Liquibase` for versioned DB migrations instead of manual changes.",
+      "answer": "I’d use `Flyway` or `Liquibase` for versioned DB migrations instead of manual changes.\n\n- Flyway runs versioned SQL files in order (`V1__create_users.sql`, `V2__add_phone.sql`) and records what already ran.\n- Every environment gets the same schema, and changes are reviewed in Git like code.\n- For zero downtime, make changes backward compatible: add a new column first, remove the old one in a later release.",
       "summary": "I’d use Flyway or Liquibase for versioned DB migrations instead of manual changes.",
       "codeBlocks": [],
       "visuals": [],
@@ -23504,10 +23552,10 @@
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 459,
-        "endLine": 463
+        "startLine": 671,
+        "endLine": 679
       },
-      "contentHash": "cfaf1b60c7b9b5e5"
+      "contentHash": "9ff1c4b86020c2cc"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#how-would-you-test-database-logic-without-affecting-real-data",
@@ -23515,7 +23563,7 @@
       "parentId": null,
       "question": "How would you test database logic without affecting real data?",
       "prompt": null,
-      "answer": "I’d use `Testcontainers` or an in-memory DB for integration testing.",
+      "answer": "I’d use `Testcontainers` or an in-memory DB for integration testing.\n\n- **Testcontainers** starts a real MySQL in Docker for the test and throws it away afterwards.\n- An in-memory DB like H2 is faster, but its SQL differs from MySQL, so some bugs slip through.\n- `@DataJpaTest` tests only the repository layer and rolls back each test by default.",
       "summary": "I’d use Testcontainers or an in-memory DB for integration testing.",
       "codeBlocks": [],
       "visuals": [],
@@ -23535,14 +23583,15 @@
         "without",
         "affecting",
         "data",
+        "testcontainers",
         "testing"
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 467,
-        "endLine": 471
+        "startLine": 683,
+        "endLine": 691
       },
-      "contentHash": "01e9d9f1ad509c64"
+      "contentHash": "63442dc5195902fb"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#when-would-you-avoid-using-jpa-and-write-native-sql-instead",
@@ -23550,7 +23599,7 @@
       "parentId": null,
       "question": "When would you avoid using JPA and write native SQL instead?",
       "prompt": null,
-      "answer": "When performance is critical or queries are complex, I’d use `native queries` for better control.",
+      "answer": "When performance is critical or queries are complex, I’d use `native queries` for better control.\n\n- Examples: reporting queries with window functions, bulk updates of millions of rows, or database-specific features.\n- In Spring Data: `@Query(value = \"SELECT ...\", nativeQuery = true)`.\n- Trade-off: native SQL is tied to one database and loses JPA's entity tracking.",
       "summary": "When performance is critical or queries are complex, I’d use native queries for better control.",
       "codeBlocks": [],
       "visuals": [],
@@ -23571,10 +23620,10 @@
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 477,
-        "endLine": 481
+        "startLine": 697,
+        "endLine": 705
       },
-      "contentHash": "548a67055323db53"
+      "contentHash": "1d975e7e0208a0a2"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#how-would-you-explain-a-database-performance-issue-to-management",
@@ -23582,7 +23631,7 @@
       "parentId": null,
       "question": "How would you explain a database performance issue to management?",
       "prompt": null,
-      "answer": "I’d explain it as inefficient data access and show how indexing, caching, and query optimization will reduce response time.",
+      "answer": "I’d explain it as inefficient data access and show how indexing, caching, and query optimization will reduce response time.\n\n- Use an analogy: an index is like a book's index — without it, the database reads every page.\n- Show numbers: \"The report takes 12s; after adding an index it takes 0.3s.\"\n- Give the cost and risk: effort, downtime (if any) and how you will verify it.",
       "summary": "I’d explain it as inefficient data access and show how indexing, caching, and query optimization will reduce response time.",
       "codeBlocks": [],
       "visuals": [],
@@ -23601,10 +23650,10 @@
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 485,
-        "endLine": 489
+        "startLine": 709,
+        "endLine": 717
       },
-      "contentHash": "24bd66c5cf56eace"
+      "contentHash": "7b6f90c22eaa17ac"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#if-database-refactoring-is-risky-how-would-you-plan-it",
@@ -23612,7 +23661,7 @@
       "parentId": null,
       "question": "If database refactoring is risky, how would you plan it?",
       "prompt": null,
-      "answer": "I’d plan phased changes, add monitoring, test with real data volume, and roll out gradually.",
+      "answer": "I’d plan phased changes, add monitoring, test with real data volume, and roll out gradually.\n\n- Use **expand → migrate → contract**: add the new column, copy data and write to both, then remove the old column later.\n- Take a backup and test the rollback before starting.\n- Run heavy changes on huge tables in batches or with online tools, so the table isn't locked for hours.",
       "summary": "I’d plan phased changes, add monitoring, test with real data volume, and roll out gradually.",
       "codeBlocks": [],
       "visuals": [],
@@ -23627,14 +23676,15 @@
         "database",
         "refactoring",
         "risky",
-        "plan"
+        "plan",
+        "expand → migrate → contract"
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 493,
-        "endLine": 497
+        "startLine": 721,
+        "endLine": 729
       },
-      "contentHash": "db318c5eb7c75270"
+      "contentHash": "b7aae9143ad5393d"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#a-screen-loads-slowly-but-it-s-unclear-whether-the-issue-is",
@@ -23668,8 +23718,8 @@
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 503,
-        "endLine": 507
+        "startLine": 735,
+        "endLine": 739
       },
       "contentHash": "77290713ba94f176"
     },
@@ -23679,7 +23729,7 @@
       "parentId": null,
       "question": "Frontend says backend is slow, backend says frontend is inefficient. How would you resolve this?",
       "prompt": null,
-      "answer": "I’d rely on data, not opinions. I’d capture `API response times`, payload size, and DB execution time, then align both teams on facts.",
+      "answer": "I’d rely on data, not opinions. I’d capture `API response times`, payload size, and DB execution time, then align both teams on facts.\n\n- The browser Network tab splits each request: **Waiting (TTFB)** is server time, **Content download** is transfer time.\n- Example: TTFB 3s → look at the backend; TTFB 100ms but the page still takes 4s → look at frontend rendering.\n- Share one dashboard so both teams look at the same numbers.",
       "summary": "I’d rely on data, not opinions. I’d capture API response times, payload size, and DB execution time, then align both teams on facts.",
       "codeBlocks": [],
       "visuals": [],
@@ -23696,14 +23746,16 @@
         "backend",
         "slow",
         "inefficient",
-        "resolve"
+        "resolve",
+        "waiting (ttfb)",
+        "content download"
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 511,
-        "endLine": 515
+        "startLine": 743,
+        "endLine": 751
       },
-      "contentHash": "d3f15c40ca8127b9"
+      "contentHash": "c52aed6d7f0c96ed"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#frontend-needs-frequent-api-changes-but-backend-releases-are",
@@ -23711,7 +23763,7 @@
       "parentId": null,
       "question": "Frontend needs frequent API changes, but backend releases are slower. How would you manage this?",
       "prompt": null,
-      "answer": "I’d design APIs to be flexible using `DTOs`, optional fields, and backward compatibility. I’d also version APIs when breaking changes are needed.",
+      "answer": "I’d design APIs to be flexible using `DTOs`, optional fields, and backward compatibility. I’d also version APIs when breaking changes are needed.\n\n- Agree on the contract first (OpenAPI), so the frontend can build against a mock server before the backend is ready.\n- Adding optional fields never breaks existing clients, so many changes need no new version.\n- Feature flags let the backend ship code early and switch it on when the frontend is ready.",
       "summary": "I’d design APIs to be flexible using DTOs, optional fields, and backward compatibility. I’d also version APIs when breaking changes are needed.",
       "codeBlocks": [],
       "visuals": [],
@@ -23736,10 +23788,10 @@
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 521,
-        "endLine": 525
+        "startLine": 757,
+        "endLine": 765
       },
-      "contentHash": "2c02d82664bddfba"
+      "contentHash": "35d921248b2d3991"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#angular-team-requests-more-data-just-in-case-how-would-you",
@@ -23747,7 +23799,7 @@
       "parentId": null,
       "question": "Angular team requests more data “just in case.” How would you respond?",
       "prompt": null,
-      "answer": "I’d push back politely and return only required fields. Over-fetching increases `payload size`, memory usage, and response time.",
+      "answer": "I’d push back politely and return only required fields. Over-fetching increases `payload size`, memory usage, and response time.\n\n- Extra fields also widen what can leak (personal data) and become a contract you must keep forever.\n- Offer a cheap way to get more later: a separate details endpoint, or optional fields (`?include=items`).\n- Example: the list screen gets `id, name, status`; the details page calls `/orders/42` for everything else.",
       "summary": "I’d push back politely and return only required fields. Over-fetching increases payload size, memory usage, and response time.",
       "codeBlocks": [],
       "visuals": [],
@@ -23769,10 +23821,10 @@
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 529,
-        "endLine": 533
+        "startLine": 769,
+        "endLine": 777
       },
-      "contentHash": "4df30359b2caaf3a"
+      "contentHash": "7ff27c70c818d212"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#a-backend-change-breaks-the-angular-app-after-deployment-how",
@@ -23780,7 +23832,7 @@
       "parentId": null,
       "question": "A backend change breaks the Angular app after deployment. How would you prevent this?",
       "prompt": null,
-      "answer": "I’d add `contract testing`, validate APIs before release, and use feature flags or backward-compatible responses.",
+      "answer": "I’d add `contract testing`, validate APIs before release, and use feature flags or backward-compatible responses.\n\n- **Contract testing** (for example, Pact): the frontend writes down what it expects, and the backend build fails if it breaks that.\n- An OpenAPI spec can also generate typed Angular clients, so mismatches show up at compile time.\n- Rule of thumb: add fields freely; never remove or rename one without versioning.",
       "summary": "I’d add contract testing, validate APIs before release, and use feature flags or backward-compatible responses.",
       "codeBlocks": [],
       "visuals": [],
@@ -23799,14 +23851,15 @@
         "app",
         "after",
         "deployment",
-        "prevent"
+        "prevent",
+        "contract testing"
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 539,
-        "endLine": 543
+        "startLine": 783,
+        "endLine": 791
       },
-      "contentHash": "7ade0a37d4346f3c"
+      "contentHash": "00fe839fa5630255"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#how-would-you-roll-out-a-risky-backend-change-safely",
@@ -23814,7 +23867,7 @@
       "parentId": null,
       "question": "How would you roll out a risky backend change safely?",
       "prompt": null,
-      "answer": "I’d use `API versioning`, deploy gradually, monitor errors, and keep rollback ready.",
+      "answer": "I’d use `API versioning`, deploy gradually, monitor errors, and keep rollback ready.\n\n- **Canary release:** send 5% of traffic to the new version, watch error rates, then increase step by step.\n- **Feature flag:** deploy the code switched off, then turn it on for a few users first.\n- Know the rollback steps (and test them) before you deploy.",
       "summary": "I’d use API versioning, deploy gradually, monitor errors, and keep rollback ready.",
       "codeBlocks": [],
       "visuals": [],
@@ -23835,10 +23888,10 @@
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 547,
-        "endLine": 551
+        "startLine": 795,
+        "endLine": 803
       },
-      "contentHash": "026632ae1d7a0415"
+      "contentHash": "9da2adf1e4e0c7d4"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#everything-works-locally-but-fails-in-staging-or-production",
@@ -23846,7 +23899,7 @@
       "parentId": null,
       "question": "Everything works locally but fails in staging or production. What would you check?",
       "prompt": null,
-      "answer": "I’d verify `Spring Profiles`, environment variables, DB configs, and security settings. Most issues come from config mismatch.",
+      "answer": "I’d verify `Spring Profiles`, environment variables, DB configs, and security settings. Most issues come from config mismatch.\n\n- Check that the expected profile is active: the startup log prints \"The following profiles are active\".\n- Other common causes: missing environment variables, wrong DB credentials, CORS settings, firewalls and SSL certificates.\n- Compare the effective config with `/actuator/env` (secured!) on both environments.",
       "summary": "I’d verify Spring Profiles, environment variables, DB configs, and security settings. Most issues come from config mismatch.",
       "codeBlocks": [],
       "visuals": [],
@@ -23868,10 +23921,10 @@
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 557,
-        "endLine": 561
+        "startLine": 809,
+        "endLine": 817
       },
-      "contentHash": "c3d81d52700baf84"
+      "contentHash": "7b1ccd1131d6df2d"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#how-do-you-ensure-angular-points-to-the-correct-backend-per",
@@ -23879,7 +23932,7 @@
       "parentId": null,
       "question": "How do you ensure Angular points to the correct backend per environment?",
       "prompt": null,
-      "answer": "I’d use Angular `environment.ts` files and avoid hardcoding URLs.",
+      "answer": "I’d use Angular `environment.ts` files and avoid hardcoding URLs.\n\n- Build-time files: `environment.ts` (dev) and `environment.prod.ts`, swapped by `fileReplacements` in `angular.json`.\n- Use them in code: `http.get(`${environment.apiUrl}/orders`)`.\n- To build once and deploy everywhere, load a `config.json` at startup instead, so the URL changes without rebuilding.",
       "summary": "I’d use Angular environment.ts files and avoid hardcoding URLs.",
       "codeBlocks": [],
       "visuals": [],
@@ -23901,10 +23954,10 @@
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 565,
-        "endLine": 569
+        "startLine": 821,
+        "endLine": 829
       },
-      "contentHash": "513633737162c754"
+      "contentHash": "5ae16e4ac7559fe1"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#cached-data-improves-performance-but-users-see-outdated-data",
@@ -23912,7 +23965,7 @@
       "parentId": null,
       "question": "Cached data improves performance but users see outdated data. How would you balance this?",
       "prompt": null,
-      "answer": "I’d apply `cache TTL`, invalidate cache on updates, and cache only read-heavy data.",
+      "answer": "I’d apply `cache TTL`, invalidate cache on updates, and cache only read-heavy data.\n\n- **TTL** sets how long data stays cached (for example, prices 30 seconds, country list 1 day).\n- **Evict on update:** when an admin changes a product, remove it from the cache (`@CacheEvict`).\n- Choose per data type: never cache data that must always be exact, like an account balance.",
       "summary": "I’d apply cache TTL, invalidate cache on updates, and cache only read-heavy data.",
       "codeBlocks": [],
       "visuals": [],
@@ -23935,14 +23988,15 @@
         "see",
         "outdated",
         "balance",
+        "ttl",
         "caching"
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 575,
-        "endLine": 579
+        "startLine": 835,
+        "endLine": 843
       },
-      "contentHash": "9e7c4998adb65fc5"
+      "contentHash": "da065bc201504c08"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#when-should-data-be-cached-on-frontend-vs-backend",
@@ -23950,7 +24004,7 @@
       "parentId": null,
       "question": "When should data be cached on frontend vs backend?",
       "prompt": null,
-      "answer": "Frontend cache is good for UI speed. Backend cache is better for DB load reduction. I choose based on usage patterns.",
+      "answer": "Frontend cache is good for UI speed. Backend cache is better for DB load reduction. I choose based on usage patterns.\n\n- **Frontend** (browser memory, `shareReplay`, HTTP cache): per-user data for one session, like dropdown values.\n- **Backend** (Redis): data shared by all users, like a product catalog — one cache serves everyone.\n- Many apps use both: CDN/browser for static files, Redis for API data.",
       "summary": "Frontend cache is good for UI speed. Backend cache is better for DB load reduction. I choose based on usage patterns.",
       "codeBlocks": [],
       "visuals": [],
@@ -23972,10 +24026,10 @@
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 583,
-        "endLine": 587
+        "startLine": 847,
+        "endLine": 855
       },
-      "contentHash": "38950754dd1fab1c"
+      "contentHash": "8a89b67d94fbd984"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#angular-needs-user-specific-data-how-do-you-ensure-users-see",
@@ -23983,7 +24037,7 @@
       "parentId": null,
       "question": "Angular needs user-specific data. How do you ensure users see only their own data?",
       "prompt": null,
-      "answer": "I’d enforce authorization in the backend using user context, not rely on frontend filtering.",
+      "answer": "I’d enforce authorization in the backend using user context, not rely on frontend filtering.\n\n- Anything in the browser can be changed, so frontend filtering is not security.\n- The backend reads the user ID from the JWT and filters by it: `findByIdAndOwnerId(orderId, currentUserId)`.\n- Return **404 or 403** when the record belongs to someone else.",
       "summary": "I’d enforce authorization in the backend using user context, not rely on frontend filtering.",
       "codeBlocks": [],
       "visuals": [],
@@ -24003,14 +24057,15 @@
         "users",
         "see",
         "only",
-        "own"
+        "own",
+        "404 or 403"
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 593,
-        "endLine": 597
+        "startLine": 861,
+        "endLine": 869
       },
-      "contentHash": "28e40bece6393143"
+      "contentHash": "0a42294755a376c2"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#how-do-you-prevent-sensitive-db-fields-from-reaching-the-ui",
@@ -24018,7 +24073,7 @@
       "parentId": null,
       "question": "How do you prevent sensitive DB fields from reaching the UI?",
       "prompt": null,
-      "answer": "I’d use `DTOs` and avoid exposing JPA entities directly.",
+      "answer": "I’d use `DTOs` and avoid exposing JPA entities directly.\n\n- A DTO lists only the safe fields: `record UserDto(Long id, String name, String email) {}` — no `passwordHash`.\n- New entity columns then don't leak by accident, because the DTO must be changed on purpose.\n- `@JsonIgnore` works too, but it is easy to forget on a new field.",
       "summary": "I’d use DTOs and avoid exposing JPA entities directly.",
       "codeBlocks": [],
       "visuals": [],
@@ -24039,10 +24094,10 @@
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 601,
-        "endLine": 605
+        "startLine": 873,
+        "endLine": 881
       },
-      "contentHash": "cb37139c7ba59f7e"
+      "contentHash": "538fb9baf513037c"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#bugs-keep-appearing-at-integration-points-how-would-you-improve",
@@ -24050,7 +24105,7 @@
       "parentId": null,
       "question": "Bugs keep appearing at integration points. How would you improve quality?",
       "prompt": null,
-      "answer": "I’d strengthen `integration tests`, mock fewer things, and test Angular ↔ API flows together.",
+      "answer": "I’d strengthen `integration tests`, mock fewer things, and test Angular ↔ API flows together.\n\n- Integration points are where two parts meet: Angular ↔ API, API ↔ DB, service ↔ service.\n- Mocks show how you **think** the other side works; real tests (Testcontainers, a test environment) show how it actually works.\n- Add a few end-to-end tests (Cypress or Playwright) for the most important user journeys.",
       "summary": "I’d strengthen integration tests, mock fewer things, and test Angular API flows together.",
       "codeBlocks": [],
       "visuals": [],
@@ -24071,14 +24126,15 @@
         "points",
         "improve",
         "quality",
+        "think",
         "testing"
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 611,
-        "endLine": 615
+        "startLine": 887,
+        "endLine": 895
       },
-      "contentHash": "daba7efbf2def09d"
+      "contentHash": "79ad3e9329ebe2cc"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#how-do-you-ensure-performance-does-not-degrade-over-time",
@@ -24086,7 +24142,7 @@
       "parentId": null,
       "question": "How do you ensure performance does not degrade over time?",
       "prompt": null,
-      "answer": "I’d add baseline performance metrics and monitor API response time and DB query execution regularly.",
+      "answer": "I’d add baseline performance metrics and monitor API response time and DB query execution regularly.\n\n- Record a baseline, for example \"p95 latency for `/orders` = 200 ms\", and alert when it goes past it.\n- Run load tests (JMeter, Gatling or k6) in CI for key endpoints before releases.\n- Check performance after every release, not only when users complain.",
       "summary": "I’d add baseline performance metrics and monitor API response time and DB query execution regularly.",
       "codeBlocks": [],
       "visuals": [],
@@ -24110,10 +24166,10 @@
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 619,
-        "endLine": 623
+        "startLine": 899,
+        "endLine": 907
       },
-      "contentHash": "910bb4f2636a5b2b"
+      "contentHash": "09ae1db886d2cc1a"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#a-feature-works-but-is-poorly-designed-do-you-ship-or-refactor",
@@ -24121,7 +24177,7 @@
       "parentId": null,
       "question": "A feature works but is poorly designed. Do you ship or refactor?",
       "prompt": null,
-      "answer": "I’d ship only if risk is low and plan refactoring immediately. Technical debt should be tracked, not ignored.",
+      "answer": "I’d ship only if risk is low and plan refactoring immediately. Technical debt should be tracked, not ignored.\n\n- Ask: will this design cause bugs, or slow down the next features in this area?\n- If you ship, create a ticket for the refactor with a reason and a planned sprint.\n- Tests around the feature make the later refactor safe.",
       "summary": "I’d ship only if risk is low and plan refactoring immediately. Technical debt should be tracked, not ignored.",
       "codeBlocks": [],
       "visuals": [],
@@ -24142,10 +24198,10 @@
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 629,
-        "endLine": 633
+        "startLine": 913,
+        "endLine": 921
       },
-      "contentHash": "25b223791a9acfe2"
+      "contentHash": "b7cf231682822271"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#a-junior-developer-wrote-a-slow-query-how-would-you-handle-it",
@@ -24153,7 +24209,7 @@
       "parentId": null,
       "question": "A junior developer wrote a slow query. How would you handle it?",
       "prompt": null,
-      "answer": "I’d review it together, explain indexing and query design, and treat it as a learning opportunity.",
+      "answer": "I’d review it together, explain indexing and query design, and treat it as a learning opportunity.\n\n- Show the problem together: run `EXPLAIN` and compare before and after adding an index.\n- Give feedback privately and focus on the code, not the person.\n- Prevent it next time with a code review checklist item or slow-query alerts.",
       "summary": "I’d review it together, explain indexing and query design, and treat it as a learning opportunity.",
       "codeBlocks": [],
       "visuals": [],
@@ -24174,10 +24230,10 @@
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 637,
-        "endLine": 641
+        "startLine": 925,
+        "endLine": 933
       },
-      "contentHash": "661cfd42bd475bf1"
+      "contentHash": "b4eaa5ed1690187b"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#how-do-you-make-sure-frontend-and-backend-teams-stay-aligned",
@@ -24185,7 +24241,7 @@
       "parentId": null,
       "question": "How do you make sure frontend and backend teams stay aligned?",
       "prompt": null,
-      "answer": "I’d encourage early API discussions, shared contracts, and regular syncs before implementation.",
+      "answer": "I’d encourage early API discussions, shared contracts, and regular syncs before implementation.\n\n- **API-first:** agree on an OpenAPI contract before coding; the frontend can build against a mock server meanwhile.\n- Share the spec in Git so changes are reviewed by both teams.\n- Short regular syncs and a shared demo environment catch mismatches early.",
       "summary": "I’d encourage early API discussions, shared contracts, and regular syncs before implementation.",
       "codeBlocks": [],
       "visuals": [],
@@ -24207,10 +24263,10 @@
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 645,
-        "endLine": 649
+        "startLine": 937,
+        "endLine": 945
       },
-      "contentHash": "5969d303fb4f72ec"
+      "contentHash": "7072838be50a8d21"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#production-is-slow-and-users-are-complaining-what-are-your",
@@ -24218,7 +24274,7 @@
       "parentId": null,
       "question": "Production is slow and users are complaining. What are your first 3 actions?",
       "prompt": null,
-      "answer": "Check monitoring dashboards, identify the slow layer, and reduce impact first before deep fixes.",
+      "answer": "Check monitoring dashboards, identify the slow layer, and reduce impact first before deep fixes.\n\n1. **Look:** dashboards and logs — error rate, latency, CPU, DB connections. Did a release just happen?\n2. **Find the layer:** frontend, API, database or an external service.\n3. **Reduce impact:** roll back, scale up or turn off the failing feature; find the root cause after users are fine.\n\n- Keep stakeholders updated during the incident, and write a blameless postmortem afterwards.",
       "summary": "Check monitoring dashboards, identify the slow layer, and reduce impact first before deep fixes.",
       "codeBlocks": [],
       "visuals": [],
@@ -24239,10 +24295,10 @@
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 655,
-        "endLine": 659
+        "startLine": 951,
+        "endLine": 961
       },
-      "contentHash": "514c26d4572e7b77"
+      "contentHash": "744ff022cc8ce009"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#a-hotfix-is-needed-quickly-how-do-you-balance-speed-and-safety",
@@ -24250,7 +24306,7 @@
       "parentId": null,
       "question": "A hotfix is needed quickly. How do you balance speed and safety?",
       "prompt": null,
-      "answer": "I’d apply the smallest safe change, test critical paths, deploy fast, and monitor closely.",
+      "answer": "I’d apply the smallest safe change, test critical paths, deploy fast, and monitor closely.\n\n- Branch from the production version, change only what fixes the bug, and get at least one quick review.\n- Run the automated tests and check the main flows (login, checkout) before deploying.\n- Merge the fix back into the main branch, and add a test so the bug can't return.",
       "summary": "I’d apply the smallest safe change, test critical paths, deploy fast, and monitor closely.",
       "codeBlocks": [],
       "visuals": [],
@@ -24271,10 +24327,10 @@
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 663,
-        "endLine": 667
+        "startLine": 965,
+        "endLine": 973
       },
-      "contentHash": "6a1ba5d02f6a81dc"
+      "contentHash": "35e77e6b6a81df21"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#when-would-you-split-a-monolithic-spring-boot-app",
@@ -24282,7 +24338,7 @@
       "parentId": null,
       "question": "When would you split a monolithic Spring Boot app?",
       "prompt": null,
-      "answer": "When independent scaling, deployment speed, or ownership becomes a problem—not just because it’s trendy.",
+      "answer": "When independent scaling, deployment speed, or ownership becomes a problem—not just because it’s trendy.\n\n- Good reasons: one part needs much more scaling, teams block each other's releases, or one module's failures take down everything.\n- First build a **modular monolith** with clear module boundaries; splitting later is then much easier.\n- Microservices add network calls, distributed data and more ops work, so the benefit must be worth that cost.",
       "summary": "When independent scaling, deployment speed, or ownership becomes a problem—not just because it’s trendy.",
       "codeBlocks": [],
       "visuals": [],
@@ -24298,14 +24354,15 @@
         "monolithic",
         "spring",
         "boot",
-        "app"
+        "app",
+        "modular monolith"
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 673,
-        "endLine": 677
+        "startLine": 979,
+        "endLine": 987
       },
-      "contentHash": "bc65600507676253"
+      "contentHash": "3195e51966bc7ac8"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#how-do-you-decide-if-a-problem-should-be-solved-in-angular-or",
@@ -24313,7 +24370,7 @@
       "parentId": null,
       "question": "How do you decide if a problem should be solved in Angular or backend?",
       "prompt": null,
-      "answer": "UI logic stays in Angular. Data validation, security, and performance-critical logic stay in backend.",
+      "answer": "UI logic stays in Angular. Data validation, security, and performance-critical logic stay in backend.\n\n- Angular: display, form hints, navigation and UI state — things that make the screen fast and friendly.\n- Backend: rules that must **always** hold, because users can bypass the browser (for example, by calling the API with curl).\n- Validation often lives in both: the frontend for quick feedback, the backend for safety.",
       "summary": "UI logic stays in Angular. Data validation, security, and performance-critical logic stay in backend.",
       "codeBlocks": [],
       "visuals": [],
@@ -24329,14 +24386,15 @@
         "problem",
         "solved",
         "angular",
-        "backend"
+        "backend",
+        "always"
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 681,
-        "endLine": 685
+        "startLine": 991,
+        "endLine": 999
       },
-      "contentHash": "6d3336d9147ed2cc"
+      "contentHash": "94f7bf11b759b2cd"
     },
     {
       "id": "interview/backend/java/08-Architecture.md#what-challenges-you-encountered-while-upgrading-spring-or-java",
@@ -24384,8 +24442,8 @@
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 689,
-        "endLine": 786
+        "startLine": 1003,
+        "endLine": 1100
       },
       "contentHash": "dd16d4ac14265c8d"
     },
@@ -24411,8 +24469,8 @@
       ],
       "source": {
         "path": "interview/backend/java/08-Architecture.md",
-        "startLine": 790,
-        "endLine": 804
+        "startLine": 1104,
+        "endLine": 1118
       },
       "contentHash": "db77d9c7fe5acaac"
     },
@@ -26012,7 +26070,7 @@
       "parentId": null,
       "question": "Can an expired access token be used to get a new access token?",
       "prompt": null,
-      "answer": "No. Only a valid refresh token can. Otherwise anyone holding an old, leaked access token could stay logged in forever.",
+      "answer": "No. Only a valid refresh token can. Otherwise anyone holding an old, leaked access token could stay logged in forever.\n\n- The expiry is part of the signed token (the `exp` claim), so the server rejects it once that time has passed.\n- That is why access tokens are short-lived (for example, 15 minutes): a leaked one stops working soon.",
       "summary": "No. Only a valid refresh token can. Otherwise anyone holding an old, leaked access token could stay logged in forever.",
       "codeBlocks": [],
       "visuals": [],
@@ -26035,9 +26093,9 @@
       "source": {
         "path": "interview/backend/java/09-JWT-Access-Refresh-Tokens.md",
         "startLine": 193,
-        "endLine": 195
+        "endLine": 198
       },
-      "contentHash": "0714f619e0610233"
+      "contentHash": "2d19728bf1cb50f6"
     },
     {
       "id": "interview/backend/java/09-JWT-Access-Refresh-Tokens.md#does-the-refresh-api-need-a-valid-access-token",
@@ -26045,7 +26103,7 @@
       "parentId": null,
       "question": "Does the refresh API need a valid access token?",
       "prompt": null,
-      "answer": "No. It authenticates with the refresh token — the access token is usually already expired when refresh is called.",
+      "answer": "No. It authenticates with the refresh token — the access token is usually already expired when refresh is called.\n\n- Example call: `POST /auth/refresh` with the refresh token in an **HttpOnly cookie** (safer than JavaScript-readable storage).\n- So the security config must allow `/auth/refresh` without an access token; the endpoint checks the refresh token itself.",
       "summary": "No. It authenticates with the refresh token — the access token is usually already expired when refresh is called.",
       "codeBlocks": [],
       "visuals": [],
@@ -26065,14 +26123,15 @@
         "valid",
         "access",
         "token",
+        "httponly cookie",
         "spring-security"
       ],
       "source": {
         "path": "interview/backend/java/09-JWT-Access-Refresh-Tokens.md",
-        "startLine": 199,
-        "endLine": 201
+        "startLine": 202,
+        "endLine": 207
       },
-      "contentHash": "9d2a2d770343f1a1"
+      "contentHash": "3890ffa58c0be295"
     },
     {
       "id": "interview/backend/java/09-JWT-Access-Refresh-Tokens.md#what-happens-if-five-api-calls-return-401-at-the-same-time",
@@ -26106,8 +26165,8 @@
       ],
       "source": {
         "path": "interview/backend/java/09-JWT-Access-Refresh-Tokens.md",
-        "startLine": 205,
-        "endLine": 207
+        "startLine": 211,
+        "endLine": 213
       },
       "contentHash": "ca105f828242b124"
     },
@@ -26139,8 +26198,8 @@
       ],
       "source": {
         "path": "interview/backend/java/09-JWT-Access-Refresh-Tokens.md",
-        "startLine": 211,
-        "endLine": 213
+        "startLine": 217,
+        "endLine": 219
       },
       "contentHash": "07863d7a45d9549d"
     },
@@ -26171,8 +26230,8 @@
       ],
       "source": {
         "path": "interview/backend/java/09-JWT-Access-Refresh-Tokens.md",
-        "startLine": 217,
-        "endLine": 219
+        "startLine": 223,
+        "endLine": 225
       },
       "contentHash": "bc70309331ee366f"
     },
@@ -26204,8 +26263,8 @@
       ],
       "source": {
         "path": "interview/backend/java/09-JWT-Access-Refresh-Tokens.md",
-        "startLine": 223,
-        "endLine": 225
+        "startLine": 229,
+        "endLine": 231
       },
       "contentHash": "778edf03b0cad928"
     },
@@ -26215,7 +26274,7 @@
       "parentId": null,
       "question": "What is the difference between 401 and 403?",
       "prompt": null,
-      "answer": "`401 Unauthorized` = not authenticated (missing, invalid or expired token). `403 Forbidden` = authenticated but not allowed to perform this action.",
+      "answer": "`401 Unauthorized` = not authenticated (missing, invalid or expired token). `403 Forbidden` = authenticated but not allowed to perform this action.\n\n- **401:** \"Who are you?\" — the client should log in or refresh the token, then retry.\n- **403:** \"I know who you are, but no.\" — retrying with the same user won't help.\n- Example: no token on `DELETE /users/5` → 401; a normal user's valid token on an admin-only endpoint → 403.",
       "summary": "401 Unauthorized = not authenticated (missing, invalid or expired token). 403 Forbidden = authenticated but not allowed to perform this action.",
       "codeBlocks": [],
       "visuals": [],
@@ -26233,10 +26292,10 @@
       ],
       "source": {
         "path": "interview/backend/java/09-JWT-Access-Refresh-Tokens.md",
-        "startLine": 229,
-        "endLine": 231
+        "startLine": 235,
+        "endLine": 241
       },
-      "contentHash": "2d056949b54761bd"
+      "contentHash": "096f914be05847be"
     },
     {
       "id": "interview/backend/java/09-JWT-Access-Refresh-Tokens.md#what-happens-if-a-user-s-role-changes-while-their-jwt-is-still",
@@ -26269,8 +26328,8 @@
       ],
       "source": {
         "path": "interview/backend/java/09-JWT-Access-Refresh-Tokens.md",
-        "startLine": 235,
-        "endLine": 237
+        "startLine": 245,
+        "endLine": 247
       },
       "contentHash": "e69ff318b9403810"
     },
@@ -26301,8 +26360,8 @@
       ],
       "source": {
         "path": "interview/backend/java/09-JWT-Access-Refresh-Tokens.md",
-        "startLine": 241,
-        "endLine": 243
+        "startLine": 251,
+        "endLine": 253
       },
       "contentHash": "89aac7bfaf833ccb"
     },
@@ -26337,8 +26396,8 @@
       ],
       "source": {
         "path": "interview/backend/java/09-JWT-Access-Refresh-Tokens.md",
-        "startLine": 247,
-        "endLine": 249
+        "startLine": 257,
+        "endLine": 259
       },
       "contentHash": "7f685e5260bd6e23"
     },
@@ -26348,7 +26407,7 @@
       "parentId": null,
       "question": "What if the refresh token is valid but the user account has been disabled?",
       "prompt": null,
-      "answer": "Refresh must fail. Always check the account status during refresh, not only at login.",
+      "answer": "Refresh must fail. Always check the account status during refresh, not only at login.\n\n- The refresh endpoint loads the user and checks flags like `enabled` or `locked` before issuing a new access token.\n- Also revoke the user's refresh tokens when the account is disabled, so they stop working immediately.\n- Access tokens already issued stay valid until they expire — another reason to keep them short.",
       "summary": "Refresh must fail. Always check the account status during refresh, not only at login.",
       "codeBlocks": [],
       "visuals": [],
@@ -26375,10 +26434,10 @@
       ],
       "source": {
         "path": "interview/backend/java/09-JWT-Access-Refresh-Tokens.md",
-        "startLine": 253,
-        "endLine": 255
+        "startLine": 263,
+        "endLine": 269
       },
-      "contentHash": "230b577ee682e571"
+      "contentHash": "fa97095d0c75fbf4"
     },
     {
       "id": "interview/backend/java/09-JWT-Access-Refresh-Tokens.md#what-if-a-refresh-token-is-revoked-before-its-expiry-date",
@@ -26386,7 +26445,7 @@
       "parentId": null,
       "question": "What if a refresh token is revoked before its expiry date?",
       "prompt": null,
-      "answer": "The backend rejects it. Revocation is checked in the database, independently of the expiry date.",
+      "answer": "The backend rejects it. Revocation is checked in the database, independently of the expiry date.\n\n- Example: on logout or \"log out of all devices\", the server marks the token as revoked (or deletes it) in the database.\n- This is why refresh tokens are stored on the server: a JWT access token alone can't be revoked before it expires.",
       "summary": "The backend rejects it. Revocation is checked in the database, independently of the expiry date.",
       "codeBlocks": [],
       "visuals": [],
@@ -26410,10 +26469,10 @@
       ],
       "source": {
         "path": "interview/backend/java/09-JWT-Access-Refresh-Tokens.md",
-        "startLine": 259,
-        "endLine": 261
+        "startLine": 273,
+        "endLine": 278
       },
-      "contentHash": "87e27cccc7c09f1c"
+      "contentHash": "7a0a76e41b942e5b"
     },
     {
       "id": "interview/backend/java/09-JWT-Access-Refresh-Tokens.md#can-the-refresh-token-s-expiry-be-extended-every-time-the-user",
@@ -26421,7 +26480,7 @@
       "parentId": null,
       "question": "Can the refresh token's expiry be extended every time the user is active?",
       "prompt": null,
-      "answer": "Yes — sliding expiration. Enforce an **absolute maximum** session lifetime as well, so a stolen token can't be kept alive forever.",
+      "answer": "Yes — sliding expiration. Enforce an **absolute maximum** session lifetime as well, so a stolen token can't be kept alive forever.\n\n- Example: the session extends by 7 days on each use, but never past 30 days from the original login.\n- **Refresh token rotation** helps too: each refresh returns a new refresh token and invalidates the old one, so a reused old token reveals theft.",
       "summary": "Yes — sliding expiration. Enforce an absolute maximum session lifetime as well, so a stolen token can't be kept alive forever.",
       "codeBlocks": [],
       "visuals": [],
@@ -26444,14 +26503,15 @@
         "user",
         "active",
         "absolute maximum",
+        "refresh token rotation",
         "spring-security"
       ],
       "source": {
         "path": "interview/backend/java/09-JWT-Access-Refresh-Tokens.md",
-        "startLine": 265,
-        "endLine": 267
+        "startLine": 282,
+        "endLine": 287
       },
-      "contentHash": "9ce7bd2aa5be95f2"
+      "contentHash": "f1989fd48729ab34"
     },
     {
       "id": "interview/backend/java/09-JWT-Access-Refresh-Tokens.md#what-happens-if-the-access-token-expires-while-a-long-request",
@@ -26459,7 +26519,7 @@
       "parentId": null,
       "question": "What happens if the access token expires while a long request is running?",
       "prompt": null,
-      "answer": "Nothing. The token is validated when the request enters the API; a request already authorized is not cancelled midway.",
+      "answer": "Nothing. The token is validated when the request enters the API; a request already authorized is not cancelled midway.\n\n- Example: a 2-minute report starts with a token that expires after 30 seconds — the report still finishes.\n- But if that request calls other services with the same token, those calls may fail with 401, so pass a fresh token or use a service-to-service token.",
       "summary": "Nothing. The token is validated when the request enters the API; a request already authorized is not cancelled midway.",
       "codeBlocks": [],
       "visuals": [],
@@ -26484,10 +26544,10 @@
       ],
       "source": {
         "path": "interview/backend/java/09-JWT-Access-Refresh-Tokens.md",
-        "startLine": 271,
-        "endLine": 273
+        "startLine": 291,
+        "endLine": 296
       },
-      "contentHash": "1d17cf6cde073726"
+      "contentHash": "f7c62f65be1acbe7"
     },
     {
       "id": "interview/backend/java/09-JWT-Access-Refresh-Tokens.md#if-the-refresh-token-is-in-an-httponly-cookie-how-does-angular",
@@ -26519,8 +26579,8 @@
       ],
       "source": {
         "path": "interview/backend/java/09-JWT-Access-Refresh-Tokens.md",
-        "startLine": 277,
-        "endLine": 279
+        "startLine": 300,
+        "endLine": 302
       },
       "contentHash": "775e024c67d3a4c7"
     },
@@ -26530,7 +26590,7 @@
       "parentId": null,
       "question": "What if the refresh token expires while the user is actively using the app?",
       "prompt": null,
-      "answer": "The next refresh attempt fails with 401, and the user has to log in again. Sliding expiration or a warning before the session ends improves the experience.",
+      "answer": "The next refresh attempt fails with 401, and the user has to log in again. Sliding expiration or a warning before the session ends improves the experience.\n\n- The frontend should catch that 401, clear the stored tokens and redirect to login, saving the current page so the user returns to it.\n- Save unsent form data (for example, a draft) before redirecting, so the user does not lose their work.",
       "summary": "The next refresh attempt fails with 401, and the user has to log in again. Sliding expiration or a warning before the session ends improves the experience.",
       "codeBlocks": [],
       "visuals": [],
@@ -26554,10 +26614,10 @@
       ],
       "source": {
         "path": "interview/backend/java/09-JWT-Access-Refresh-Tokens.md",
-        "startLine": 283,
-        "endLine": 285
+        "startLine": 306,
+        "endLine": 311
       },
-      "contentHash": "40133daa5e89ecd6"
+      "contentHash": "615ddb6caa46a77d"
     },
     {
       "id": "interview/backend/java/09-JWT-Access-Refresh-Tokens.md#what-if-the-backend-issues-a-new-token-but-the-response-never",
@@ -26591,8 +26651,8 @@
       ],
       "source": {
         "path": "interview/backend/java/09-JWT-Access-Refresh-Tokens.md",
-        "startLine": 289,
-        "endLine": 291
+        "startLine": 315,
+        "endLine": 317
       },
       "contentHash": "3fa92938020a7f19"
     },
@@ -26625,8 +26685,8 @@
       ],
       "source": {
         "path": "interview/backend/java/09-JWT-Access-Refresh-Tokens.md",
-        "startLine": 295,
-        "endLine": 297
+        "startLine": 321,
+        "endLine": 323
       },
       "contentHash": "5e43f99f5bd54b04"
     },
@@ -26659,8 +26719,8 @@
       ],
       "source": {
         "path": "interview/backend/java/09-JWT-Access-Refresh-Tokens.md",
-        "startLine": 301,
-        "endLine": 303
+        "startLine": 327,
+        "endLine": 329
       },
       "contentHash": "e771d4d21b7c6589"
     },
@@ -26695,8 +26755,8 @@
       ],
       "source": {
         "path": "interview/backend/java/09-JWT-Access-Refresh-Tokens.md",
-        "startLine": 307,
-        "endLine": 315
+        "startLine": 333,
+        "endLine": 341
       },
       "contentHash": "b0686cab7c233a32"
     },
@@ -44708,9 +44768,14 @@
       "parentId": null,
       "question": "Trick: Does `BehaviorSubject` emit its current value immediately on subscription?",
       "prompt": null,
-      "answer": "**Yes** — synchronously, the moment you subscribe.",
+      "answer": "**Yes** — synchronously, the moment you subscribe.\n\n- It always has a value: the initial value you passed in, or the latest `next()`.\n\n```ts\nconst user$ = new BehaviorSubject<string>('guest');\nuser$.next('sam');\nuser$.subscribe(v => console.log(v)); // 'sam', right away\n```\n\n- That is why it suits \"current state\" like the logged-in user; a plain `Subject` gives a new subscriber nothing until the next `next()`.",
       "summary": "Yes — synchronously, the moment you subscribe.",
-      "codeBlocks": [],
+      "codeBlocks": [
+        {
+          "language": "ts",
+          "code": "const user$ = new BehaviorSubject<string>('guest');\nuser$.next('sam');\nuser$.subscribe(v => console.log(v)); // 'sam', right away"
+        }
+      ],
       "visuals": [],
       "contentType": "interview",
       "domain": "frontend",
@@ -44735,9 +44800,9 @@
       "source": {
         "path": "interview/frontend/06-RxJS.md",
         "startLine": 307,
-        "endLine": 311
+        "endLine": 321
       },
-      "contentHash": "6613b0b220618eb0"
+      "contentHash": "a8b0424a45f75785"
     },
     {
       "id": "interview/frontend/06-RxJS.md#trick-can-a-subject-emit-values-before-anyone-subscribes",
@@ -44745,9 +44810,14 @@
       "parentId": null,
       "question": "Trick: Can a `Subject` emit values before anyone subscribes?",
       "prompt": null,
-      "answer": "Yes — it can. But those values are **lost** (no replay). Future subscribers will only see emissions that happen *after* they subscribe.",
+      "answer": "Yes — it can. But those values are **lost** (no replay). Future subscribers will only see emissions that happen *after* they subscribe.\n\n```ts\nconst s$ = new Subject<number>();\ns$.next(1);                        // nobody is listening → lost\ns$.subscribe(v => console.log(v));\ns$.next(2);                        // logs 2\n```\n\n- Need earlier values? Use `BehaviorSubject` (the latest one) or `ReplaySubject` (the last N).",
       "summary": "Yes — it can. But those values are lost (no replay). Future subscribers will only see emissions that happen *after* they subscribe.",
-      "codeBlocks": [],
+      "codeBlocks": [
+        {
+          "language": "ts",
+          "code": "const s$ = new Subject<number>();\ns$.next(1);                        // nobody is listening → lost\ns$.subscribe(v => console.log(v));\ns$.next(2);                        // logs 2"
+        }
+      ],
       "visuals": [],
       "contentType": "interview",
       "domain": "frontend",
@@ -44771,10 +44841,10 @@
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 315,
-        "endLine": 319
+        "startLine": 325,
+        "endLine": 338
       },
-      "contentHash": "472c49c03bcd21f7"
+      "contentHash": "beed53b6199d4023"
     },
     {
       "id": "interview/frontend/06-RxJS.md#trick-what-happens-if-you-call-next-on-a-completed-subject",
@@ -44808,8 +44878,8 @@
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 323,
-        "endLine": 327
+        "startLine": 342,
+        "endLine": 346
       },
       "contentHash": "90401ad13346f101"
     },
@@ -44853,8 +44923,8 @@
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 331,
-        "endLine": 360
+        "startLine": 350,
+        "endLine": 379
       },
       "contentHash": "e411fe593553dce9"
     },
@@ -44888,8 +44958,8 @@
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 366,
-        "endLine": 375
+        "startLine": 385,
+        "endLine": 394
       },
       "contentHash": "3f0d411fe29f6111"
     },
@@ -44923,8 +44993,8 @@
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 379,
-        "endLine": 388
+        "startLine": 398,
+        "endLine": 407
       },
       "contentHash": "9fdbb2abf7c0aa6a"
     },
@@ -44962,8 +45032,8 @@
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 392,
-        "endLine": 404
+        "startLine": 411,
+        "endLine": 423
       },
       "contentHash": "9350ce01eb39aafd"
     },
@@ -44998,8 +45068,8 @@
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 408,
-        "endLine": 419
+        "startLine": 427,
+        "endLine": 438
       },
       "contentHash": "a6229a8b43507f75"
     },
@@ -45036,8 +45106,8 @@
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 425,
-        "endLine": 440
+        "startLine": 444,
+        "endLine": 459
       },
       "contentHash": "3d1a9205a4ec9709"
     },
@@ -45068,8 +45138,8 @@
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 444,
-        "endLine": 450
+        "startLine": 463,
+        "endLine": 469
       },
       "contentHash": "35ec9ff5b206a6f5"
     },
@@ -45099,8 +45169,8 @@
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 454,
-        "endLine": 460
+        "startLine": 473,
+        "endLine": 479
       },
       "contentHash": "d5f6a5f17355c3ae"
     },
@@ -45139,8 +45209,8 @@
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 464,
-        "endLine": 483
+        "startLine": 483,
+        "endLine": 502
       },
       "contentHash": "ff57fa5dba87473b"
     },
@@ -45179,8 +45249,8 @@
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 487,
-        "endLine": 499
+        "startLine": 506,
+        "endLine": 518
       },
       "contentHash": "15f6cb7b2060cebe"
     },
@@ -45221,8 +45291,8 @@
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 503,
-        "endLine": 513
+        "startLine": 522,
+        "endLine": 532
       },
       "contentHash": "13652868b1450644"
     },
@@ -45258,8 +45328,8 @@
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 517,
-        "endLine": 521
+        "startLine": 536,
+        "endLine": 540
       },
       "contentHash": "10ba2184ca1e3d03"
     },
@@ -45295,8 +45365,8 @@
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 527,
-        "endLine": 542
+        "startLine": 546,
+        "endLine": 561
       },
       "contentHash": "f7878472e0e9f799"
     },
@@ -45327,8 +45397,8 @@
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 546,
-        "endLine": 553
+        "startLine": 565,
+        "endLine": 572
       },
       "contentHash": "2aa9318ef6266a91"
     },
@@ -45363,8 +45433,8 @@
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 557,
-        "endLine": 570
+        "startLine": 576,
+        "endLine": 589
       },
       "contentHash": "0ac212f97f5a9d67"
     },
@@ -45399,8 +45469,8 @@
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 574,
-        "endLine": 582
+        "startLine": 593,
+        "endLine": 601
       },
       "contentHash": "79a28418b432dcb4"
     },
@@ -45438,8 +45508,8 @@
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 586,
-        "endLine": 592
+        "startLine": 605,
+        "endLine": 611
       },
       "contentHash": "6f72c4b889403dfd"
     },
@@ -45474,8 +45544,8 @@
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 598,
-        "endLine": 611
+        "startLine": 617,
+        "endLine": 630
       },
       "contentHash": "5139be34b78ce32e"
     },
@@ -45513,8 +45583,8 @@
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 615,
-        "endLine": 628
+        "startLine": 634,
+        "endLine": 647
       },
       "contentHash": "a3c1154d7983a44d"
     },
@@ -45549,8 +45619,8 @@
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 632,
-        "endLine": 641
+        "startLine": 651,
+        "endLine": 660
       },
       "contentHash": "83e6673f6bfe0199"
     },
@@ -45582,8 +45652,8 @@
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 645,
-        "endLine": 652
+        "startLine": 664,
+        "endLine": 671
       },
       "contentHash": "7ff2a744356588a4"
     },
@@ -45621,8 +45691,8 @@
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 656,
-        "endLine": 667
+        "startLine": 675,
+        "endLine": 686
       },
       "contentHash": "e060952ec2608fd4"
     },
@@ -45632,7 +45702,7 @@
       "parentId": null,
       "question": "Trick: If you `catchError` and return `EMPTY`, does the stream complete?",
       "prompt": null,
-      "answer": "**Yes.** `EMPTY` is an Observable that completes immediately with no emissions.",
+      "answer": "**Yes.** `EMPTY` is an Observable that completes immediately with no emissions.\n\n- So subscribers get `complete`, not `error`, and nothing more is emitted after the failure.\n- Inside a long-lived stream (for example, one built with `switchMap` from button clicks), put `catchError` **inside** the inner observable; otherwise one failure ends the whole stream and later clicks do nothing.",
       "summary": "Yes. EMPTY is an Observable that completes immediately with no emissions.",
       "codeBlocks": [],
       "visuals": [],
@@ -45653,14 +45723,15 @@
         "stream",
         "complete",
         "yes",
+        "inside",
         "rxjs"
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 671,
-        "endLine": 675
+        "startLine": 690,
+        "endLine": 697
       },
-      "contentHash": "3fefce27b3bb50ce"
+      "contentHash": "bd8ae61baba2f79f"
     },
     {
       "id": "interview/frontend/06-RxJS.md#trick-can-catcherror-swallow-an-error-and-keep-the-outer-stream",
@@ -45702,8 +45773,8 @@
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 679,
-        "endLine": 693
+        "startLine": 701,
+        "endLine": 715
       },
       "contentHash": "d4bff596fe5d0182"
     },
@@ -45737,8 +45808,8 @@
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 699,
-        "endLine": 710
+        "startLine": 721,
+        "endLine": 732
       },
       "contentHash": "c8b0314169817edb"
     },
@@ -45771,8 +45842,8 @@
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 714,
-        "endLine": 721
+        "startLine": 736,
+        "endLine": 743
       },
       "contentHash": "8411eb3b8acf3d57"
     },
@@ -45809,8 +45880,8 @@
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 727,
-        "endLine": 731
+        "startLine": 749,
+        "endLine": 753
       },
       "contentHash": "7133544d7bee3692"
     },
@@ -45847,8 +45918,8 @@
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 735,
-        "endLine": 743
+        "startLine": 757,
+        "endLine": 765
       },
       "contentHash": "9a0333d042dfe0f1"
     },
@@ -45894,8 +45965,8 @@
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 747,
-        "endLine": 757
+        "startLine": 769,
+        "endLine": 779
       },
       "contentHash": "c2b1d0cac89452ca"
     },
@@ -45940,8 +46011,8 @@
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 761,
-        "endLine": 776
+        "startLine": 783,
+        "endLine": 798
       },
       "contentHash": "00ea1dbe9b5115c6"
     },
@@ -45978,8 +46049,8 @@
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 780,
-        "endLine": 792
+        "startLine": 802,
+        "endLine": 814
       },
       "contentHash": "40315a2089477d76"
     },
@@ -46014,8 +46085,8 @@
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 796,
-        "endLine": 802
+        "startLine": 818,
+        "endLine": 824
       },
       "contentHash": "cbd693a92f446071"
     },
@@ -46053,8 +46124,8 @@
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 806,
-        "endLine": 819
+        "startLine": 828,
+        "endLine": 841
       },
       "contentHash": "08b425b479e6d1bc"
     },
@@ -46092,8 +46163,8 @@
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 823,
-        "endLine": 833
+        "startLine": 845,
+        "endLine": 855
       },
       "contentHash": "7883c7b21c566e5b"
     },
@@ -46130,8 +46201,8 @@
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 837,
-        "endLine": 855
+        "startLine": 859,
+        "endLine": 877
       },
       "contentHash": "9e059edfd28c2b3a"
     },
@@ -46164,8 +46235,8 @@
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 861,
-        "endLine": 867
+        "startLine": 883,
+        "endLine": 889
       },
       "contentHash": "a80b833f481dfabc"
     },
@@ -46198,8 +46269,8 @@
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 871,
-        "endLine": 880
+        "startLine": 893,
+        "endLine": 902
       },
       "contentHash": "56731aca7f83f312"
     },
@@ -46237,8 +46308,8 @@
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 884,
-        "endLine": 899
+        "startLine": 906,
+        "endLine": 921
       },
       "contentHash": "52e30dc0ded9f726"
     },
@@ -46275,8 +46346,8 @@
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 903,
-        "endLine": 916
+        "startLine": 925,
+        "endLine": 938
       },
       "contentHash": "98cf052b0e7f5a3b"
     },
@@ -46312,8 +46383,8 @@
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 920,
-        "endLine": 926
+        "startLine": 942,
+        "endLine": 948
       },
       "contentHash": "40f0b37a4c80b646"
     },
@@ -46350,8 +46421,8 @@
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 930,
-        "endLine": 934
+        "startLine": 952,
+        "endLine": 956
       },
       "contentHash": "a28a7624ab21b3f6"
     },
@@ -46389,8 +46460,8 @@
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 938,
-        "endLine": 948
+        "startLine": 960,
+        "endLine": 970
       },
       "contentHash": "c0228b3378dc645f"
     },
@@ -46425,8 +46496,8 @@
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 952,
-        "endLine": 956
+        "startLine": 974,
+        "endLine": 978
       },
       "contentHash": "6e799257f8bfb57a"
     },
@@ -46436,9 +46507,14 @@
       "parentId": null,
       "question": "Trick: Will `map` execute if no one subscribes?",
       "prompt": null,
-      "answer": "**No.** Operators are lazy — they only run when there's an active subscription.",
+      "answer": "**No.** Operators are lazy — they only run when there's an active subscription.\n\n```ts\nconst n$ = of(1, 2).pipe(map(x => { console.log('mapping', x); return x * 2; }));\n// nothing is logged yet\nn$.subscribe(); // now 'mapping 1', 'mapping 2'\n```\n\n- Same for HTTP: `http.get()` sends no request until something subscribes (or the `async` pipe does).",
       "summary": "No. Operators are lazy — they only run when there's an active subscription.",
-      "codeBlocks": [],
+      "codeBlocks": [
+        {
+          "language": "ts",
+          "code": "const n$ = of(1, 2).pipe(map(x => { console.log('mapping', x); return x * 2; }));\n// nothing is logged yet\nn$.subscribe(); // now 'mapping 1', 'mapping 2'"
+        }
+      ],
       "visuals": [],
       "contentType": "interview",
       "domain": "frontend",
@@ -46460,10 +46536,10 @@
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 962,
-        "endLine": 966
+        "startLine": 984,
+        "endLine": 996
       },
-      "contentHash": "381d2a66bc8fdf01"
+      "contentHash": "465474b81db70cdd"
     },
     {
       "id": "interview/frontend/06-RxJS.md#trick-does-tap-change-the-emitted-values",
@@ -46471,7 +46547,7 @@
       "parentId": null,
       "question": "Trick: Does `tap` change the emitted values?",
       "prompt": null,
-      "answer": "**No.** It's strictly for side effects; the original values pass through unchanged.",
+      "answer": "**No.** It's strictly for side effects; the original values pass through unchanged.\n\n- Typical uses: logging, debugging, or setting a loading flag: `tap(() => this.loading = false)`.\n- Whatever `tap` returns is ignored; to change values use `map`.\n- Careful: mutating an object inside `tap` (`tap(u => u.name = 'x')`) does change it for everyone — avoid that.",
       "summary": "No. It's strictly for side effects; the original values pass through unchanged.",
       "codeBlocks": [],
       "visuals": [],
@@ -46495,10 +46571,10 @@
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 970,
-        "endLine": 974
+        "startLine": 1000,
+        "endLine": 1008
       },
-      "contentHash": "330508c76f5dc049"
+      "contentHash": "9b60e69cc69145fe"
     },
     {
       "id": "interview/frontend/06-RxJS.md#trick-interval-1000-pipe-take-0-does-it-emit-anything",
@@ -46506,7 +46582,7 @@
       "parentId": null,
       "question": "Trick: `interval(1000).pipe(take(0))` — does it emit anything?",
       "prompt": null,
-      "answer": "**No.** `take(0)` completes immediately with zero emissions.",
+      "answer": "**No.** `take(0)` completes immediately with zero emissions.\n\n- It completes as soon as you subscribe, so `interval` never even starts its timer.\n- `take(n)` emits the first n values and then completes, which also stops endless sources like `interval`: `take(3)` gives 0, 1, 2 and ends.",
       "summary": "No. take(0) completes immediately with zero emissions.",
       "codeBlocks": [],
       "visuals": [],
@@ -46532,10 +46608,10 @@
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 978,
-        "endLine": 982
+        "startLine": 1012,
+        "endLine": 1019
       },
-      "contentHash": "c46fe0790f1185e6"
+      "contentHash": "3f425fcfb43ca24d"
     },
     {
       "id": "interview/frontend/06-RxJS.md#trick-from-1-2-3-pipe-switchmap-x-of-x-can-any-values-be",
@@ -46543,7 +46619,7 @@
       "parentId": null,
       "question": "Trick: `from([1,2,3]).pipe(switchMap(x => of(x)))` — can any values be cancelled?",
       "prompt": null,
-      "answer": "**No.** `of(x)` completes synchronously, so `switchMap` doesn't have time to cancel — every value emerges.",
+      "answer": "**No.** `of(x)` completes synchronously, so `switchMap` doesn't have time to cancel — every value emerges.\n\n- `switchMap` cancels only an inner observable that is **still running** when the next value arrives.\n- With async inner work it does cancel: `switchMap(x => timer(100).pipe(map(() => x)))` emits only 3, because 1 and 2 are cancelled before their timers fire.",
       "summary": "No. of(x) completes synchronously, so switchMap doesn't have time to cancel — every value emerges.",
       "codeBlocks": [],
       "visuals": [],
@@ -46564,14 +46640,15 @@
         "values",
         "cancelled",
         "no",
+        "still running",
         "rxjs"
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 986,
-        "endLine": 990
+        "startLine": 1023,
+        "endLine": 1030
       },
-      "contentHash": "f5a8df18bf2c1df1"
+      "contentHash": "a1fb9c8e6d80957d"
     },
     {
       "id": "interview/frontend/06-RxJS.md#trick-share-vs-sharereplay-1-for-http-caching",
@@ -46603,8 +46680,8 @@
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 994,
-        "endLine": 1001
+        "startLine": 1034,
+        "endLine": 1041
       },
       "contentHash": "41f7cdfb53f633c1"
     },
@@ -46647,8 +46724,8 @@
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 1007,
-        "endLine": 1021
+        "startLine": 1047,
+        "endLine": 1061
       },
       "contentHash": "ec96b7fff296bf59"
     },
@@ -46688,8 +46765,8 @@
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 1025,
-        "endLine": 1049
+        "startLine": 1065,
+        "endLine": 1089
       },
       "contentHash": "93613afd5eac84b2"
     },
@@ -46732,8 +46809,8 @@
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 1053,
-        "endLine": 1066
+        "startLine": 1093,
+        "endLine": 1106
       },
       "contentHash": "b367c9b713b76d93"
     },
@@ -46774,8 +46851,8 @@
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 1070,
-        "endLine": 1078
+        "startLine": 1110,
+        "endLine": 1118
       },
       "contentHash": "e200abf172d00fc0"
     },
@@ -46815,8 +46892,8 @@
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 1082,
-        "endLine": 1093
+        "startLine": 1122,
+        "endLine": 1133
       },
       "contentHash": "a7b0c18b16129a8f"
     },
@@ -46857,8 +46934,8 @@
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 1097,
-        "endLine": 1117
+        "startLine": 1137,
+        "endLine": 1157
       },
       "contentHash": "2e2e13592e58f1fd"
     },
@@ -46898,8 +46975,8 @@
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 1121,
-        "endLine": 1127
+        "startLine": 1161,
+        "endLine": 1167
       },
       "contentHash": "c2d7fc7817c65853"
     },
@@ -46936,8 +47013,8 @@
       ],
       "source": {
         "path": "interview/frontend/06-RxJS.md",
-        "startLine": 1131,
-        "endLine": 1172
+        "startLine": 1171,
+        "endLine": 1212
       },
       "contentHash": "2a93929c314c71ce"
     },
@@ -49495,7 +49572,7 @@
       "parentId": null,
       "question": "Tricky: Should you test private methods?",
       "prompt": null,
-      "answer": "No — test them **through the public methods** that use them. If a private method feels like it needs its own tests, it probably belongs in its own class.",
+      "answer": "No — test them **through the public methods** that use them. If a private method feels like it needs its own tests, it probably belongs in its own class.\n\n- Tests that call private methods (through reflection) break whenever you refactor, even when the behaviour is still correct.\n- Example: `calculateDiscount()` is private inside `OrderService` — test `placeOrder()` with inputs that should get a discount and check the total.\n- If the logic is complex, move it to its own class (for example, `DiscountPolicy`) with public methods and test that directly.",
       "summary": "No — test them through the public methods that use them. If a private method feels like it needs its own tests, it probably belongs in its own class.",
       "codeBlocks": [],
       "visuals": [],
@@ -49519,9 +49596,9 @@
       "source": {
         "path": "interview/testing/01-Testing.md",
         "startLine": 363,
-        "endLine": 367
+        "endLine": 371
       },
-      "contentHash": "456147b176d852cc"
+      "contentHash": "9418235e61a08339"
     },
     {
       "id": "interview/testing/01-Testing.md#tricky-why-can-too-many-mocks-be-a-problem",
@@ -49552,8 +49629,8 @@
       ],
       "source": {
         "path": "interview/testing/01-Testing.md",
-        "startLine": 371,
-        "endLine": 375
+        "startLine": 375,
+        "endLine": 379
       },
       "contentHash": "3e81686d834257eb"
     },
@@ -49587,8 +49664,8 @@
       ],
       "source": {
         "path": "interview/testing/01-Testing.md",
-        "startLine": 379,
-        "endLine": 383
+        "startLine": 383,
+        "endLine": 387
       },
       "contentHash": "6bb93f96b430d340"
     },

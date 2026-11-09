@@ -10,7 +10,7 @@ import { topicLabel } from "./topic-labels.js";
 import { topicSlug } from "./roadmap-generator.js";
 
 /** Picker groups, in the order a candidate usually prepares them (basics before frameworks, HR last). */
-const LAYERS: Array<[string, string[]]> = [
+export const LAYERS: Array<[string, string[]]> = [
   ["Frontend", ["html", "css", "javascript", "typescript", "angular", "react", "rxjs", "web-vitals"]],
   ["Backend", ["java", "spring", "spring-security", "nodejs", "rest-api", "microservices", "spring-cloud", "messaging"]],
   ["Data", ["database/sql", "caching"]],
