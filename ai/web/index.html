@@ -97,16 +97,12 @@
       </div>
 
       <nav class="side-scroll" aria-label="Topics and history">
-        <ul class="nav-list primary-nav" id="primary-list" aria-label="Start here"></ul>
+        <div class="atlas-entry" id="atlas-entry"></div>
+        <ul class="nav-list primary-nav" id="primary-list" aria-label="Glossary and roadmaps"></ul>
         <details class="side-section" data-section="topics" open>
           <summary><svg class="icon chevron"><use href="#i-chevron"></use></svg>Topics</summary>
           <p class="side-intro">Interview questions and notes for each technology. Pick one to see its main sections first.</p>
           <ul class="nav-list" id="topic-list"></ul>
-        </details>
-        <details class="side-section" data-section="atlas">
-          <summary><svg class="icon chevron"><use href="#i-chevron"></use></svg>Career atlas</summary>
-          <p class="side-intro">Understand the IT industry: job roles, the tech stack, salaries, working abroad and roadmaps.</p>
-          <ul class="nav-list" id="atlas-list"></ul>
         </details>
         <details class="side-section" data-section="recent" open>
           <summary><svg class="icon chevron"><use href="#i-chevron"></use></svg>Recent chats</summary>
@@ -137,7 +133,11 @@
       <form class="composer" id="composer" autocomplete="off">
         <div class="slash-menu" id="slash-menu" role="listbox" hidden></div>
         <div class="composer-box">
-          <textarea id="input" rows="1" placeholder="Ask a question…" aria-label="Message"></textarea>
+          <div class="input-wrap">
+            <div class="ghost" id="ghost" aria-hidden="true"><span class="ghost-typed"></span><span class="ghost-rest"></span><kbd class="ghost-key">Tab</kbd></div>
+            <textarea id="input" rows="1" placeholder="Ask a question…" aria-label="Message" aria-describedby="ghost-hint"></textarea>
+            <span class="sr-only" id="ghost-hint" aria-live="polite"></span>
+          </div>
           <div class="composer-bar">
             <div class="composer-tools">
               <button class="tool-btn" type="button" data-action="slash" title="Commands"><span class="slash">/</span><span class="tool-label">Commands</span></button>

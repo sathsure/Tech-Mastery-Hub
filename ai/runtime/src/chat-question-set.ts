@@ -133,7 +133,9 @@ export function isQuestionSetRequest(message: string): boolean {
   if (!/\binterview/.test(text)) return false;
   const asksForSet = /\b(question set|set of (interview )?questions|question bank|question paper|questionnaire)\b/.test(text);
   const interviewerSide = /\b(to interview (a|an|the|my|our)|for interviewing|interviewing (a|an|the)|as (an|the) interviewer|interviewer|interview panel|to hire|hiring|candidates?|questions to ask)\b/.test(text);
-  return asksForSet || (interviewerSide && /\bquestions?\b/.test(text));
+  // "Prepare interview questions for Java", "Create interview questions for a 13+ years person".
+  const preparesQuestions = /\b(prepare|create|generate|make|build|draft|frame|design|set up)\b(?!\s+me\b)[^.?!]*\binterview questions?\b/.test(text);
+  return asksForSet || preparesQuestions || (interviewerSide && /\bquestions?\b/.test(text));
 }
 
 interface Detected {
@@ -165,13 +167,25 @@ function detect(message: string): Detected {
   };
 }
 
+/** 10 years and more keep the exact number asked for ("13+ years"); fewer fall in a range. */
 function experienceFor(years: number): string {
-  if (years >= 15) return "15+ years";
-  if (years >= 12) return "12+ years";
-  if (years >= 10) return "10+ years";
+  if (years >= 10) return `${years}+ years`;
   if (years >= 6) return "6–9 years";
   if (years >= 3) return "3–5 years";
   return "0–2 years";
+}
+
+/** The experience choices, with the asked-for number added when it is not one of them. */
+function experienceOptions(years: number | null): Option[] {
+  if (years === null || EXPERIENCE.some(option => option.label === experienceFor(years))) return EXPERIENCE;
+  return [...EXPERIENCE, { label: experienceFor(years), years }].sort((a, b) => a.years! - b.years!);
+}
+
+/** "13+ years" -> 13, "3–5 years" -> 4; null for anything else. */
+function yearsOfLabel(label: string): number | null {
+  const plus = /^(\d{1,2})\+ years$/.exec(label);
+  if (plus) return Number(plus[1]);
+  return EXPERIENCE.find(option => option.label === label)?.years ?? null;
 }
 
 function seniorityOf(years: number): Seniority {
@@ -220,7 +234,7 @@ export function questionSetSetup(message: string): string {
   const role = ROLES.find(item => item.label === found.role);
   // Stack choices: only the layers this role works in, plus anything the request named.
   const stackOptions = STACK.filter(item => !role || role.layers.includes(item.layer) || found.stack.includes(item.label));
-  const titleParts = [found.role ?? "Software Engineer", years === null ? null : experienceFor(years), found.company ? `for ${found.company}` : null].filter(Boolean);
+  const titleParts = [found.role ?? (found.stack.length === 1 ? `${found.stack[0]} Developer` : "Software Engineer"), years === null ? null : experienceFor(years), found.company ? `for ${found.company}` : null].filter(Boolean);
   let categories = seniority ? defaultCategories(seniority, found.role, found.stack, found.companyType) : [];
   const focus = seniority ? defaultFocus(seniority, found.role) : [];
   const duration = durationFor(found);
@@ -242,11 +256,13 @@ export function questionSetSetup(message: string): string {
   const group = (heading: string, hint: string, options: Option[], ticked: (option: Option) => boolean) => {
     lines.push("", `**${heading}** — ${hint}`, "", ...options.map(option => box(option.label, ticked(option))));
   };
-  if (years === null) group("Experience", "pick one", EXPERIENCE, () => false);
-  else group("Experience", "pick one", EXPERIENCE, option => option.label === experienceFor(years));
+  group("Experience", years === null ? "how many years? pick one" : "pick one", experienceOptions(years), option => years !== null && option.label === experienceFor(years));
   group("Role", "pick one", ROLES, option => option.label === found.role);
-  group("Tech stack", "tick everything the job uses", stackOptions, option => found.stack.includes(option.label));
-  group("Interview duration", "pick one", DURATIONS, option => option.label === duration);
+  const stackHint = found.stack.length
+    ? `${found.stack.join(", ")} ${found.stack.length > 1 ? "are" : "is"} ticked — need any other skills on top? Tick them too`
+    : "which skills should the interview cover? Tick all that apply";
+  group("Tech stack", stackHint, stackOptions, option => found.stack.includes(option.label));
+  group("Interview duration", duration ? "pick one" : "how many minutes? pick one", DURATIONS, option => option.label === duration);
   group("Question categories", "untick what you want to leave out", CATEGORIES, option => categories.includes(CATEGORIES.find(item => item.label === option.label)!.id));
   group("Difficulty", "pick one", DIFFICULTIES, option => years !== null && option.label === difficultyFor(years));
   group("Company type", "optional", COMPANY_TYPES, option => option.label === found.companyType);
@@ -279,7 +295,7 @@ function readSettings(plan: PlanRequest): Settings {
   const title = plan.title.startsWith(SETUP_PREFIX) ? plan.title.slice(SETUP_PREFIX.length) : "";
   const company = /\bfor (.+)$/.exec(title.split(" · ").find(part => part.startsWith("for ")) ?? "")?.[1] ?? null;
   // Several ticks in a "pick one" group: the most senior / longest one wins.
-  const years = Math.max(0, ...byLabel(EXPERIENCE, labels).map(option => option.years!)) || detect(title).years || 5;
+  const years = Math.max(0, ...labels.map(yearsOfLabel).filter((value): value is number => value !== null)) || detect(title).years || 5;
   const role = byLabel(ROLES, labels).map(option => option.label)[0] ?? title.split(" · ")[0] ?? "Software Engineer";
   const stack = byLabel(STACK, labels);
   const duration = byLabel(DURATIONS, labels).sort((a, b) => (b.rounds ?? 1) * b.minutes! - (a.rounds ?? 1) * a.minutes!)[0] ?? DURATIONS[2];
@@ -426,6 +442,8 @@ const GENERAL_TOPICS = new Set(["dsa", "leadership", "agile", "system-design", "
 /** An entry fits the stack when it is about a chosen topic, or only about general skills any engineer needs. */
 function stackFits(entry: QuestionEntry, settings: Settings, category: CategoryId): boolean {
   if (category === "coding") return codingFits(entry, settings);
+  // Algorithm problems are the same in any language (the LeetCode notes happen to be tagged Python).
+  if (category === "dsa") return true;
   if (category === "core") return entry.topics.some(topic => settings.topics.includes(topic));
   if (!settings.topics.length) return true;
   return entry.topics.some(topic => settings.topics.includes(topic)) || entry.topics.every(topic => GENERAL_TOPICS.has(topic));
@@ -443,17 +461,27 @@ function levelRank(entry: QuestionEntry, wanted: Level): number {
 const MAX_QUESTION_LENGTH = 160;
 
 /** Picks questions for every slot: best difficulty fit, spread across the chosen stacks, no repeats. */
-function chooseQuestions(entries: QuestionEntry[], slots: Slot[], settings: Settings, used = new Set<string>()): Map<Slot, QuestionEntry[]> {
+function chooseQuestions(entries: QuestionEntry[], slots: Slot[], settings: Settings, used = new Set<string>(), variety?: Variety): Map<Slot, QuestionEntry[]> {
   const chosen = new Map<Slot, QuestionEntry[]>();
   const pool = entries.filter(entry => entry.kind === "question" && !isContextQuestion(entry) && entry.question.length <= MAX_QUESTION_LENGTH && entry.answer.trim().length > 40);
+  // Another set: questions from earlier sets go last (used only when nothing new is left), the rest in random order.
+  const seen = (entry: QuestionEntry) => (variety?.avoid.has(entry.question) ? 1 : 0);
+  const order = new Map(variety ? pool.map(entry => [entry.id, Math.random()]) : []);
+  const position = (a: QuestionEntry, b: QuestionEntry) =>
+    variety ? order.get(a.id)! - order.get(b.id)! : a.source.path.localeCompare(b.source.path) || a.source.startLine - b.source.startLine;
   for (const slot of slots) {
     const id = slot.category.id;
-    const candidates = pool
-      .filter(entry => SOURCES[id](entry) && stackFits(entry, settings, id) && levelRank(entry, settings.level) < 9)
-      .sort((a, b) => levelRank(a, settings.level) - levelRank(b, settings.level) || a.source.path.localeCompare(b.source.path) || a.source.startLine - b.source.startLine);
+    const fitting = pool.filter(entry => SOURCES[id](entry) && stackFits(entry, settings, id));
+    // Near the asked level first; when the notes only have harder ones (design and scenarios are mostly
+    // advanced), use those rather than leave the section empty. Each question shows its own level.
+    const nearLevel = fitting.filter(entry => levelRank(entry, settings.level) < 9);
+    const candidates = (nearLevel.length ? nearLevel : fitting)
+      .sort((a, b) => seen(a) - seen(b) || levelRank(a, settings.level) - levelRank(b, settings.level) || position(a, b));
     const picks: QuestionEntry[] = [];
     // Core questions rotate through the chosen stacks; other categories through their source files, so a set mixes material.
     const byFile = [...new Set(candidates.map(entry => entry.source.path))].map(path => candidates.filter(entry => entry.source.path === path));
+    // Files in random order too, so another set does not always start from the same notes.
+    if (variety) byFile.sort((a, b) => seen(a[0]) - seen(b[0]) || order.get(a[0].id)! - order.get(b[0].id)!);
     // When leadership is a focus, the leadership notes lead the behavioural section.
     if (settings.focus.includes("Technical leadership")) byFile.sort((a, b) => Number(b[0].source.path.startsWith("interview/leadership/")) - Number(a[0].source.path.startsWith("interview/leadership/")));
     const groups = id === "core" ? settings.topics.map(topic => candidates.filter(entry => entry.topics[0] === topic)).filter(group => group.length) : byFile;
@@ -572,9 +600,15 @@ async function questionBlock(entry: QuestionEntry, number: number, slot: Slot, s
   return lines;
 }
 
-/** The question set for the ticked options. */
-export async function buildQuestionSet(plan: PlanRequest): Promise<string> {
+interface Variety {
+  /** Questions already shown in earlier sets. */
+  avoid: Set<string>;
+}
+
+/** The question set for the ticked options. `avoid`: questions from earlier sets; the new set picks others at random. */
+export async function buildQuestionSet(plan: PlanRequest, avoid?: Set<string>): Promise<string> {
   const settings = readSettings(plan);
+  const variety: Variety | undefined = avoid ? { avoid } : undefined;
   const { entries } = await loadQuestionIndex();
   const header = `**Interview question set: ${settings.role} · ${experienceFor(settings.years)}${settings.company ? ` · for ${settings.company}` : ""}**`;
   const lines = [header, "", ...settingsTable(settings), ""];
@@ -590,7 +624,7 @@ export async function buildQuestionSet(plan: PlanRequest): Promise<string> {
   const used = new Set<string>();
   for (const round of rounds) {
     const { slots, intro, close, dropped } = allocate(round.categories, settings.minutes, settings);
-    const chosen = chooseQuestions(entries, slots, settings, used);
+    const chosen = chooseQuestions(entries, slots, settings, used, variety);
     if (round.name) lines.push(`### ${round.name} (${settings.minutes} min)`, "");
     lines.push("**Time plan**", "", "| Part | Time | Questions |", "|---|---|---|", `| Intro${settings.seniority === "junior" ? "" : " + recent project walkthrough"} | ${intro} min | — |`);
     for (const slot of slots) lines.push(`| ${slot.category.label} | ${slot.minutes} min | ${chosen.get(slot)?.length ?? 0} |`);
@@ -604,7 +638,7 @@ export async function buildQuestionSet(plan: PlanRequest): Promise<string> {
       const picks = chosen.get(slot) ?? [];
       lines.push(`#### ${slot.category.label} · ${slot.minutes} min`, "");
       if (!picks.length) {
-        lines.push(`_Your notes have no ${slot.category.label.toLowerCase()} questions for this stack and level yet. Use your own, or widen the stack._`, "");
+        lines.push(`_Your notes have no ${slot.category.label.toLowerCase()} questions for this stack and level yet — they will be added in a future update. Until then, use your own or widen the stack._`, "");
         continue;
       }
       // The first half of each section is must-ask; the rest can go if time runs short.
@@ -633,7 +667,50 @@ export async function buildQuestionSet(plan: PlanRequest): Promise<string> {
     "",
     `**Suggested bar:** ${settings.seniority === "junior" ? "average 2.5+ with working code" : settings.seniority === "mid" ? "average 3+ and no 1s in core topics" : "average 3+, at least one 4 in design or architecture, and no 1s"}. Write notes against each question during the interview, not after.`,
     "",
-    "_Questions come from your notes, so expected answers are only as current as the notes. Tick different options above and build again to change the set._",
+    `_Questions come from your notes, so expected answers are only as current as the notes. Ask for "${ANOTHER_SET}" to get different questions with the same settings._`,
   );
   return lines.join("\n");
+}
+
+// ---------- Another set with the same settings ----------
+
+/** The chip offered after a question set. */
+export const ANOTHER_SET = "Generate another set of these interview questions";
+
+/** "Generate another set", "more questions like these", "a different set". */
+export function isAnotherSetRequest(message: string): boolean {
+  const text = message.toLowerCase();
+  return /\b(another|new|different|more|next|fresh|other)\b/.test(text) && /\b(set|questions?|batch)\b/.test(text);
+}
+
+const SETTING_ROW = /^\| (Role|Experience|Tech stack|Duration|Difficulty|Company|Focus) \| (.+) \|$/;
+
+/**
+ * Rebuilds the settings of the latest question set in the conversation from its own text (its settings
+ * table and time plan), so "another set" needs nothing stored. Also returns every question already asked.
+ */
+export function previousQuestionSet(answers: string[]): { plan: PlanRequest; asked: Set<string> } | null {
+  const sets = answers.filter(text => text.startsWith(`**${SETUP_PREFIX}`) && text.includes("| Setting | Choice |"));
+  const last = sets.at(-1);
+  if (!last) return null;
+  // The history comes from the browser: keep to the same limits as a plan sent directly.
+  const header = (/^\*\*Interview question set: (.+?)\*\*/.exec(last)?.[1] ?? "").slice(0, 160);
+  const labels: string[] = [];
+  for (const line of last.split("\n")) {
+    const row = SETTING_ROW.exec(line.trim());
+    if (row) {
+      const [, name, value] = row;
+      if (name === "Tech stack" || name === "Focus") labels.push(...value.split(", "));
+      else if (name === "Company") labels.push(...value.split(" — "));
+      else labels.push(value);
+      continue;
+    }
+    // Categories: the time plan rows, and any that did not fit.
+    const category = CATEGORIES.find(item => line.startsWith(`| ${item.label} |`));
+    if (category) labels.push(category.label);
+    const dropped = /^_Not enough time for: \*\*(.+?)\*\*/.exec(line);
+    if (dropped) labels.push(...dropped[1].split(", "));
+  }
+  const asked = new Set(sets.flatMap(text => [...text.matchAll(/^\*\*Q\d+\. (.+?)\*\* {0,2}$/gm)].map(match => match[1])));
+  return { plan: { title: `${SETUP_PREFIX}${header}`, items: [...new Set(labels)].slice(0, 60).map(label => ({ label: label.slice(0, 200) })), kind: "question-set" }, asked };
 }

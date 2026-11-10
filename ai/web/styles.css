@@ -319,6 +319,17 @@ a.src-btn { text-decoration: none; }
 .composer-box:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-subtle); }
 .composer textarea { display: block; width: 100%; min-height: 24px; max-height: 200px; resize: none; border: 0; outline: 0; background: transparent; font-size: 15px; line-height: 1.5; }
 .composer textarea::placeholder { color: var(--muted); }
+.composer textarea.has-ghost::placeholder { color: transparent; }
+/* Suggested next words, drawn behind the (transparent) textarea in the same font and wrapping. */
+.input-wrap { position: relative; }
+.composer .input-wrap textarea { position: relative; z-index: 1; padding: 0; }
+.ghost { position: absolute; inset: 0; z-index: 0; overflow: hidden; padding: 0; font-size: 15px; line-height: 1.5; white-space: pre-wrap; overflow-wrap: break-word; pointer-events: none; }
+.ghost[hidden] { display: none; }
+.ghost-typed { color: transparent; }
+.ghost-rest { color: var(--muted); opacity: 0.85; }
+.ghost-key { margin-left: 6px; padding: 0 5px; border: 1px solid var(--border); border-radius: 4px; font-size: 10.5px; color: var(--muted); vertical-align: 1px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+@media (max-width: 760px) { .ghost { font-size: 16px; } .ghost-key { display: none; } }
 .composer-bar { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 8px; }
 .composer-tools { display: flex; align-items: center; gap: 6px; min-width: 0; }
 .tool-btn, .topic-filter { display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 10px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--bg); color: var(--text-2); font-size: 13px; }
@@ -585,6 +596,21 @@ html.theming .thread { view-transition-name: none; }
 .mode { padding: 1px 8px; border: 1px solid var(--border); border-radius: 999px; font-size: 12px; }
 .primary-nav { margin: 2px 0 8px; padding-bottom: 8px; border-bottom: 1px solid var(--border-muted); }
 .primary-nav .nav-item { font-weight: 500; color: var(--text); }
+
+/* Career Atlas: one card that opens a page of many sections (count badge + arrow). */
+.atlas-entry { margin: 2px 0 8px; padding-bottom: 10px; border-bottom: 1px solid var(--border-muted); }
+.atlas-card { display: flex; align-items: center; gap: 10px; width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--accent-subtle); color: var(--text); text-align: left; transition: border-color var(--fast), box-shadow var(--fast), transform var(--fast) var(--ease); }
+.atlas-card:hover { border-color: var(--accent); box-shadow: var(--shadow-sm); }
+.atlas-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.atlas-card-ic { display: grid; place-items: center; flex: none; width: 32px; height: 32px; border-radius: 8px; background: var(--brand); color: #fff; }
+.atlas-card-ic .icon { width: 17px; height: 17px; }
+.atlas-card-text { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+.atlas-card-title { font-size: 14px; font-weight: 600; }
+.atlas-card-sub { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 11.5px; color: var(--muted); }
+.atlas-card-count { flex: none; min-width: 22px; padding: 1px 6px; border-radius: 999px; background: var(--bg); border: 1px solid var(--border); font-size: 11px; font-weight: 600; text-align: center; color: var(--text-2); }
+.atlas-card-go { flex: none; width: 16px; height: 16px; color: var(--muted); transition: transform var(--fast) var(--ease), color var(--fast); }
+.atlas-card:hover .atlas-card-go { color: var(--accent); transform: translateX(2px); }
+@media (max-width: 760px) { .atlas-card { min-height: 52px; } }
 .forward-btn { width: 32px; height: 32px; }
 
 .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; margin: 12px 0; }

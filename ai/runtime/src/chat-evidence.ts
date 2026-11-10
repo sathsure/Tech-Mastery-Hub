@@ -94,11 +94,15 @@ export function checkGrounding(answer: string, evidence: Evidence[]): Grounding 
  * Answer built only from the notes: used when no AI model is configured, or when the model fails.
  * Everything here is quoted from the repository; the Sources link shows where it came from.
  */
+/** Said wherever the notes have no answer yet. */
+export const COMING_SOON = "_This answer isn't in the notes yet — it will be added in a future update._";
+
 export function composeRepositoryAnswer(search: SearchResult, evidence: Evidence[]): string {
   if (!evidence.length) {
     const topics = search.suggestions.topics.slice(0, 6).map(topic => askLink(topicLabel(topic), `Explore ${topicLabel(topic)}`)).join(", ");
     return [
       "I couldn't find this in your notes, so I won't guess an answer.",
+      COMING_SOON,
       topics ? `Topics your notes do cover: ${topics}.` : "",
       search.suggestions.questions.length ? ["Questions that might be close:", ...search.suggestions.questions.slice(0, 3).map(item => `- ${askLink(item.question, item.question)}`)].join("\n") : "",
     ].filter(Boolean).join("\n\n");
@@ -107,7 +111,11 @@ export function composeRepositoryAnswer(search: SearchResult, evidence: Evidence
   // A weak match is not an answer: say so and offer the closest entries instead of showing one as if it were.
   if (search.confidence === "low") {
     return [
-      "Your notes don't answer this directly. The closest entries are:",
+      "Your notes don't answer this directly yet.",
+      "",
+      COMING_SOON,
+      "",
+      "The closest entries are:",
       "",
       ...evidence.slice(0, 4).map(item => `- ${askLink(conciseTitle(item), item.question)}`),
     ].join("\n");
@@ -121,7 +129,7 @@ export function composeRepositoryAnswer(search: SearchResult, evidence: Evidence
 
   // The best match only; related entries are offered as follow-up questions.
   const [top] = evidence;
-  const body = top.answer ?? top.summary;
+  const body = (top.answer ?? top.summary).trim() || COMING_SOON;
   const intro = search.confidence === "medium" ? "_Closest entry in your notes; it may not cover everything you asked._\n\n" : "";
   const title = `**${conciseTitle(top)}**`;
   // Glossary answers already open with the term in bold.
@@ -140,6 +148,8 @@ export function withoutTrailingParentheses(text: string): string {
   return result;
 }
 
+const article = (word: string) => (/^[aeiou]/i.test(word) ? "an" : "a");
+
 /** Suggestions in front (prepend) and behind (append) the shared ones. */
 interface FollowUpParts {
   first: string[];
@@ -149,14 +159,14 @@ interface FollowUpParts {
 function roadmapFollowUps(top: Evidence): FollowUpParts {
   const last = top.relatedTopics.slice(0, 2).map(topic => `Prepare me for a ${topicLabel(topic)} interview`);
   const role = top.question.startsWith("Roadmap: ") ? top.question.slice("Roadmap: ".length) : null;
-  if (role) return { first: [`${role} salary in India (LPA)`, `What does a ${role} do?`], last };
+  if (role) return { first: [`${role} salary in India (LPA)`, `What does ${article(role)} ${role} do?`], last };
   if (top.topics[0] && top.topics[0] !== "roadmaps") last.push(`Quiz me on ${topicLabel(top.topics[0])}`);
   return { first: [], last };
 }
 
 function roleFollowUps(top: Evidence): FollowUpParts {
   const role = withoutTrailingParentheses(top.question.replace(/^What does an? /, "").replace(/ do\?$/, ""));
-  return { first: [`Roadmap to become a ${role}`, `${role} salary in India (LPA)`], last: [] };
+  return { first: [`Roadmap to become ${article(role)} ${role}`, `${role} salary in India (LPA)`], last: [] };
 }
 
 /** Career and salary notes: diagrams and mock interviews don't fit; offer the role itself. */
@@ -164,7 +174,7 @@ function careerFollowUps(top: Evidence): FollowUpParts {
   if (isCountryNote(top)) return { first: ["Which countries can I work in from India?", "How to actually get an interview abroad"], last: [] };
   const colon = top.question.indexOf(": ");
   const role = colon >= 0 ? withoutTrailingParentheses(top.question.slice(colon + 2)) : "";
-  const last = role && top.topics.includes("it-careers") ? [`What does a ${role} do?`, `Roadmap to become a ${role}`] : [];
+  const last = role && top.topics.includes("it-careers") ? [`What does ${article(role)} ${role} do?`, `Roadmap to become ${article(role)} ${role}`] : [];
   return { first: [], last };
 }
 
@@ -219,5 +229,6 @@ export function suggestFollowUps(search: SearchResult, evidence: Evidence[], fol
     if ([...asked, ...unique].some(other => sameQuestion(text, other))) continue;
     unique.push(text);
   }
-  return unique.slice(0, 4);
+  // A few spare: the chat drops any that would only open this answer again.
+  return unique.slice(0, 8);
 }

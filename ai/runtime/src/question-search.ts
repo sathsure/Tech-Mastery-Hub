@@ -261,7 +261,12 @@ interface Engine {
   entities: Map<string, number[]>;
   maxEntityWords: number;
   topicAliasKeys: Set<string>;
+  /** Question text, lower case and letters/digits only → doc positions, for questions asked word for word. */
+  questions: Map<string, number[]>;
 }
+
+/** "What is a token?" → "what is a token": how a question is matched word for word. */
+export const questionKey = (text: string) => text.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
 
 let engine: Engine | null = null;
 
@@ -304,7 +309,11 @@ function buildEngine(index: QuestionIndex, vocabulary: Vocabulary): Engine {
   for (const doc of docs) for (const term of doc.all) documentFrequency.set(term, (documentFrequency.get(term) ?? 0) + 1);
 
   const topicAliasKeys = new Set(Object.values(vocabulary.topicAliases).flat().map(entityKey));
-  const partial: Engine = { index, vocabulary, docs, documentFrequency, branches: [], topicNames: [], topicCounts: new Map(), entities: new Map(), maxEntityWords: 1, topicAliasKeys };
+  const partial: Engine = { index, vocabulary, docs, documentFrequency, branches: [], topicNames: [], topicCounts: new Map(), entities: new Map(), maxEntityWords: 1, topicAliasKeys, questions: new Map() };
+  docs.forEach((doc, position) => {
+    const key = questionKey(doc.entry.question);
+    if (key) partial.questions.set(key, [...(partial.questions.get(key) ?? []), position]);
+  });
   docs.forEach((doc, position) => {
     for (const name of doc.entry.names ?? []) {
       const key = entityKey(name);
@@ -852,11 +861,42 @@ function confidenceOf(top: Scored | undefined, primaryCount: number): SearchConf
   return "low";
 }
 
+/**
+ * Entries whose question is exactly the query ("What is a token?" clicked in an overview). Topic words in such
+ * a question ("token", "AI agent") must not turn it into a topic overview or a search in another topic.
+ * Several entries can share a question: the filtered topic first, then questions, then interview notes.
+ */
+function exactQuestions(engineRef: Engine, query: string, options: SearchOptions): Doc[] {
+  const positions = engineRef.questions.get(questionKey(query)) ?? [];
+  const topic = options.topic?.trim().toLowerCase();
+  const rank = (doc: Doc) =>
+    (topic && doc.entry.topics.includes(topic) ? 0 : 4) + (doc.entry.kind === "question" ? 0 : 2) + (doc.entry.source.path.startsWith("interview/") ? 0 : 1);
+  return positions
+    .map(position => engineRef.docs[position])
+    .filter(doc => (!options.kinds || options.kinds.includes(doc.entry.kind)) && doc.entry.kind !== "roadmap")
+    .sort((a, b) => rank(a) - rank(b));
+}
+
 export function searchQuestions(query: string, options: SearchOptions = {}): SearchResult {
   const engineRef = getEngine();
   const limit = Math.min(Math.max(options.limit ?? 8, 1), 50);
   const parsed = parseQuery(query, engineRef, options.topic?.trim().toLowerCase() || undefined);
   const result = searchParsed(engineRef, query, parsed, limit, options);
+  const exact = exactQuestions(engineRef, query, options);
+  // A role or term found by its name is already pinned first below.
+  const firstPinned = parsed.pinned.length ? engineRef.docs[parsed.pinned[0]] : null;
+  if (exact.length && firstPinned !== exact[0]) {
+    const top = Math.max(0, ...result.hits.map(hit => hit.score)) + 1;
+    const ids = new Set(exact.map(doc => doc.entry.id));
+    const hits = exact.map(doc => toHit({ doc, score: top, coverage: 1, matched: [] }));
+    return {
+      ...result,
+      mode: "search",
+      confidence: "high",
+      hits: [...hits, ...(result.mode === "search" ? result.hits.filter(hit => !ids.has(hit.id)) : [])].slice(0, limit),
+      suggestions: { topics: [], questions: [] },
+    };
+  }
   if (!parsed.pinned.length) return result;
   // Named roles/terms go first; the rest of the results show what is related to them.
   const pins = parsed.pinned.map(position => toHit({ doc: engineRef.docs[position], score: (result.hits[0]?.score ?? 0) + 1, coverage: 1, matched: [] }, "name"));

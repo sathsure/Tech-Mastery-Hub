@@ -1,4 +1,4 @@
-import { fetchCatalog, fetchEntry, searchNotes, streamChat } from "./api.js";
+import { fetchCatalog, fetchEntry, searchNotes, streamChat, suggestQuestions } from "./api.js";
 import { escapeHtml, icon, markdownToText, renderMarkdown, withCardsAsText } from "./render.js";
 import { deleteConversation, getConversation, listConversations, newConversation, saveConversation } from "./store.js";
 import { openZoom } from "./zoom.js";
@@ -205,6 +205,7 @@ const NAV_ICONS = {
  */
 function anchorToQuestion(questionElement, { smooth = true } = {}) {
   if (!questionElement) return;
+  following = false;
   for (const old of thread.querySelectorAll(".msg.latest")) old.classList.remove("latest");
   questionElement.nextElementSibling?.classList.add("latest");
   thread.style.setProperty("--thread-h", `${thread.clientHeight}px`);
@@ -216,7 +217,40 @@ function anchorToQuestion(questionElement, { smooth = true } = {}) {
 /** "Jump to latest" appears only when the end of the answer is out of view. */
 function updateJump() {
   const below = thread.scrollHeight - thread.scrollTop - thread.clientHeight;
-  $("#jump").hidden = below < 120 || !state.conversation.messages.length;
+  $("#jump").hidden = following || below < 120 || !state.conversation.messages.length;
+}
+
+/**
+ * "Jump to latest": go to the end and stay there while the answer is still being written or its
+ * diagrams and images are still loading. A plain scroll would stop at the old end and leave the
+ * reader short of it. Scrolling up yourself stops following.
+ */
+let following = false;
+function jumpToLatest() {
+  following = true;
+  $("#jump").hidden = true;
+  const started = performance.now();
+  let height = 0;
+  let steadySince = started;
+  thread.scrollTo({ top: thread.scrollHeight, behavior: reducedMotion() ? "auto" : "smooth" });
+  const step = now => {
+    if (!following) return;
+    if (thread.scrollHeight !== height) {
+      height = thread.scrollHeight;
+      steadySince = now;
+    }
+    // Let the smooth scroll run first, then keep pinned to the end as the content grows.
+    if (now - started > 450 && thread.scrollHeight - thread.scrollTop - thread.clientHeight > 2) thread.scrollTo({ top: thread.scrollHeight, behavior: "auto" });
+    if (!state.controller && now - steadySince > 900) return stopFollowing();
+    requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
+function stopFollowing() {
+  if (!following) return;
+  following = false;
+  updateJump();
 }
 
 function setStreaming(active) {
@@ -228,10 +262,87 @@ function setStreaming(active) {
 
 function autosize() {
   input.style.height = "auto";
-  input.style.height = `${Math.min(input.scrollHeight, 220)}px`;
+  const ghostHeight = $("#ghost").hidden ? 0 : $("#ghost").scrollHeight;
+  input.style.height = `${Math.min(Math.max(input.scrollHeight, ghostHeight), 220)}px`;
+}
+
+// ---------- Suggested next words (Tab or → to accept) ----------
+
+/** Openings worth completing while typing. */
+const STARTERS = [
+  "Prepare interview questions for ",
+  "Prepare a question set to interview a ",
+  "Explain ",
+  "What is the difference between ",
+  "Roadmap to become a ",
+  "Interview prep: ",
+  "Quiz me on ",
+  "Mock interview on ",
+  "Where do I start?",
+];
+
+const suggest = { text: "", hits: [], query: "", timer: 0 };
+
+/** Next steps offered by the latest answer ("Generate another set of these interview questions"). */
+function latestFollowUps() {
+  const last = [...state.conversation.messages].reverse().find(message => message.role === "assistant");
+  return last?.done?.followUps ?? [];
+}
+
+/** The best completion of what is typed, or with nothing typed the latest answer's first next step. */
+function pickSuggestion(typed) {
+  if (activeMock(state.conversation.messages) || typed.startsWith("/") || typed.includes("\n")) return "";
+  if (!typed.trim()) return latestFollowUps()[0] ?? "";
+  if (typed.trim().length < 2) return "";
+  const lower = typed.toLowerCase();
+  const candidates = [...latestFollowUps(), ...suggest.hits, ...STARTERS];
+  return candidates.find(text => text.length > typed.length && text.toLowerCase().startsWith(lower)) ?? "";
+}
+
+function renderSuggestion() {
+  const typed = input.value;
+  const text = state.controller ? "" : pickSuggestion(typed);
+  suggest.text = text;
+  const ghost = $("#ghost");
+  ghost.hidden = !text;
+  ghost.querySelector(".ghost-typed").textContent = typed;
+  ghost.querySelector(".ghost-rest").textContent = text.slice(typed.length);
+  // The ghost text replaces the placeholder while it shows.
+  input.classList.toggle("has-ghost", Boolean(text));
+  $("#ghost-hint").textContent = text ? `Suggestion: ${text}. Press Tab to use it.` : "";
+  autosize();
+}
+
+/** Questions from the notes that start with what is typed; fetched shortly after typing stops. */
+function fetchSuggestions() {
+  clearTimeout(suggest.timer);
+  const typed = input.value.trim();
+  if (typed.length < 3 || typed.startsWith("/")) return;
+  suggest.timer = setTimeout(async () => {
+    try {
+      const questions = await suggestQuestions(input.value);
+      if (input.value.trim() !== typed) return;
+      suggest.hits = questions;
+      renderSuggestion();
+    } catch {
+      // No suggestions this time; typing still works.
+    }
+  }, 160);
+}
+
+/** Tab or → at the end of the text takes the suggestion. */
+function acceptSuggestion() {
+  if (!suggest.text) return false;
+  input.value = suggest.text;
+  input.setSelectionRange(input.value.length, input.value.length);
+  renderSuggestion();
+  return true;
 }
 
 // ---------- Sidebar ----------
+
+/** The Career Atlas page's sections (its tabs after Overview). */
+const ATLAS_SECTIONS = ["Roles", "Career ladder", "Salary", "Tax", "Who does what", "Tech stack", "Glossary", "My path", "Readiness test", "Work abroad"];
 
 function renderSidebar() {
   const { atlas } = state.catalog;
@@ -239,16 +350,17 @@ function renderSidebar() {
   const topics = [...state.catalog.topics].sort((a, b) => a.label.localeCompare(b.label));
   // Each item opens an overview: what the section covers, then its parts to pick from.
   const navItem = item => `<li><button type="button" class="nav-item" data-ask="${item.id === "roadmaps" ? "Roadmaps" : `Explore ${escapeHtml(item.label)}`}" data-overview="${item.id === "roadmaps" ? "roadmaps-hub" : escapeHtml(item.id)}" title="${escapeHtml(item.description ?? item.label)}">${icon(NAV_ICONS[item.id] ?? "book", "nav-ic")}<span>${escapeHtml(item.label)}</span></button></li>`;
-  // The glossary and the learning roadmap are the main ways in, so they lead the sidebar.
+  // The Career Atlas opens as its own page over the chat. The card shows it holds many sections
+  // (roles, ladder, salary, tax, abroad, readiness test…), with an arrow for "opens a page".
+  $("#atlas-entry").innerHTML = `<button type="button" class="atlas-card" data-atlas="overview" title="Open the Career Atlas: ${ATLAS_SECTIONS.length} sections">
+    <span class="atlas-card-ic">${icon("compass")}</span>
+    <span class="atlas-card-text"><span class="atlas-card-title">Career Atlas</span><span class="atlas-card-sub">Roles · Salary · Abroad</span></span>
+    <span class="atlas-card-count" aria-label="${ATLAS_SECTIONS.length} sections">${ATLAS_SECTIONS.length}</span>${icon("chevron", "atlas-card-go")}
+  </button>`;
+  // The glossary and the learning roadmaps come next, as their own group.
   const primary = ["it-terminology", "roadmaps"].map(id => atlas.find(item => item.id === id)).filter(Boolean);
-  // The Career Atlas (with the Role Readiness Test) opens over the chat on this same page.
-  const atlasLinks = [
-    ["overview", "compass", "Career Atlas", "Roles, salaries, career ladder and working abroad"],
-    ["roletest", "target", "Role Readiness Test", "Score how ready you are for a role, topic by topic"],
-  ].map(([section, name, label, title]) => `<li><button type="button" class="nav-item" data-atlas="${section}" title="${title}">${icon(name, "nav-ic")}<span>${label}</span></button></li>`);
-  $("#primary-list").innerHTML = atlasLinks[0] + primary.map(navItem).join("") + atlasLinks[1];
+  $("#primary-list").innerHTML = primary.map(navItem).join("");
   $("#topic-list").innerHTML = topics.map(navItem).join("");
-  $("#atlas-list").innerHTML = atlas.filter(item => !primary.includes(item)).map(navItem).join("");
   topicFilter.innerHTML = `<option value="">All notes</option>` + [...topics, ...atlas].map(topic => `<option value="${escapeHtml(topic.id)}">${escapeHtml(topic.label)}</option>`).join("");
   topicFilter.value = state.conversation.topic ?? "";
   const engine = $("#engine");
@@ -791,6 +903,8 @@ async function send(rawText, { replaceFrom, plan, overview, mock } = {}) {
   view.classList.add("enter");
   thread.append(view);
   input.value = "";
+  suggest.hits = [];
+  renderSuggestion();
   autosize();
   anchorToQuestion(questionView);
 
@@ -842,6 +956,7 @@ function activeMock(messages) {
 /** The composer says when the next message is an interview answer. */
 function updateComposerHint() {
   const mock = activeMock(state.conversation.messages);
+  queueMicrotask(renderSuggestion);
   input.placeholder = mock ? `Your answer to question ${mock.index + 1} of ${mock.ids.length}… (Shift+Enter for a new line)` : "Ask a question…";
 }
 
@@ -898,7 +1013,7 @@ const ACTIONS = {
   forward: () => goForward(),
   reload: () => location.reload(),
   theme: () => toggleTheme(),
-  jump: () => thread.scrollTo({ top: thread.scrollHeight, behavior: reducedMotion() ? "auto" : "smooth" }),
+  jump: () => jumpToLatest(),
   "close-panels": closeSidebar,
   "open-sidebar": () => document.body.classList.add("sidebar-open"),
   "close-sidebar": closeSidebar,
@@ -1037,9 +1152,10 @@ $("#composer").addEventListener("submit", event => {
 });
 
 input.addEventListener("input", () => {
-  autosize();
   slashActive = 0;
   renderSlashMenu();
+  renderSuggestion();
+  fetchSuggestions();
 });
 
 input.addEventListener("keydown", event => {
@@ -1054,11 +1170,27 @@ input.addEventListener("keydown", event => {
     event.preventDefault();
     return completeSlash(slashMatches()[slashActive].name);
   }
+  const atEnd = input.selectionStart === input.value.length && input.selectionEnd === input.value.length;
+  if (suggest.text && !event.shiftKey && !event.ctrlKey && !event.altKey && (event.key === "Tab" || (event.key === "ArrowRight" && atEnd))) {
+    event.preventDefault();
+    return acceptSuggestion();
+  }
+  if (event.key === "Escape" && suggest.text) {
+    suggest.text = "";
+    $("#ghost").hidden = true;
+    return;
+  }
   if (event.key === "Enter" && !event.shiftKey && !event.isComposing) {
     event.preventDefault();
     $("#composer").requestSubmit();
   }
 });
+
+// Scrolling up yourself ends "Jump to latest" following the answer.
+thread.addEventListener("wheel", event => event.deltaY < 0 && stopFollowing(), { passive: true });
+thread.addEventListener("touchstart", stopFollowing, { passive: true });
+thread.addEventListener("pointerdown", stopFollowing, { passive: true });
+thread.addEventListener("keydown", event => ["ArrowUp", "PageUp", "Home"].includes(event.key) && stopFollowing());
 
 let scrollSaveTimer = 0;
 thread.addEventListener(

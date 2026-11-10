@@ -120,7 +120,7 @@ export async function buildInterviewPrep(plan: PlanRequest): Promise<string> {
     const questions = await keyQuestions(topic, 5);
     lines.push("", `**${++step}. ${label}**`, "");
     if (questions.length) lines.push(...questions.map(question => `- ${askLink(question, question)}`));
-    else lines.push(`- Your notes have no ${label} questions yet.`);
+    else lines.push(`- Your notes have no ${label} questions yet — they will be added in a future update.`);
     lines.push(`- ${askLink(`${label} study path`, `${label} study path`)}`);
   }
   for (const item of others) lines.push("", `**${++step}. ${item.label}**`, "", `- ${askLink(item.label, item.label)}`);

@@ -9,17 +9,18 @@ async function getJson(url) {
 
 export const fetchCatalog = () => getJson("/catalog");
 export const fetchEntry = id => getJson(`/entry?id=${encodeURIComponent(id)}`);
+export const suggestQuestions = query => getJson(`/suggest?q=${encodeURIComponent(query)}`);
 export const searchNotes = (query, limit = 8) => getJson(`/search?q=${encodeURIComponent(query)}&limit=${limit}`);
 
 /**
  * POST /chat and read the Server-Sent Events stream.
  * Calls onEvent for each event ({type: "meta"|"status"|"delta"|"done"|"error", ...}).
  */
-export async function streamChat({ message, history, topic, plan, overview }, onEvent, signal) {
+export async function streamChat({ message, history, topic, plan, overview, mock }, onEvent, signal) {
   const response = await fetch("/chat", {
     method: "POST",
     headers: { "content-type": "application/json", accept: "text/event-stream" },
-    body: JSON.stringify({ message, history, topic: topic || undefined, plan, overview: overview || undefined }),
+    body: JSON.stringify({ message, history, topic: topic || undefined, plan, overview: overview || undefined, mock }),
     signal,
   });
   if (!response.ok || !response.body) {

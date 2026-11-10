@@ -19,6 +19,25 @@ import { REPOSITORY_ROOT } from "./question-indexer.js";
 import { TOPIC_DESCRIPTIONS, TOPIC_LABELS } from "./topic-labels.js";
 
 const RUNTIME_DIR = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+
+/**
+ * GET /suggest?q=What is a clos → questions from the notes that start with the typed text
+ * ("What is a closure?"), shortest first, for the composer's Tab-to-complete suggestion.
+ */
+async function completions(typed: string): Promise<string[]> {
+  const prefix = typed.trimStart().toLowerCase();
+  if (prefix.trim().length < 3 || prefix.length > 200) return [];
+  const { entries } = await loadQuestionIndex();
+  const seen = new Set<string>();
+  const found: string[] = [];
+  for (const entry of entries) {
+    const question = entry.question.trim();
+    if (entry.kind === "roadmap" || question.length > 140 || !question.toLowerCase().startsWith(prefix) || seen.has(question)) continue;
+    seen.add(question);
+    found.push(question);
+  }
+  return found.sort((a, b) => a.length - b.length).slice(0, 8);
+}
 const WEB_DIR = resolve(REPOSITORY_ROOT, "ai/web");
 const ATLAS_DIR = resolve(REPOSITORY_ROOT, "IT_Roles_Terminology_Atlas");
 export const ATLAS_HOME = "/#atlas";
@@ -178,12 +197,18 @@ export async function handleWebRoute(request: IncomingMessage, response: ServerR
   }
   if (path.startsWith("/atlas/")) {
     // Test files stay private; everything else is the static Atlas page and its scripts.
-    const file = path.endsWith(".test.js") ? null : inside(ATLAS_DIR, path.slice("/atlas/".length));
+    // Checked after decoding, so "pay-tax.test%2Ejs" can't slip past.
+    const resolved = inside(ATLAS_DIR, path.slice("/atlas/".length));
+    const file = resolved && !/\.test\.js$/i.test(resolved) ? resolved : null;
     await serveStatic(response, file, "no-cache", ATLAS_CSP);
     return true;
   }
   if (path === "/catalog") {
     sendJson(response, 200, { data: await buildCatalog() });
+    return true;
+  }
+  if (path === "/suggest") {
+    sendJson(response, 200, { data: await completions(url.searchParams.get("q") ?? "") });
     return true;
   }
   if (path === "/entry") {

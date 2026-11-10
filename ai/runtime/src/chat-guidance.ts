@@ -62,6 +62,9 @@ function sectionsOf(entries: QuestionEntry[], topic: string): Map<string, Questi
   const sections = new Map<string, QuestionEntry[]>();
   for (const entry of entries) {
     if (!entry.topics.includes(topic) || !OVERVIEW_KINDS.has(entry.kind)) continue;
+    // The old area roadmaps (roadmap/frontend/README.md…) are bare lists of tool names, not lessons:
+    // as overview cards they show "Topics" or "Routing" items with nothing to explain.
+    if (entry.kind === "note" && entry.source.path.startsWith("roadmap/")) continue;
     const title = sectionTitle(entry);
     sections.set(title, [...(sections.get(title) ?? []), entry]);
   }
