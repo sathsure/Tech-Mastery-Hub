@@ -189,11 +189,11 @@ export async function buildRoadmapsHub(tracks: Array<{ name: string; description
 }
 export const INTERVIEW_HUB = "interview-prep";
 
-/** The whole Career Atlas: roles, salaries, glossary and tech stack, one card each. */
+/** The Career Atlas in the chat: roles, salaries and tech stack, one card each (the glossary lives in the Atlas page). */
 export function buildCareerAtlas(): Promise<string> {
   return buildTopicList(
-    ["it-roles", "it-careers", "it-terminology", "tech-stack"],
-    "**Career atlas** — a map of the IT industry. See what each job involves, what it pays in India, the terms people use at work, and which tools are used where. Pick a part to open:",
+    ["it-roles", "it-careers", "tech-stack"],
+    "**Career atlas** — a map of the IT industry. See what each job involves, what it pays in India, and which tools are used where. Pick a part to open:",
   );
 }
 

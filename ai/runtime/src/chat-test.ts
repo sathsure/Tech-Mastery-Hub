@@ -322,11 +322,11 @@ await check("home page hubs: Explore topics and Roadmaps list choices instead of
   assert.ok(cards.some(card => card.title === "Backend with Java"), "learning tracks are listed too");
 });
 
-await check("home page hubs: Career atlas shows all four parts, Interview prep offers roles and topics", async () => {
+await check("home page hubs: Career atlas shows its three parts (no glossary), Interview prep offers roles and topics", async () => {
   const cardsOf = (answer: string): Card[] => JSON.parse(/```tmh-cards\n([\s\S]*?)```/.exec(answer)?.[1] ?? "[]");
   const atlas = await collect({ message: "Explore the Career Atlas", overview: "career-atlas" }, null);
   assert.equal(atlas.done?.view, "overview");
-  assert.deepEqual(cardsOf(atlas.answer).map(card => card.title), ["IT Roles", "Careers & Salary", "Glossary", "Tech Stack"]);
+  assert.deepEqual(cardsOf(atlas.answer).map(card => card.title), ["IT Roles", "Careers & Salary", "Tech Stack"]);
 
   const hub = await collect({ message: "Interview prep", overview: "interview-prep" }, null);
   assert.equal(hub.done?.view, "overview");

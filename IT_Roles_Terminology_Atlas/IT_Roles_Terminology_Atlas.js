@@ -458,11 +458,18 @@
   const reveal = (el) => { el.scrollIntoView({ block: "nearest", behavior: "smooth" }); el.querySelector("h2")?.focus({ preventScroll: true }); };
 
   function openRole(i, anchor) {
-    let shown = null;
-    if (!anchor) { // search result or shared link: show it in the Roles tab, under its card
-      shown = showTab("roles", { scroll: false });
-      if (!visibleRoles.includes(i)) { roleState.q = ""; roleState.family = "all"; $("#roleFilter").value = ""; renderRoleChips(); renderRoles(); }
-      anchor = $(`#roleGrid [data-role="${i}"]`);
+    // Search result or shared link: open the Roles tab at its top with the role right under the heading,
+    // instead of scrolling a long way down to its card.
+    if (!anchor) {
+      showTab("roles");
+      closeView("role");
+      const el = makeView("role");
+      $("#roles > .panel-head").after(el);
+      views.role = { el, i, inGrid: false };
+      renderRoleView();
+      history.replaceState(null, "", `#roles/${slug(A.roles[i].name)}`);
+      el.querySelector("h2")?.focus({ preventScroll: true });
+      return;
     }
     const v = views.role;
     if (v && v.el.isConnected && v.el.contains(anchor)) v.i = i; // e.g. "Similar roles": swap content in place
@@ -474,10 +481,7 @@
     renderRoleView();
     // The tab buttons switch at once; the panel may still be animating in.
     if ($(".tabs button.active")?.dataset.tab === "roles") history.replaceState(null, "", `#roles/${slug(A.roles[i].name)}`);
-    // Coming from another tab, scroll once the Roles panel is on screen (scrolling a hidden panel does nothing).
-    const el = views.role.el;
-    if (shown) shown.then(() => requestAnimationFrame(() => { el.scrollIntoView({ block: "start", behavior: "smooth" }); el.querySelector("h2")?.focus({ preventScroll: true }); }));
-    else reveal(el);
+    reveal(views.role.el);
   }
   // The roles grid is re-rendered on filter/sort/save; put an open panel back under its card.
   function restoreRoleView() {
@@ -1303,9 +1307,15 @@
   const SDLC_ICON = ["clipboard", "layout", "code", "check", "rocket", "pulse", "users"];
   const phaseName = (p) => p.phase.replace(/^\d+\.\s*/, "");
   // Other roles that can do this phase's work: collapsed under the main ones.
+  // Every other role that takes part in this step (from sdlcRoles), leaving out the step's main owners.
   const othersHtml = (p) => {
-    const list = A.sdlcOthers?.[(/^(\d+)/.exec(p.phase) || [, p.phase])[1]];
-    return list ? `<details class="fc-alt"><summary>Other roles</summary><div class="fc-who">${whoHtml(list)}</div></details>` : "";
+    const step = /^\d+/.exec(p.phase)?.[0] ?? "T";
+    const owners = new Set(p.who.split(/,\s*/).map(roleForName).filter((i) => i >= 0));
+    const names = Object.entries(A.sdlcRoles || {})
+      .filter(([name, steps]) => steps.split(",").includes(step) && !owners.has(roleForName(name)))
+      .map(([name]) => name);
+    if (A.sdlcExtras?.[step]) names.push(A.sdlcExtras[step]);
+    return names.length ? `<details class="fc-alt"><summary>Other roles (${names.length})</summary><div class="fc-who">${whoHtml(names.join(", "))}</div></details>` : "";
   };
   const node = (p, k) => `<li class="fc-node">
       <span class="fc-num">${k + 1}</span><span class="fc-ic">${icon(SDLC_ICON[k] || "flow")}</span>
@@ -1916,33 +1926,15 @@
   };
   // "Treat this as a guide": a small caution note in the top-right corner of the pages it applies to.
   const GUIDE_NOTES = {
-    ladder: "Levels here are a general scale, not one company's. Each company sets its own (e.g. Google L3–L8, Amazon SDE I–III) — see Titles by company.",
-    roles: "Titles, years and tools vary by company. Treat this as a guide.",
-    lifecycle: "Who owns each step varies by company and team size. Treat this as a guide.",
-    stack: "Tools vary by company. Treat this as a guide.",
-    salary: "Pay varies by company, city and negotiation. Treat these as estimates.",
+    ladder: "A general scale — each company sets its own levels.",
+    roles: "Titles and tools vary by company — treat as a guide.",
+    lifecycle: "Who owns each step varies by company — treat as a guide.",
+    stack: "Tools vary by company — treat as a guide.",
+    salary: "Estimates — pay varies by company and city.",
   };
   Object.entries(GUIDE_NOTES).forEach(([id, text]) => {
     document.querySelector(`#${id} > .panel-head`)?.insertAdjacentHTML("beforeend", `<p class="guide-note" role="note">${icon("info")}<span>${esc(text)}</span></p>`);
   });
-  const TIPS = {
-    ladder: "IC and management pay about the same at equal levels — you don't have to manage people to grow.",
-    glossary: "Click any term to copy it with its meaning — handy for notes and interview prep.",
-    stack: "Click any technology to see which roles use it."
-  };
-  const hidden = loadJSON("atlas-tips-hidden", []);
-  Object.entries(TIPS).forEach(([id, html]) => {
-    if (hidden.includes(id)) return;
-    const panel = document.getElementById(id);
-    const anchor = panel.querySelector(".panel-head") || panel.querySelector(".hero") || panel.querySelector(".lead") || panel.querySelector(".h2");
-    anchor.insertAdjacentHTML("afterend", `<p class="hint" data-hint="${id}"><span>${icon("bulb")} ${html}</span><button type="button" aria-label="Dismiss tip">×</button></p>`);
-  });
-  document.addEventListener("click", (e) => {
-    const b = e.target.closest(".hint button");
-    if (!b) return;
-    const p = b.closest(".hint"); hidden.push(p.dataset.hint); store.set("atlas-tips-hidden", JSON.stringify(hidden)); p.remove();
-  });
-
   $("#glossBody").addEventListener("click", (e) => {
     const row = e.target.closest("tr[id^=term-]");
     if (!row || e.target.closest("button")) return;

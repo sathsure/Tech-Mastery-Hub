@@ -115,9 +115,9 @@ main { min-width: 0; max-width: 1120px; padding: 28px 36px 24px; }
 @keyframes fade { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: none; } }
 .panel-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 20px; }
 /* Small caution note in the page header's top-right corner. */
-.guide-note { display: flex; align-items: flex-start; gap: 6px; flex: 0 1 260px; margin: 2px 0 0; padding: 7px 10px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface-2); color: var(--muted); font-size: .75rem; line-height: 1.4; }
+.guide-note { display: flex; align-items: center; gap: 6px; flex: 0 0 auto; white-space: nowrap; margin: 2px 0 0; padding: 7px 10px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface-2); color: var(--muted); font-size: .75rem; line-height: 1.4; }
 .guide-note svg { flex: none; width: 14px; height: 14px; margin-top: 1px; color: #d97706; }
-@media (max-width: 700px) { .panel-head { flex-wrap: wrap; } .guide-note { flex-basis: 100%; } }
+@media (max-width: 700px) { .panel-head { flex-wrap: wrap; } .guide-note { flex-basis: 100%; white-space: normal; } }
 .section-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
 
 /* Sub-tabs: one part of a page at a time. */

@@ -597,20 +597,12 @@ html.theming .thread { view-transition-name: none; }
 .primary-nav { margin: 2px 0 8px; padding-bottom: 8px; border-bottom: 1px solid var(--border-muted); }
 .primary-nav .nav-item { font-weight: 500; color: var(--text); }
 
-/* Career Atlas: one card that opens a page of many sections (count badge + arrow). */
-.atlas-entry { margin: 2px 0 8px; padding-bottom: 10px; border-bottom: 1px solid var(--border-muted); }
-.atlas-card { display: flex; align-items: center; gap: 10px; width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--accent-subtle); color: var(--text); text-align: left; transition: border-color var(--fast), box-shadow var(--fast), transform var(--fast) var(--ease); }
-.atlas-card:hover { border-color: var(--accent); box-shadow: var(--shadow-sm); }
-.atlas-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-.atlas-card-ic { display: grid; place-items: center; flex: none; width: 32px; height: 32px; border-radius: 8px; background: var(--brand); color: #fff; }
-.atlas-card-ic .icon { width: 17px; height: 17px; }
-.atlas-card-text { display: flex; flex-direction: column; min-width: 0; flex: 1; }
-.atlas-card-title { font-size: 14px; font-weight: 600; }
-.atlas-card-sub { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 11.5px; color: var(--muted); }
-.atlas-card-count { flex: none; min-width: 22px; padding: 1px 6px; border-radius: 999px; background: var(--bg); border: 1px solid var(--border); font-size: 11px; font-weight: 600; text-align: center; color: var(--text-2); }
-.atlas-card-go { flex: none; width: 16px; height: 16px; color: var(--muted); transition: transform var(--fast) var(--ease), color var(--fast); }
-.atlas-card:hover .atlas-card-go { color: var(--accent); transform: translateX(2px); }
-@media (max-width: 760px) { .atlas-card { min-height: 52px; } }
+/* Career Atlas: looks like the TOPICS / RECENT CHATS headings; the chevron points to the page it opens. */
+.atlas-entry { margin: 2px 0 4px; }
+.side-link { display: flex; align-items: center; gap: 6px; width: 100%; padding: 6px 8px; border: 0; border-radius: var(--radius-sm); background: none; color: var(--muted); font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; text-align: left; cursor: pointer; }
+.side-link:hover { color: var(--text); background: var(--bg-hover); }
+.side-link .chevron { transition: transform var(--fast) var(--ease); }
+.side-link:hover .chevron { transform: translateX(2px); }
 .forward-btn { width: 32px; height: 32px; }
 
 .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; margin: 12px 0; }

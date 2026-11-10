@@ -341,8 +341,6 @@ function acceptSuggestion() {
 
 // ---------- Sidebar ----------
 
-/** The Career Atlas page's sections (its tabs after Overview). */
-const ATLAS_SECTIONS = ["Roles", "Career ladder", "Salary", "Tax", "Who does what", "Tech stack", "Glossary", "My path", "Readiness test", "Work abroad"];
 
 function renderSidebar() {
   const { atlas } = state.catalog;
@@ -352,16 +350,13 @@ function renderSidebar() {
   const navItem = item => `<li><button type="button" class="nav-item" data-ask="${item.id === "roadmaps" ? "Roadmaps" : `Explore ${escapeHtml(item.label)}`}" data-overview="${item.id === "roadmaps" ? "roadmaps-hub" : escapeHtml(item.id)}" title="${escapeHtml(item.description ?? item.label)}">${icon(NAV_ICONS[item.id] ?? "book", "nav-ic")}<span>${escapeHtml(item.label)}</span></button></li>`;
   // The Career Atlas opens as its own page over the chat. The card shows it holds many sections
   // (roles, ladder, salary, tax, abroad, readiness test…), with an arrow for "opens a page".
-  $("#atlas-entry").innerHTML = `<button type="button" class="atlas-card" data-atlas="overview" title="Open the Career Atlas: ${ATLAS_SECTIONS.length} sections">
-    <span class="atlas-card-ic">${icon("compass")}</span>
-    <span class="atlas-card-text"><span class="atlas-card-title">Career Atlas</span><span class="atlas-card-sub">Roles · Salary · Abroad</span></span>
-    <span class="atlas-card-count" aria-label="${ATLAS_SECTIONS.length} sections">${ATLAS_SECTIONS.length}</span>${icon("chevron", "atlas-card-go")}
-  </button>`;
-  // The glossary and the learning roadmaps come next, as their own group.
-  const primary = ["it-terminology", "roadmaps"].map(id => atlas.find(item => item.id === id)).filter(Boolean);
+  // The Career Atlas: styled like the section headings below it; the chevron says it opens a page.
+  $("#atlas-entry").innerHTML = `<button type="button" class="side-link" data-atlas="overview" title="Open the Career Atlas">${icon("chevron", "chevron")}<span>Career Atlas</span></button>`;
+  // The learning roadmaps come next. The glossary lives in the Career Atlas only.
+  const primary = ["roadmaps"].map(id => atlas.find(item => item.id === id)).filter(Boolean);
   $("#primary-list").innerHTML = primary.map(navItem).join("");
   $("#topic-list").innerHTML = topics.map(navItem).join("");
-  topicFilter.innerHTML = `<option value="">All notes</option>` + [...topics, ...atlas].map(topic => `<option value="${escapeHtml(topic.id)}">${escapeHtml(topic.label)}</option>`).join("");
+  topicFilter.innerHTML = `<option value="">All notes</option>` + [...topics, ...atlas.filter(item => item.id !== "it-terminology")].map(topic => `<option value="${escapeHtml(topic.id)}">${escapeHtml(topic.label)}</option>`).join("");
   topicFilter.value = state.conversation.topic ?? "";
   const engine = $("#engine");
   const claude = state.catalog.answerMode === "claude";
@@ -536,14 +531,14 @@ function renderWelcome() {
     { icon: "layers", title: "Explore topics", text: "Frontend, backend, data, cloud and more: pick an area, then a topic.", ask: "Explore topics", overview: "topics" },
     { icon: "graduation", title: "Interview prep", text: "Model answers, key points and likely follow-ups.", ask: "Interview prep", overview: "interview-prep" },
     { icon: "map", title: "Roadmaps", text: "Follow a learning track, or get a full roadmap for a job role.", ask: "Roadmaps", overview: "roadmaps-hub" },
-    { icon: "briefcase", title: "Career atlas", text: "IT roles, a glossary of terms, and salaries in India.", ask: "Explore the Career Atlas", overview: "career-atlas" },
+    { icon: "briefcase", title: "Career atlas", text: "IT roles, salaries in India and working abroad.", atlas: "overview" },
   ];
   const starters = ["How does the event loop work?", "What does a DevOps engineer do?", "How does HashMap work internally?", "Where do I start?"];
   thread.innerHTML = `<div class="welcome">
     <span class="hero-badge"><svg aria-hidden="true"><use href="#i-logo"></use></svg>Your notes, as a tutor</span>
     <h2>Learn faster. <em>Interview with confidence.</em></h2>
     <p>Answers come from your Tech-Mastery-Hub notes, with every source a click away on GitHub.</p>
-    <div class="features">${features.map(item => `<button type="button" class="feature" data-ask="${escapeHtml(item.ask)}" ${item.overview ? `data-overview="${item.overview}"` : ""}><span class="feature-ic">${icon(item.icon)}</span><b>${escapeHtml(item.title)}</b><span>${escapeHtml(item.text)}</span></button>`).join("")}</div>
+    <div class="features">${features.map(item => `<button type="button" class="feature" ${item.atlas ? `data-atlas="${item.atlas}"` : `data-ask="${escapeHtml(item.ask)}"`} ${item.overview ? `data-overview="${item.overview}"` : ""}><span class="feature-ic">${icon(item.icon)}</span><b>${escapeHtml(item.title)}</b><span>${escapeHtml(item.text)}</span></button>`).join("")}</div>
     <p class="starters-label">Try asking</p>
     <div class="starters">${starters.map(q => `<button type="button" class="starter" data-ask="${escapeHtml(q)}"><span>${escapeHtml(q)}</span>${icon("arrow")}</button>`).join("")}</div>
   </div>`;
