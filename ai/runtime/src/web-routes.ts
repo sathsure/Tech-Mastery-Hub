@@ -17,6 +17,7 @@ import { createAnswerModel } from "./answer-model.js";
 import { loadQuestionIndex } from "./question-index.js";
 import { REPOSITORY_ROOT } from "./question-indexer.js";
 import { TOPIC_DESCRIPTIONS, TOPIC_LABELS } from "./topic-labels.js";
+import { needsProfile } from "./profile-gate.js";
 
 const RUNTIME_DIR = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -24,7 +25,7 @@ const RUNTIME_DIR = resolve(dirname(fileURLToPath(import.meta.url)), "..");
  * GET /suggest?q=What is a clos → questions from the notes that start with the typed text
  * ("What is a closure?"), shortest first, for the composer's Tab-to-complete suggestion.
  */
-async function completions(typed: string): Promise<string[]> {
+async function completions(typed: string, profile: boolean): Promise<string[]> {
   const prefix = typed.trimStart().toLowerCase();
   if (prefix.trim().length < 3 || prefix.length > 200) return [];
   const { entries } = await loadQuestionIndex();
@@ -33,6 +34,7 @@ async function completions(typed: string): Promise<string[]> {
   for (const entry of entries) {
     const question = entry.question.trim();
     if (entry.kind === "roadmap" || question.length > 140 || !question.toLowerCase().startsWith(prefix) || seen.has(question)) continue;
+    if (!profile && needsProfile(entry.source.path, question)) continue;
     seen.add(question);
     found.push(question);
   }
@@ -208,12 +210,14 @@ export async function handleWebRoute(request: IncomingMessage, response: ServerR
     return true;
   }
   if (path === "/suggest") {
-    sendJson(response, 200, { data: await completions(url.searchParams.get("q") ?? "") });
+    sendJson(response, 200, { data: await completions(url.searchParams.get("q") ?? "", url.searchParams.get("profile") === "1") });
     return true;
   }
   if (path === "/entry") {
     const id = url.searchParams.get("id") ?? "";
-    const payload = id.length > 0 && id.length <= 400 ? await entryPayload(id) : null;
+    let payload = id.length > 0 && id.length <= 400 ? await entryPayload(id) : null;
+    // Salary and work-abroad notes need the profile, as everywhere else.
+    if (payload && url.searchParams.get("profile") !== "1" && needsProfile(payload.path, payload.question)) payload = null;
     sendJson(response, payload ? 200 : 404, payload ? { data: payload } : { error: { code: "NOT_FOUND", message: "Entry not found." } });
     return true;
   }

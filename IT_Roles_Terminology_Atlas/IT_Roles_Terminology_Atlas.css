@@ -42,7 +42,7 @@
 
 /* ===== Base & typography ===== */
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; scroll-padding-top: calc(var(--top-h) + 16px); background: var(--bg); color-scheme: light; }
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--top-h) + 16px); background: var(--bg); color-scheme: light; scrollbar-gutter: stable; }
 :root[data-theme="dark"] { color-scheme: dark; }
 /* Moving between the Atlas and the profile page (and Back / Forward) cross-fades instead of cutting. */
 @view-transition { navigation: auto; }

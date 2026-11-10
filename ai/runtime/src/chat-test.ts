@@ -163,7 +163,7 @@ await check("overview: one card per section, items ask their question", async ()
 });
 
 await check("career cards: a role and the working-abroad countries", async () => {
-  const role = await collect({ message: "What does a Data Analyst do?" }, null);
+  const role = await collect({ message: "What does a Data Analyst do?", profile: true }, null);
   const [card] = cardsIn(role.answer);
   assert.ok(card?.type === "role", role.answer.slice(0, 200));
   assert.equal(card.title, "Data Analyst", "concise title");
@@ -171,14 +171,14 @@ await check("career cards: a role and the working-abroad countries", async () =>
   assert.deepEqual(card.progression.grow, ["Analytics Engineer", "Data Scientist"]);
   assert.equal(card.experience, "0+ years");
   for (const action of card.actions) assert.ok(action.ask, "every button asks something");
-  const countries = await collect({ message: "Which countries can I work in from India?" }, null);
+  const countries = await collect({ message: "Which countries can I work in from India?", profile: true }, null);
   const grid = cardsIn(countries.answer);
   assert.ok(grid.length >= 10 && grid.every(item => item.type === "country"), `cards: ${grid.length}`);
   const germany = grid.find(item => item.title === "Germany");
   assert.ok(germany?.type === "country" && germany.badge === "Realistic" && germany.flag);
   assert.ok(germany.details.some(item => item.label === "Visa route"));
   assert.match(germany.actions.find(item => item.label === "Explore Jobs")?.href ?? "", /^https:\/\/www\.linkedin\.com\/jobs\/search\//);
-  const details = await collect({ message: germany.actions[0].ask! }, null);
+  const details = await collect({ message: germany.actions[0].ask!, profile: true }, null);
   assert.match(details.answer, /^\*\*Germany — Realistic\*\*/, "View Details opens that country's note");
   assert.ok(!details.done?.followUps.some(text => /What does a Germany/.test(text)), `follow-ups: ${details.done?.followUps}`);
 });
@@ -340,19 +340,33 @@ await check("home page hubs: Career atlas shows its three parts (no glossary), I
   }
 });
 
+await check("profile lock: salary and work-abroad details need the Career Atlas profile", async () => {
+  for (const message of ["Full Stack Developer salary in India (LPA)", "Which countries can I work in from India?", "Working in Germany from India"]) {
+    const locked = await collect({ message }, null);
+    assert.match(locked.answer, /This needs your profile/, message);
+    assert.match(locked.answer, /(#atlas:mypath)/, "links to the Atlas profile");
+    const open = await collect({ message, profile: true }, null);
+    assert.doesNotMatch(open.answer, /This needs your profile/, message);
+  }
+  // Other answers never offer salary or abroad chips without a profile.
+  const role = await collect({ message: "What does a Data Analyst do?" }, null);
+  assert.ok(!role.done?.followUps.some(chip => /salary|abroad|countries/i.test(chip)), String(role.done?.followUps));
+  assert.match(role.answer, /Data Analyst/, "the role itself is still answered");
+});
+
 await check("FDE roadmap: only the six sections, no internal references, India salary follow-up", async () => {
-  const { answer, done } = await collect({ message: "Roadmap to become a Forward Deployed Engineer" }, null);
+  const { answer, done } = await collect({ message: "Roadmap to become a Forward Deployed Engineer", profile: true }, null);
   const headings = [...answer.matchAll(/^## (.+)$/gm)].map(match => match[1]);
   assert.deepEqual(headings, ["Role overview", "Prerequisites", "Learning stages", "Also useful", "Also needed", "Where it leads"]);
   assert.doesNotMatch(answer, /not in your notes|Related in your notes|Interview preparation/i);
   assert.ok(done?.followUps.includes("Forward Deployed Engineer salary in India (LPA)"), `follow-ups: ${done?.followUps}`);
-  const salary = await collect({ message: "Forward Deployed Engineer salary in India (LPA)" }, null);
+  const salary = await collect({ message: "Forward Deployed Engineer salary in India (LPA)", profile: true }, null);
   assert.match(salary.answer, /18–35 LPA/, "the salary follow-up is answered from the notes");
 });
 
 await check("learning plan: picked topics in prerequisite order, missing prerequisites added", async () => {
   const plan = { title: "Roadmap: Forward Deployed Engineer", items: [{ label: "React", topic: "react" }, { label: "TypeScript", topic: "typescript" }] };
-  const { answer, done } = await collect({ message: "Build my learning plan: React, TypeScript", plan }, null);
+  const { answer, done } = await collect({ message: "Build my learning plan: React, TypeScript", plan, profile: true }, null);
   assert.equal(done?.view, "plan");
   const order = [...answer.matchAll(/^\d+\. \*\*(.+?)\*\*/gm)].map(match => match[1]);
   assert.deepEqual(order.slice(0, 2), ["HTML", "JavaScript"], "prerequisites come first");

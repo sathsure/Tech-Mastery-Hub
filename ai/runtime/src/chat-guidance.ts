@@ -58,10 +58,11 @@ export interface Overview {
 }
 
 /** A topic's entries grouped by section, in note order. */
-function sectionsOf(entries: QuestionEntry[], topic: string): Map<string, QuestionEntry[]> {
+function sectionsOf(entries: QuestionEntry[], topic: string, skip?: (entry: QuestionEntry) => boolean): Map<string, QuestionEntry[]> {
   const sections = new Map<string, QuestionEntry[]>();
   for (const entry of entries) {
     if (!entry.topics.includes(topic) || !OVERVIEW_KINDS.has(entry.kind)) continue;
+    if (skip?.(entry)) continue;
     // The old area roadmaps (roadmap/frontend/README.md…) are bare lists of tool names, not lessons:
     // as overview cards they show "Topics" or "Routing" items with nothing to explain.
     if (entry.kind === "note" && entry.source.path.startsWith("roadmap/")) continue;
@@ -79,9 +80,9 @@ function hasStudyPath(entries: QuestionEntry[], topic: string): boolean {
 const CHIP_TOPICS = new Set(["it-terminology", "it-roles", "tech-stack"]);
 
 /** Topic overview: what the topic covers, then one card per section with its items. */
-export async function buildOverview(topic: string): Promise<Overview | null> {
+export async function buildOverview(topic: string, skip?: (entry: QuestionEntry) => boolean): Promise<Overview | null> {
   const index = await loadQuestionIndex();
-  const sections = sectionsOf(index.entries, topic);
+  const sections = sectionsOf(index.entries, topic, skip);
   if (!sections.size) return null;
   const label = topicLabel(topic);
   const description = topicDescription(topic);
@@ -115,7 +116,7 @@ function prerequisiteBadge(topic: string): string {
 }
 
 /** Several topics at once ("Explore frontend"): one card per topic, with its main sections. */
-export async function buildTopicList(topics: string[], intro = "This covers several topics. Pick one to start:"): Promise<string> {
+export async function buildTopicList(topics: string[], intro = "This covers several topics. Pick one to start:", skip?: (entry: QuestionEntry) => boolean): Promise<string> {
   const index = await loadQuestionIndex();
   const cards: TopicCard[] = topics.map(topic => {
     const label = topicLabel(topic);
@@ -127,7 +128,7 @@ export async function buildTopicList(topics: string[], intro = "This covers seve
       badge: topic in PREREQUISITES ? prerequisiteBadge(topic) : undefined,
       description: topicDescription(topic),
       chips: false,
-      items: [...sectionsOf(index.entries, topic).keys()].slice(0, 4).map(section => ({ label: displayTitle(section) })),
+      items: [...sectionsOf(index.entries, topic, skip).keys()].slice(0, 4).map(section => ({ label: displayTitle(section) })),
       actions,
     };
   });
@@ -190,10 +191,11 @@ export async function buildRoadmapsHub(tracks: Array<{ name: string; description
 export const INTERVIEW_HUB = "interview-prep";
 
 /** The Career Atlas in the chat: roles, salaries and tech stack, one card each (the glossary lives in the Atlas page). */
-export function buildCareerAtlas(): Promise<string> {
+export function buildCareerAtlas(skip?: (entry: QuestionEntry) => boolean): Promise<string> {
   return buildTopicList(
     ["it-roles", "it-careers", "tech-stack"],
     "**Career atlas** — a map of the IT industry. See what each job involves, what it pays in India, and which tools are used where. Pick a part to open:",
+    skip,
   );
 }
 

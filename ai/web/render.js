@@ -369,6 +369,13 @@ function enhanceMisc(root) {
       }
       button.textContent = link.textContent ?? "";
       link.replaceWith(button);
+    } else if (/^#atlas:[\w/-]*$/.test(href)) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "ask-link";
+      button.dataset.atlas = href.slice("#atlas:".length) || "overview";
+      button.textContent = link.textContent ?? "";
+      link.replaceWith(button);
     } else if (/^https?:/i.test(href)) {
       link.target = "_blank";
       link.rel = "noopener noreferrer";

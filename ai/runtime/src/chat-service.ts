@@ -27,6 +27,11 @@ import { ANOTHER_SET, buildQuestionSet, isAnotherSetRequest, isQuestionSetReques
 import { continueMock, isMockRequest, startMock } from "./chat-mock.js";
 import type { MockState } from "./chat-contracts.js";
 import { questionKey, searchQuestions, type SearchConfidence, type SearchResult } from "./question-search.js";
+import { needsProfile, PROFILE_NEEDED_MARKDOWN, withoutProfileChips } from "./profile-gate.js";
+
+/** Without a profile: leave out salary and work-abroad notes (as the Career Atlas does). */
+const profileSkip = (request: ChatRequest) => (request.profile ? undefined : (entry: QuestionEntry) => needsProfile(entry.source.path, entry.question));
+const chipsFor = (request: ChatRequest, chips: string[]) => (request.profile ? chips : withoutProfileChips(chips));
 
 export const MAX_HISTORY_TURNS = 8;
 const CONFIDENCE_RANK: Record<SearchConfidence, number> = { none: 0, low: 1, medium: 2, high: 3 };
@@ -142,6 +147,7 @@ async function* builtAnswer(
   evidence: Evidence[] = [],
   mock?: MockState | null,
 ): AsyncGenerator<ChatEvent> {
+  followUps = chipsFor(request, followUps);
   yield {
     type: "meta",
     query: request.message,
@@ -237,7 +243,7 @@ async function directAnswer(request: ChatRequest, model: AnswerModel | null = nu
   }
   if (request.overview === CAREER_ATLAS) {
     const followUps = ["What does a DevOps engineer do?", "Full Stack Developer salary in India (LPA)", "Which countries can I work in from India?"];
-    return builtAnswer(request, emptySearch({ mode: "browse" }), "overview", await buildCareerAtlas(), followUps);
+    return builtAnswer(request, emptySearch({ mode: "browse" }), "overview", await buildCareerAtlas(profileSkip(request)), followUps);
   }
   if (request.overview === INTERVIEW_HUB) {
     const { entries } = await loadQuestionIndex();
@@ -245,7 +251,7 @@ async function directAnswer(request: ChatRequest, model: AnswerModel | null = nu
     const followUps = ["Interview prep: Full Stack Developer", "Prepare me for a Java interview"];
     return builtAnswer(request, emptySearch({ mode: "browse", intents: ["interview-prep"] }), "overview", markdown, followUps);
   }
-  const overview = await buildOverview(request.overview);
+  const overview = await buildOverview(request.overview, profileSkip(request));
   if (!overview) return null;
   return builtAnswer(request, emptySearch({ mode: "browse" }), "overview", overview.markdown, await topicFollowUps(request.overview));
 }
@@ -276,10 +282,10 @@ async function overviewAnswer(
   const topics = overviewTopics(search, evidence);
   if (topics.length > 1) {
     const followUps = topics.slice(0, 3).map(topic => `Explore ${topicLabel(topic)}`);
-    return builtAnswer(request, search, "overview", await buildTopicList(topics), followUps);
+    return builtAnswer(request, search, "overview", await buildTopicList(topics, undefined, profileSkip(request)), followUps);
   }
   if (topics.length === 0) return null;
-  const overview = await buildOverview(topics[0]);
+  const overview = await buildOverview(topics[0], profileSkip(request));
   return overview ? builtAnswer(request, search, "overview", overview.markdown, await topicFollowUps(topics[0])) : null;
 }
 
@@ -437,7 +443,14 @@ export async function* runChat(request: ChatRequest, options: ChatOptions = {}):
 
   const found = searchWithContext(request);
   const search = judgeMatch(found.search);
-  const evidence = await buildEvidence(search);
+  let evidence = await buildEvidence(search);
+  if (!request.profile) {
+    if (evidence[0] && needsProfile(evidence[0].path, evidence[0].question)) {
+      yield* builtAnswer(request, emptySearch({}), "answer", PROFILE_NEEDED_MARKDOWN, []);
+      return;
+    }
+    evidence = evidence.filter(item => !needsProfile(item.path, item.question)).map((item, i) => ({ ...item, n: i + 1 }));
+  }
   const overview = await overviewAnswer(request, search, evidence);
   if (overview) {
     yield* overview;
@@ -490,7 +503,7 @@ export async function* runChat(request: ChatRequest, options: ChatOptions = {}):
     // Notes-only answers quote the sources rather than cite them, so a missing [n] is not a warning.
     grounding: { ...checkGrounding(answer, evidence), ...(answerMode === "repository" ? { uncited: false } : {}) },
     // A weak match's own follow-ups would lead away from the question; the answer lists the closest entries instead.
-    followUps: search.confidence === "low" ? [] : distinctFollowUps(suggestFollowUps(search, evidence, followUpQuestions, askedBefore(request)), request, evidence.slice(0, 1).map(item => item.id)),
+    followUps: search.confidence === "low" ? [] : chipsFor(request, distinctFollowUps(suggestFollowUps(search, evidence, followUpQuestions, askedBefore(request)), request, evidence.slice(0, 1).map(item => item.id))),
     suggestions: search.suggestions,
     notice: outcome.notice,
     usage: outcome.usage,
