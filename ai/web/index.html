@@ -97,8 +97,8 @@
       </div>
 
       <nav class="side-scroll" aria-label="Topics and history">
-        <div class="atlas-entry" id="atlas-entry"></div>
         <ul class="nav-list primary-nav" id="primary-list" aria-label="Roadmaps"></ul>
+        <div class="atlas-entry" id="atlas-entry"></div>
         <details class="side-section" data-section="topics">
           <summary><svg class="icon chevron"><use href="#i-chevron"></use></svg>Topics</summary>
           <p class="side-intro">Interview questions and notes for each technology. Pick one to see its main sections first.</p>
@@ -140,6 +140,7 @@
           </div>
           <div class="composer-bar">
             <div class="composer-tools">
+              <button class="tool-btn suggest-use" id="suggest-use" type="button" data-action="use-suggestion" hidden>Use suggestion</button>
               <button class="tool-btn" type="button" data-action="slash" title="Commands"><span class="slash">/</span><span class="tool-label">Commands</span></button>
               <label class="topic-filter" title="Limit answers to one topic">
                 <svg class="icon"><use href="#i-filter"></use></svg>

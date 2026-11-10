@@ -34,6 +34,13 @@ print(two_sum([2, 7, 11, 15], 9))   # [0, 1]
 print(two_sum([3, 2, 4], 6))        # [1, 2]
 ```
 
+**Output:**
+
+```text
+[0, 1]
+[1, 2]
+```
+
 **Complexity:** `O(n)` time, `O(n)` space. The brute-force double loop is `O(n²)`.
 
 ---
@@ -85,6 +92,13 @@ print(three_sum([-1, 0, 1, 2, -1, -4]))  # [[-1, -1, 2], [-1, 0, 1]]
 print(three_sum([0, 0, 0, 0]))           # [[0, 0, 0]]
 ```
 
+**Output:**
+
+```text
+[[-1, -1, 2], [-1, 0, 1]]
+[[0, 0, 0]]
+```
+
 **Complexity:** `O(n²)` time (sorting is `O(n log n)`), `O(1)` extra space apart from the output.
 
 ---
@@ -105,6 +119,16 @@ Return `True` if any value appears at least twice in `nums`.
 ```python
 def contains_duplicate(nums: list[int]) -> bool:
     return len(set(nums)) != len(nums)
+
+print(contains_duplicate([1, 2, 3, 1]))
+print(contains_duplicate([1, 2, 3, 4]))
+```
+
+**Output:**
+
+```text
+True
+False
 ```
 
 **Complexity:** `O(n)` time, `O(n)` space.
@@ -131,6 +155,16 @@ from collections import Counter
 
 def is_anagram(s: str, t: str) -> bool:
     return Counter(s) == Counter(t)
+
+print(is_anagram("anagram", "nagaram"))
+print(is_anagram("rat", "car"))
+```
+
+**Output:**
+
+```text
+True
+False
 ```
 
 **Complexity:** `O(n)` time, `O(k)` space for `k` distinct characters.
@@ -163,6 +197,14 @@ def group_anagrams(words: list[str]) -> list[list[str]]:
     for word in words:
         groups["".join(sorted(word))].append(word)
     return list(groups.values())
+
+print(group_anagrams(["eat", "tea", "tan", "ate", "nat", "bat"]))
+```
+
+**Output:**
+
+```text
+[['eat', 'tea', 'ate'], ['tan', 'nat'], ['bat']]
 ```
 
 **Complexity:** `O(n · k log k)` for `n` words of length `k`.
@@ -191,6 +233,14 @@ from collections import Counter
 def top_k_frequent(nums: list[int], k: int) -> list[int]:
     counts = Counter(nums)
     return heapq.nlargest(k, counts.keys(), key=counts.get)
+
+print(top_k_frequent([1, 1, 1, 2, 2, 3], 2))
+```
+
+**Output:**
+
+```text
+[1, 2]
 ```
 
 **Complexity:** `O(n log k)` time, `O(n)` space.
@@ -230,6 +280,14 @@ def product_except_self(nums: list[int]) -> list[int]:
         result[i] *= suffix          # times product of nums[i+1..]
         suffix *= nums[i]
     return result
+
+print(product_except_self([1, 2, 3, 4]))
+```
+
+**Output:**
+
+```text
+[24, 12, 8, 6]
 ```
 
 **Complexity:** `O(n)` time, `O(1)` extra space apart from the output.
@@ -268,6 +326,15 @@ print(search_insert([1, 3, 5, 6], 5))  # 2 (found)
 print(search_insert([1, 3, 5, 6], 2))  # 1 (insert between 1 and 3)
 print(search_insert([1, 3, 5, 6], 7))  # 4 (insert at the end)
 print(search_insert([1, 3, 5, 6], 0))  # 0 (insert at the start)
+```
+
+**Output:**
+
+```text
+2
+1
+4
+0
 ```
 
 Python's standard library does the same: `bisect.bisect_left(nums, target)`.
@@ -311,6 +378,14 @@ def search_rotated(nums: list[int], target: int) -> int:
     return -1
 
 print(search_rotated([4, 5, 6, 7, 0, 1, 2], 0))  # 4
+print(search_rotated([4, 5, 6, 7, 0, 1, 2], 3))
+```
+
+**Output:**
+
+```text
+4
+-1
 ```
 
 **Complexity:** `O(log n)` time, `O(1)` space.
@@ -336,6 +411,16 @@ Example: `"A man, a plan, a canal: Panama"` → `True`
 def is_palindrome(s: str) -> bool:
     cleaned = [ch.lower() for ch in s if ch.isalnum()]
     return cleaned == cleaned[::-1]
+
+print(is_palindrome("A man, a plan, a canal: Panama"))
+print(is_palindrome("race a car"))
+```
+
+**Output:**
+
+```text
+True
+False
 ```
 
 **Complexity:** `O(n)` time, `O(n)` space. A two-pointer version that skips non-alphanumeric characters uses `O(1)` space.
@@ -374,6 +459,14 @@ def max_area(height: list[int]) -> int:
         else:
             right -= 1
     return best
+
+print(max_area([1, 8, 6, 2, 5, 4, 8, 3, 7]))
+```
+
+**Output:**
+
+```text
+49
 ```
 
 **Complexity:** `O(n)` time, `O(1)` space.
@@ -413,6 +506,13 @@ print(length_of_longest_substring("abcabcbb"))  # 3
 print(length_of_longest_substring("pwwkew"))    # 3
 ```
 
+**Output:**
+
+```text
+3
+3
+```
+
 **Complexity:** `O(n)` time, `O(k)` space for `k` distinct characters.
 
 ---
@@ -443,6 +543,16 @@ def max_profit(prices: list[int]) -> int:
         min_price = min(min_price, price)
         best = max(best, price - min_price)
     return best
+
+print(max_profit([7, 1, 5, 3, 6, 4]))
+print(max_profit([7, 6, 4, 3, 1]))
+```
+
+**Output:**
+
+```text
+5
+0
 ```
 
 **Complexity:** `O(n)` time, `O(1)` space.
@@ -478,6 +588,18 @@ def is_valid(s: str) -> bool:
         else:
             stack.append(ch)
     return not stack                 # every bracket must be closed
+
+print(is_valid("()[]{}"))
+print(is_valid("(]"))
+print(is_valid("([)]"))
+```
+
+**Output:**
+
+```text
+True
+False
+False
 ```
 
 **Complexity:** `O(n)` time, `O(n)` space.
@@ -512,6 +634,14 @@ def merge(intervals: list[list[int]]) -> list[list[int]]:
         else:
             merged.append([start, end])
     return merged
+
+print(merge([[1, 3], [2, 6], [8, 10], [15, 18]]))
+```
+
+**Output:**
+
+```text
+[[1, 6], [8, 10], [15, 18]]
 ```
 
 **Complexity:** `O(n log n)` time (sorting), `O(n)` space.
@@ -546,6 +676,14 @@ def find_kth_largest(nums: list[int], k: int) -> int:
         if len(heap) > k:
             heapq.heappop(heap)      # drop the smallest
     return heap[0]
+
+print(find_kth_largest([3, 2, 1, 5, 6, 4], 2))
+```
+
+**Output:**
+
+```text
+5
 ```
 
 **Complexity:** `O(n log k)` time, `O(k)` space.
@@ -582,6 +720,28 @@ def reverse_list(head: ListNode | None) -> ListNode | None:
         prev = head
         head = nxt
     return prev
+
+def from_list(values):               # [1, 2, 3] -> 1 -> 2 -> 3
+    dummy = tail = ListNode()
+    for v in values:
+        tail.next = ListNode(v)
+        tail = tail.next
+    return dummy.next
+
+def to_list(head):                   # 1 -> 2 -> 3 -> [1, 2, 3]
+    values = []
+    while head:
+        values.append(head.val)
+        head = head.next
+    return values
+
+print(to_list(reverse_list(from_list([1, 2, 3, 4, 5]))))
+```
+
+**Output:**
+
+```text
+[5, 4, 3, 2, 1]
 ```
 
 **Complexity:** `O(n)` time, `O(1)` space.
@@ -615,6 +775,14 @@ def merge_two_lists(a: ListNode | None, b: ListNode | None) -> ListNode | None:
         tail = tail.next
     tail.next = a or b       # attach whatever remains
     return dummy.next
+
+print(to_list(merge_two_lists(from_list([1, 2, 4]), from_list([1, 3, 4]))))
+```
+
+**Output:**
+
+```text
+[1, 1, 2, 3, 4, 4]
 ```
 
 **Complexity:** `O(n + m)` time, `O(1)` space.
@@ -646,6 +814,18 @@ def has_cycle(head: ListNode | None) -> bool:
         if slow is fast:
             return True
     return False
+
+head = from_list([3, 2, 0, -4])
+head.next.next.next.next = head.next   # -4 points back to 2: a cycle
+print(has_cycle(head))
+print(has_cycle(from_list([1, 2])))
+```
+
+**Output:**
+
+```text
+True
+False
 ```
 
 **Complexity:** `O(n)` time, `O(1)` space.
@@ -677,6 +857,20 @@ def max_depth(root: TreeNode | None) -> int:
     if not root:
         return 0
     return 1 + max(max_depth(root.left), max_depth(root.right))
+
+#     3
+#    / \
+#   9  20
+#     /  \
+#    15   7
+root = TreeNode(3, TreeNode(9), TreeNode(20, TreeNode(15), TreeNode(7)))
+print(max_depth(root))
+```
+
+**Output:**
+
+```text
+3
 ```
 
 **Complexity:** `O(n)` time, `O(h)` space for tree height `h` (recursion stack).
@@ -719,6 +913,20 @@ def num_islands(grid: list[list[str]]) -> int:
                 count += 1
                 sink(r, c)
     return count
+
+grid = [
+    ["1", "1", "0", "0", "0"],
+    ["1", "1", "0", "0", "0"],
+    ["0", "0", "1", "0", "0"],
+    ["0", "0", "0", "1", "1"],
+]
+print(num_islands(grid))
+```
+
+**Output:**
+
+```text
+3
 ```
 
 **Complexity:** `O(rows × cols)` time and space. For very large grids, use BFS with `collections.deque` to avoid Python's recursion limit.
@@ -753,6 +961,12 @@ def climb_stairs(n: int) -> int:
 print(climb_stairs(5))       # 8
 ```
 
+**Output:**
+
+```text
+8
+```
+
 **Complexity:** `O(n)` time, `O(1)` space.
 
 ---
@@ -782,6 +996,14 @@ def max_sub_array(nums: list[int]) -> int:
         current = max(num, current + num)
         best = max(best, current)
     return best
+
+print(max_sub_array([-2, 1, -3, 4, -1, 2, 1, -5, 4]))
+```
+
+**Output:**
+
+```text
+6
 ```
 
 **Complexity:** `O(n)` time, `O(1)` space.
@@ -816,6 +1038,16 @@ def coin_change(coins: list[int], amount: int) -> int:
             if coin <= value:
                 dp[value] = min(dp[value], dp[value - coin] + 1)
     return dp[amount] if dp[amount] != float("inf") else -1
+
+print(coin_change([1, 2, 5], 11))
+print(coin_change([2], 3))
+```
+
+**Output:**
+
+```text
+3
+-1
 ```
 
 **Complexity:** `O(amount × len(coins))` time, `O(amount)` space.

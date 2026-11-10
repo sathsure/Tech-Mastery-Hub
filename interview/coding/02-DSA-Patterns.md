@@ -116,6 +116,14 @@ def max_sum(nums, k):
         window += nums[i] - nums[i - k]   # add new, drop old
         best = max(best, window)
     return best
+
+print(max_sum([2, 1, 5, 1, 3, 2], 3))
+```
+
+**Output:**
+
+```text
+9
 ```
 
 **Variable size — Minimum Size Subarray Sum (LeetCode 209): shortest subarray with sum ≥ target:**
@@ -131,6 +139,14 @@ def min_sub_array_len(target, nums):
             best = min(best, right - left + 1)
             total -= nums[left]; left += 1
     return 0 if best == float("inf") else best
+
+print(min_sub_array_len(7, [2, 3, 1, 2, 4, 3]))
+```
+
+**Output:**
+
+```text
+2
 ```
 
 **Spot it:** "longest/shortest/max subarray or substring that…".
@@ -154,6 +170,14 @@ def two_sum_sorted(nums, target):
         if s == target: return [l + 1, r + 1]
         if s < target: l += 1      # need bigger
         else: r -= 1               # need smaller
+
+print(two_sum_sorted([2, 7, 11, 15], 9))
+```
+
+**Output:**
+
+```text
+[1, 2]
 ```
 
 Also used for: reversing, removing duplicates in place, palindromes, 3Sum.
@@ -175,6 +199,15 @@ def middle(head):
     while fast and fast.next:
         slow, fast = slow.next, fast.next.next
     return slow
+
+# from_list / to_list build and print linked lists (see the LeetCode notes)
+print(middle(from_list([1, 2, 3, 4, 5])).val)
+```
+
+**Output:**
+
+```text
+3
 ```
 
 ---
@@ -198,6 +231,16 @@ def subarray_sum(nums, k):
         count += seen.get(total - k, 0)   # an earlier prefix that leaves exactly k
         seen[total] = seen.get(total, 0) + 1
     return count
+
+print(subarray_sum([1, 1, 1], 2))
+print(subarray_sum([1, 2, 3], 3))
+```
+
+**Output:**
+
+```text
+2
+2
 ```
 
 ---
@@ -216,6 +259,16 @@ def lower_bound(nums, target):     # first index with nums[i] >= target
         if nums[mid] < target: lo = mid + 1
         else: hi = mid
     return lo
+
+print(lower_bound([1, 3, 5, 6], 5))
+print(lower_bound([1, 3, 5, 6], 2))
+```
+
+**Output:**
+
+```text
+2
+1
 ```
 
 Python has it built in: `bisect.bisect_left(nums, target)`.
@@ -242,7 +295,14 @@ def daily_temperatures(t):
             j = stack.pop(); ans[j] = i - j
         stack.append(i)
     return ans
-# [73,74,75,71,69,72,76,73] → [1,1,4,2,1,1,0,0]
+
+print(daily_temperatures([73, 74, 75, 71, 69, 72, 76, 73]))
+```
+
+**Output:**
+
+```text
+[1, 1, 4, 2, 1, 1, 0, 0]
 ```
 
 ---
@@ -304,6 +364,15 @@ def level_order(root):
             if node.right: q.append(node.right)
         result.append(level)
     return result
+
+root = TreeNode(3, TreeNode(9), TreeNode(20, TreeNode(15), TreeNode(7)))
+print(level_order(root))
+```
+
+**Output:**
+
+```text
+[[3], [9, 20], [15, 7]]
 ```
 
 ---
@@ -327,6 +396,16 @@ def is_valid_bst(node, low=float("-inf"), high=float("inf")):
     if not node: return True
     if not (low < node.val < high): return False
     return is_valid_bst(node.left, low, node.val) and is_valid_bst(node.right, node.val, high)
+
+print(is_valid_bst(TreeNode(2, TreeNode(1), TreeNode(3))))
+print(is_valid_bst(TreeNode(5, TreeNode(1), TreeNode(4, TreeNode(3), TreeNode(6)))))
+```
+
+**Output:**
+
+```text
+True
+False
 ```
 
 > ⚠️ **Trap:** a right grandchild smaller than the root breaks the BST even if it's bigger than its own parent.
@@ -353,6 +432,16 @@ def lca(root, p, q):
     left, right = lca(root.left, p, q), lca(root.right, p, q)
     if left and right: return root        # one on each side
     return left or right
+
+p, q = TreeNode(5), TreeNode(1)
+root = TreeNode(3, p, q)
+print(lca(root, p, q).val)
+```
+
+**Output:**
+
+```text
+3
 ```
 
 ---
@@ -386,6 +475,16 @@ def can_finish(n, prerequisites):
             indegree[nxt] -= 1
             if indegree[nxt] == 0: q.append(nxt)
     return done == n          # False → there is a cycle
+
+print(can_finish(2, [[1, 0]]))            # take 0, then 1
+print(can_finish(2, [[1, 0], [0, 1]]))    # each needs the other: a cycle
+```
+
+**Output:**
+
+```text
+True
+False
 ```
 
 Real use: build systems, package installs, the study-path order in this repository.
@@ -438,6 +537,16 @@ def permutations(nums):                    # LeetCode 46 → n! results
         for i in range(len(rest)):
             go(path + [rest[i]], rest[:i] + rest[i+1:])
     go([], nums); return result
+
+print(subsets([1, 2, 3]))
+print(permutations([1, 2, 3]))
+```
+
+**Output:**
+
+```text
+[[1, 2, 3], [1, 2], [1, 3], [1], [2, 3], [2], [3], []]
+[[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]]
 ```
 
 Used for: subsets, permutations, combinations, N-Queens, Sudoku, word search.
@@ -467,7 +576,13 @@ def rob(nums):
     for x in nums:
         prev2, prev1 = prev1, max(prev1, prev2 + x)   # skip it, or take it
     return prev1
-# [2,7,9,3,1] → 12  (2 + 9 + 1)
+print(rob([2, 7, 9, 3, 1]))          # 2 + 9 + 1
+```
+
+**Output:**
+
+```text
+12
 ```
 
 #### ↳ Follow-up: Memoization vs tabulation?
@@ -498,7 +613,13 @@ def lcs(a, b):
             if a[i-1] == b[j-1]: dp[i][j] = dp[i-1][j-1] + 1
             else:                dp[i][j] = max(dp[i-1][j], dp[i][j-1])
     return dp[-1][-1]
-# lcs("abcde", "ace") → 3
+print(lcs("abcde", "ace"))          # "ace"
+```
+
+**Output:**
+
+```text
+3
 ```
 
 O(m × n) time and space.
@@ -533,6 +654,22 @@ class LRUCache:
         self.data[key] = value; self.data.move_to_end(key)
         if len(self.data) > self.cap:
             self.data.popitem(last=False)   # remove the oldest
+
+cache = LRUCache(2)
+cache.put(1, "a")
+cache.put(2, "b")
+print(cache.get(1))      # 1 is now the most recent
+cache.put(3, "c")         # full: evicts 2, the least recently used
+print(cache.get(2))
+print(cache.get(3))
+```
+
+**Output:**
+
+```text
+a
+-1
+c
 ```
 
 ---
@@ -561,6 +698,14 @@ def merge_k_lists(lists):
         tail.next = tail = node
         if node.next: heapq.heappush(heap, (node.next.val, i, node.next))
     return dummy.next
+
+print(to_list(merge_k_lists([from_list([1, 4, 5]), from_list([1, 3, 4]), from_list([2, 6])])))
+```
+
+**Output:**
+
+```text
+[1, 1, 2, 3, 4, 4, 5, 6]
 ```
 
 ---

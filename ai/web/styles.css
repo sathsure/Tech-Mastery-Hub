@@ -601,8 +601,11 @@ html.theming .thread { view-transition-name: none; }
 .atlas-entry { margin: 2px 0 4px; }
 .side-link { display: flex; align-items: center; gap: 6px; width: 100%; padding: 6px 8px; border: 0; border-radius: var(--radius-sm); background: none; color: var(--muted); font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; text-align: left; cursor: pointer; }
 .side-link:hover { color: var(--text); background: var(--bg-hover); }
-.side-link .chevron { transition: transform var(--fast) var(--ease); }
-.side-link:hover .chevron { transform: translateX(2px); }
+.side-link-ic { width: 13px; height: 13px; transition: transform var(--fast) var(--ease); }
+.side-link:hover .side-link-ic { color: var(--accent); transform: translate(1px, -1px); }
+/* "Use suggestion": only where there is no Tab key (touch screens). */
+.suggest-use { color: var(--accent); border-color: var(--accent); }
+@media (hover: hover) and (pointer: fine) { .suggest-use { display: none !important; } }
 .forward-btn { width: 32px; height: 32px; }
 
 .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; margin: 12px 0; }

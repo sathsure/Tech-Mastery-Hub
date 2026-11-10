@@ -792,3 +792,73 @@
 1️⃣3️⃣ Employees need to search enterprise documents using natural language questions → **Amazon Kendra**
 
 ![AWS_Architecture Image](/src/assets/aws-architecture.png)
+
+---
+
+## AWS Basics
+
+### ❓ What are an AWS Region and an Availability Zone?
+
+### 📝 Answer
+
+- A **Region** is a geographic area with its own data centres, e.g. `ap-south-1` (Mumbai).
+- An **Availability Zone (AZ)** is one or more separate data centres inside a Region, with its own power and network.
+
+Run your app in **two or more AZs** so it keeps working if one data centre fails. Pick the Region **closest to your users** (and where your data is allowed to live).
+
+_Follow-up — Is data copied between Regions automatically?_ No — you set up cross-Region copies yourself (e.g. S3 replication).
+
+---
+
+### ❓ EC2 or Lambda — what is the difference, in simple words?
+
+### 📝 Answer
+
+- **EC2** is a **virtual server** you rent. It runs all the time; you manage the OS, patches and scaling. Good for long-running apps.
+- **Lambda** runs **a function only when it's called** (an API request, a file upload). No servers to manage; you pay per run. Good for short, event-driven jobs.
+
+Example: a resize-image job triggered by an S3 upload → Lambda. A Java app running 24×7 → EC2 (or containers).
+
+_Follow-up — A limit of Lambda?_ A single run can last at most 15 minutes.
+
+---
+
+### ❓ What is S3 used for?
+
+### 📝 Answer
+
+**S3** stores **files (objects)** — images, videos, backups, logs, static websites — in **buckets**, and scales without limit.
+
+- Each file has a **key** (its path), e.g. `users/42/photo.jpg`.
+- Very durable (designed for 99.999999999%).
+- Storage classes cut cost for files you rarely read (e.g. Glacier for archives).
+
+_Follow-up — Can S3 host a website?_ Yes, a static one (HTML, CSS, JS), usually behind CloudFront.
+
+---
+
+### ❓ What are IAM users, roles and policies?
+
+### 📝 Answer
+
+**IAM** controls **who can do what** in your AWS account.
+
+- **User:** a person or app with long-term credentials.
+- **Role:** a set of permissions that someone or something **assumes for a while** — e.g. an EC2 server reading from S3, with no stored keys.
+- **Policy:** a JSON document listing what is allowed: `"Allow s3:GetObject on bucket my-photos"`.
+
+**Rule:** give the **least privilege** needed, and use roles instead of keys inside code.
+
+---
+
+### ❓ What is a VPC?
+
+### 📝 Answer
+
+A **VPC (Virtual Private Cloud)** is **your own private network** inside AWS, where your servers and databases live.
+
+- **Public subnet:** reachable from the internet (e.g. load balancers).
+- **Private subnet:** not reachable directly (e.g. databases).
+- **Security groups:** firewall rules on each server ("allow port 443 from anywhere").
+
+Example: the load balancer sits in a public subnet; the app servers and database sit in private subnets.

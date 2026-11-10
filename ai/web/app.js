@@ -309,6 +309,8 @@ function renderSuggestion() {
   ghost.querySelector(".ghost-rest").textContent = text.slice(typed.length);
   // The ghost text replaces the placeholder while it shows.
   input.classList.toggle("has-ghost", Boolean(text));
+  // Phones have no Tab or → key: a button takes the suggestion there.
+  $("#suggest-use").hidden = !text;
   $("#ghost-hint").textContent = text ? `Suggestion: ${text}. Press Tab to use it.` : "";
   autosize();
 }
@@ -350,8 +352,8 @@ function renderSidebar() {
   const navItem = item => `<li><button type="button" class="nav-item" data-ask="${item.id === "roadmaps" ? "Roadmaps" : `Explore ${escapeHtml(item.label)}`}" data-overview="${item.id === "roadmaps" ? "roadmaps-hub" : escapeHtml(item.id)}" title="${escapeHtml(item.description ?? item.label)}">${icon(NAV_ICONS[item.id] ?? "book", "nav-ic")}<span>${escapeHtml(item.label)}</span></button></li>`;
   // The Career Atlas opens as its own page over the chat. The card shows it holds many sections
   // (roles, ladder, salary, tax, abroad, readiness test…), with an arrow for "opens a page".
-  // The Career Atlas: styled like the section headings below it; the chevron says it opens a page.
-  $("#atlas-entry").innerHTML = `<button type="button" class="side-link" data-atlas="overview" title="Open the Career Atlas">${icon("chevron", "chevron")}<span>Career Atlas</span></button>`;
+  // The Career Atlas: styled like the section headings around it; the "open" icon says it goes to another page.
+  $("#atlas-entry").innerHTML = `<button type="button" class="side-link" data-atlas="overview" title="Open the Career Atlas page">${icon("external", "side-link-ic")}<span>Career Atlas</span></button>`;
   // The learning roadmaps come next. The glossary lives in the Career Atlas only.
   const primary = ["roadmaps"].map(id => atlas.find(item => item.id === id)).filter(Boolean);
   $("#primary-list").innerHTML = primary.map(navItem).join("");
@@ -1009,6 +1011,10 @@ const ACTIONS = {
   reload: () => location.reload(),
   theme: () => toggleTheme(),
   jump: () => jumpToLatest(),
+  "use-suggestion": () => {
+    acceptSuggestion();
+    input.focus();
+  },
   "close-panels": closeSidebar,
   "open-sidebar": () => document.body.classList.add("sidebar-open"),
   "close-sidebar": closeSidebar,

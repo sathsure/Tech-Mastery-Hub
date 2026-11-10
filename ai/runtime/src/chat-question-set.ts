@@ -416,7 +416,7 @@ const SOURCES: Record<CategoryId, (entry: QuestionEntry) => boolean> = {
   coding: entry => entry.source.path.startsWith("practice/coding/") && !/leetcode|sql/i.test(entry.source.path) && !/\b(output|print|compile|trap)\b/i.test(entry.question),
   sql: entry => /03-SQL-Interview-Queries|02-MySQL-coding|02-SQL-Indexing/.test(entry.source.path),
   design: entry => /04-System-Design\.md$/.test(entry.source.path) ? /classic|tricky|reliability/i.test(entry.section.join(" ")) : /05-Distributed-Systems|microservice-architecture|09-Web_Architecture/.test(entry.source.path) && /final system design|walkthrough|consistency|transactions across/i.test(entry.section.join(" ")),
-  architecture: entry => /10-Design-Patterns-SOLID/.test(entry.source.path) || (/08-Architecture|06-Spring-Cloud/.test(entry.source.path) && /architect|design decision|end-to-end|api design|fundamentals|service boundaries/i.test(entry.section.join(" "))),
+  architecture: entry => /10-Design-Patterns-SOLID/.test(entry.source.path) || (/04-System-Design\.md$/.test(entry.source.path) && /architecture basics/i.test(entry.section.join(" "))) || (/08-Architecture|06-Spring-Cloud/.test(entry.source.path) && /architect|design decision|end-to-end|api design|fundamentals|service boundaries/i.test(entry.section.join(" "))),
   debugging: entry => /production issues|incident|configuration & environment|troubleshooting|jpa \/ hibernate performance|memory leaks/i.test(entry.section.join(" ")),
   scenarios: entry => /scenario|mock interview|real-world|concurrent users|performance & scalability|state, caching|data safety|security & data exposure|deployment & release/i.test(entry.section.join(" ")),
   behavioural: entry =>

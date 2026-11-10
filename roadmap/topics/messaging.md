@@ -19,13 +19,24 @@
 2. [When should you use Kafka (use cases)?](../../interview/architecture/messaging-rabbitmq-kafka.md)
 3. [How do you choose between RabbitMQ and Kafka for a requirement?](../../interview/architecture/messaging-rabbitmq-kafka.md)
 
-## 3. Scaling: serving more users with more servers (system design, any language)
+## 3. Kafka Basics
+
+1. [What are a Kafka topic and a partition?](../../interview/architecture/messaging-rabbitmq-kafka.md)
+   - [Is order guaranteed across the whole topic?](../../interview/architecture/messaging-rabbitmq-kafka.md)
+2. [What is a consumer group?](../../interview/architecture/messaging-rabbitmq-kafka.md)
+   - [What happens when a consumer in the group crashes?](../../interview/architecture/messaging-rabbitmq-kafka.md)
+3. [What is an offset, and what does committing it mean?](../../interview/architecture/messaging-rabbitmq-kafka.md)
+4. [What does the message key do in Kafka?](../../interview/architecture/messaging-rabbitmq-kafka.md)
+5. [How does Kafka avoid losing data when a server fails?](../../interview/architecture/messaging-rabbitmq-kafka.md)
+   - [What is a typical replication factor?](../../interview/architecture/messaging-rabbitmq-kafka.md)
+
+## 4. Scaling: serving more users with more servers (system design, any language)
 
 1. [Why do large systems run on many servers instead of one big one?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)
 2. [How does a cache like Redis make systems faster?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)
 3. [Why use a message queue like Kafka or RabbitMQ?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)
 
-## 4. Resilience: surviving failures (any language; Java examples)
+## 5. Resilience: surviving failures (any language; Java examples)
 
 1. [What is resilience, and is it Java-specific?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)
 2. [How does a circuit breaker work?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)
