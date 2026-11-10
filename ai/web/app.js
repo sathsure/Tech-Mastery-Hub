@@ -1230,6 +1230,23 @@ $("#palette-input").addEventListener("input", event => {
   }, 120);
 });
 
+// Clicking a result asks it, like Enter; the eye button on the row opens the source instead.
+$("#palette-results").addEventListener("click", event => {
+  if (event.target.closest("[data-entry-open]")) return;
+  const item = event.target.closest(".palette-item");
+  const hit = item ? paletteHits[Number(item.dataset.i)] : null;
+  const text = hit?.question ?? (event.target.closest(".palette-empty") ? $("#palette-input").value.trim() : "");
+  if (!text) return;
+  closeOverlays();
+  send(text);
+});
+// The row under the mouse is the one Enter would open.
+$("#palette-results").addEventListener("mousemove", event => {
+  const item = event.target.closest(".palette-item");
+  if (!item || Number(item.dataset.i) === paletteActive) return;
+  movePalette(Number(item.dataset.i) - paletteActive);
+});
+
 $("#palette-input").addEventListener("keydown", event => {
   if (event.key === "ArrowDown" || event.key === "ArrowUp") {
     event.preventDefault();
