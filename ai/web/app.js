@@ -444,6 +444,13 @@ function syncAtlasTheme() {
   }
 }
 
+/** Opening or closing the Atlas: one quick cross-fade of the whole page. */
+function atlasTransition(update) {
+  if (!document.startViewTransition || reducedMotion() || document.hidden) return update();
+  document.documentElement.classList.add("atlas-switch");
+  document.startViewTransition(update).finished.finally(() => document.documentElement.classList.remove("atlas-switch"));
+}
+
 function showAtlas(section) {
   section = section || "overview";
   syncAtlasTheme();
@@ -463,18 +470,25 @@ function showAtlas(section) {
       atlasFrame.src = `${ATLAS_PAGE}?embed=1#${section}`;
     }
   }
-  if (atlasView.hidden) atlasReturnFocus = document.activeElement;
-  atlasView.hidden = false;
-  document.body.classList.add("atlas-open");
-  document.title = "Career Atlas · Tech-Mastery-Hub";
+  const reveal = () => {
+    atlasView.hidden = false;
+    document.body.classList.add("atlas-open");
+    document.title = "Career Atlas · Tech-Mastery-Hub";
+  };
+  if (atlasView.hidden) {
+    atlasReturnFocus = document.activeElement;
+    atlasTransition(reveal);
+  } else reveal();
   atlasFrame.focus();
 }
 
 function hideAtlas() {
   if (atlasView.hidden) return;
-  atlasView.hidden = true;
-  document.body.classList.remove("atlas-open");
-  document.title = pageTitle;
+  atlasTransition(() => {
+    atlasView.hidden = true;
+    document.body.classList.remove("atlas-open");
+    document.title = pageTitle;
+  });
   (atlasReturnFocus?.isConnected ? atlasReturnFocus : input).focus();
 }
 

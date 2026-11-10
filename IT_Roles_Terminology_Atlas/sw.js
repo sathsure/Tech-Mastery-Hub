@@ -1,8 +1,8 @@
 /* Offline cache for the Atlas. Always fetches the latest file; the cached copy is used only when offline,
  * so an update is never hidden behind an old copy. Live feeds (other origins) are never cached here.
  * Bump CACHE when the file list changes. */
-const CACHE = "atlas-v10";
-const CORE = ["welcome.html", "atlas-ui.js", "welcome.js", "IT_Roles_Terminology_Atlas.html", "IT_Roles_Terminology_Atlas.css", "IT_Roles_Terminology_Atlas.js", "it-atlas-data.js", "pay-tax.js", "pay-tax-ui.js", "glossary-cards.js", "role-test-data.js", "role-test-data-2.js", "role-test-data-3.js", "role-test-data-4.js", "role-test-data-5.js", "role-test-engine.js", "role-test-ui.js", "icon.svg", "manifest.webmanifest"];
+const CACHE = "atlas-v11";
+const CORE = ["welcome.html", "theme-boot.js", "atlas-ui.js", "welcome.js", "IT_Roles_Terminology_Atlas.html", "IT_Roles_Terminology_Atlas.css", "IT_Roles_Terminology_Atlas.js", "it-atlas-data.js", "pay-tax.js", "pay-tax-ui.js", "glossary-cards.js", "role-test-data.js", "role-test-data-2.js", "role-test-data-3.js", "role-test-data-4.js", "role-test-data-5.js", "role-test-engine.js", "role-test-ui.js", "icon.svg", "manifest.webmanifest"];
 
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(CORE)).then(() => self.skipWaiting()));

@@ -15,7 +15,7 @@
   document.getElementById("wBrand").href = BACK_TO;
   // Opened from an Atlas page: leaving is a step back in history, so Back / Forward stay in order.
   const cameFromAtlas = Boolean(RETURN) && history.length > 1;
-  try { sessionStorage.removeItem("atlas-return"); } catch {}
+  // Kept (not cleared), so the page still knows where it came from after Back / Forward return to it.
   const leave = () => (cameFromAtlas ? history.back() : location.replace(BACK_TO));
   document.getElementById("wBrand").addEventListener("click", (e) => {
     if (!cameFromAtlas || e.ctrlKey || e.metaKey || e.shiftKey) return;
