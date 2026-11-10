@@ -67,7 +67,49 @@
 3. [Tricky: Monolith or microservices for a new startup product?](../../interview/architecture/04-System-Design.md)
    - [What is a modular monolith?](../../interview/architecture/04-System-Design.md)
 
-## 5. Part 1 — Consistency
+## 5. Part 5 — Classic Design Basics
+
+1. [How would you design the backend of a simple to-do list app?](../../interview/architecture/04-System-Design.md)
+   - [What would you add first if it grew to millions of users?](../../interview/architecture/04-System-Design.md)
+2. [How would you design a "like" button that shows the like count on a post?](../../interview/architecture/04-System-Design.md)
+   - [Why not `SELECT COUNT(*)` every time?](../../interview/architecture/04-System-Design.md)
+3. [How would you design a simple file upload feature (profile photos)?](../../interview/architecture/04-System-Design.md)
+   - [Why upload straight to storage instead of through the API?](../../interview/architecture/04-System-Design.md)
+4. [How would you design a basic search box for products?](../../interview/architecture/04-System-Design.md)
+   - [Why is `LIKE '%phone%'` slow?](../../interview/architecture/04-System-Design.md)
+
+## 6. Part 6 — Troubleshooting Basics
+
+1. [A web page has become slow. What do you check first?](../../interview/architecture/04-System-Design.md)
+   - [Name a quick win for a slow query.](../../interview/architecture/04-System-Design.md)
+2. [Users see "500 Internal Server Error" right after a deploy. What do you do?](../../interview/architecture/04-System-Design.md)
+   - [Why roll back before debugging?](../../interview/architecture/04-System-Design.md)
+3. [How do you read a stack trace?](../../interview/architecture/04-System-Design.md)
+4. [Users say they can't log in. How do you start?](../../interview/architecture/04-System-Design.md)
+   - [Name a common hidden cause.](../../interview/architecture/04-System-Design.md)
+5. [The app's memory keeps growing until it crashes. What are your first steps?](../../interview/architecture/04-System-Design.md)
+   - [A quick fix while you investigate?](../../interview/architecture/04-System-Design.md)
+
+## 7. Part 7 — Real-World Scenario Basics
+
+1. [A user double-clicks "Pay". How do you avoid charging them twice?](../../interview/architecture/04-System-Design.md)
+2. [Two users edit the same record at the same time. What happens, and how do you handle it?](../../interview/architecture/04-System-Design.md)
+   - [Which is more common in web apps?](../../interview/architecture/04-System-Design.md)
+3. [An external API your app depends on is down. What should your app do?](../../interview/architecture/04-System-Design.md)
+4. [You need to release a new feature to only 10% of users first. How?](../../interview/architecture/04-System-Design.md)
+5. [A daily report query slows the whole app during business hours. What do you do?](../../interview/architecture/04-System-Design.md)
+
+## 8. Part 8 — Architecture Basics
+
+1. [What is layered (n-tier) architecture?](../../interview/architecture/04-System-Design.md)
+   - [What goes wrong if a controller queries the database directly?](../../interview/architecture/04-System-Design.md)
+2. [What is MVC?](../../interview/architecture/04-System-Design.md)
+3. [What is separation of concerns?](../../interview/architecture/04-System-Design.md)
+4. [What is dependency injection, in simple words?](../../interview/architecture/04-System-Design.md)
+5. [What is the difference between a monolith and microservices, in simple words?](../../interview/architecture/04-System-Design.md)
+   - [Which do most teams start with?](../../interview/architecture/04-System-Design.md)
+
+## 9. Part 1 — Consistency
 
 1. [What is the CAP theorem?](../../interview/architecture/05-Distributed-Systems.md)
    - [Which would you choose for a bank balance and for a "likes" counter?](../../interview/architecture/05-Distributed-Systems.md)
@@ -76,7 +118,7 @@
    - [Where is eventual consistency not acceptable?](../../interview/architecture/05-Distributed-Systems.md)
 3. [What are ACID and BASE?](../../interview/architecture/05-Distributed-Systems.md)
 
-## 6. Part 2 — Transactions Across Services
+## 10. Part 2 — Transactions Across Services
 
 1. [Why can't you use a normal database transaction across microservices?](../../interview/architecture/05-Distributed-Systems.md)
 2. [What is the Transactional Outbox pattern?](../../interview/architecture/05-Distributed-Systems.md)
@@ -84,12 +126,12 @@
 3. [What are "at most once", "at least once" and "exactly once" delivery?](../../interview/architecture/05-Distributed-Systems.md)
    - [How do you make a consumer idempotent?](../../interview/architecture/05-Distributed-Systems.md)
 
-## 7. Part 3 — Coordination
+## 11. Part 3 — Coordination
 
 1. [What is a quorum?](../../interview/architecture/05-Distributed-Systems.md)
 2. [How do you generate unique IDs across many servers?](../../interview/architecture/05-Distributed-Systems.md)
 
-## 8. Part 4 — Failures
+## 12. Part 4 — Failures
 
 1. [What are retries with exponential backoff and jitter?](../../interview/architecture/05-Distributed-Systems.md)
 2. [What is a timeout and why should every remote call have one?](../../interview/architecture/05-Distributed-Systems.md)
@@ -98,17 +140,17 @@
 4. [Tricky: The network is reliable, right?](../../interview/architecture/05-Distributed-Systems.md)
 5. [Tricky: A request timed out — did the operation happen?](../../interview/architecture/05-Distributed-Systems.md)
 
-## 9. Part 11 — Final System Design Question
+## 13. Part 11 — Final System Design Question
 
 1. [Final Question: Design a MEAN system for 1 million users](../../interview/frontend/09-Web_Architecture.md)
 
-## 10. Scaling: serving more users with more servers (system design, any language)
+## 14. Scaling: serving more users with more servers (system design, any language)
 
 1. [Why do large systems run on many servers instead of one big one?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)
 2. [How does a cache like Redis make systems faster?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)
 3. [Why use a message queue like Kafka or RabbitMQ?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)
 
-## 11. Resilience: surviving failures (any language; Java examples)
+## 15. Resilience: surviving failures (any language; Java examples)
 
 1. [What is resilience, and is it Java-specific?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)
 2. [How does a circuit breaker work?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)

@@ -18,6 +18,8 @@ export interface ChatRequest {
   overview?: string;
   /** A mock interview in progress: the message is the answer to the current question. */
   mock?: MockState;
+  /** The user has filled in their Career Atlas profile: salary and work-abroad details may be shown. */
+  profile?: boolean;
 }
 
 /** A mock interview's progress; the server returns it on the done event and the client sends it back. */

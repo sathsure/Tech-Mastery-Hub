@@ -4,7 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="Tell the IT Roles & Terminology Atlas about you to get personal role, salary and career recommendations.">
-<title>Welcome · IT Atlas</title>
+<title>Your profile · Career Atlas</title>
+<meta name="color-scheme" content="light dark">
+<script src="theme-boot.js"></script>
+<link rel="expect" href="#atlas-ready" blocking="render">
 <link rel="stylesheet" href="IT_Roles_Terminology_Atlas.css">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
@@ -13,8 +16,9 @@
 <body class="welcome-page">
 <main class="wl">
   <header class="wl-top">
-    <a class="brand" href="IT_Roles_Terminology_Atlas.html"><span class="brand-mark">IT</span><span>Roles &amp; Terminology Atlas</span></a>
-    <button class="btn-link" type="button" data-skip>Skip — just browse →</button>
+    <a class="brand" id="wBrand" href="IT_Roles_Terminology_Atlas.html"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5z"/></svg></span><span class="brand-text">Career Atlas</span></a>
+    <span class="wl-crumb" aria-hidden="true">/</span>
+    <span class="wl-page-title">Your profile</span>
   </header>
 
   <section class="wl-card" aria-labelledby="wlTitle">
@@ -79,5 +83,6 @@
 
 <script src="it-atlas-data.js"></script>
 <script src="welcome.js"></script>
+<div id="atlas-ready" hidden></div>
 </body>
 </html>

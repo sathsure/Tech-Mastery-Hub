@@ -1431,6 +1431,17 @@ const ATLAS = {
    */
   taxes: {
     asOf: "November 2026",
+    /* What the same money buys in each country: World Bank PPP conversion factor, private consumption
+       (local currency per international $), 2024, data updated 8 Oct 2026. Re-check yearly. */
+    ppp: {
+      source: "World Bank — PPP conversion factor, private consumption (PA.NUS.PRVT.PP), 2024",
+      url: "https://data.worldbank.org/indicator/PA.NUS.PRVT.PP",
+      rates: {
+        "India": 19.897, "United States": 1, "United Kingdom": 0.683, "Canada": 1.241, "Germany": 0.702,
+        "Netherlands": 0.742, "Ireland": 0.882, "Singapore": 1.042, "Japan": 99.385, "Australia": 1.427,
+        "UAE (Dubai/Abu Dhabi)": 2.563
+      }
+    },
     note: "Rules for a single employee who is tax resident there, with salary as the only income. Local taxes, family allowances and many credits are left out, so treat estimates as a guide and use the official calculator linked on each card for exact numbers. Moving abroad from India? Check the India–country tax treaty (DTAA): it decides where you pay, and Form 67 lets you claim credit in India for tax paid abroad.",
     countries: [
       {
@@ -1745,7 +1756,96 @@ const ATLAS = {
     { phase: "5. Deployment", what: "Release to production.", who: "DevOps / Release Engineer, Cloud Engineer", out: "CI/CD pipeline, release notes, deployed build" },
     { phase: "6. Operations & Support", what: "Keep it running and fix issues.", who: "SRE, Production Support, IT Support", out: "Dashboards, alerts, incident & RCA reports" },
     { phase: "Throughout", what: "Plan, track and remove blockers.", who: "Scrum Master, Project/Delivery Manager, Engineering Manager", out: "Sprint plans, status reports, risk logs" }
-  ]
+  ],
+  /* Who talks to the client or customer, and who takes their production issues. */
+  clientContacts: [
+    { when: "Before the project", who: "Account Manager, Pre-Sales, Solutions / Sales Engineer", what: "Understand the need, demo the product, send the proposal and estimate." },
+    { when: "Requirements & sign-off", who: "Business Analyst, Product Manager, Project Manager", what: "Gather requirements, agree the scope and get sign-off." },
+    { when: "Status & escalations", who: "Project Manager, Delivery / Program Manager, Engineering Manager", what: "Weekly status, demos, change requests and escalations." },
+    { when: "On-site integration", who: "Forward Deployed Engineer, Forward Deployed Manager, Solutions / Sales Engineer", what: "Work inside the client's team to connect the product to their data and systems." },
+    { when: "Production issues", who: "IT Support / Help Desk, Production / Application Support, SRE", what: "Client raises a ticket → L1 support logs and triages → L2/L3 support fixes or escalates → SRE and developers handle outages and the RCA." },
+    { when: "After go-live", who: "Customer Success Engineer, Account Manager", what: "Training, adoption and renewals; client feedback goes back to the product team." }
+  ],
+  /* Every step of a project each role takes part in: 1 Requirement · 2 Design · 3 Development · 4 Testing ·
+     5 Deployment · 6 Operations & Support · T Throughout. "Who does what" lists them under each step. */
+  sdlcRoles: {
+    "Forward Deployed Engineer (FDE)": "1,2,3,4,5,6",
+    "AI Agent Engineer": "2,3,4,5",
+    "Context / Prompt Engineer": "2,3,4",
+    "AI Evaluation (Evals) Engineer": "1,4,6",
+    "AI Red Teamer / AI Safety Engineer": "4,6",
+    "AI Product Manager": "1,2,4,T",
+    "AI Solutions Architect": "1,2,5",
+    "AI Infrastructure / LLMOps Engineer": "2,5,6",
+    "AI Automation Engineer": "1,2,3,5",
+    "Responsible AI / AI Governance Lead": "1,2,4,T",
+    "AI Trainer / Data Annotation Specialist": "3,4",
+    "Conversational AI Designer": "1,2,4",
+    "Physical AI / Robotics Engineer": "2,3,4",
+    "XR (AR/VR) Developer": "2,3,4",
+    "Quantum Software Engineer": "2,3",
+    "Developer Advocate (DevRel)": "1,6",
+    "Frontend Developer": "2,3,4",
+    "Backend Developer": "2,3,4,5",
+    "Full Stack Developer": "2,3,4,5",
+    "Mobile Developer": "2,3,4,5",
+    "Embedded / Firmware Engineer": "2,3,4",
+    "Game Developer": "2,3,4",
+    "Mainframe Developer": "3,4,6",
+    "ERP / CRM Developer": "1,3,4,5",
+    "Blockchain Developer": "2,3,4",
+    "Low-Code / RPA Developer": "1,3,4",
+    "Data Analyst": "1,6",
+    "Analytics Engineer": "2,3,4",
+    "Data Engineer": "2,3,5,6",
+    "Data Scientist": "1,2,3,4",
+    "Machine Learning Engineer": "2,3,4,5",
+    "AI / LLM Engineer": "2,3,4,5",
+    "MLOps Engineer": "5,6",
+    "BI Developer": "1,3",
+    "Database Administrator (DBA)": "2,5,6",
+    "DevOps Engineer": "2,5,6",
+    "Cloud Engineer": "2,5,6",
+    "Site Reliability Engineer (SRE)": "2,5,6",
+    "Platform Engineer": "2,5,6",
+    "FinOps Engineer / Analyst": "2,6",
+    "System Administrator": "5,6",
+    "Network Engineer": "2,5,6",
+    "Release / Build Engineer": "4,5",
+    "Manual QA / Test Engineer": "1,4",
+    "Automation Test Engineer (SDET)": "3,4,5",
+    "Performance Test Engineer": "4,6",
+    "Security Analyst (SOC)": "6",
+    "Penetration Tester / Ethical Hacker": "4",
+    "Application Security (AppSec) / DevSecOps Engineer": "2,3,4,5",
+    "Cloud Security Engineer": "2,5,6",
+    "IAM Engineer": "2,5,6",
+    "GRC / Compliance Analyst": "1,4,T",
+    "Product Manager (PM)": "1,2,4,T",
+    "Product Owner (PO)": "1,4,T",
+    "UI/UX Designer": "1,2,4",
+    "UX Researcher": "1,2,4",
+    "Solution Architect": "1,2,3,5",
+    "Enterprise Architect": "1,2",
+    "Cloud Architect": "2,5",
+    "Data Architect": "2,3",
+    "Tech Lead": "2,3,4,5,T",
+    "Engineering Manager": "2,T",
+    "CTO / CIO": "1,T",
+    "IT Support / Help Desk (L1/L2)": "6",
+    "Production / Application Support (L2/L3)": "5,6",
+    "NOC Engineer": "6",
+    "Business Analyst (BA)": "1,4",
+    "Scrum Master / Agile Coach": "T",
+    "Project Manager": "1,T",
+    "Delivery / Program Manager": "1,T",
+    "Solutions / Sales Engineer": "1,2",
+    "Customer Success Engineer": "6",
+    "Technical Writer": "3,5",
+    "Pre-Sales / Solutions Consultant": "1"
+  },
+  /* People who take part but are not roles in this Atlas. */
+  sdlcExtras: { T: "Forward Deployed Manager" }
 };
 
 if (typeof module !== "undefined" && module.exports) module.exports = ATLAS;

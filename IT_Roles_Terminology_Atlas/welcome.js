@@ -8,8 +8,28 @@
   const load = (k, d) => { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch { return d; } };
   const save = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} };
   const DASH = `IT_Roles_Terminology_Atlas.html${location.search}`; // keeps ?embed=1 inside the tutor
+  // The Atlas section this page was opened from (e.g. #mypath), so leaving returns there.
+  const RETURN = (() => { try { return sessionStorage.getItem("atlas-return") || ""; } catch { return ""; } })();
+  const BACK_TO = `${DASH}${/^#[\w/,-]*$/.test(RETURN) ? RETURN : ""}`;
+  // The brand goes back to the Atlas the same way (keeping the tutor's "Chat" button).
+  document.getElementById("wBrand").href = BACK_TO;
+  // Opened from an Atlas page: leaving is a step back in history, so Back / Forward stay in order.
+  const cameFromAtlas = Boolean(RETURN) && history.length > 1;
+  // Kept (not cleared), so the page still knows where it came from after Back / Forward return to it.
+  const leave = () => (cameFromAtlas ? history.back() : location.replace(BACK_TO));
+  document.getElementById("wBrand").addEventListener("click", (e) => {
+    if (!cameFromAtlas || e.ctrlKey || e.metaKey || e.shiftKey) return;
+    e.preventDefault();
+    leave();
+  });
 
-  try { document.documentElement.dataset.theme = localStorage.getItem("atlas-theme") || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"); } catch {}
+  // Inside the tutor: use the tutor's theme.
+  const embedded = new URLSearchParams(location.search).has("embed") && window.parent !== window;
+  let parentTheme = null;
+  if (embedded) {
+    try { parentTheme = window.parent.document.documentElement.getAttribute("data-theme"); } catch { /* not same-origin */ }
+  }
+  try { document.documentElement.dataset.theme = parentTheme || localStorage.getItem("atlas-theme") || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"); } catch {}
 
   const prev = load("atlas-profile", {}) || {};
   const sal = Object.assign({ track: 0, exp: 0, city: 0, company: 0, mode: 0, skills: [] }, load("atlas-salary", {}));
@@ -92,7 +112,7 @@
     if (n === 2) renderSkills();
     document.querySelector(`[data-step="${n}"] input, [data-step="${n}"] select`)?.focus();
   }
-  $("#wBack").addEventListener("click", () => show(step - 1));
+  $("#wBack").addEventListener("click", () => { if (step > 1) show(step - 1); });
   $("#wlForm").addEventListener("submit", (e) => {
     e.preventDefault();
     if (step === 1) {
@@ -123,7 +143,7 @@
     if (editing) b.textContent = "Cancel — back to the atlas";
     b.addEventListener("click", () => {
       if (!editing) save("atlas-profile", { skipped: true });
-      location.replace(DASH);
+      leave();
     });
   });
   if (editing) {
@@ -132,7 +152,7 @@
       if (!confirm("Remove your name, role, skills and salary from this browser?")) return;
       save("atlas-profile", { skipped: true });
       save("atlas-salary", Object.assign(sal, { skills: [] }));
-      location.replace(DASH);
+      location.replace(BACK_TO);
     });
   }
 

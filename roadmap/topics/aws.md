@@ -77,6 +77,14 @@
 1. [What are the main AWS AI & Machine Learning services (SageMaker, Bedrock, Rekognition, Comprehend)?](../../interview/architecture/02-aws-cloud.md)
 2. [AWS AI & Machine Learning: which service fits each scenario?](../../interview/architecture/02-aws-cloud.md)
 
+## 16. AWS Basics
+
+1. [What are an AWS Region and an Availability Zone?](../../interview/architecture/02-aws-cloud.md)
+2. [EC2 or Lambda — what is the difference, in simple words?](../../interview/architecture/02-aws-cloud.md)
+3. [What is S3 used for?](../../interview/architecture/02-aws-cloud.md)
+4. [What are IAM users, roles and policies?](../../interview/architecture/02-aws-cloud.md)
+5. [What is a VPC?](../../interview/architecture/02-aws-cloud.md)
+
 ## Diagrams
 
 - [AWS_CLS_DIAGRAM](../../knowledge/visual-notes/aws-cls-diagram.png)

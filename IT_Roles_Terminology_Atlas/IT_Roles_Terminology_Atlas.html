@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="One-stop reference for IT roles, career hierarchy, terminology, languages, frameworks and tools.">
 <title>Career Atlas · Tech-Mastery-Hub</title>
+<meta name="color-scheme" content="light dark">
+<script src="theme-boot.js"></script>
+<link rel="expect" href="#atlas-ready" blocking="render">
 <link rel="stylesheet" href="IT_Roles_Terminology_Atlas.css">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
@@ -39,8 +42,8 @@
   <button data-tab="mypath">My path</button>
   <button data-tab="roletest">Readiness test</button>
   <p class="rail-label">Pay &amp; moves</p>
-  <button data-tab="salary">Salary (India)</button>
   <button data-tab="pay">Take-home &amp; tax</button>
+  <button data-tab="salary">Salary (India)</button>
   <button data-tab="abroad">Work abroad</button>
 </nav>
 
@@ -54,7 +57,6 @@
         <p id="heroCounts" class="lead">Roles, career levels, terms, tools and salaries, explained simply.</p>
       </div>
     </div>
-    <div id="popular" class="popular"></div>
     <h2 class="h3">Start here</h2>
     <div class="quick">
       <button class="quick-card" data-tab="mypath"><b>Find my fit</b><span id="quickPath">Match your skills to roles</span></button>
@@ -147,6 +149,16 @@
     <div id="roleGrid" class="role-grid"></div>
   </section>
 
+  <!-- Compare roles: a page of its own (#compare/a,b), opened from the compare tray -->
+  <section id="compare" class="panel">
+    <div class="panel-head">
+      <div>
+        <button class="btn-link back-link" type="button" data-tab="roles">← Back to roles</button>
+      </div>
+    </div>
+    <div id="cmpPage"></div>
+  </section>
+
   <!-- Role readiness test -->
   <section id="roletest" class="panel"><div id="rtRoot" class="rt"></div></section>
 
@@ -193,7 +205,7 @@
         <h2 class="h2">Salary in India</h2>
         <p class="lead">Add your skills, see your likely range. Got an offer? <a href="#pay" data-tab="pay">Work out take-home →</a></p>
       </div>
-      <details class="note"><summary>Estimates only</summary><p id="salaryNote"></p></details>
+      <p class="guide-note est-note"><span class="hint-tip" tabindex="0" aria-describedby="salaryNote"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg><span class="tip-box" role="tooltip" id="salaryNote"></span></span>Estimates only</p>
     </div>
 
     <div class="subview" data-sub="estimate" data-label="Estimate">
@@ -274,7 +286,7 @@
         <h2 class="h2">Take-home &amp; tax</h2>
         <p class="lead">CTC to monthly in-hand, offer comparison, and tax abroad.</p>
       </div>
-      <details class="note"><summary>Rules used</summary><p id="payTaxNote"></p></details>
+      <p class="guide-note est-note"><span class="hint-tip info" tabindex="0" aria-describedby="payTaxNote"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg><span class="tip-box" role="tooltip" id="payTaxNote"></span></span>Rules used</p>
     </div>
     <div id="ptTabs" class="seg" role="tablist" aria-label="Pay and tax tools"></div>
     <div id="pt-calc" class="pt-view"></div>
@@ -354,7 +366,6 @@
   </section>
 
   <footer>
-    <p>Titles, years and tools vary by company. Treat this as a guide.</p>
     <details id="shortcuts" class="shortcuts">
       <summary>Keyboard shortcuts <kbd>?</kbd></summary>
       <dl class="sc-list">
@@ -386,5 +397,6 @@
 <script src="role-test-data-5.js"></script>
 <script src="role-test-engine.js"></script>
 <script src="role-test-ui.js"></script>
+<div id="atlas-ready" hidden></div>
 </body>
 </html>

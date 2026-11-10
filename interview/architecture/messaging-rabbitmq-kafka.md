@@ -116,3 +116,83 @@ Use Kafka for **event streaming** — business events that must be stored and co
 | Stream logs or IoT data | Kafka |
 
 **Short rule:** RabbitMQ when a **task** should be done once by a worker; Kafka when an **event** should be kept and read by many.
+
+---
+
+## Kafka Basics
+
+### ❓ What are a Kafka topic and a partition?
+
+### 📝 Answer
+
+A **topic** is a named stream of events, like a table name for messages (`orders`). It is split into **partitions** so many machines and consumers can work on it at once.
+
+- Each partition is an **ordered, append-only log**; new events go at the end.
+- More partitions → more consumers can read in parallel.
+
+```text
+topic "orders"
+  partition 0: e1 e4 e7 →
+  partition 1: e2 e5 e8 →
+  partition 2: e3 e6 e9 →
+```
+
+#### ↳ Follow-up: Is order guaranteed across the whole topic?
+
+↪ No — only **within one partition**.
+
+---
+
+### ❓ What is a consumer group?
+
+### 📝 Answer
+
+A set of consumers that **share the work** of reading a topic. Kafka gives each partition to exactly **one** consumer in the group.
+
+- 3 partitions, 3 consumers → each reads one partition.
+- 3 partitions, 5 consumers → 2 consumers sit idle.
+- **Different groups** each get **all** the events (e.g. a billing group and an email group both read `orders`).
+
+#### ↳ Follow-up: What happens when a consumer in the group crashes?
+
+↪ Kafka **rebalances**: its partitions are handed to the remaining consumers.
+
+---
+
+### ❓ What is an offset, and what does committing it mean?
+
+### 📝 Answer
+
+An **offset** is an event's position number in a partition (0, 1, 2…). **Committing** saves "my group has processed up to here".
+
+- After a restart, the consumer continues from the last committed offset.
+- Commit **after** processing → an event may be processed twice if you crash in between (**at-least-once**), so make processing safe to repeat.
+
+---
+
+### ❓ What does the message key do in Kafka?
+
+### 📝 Answer
+
+The **key** decides which partition an event goes to: the same key always lands in the same partition.
+
+- Use the **order ID** or **customer ID** as the key → all events for that order stay **in order**.
+- No key → events are spread across partitions, so their order isn't kept.
+
+Example: `OrderCreated`, `OrderPaid`, `OrderShipped` with key `order-42` are always read in that order.
+
+---
+
+### ❓ How does Kafka avoid losing data when a server fails?
+
+### 📝 Answer
+
+Each partition is **copied (replicated)** to several brokers (servers).
+
+- One copy is the **leader** (handles reads and writes); the others are **followers** that keep up.
+- If the leader's broker dies, a follower becomes the new leader.
+- With `acks=all`, the producer is told "saved" only after the in-sync copies have it.
+
+#### ↳ Follow-up: What is a typical replication factor?
+
+↪ 3 — the data survives one broker failure, and usually two.

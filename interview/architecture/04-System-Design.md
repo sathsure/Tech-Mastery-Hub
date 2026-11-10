@@ -525,3 +525,313 @@ Usually a **well-structured monolith** first. It is faster to build, test and de
 #### ↳ Follow-up: What is a modular monolith?
 
 ↪ One deployable app whose code is split into clear modules (orders, payments) with strict boundaries — easy to split into services later.
+
+---
+
+## Part 5 — Classic Design Basics
+
+### ❓ How would you design the backend of a simple to-do list app?
+
+### 📝 Answer
+
+A small REST API in front of one database. Start simple; there is nothing to scale yet.
+
+- **API:** `GET /todos`, `POST /todos`, `PATCH /todos/{id}` (mark done), `DELETE /todos/{id}`.
+- **Table:** `todos(id, user_id, title, done, created_at)`, with an index on `user_id`.
+- **Auth:** each request carries a token; the API only returns the caller's own rows.
+
+```text
+Browser / app  →  API server  →  SQL database
+```
+
+#### ↳ Follow-up: What would you add first if it grew to millions of users?
+
+↪ More API servers behind a load balancer (they are stateless), a read replica for the database, then a cache for hot lists.
+
+---
+
+### ❓ How would you design a "like" button that shows the like count on a post?
+
+### 📝 Answer
+
+Store who liked what, and keep a running count so you don't count rows on every page view.
+
+- **Likes table:** `likes(post_id, user_id)` with a **unique key on both** — a user can like a post only once.
+- **Count:** a `like_count` column on the post, updated when a like is added or removed (or a counter in Redis).
+- **Show:** read `like_count`; it may be a second behind, which is fine for likes.
+
+#### ↳ Follow-up: Why not `SELECT COUNT(*)` every time?
+
+↪ It reads every like row for that post on every page view — slow for popular posts.
+
+---
+
+### ❓ How would you design a simple file upload feature (profile photos)?
+
+### 📝 Answer
+
+Keep files out of the database: store them in **object storage** (like S3) and save only the file's address in the database.
+
+1. The app asks the API for an upload link.
+2. The API returns a short-lived **pre-signed URL**.
+3. The browser uploads the file straight to storage with that URL.
+4. The API saves the file's key on the user's row; a **CDN** serves the image.
+
+#### ↳ Follow-up: Why upload straight to storage instead of through the API?
+
+↪ Big files don't tie up your API servers, and storage scales on its own.
+
+---
+
+### ❓ How would you design a basic search box for products?
+
+### 📝 Answer
+
+For a small catalogue, a SQL query is enough; as it grows, use a search engine.
+
+- **Small:** `WHERE name LIKE 'phone%'` with an index, or the database's full-text search.
+- **Larger:** copy products into **Elasticsearch / OpenSearch**, which handles typos, ranking and filters fast.
+- **Keep it fresh:** update the search index whenever a product changes (directly, or through a message queue).
+
+#### ↳ Follow-up: Why is `LIKE '%phone%'` slow?
+
+↪ A leading `%` means the index can't be used, so the database scans every row.
+
+---
+
+## Part 6 — Troubleshooting Basics
+
+### ❓ A web page has become slow. What do you check first?
+
+### 📝 Answer
+
+Find **where** the time goes before changing anything.
+
+1. **Browser dev tools (Network tab):** is it one slow API call, or large images and scripts?
+2. **That API's logs / APM:** how long does it take, and which part — code, database or another service?
+3. **Database:** run the slow query with `EXPLAIN`; a missing index is the most common cause.
+4. **Recent changes:** did a deploy or a data spike start it?
+
+#### ↳ Follow-up: Name a quick win for a slow query.
+
+↪ Add an index on the column in the `WHERE` or `JOIN`.
+
+---
+
+### ❓ Users see "500 Internal Server Error" right after a deploy. What do you do?
+
+### 📝 Answer
+
+**Stop the damage first, then find the cause.**
+
+1. **Roll back** to the last good version (or turn off the new feature flag).
+2. Check the **logs and the stack trace** for the first error after the deploy.
+3. Compare what changed: code, configuration, environment variables, database migrations.
+4. Fix it, test it, and deploy again.
+
+#### ↳ Follow-up: Why roll back before debugging?
+
+↪ Users get a working app in minutes; you can investigate calmly afterwards.
+
+---
+
+### ❓ How do you read a stack trace?
+
+### 📝 Answer
+
+A stack trace is the list of method calls that were running when the error happened.
+
+- The **first line** says **what** went wrong (e.g. `NullPointerException`, `KeyError`).
+- Look for the **first line from your own code** — that's usually where to fix it.
+- A **"Caused by"** section at the bottom is often the real root cause.
+
+```text
+Traceback (most recent call last):
+  File "app.py", line 12, in get_user
+    return users[user_id]
+KeyError: 42            ← what went wrong, and app.py line 12 is where
+```
+
+---
+
+### ❓ Users say they can't log in. How do you start?
+
+### 📝 Answer
+
+Narrow it down: **who**, **since when**, and **what exactly** happens.
+
+1. **Everyone or some users?** Everyone → the login service, database or identity provider is down. Some → their accounts, browsers or region.
+2. **Since when?** Match it to a deploy, an expired certificate or a changed password policy.
+3. **Reproduce it** with a test account, and read the login service logs for the error.
+
+#### ↳ Follow-up: Name a common hidden cause.
+
+↪ An expired SSL certificate or secret (for example an OAuth client secret).
+
+---
+
+### ❓ The app's memory keeps growing until it crashes. What are your first steps?
+
+### 📝 Answer
+
+That's usually a **memory leak**: objects are kept even though they are no longer needed.
+
+1. Watch memory over time on a dashboard — does it grow with traffic or steadily?
+2. Take a **heap dump** (Java) or memory snapshot and see which objects take the most space.
+3. Common culprits: an unbounded cache or map, listeners never removed, unclosed connections.
+
+#### ↳ Follow-up: A quick fix while you investigate?
+
+↪ Restart on a schedule or raise the memory limit — only to buy time, not as the fix.
+
+---
+
+## Part 7 — Real-World Scenario Basics
+
+### ❓ A user double-clicks "Pay". How do you avoid charging them twice?
+
+### 📝 Answer
+
+Make the payment request **idempotent**: the same request twice has the same effect as once.
+
+- The client sends a unique **idempotency key** with the request.
+- The server stores the key with the result; a repeat with the same key returns the saved result instead of charging again.
+- Also disable the button after the first click (helpful, but not enough on its own).
+
+---
+
+### ❓ Two users edit the same record at the same time. What happens, and how do you handle it?
+
+### 📝 Answer
+
+Without care, the **last save wins** and the first user's change is silently lost.
+
+- **Optimistic locking:** each row has a `version`. An update succeeds only if the version is unchanged: `UPDATE ... SET ..., version = version + 1 WHERE id = 7 AND version = 3`. If 0 rows change, tell the user someone else edited it.
+- **Pessimistic locking:** lock the row while one user edits — safer, but others wait.
+
+#### ↳ Follow-up: Which is more common in web apps?
+
+↪ Optimistic locking — conflicts are rare and nobody waits.
+
+---
+
+### ❓ An external API your app depends on is down. What should your app do?
+
+### 📝 Answer
+
+Fail gracefully instead of hanging or crashing.
+
+- **Timeouts:** never wait forever for the other service.
+- **Retries with back-off:** try again a few times, waiting longer each time.
+- **Fallback:** show cached data or a friendly message ("Tracking is unavailable right now").
+- **Circuit breaker:** after many failures, stop calling it for a while.
+
+---
+
+### ❓ You need to release a new feature to only 10% of users first. How?
+
+### 📝 Answer
+
+Use a **feature flag**: the code ships to everyone, but a setting decides who sees the feature.
+
+1. Put the new code behind `if flags.enabled("new_checkout", user)`.
+2. Turn it on for 10% of users (e.g. by user ID).
+3. Watch errors and metrics; raise to 50%, then 100% — or switch it off instantly if something breaks.
+
+---
+
+### ❓ A daily report query slows the whole app during business hours. What do you do?
+
+### 📝 Answer
+
+Keep heavy reports away from the live database users depend on.
+
+- Run the report on a **read replica**, not the main database.
+- Schedule it **outside peak hours**, or build it gradually (pre-computed summary tables).
+- Check the query itself with `EXPLAIN` — a missing index may be the real problem.
+
+---
+
+## Part 8 — Architecture Basics
+
+### ❓ What is layered (n-tier) architecture?
+
+### 📝 Answer
+
+The code is split into **layers**, and each layer only talks to the one below it.
+
+```text
+Controller (handles HTTP)  →  Service (business rules)  →  Repository (database)
+```
+
+- **Why:** each part has one job, so it's easier to change, test and understand.
+- **Example:** changing from MySQL to PostgreSQL touches only the repository layer.
+
+#### ↳ Follow-up: What goes wrong if a controller queries the database directly?
+
+↪ Business rules get scattered and duplicated, and the code is hard to test.
+
+---
+
+### ❓ What is MVC?
+
+### 📝 Answer
+
+**Model–View–Controller** splits an app into three parts:
+
+- **Model:** the data and rules (a `User` and how it's saved).
+- **View:** what the user sees (an HTML page or a JSON response).
+- **Controller:** receives the request, asks the model, and picks the view.
+
+Example: `GET /users/7` → the controller loads user 7 from the model → the view shows it.
+
+---
+
+### ❓ What is separation of concerns?
+
+### 📝 Answer
+
+Each part of the code does **one kind of job**, and different jobs live in different places.
+
+- Validation, business rules, database access and HTTP handling each have their own class or module.
+- **Benefit:** a change to one concern (e.g. a new database) doesn't ripple through everything.
+- Layered architecture and MVC are both ways of separating concerns.
+
+---
+
+### ❓ What is dependency injection, in simple words?
+
+### 📝 Answer
+
+A class **receives** the objects it needs instead of creating them itself.
+
+```java
+class OrderService {
+    private final PaymentClient payments;
+    OrderService(PaymentClient payments) {   // given from outside
+        this.payments = payments;
+    }
+}
+```
+
+- **Why:** you can swap the real `PaymentClient` for a fake one in tests, or change it without editing `OrderService`.
+- Frameworks like Spring create and pass these objects for you.
+
+---
+
+### ❓ What is the difference between a monolith and microservices, in simple words?
+
+### 📝 Answer
+
+- **Monolith:** the whole app is **one** program, deployed together. Simple to build and run.
+- **Microservices:** the app is **many small services** (orders, payments, users), each deployed on its own and talking over the network.
+
+| | Monolith | Microservices |
+|---|---|---|
+| Deploy | All at once | Each service separately |
+| Scale | The whole app | Only the busy service |
+| Complexity | Low | High (network, data, monitoring) |
+
+#### ↳ Follow-up: Which do most teams start with?
+
+↪ A well-structured monolith; they split it later when they really need to.

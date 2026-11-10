@@ -84,7 +84,7 @@ function subjectOf(previous: PreviousTurn): string {
 
 /** Nothing (more) in the notes: say so, and point to places that have it. */
 function nothingNew(what: string, subject: string, query: string, topics: string[]): string {
-  return [`Your notes don't have ${what} for **${subject}** beyond the previous answer.`, "", learningResources(query, topics)].join("\n");
+  return [`Your notes don't have ${what} for **${subject}** beyond the previous answer yet — more will be added in a future update.`, "", learningResources(query, topics)].join("\n");
 }
 
 /**

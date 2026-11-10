@@ -1,4 +1,5 @@
 (() => {
+  if (window.atlasRedirecting) return; // atlas-ui.js is moving this page into the tutor
   const A = window.ATLAS;
   const $ = (s) => document.querySelector(s);
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -57,6 +58,8 @@
     cpu: '<rect x="6" y="6" width="12" height="12" rx="1.5"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/>',
     file: '<path d="M14 3H6v18h12V7zM14 3v4h4"/>',
     target: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
+    info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>',
+    lock: '<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
     bulb: '<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/>',
     bolt: '<path d="M13 2 4 14h7l-1 8 9-12h-7z"/>',
     sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
@@ -170,15 +173,17 @@
     if (!document.getElementById(id) || !document.getElementById(id).classList.contains("panel")) id = hash = "overview";
     const current = document.querySelector(".panel.active");
     const swap = () => document.querySelectorAll(".panel").forEach((p) => p.classList.toggle("active", p.id === id));
-    if (current && current.id !== id) transition(swap); else swap();
+    // The animated switch shows the new panel a moment later; callers wait for `shown` before scrolling in it.
+    const shown = current && current.id !== id ? Promise.resolve(transition(swap)?.updateCallbackDone).catch(() => {}) : (swap(), Promise.resolve());
     document.querySelectorAll(".tabs button").forEach((b) => {
-      const on = b.dataset.tab === id;
+      const on = b.dataset.tab === (id === "compare" ? "roles" : id);
       b.classList.toggle("active", on);
       if (on) b.scrollIntoView({ block: "nearest", inline: "nearest" });
     });
-    if (location.hash.slice(1) !== hash) history.replaceState(null, "", `#${hash}`);
+    if (location.hash.slice(1) !== hash) window.atlasNav.go(hash);
     if (scroll) scrollTo({ top: 0 });
     onShow[id]?.();
+    return shown;
   }
   document.addEventListener("click", (e) => {
     const t = e.target.closest("[data-tab]");
@@ -194,7 +199,6 @@
       const list = item.split(",").filter((s) => roleBySlug(s) >= 0).slice(0, 3);
       if (list.length >= 2) {
         compareList = list; saveCompare(); renderTray();
-        showTab("roles", { hash: `compare/${list.join(",")}`, scroll: false });
         return openCompare();
       }
     }
@@ -206,16 +210,18 @@
     if (tab === "pay" && item) return showTab("pay", { hash: `pay/${item}` });
     // Role Test opens one role's setup (#roletest/tech-lead); role-test-ui.js reads the rest.
     if (tab === "roletest" && item) return showTab("roletest", { hash: `roletest/${item}` });
+    // A page's sub-tab (#ladder/titles, #salary/market, #abroad/live).
+    if (item && window.atlasShowSub?.(tab, item)) return showTab(tab, { hash: `${tab}/${item}` });
+    // #compare without roles: the comparison of the saved compare list, or Roles.
+    if (tab === "compare") return compareList.length >= 2 ? openCompare() : showTab("roles");
     showTab(tab || "overview");
   }
-  addEventListener("hashchange", route);
+  addEventListener("hashchange", () => window.atlasNav.follow(route));
 
   /* ---------- Overview ---------- */
   $("#heroCounts").textContent = `${A.roles.length} roles · ${A.glossary.length} terms · ${A.stack.reduce((n, s) => n + s.items.length, 0)} technologies · salaries & visas — explained simply, with examples.`;
 
   const POPULAR = ["FDE", "RAG", "System Design", "Kubernetes", "SRE", "Spring Boot", "CTC", "Microservices"];
-  $("#popular").innerHTML = `<span>Popular:</span>` + POPULAR.map((p) => `<button class="pop" data-q="${esc(p)}">${esc(p)}</button>`).join("");
-  $("#popular").addEventListener("click", (e) => { const b = e.target.closest("[data-q]"); if (b) openSearch(b.dataset.q); });
   document.querySelector("[data-quick-ai]").addEventListener("click", () => {
     termState.q = ""; termState.cat = "AI & ML"; $("#termFilter").value = "";
     renderCatChips(); renderGlossary(); showTab("glossary");
@@ -453,10 +459,18 @@
   const reveal = (el) => { el.scrollIntoView({ block: "nearest", behavior: "smooth" }); el.querySelector("h2")?.focus({ preventScroll: true }); };
 
   function openRole(i, anchor) {
-    if (!anchor) { // search result or shared link: show it in the Roles tab, under its card
-      showTab("roles", { scroll: false });
-      if (!visibleRoles.includes(i)) { roleState.q = ""; roleState.family = "all"; $("#roleFilter").value = ""; renderRoleChips(); renderRoles(); }
-      anchor = $(`#roleGrid [data-role="${i}"]`);
+    // Search result or shared link: open the Roles tab at its top with the role right under the heading,
+    // instead of scrolling a long way down to its card.
+    if (!anchor) {
+      showTab("roles");
+      closeView("role");
+      const el = makeView("role");
+      $("#roles > .panel-head").after(el);
+      views.role = { el, i, inGrid: false };
+      renderRoleView();
+      window.atlasNav.go(`roles/${slug(A.roles[i].name)}`);
+      el.querySelector("h2")?.focus({ preventScroll: true });
+      return;
     }
     const v = views.role;
     if (v && v.el.isConnected && v.el.contains(anchor)) v.i = i; // e.g. "Similar roles": swap content in place
@@ -466,7 +480,8 @@
       views.role = { el, i, inGrid: placeAfter(el, anchor) };
     }
     renderRoleView();
-    if ($("#roles").classList.contains("active")) history.replaceState(null, "", `#roles/${slug(A.roles[i].name)}`);
+    // The tab buttons switch at once; the panel may still be animating in.
+    if ($(".tabs button.active")?.dataset.tab === "roles") window.atlasNav.go(`roles/${slug(A.roles[i].name)}`);
     reveal(views.role.el);
   }
   // The roles grid is re-rendered on filter/sort/save; put an open panel back under its card.
@@ -480,6 +495,15 @@
   function renderRoleView() {
     const i = views.role.i, r = A.roles[i], n = A.roleNames[r.name];
     const me = mySkillSet();
+    /** Languages, Frameworks, Tools, Skills and Soft skills as sub-tabs: one group shown at a time. */
+    const stackTabsHtml = (role, mine) => {
+      const groups = [["Languages", role.languages], ["Frameworks", role.frameworks], ["Tools", role.tools], ["Skills", role.skills], ["Soft skills", role.soft]].filter(([, a]) => a && a.length);
+      if (!groups.length) return "";
+      return `<h4 class="sub">Skills &amp; stack</h4>
+        <div class="stack-tabs" role="tablist" aria-label="Skills and stack">${groups.map(([label, a], k) =>
+          `<button type="button" role="tab" class="${k ? "" : "active"}" data-act="stack-tab" data-k="${k}" aria-selected="${!k}">${label} <small>${a.length}</small></button>`).join("")}</div>
+        ${groups.map(([label, a], k) => `<div class="stack-pane" role="tabpanel" aria-label="${label}" data-k="${k}"${k ? " hidden" : ""}><div class="pills">${a.map((x) => linkPill(x, mine)).join("")}</div></div>`).join("")}`;
+    };
     const row = (label, arr) => arr && arr.length ? `<dt>${label}</dt><dd><div class="pills">${arr.map((x) => linkPill(x, me)).join("")}</div></dd>` : "";
     const ti = salaryTrackFor(r.name);
     const sim = similarRoles(i);
@@ -491,9 +515,7 @@
         <div class="names-at">${NAME_AT.map(([ic, label, eg, k]) => `<div class="at"><span class="at-ic">${icon(ic)}</span><span><small>${label}${eg ? ` · ${eg}` : ""}</small><b>${esc(n[k])}</b></span></div>`).join("")}</div>
       </div>` : ""}
       ${forYouHtml(i, me)}
-      ${r.why ? `<p class="why">${icon("bulb")}<span><b>Why it exists now:</b> ${esc(r.why)}</span></p>` : ""}
-      <dl class="dl">${row("Languages", r.languages)}${row("Frameworks", r.frameworks)}${row("Tools", r.tools)}${row("Skills", r.skills)}${row("Soft skills", r.soft)}</dl>
-      ${r.ai ? `<p class="ai-impact">${icon("sparkles")}<span><b>AI impact:</b> ${esc(r.ai)}</span></p>` : ""}
+      ${stackTabsHtml(r, me)}
       ${ti >= 0 ? `<h4 class="sub">Skill roadmap <small class="muted">what's expected as you grow · ✓ = you have it</small></h4>${roadmapHtml(ti, me)}` : ""}
       ${sim.length ? `<h4 class="sub">Similar roles <small class="muted">by shared stack</small></h4><div class="pills">${sim.map((o) =>
         `<button class="pill pill-link" type="button" data-act="open-role" data-i="${o.j}">${esc(A.roles[o.j].name)} <small>${Math.round(o.s * 100)}%</small></button>`).join("")}</div>` : ""}
@@ -572,14 +594,13 @@
     const ti = salaryTrackFor(A.roles[i].name), key = roleKey(i);
     const m = matchRole(i, me);
     const lines = [];
-    if (me.size) {
-      lines.push(matchHtml(m, ti));
-    } else {
-      lines.push(`<p class="cta-line">${icon("target")}<span>See your match %, pay at your experience and what to learn next — <a class="btn-link" href="welcome.html">tell us about you</a>.</span></p>`);
-    }
+    if (me.size) lines.push(matchHtml(m, ti));
     if (ti >= 0 && personal) lines.push(`<p><b>Pay at ${sal.exp} yrs</b> (${esc(S.cities[sal.city].n.split(" (")[0])}, ${esc(S.companies[sal.company].n)}): <b>${range(salaryAt(ti, sal.exp))}</b> typical</p>`);
     if (key) lines.push(`<div class="fy-countries"><b>In demand abroad:</b> <span class="pills">${countriesHtml(key)}</span></div>`);
-    return `<div class="for-you"><h3>${personal ? "For you" : "Personal fit"} <small class="muted">${personal ? "from your profile, kept in this browser" : "needs your profile"}</small></h3>${lines.join("")}</div>`;
+    const head = personal || me.size
+      ? `<h3>For you</h3>`
+      : `<h3>Personal fit <a class="btn-link fy-cta" href="welcome.html">Add your profile →</a></h3>`;
+    return `<div class="for-you">${head}${lines.join("")}</div>`;
   }
 
   /* ---------- Glossary ---------- */
@@ -696,6 +717,25 @@
   $("#salMode").innerHTML = opts(S.workModes, (c) => c.n);
   $("#skillList").innerHTML = S.skills.map((s) => `<option value="${esc(s.n)}">${esc(s.c)}</option>`).join("");
   $("#salaryNote").textContent = S.disclaimer;
+  /** Pages that need your profile: without one they explain how to enable them, and their menu item shows a lock. */
+  function lockUntilProfile(id, title, text) {
+    $(`#${id}`).classList.add("locked");
+    $(`#${id} > .panel-head`).insertAdjacentHTML("afterend", `<div class="locked-card">${icon("lock")}<div><b>${title}</b><p>${text}</p><a class="btn" href="welcome.html">Set up profile →</a></div></div>`);
+    markNeedsProfile(id);
+  }
+  /** The lock symbol on a menu item whose page depends on your profile. */
+  function markNeedsProfile(id) {
+    const tab = document.querySelector(`.tabs [data-tab="${id}"]`);
+    if (!tab) return;
+    tab.classList.add("is-locked");
+    tab.insertAdjacentHTML("beforeend", `<span class="tab-lock" title="Enabled once you fill in your profile">${icon("lock")}</span>`);
+    tab.title = "Enabled once you fill in your profile";
+  }
+  if (!personal) {
+    lockUntilProfile("salary", "Salary estimates are off until you fill in your profile", "Tell us your role, experience and skills, and this page shows your likely pay range and how to raise it.");
+    lockUntilProfile("mypath", "My path is off until you fill in your profile", "Tell us your role, experience and skills, and this page shows your next moves, a plan to switch roles and the roles and terms you save.");
+    lockUntilProfile("abroad", "Work abroad is off until you fill in your profile", "Tell us your role, experience and skills, and this page shows the countries where they're in demand, the pay there and how to get hired.");
+  }
   $("#reality").innerHTML = `<b>Market reality · ${esc(S.asOf)}</b>` + S.reality.map((r) =>
     `<span>${esc(r.f)} <a href="${esc(r.src)}" target="_blank" rel="noopener" title="Source">↗</a></span>`).join("");
   const syncControls = () => {
@@ -1268,6 +1308,7 @@
   $("#feedFilter").addEventListener("input", () => { feed.limit = 25; renderFeed(); });
   $("#feedList").addEventListener("click", (e) => { if (e.target.closest("[data-feed-more]")) { feed.limit += 25; renderFeed(); } });
   onShow.abroad = () => {
+    if (!personal) return;
     renderCountries(); // picks up role/experience changes made in the Salary tab
     if (!feed.loaded) { feed.loaded = true; loadFeed(); }
     else if (Date.now() - feed.fetched > 30 * 60 * 1000) loadFeed(true);
@@ -1286,15 +1327,31 @@
   // Flow chart: numbered phases joined by arrows; "Throughout" runs as a band under all of them.
   const SDLC_ICON = ["clipboard", "layout", "code", "check", "rocket", "pulse", "users"];
   const phaseName = (p) => p.phase.replace(/^\d+\.\s*/, "");
+  // Other roles that can do this phase's work: collapsed under the main ones.
+  // Every other role that takes part in this step (from sdlcRoles), leaving out the step's main owners.
+  const othersHtml = (p) => {
+    const step = /^\d+/.exec(p.phase)?.[0] ?? "T";
+    const owners = new Set(p.who.split(/,\s*/).map(roleForName).filter((i) => i >= 0));
+    const names = Object.entries(A.sdlcRoles || {})
+      .filter(([name, steps]) => steps.split(",").includes(step) && !owners.has(roleForName(name)))
+      .map(([name]) => name);
+    if (A.sdlcExtras?.[step]) names.push(A.sdlcExtras[step]);
+    return names.length ? `<details class="fc-alt"><summary>Other roles (${names.length})</summary><div class="fc-who">${whoHtml(names.join(", "))}</div></details>` : "";
+  };
   const node = (p, k) => `<li class="fc-node">
       <span class="fc-num">${k + 1}</span><span class="fc-ic">${icon(SDLC_ICON[k] || "flow")}</span>
       <h3>${esc(phaseName(p))}</h3><p class="fc-what">${esc(p.what)}</p>
-      <div class="fc-who">${whoHtml(p.who)}</div>
+      <div class="fc-who">${whoHtml(p.who)}</div>${othersHtml(p)}
       <p class="fc-out" title="Output of this phase">${icon("file")}<span>${esc(p.out)}</span></p></li>`;
   const phases = A.sdlc.filter((p) => /^\d/.test(p.phase)), always = A.sdlc.filter((p) => !/^\d/.test(p.phase));
-  $("#flow").innerHTML = `<ol class="fc">${phases.map(node).join("")}</ol>
+  // The client / customer: who talks to them at each stage, and who takes their production issues.
+  const clientHtml = (A.clientContacts || []).length ? `<div class="client-band">
+      <h3>${icon("users")}Client / customer <small>who talks to them, and who handles their production issues</small></h3>
+      <ol class="cb-list">${A.clientContacts.map((c) => `<li><b>${esc(c.when)}</b><span class="cb-what">${esc(c.what)}</span><div class="fc-who">${whoHtml(c.who)}</div></li>`).join("")}</ol>
+    </div>` : "";
+  $("#flow").innerHTML = `${clientHtml}<ol class="fc">${phases.map(node).join("")}</ol>
     ${always.map((p) => `<div class="fc-band"><span class="fc-ic">${icon("users")}</span><div><h3>${esc(p.phase)}</h3><p class="fc-what">${esc(p.what)}</p></div>
-      <div class="fc-who">${whoHtml(p.who)}</div><p class="fc-out">${icon("file")}<span>${esc(p.out)}</span></p></div>`).join("")}`;
+      <div class="fc-who">${whoHtml(p.who)}${othersHtml(p)}</div><p class="fc-out">${icon("file")}<span>${esc(p.out)}</span></p></div>`).join("")}`;
 
   /* ---------- My Path: fit ranking, switch planner, saved items ---------- */
   const roleOptions = A.families.map((f) => `<optgroup label="${esc(f.name)}">${A.roles.map((r, i) => (r.family === f.id ? `<option value="${i}">${esc(r.name)}</option>` : "")).join("")}</optgroup>`).join("");
@@ -1360,29 +1417,15 @@
     const upside = all.filter((x) => x.kind === "pivot" && x.pay > 10).sort((a, b) => b.pay - a.pay)[0];
     return { from, groups, best, upside, narrower: moves.narrower.map(roleIdx) };
   }
-  function waitChip(x) {
-    if (!x.wait) return `<span class="why-chip ok">Ready now</span>`;
-    return `<span class="why-chip later">In ~${x.wait} yr${x.wait > 1 ? "s" : ""}</span>`;
-  }
-  /** "+12% typical pay", "-8% typical pay" or "Similar pay"; "(est.)" when based on the current track. */
-  function payChip(x) {
-    if (x.pay == null) return "";
-    const est = x.proxy ? " (est.)" : "";
-    if (x.pay >= 5) return `<span class="why-chip up">+${x.pay}% typical pay${est}</span>`;
-    if (x.pay <= -5) return `<span class="why-chip down">${x.pay}% typical pay${est}</span>`;
-    return `<span class="why-chip ">Similar pay${est}</span>`;
-  }
   function recRow(x, best, upside) {
     const r = A.roles[x.i];
     const chips = [
       x.kind === "pivot" ? `<span class="why-chip">You have ${x.g.pct}% of its stack</span>` : `<span class="why-chip ok">Builds on your current stack</span>`,
       x.kind !== "pivot" && x.add.length ? `<span class="why-chip">Add: ${x.add.slice(0, 2).map(esc).join(", ")}</span>` : "",
-      waitChip(x),
-      payChip(x),
       x.hot.length ? `<span class="why-chip">Hiring: ${x.hot.slice(0, 2).map((k) => esc(k.c.split(" (")[0])).join(", ")}</span>` : "",
       r.isNew ? `<span class="why-chip ai">AI-era role</span>` : ""
     ].join("");
-    const tip = `<b>${esc(r.name)}</b>${x.add.length ? `<br>To add: ${x.add.slice(0, 5).map(esc).join(", ")}` : ""}${x.proxy ? "<br>No separate salary data for this role — estimated as the top of your current track's typical range" : ""}`;
+    const tip = `<b>${esc(r.name)}</b>${x.add.length ? `<br>To add: ${x.add.slice(0, 5).map(esc).join(", ")}` : ""}`;
     return `<div class="rec-row${x === best ? " best" : ""}">
       <span class="fit-ic">${famIcon(r.family)}</span>
       <div class="rec-main"><div class="rec-title"><button class="fit-name" type="button" data-act="open-role" data-i="${x.i}">${esc(r.name)}</button>${x === best ? `<span class="top-pick">Top pick</span>` : ""}${x === upside && x !== best ? `<span class="top-pick upside">Biggest pay upside</span>` : ""}</div>
@@ -1475,7 +1518,7 @@
     const sr = saved.roles.map(roleBySlug).filter((i) => i >= 0);
     const st = saved.terms.map((s) => A.glossary.findIndex((g) => slug(g.t) === s)).filter((i) => i >= 0);
     if (!sr.length && !st.length) {
-      return `<p class="empty-inline">Nothing saved yet. Use <b>Save</b> on a role or the star next to any glossary term. They collect here as your study list.</p>`;
+      return `<p class="empty-inline">No saved items yet.</p>`;
     }
     const firstThree = sr.length > 3 ? "first 3 " : "";
     const compare = sr.length > 1 ? `<button class="btn-link" type="button" data-act="cmp-saved">Compare ${firstThree}saved roles →</button>` : "";
@@ -1602,34 +1645,47 @@
 
   /* ---------- Compare (up to 3 roles, shareable as #compare/a,b,c) ---------- */
   const tray = $("#cmpTray");
-  const linkTo = (hash) => `${location.href.split("#")[0]}#${hash}`;
+  // Inside the tutor, share the tutor's own address (/#atlas/<section>): the frame's address would open a bare page.
+  const linkTo = (hash) => {
+    if (document.documentElement.classList.contains("embedded")) {
+      try { return `${parent.location.origin}${parent.location.pathname}#atlas/${hash}`; } catch { /* not same-origin */ }
+    }
+    return `${location.href.split("#")[0].replace(/[?&]embed=1/, "")}#${hash}`;
+  };
   function renderTray() {
     tray.hidden = !compareList.length;
     document.body.classList.toggle("has-tray", !!compareList.length);
-    tray.innerHTML = `<span class="tray-label">Compare</span>${compareList.map((s) => { const i = roleBySlug(s);
-      return `<span class="saved-chip"><span>${esc(A.roles[i].name)}</span><button type="button" data-act="cmp" data-i="${i}" aria-label="Remove ${esc(A.roles[i].name)} from compare">×</button></span>`; }).join("")}
-      <span class="tray-actions"><button class="btn" type="button" data-act="cmp-open"${compareList.length < 2 ? " disabled" : ""}>${compareList.length < 2 ? "Add 1 more" : `Compare ${compareList.length}`}</button>
-      <button class="btn-link" type="button" data-act="cmp-clear">Clear</button></span>`;
+    // A bar of its own under the page: label, the picked roles, then the action (or what is still needed).
+    const ready = compareList.length >= 2;
+    tray.innerHTML = `<div class="tray-inner"><span class="tray-label">Compare roles</span>
+      <span class="tray-chips">${compareList.map((s) => { const i = roleBySlug(s);
+        return `<span class="tray-chip">${esc(A.roles[i].name)}<button type="button" data-act="cmp" data-i="${i}" aria-label="Remove ${esc(A.roles[i].name)} from compare">×</button></span>`; }).join("")}</span>
+      <span class="tray-actions">${ready ? `<button class="btn" type="button" data-act="cmp-open">Compare ${compareList.length} roles →</button>` : `<span class="tray-hint">Add 1 more role to compare</span>`}
+      <button class="btn-link" type="button" data-act="cmp-clear">Clear</button></span></div>`;
   }
   function toggleCompare(i) {
     const s = slug(A.roles[i].name);
     if (compareList.includes(s)) compareList = compareList.filter((x) => x !== s);
     else if (compareList.length >= 3) { toast("Compare up to 3 roles — remove one first"); return false; }
     else compareList.push(s);
-    saveCompare(); renderTray(); return true;
+    saveCompare(); renderTray();
+    // On the Compare page: update it, or go back to Roles when fewer than 2 roles are left.
+    if (location.hash.startsWith("#compare")) {
+      if (compareList.length >= 2) openCompare(); else { closeView("cmp"); showTab("roles"); }
+    }
+    return true;
   }
-  // Opens below `anchor` (or at the top of the current tab); if already open, updates in place.
-  function openCompare(anchor) {
+  /** The comparison opens as its own page (#compare/a,b), not on top of the page you were on. */
+  function openCompare() {
     const ids = compareList.map(roleBySlug).filter((i) => i >= 0);
     if (ids.length < 2) { closeView("cmp"); return toast("Pick at least 2 roles to compare"); }
-    if (!views.cmp?.el.isConnected || !views.cmp.el.closest(".panel.active")) {
-      closeView("cmp");
+    if (!views.cmp?.el.isConnected) {
       const el = makeView("cmp");
+      $("#cmpPage").replaceChildren(el);
       views.cmp = { el };
-      placeAfter(el, anchor);
     }
     renderCompare(ids);
-    reveal(views.cmp.el);
+    showTab("compare", { hash: `compare/${compareList.join(",")}` });
   }
   function renderCompare(ids) {
     const me = mySkillSet();
@@ -1656,7 +1712,6 @@
           ${rowHtml("Frameworks", (i) => cell(r(i).frameworks))}
           ${rowHtml("Tools", (i) => cell(r(i).tools))}
           ${rowHtml("Skills", (i) => cell(r(i).skills))}
-          ${rowHtml("AI impact", (i) => esc(r(i).ai || "—"))}
         </tbody></table></div>
       <div class="plan-actions"><button class="btn-ghost" type="button" data-act="cmp-link">Copy link</button><button class="btn-ghost" type="button" data-act="print">Print / PDF</button></div>`;
   }
@@ -1684,9 +1739,17 @@
     return personal ? "Add skills to your profile to see your best fit" : "Tell us about you to get recommendations";
   }
   // Print just one panel (role or comparison) when its Print button is used.
+  /**
+   * Print one panel only. Its ancestors are marked so print CSS can drop everything else from the
+   * layout (hiding it would keep its space and print blank pages).
+   */
   function printPanel(el) {
+    const path = [];
+    for (let n = el.parentElement; n && n !== document.documentElement; n = n.parentElement) { n.classList.add("print-path"); path.push(n); }
     el.classList.add("print-focus"); document.body.classList.add("print-one");
-    addEventListener("afterprint", () => { el.classList.remove("print-focus"); document.body.classList.remove("print-one"); }, { once: true });
+    addEventListener("afterprint", () => {
+      el.classList.remove("print-focus"); path.forEach((n) => n.classList.remove("print-path")); document.body.classList.remove("print-one");
+    }, { once: true });
     print();
   }
 
@@ -1748,13 +1811,19 @@
       case "save-term": saveTerm(b); break;
       case "cmp": if (toggleCompare(i)) refreshPersonal(); break;
       case "cmp-open": openCompare(); break;
-      case "cmp-clear": compareList = []; saveCompare(); closeView("cmp"); refreshPersonal(); break;
+      case "cmp-clear": { const onPage = location.hash.startsWith("#compare"); compareList = []; saveCompare(); closeView("cmp"); refreshPersonal(); if (onPage) showTab("roles"); break; }
       case "cmp-saved": compareList = saved.roles.filter((s) => roleBySlug(s) >= 0).slice(0, 3); saveCompare(); renderTray(); openCompare(b); break;
       case "cmp-pair": compareList = [plan.from, plan.to].map((k) => slug(A.roles[k].name)); saveCompare(); renderTray(); openCompare(b); break;
       case "cmp-link": copyText(linkTo(`compare/${compareList.join(",")}`), "Link copied — anyone can open this comparison"); break;
+      case "stack-tab": {
+        const box = b.closest(".inline-view");
+        box.querySelectorAll("[data-act=stack-tab]").forEach((t) => { const on = t === b; t.classList.toggle("active", on); t.setAttribute("aria-selected", on); });
+        box.querySelectorAll(".stack-pane").forEach((pane) => { pane.hidden = pane.dataset.k !== b.dataset.k; });
+        break;
+      }
       case "copy-role": copyText(linkTo(`roles/${slug(A.roles[i].name)}`), "Link copied — share this role"); break;
       case "open-role": openRole(i, b); break;
-      case "close-view": closeView(b.dataset.kind); break;
+      case "close-view": closeView(b.dataset.kind); if (b.dataset.kind === "cmp") showTab("roles"); break;
       case "used-by": showRolesUsing(b); break; // just the roles that use this term, in the Roles tab
       case "go-term": goTerm(i); break;
       case "go-salary": goTrack(i); break;
@@ -1876,29 +1945,16 @@
   const copyText = async (text, msg) => {
     try { await navigator.clipboard.writeText(text); toast(msg); } catch { prompt("Copy:", text); }
   };
-  const TIPS = {
-    mypath: "Everything here comes from <b>your profile</b> (top right) — edit it any time. Nothing leaves your browser.",
-    ladder: "IC and management pay about the same at equal levels — you don't have to manage people to grow.",
-    roles: "Click a role to open its details right here, including what other companies call it. Blue pills open related terms and tools.",
-    glossary: "Click any term to copy it with its meaning — handy for notes and interview prep.",
-    stack: "Click any technology to see which roles use it.",
-    salary: "A calculator: try any role, experience and skill set. Changes here also update your profile. <b>Copy for resume</b> gives a ready skills section.",
-    abroad: "Pick your role to see where it's in demand. Live feeds auto-refresh every 30 min.",
-    lifecycle: "Interviewers often ask \"who owns what\" — know each phase's output."
+  // "Treat this as a guide": a small caution note in the top-right corner of the pages it applies to.
+  const GUIDE_NOTES = {
+    ladder: "A general scale — each company sets its own levels.",
+    roles: "Titles and tools vary by company — treat as a guide.",
+    lifecycle: "Who owns each step varies by company — treat as a guide.",
+    stack: "Tools vary by company — treat as a guide.",
   };
-  const hidden = loadJSON("atlas-tips-hidden", []);
-  Object.entries(TIPS).forEach(([id, html]) => {
-    if (hidden.includes(id)) return;
-    const panel = document.getElementById(id);
-    const anchor = panel.querySelector(".panel-head") || panel.querySelector(".hero") || panel.querySelector(".lead") || panel.querySelector(".h2");
-    anchor.insertAdjacentHTML("afterend", `<p class="hint" data-hint="${id}"><span>${icon("bulb")} ${html}</span><button type="button" aria-label="Dismiss tip">×</button></p>`);
+  Object.entries(GUIDE_NOTES).forEach(([id, text]) => {
+    document.querySelector(`#${id} > .panel-head`)?.insertAdjacentHTML("beforeend", `<p class="guide-note" role="note">${icon("info")}<span>${esc(text)}</span></p>`);
   });
-  document.addEventListener("click", (e) => {
-    const b = e.target.closest(".hint button");
-    if (!b) return;
-    const p = b.closest(".hint"); hidden.push(p.dataset.hint); store.set("atlas-tips-hidden", JSON.stringify(hidden)); p.remove();
-  });
-
   $("#glossBody").addEventListener("click", (e) => {
     const row = e.target.closest("tr[id^=term-]");
     if (!row || e.target.closest("button")) return;
@@ -1918,7 +1974,7 @@
   /* ---------- Init ---------- */
   onShow.roles = renderRoles; // picks up skill changes for match badges
   renderRoleChips(); renderRoles(); renderCatChips(); renderGlossary(); renderSalary(); renderTray();
-  route();
+  window.atlasNav.follow(route);
 
   // Offline support once served over http(s); file:// can't register a service worker.
   if ("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js").catch(() => {});

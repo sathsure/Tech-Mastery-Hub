@@ -10,6 +10,14 @@ Example: `nums = [2, 7, 11, 15], target = 9` → `[0, 1]`
 
 ### 📝 Answer
 
+**In simple words:** Find two numbers in the list that add up to the target, and return their positions.
+
+**How to approach it:**
+
+1. For each number, the partner you need is `target - number` (for `7` with target `9`, you need `2`).
+2. Keep a dictionary of the numbers already seen → their index.
+3. If the partner is already in the dictionary, you're done; otherwise store the current number and move on.
+
 **Pattern:** hash map. For each number, check whether its complement (`target - num`) was already seen.
 
 ```python
@@ -26,6 +34,13 @@ print(two_sum([2, 7, 11, 15], 9))   # [0, 1]
 print(two_sum([3, 2, 4], 6))        # [1, 2]
 ```
 
+**Input and output:**
+
+| Input (`nums`) | `target` | Output |
+|---|---|---|
+| `[2, 7, 11, 15]` | `9` | `[0, 1]` |
+| `[3, 2, 4]` | `6` | `[1, 2]` |
+
 **Complexity:** `O(n)` time, `O(n)` space. The brute-force double loop is `O(n²)`.
 
 ---
@@ -37,6 +52,15 @@ Given an array `nums`, return all **unique** triplets `[a, b, c]` with `a + b + 
 Example: `nums = [-1, 0, 1, 2, -1, -4]` → `[[-1, -1, 2], [-1, 0, 1]]`
 
 ### 📝 Answer
+
+**In simple words:** Find every group of three numbers that adds up to 0, without repeating the same group.
+
+**How to approach it:**
+
+1. Sort the list, so equal numbers sit together and you can move left or right by size.
+2. Fix one number, then look for two more that add up to its negative, with one pointer at each end of the rest.
+3. Sum too small → move the left pointer right; too big → move the right pointer left.
+4. Skip a number equal to the previous one, so no group repeats.
 
 **Pattern:** sort, then fix one number and find the other two with **two pointers**. Skip equal neighbours to avoid duplicate triplets.
 
@@ -68,6 +92,13 @@ print(three_sum([-1, 0, 1, 2, -1, -4]))  # [[-1, -1, 2], [-1, 0, 1]]
 print(three_sum([0, 0, 0, 0]))           # [[0, 0, 0]]
 ```
 
+**Input and output:**
+
+| Input (`nums`) | Output |
+|---|---|
+| `[-1, 0, 1, 2, -1, -4]` | `[[-1, -1, 2], [-1, 0, 1]]` |
+| `[0, 0, 0, 0]` | `[[0, 0, 0]]` |
+
 **Complexity:** `O(n²)` time (sorting is `O(n log n)`), `O(1)` extra space apart from the output.
 
 ---
@@ -78,10 +109,27 @@ Return `True` if any value appears at least twice in `nums`.
 
 ### 📝 Answer
 
+**In simple words:** Does any number appear more than once?
+
+**How to approach it:**
+
+1. A set keeps only unique values.
+2. If the set is smaller than the list, something was repeated.
+
 ```python
 def contains_duplicate(nums: list[int]) -> bool:
     return len(set(nums)) != len(nums)
+
+print(contains_duplicate([1, 2, 3, 1]))
+print(contains_duplicate([1, 2, 3, 4]))
 ```
+
+**Input and output:**
+
+| Input (`nums`) | Output |
+|---|---|
+| `[1, 2, 3, 1]` | `True` |
+| `[1, 2, 3, 4]` | `False` |
 
 **Complexity:** `O(n)` time, `O(n)` space.
 
@@ -95,12 +143,29 @@ Example: `s = "anagram", t = "nagaram"` → `True`
 
 ### 📝 Answer
 
+**In simple words:** Do both words use exactly the same letters, the same number of times? ("listen" and "silent" do.)
+
+**How to approach it:**
+
+1. Count each letter in both words.
+2. If the counts match, they are anagrams.
+
 ```python
 from collections import Counter
 
 def is_anagram(s: str, t: str) -> bool:
     return Counter(s) == Counter(t)
+
+print(is_anagram("anagram", "nagaram"))
+print(is_anagram("rat", "car"))
 ```
+
+**Input and output:**
+
+| Input (`s`) | `t` | Output |
+|---|---|---|
+| `"anagram"` | `"nagaram"` | `True` |
+| `"rat"` | `"car"` | `False` |
 
 **Complexity:** `O(n)` time, `O(k)` space for `k` distinct characters.
 
@@ -114,6 +179,14 @@ Example: `["eat", "tea", "tan", "ate", "nat", "bat"]` → `[["eat", "tea", "ate"
 
 ### 📝 Answer
 
+**In simple words:** Put words made of the same letters into the same group.
+
+**How to approach it:**
+
+1. Sort each word's letters: "eat", "tea" and "ate" all become "aet".
+2. Use that sorted form as a dictionary key and add the word to its list.
+3. The dictionary's lists are the groups.
+
 **Pattern:** anagrams share the same sorted letters, so use those as the dictionary key.
 
 ```python
@@ -124,7 +197,15 @@ def group_anagrams(words: list[str]) -> list[list[str]]:
     for word in words:
         groups["".join(sorted(word))].append(word)
     return list(groups.values())
+
+print(group_anagrams(["eat", "tea", "tan", "ate", "nat", "bat"]))
 ```
+
+**Input and output:**
+
+| Input (`words`) | Output |
+|---|---|
+| `["eat", "tea", "tan", "ate", "nat", "bat"]` | `[["eat", "tea", "ate"], ["tan", "nat"], ["bat"]]` |
 
 **Complexity:** `O(n · k log k)` for `n` words of length `k`.
 
@@ -138,6 +219,13 @@ Example: `nums = [1, 1, 1, 2, 2, 3], k = 2` → `[1, 2]`
 
 ### 📝 Answer
 
+**In simple words:** Return the `k` numbers that appear most often.
+
+**How to approach it:**
+
+1. Count how often each number appears.
+2. Pick the `k` numbers with the highest counts (a heap does this without sorting everything).
+
 ```python
 import heapq
 from collections import Counter
@@ -145,7 +233,15 @@ from collections import Counter
 def top_k_frequent(nums: list[int], k: int) -> list[int]:
     counts = Counter(nums)
     return heapq.nlargest(k, counts.keys(), key=counts.get)
+
+print(top_k_frequent([1, 1, 1, 2, 2, 3], 2))
 ```
+
+**Input and output:**
+
+| Input (`nums`) | `k` | Output |
+|---|---|---|
+| `[1, 1, 1, 2, 2, 3]` | `2` | `[1, 2]` |
 
 **Complexity:** `O(n log k)` time, `O(n)` space.
 
@@ -158,6 +254,16 @@ Return an array where `answer[i]` is the product of all numbers except `nums[i]`
 Example: `[1, 2, 3, 4]` → `[24, 12, 8, 6]`
 
 ### 📝 Answer
+
+**In simple words:** For each position, multiply all the other numbers together — without using division.
+
+**How to approach it:**
+
+1. The answer at `i` = (product of everything to its left) × (product of everything to its right).
+2. Pass 1, left to right: store the running product of the left side.
+3. Pass 2, right to left: multiply in the running product of the right side.
+
+_Example:_ in `[1, 2, 3, 4]`, position 2 → left `1 × 2 = 2`, right `4`, answer `8`.
 
 **Pattern:** prefix and suffix products. First store the product of everything to the left, then multiply by the product of everything to the right.
 
@@ -174,7 +280,15 @@ def product_except_self(nums: list[int]) -> list[int]:
         result[i] *= suffix          # times product of nums[i+1..]
         suffix *= nums[i]
     return result
+
+print(product_except_self([1, 2, 3, 4]))
 ```
+
+**Input and output:**
+
+| Input (`nums`) | Output |
+|---|---|
+| `[1, 2, 3, 4]` | `[24, 12, 8, 6]` |
 
 **Complexity:** `O(n)` time, `O(1)` extra space apart from the output.
 
@@ -187,6 +301,13 @@ Given a sorted array of distinct integers and a target, return the index of the 
 Example: `nums = [1, 3, 5, 6], target = 2` → `1`
 
 ### 📝 Answer
+
+**In simple words:** Find the target in a sorted list; if it isn't there, say where it would go.
+
+**How to approach it:**
+
+1. The list is sorted, so use binary search: look at the middle and throw away the half that can't hold the answer.
+2. Look for the first position whose value is `>= target`. That is the index if the target is there, and the insert spot if it isn't.
 
 **Pattern:** binary search for the first position whose value is `>= target` (the "lower bound").
 
@@ -207,6 +328,15 @@ print(search_insert([1, 3, 5, 6], 7))  # 4 (insert at the end)
 print(search_insert([1, 3, 5, 6], 0))  # 0 (insert at the start)
 ```
 
+**Input and output:**
+
+| Input (`nums`) | `target` | Output |
+|---|---|---|
+| `[1, 3, 5, 6]` | `5` | `2` |
+| `[1, 3, 5, 6]` | `2` | `1` |
+| `[1, 3, 5, 6]` | `7` | `4` |
+| `[1, 3, 5, 6]` | `0` | `0` |
+
 Python's standard library does the same: `bisect.bisect_left(nums, target)`.
 
 **Complexity:** `O(log n)` time, `O(1)` space.
@@ -218,6 +348,13 @@ Python's standard library does the same: `bisect.bisect_left(nums, target)`.
 A sorted array was rotated at an unknown pivot (e.g. `[4, 5, 6, 7, 0, 1, 2]`). Return the index of `target`, or `-1`, in `O(log n)`.
 
 ### 📝 Answer
+
+**In simple words:** A sorted list was "rotated" (its end moved to the front). Find the target quickly, in `O(log n)`.
+
+**How to approach it:**
+
+1. Use binary search, but first check which half around the middle is still in order.
+2. If the target fits inside the ordered half's range, search there; otherwise search the other half.
 
 **Pattern:** binary search. At every step one half is still sorted; check whether the target lies inside that sorted half.
 
@@ -241,7 +378,15 @@ def search_rotated(nums: list[int], target: int) -> int:
     return -1
 
 print(search_rotated([4, 5, 6, 7, 0, 1, 2], 0))  # 4
+print(search_rotated([4, 5, 6, 7, 0, 1, 2], 3))
 ```
+
+**Input and output:**
+
+| Input (`nums`) | `target` | Output |
+|---|---|---|
+| `[4, 5, 6, 7, 0, 1, 2]` | `0` | `4` |
+| `[4, 5, 6, 7, 0, 1, 2]` | `3` | `-1` |
 
 **Complexity:** `O(log n)` time, `O(1)` space.
 
@@ -255,11 +400,28 @@ Example: `"A man, a plan, a canal: Panama"` → `True`
 
 ### 📝 Answer
 
+**In simple words:** Ignoring spaces, punctuation and case, does the text read the same forwards and backwards?
+
+**How to approach it:**
+
+1. Keep only letters and digits, in lower case.
+2. Compare the cleaned text with its reverse.
+
 ```python
 def is_palindrome(s: str) -> bool:
     cleaned = [ch.lower() for ch in s if ch.isalnum()]
     return cleaned == cleaned[::-1]
+
+print(is_palindrome("A man, a plan, a canal: Panama"))
+print(is_palindrome("race a car"))
 ```
+
+**Input and output:**
+
+| Input (`s`) | Output |
+|---|---|
+| `"A man, a plan, a canal: Panama"` | `True` |
+| `"race a car"` | `False` |
 
 **Complexity:** `O(n)` time, `O(n)` space. A two-pointer version that skips non-alphanumeric characters uses `O(1)` space.
 
@@ -272,6 +434,17 @@ Given wall heights, choose two walls that hold the most water: `width × min(hei
 Example: `[1, 8, 6, 2, 5, 4, 8, 3, 7]` → `49`
 
 ### 📝 Answer
+
+**In simple words:** Each number is the height of a wall. Pick two walls; the water between them = the distance between them × the shorter wall. Find the most water.
+
+**How to approach it:**
+
+1. Start with the widest container: one pointer at each end.
+2. Work out the water and remember the best so far.
+3. Move the **shorter** wall inward. The water is limited by the shorter wall, so moving the taller one can only make it worse.
+4. Stop when the pointers meet.
+
+_Example:_ walls `8` (index 1) and `7` (index 8) → width `7` × shorter wall `7` = `49`.
 
 **Pattern:** two pointers at both ends. Always move the **shorter** wall inward — moving the taller one can never increase the area.
 
@@ -286,7 +459,15 @@ def max_area(height: list[int]) -> int:
         else:
             right -= 1
     return best
+
+print(max_area([1, 8, 6, 2, 5, 4, 8, 3, 7]))
 ```
+
+**Input and output:**
+
+| Input (`height`) | Output |
+|---|---|
+| `[1, 8, 6, 2, 5, 4, 8, 3, 7]` | `49` |
 
 **Complexity:** `O(n)` time, `O(1)` space.
 
@@ -299,6 +480,14 @@ Return the length of the longest substring with no repeated characters.
 Example: `"abcabcbb"` → `3` (`"abc"`)
 
 ### 📝 Answer
+
+**In simple words:** Find the longest stretch of the text where no character repeats ("abcabcbb" → "abc", length 3).
+
+**How to approach it:**
+
+1. Keep a "window" of characters with no repeats, and grow it one character at a time.
+2. When a character repeats inside the window, move the window's start just past its earlier copy.
+3. Track the biggest window size seen.
 
 **Pattern:** sliding window. Remember where each character was last seen; when a character repeats inside the window, move the window's start past it.
 
@@ -317,6 +506,13 @@ print(length_of_longest_substring("abcabcbb"))  # 3
 print(length_of_longest_substring("pwwkew"))    # 3
 ```
 
+**Input and output:**
+
+| Input (`s`) | Output |
+|---|---|
+| `"abcabcbb"` | `3` |
+| `"pwwkew"` | `3` |
+
 **Complexity:** `O(n)` time, `O(k)` space for `k` distinct characters.
 
 ---
@@ -329,6 +525,14 @@ Example: `[7, 1, 5, 3, 6, 4]` → `5` (buy at 1, sell at 6)
 
 ### 📝 Answer
 
+**In simple words:** Pick one day to buy and a later day to sell, for the biggest profit.
+
+**How to approach it:**
+
+1. Walk through the days, remembering the cheapest price so far.
+2. On each day, the profit if you sold today = today's price − the cheapest so far.
+3. Keep the best profit.
+
 Track the lowest price so far and the best profit from selling today.
 
 ```python
@@ -339,7 +543,17 @@ def max_profit(prices: list[int]) -> int:
         min_price = min(min_price, price)
         best = max(best, price - min_price)
     return best
+
+print(max_profit([7, 1, 5, 3, 6, 4]))
+print(max_profit([7, 6, 4, 3, 1]))
 ```
+
+**Input and output:**
+
+| Input (`prices`) | Output |
+|---|---|
+| `[7, 1, 5, 3, 6, 4]` | `5` |
+| `[7, 6, 4, 3, 1]` | `0` |
 
 **Complexity:** `O(n)` time, `O(1)` space.
 
@@ -352,6 +566,14 @@ Given a string of `()[]{}`, check that every bracket is closed in the correct or
 Example: `"()[]{}"` → `True`, `"(]"` → `False`
 
 ### 📝 Answer
+
+**In simple words:** Is every opening bracket closed by the right kind of bracket, in the right order? `"([])"` is fine, `"(]"` is not.
+
+**How to approach it:**
+
+1. Push each opening bracket onto a stack.
+2. On a closing bracket, the top of the stack must be its matching opener; pop it.
+3. At the end, the stack must be empty.
 
 **Pattern:** stack. Push opening brackets; each closing bracket must match the top of the stack.
 
@@ -366,7 +588,19 @@ def is_valid(s: str) -> bool:
         else:
             stack.append(ch)
     return not stack                 # every bracket must be closed
+
+print(is_valid("()[]{}"))
+print(is_valid("(]"))
+print(is_valid("([)]"))
 ```
+
+**Input and output:**
+
+| Input (`s`) | Output |
+|---|---|
+| `"()[]{}"` | `True` |
+| `"(]"` | `False` |
+| `"([)]"` | `False` |
 
 **Complexity:** `O(n)` time, `O(n)` space.
 
@@ -380,6 +614,14 @@ Example: `[[1, 3], [2, 6], [8, 10], [15, 18]]` → `[[1, 6], [8, 10], [15, 18]]`
 
 ### 📝 Answer
 
+**In simple words:** Combine ranges that overlap into one range: `[1, 3]` and `[2, 6]` become `[1, 6]`.
+
+**How to approach it:**
+
+1. Sort the ranges by their start.
+2. If a range starts before the last merged one ends, they overlap — extend the end.
+3. Otherwise, start a new merged range.
+
 Sort by start; extend the last merged interval while the next one overlaps.
 
 ```python
@@ -392,7 +634,15 @@ def merge(intervals: list[list[int]]) -> list[list[int]]:
         else:
             merged.append([start, end])
     return merged
+
+print(merge([[1, 3], [2, 6], [8, 10], [15, 18]]))
 ```
+
+**Input and output:**
+
+| Input (`intervals`) | Output |
+|---|---|
+| `[[1, 3], [2, 6], [8, 10], [15, 18]]` | `[[1, 6], [8, 10], [15, 18]]` |
 
 **Complexity:** `O(n log n)` time (sorting), `O(n)` space.
 
@@ -406,6 +656,14 @@ Example: `nums = [3, 2, 1, 5, 6, 4], k = 2` → `5`
 
 ### 📝 Answer
 
+**In simple words:** Find the number that would be at position `k` if the list were sorted from largest to smallest.
+
+**How to approach it:**
+
+1. Keep a small min-heap holding the `k` largest numbers seen so far.
+2. When it grows past `k`, drop its smallest.
+3. At the end, the smallest of those `k` numbers is the k-th largest.
+
 **Pattern:** keep a min-heap of the `k` largest values seen; its smallest element is the answer.
 
 ```python
@@ -418,7 +676,15 @@ def find_kth_largest(nums: list[int], k: int) -> int:
         if len(heap) > k:
             heapq.heappop(heap)      # drop the smallest
     return heap[0]
+
+print(find_kth_largest([3, 2, 1, 5, 6, 4], 2))
 ```
+
+**Input and output:**
+
+| Input (`nums`) | `k` | Output |
+|---|---|---|
+| `[3, 2, 1, 5, 6, 4]` | `2` | `5` |
 
 **Complexity:** `O(n log k)` time, `O(k)` space.
 
@@ -429,6 +695,14 @@ def find_kth_largest(nums: list[int], k: int) -> int:
 Reverse a singly linked list and return the new head.
 
 ### 📝 Answer
+
+**In simple words:** Turn the chain `1 → 2 → 3` into `3 → 2 → 1`.
+
+**How to approach it:**
+
+1. Walk the list, keeping `prev` (the part already reversed; empty at first).
+2. For each node: remember the next node, point the current node back to `prev`, then step forward.
+3. When you run off the end, `prev` is the new head.
 
 Walk the list once, turning each `next` pointer backwards.
 
@@ -446,7 +720,29 @@ def reverse_list(head: ListNode | None) -> ListNode | None:
         prev = head
         head = nxt
     return prev
+
+def from_list(values):               # [1, 2, 3] -> 1 -> 2 -> 3
+    dummy = tail = ListNode()
+    for v in values:
+        tail.next = ListNode(v)
+        tail = tail.next
+    return dummy.next
+
+def to_list(head):                   # 1 -> 2 -> 3 -> [1, 2, 3]
+    values = []
+    while head:
+        values.append(head.val)
+        head = head.next
+    return values
+
+print(to_list(reverse_list(from_list([1, 2, 3, 4, 5]))))
 ```
+
+**Input and output:**
+
+| Input (`head`) | Output |
+|---|---|
+| `[1, 2, 3, 4, 5]` | `[5, 4, 3, 2, 1]` |
 
 **Complexity:** `O(n)` time, `O(1)` space.
 
@@ -457,6 +753,14 @@ def reverse_list(head: ListNode | None) -> ListNode | None:
 Merge two sorted linked lists into one sorted list.
 
 ### 📝 Answer
+
+**In simple words:** Join two sorted chains into one sorted chain.
+
+**How to approach it:**
+
+1. Compare the two front nodes and attach the smaller one to the result.
+2. Move forward in the list you took it from, and repeat.
+3. When one list runs out, attach the rest of the other.
 
 A dummy head avoids special cases for the first node.
 
@@ -471,7 +775,15 @@ def merge_two_lists(a: ListNode | None, b: ListNode | None) -> ListNode | None:
         tail = tail.next
     tail.next = a or b       # attach whatever remains
     return dummy.next
+
+print(to_list(merge_two_lists(from_list([1, 2, 4]), from_list([1, 3, 4]))))
 ```
+
+**Input and output:**
+
+| Input (`a`) | `b` | Output |
+|---|---|---|
+| `[1, 2, 4]` | `[1, 3, 4]` | `[1, 1, 2, 3, 4, 4]` |
 
 **Complexity:** `O(n + m)` time, `O(1)` space.
 
@@ -482,6 +794,14 @@ def merge_two_lists(a: ListNode | None, b: ListNode | None) -> ListNode | None:
 Return `True` if the linked list has a cycle.
 
 ### 📝 Answer
+
+**In simple words:** Does the chain loop back on itself instead of ending?
+
+**How to approach it:**
+
+1. Move a slow pointer 1 step and a fast pointer 2 steps at a time.
+2. If there is a loop, the fast one laps the slow one and they meet.
+3. If the fast one reaches the end, there is no loop.
 
 **Pattern:** Floyd's fast and slow pointers. If there is a cycle, the fast pointer eventually meets the slow one.
 
@@ -494,7 +814,19 @@ def has_cycle(head: ListNode | None) -> bool:
         if slow is fast:
             return True
     return False
+
+head = from_list([3, 2, 0, -4])
+head.next.next.next.next = head.next   # -4 points back to 2: a cycle
+print(has_cycle(head))
+print(has_cycle(from_list([1, 2])))
 ```
+
+**Input and output:**
+
+| Input (`head`) | Output |
+|---|---|
+| `[3, 2, 0, -4] (last node links back to 2)` | `True` |
+| `[1, 2]` | `False` |
 
 **Complexity:** `O(n)` time, `O(1)` space.
 
@@ -505,6 +837,14 @@ def has_cycle(head: ListNode | None) -> bool:
 Return the number of nodes on the longest path from the root down to a leaf.
 
 ### 📝 Answer
+
+**In simple words:** How many levels does the tree have, from the top down to its deepest leaf?
+
+**How to approach it:**
+
+1. An empty tree has depth 0.
+2. A node's depth = 1 + the deeper of its left and right subtrees.
+3. Recursion works this out from the leaves upward.
 
 ```python
 class TreeNode:
@@ -517,7 +857,21 @@ def max_depth(root: TreeNode | None) -> int:
     if not root:
         return 0
     return 1 + max(max_depth(root.left), max_depth(root.right))
+
+#     3
+#    / \
+#   9  20
+#     /  \
+#    15   7
+root = TreeNode(3, TreeNode(9), TreeNode(20, TreeNode(15), TreeNode(7)))
+print(max_depth(root))
 ```
+
+**Input and output:**
+
+| Input (`root`) | Output |
+|---|---|
+| `[3, 9, 20, null, null, 15, 7]` | `3` |
 
 **Complexity:** `O(n)` time, `O(h)` space for tree height `h` (recursion stack).
 
@@ -528,6 +882,14 @@ def max_depth(root: TreeNode | None) -> int:
 Given a grid of `"1"` (land) and `"0"` (water), count the islands (groups of land connected up, down, left or right).
 
 ### 📝 Answer
+
+**In simple words:** In a map of land (`"1"`) and water (`"0"`), count the separate pieces of land. Land touching up, down, left or right belongs to the same island.
+
+**How to approach it:**
+
+1. Scan every cell.
+2. When you find land, count one island, then "sink" it: turn it and all land connected to it into water.
+3. Because each island is sunk when first found, it is counted only once.
 
 **Pattern:** DFS flood fill. When you find land, count an island and "sink" all land connected to it.
 
@@ -551,7 +913,21 @@ def num_islands(grid: list[list[str]]) -> int:
                 count += 1
                 sink(r, c)
     return count
+
+grid = [
+    ["1", "1", "0", "0", "0"],
+    ["1", "1", "0", "0", "0"],
+    ["0", "0", "1", "0", "0"],
+    ["0", "0", "0", "1", "1"],
+]
+print(num_islands(grid))
 ```
+
+**Input and output:**
+
+| Input (`grid`) | Output |
+|---|---|
+| `[["1", "1", "0", "0", "0"], ["1", "1", "0", "0", "0"], ["0", "0", "1", "0", "0"], ["0", "0", "0", "1", "1"]]` | `3` |
 
 **Complexity:** `O(rows × cols)` time and space. For very large grids, use BFS with `collections.deque` to avoid Python's recursion limit.
 
@@ -565,6 +941,14 @@ Example: `n = 3` → `3` (1+1+1, 1+2, 2+1)
 
 ### 📝 Answer
 
+**In simple words:** You climb 1 or 2 steps at a time. How many different ways can you reach the top?
+
+**How to approach it:**
+
+1. Your last move onto step `n` came either from step `n-1` or from step `n-2`.
+2. So ways(`n`) = ways(`n-1`) + ways(`n-2`) — the Fibonacci sequence.
+3. Keep only the last two counts as you go up.
+
 Ways to reach step `n` = ways to reach `n-1` + ways to reach `n-2` — the Fibonacci pattern.
 
 ```python
@@ -576,6 +960,12 @@ def climb_stairs(n: int) -> int:
 
 print(climb_stairs(5))       # 8
 ```
+
+**Input and output:**
+
+| Input (`n`) | Output |
+|---|---|
+| `5` | `8` |
 
 **Complexity:** `O(n)` time, `O(1)` space.
 
@@ -589,6 +979,14 @@ Example: `[-2, 1, -3, 4, -1, 2, 1, -5, 4]` → `6` (`[4, -1, 2, 1]`)
 
 ### 📝 Answer
 
+**In simple words:** Find the block of consecutive numbers with the biggest total.
+
+**How to approach it:**
+
+1. Walk the list, keeping the best total of a block that ends at the current number.
+2. At each number: if the block so far has a negative total it only hurts, so start fresh here; otherwise add the number to it.
+3. Track the best total seen.
+
 **Pattern:** Kadane's algorithm. At each number, either extend the current subarray or start a new one there.
 
 ```python
@@ -598,7 +996,15 @@ def max_sub_array(nums: list[int]) -> int:
         current = max(num, current + num)
         best = max(best, current)
     return best
+
+print(max_sub_array([-2, 1, -3, 4, -1, 2, 1, -5, 4]))
 ```
+
+**Input and output:**
+
+| Input (`nums`) | Output |
+|---|---|
+| `[-2, 1, -3, 4, -1, 2, 1, -5, 4]` | `6` |
 
 **Complexity:** `O(n)` time, `O(1)` space.
 
@@ -612,6 +1018,16 @@ Example: `coins = [1, 2, 5], amount = 11` → `3` (5 + 5 + 1)
 
 ### 📝 Answer
 
+**In simple words:** Using the given coin values (as many of each as you like), make the amount with the fewest coins.
+
+**How to approach it:**
+
+1. Solve every smaller amount first: `dp[v]` = fewest coins for value `v`, with `dp[0] = 0`.
+2. For each value, try each coin as the last coin: `dp[v - coin] + 1`, and keep the smallest.
+3. If the amount still can't be made, return `-1`.
+
+_Example:_ `11` with coins `[1, 2, 5]` → `5 + 5 + 1`, 3 coins.
+
 `dp[v]` = fewest coins for value `v`, built up from smaller values.
 
 ```python
@@ -622,7 +1038,17 @@ def coin_change(coins: list[int], amount: int) -> int:
             if coin <= value:
                 dp[value] = min(dp[value], dp[value - coin] + 1)
     return dp[amount] if dp[amount] != float("inf") else -1
+
+print(coin_change([1, 2, 5], 11))
+print(coin_change([2], 3))
 ```
+
+**Input and output:**
+
+| Input (`coins`) | `amount` | Output |
+|---|---|---|
+| `[1, 2, 5]` | `11` | `3` |
+| `[2]` | `3` | `-1` |
 
 **Complexity:** `O(amount × len(coins))` time, `O(amount)` space.
 

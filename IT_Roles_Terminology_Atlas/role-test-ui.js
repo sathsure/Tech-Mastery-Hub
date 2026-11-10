@@ -66,7 +66,7 @@
   }
   const animateRings = () => requestAnimationFrame(() => requestAnimationFrame(() => root.querySelectorAll(".rt-ring-value[data-offset]").forEach((c) => { c.style.strokeDashoffset = c.dataset.offset; })));
 
-  const state = { view: "home", role: null, choice: null, items: [], answers: [], index: 0, guess: false, result: null };
+  const state = { view: "home", role: null, choice: null, items: [], answers: [], index: 0, guess: false, result: null, selected: null };
   const show = (view) => {
     state.view = view;
     if (view === "home" && location.hash.startsWith("#roletest/")) window.history.replaceState(null, "", "#roletest");
@@ -148,7 +148,8 @@
     const options = item.options.map((o, i) => {
       let cls = "";
       if (answered) cls = i === item.answer ? " right" : i === answered.choice ? " wrong" : " dim";
-      return `<button type="button" class="rt-opt${cls}" data-rt-opt="${i}" ${answered ? "disabled" : ""}><kbd>${letters[i]}</kbd><span>${esc(o)}</span>${answered && i === item.answer ? icon("check", "rt-ic sm") : ""}</button>`;
+      else if (state.selected === i) cls = " selected";
+      return `<button type="button" class="rt-opt${cls}" data-rt-opt="${i}" ${answered ? "disabled" : `aria-pressed="${state.selected === i}"`}><kbd>${letters[i]}</kbd><span>${esc(o)}</span>${answered && i === item.answer ? icon("check", "rt-ic sm") : ""}</button>`;
     }).join("");
     const right = answered && answered.choice === item.answer;
     const feedback = answered ? `<div class="rt-feedback ${right ? "ok" : "bad"}"><b>${right ? (answered.guess ? "Correct — lucky guess!" : "Correct!") : answered.guess ? "Not quite — good that you marked it as a guess." : "Not quite."}</b><span>${esc(item.explain)}</span></div>` : "";
@@ -162,9 +163,11 @@
           ${item.code ? `<pre class="rt-code"><code>${esc(item.code)}</code></pre>` : ""}
           <div class="rt-opts">${options}</div>
           ${answered ? feedback : `<label class="rt-guess"><input type="checkbox" data-rt-guess ${state.guess ? "checked" : ""}><span class="rt-switch"></span>I'm guessing</label>`}
-          ${answered ? `<button type="button" class="rt-next" data-rt="next">${state.index + 1 === total ? "See my result" : "Next question"} ${icon("arrow", "rt-ic sm")}</button>` : ""}
+          ${answered
+            ? `<button type="button" class="rt-next" data-rt="next">${state.index + 1 === total ? "See my result" : "Next question"} ${icon("arrow", "rt-ic sm")}</button>`
+            : `<button type="button" class="rt-next rt-submit" data-rt="submit" ${state.selected === null ? "disabled" : ""}>Submit answer</button>`}
         </article>
-        <p class="rt-keys"><kbd>1</kbd>–<kbd>4</kbd> answer · <kbd>G</kbd> mark a guess · <kbd>Enter</kbd> next</p>
+        <p class="rt-keys"><kbd>1</kbd>–<kbd>4</kbd> choose · <kbd>Enter</kbd> submit / next · <kbd>G</kbd> mark a guess</p>
       </div>`;
   }
 
@@ -236,17 +239,25 @@
   function render() {
     root.innerHTML = state.view === "home" ? home() : state.view === "setup" ? setup() : state.view === "quiz" ? question() : results();
     if (state.view === "results") animateRings();
-    if (state.view === "quiz") root.querySelector(state.answers[state.index] ? ".rt-next" : ".rt-opt")?.focus({ preventScroll: true });
+    if (state.view === "quiz") root.querySelector(state.answers[state.index] ? ".rt-next" : state.selected !== null ? ".rt-submit" : ".rt-opt")?.focus({ preventScroll: true });
   }
 
-  function answer(choice) {
+  /** Picking an option only selects it; Submit checks it. */
+  function select(choice) {
     if (state.answers[state.index]) return;
+    state.selected = choice;
+    render();
+  }
+  function answer(choice) {
+    if (state.answers[state.index] || choice === null) return;
     state.answers[state.index] = { choice, guess: state.guess };
+    state.selected = null;
     render();
   }
 
   function next() {
     state.guess = false;
+    state.selected = null;
     if (state.index + 1 < state.items.length) { state.index += 1; render(); return; }
     state.result = E.scoreTest(state.items, state.answers);
     const key = roleKey(state.role, state.choice);
@@ -272,11 +283,12 @@
     if (!b) return;
     if (b.dataset.rtRole != null) { state.role = BANK.roles[Number(b.dataset.rtRole)]; state.choice = state.role.choice ? state.role.choice.options[0] : null; return show("setup"); }
     if (b.dataset.rtChoice) { state.choice = b.dataset.rtChoice; return render(); }
-    if (b.dataset.rtOpt != null) return answer(Number(b.dataset.rtOpt));
+    if (b.dataset.rtOpt != null) return select(Number(b.dataset.rtOpt));
     const act = b.dataset.rt;
     if (act === "home") show("home");
-    else if (act === "start") { Object.assign(state, { items: E.buildTest(BANK, state.role, state.choice), answers: [], index: 0, guess: false }); show("quiz"); }
+    else if (act === "start") { Object.assign(state, { items: E.buildTest(BANK, state.role, state.choice), answers: [], index: 0, guess: false, selected: null }); show("quiz"); }
     else if (act === "next") next();
+    else if (act === "submit") answer(state.selected);
     else if (act === "quit") { if (!state.answers.length || confirm("Quit this test? Your answers so far won't be saved.")) show("setup"); }
     else if (act === "copy") copyResult();
   });
@@ -285,7 +297,8 @@
     if (state.view !== "quiz" || !root.closest(".panel")?.classList.contains("active") || /input|textarea|select/i.test(document.activeElement?.tagName) && !document.activeElement.matches("[data-rt-guess]")) return;
     const answered = state.answers[state.index];
     const n = "1234".indexOf(e.key) >= 0 ? "1234".indexOf(e.key) : "abcd".indexOf(e.key.toLowerCase());
-    if (!answered && n >= 0 && n < state.items[state.index].options.length && !e.ctrlKey && !e.metaKey) { e.preventDefault(); answer(n); }
+    if (!answered && n >= 0 && n < state.items[state.index].options.length && !e.ctrlKey && !e.metaKey) { e.preventDefault(); select(n); }
+    else if (!answered && e.key === "Enter" && state.selected !== null) { e.preventDefault(); answer(state.selected); }
     else if (!answered && e.key.toLowerCase() === "g") { state.guess = !state.guess; const box = root.querySelector("[data-rt-guess]"); if (box) box.checked = state.guess; }
     else if (answered && e.key === "Enter") { e.preventDefault(); next(); }
   });

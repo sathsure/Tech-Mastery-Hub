@@ -13,7 +13,7 @@ import type Anthropic from "@anthropic-ai/sdk";
 import { createAnswerModel, describeModelError, type AnswerModel } from "./answer-model.js";
 import { renderUserTurn, SYSTEM_PROMPT } from "./answer-prompt.js";
 import type { AnswerMode, AnswerView, ChatEvent, ChatRequest, Evidence } from "./chat-contracts.js";
-import { buildEvidence, checkGrounding, composeRepositoryAnswer, MAX_EVIDENCE, suggestFollowUps, withoutTrailingParentheses } from "./chat-evidence.js";
+import { buildEvidence, checkGrounding, COMING_SOON, composeRepositoryAnswer, MAX_EVIDENCE, suggestFollowUps, withoutTrailingParentheses } from "./chat-evidence.js";
 import { cardsBlock, conciseTitle, countryCard, isCountryNote, roleCard } from "./chat-cards.js";
 import { roleTestHref } from "./role-test-link.js";
 import type { QuestionEntry } from "./question-index-contracts.js";
@@ -23,10 +23,15 @@ import { composeFollowUpAnswer, looksLikeFollowUp, previousTurn } from "./chat-f
 import { TOPIC_DESCRIPTIONS, topicLabel } from "./topic-labels.js";
 import { getFollowUps, getNextQuestions, getQuestionsByTopic, isContextQuestion, loadQuestionIndex } from "./question-index.js";
 import { buildInterviewPrep, findRole, interviewPicker, LAYERS, interviewPrepRole, interviewTopics, PICKER_PREFIX } from "./chat-interview.js";
-import { buildQuestionSet, isQuestionSetRequest, questionSetSetup } from "./chat-question-set.js";
+import { ANOTHER_SET, buildQuestionSet, isAnotherSetRequest, isQuestionSetRequest, previousQuestionSet, questionSetSetup } from "./chat-question-set.js";
 import { continueMock, isMockRequest, startMock } from "./chat-mock.js";
 import type { MockState } from "./chat-contracts.js";
-import { searchQuestions, type SearchConfidence, type SearchResult } from "./question-search.js";
+import { questionKey, searchQuestions, type SearchConfidence, type SearchResult } from "./question-search.js";
+import { needsProfile, PROFILE_NEEDED_MARKDOWN, withoutProfileChips } from "./profile-gate.js";
+
+/** Without a profile: leave out salary and work-abroad notes (as the Career Atlas does). */
+const profileSkip = (request: ChatRequest) => (request.profile ? undefined : (entry: QuestionEntry) => needsProfile(entry.source.path, entry.question));
+const chipsFor = (request: ChatRequest, chips: string[]) => (request.profile ? chips : withoutProfileChips(chips));
 
 export const MAX_HISTORY_TURNS = 8;
 const CONFIDENCE_RANK: Record<SearchConfidence, number> = { none: 0, low: 1, medium: 2, high: 3 };
@@ -66,7 +71,6 @@ export function searchWithContext(request: ChatRequest): { search: SearchResult;
   return own;
 }
 
-const questionKey = (text: string) => text.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
 
 /** True when the message is, word for word, one of the questions in the notes. */
 function isNotesQuestion(message: string, search: SearchResult): boolean {
@@ -111,6 +115,28 @@ export function judgeMatch(search: SearchResult): SearchResult {
   return best && best.coverage <= 0.5 ? { ...search, confidence: "low" } : search;
 }
 
+/**
+ * Chips must lead somewhere new. A chip is dropped when it repeats the question just asked or an earlier one,
+ * when it would open the entry just answered ("Roadmap to become …" on a note that is not a role), or when the
+ * notes have nothing for it at all.
+ */
+export function distinctFollowUps(followUps: string[], request: ChatRequest, answeredIds: string[]): string[] {
+  const asked = new Set([request.message, ...askedBefore(request)].map(questionKey));
+  const answered = new Set(answeredIds);
+  const kept: string[] = [];
+  for (const chip of followUps) {
+    const key = questionKey(chip);
+    if (!key || asked.has(key) || kept.some(other => questionKey(other) === key)) continue;
+    const search = searchQuestions(chip, { limit: 1 });
+    const top = search.hits[0];
+    // A chip the notes can't answer (no match, or only a weak one) would end in "not in your notes".
+    if (search.mode === "search" && (!top || CONFIDENCE_RANK[judgeMatch(search).confidence] < CONFIDENCE_RANK.medium)) continue;
+    if (top && answered.has(top.id) && search.mode !== "browse") continue;
+    kept.push(chip);
+  }
+  return kept.slice(0, 4);
+}
+
 /** Built answers (overviews, plans) stream like the others but need no model. */
 async function* builtAnswer(
   request: ChatRequest,
@@ -121,6 +147,7 @@ async function* builtAnswer(
   evidence: Evidence[] = [],
   mock?: MockState | null,
 ): AsyncGenerator<ChatEvent> {
+  followUps = chipsFor(request, followUps);
   yield {
     type: "meta",
     query: request.message,
@@ -140,7 +167,8 @@ async function* builtAnswer(
     view,
     model: null,
     grounding: { ...checkGrounding(text, evidence), uncited: false },
-    followUps,
+    // Hand-picked chips (overviews, plans, mock interview options) stay; chips built from a note are checked.
+    followUps: evidence.length ? distinctFollowUps(followUps, request, [evidence[0].id]) : followUps,
     suggestions: { topics: [], questions: [] },
     notice: null,
     usage: null,
@@ -177,9 +205,15 @@ async function directAnswer(request: ChatRequest, model: AnswerModel | null = nu
     return builtAnswer(request, emptySearch({ intents: ["quiz"] }), "mock", start.markdown, start.followUps, [], start.state);
   }
   // An interviewer's question set: first ask for the details, then build the set from the ticked options.
+  const setFollowUps = [ANOTHER_SET, "How do I evaluate a system design answer?", "Interview prep: Full Stack Developer"];
   if (request.plan?.kind === "question-set") {
-    const followUps = ["How do I evaluate a system design answer?", "Interview prep: Full Stack Developer"];
-    return builtAnswer(request, emptySearch({ intents: ["interview-prep"] }), "plan", await buildQuestionSet(request.plan), followUps);
+    return builtAnswer(request, emptySearch({ intents: ["interview-prep"] }), "plan", await buildQuestionSet(request.plan), setFollowUps);
+  }
+  // "Generate another set": same settings as the last set in this chat, different questions.
+  if (!request.plan && !request.overview && isAnotherSetRequest(request.message)) {
+    const answers = (request.history ?? []).filter(turn => turn.role === "assistant").map(turn => turn.content);
+    const previous = previousQuestionSet(answers);
+    if (previous) return builtAnswer(request, emptySearch({ intents: ["interview-prep"] }), "plan", await buildQuestionSet(previous.plan, previous.asked), setFollowUps);
   }
   if (!request.plan && !request.overview && isQuestionSetRequest(request.message)) {
     return builtAnswer(request, emptySearch({ intents: ["interview-prep"] }), "setup", questionSetSetup(request.message), []);
@@ -196,6 +230,10 @@ async function directAnswer(request: ChatRequest, model: AnswerModel | null = nu
     const followUps = /^Roadmap:/i.test(request.plan.title) ? [`What does a ${name} do?`, `${name} salary in India (LPA)`] : [];
     return builtAnswer(request, emptySearch({ intents: ["roadmap"] }), "plan", buildLearningPlan(request.plan), followUps);
   }
+  // "Explore Roadmaps" typed (or offered as a chip) opens the same hub as the sidebar's Roadmaps.
+  if (!request.overview && /^\s*(explore|show|open|all|list)?\s*(the\s+)?roadmaps\s*[.?!]?\s*$/i.test(request.message)) {
+    return builtAnswer(request, emptySearch({ mode: "browse", intents: ["roadmap"] }), "overview", await buildRoadmapsHub(TRACKS), ["Roadmap to become a Full Stack Developer", "Java study path", "Where do I start?"]);
+  }
   if (!request.overview || request.overview === "roadmaps") return null;
   if (request.overview === TOPICS_HUB) {
     return builtAnswer(request, emptySearch({ mode: "browse" }), "overview", await buildTopicsHub(), ["Explore Java", "Explore System Design", "Where do I start?"]);
@@ -205,7 +243,7 @@ async function directAnswer(request: ChatRequest, model: AnswerModel | null = nu
   }
   if (request.overview === CAREER_ATLAS) {
     const followUps = ["What does a DevOps engineer do?", "Full Stack Developer salary in India (LPA)", "Which countries can I work in from India?"];
-    return builtAnswer(request, emptySearch({ mode: "browse" }), "overview", await buildCareerAtlas(), followUps);
+    return builtAnswer(request, emptySearch({ mode: "browse" }), "overview", await buildCareerAtlas(profileSkip(request)), followUps);
   }
   if (request.overview === INTERVIEW_HUB) {
     const { entries } = await loadQuestionIndex();
@@ -213,7 +251,7 @@ async function directAnswer(request: ChatRequest, model: AnswerModel | null = nu
     const followUps = ["Interview prep: Full Stack Developer", "Prepare me for a Java interview"];
     return builtAnswer(request, emptySearch({ mode: "browse", intents: ["interview-prep"] }), "overview", markdown, followUps);
   }
-  const overview = await buildOverview(request.overview);
+  const overview = await buildOverview(request.overview, profileSkip(request));
   if (!overview) return null;
   return builtAnswer(request, emptySearch({ mode: "browse" }), "overview", overview.markdown, await topicFollowUps(request.overview));
 }
@@ -244,10 +282,10 @@ async function overviewAnswer(
   const topics = overviewTopics(search, evidence);
   if (topics.length > 1) {
     const followUps = topics.slice(0, 3).map(topic => `Explore ${topicLabel(topic)}`);
-    return builtAnswer(request, search, "overview", await buildTopicList(topics), followUps);
+    return builtAnswer(request, search, "overview", await buildTopicList(topics, undefined, profileSkip(request)), followUps);
   }
   if (topics.length === 0) return null;
-  const overview = await buildOverview(topics[0]);
+  const overview = await buildOverview(topics[0], profileSkip(request));
   return overview ? builtAnswer(request, search, "overview", overview.markdown, await topicFollowUps(topics[0])) : null;
 }
 
@@ -382,6 +420,12 @@ function closingPieces(
   }
   // When the notes don't clearly answer, point to trusted places to learn instead of guessing.
   const text = outcome.answer + pieces.join("");
+  // The model may answer from general knowledge; still say the notes will cover it later.
+  if (!followUp && outcome.answer.trim() && (!evidence.length || search.confidence === "low") && !text.includes(COMING_SOON)) {
+    pieces.push(`
+
+${COMING_SOON}`);
+  }
   // Follow-ups add their own subject-aware links when the notes have nothing more.
   if (!followUp && search.confidence !== "high" && text.trim() && !text.includes(LEARN_MORE_HEADING)) {
     pieces.push(`\n\n${learningResources(request.message, search.topics.map(item => item.topic))}`);
@@ -399,7 +443,14 @@ export async function* runChat(request: ChatRequest, options: ChatOptions = {}):
 
   const found = searchWithContext(request);
   const search = judgeMatch(found.search);
-  const evidence = await buildEvidence(search);
+  let evidence = await buildEvidence(search);
+  if (!request.profile) {
+    if (evidence[0] && needsProfile(evidence[0].path, evidence[0].question)) {
+      yield* builtAnswer(request, emptySearch({}), "answer", PROFILE_NEEDED_MARKDOWN, []);
+      return;
+    }
+    evidence = evidence.filter(item => !needsProfile(item.path, item.question)).map((item, i) => ({ ...item, n: i + 1 }));
+  }
   const overview = await overviewAnswer(request, search, evidence);
   if (overview) {
     yield* overview;
@@ -452,7 +503,7 @@ export async function* runChat(request: ChatRequest, options: ChatOptions = {}):
     // Notes-only answers quote the sources rather than cite them, so a missing [n] is not a warning.
     grounding: { ...checkGrounding(answer, evidence), ...(answerMode === "repository" ? { uncited: false } : {}) },
     // A weak match's own follow-ups would lead away from the question; the answer lists the closest entries instead.
-    followUps: search.confidence === "low" ? [] : suggestFollowUps(search, evidence, followUpQuestions, askedBefore(request)),
+    followUps: search.confidence === "low" ? [] : chipsFor(request, distinctFollowUps(suggestFollowUps(search, evidence, followUpQuestions, askedBefore(request)), request, evidence.slice(0, 1).map(item => item.id))),
     suggestions: search.suggestions,
     notice: outcome.notice,
     usage: outcome.usage,

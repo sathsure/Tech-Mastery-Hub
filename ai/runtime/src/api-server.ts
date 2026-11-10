@@ -6,6 +6,7 @@ import { ValidationError, validateActionRequirements, validateTutorRequest } fro
 import { API_VERSION, type ApiError, type ApiResponse } from "./api-contracts.js";
 import { searchQuestions } from "./question-search.js";
 import { runChat } from "./chat-service.js";
+import { needsProfile } from "./profile-gate.js";
 import { handleWebRoute } from "./web-routes.js";
 import type { ChatEvent, ChatRequest, ChatTurn } from "./chat-contracts.js";
 import { REPOSITORY_ROOT } from "./question-indexer.js";
@@ -116,6 +117,26 @@ export function chatAllowed(client: string, now = Date.now()): boolean {
   return true;
 }
 
+/** Lookups (search, suggestions, the source viewer) per client per minute (TUTOR_LOOKUP_RATE_LIMIT, 0 = no limit). Generous: typing never reaches it. */
+const LOOKUP_LIMIT = Number(process.env.TUTOR_LOOKUP_RATE_LIMIT ?? "120");
+const lookupHits = new Map<string, number[]>();
+const LOOKUP_PATHS = new Set(["/search", "/suggest", "/entry"]);
+
+export function lookupAllowed(client: string, now = Date.now()): boolean {
+  if (LOOKUP_LIMIT <= 0 || Number.isNaN(LOOKUP_LIMIT)) return true;
+  const recent = (lookupHits.get(client) ?? []).filter(time => now - time < WINDOW_MS);
+  if (recent.length >= LOOKUP_LIMIT) {
+    lookupHits.set(client, recent);
+    return false;
+  }
+  recent.push(now);
+  lookupHits.set(client, recent);
+  if (lookupHits.size > MAX_TRACKED_CLIENTS) {
+    for (const [key, times] of lookupHits) if (times.every(time => now - time >= WINDOW_MS)) lookupHits.delete(key);
+  }
+  return true;
+}
+
 // ---------- Responses ----------
 
 let ready = false;
@@ -183,6 +204,7 @@ function searchInput(request: IncomingMessage): Record<string, unknown> {
     query: params.get("q") ?? "",
     limit: params.has("limit") ? Number(params.get("limit")) : undefined,
     topic: params.get("topic") ?? undefined,
+    profile: params.get("profile") === "1",
   };
 }
 
@@ -219,13 +241,13 @@ async function handleSearch(request: IncomingMessage, response: ServerResponse):
     error(response, 400, "INVALID_REQUEST", problem);
     return;
   }
-  const payload: ApiResponse<ReturnType<typeof searchQuestions>> = {
-    version: API_VERSION,
-    data: searchQuestions(input.query as string, {
-      limit: input.limit as number | undefined,
-      topic: input.topic as string | undefined,
-    }),
-  };
+  const result = searchQuestions(input.query as string, {
+    limit: input.limit as number | undefined,
+    topic: input.topic as string | undefined,
+  });
+  // Without a profile, salary and work-abroad notes are left out (as in the chat and the Career Atlas).
+  const data = input.profile === true ? result : { ...result, hits: result.hits.filter(hit => !needsProfile(hit.source.path, hit.question)) };
+  const payload: ApiResponse<typeof result> = { version: API_VERSION, data };
   send(response, 200, payload);
 }
 
@@ -298,7 +320,8 @@ function checkMock(mock: unknown): Checked<ChatRequest["mock"]> {
 /** Validates a /chat body: the request, or why it is invalid. */
 export function validateChatRequest(value: unknown): Checked<ChatRequest> {
   if (!value || typeof value !== "object" || Array.isArray(value)) return invalid("Request body must be a JSON object.");
-  const { message, history, topic, plan, overview, mock } = value as Record<string, unknown>;
+  const { message, history, topic, plan, overview, mock, profile } = value as Record<string, unknown>;
+  if (profile !== undefined && typeof profile !== "boolean") return invalid("profile must be true or false.");
   if (!optionalString(overview, 100)) return invalid("overview must be a topic id of 100 characters or fewer.");
   if (typeof message !== "string" || !message.trim()) return invalid("message is required.");
   if (message.length > 2000) return invalid("message must be 2000 characters or fewer.");
@@ -318,6 +341,7 @@ export function validateChatRequest(value: unknown): Checked<ChatRequest> {
       plan: checkedPlan.value,
       overview: overview as string | undefined,
       ...(checkedMock.value ? { mock: checkedMock.value } : {}),
+      ...(profile === true ? { profile: true } : {}),
     },
   };
 }
@@ -469,6 +493,12 @@ async function handleRequest(request: IncomingMessage, response: ServerResponse)
   }
   if (request.method === "OPTIONS") {
     response.writeHead(204, corsHeaders()).end();
+    return;
+  }
+  const path = (request.url ?? "").split("?")[0];
+  if (LOOKUP_PATHS.has(path) && !lookupAllowed(clientAddress(request))) {
+    response.setHeader("retry-after", "60");
+    error(response, 429, "RATE_LIMITED", "Too many requests. Try again in a minute.");
     return;
   }
   if (await handleWebRoute(request, response)) return;
