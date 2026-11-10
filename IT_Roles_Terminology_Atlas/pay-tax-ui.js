@@ -234,8 +234,7 @@
     $("#ptOfferResult").innerHTML = `<div class="table-wrap"><table class="gloss pt-table pt-cmp">
       <thead><tr><th></th>${names.map((n) => `<th>${esc(n)}</th>`).join("")}</tr></thead>
       <tbody>${rows.map(([label, v, fmt, compare]) => `<tr><td>${esc(label)}</td>${cell(v, fmt, compare)}</tr>`).join("")}</tbody></table></div>
-      <p class="pt-verdict">${verdict.join(" ")}</p>
-      <p class="pt-note">Stock is valued at grant price and spread evenly over the vesting years; it can go up or down, and unlisted ESOPs may not be sellable for years. Joining bonuses usually must be repaid if you leave within 12 months. Also weigh notice period, role, growth and work mode.</p>`;
+      <p class="pt-verdict">${verdict.join(" ")}</p>`;
   }
   $("#pt-offers").addEventListener("input", (e) => {
     const el = e.target;

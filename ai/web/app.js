@@ -1295,6 +1295,8 @@ async function start() {
   }
   state.labels = Object.fromEntries([...state.catalog.topics, ...state.catalog.atlas].map(topic => [topic.id, topic.label]));
   const params = new URLSearchParams(location.search);
+  // Read before loading the chat: that resets the address for the chat and would drop #atlas/<section>.
+  const section = atlasSection();
   loadNav();
   loadConversation(params.get("c"), { animate: false, remember: false });
   // After a reload, return to where this screen was scrolled.
@@ -1306,7 +1308,6 @@ async function start() {
   }
   renderSidebar();
   updateNavButtons();
-  const section = atlasSection();
   if (section !== null) {
     history.replaceState({ ...(history.state ?? { tmh: nav.at }), atlas: section || "overview" }, "", atlasUrl(section || "overview"));
     showAtlas(section || "overview");

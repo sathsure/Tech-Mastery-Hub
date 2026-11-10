@@ -54,7 +54,6 @@
         <p id="heroCounts" class="lead">Roles, career levels, terms, tools and salaries, explained simply.</p>
       </div>
     </div>
-    <div id="popular" class="popular"></div>
     <h2 class="h3">Start here</h2>
     <div class="quick">
       <button class="quick-card" data-tab="mypath"><b>Find my fit</b><span id="quickPath">Match your skills to roles</span></button>
@@ -145,6 +144,16 @@
     </div>
     <p id="roleCount" class="count"></p>
     <div id="roleGrid" class="role-grid"></div>
+  </section>
+
+  <!-- Compare roles: a page of its own (#compare/a,b), opened from the compare tray -->
+  <section id="compare" class="panel">
+    <div class="panel-head">
+      <div>
+        <button class="btn-link back-link" type="button" data-tab="roles">← Back to roles</button>
+      </div>
+    </div>
+    <div id="cmpPage"></div>
   </section>
 
   <!-- Role readiness test -->
@@ -354,7 +363,6 @@
   </section>
 
   <footer>
-    <p>Titles, years and tools vary by company. Treat this as a guide.</p>
     <details id="shortcuts" class="shortcuts">
       <summary>Keyboard shortcuts <kbd>?</kbd></summary>
       <dl class="sc-list">

@@ -120,6 +120,8 @@ def max_sum(nums, k):
 
 **Variable size — Minimum Size Subarray Sum (LeetCode 209): shortest subarray with sum ≥ target:**
 
+_In simple words:_ find the shortest run of neighbouring numbers whose sum reaches the target. Grow the window to the right until the sum is big enough, then shrink it from the left while it still is.
+
 ```python
 def min_sub_array_len(target, nums):
     left = total = 0; best = float("inf")
@@ -140,6 +142,8 @@ def min_sub_array_len(target, nums):
 ### 📝 Answer
 
 Use two indexes that move toward each other (or at different speeds), usually on a **sorted** array or a string.
+
+_In simple words (Two Sum II):_ the list is sorted; find two numbers that add up to the target. Start with one pointer at each end: if the sum is too small, move the left one up; if too big, move the right one down.
 
 ```python
 # Two Sum II — sorted input (LeetCode 167)
@@ -183,6 +187,8 @@ Pre-compute running totals so any range sum is **O(1)**: `sum(i..j) = prefix[j+1
 
 **Subarray Sum Equals K (LeetCode 560)** — count subarrays summing to k (works with negatives):
 
+_In simple words:_ count the runs of consecutive numbers that add up to exactly `k`. If the running total is now `T` and was `T - k` earlier, the numbers in between sum to `k` — so count how often each running total has appeared.
+
 ```python
 def subarray_sum(nums, k):
     count = total = 0
@@ -225,6 +231,8 @@ Python has it built in: `bisect.bisect_left(nums, target)`.
 A stack kept in increasing or decreasing order. Answers "**next greater/smaller element**" in **O(n)**.
 
 **Daily Temperatures (LeetCode 739)** — days to wait for a warmer day:
+
+_In simple words:_ for each day, how many days until a warmer one? Keep a stack of the days still waiting; when a warmer day arrives, it answers every cooler day on top of the stack.
 
 ```python
 def daily_temperatures(t):
@@ -274,6 +282,14 @@ Both are **O(V + E)**.
 
 ### 📝 Answer
 
+**In simple words:** Return the tree's values level by level: first the root, then its children, then their children.
+
+**How to approach it:**
+
+1. Use a queue (BFS), starting with the root.
+2. Each round, take exactly the nodes now in the queue — that is one level.
+3. Add their children to the queue for the next round.
+
 BFS, processing one level at a time.
 
 ```python
@@ -296,6 +312,14 @@ def level_order(root):
 
 ### 📝 Answer
 
+**In simple words:** Check that every node's left side holds only smaller values and its right side only bigger ones — all the way down, not just its direct children.
+
+**How to approach it:**
+
+1. Give each node an allowed range (low, high); the root can be anything.
+2. Going left, the node's value becomes the new upper limit; going right, the new lower limit.
+3. Any value outside its range → not a valid BST.
+
 Each node must be inside a **range** that narrows as you go down — checking only the direct children is a common bug.
 
 ```python
@@ -313,6 +337,14 @@ def is_valid_bst(node, low=float("-inf"), high=float("inf")):
 
 ### 📝 Answer
 
+**In simple words:** Find the lowest node that has both `p` and `q` below it (a node can be its own ancestor).
+
+**How to approach it:**
+
+1. Search for `p` and `q` in the left and right subtrees.
+2. If one is found on each side, the current node is where they split — that's the answer.
+3. If both are on one side, the answer is on that side.
+
 Search both sides; the node where `p` and `q` come from different sides is the LCA.
 
 ```python
@@ -328,6 +360,14 @@ def lca(root, p, q):
 ### ❓ What is topological sort? (Course Schedule, LeetCode 207)
 
 ### 📝 Answer
+
+**In simple words:** Some courses need others first. Can you finish all of them, or do the requirements go round in a circle?
+
+**How to approach it:**
+
+1. Count each course's unmet prerequisites.
+2. Start with the courses that need nothing; "take" them and lower the count of the courses that depend on them.
+3. If you take every course, it's possible; if some are left over, there's a circle.
 
 An order of tasks where every task comes **after its prerequisites**. Only possible if there is **no cycle**.
 
@@ -380,6 +420,8 @@ O((V + E) log V). Negative weights → use Bellman-Ford.
 
 Build a solution step by step; when a choice is done (or fails), **undo it and try the next**.
 
+_In simple words:_ **subsets** — for each number, choose "take it" or "skip it"; **permutations** — choose which number goes first, then arrange the rest the same way.
+
 ```python
 def subsets(nums):                         # LeetCode 78 → 2ⁿ results
     result, path = [], []
@@ -417,6 +459,8 @@ Steps:
 
 **House Robber (LeetCode 198)** — can't rob two neighbours:
 
+_In simple words:_ rob houses for the most money, but never two next to each other. At each house, either skip it (keep the best so far) or rob it (the best from two houses back + this one).
+
 ```python
 def rob(nums):
     prev2 = prev1 = 0
@@ -435,6 +479,14 @@ def rob(nums):
 ### ❓ Longest Common Subsequence (LeetCode 1143)
 
 ### 📝 Answer
+
+**In simple words:** Find the length of the longest sequence of letters that appears in both words in the same order, not necessarily side by side. "abcde" and "ace" share "ace" → 3.
+
+**How to approach it:**
+
+1. Build a table where `dp[i][j]` = the answer for the first `i` letters of one word and the first `j` of the other.
+2. If the current letters match, take the answer without both letters, plus 1.
+3. If not, take the better of dropping a letter from either word.
 
 Classic 2-D DP: compare the last characters.
 
@@ -456,6 +508,14 @@ O(m × n) time and space.
 ### ❓ LRU Cache (LeetCode 146)
 
 ### 📝 Answer
+
+**In simple words:** Build a cache with a size limit that, when full, throws out the item used longest ago. Both `get` and `put` must be fast (`O(1)`).
+
+**How to approach it:**
+
+1. A dictionary finds items quickly; an ordering tracks which were used recently.
+2. On every `get` or `put`, move that key to the "recently used" end.
+3. When over capacity, remove the item at the "oldest" end. Python's `OrderedDict` gives you both.
 
 Keep items in **use order**; when full, evict the **least recently used**. Both `get` and `put` must be O(1): a hash map + a doubly linked list. In Python, `OrderedDict` does both.
 
@@ -480,6 +540,14 @@ class LRUCache:
 ### ❓ Merge K Sorted Lists (LeetCode 23)
 
 ### 📝 Answer
+
+**In simple words:** Join `k` sorted chains into one sorted chain.
+
+**How to approach it:**
+
+1. The next smallest node is always at the front of one of the lists.
+2. Keep the `k` front nodes in a min-heap; take the smallest and attach it.
+3. Push that node's next node into the heap, and repeat until the heap is empty.
 
 Put the head of each list in a **min-heap**; repeatedly take the smallest and push its next node. O(N log k).
 

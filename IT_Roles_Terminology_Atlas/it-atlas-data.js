@@ -1745,7 +1745,26 @@ const ATLAS = {
     { phase: "5. Deployment", what: "Release to production.", who: "DevOps / Release Engineer, Cloud Engineer", out: "CI/CD pipeline, release notes, deployed build" },
     { phase: "6. Operations & Support", what: "Keep it running and fix issues.", who: "SRE, Production Support, IT Support", out: "Dashboards, alerts, incident & RCA reports" },
     { phase: "Throughout", what: "Plan, track and remove blockers.", who: "Scrum Master, Project/Delivery Manager, Engineering Manager", out: "Sprint plans, status reports, risk logs" }
-  ]
+  ],
+  /* Who talks to the client or customer, and who takes their production issues. */
+  clientContacts: [
+    { when: "Before the project", who: "Account Manager, Pre-Sales, Solutions / Sales Engineer", what: "Understand the need, demo the product, send the proposal and estimate." },
+    { when: "Requirements & sign-off", who: "Business Analyst, Product Manager, Project Manager", what: "Gather requirements, agree the scope and get sign-off." },
+    { when: "Status & escalations", who: "Project Manager, Delivery / Program Manager, Engineering Manager", what: "Weekly status, demos, change requests and escalations." },
+    { when: "On-site integration", who: "Forward Deployed Engineer, Forward Deployed Manager, Solutions / Sales Engineer", what: "Work inside the client's team to connect the product to their data and systems." },
+    { when: "Production issues", who: "IT Support / Help Desk, Production / Application Support, SRE", what: "Client raises a ticket → L1 support logs and triages → L2/L3 support fixes or escalates → SRE and developers handle outages and the RCA." },
+    { when: "After go-live", who: "Customer Success Engineer, Account Manager", what: "Training, adoption and renewals; client feedback goes back to the product team." }
+  ],
+  /* Other roles that can do each phase's work, in place of (or alongside) the ones listed in sdlc. */
+  sdlcOthers: {
+    "1": "Forward Deployed Engineer, Pre-Sales, AI Product Manager, Product Owner, UX Researcher",
+    "2": "Solution Architect, Cloud Architect, Data Architect, AI Solutions Architect, Enterprise Architect",
+    "3": "AI / LLM Engineer, AI Agent Engineer, Data Engineer, Machine Learning Engineer, Low-Code / RPA Developer, ERP / CRM Developer",
+    "4": "Automation Test Engineer, Manual QA, Performance Test Engineer, AI Evaluation (Evals) Engineer, Penetration Tester",
+    "5": "Platform Engineer, Release / Build Engineer, MLOps Engineer, Forward Deployed Engineer",
+    "6": "NOC Engineer, Customer Success Engineer, Database Administrator, Security Analyst, FinOps Engineer",
+    Throughout: "Forward Deployed Manager, Product Owner, Tech Lead, Technical Writer, GRC / Compliance Analyst"
+  }
 };
 
 if (typeof module !== "undefined" && module.exports) module.exports = ATLAS;
