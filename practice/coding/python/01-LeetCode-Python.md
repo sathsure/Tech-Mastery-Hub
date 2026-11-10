@@ -34,12 +34,12 @@ print(two_sum([2, 7, 11, 15], 9))   # [0, 1]
 print(two_sum([3, 2, 4], 6))        # [1, 2]
 ```
 
-**Output:**
+**Input and output:**
 
-```text
-[0, 1]
-[1, 2]
-```
+| Input (`nums`) | `target` | Output |
+|---|---|---|
+| `[2, 7, 11, 15]` | `9` | `[0, 1]` |
+| `[3, 2, 4]` | `6` | `[1, 2]` |
 
 **Complexity:** `O(n)` time, `O(n)` space. The brute-force double loop is `O(n²)`.
 
@@ -92,12 +92,12 @@ print(three_sum([-1, 0, 1, 2, -1, -4]))  # [[-1, -1, 2], [-1, 0, 1]]
 print(three_sum([0, 0, 0, 0]))           # [[0, 0, 0]]
 ```
 
-**Output:**
+**Input and output:**
 
-```text
-[[-1, -1, 2], [-1, 0, 1]]
-[[0, 0, 0]]
-```
+| Input (`nums`) | Output |
+|---|---|
+| `[-1, 0, 1, 2, -1, -4]` | `[[-1, -1, 2], [-1, 0, 1]]` |
+| `[0, 0, 0, 0]` | `[[0, 0, 0]]` |
 
 **Complexity:** `O(n²)` time (sorting is `O(n log n)`), `O(1)` extra space apart from the output.
 
@@ -124,12 +124,12 @@ print(contains_duplicate([1, 2, 3, 1]))
 print(contains_duplicate([1, 2, 3, 4]))
 ```
 
-**Output:**
+**Input and output:**
 
-```text
-True
-False
-```
+| Input (`nums`) | Output |
+|---|---|
+| `[1, 2, 3, 1]` | `True` |
+| `[1, 2, 3, 4]` | `False` |
 
 **Complexity:** `O(n)` time, `O(n)` space.
 
@@ -160,12 +160,12 @@ print(is_anagram("anagram", "nagaram"))
 print(is_anagram("rat", "car"))
 ```
 
-**Output:**
+**Input and output:**
 
-```text
-True
-False
-```
+| Input (`s`) | `t` | Output |
+|---|---|---|
+| `"anagram"` | `"nagaram"` | `True` |
+| `"rat"` | `"car"` | `False` |
 
 **Complexity:** `O(n)` time, `O(k)` space for `k` distinct characters.
 
@@ -201,11 +201,11 @@ def group_anagrams(words: list[str]) -> list[list[str]]:
 print(group_anagrams(["eat", "tea", "tan", "ate", "nat", "bat"]))
 ```
 
-**Output:**
+**Input and output:**
 
-```text
-[['eat', 'tea', 'ate'], ['tan', 'nat'], ['bat']]
-```
+| Input (`words`) | Output |
+|---|---|
+| `["eat", "tea", "tan", "ate", "nat", "bat"]` | `[["eat", "tea", "ate"], ["tan", "nat"], ["bat"]]` |
 
 **Complexity:** `O(n · k log k)` for `n` words of length `k`.
 
@@ -237,11 +237,11 @@ def top_k_frequent(nums: list[int], k: int) -> list[int]:
 print(top_k_frequent([1, 1, 1, 2, 2, 3], 2))
 ```
 
-**Output:**
+**Input and output:**
 
-```text
-[1, 2]
-```
+| Input (`nums`) | `k` | Output |
+|---|---|---|
+| `[1, 1, 1, 2, 2, 3]` | `2` | `[1, 2]` |
 
 **Complexity:** `O(n log k)` time, `O(n)` space.
 
@@ -284,11 +284,11 @@ def product_except_self(nums: list[int]) -> list[int]:
 print(product_except_self([1, 2, 3, 4]))
 ```
 
-**Output:**
+**Input and output:**
 
-```text
-[24, 12, 8, 6]
-```
+| Input (`nums`) | Output |
+|---|---|
+| `[1, 2, 3, 4]` | `[24, 12, 8, 6]` |
 
 **Complexity:** `O(n)` time, `O(1)` extra space apart from the output.
 
@@ -328,14 +328,14 @@ print(search_insert([1, 3, 5, 6], 7))  # 4 (insert at the end)
 print(search_insert([1, 3, 5, 6], 0))  # 0 (insert at the start)
 ```
 
-**Output:**
+**Input and output:**
 
-```text
-2
-1
-4
-0
-```
+| Input (`nums`) | `target` | Output |
+|---|---|---|
+| `[1, 3, 5, 6]` | `5` | `2` |
+| `[1, 3, 5, 6]` | `2` | `1` |
+| `[1, 3, 5, 6]` | `7` | `4` |
+| `[1, 3, 5, 6]` | `0` | `0` |
 
 Python's standard library does the same: `bisect.bisect_left(nums, target)`.
 
@@ -381,12 +381,12 @@ print(search_rotated([4, 5, 6, 7, 0, 1, 2], 0))  # 4
 print(search_rotated([4, 5, 6, 7, 0, 1, 2], 3))
 ```
 
-**Output:**
+**Input and output:**
 
-```text
-4
--1
-```
+| Input (`nums`) | `target` | Output |
+|---|---|---|
+| `[4, 5, 6, 7, 0, 1, 2]` | `0` | `4` |
+| `[4, 5, 6, 7, 0, 1, 2]` | `3` | `-1` |
 
 **Complexity:** `O(log n)` time, `O(1)` space.
 
@@ -416,12 +416,12 @@ print(is_palindrome("A man, a plan, a canal: Panama"))
 print(is_palindrome("race a car"))
 ```
 
-**Output:**
+**Input and output:**
 
-```text
-True
-False
-```
+| Input (`s`) | Output |
+|---|---|
+| `"A man, a plan, a canal: Panama"` | `True` |
+| `"race a car"` | `False` |
 
 **Complexity:** `O(n)` time, `O(n)` space. A two-pointer version that skips non-alphanumeric characters uses `O(1)` space.
 
@@ -463,11 +463,11 @@ def max_area(height: list[int]) -> int:
 print(max_area([1, 8, 6, 2, 5, 4, 8, 3, 7]))
 ```
 
-**Output:**
+**Input and output:**
 
-```text
-49
-```
+| Input (`height`) | Output |
+|---|---|
+| `[1, 8, 6, 2, 5, 4, 8, 3, 7]` | `49` |
 
 **Complexity:** `O(n)` time, `O(1)` space.
 
@@ -506,12 +506,12 @@ print(length_of_longest_substring("abcabcbb"))  # 3
 print(length_of_longest_substring("pwwkew"))    # 3
 ```
 
-**Output:**
+**Input and output:**
 
-```text
-3
-3
-```
+| Input (`s`) | Output |
+|---|---|
+| `"abcabcbb"` | `3` |
+| `"pwwkew"` | `3` |
 
 **Complexity:** `O(n)` time, `O(k)` space for `k` distinct characters.
 
@@ -548,12 +548,12 @@ print(max_profit([7, 1, 5, 3, 6, 4]))
 print(max_profit([7, 6, 4, 3, 1]))
 ```
 
-**Output:**
+**Input and output:**
 
-```text
-5
-0
-```
+| Input (`prices`) | Output |
+|---|---|
+| `[7, 1, 5, 3, 6, 4]` | `5` |
+| `[7, 6, 4, 3, 1]` | `0` |
 
 **Complexity:** `O(n)` time, `O(1)` space.
 
@@ -594,13 +594,13 @@ print(is_valid("(]"))
 print(is_valid("([)]"))
 ```
 
-**Output:**
+**Input and output:**
 
-```text
-True
-False
-False
-```
+| Input (`s`) | Output |
+|---|---|
+| `"()[]{}"` | `True` |
+| `"(]"` | `False` |
+| `"([)]"` | `False` |
 
 **Complexity:** `O(n)` time, `O(n)` space.
 
@@ -638,11 +638,11 @@ def merge(intervals: list[list[int]]) -> list[list[int]]:
 print(merge([[1, 3], [2, 6], [8, 10], [15, 18]]))
 ```
 
-**Output:**
+**Input and output:**
 
-```text
-[[1, 6], [8, 10], [15, 18]]
-```
+| Input (`intervals`) | Output |
+|---|---|
+| `[[1, 3], [2, 6], [8, 10], [15, 18]]` | `[[1, 6], [8, 10], [15, 18]]` |
 
 **Complexity:** `O(n log n)` time (sorting), `O(n)` space.
 
@@ -680,11 +680,11 @@ def find_kth_largest(nums: list[int], k: int) -> int:
 print(find_kth_largest([3, 2, 1, 5, 6, 4], 2))
 ```
 
-**Output:**
+**Input and output:**
 
-```text
-5
-```
+| Input (`nums`) | `k` | Output |
+|---|---|---|
+| `[3, 2, 1, 5, 6, 4]` | `2` | `5` |
 
 **Complexity:** `O(n log k)` time, `O(k)` space.
 
@@ -738,11 +738,11 @@ def to_list(head):                   # 1 -> 2 -> 3 -> [1, 2, 3]
 print(to_list(reverse_list(from_list([1, 2, 3, 4, 5]))))
 ```
 
-**Output:**
+**Input and output:**
 
-```text
-[5, 4, 3, 2, 1]
-```
+| Input (`head`) | Output |
+|---|---|
+| `[1, 2, 3, 4, 5]` | `[5, 4, 3, 2, 1]` |
 
 **Complexity:** `O(n)` time, `O(1)` space.
 
@@ -779,11 +779,11 @@ def merge_two_lists(a: ListNode | None, b: ListNode | None) -> ListNode | None:
 print(to_list(merge_two_lists(from_list([1, 2, 4]), from_list([1, 3, 4]))))
 ```
 
-**Output:**
+**Input and output:**
 
-```text
-[1, 1, 2, 3, 4, 4]
-```
+| Input (`a`) | `b` | Output |
+|---|---|---|
+| `[1, 2, 4]` | `[1, 3, 4]` | `[1, 1, 2, 3, 4, 4]` |
 
 **Complexity:** `O(n + m)` time, `O(1)` space.
 
@@ -821,12 +821,12 @@ print(has_cycle(head))
 print(has_cycle(from_list([1, 2])))
 ```
 
-**Output:**
+**Input and output:**
 
-```text
-True
-False
-```
+| Input (`head`) | Output |
+|---|---|
+| `[3, 2, 0, -4] (last node links back to 2)` | `True` |
+| `[1, 2]` | `False` |
 
 **Complexity:** `O(n)` time, `O(1)` space.
 
@@ -867,11 +867,11 @@ root = TreeNode(3, TreeNode(9), TreeNode(20, TreeNode(15), TreeNode(7)))
 print(max_depth(root))
 ```
 
-**Output:**
+**Input and output:**
 
-```text
-3
-```
+| Input (`root`) | Output |
+|---|---|
+| `[3, 9, 20, null, null, 15, 7]` | `3` |
 
 **Complexity:** `O(n)` time, `O(h)` space for tree height `h` (recursion stack).
 
@@ -923,11 +923,11 @@ grid = [
 print(num_islands(grid))
 ```
 
-**Output:**
+**Input and output:**
 
-```text
-3
-```
+| Input (`grid`) | Output |
+|---|---|
+| `[["1", "1", "0", "0", "0"], ["1", "1", "0", "0", "0"], ["0", "0", "1", "0", "0"], ["0", "0", "0", "1", "1"]]` | `3` |
 
 **Complexity:** `O(rows × cols)` time and space. For very large grids, use BFS with `collections.deque` to avoid Python's recursion limit.
 
@@ -961,11 +961,11 @@ def climb_stairs(n: int) -> int:
 print(climb_stairs(5))       # 8
 ```
 
-**Output:**
+**Input and output:**
 
-```text
-8
-```
+| Input (`n`) | Output |
+|---|---|
+| `5` | `8` |
 
 **Complexity:** `O(n)` time, `O(1)` space.
 
@@ -1000,11 +1000,11 @@ def max_sub_array(nums: list[int]) -> int:
 print(max_sub_array([-2, 1, -3, 4, -1, 2, 1, -5, 4]))
 ```
 
-**Output:**
+**Input and output:**
 
-```text
-6
-```
+| Input (`nums`) | Output |
+|---|---|
+| `[-2, 1, -3, 4, -1, 2, 1, -5, 4]` | `6` |
 
 **Complexity:** `O(n)` time, `O(1)` space.
 
@@ -1043,12 +1043,12 @@ print(coin_change([1, 2, 5], 11))
 print(coin_change([2], 3))
 ```
 
-**Output:**
+**Input and output:**
 
-```text
-3
--1
-```
+| Input (`coins`) | `amount` | Output |
+|---|---|---|
+| `[1, 2, 5]` | `11` | `3` |
+| `[2]` | `3` | `-1` |
 
 **Complexity:** `O(amount × len(coins))` time, `O(amount)` space.
 

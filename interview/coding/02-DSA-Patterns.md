@@ -120,11 +120,11 @@ def max_sum(nums, k):
 print(max_sum([2, 1, 5, 1, 3, 2], 3))
 ```
 
-**Output:**
+**Input and output:**
 
-```text
-9
-```
+| Input (`nums`) | `k` | Output |
+|---|---|---|
+| `[2, 1, 5, 1, 3, 2]` | `3` | `9` |
 
 **Variable size — Minimum Size Subarray Sum (LeetCode 209): shortest subarray with sum ≥ target:**
 
@@ -143,11 +143,11 @@ def min_sub_array_len(target, nums):
 print(min_sub_array_len(7, [2, 3, 1, 2, 4, 3]))
 ```
 
-**Output:**
+**Input and output:**
 
-```text
-2
-```
+| Input (`target`) | `nums` | Output |
+|---|---|---|
+| `7` | `[2, 3, 1, 2, 4, 3]` | `2` |
 
 **Spot it:** "longest/shortest/max subarray or substring that…".
 
@@ -174,11 +174,11 @@ def two_sum_sorted(nums, target):
 print(two_sum_sorted([2, 7, 11, 15], 9))
 ```
 
-**Output:**
+**Input and output:**
 
-```text
-[1, 2]
-```
+| Input (`nums`) | `target` | Output |
+|---|---|---|
+| `[2, 7, 11, 15]` | `9` | `[1, 2]` |
 
 Also used for: reversing, removing duplicates in place, palindromes, 3Sum.
 
@@ -204,11 +204,11 @@ def middle(head):
 print(middle(from_list([1, 2, 3, 4, 5])).val)
 ```
 
-**Output:**
+**Input and output:**
 
-```text
-3
-```
+| Input (`head`) | Output |
+|---|---|
+| `[1, 2, 3, 4, 5]` | `3` |
 
 ---
 
@@ -236,12 +236,12 @@ print(subarray_sum([1, 1, 1], 2))
 print(subarray_sum([1, 2, 3], 3))
 ```
 
-**Output:**
+**Input and output:**
 
-```text
-2
-2
-```
+| Input (`nums`) | `k` | Output |
+|---|---|---|
+| `[1, 1, 1]` | `2` | `2` |
+| `[1, 2, 3]` | `3` | `2` |
 
 ---
 
@@ -264,12 +264,12 @@ print(lower_bound([1, 3, 5, 6], 5))
 print(lower_bound([1, 3, 5, 6], 2))
 ```
 
-**Output:**
+**Input and output:**
 
-```text
-2
-1
-```
+| Input (`nums`) | `target` | Output |
+|---|---|---|
+| `[1, 3, 5, 6]` | `5` | `2` |
+| `[1, 3, 5, 6]` | `2` | `1` |
 
 Python has it built in: `bisect.bisect_left(nums, target)`.
 
@@ -299,11 +299,11 @@ def daily_temperatures(t):
 print(daily_temperatures([73, 74, 75, 71, 69, 72, 76, 73]))
 ```
 
-**Output:**
+**Input and output:**
 
-```text
-[1, 1, 4, 2, 1, 1, 0, 0]
-```
+| Input (`t`) | Output |
+|---|---|
+| `[73, 74, 75, 71, 69, 72, 76, 73]` | `[1, 1, 4, 2, 1, 1, 0, 0]` |
 
 ---
 
@@ -369,11 +369,11 @@ root = TreeNode(3, TreeNode(9), TreeNode(20, TreeNode(15), TreeNode(7)))
 print(level_order(root))
 ```
 
-**Output:**
+**Input and output:**
 
-```text
-[[3], [9, 20], [15, 7]]
-```
+| Input (`root`) | Output |
+|---|---|
+| `[3, 9, 20, null, null, 15, 7]` | `[[3], [9, 20], [15, 7]]` |
 
 ---
 
@@ -401,12 +401,12 @@ print(is_valid_bst(TreeNode(2, TreeNode(1), TreeNode(3))))
 print(is_valid_bst(TreeNode(5, TreeNode(1), TreeNode(4, TreeNode(3), TreeNode(6)))))
 ```
 
-**Output:**
+**Input and output:**
 
-```text
-True
-False
-```
+| Input (`node`) | Output |
+|---|---|
+| `[2, 1, 3]` | `True` |
+| `[5, 1, 4, null, null, 3, 6]` | `False` |
 
 > ⚠️ **Trap:** a right grandchild smaller than the root breaks the BST even if it's bigger than its own parent.
 
@@ -438,11 +438,11 @@ root = TreeNode(3, p, q)
 print(lca(root, p, q).val)
 ```
 
-**Output:**
+**Input and output:**
 
-```text
-3
-```
+| Input (`root`) | `p` | `q` | Output |
+|---|---|---|---|
+| `[3, 5, 1]` | `5` | `1` | `3` |
 
 ---
 
@@ -480,12 +480,12 @@ print(can_finish(2, [[1, 0]]))            # take 0, then 1
 print(can_finish(2, [[1, 0], [0, 1]]))    # each needs the other: a cycle
 ```
 
-**Output:**
+**Input and output:**
 
-```text
-True
-False
-```
+| Input (`n`) | `prerequisites` | Output |
+|---|---|---|
+| `2` | `[[1, 0]]` | `True` |
+| `2` | `[[1, 0], [0, 1]]` | `False` |
 
 Real use: build systems, package installs, the study-path order in this repository.
 
@@ -542,12 +542,19 @@ print(subsets([1, 2, 3]))
 print(permutations([1, 2, 3]))
 ```
 
-**Output:**
+**Input and output:**
 
-```text
-[[1, 2, 3], [1, 2], [1, 3], [1], [2, 3], [2], [3], []]
-[[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]]
-```
+_`subsets`_
+
+| Input (`nums`) | Output |
+|---|---|
+| `[1, 2, 3]` | `[[1, 2, 3], [1, 2], [1, 3], [1], [2, 3], [2], [3], []]` |
+
+_`permutations`_
+
+| Input (`nums`) | Output |
+|---|---|
+| `[1, 2, 3]` | `[[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]]` |
 
 Used for: subsets, permutations, combinations, N-Queens, Sudoku, word search.
 
@@ -579,11 +586,11 @@ def rob(nums):
 print(rob([2, 7, 9, 3, 1]))          # 2 + 9 + 1
 ```
 
-**Output:**
+**Input and output:**
 
-```text
-12
-```
+| Input (`nums`) | Output |
+|---|---|
+| `[2, 7, 9, 3, 1]` | `12` |
 
 #### ↳ Follow-up: Memoization vs tabulation?
 
@@ -616,11 +623,11 @@ def lcs(a, b):
 print(lcs("abcde", "ace"))          # "ace"
 ```
 
-**Output:**
+**Input and output:**
 
-```text
-3
-```
+| Input (`a`) | `b` | Output |
+|---|---|---|
+| `"abcde"` | `"ace"` | `3` |
 
 O(m × n) time and space.
 
@@ -664,13 +671,17 @@ print(cache.get(2))
 print(cache.get(3))
 ```
 
-**Output:**
+**Input and output:**
 
-```text
-a
--1
-c
-```
+| Operation | Output |
+|---|---|
+| `cache = LRUCache(2)` | — |
+| `cache.put(1, "a")` | — |
+| `cache.put(2, "b")` | — |
+| `cache.get(1)` | `"a"` |
+| `cache.put(3, "c")` | — |
+| `cache.get(2)` | `-1` |
+| `cache.get(3)` | `"c"` |
 
 ---
 
@@ -702,11 +713,11 @@ def merge_k_lists(lists):
 print(to_list(merge_k_lists([from_list([1, 4, 5]), from_list([1, 3, 4]), from_list([2, 6])])))
 ```
 
-**Output:**
+**Input and output:**
 
-```text
-[1, 1, 2, 3, 4, 4, 5, 6]
-```
+| Input (`lists`) | Output |
+|---|---|
+| `[[1, 4, 5], [1, 3, 4], [2, 6]]` | `[1, 1, 2, 3, 4, 4, 5, 6]` |
 
 ---
 

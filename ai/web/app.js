@@ -494,10 +494,10 @@ function openAtlas(section = "overview") {
 
 /** "Chat" in the Atlas: step back to the chat screen it was opened from. */
 function leaveAtlas() {
-  if (atlasToken && history.state?.opened === atlasToken) return history.back();
-  // Opened from a link or a typed address: no known chat screen behind it, so turn this one into the chat.
+  // A new step for the chat (the Atlas pages you visited are steps of their own), so the browser's Back
+  // returns to the Atlas page you left, then through the Atlas pages before it.
   hideAtlas();
-  history.replaceState({ tmh: nav.at, c: history.state?.c ?? null }, "", `${location.pathname}${location.search}`);
+  pushScreen(state.conversation.id);
 }
 
 addEventListener("message", event => {

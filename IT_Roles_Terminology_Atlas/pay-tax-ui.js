@@ -28,7 +28,7 @@
     panel.querySelectorAll("[data-pt]").forEach((b) => { const on = b.dataset.pt === id; b.classList.toggle("active", on); b.setAttribute("aria-selected", on); });
     panel.querySelectorAll(".pt-view").forEach((v) => { v.hidden = v.id !== `pt-${id}`; });
     // Linkable: #pay/offers, #pay/world.
-    if (location.hash.startsWith("#pay")) history.replaceState(null, "", id === "calc" ? "#pay" : `#pay/${id}`);
+    if (location.hash.startsWith("#pay")) window.atlasNav.go(id === "calc" ? "pay" : `pay/${id}`);
     if (id === "offers") renderOffers();
     if (id === "world") renderWorld();
   }
@@ -79,7 +79,7 @@
       </div>
       <div id="ptResult" aria-live="polite"></div>
     </div>
-    <details class="section-fold" open><summary>Full breakdown</summary><div id="ptBreakdown"></div></details>`;
+    <details class="section-fold"><summary>Full breakdown</summary><div id="ptBreakdown"></div></details>`;
 
   function readCalc() {
     panel.querySelectorAll("#pt-calc [data-f]").forEach((el) => {
@@ -264,22 +264,38 @@
   const rangeText = (c, [from, to]) => (to == null ? `Above ${money(from, c)}` : from === 0 ? `Up to ${money(to, c)}` : `${money(from, c)} – ${money(to, c)}`);
 
   function glanceTable() {
+    const india = T.indiaSalary(calcValues);
+    const indiaMonthly = india.regimes[india.best].monthly;
+    // Your India take-home in "international dollars", then in each country's money at its price level.
+    const ppp = A.taxes.ppp?.rates || {};
+    const intl = ppp.India ? indiaMonthly / ppp.India : null;
+    let example = null;
     const rows = A.taxes.countries.map((c, i) => {
       const top = Math.max(...c.regimes.flatMap((r) => r.brackets.map((b) => b[2])));
-      let eff = "—", inHand = "—";
+      let eff = "—", same = "—", inHand = "—", gain = "—";
+      const sameLocal = intl != null && ppp[c.c] ? intl * ppp[c.c] : null;
       if (c.calc === "india") {
-        const s = T.indiaSalary(calcValues);
-        eff = pct(s.regimes[s.best].effective); inHand = inr(s.regimes[s.best].monthly);
+        eff = pct(india.regimes[india.best].effective); same = inr(indiaMonthly); inHand = inr(indiaMonthly); gain = "1×";
       } else {
         const pay = typicalPay(c);
         const est = pay && T.countryEstimate(c, pay.gross);
-        if (est) { eff = pct(est.effective); inHand = inr(est.monthly * pay.fx); }
+        if (sameLocal != null) same = money(sameLocal, c);
+        if (est) {
+          eff = pct(est.effective);
+          inHand = `${money(est.monthly, c)} <small class="muted">≈ ${inr(est.monthly * pay.fx)}</small>`;
+          if (sameLocal) gain = `${(est.monthly / sameLocal).toFixed(1)}×`;
+          if (!example || c.cur === "USD") example = { c, same: sameLocal != null ? money(sameLocal, c) : null, local: money(est.monthly, c), gain };
+        }
       }
-      return `<tr><td><button type="button" class="btn-link" data-country="${i}">${esc(c.c)}</button></td><td>${top}%</td><td>${eff}</td><td>${inHand}</td></tr>`;
+      return `<tr><td><button type="button" class="btn-link" data-country="${i}">${esc(c.c)}</button></td><td>${top}%</td><td>${eff}</td><td>${same}</td><td>${inHand}</td><td>${gain}</td></tr>`;
     }).join("");
-    return `<div class="table-wrap"><table class="gloss pt-table">
-      <thead><tr><th>Country</th><th>Top income-tax rate</th><th>Tax + social on typical pay*</th><th>Take-home ≈ ₹/month*</th></tr></thead><tbody>${rows}</tbody></table></div>
-      <p class="pt-note">*Typical software-engineer pay for ${worldExp} years' experience from the Work Abroad tab (India: your CTC from the calculator), converted at the Atlas's rupee rates. Estimates leave out: ${A.taxes.countries.filter((c) => c.excludes).map((c) => `${c.c} — ${c.excludes.charAt(0).toLowerCase()}${c.excludes.slice(1)}`).join("; ")}.</p>`;
+    const where = example && (example.c.c === "United States" ? "the USA" : example.c.c);
+    const lead = example && example.same && indiaMonthly > 0
+      ? `<p class="pt-equiv"><b>${inr(indiaMonthly)} a month in India</b> buys about as much as <b>${example.same} a month in ${esc(where)}</b> — that's the pay you'd need there for the same lifestyle. A typical software engineer with ${worldExp} years' experience there takes home about <b>${example.local}</b>, so <b>${example.gain}</b> better off in real terms.</p>`
+      : "";
+    return `${lead}<div class="table-wrap"><table class="gloss pt-table">
+      <thead><tr><th>Country</th><th>Top income-tax rate</th><th>Tax + social on typical pay*</th><th title="What your India take-home buys, at each country's prices">Same lifestyle as India / month†</th><th>Typical take-home there / month*</th><th title="Typical take-home there ÷ same-lifestyle pay">Real gain</th></tr></thead><tbody>${rows}</tbody></table></div>
+      <p class="pt-note">*Typical software-engineer take-home for ${worldExp} years' experience, from the Work Abroad pay data (the same for any tech role; India: your CTC from the calculator). ₹ values use the Atlas's exchange rates. †Your India take-home converted at each country's price level (<a href="${esc(A.taxes.ppp?.url || "")}" target="_blank" rel="noopener">${esc(A.taxes.ppp?.source || "World Bank PPP")}</a>); real gain = typical take-home there ÷ that amount. Estimates leave out: ${A.taxes.countries.filter((c) => c.excludes).map((c) => `${c.c} — ${c.excludes.charAt(0).toLowerCase()}${c.excludes.slice(1)}`).join("; ")}.</p>`;
   }
 
   function countryCard(c) {

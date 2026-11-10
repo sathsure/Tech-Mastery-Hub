@@ -637,6 +637,11 @@ body.has-tray footer { padding-bottom: 90px; }
 .wl-error { margin: 12px 0 0; padding: 8px 12px; border-radius: 8px; background: #ffe4e6; color: #881337; font-size: .88rem; }
 .wl-nav { display: flex; align-items: center; gap: 12px; margin-top: 18px; }
 .wl-nav #wNext { margin-left: auto; }
+.welcome-page [hidden] { display: none !important; }
+.welcome-page .wl-top { gap: 10px; justify-content: flex-start; }
+.welcome-page .brand { width: auto; }
+.wl-crumb { color: var(--muted); font-size: 1.1rem; }
+.wl-page-title { font-weight: 600; font-size: 1rem; color: var(--text); }
 .wl-foot { text-align: center; color: var(--muted); font-size: .85rem; }
 
 footer { text-align: center; color: var(--muted); font-size: .85rem; padding: 24px 16px 40px; }
@@ -1117,3 +1122,24 @@ footer { border-top: 1px solid var(--border); margin-top: 40px; padding: 18px 0 
 .fc-alt[open] > summary::before { content: "▾ "; }
 .fc-alt > summary::-webkit-details-marker { display: none; }
 .fc-alt .fc-who { margin-top: 6px; }
+
+/* ===== "Estimates only" with a hover tooltip ===== */
+.est-note { position: relative; color: var(--muted); }
+.hint-tip { position: relative; display: inline-flex; cursor: help; outline: none; }
+.hint-tip > svg { width: 15px; height: 15px; color: #d97706; }
+.hint-tip.info > svg { color: var(--accent); }
+.tip-box { position: absolute; top: calc(100% + 8px); right: -8px; z-index: 30; width: min(320px, 80vw); padding: 10px 12px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); color: var(--text); box-shadow: var(--shadow); font-size: .78rem; line-height: 1.5; white-space: normal; opacity: 0; visibility: hidden; transform: translateY(-4px); transition: opacity .15s, transform .15s, visibility .15s; }
+.hint-tip:hover .tip-box, .hint-tip:focus .tip-box, .hint-tip:focus-within .tip-box { opacity: 1; visibility: visible; transform: none; }
+
+/* ===== Salary is enabled by the profile ===== */
+.panel.locked > :not(.panel-head):not(.locked-card) { display: none !important; }
+#salary.locked .est-note, #abroad.locked .note { display: none; }
+.locked-card { display: flex; gap: 14px; align-items: flex-start; padding: 18px 20px; border: 1px dashed var(--border); border-radius: var(--radius); background: var(--surface); }
+.locked-card > svg { flex: none; width: 22px; height: 22px; color: var(--muted); margin-top: 2px; }
+.locked-card p { margin: 4px 0 12px; color: var(--muted); }
+.tabs button.is-locked { opacity: .65; }
+.tab-lock { display: inline-flex; margin-left: auto; }
+.tab-lock svg { width: 13px; height: 13px; }
+
+/* ===== Income tax by country ===== */
+.pt-equiv { margin: 0 0 10px; font-size: .9rem; }

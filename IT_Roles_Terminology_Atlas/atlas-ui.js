@@ -13,6 +13,24 @@
     location.replace(`/#atlas/${location.hash.slice(1) || "overview"}`);
     return;
   }
+  /**
+   * Browser history for the Atlas. A page change you make (a tab, sub-tab, role, comparison) is a new step,
+   * so Back returns to it. While following Back / Forward or opening a link, the address is only updated.
+   */
+  let following = false;
+  window.atlasNav = {
+    go(hash) {
+      const target = `#${hash}`;
+      if (location.hash === target) return;
+      if (following) history.replaceState(null, "", target);
+      else history.pushState(null, "", target);
+    },
+    /** Runs `fn` (showing the page for the current address) without adding history steps. */
+    follow(fn) {
+      following = true;
+      try { return fn(); } finally { following = false; }
+    },
+  };
   const read = (k) => { try { return sessionStorage.getItem(k); } catch { return null; } };
   const write = (k, v) => { try { sessionStorage.setItem(k, v); } catch { /* remembered for this visit only */ } };
 
@@ -42,10 +60,15 @@
       if (!b) return;
       showSub(panel, b.dataset.sub);
       // The sub-tab is part of the address (#ladder/titles), so a copied link opens the same view.
-      history.replaceState(null, "", `#${panel.id}/${b.dataset.sub}`);
+      window.atlasNav.go(`${panel.id}/${b.dataset.sub}`);
     });
     showSub(panel, read(`atlas-sub-${panel.id}`));
   });
+  // Leaving for the profile page: remember this section, so Back / Skip there returns here.
+  document.addEventListener("click", (e) => {
+    if (e.target.closest?.('a[href^="welcome.html"]')) write("atlas-return", location.hash);
+  }, true);
+
   /** Open sub-tab `id` of panel `panelId` (from a link like #ladder/titles); false when there is no such sub-tab. */
   window.atlasShowSub = (panelId, id) => {
     const panel = document.getElementById(panelId);
@@ -83,12 +106,12 @@
   const back = document.getElementById("backToChat");
   back.hidden = false;
   back.addEventListener("click", () => post({ type: "close" }));
-  // Profile links keep the embedded flag (so the profile page comes back here) and add no history
-  // entry, so the tutor's Back still returns to the chat.
+  // Profile links keep the embedded flag (so the profile page comes back here). Opening it is a history
+  // step, so Back returns to the Atlas page it was opened from.
   document.addEventListener("click", (e) => {
     const link = e.target.closest?.('a[href^="welcome.html"]');
     if (!link || e.ctrlKey || e.metaKey || e.shiftKey) return;
     e.preventDefault();
-    location.replace(`welcome.html${location.search}`);
+    location.assign(`welcome.html${location.search}`);
   });
 })();

@@ -1,8 +1,8 @@
 {
   "schema_version": "1.0.0",
   "repository": "Tech-Mastery-Hub",
-  "generated_at": "2026-11-10T17:05:41.029Z",
-  "source_fingerprint": "0a8244628b86a885cbafabf125739bbd61d6b2ad654ca0491c46543f5e25f61f",
+  "generated_at": "2026-11-10T17:28:21.668Z",
+  "source_fingerprint": "813318da973bb07166c27a4f275c603c75ef74a4194c73388b8d18e3b70b2c97",
   "stats": {
     "files": 191,
     "entries": 2309,
@@ -12,7 +12,7 @@
     "roles": 74,
     "terms": 378,
     "roadmaps": 110,
-    "codeBlocks": 1415,
+    "codeBlocks": 1375,
     "visuals": 100,
     "missingVisuals": 0
   },
@@ -37980,7 +37980,7 @@
       "parentId": null,
       "question": "What is the sliding window pattern? Give a template.",
       "prompt": null,
-      "answer": "Keep a **window** `[left, right]` over an array/string and slide it, instead of re-checking every subarray. Turns O(n²) into **O(n)**.\n\n**Fixed size — max sum of any 3 consecutive numbers:**\n\n```python\ndef max_sum(nums, k):\n    window = sum(nums[:k]); best = window\n    for i in range(k, len(nums)):\n        window += nums[i] - nums[i - k]   # add new, drop old\n        best = max(best, window)\n    return best\n\nprint(max_sum([2, 1, 5, 1, 3, 2], 3))\n```\n\n**Output:**\n\n```text\n9\n```\n\n**Variable size — Minimum Size Subarray Sum (LeetCode 209): shortest subarray with sum ≥ target:**\n\n_In simple words:_ find the shortest run of neighbouring numbers whose sum reaches the target. Grow the window to the right until the sum is big enough, then shrink it from the left while it still is.\n\n```python\ndef min_sub_array_len(target, nums):\n    left = total = 0; best = float(\"inf\")\n    for right, x in enumerate(nums):\n        total += x                          # grow\n        while total >= target:              # shrink while valid\n            best = min(best, right - left + 1)\n            total -= nums[left]; left += 1\n    return 0 if best == float(\"inf\") else best\n\nprint(min_sub_array_len(7, [2, 3, 1, 2, 4, 3]))\n```\n\n**Output:**\n\n```text\n2\n```\n\n**Spot it:** \"longest/shortest/max subarray or substring that…\".",
+      "answer": "Keep a **window** `[left, right]` over an array/string and slide it, instead of re-checking every subarray. Turns O(n²) into **O(n)**.\n\n**Fixed size — max sum of any 3 consecutive numbers:**\n\n```python\ndef max_sum(nums, k):\n    window = sum(nums[:k]); best = window\n    for i in range(k, len(nums)):\n        window += nums[i] - nums[i - k]   # add new, drop old\n        best = max(best, window)\n    return best\n\nprint(max_sum([2, 1, 5, 1, 3, 2], 3))\n```\n\n**Input and output:**\n\n| Input (`nums`) | `k` | Output |\n|---|---|---|\n| `[2, 1, 5, 1, 3, 2]` | `3` | `9` |\n\n**Variable size — Minimum Size Subarray Sum (LeetCode 209): shortest subarray with sum ≥ target:**\n\n_In simple words:_ find the shortest run of neighbouring numbers whose sum reaches the target. Grow the window to the right until the sum is big enough, then shrink it from the left while it still is.\n\n```python\ndef min_sub_array_len(target, nums):\n    left = total = 0; best = float(\"inf\")\n    for right, x in enumerate(nums):\n        total += x                          # grow\n        while total >= target:              # shrink while valid\n            best = min(best, right - left + 1)\n            total -= nums[left]; left += 1\n    return 0 if best == float(\"inf\") else best\n\nprint(min_sub_array_len(7, [2, 3, 1, 2, 4, 3]))\n```\n\n**Input and output:**\n\n| Input (`target`) | `nums` | Output |\n|---|---|---|\n| `7` | `[2, 3, 1, 2, 4, 3]` | `2` |\n\n**Spot it:** \"longest/shortest/max subarray or substring that…\".",
       "summary": "Keep a window [left, right] over an array/string and slide it, instead of re-checking every subarray. Turns O(n²) into O(n).",
       "codeBlocks": [
         {
@@ -37988,16 +37988,8 @@
           "code": "def max_sum(nums, k):\n    window = sum(nums[:k]); best = window\n    for i in range(k, len(nums)):\n        window += nums[i] - nums[i - k]   # add new, drop old\n        best = max(best, window)\n    return best\n\nprint(max_sum([2, 1, 5, 1, 3, 2], 3))"
         },
         {
-          "language": "text",
-          "code": "9"
-        },
-        {
           "language": "python",
           "code": "def min_sub_array_len(target, nums):\n    left = total = 0; best = float(\"inf\")\n    for right, x in enumerate(nums):\n        total += x                          # grow\n        while total >= target:              # shrink while valid\n            best = min(best, right - left + 1)\n            total -= nums[left]; left += 1\n    return 0 if best == float(\"inf\") else best\n\nprint(min_sub_array_len(7, [2, 3, 1, 2, 4, 3]))"
-        },
-        {
-          "language": "text",
-          "code": "2"
         }
       ],
       "visuals": [],
@@ -38023,7 +38015,7 @@
         "startLine": 104,
         "endLine": 152
       },
-      "contentHash": "bd70fda3753080cc"
+      "contentHash": "f3ef18643ae4d011"
     },
     {
       "id": "interview/coding/02-DSA-Patterns.md#what-is-the-two-pointers-pattern",
@@ -38031,16 +38023,12 @@
       "parentId": null,
       "question": "What is the two pointers pattern?",
       "prompt": null,
-      "answer": "Use two indexes that move toward each other (or at different speeds), usually on a **sorted** array or a string.\n\n_In simple words (Two Sum II):_ the list is sorted; find two numbers that add up to the target. Start with one pointer at each end: if the sum is too small, move the left one up; if too big, move the right one down.\n\n```python\n# Two Sum II — sorted input (LeetCode 167)\ndef two_sum_sorted(nums, target):\n    l, r = 0, len(nums) - 1\n    while l < r:\n        s = nums[l] + nums[r]\n        if s == target: return [l + 1, r + 1]\n        if s < target: l += 1      # need bigger\n        else: r -= 1               # need smaller\n\nprint(two_sum_sorted([2, 7, 11, 15], 9))\n```\n\n**Output:**\n\n```text\n[1, 2]\n```\n\nAlso used for: reversing, removing duplicates in place, palindromes, 3Sum.",
+      "answer": "Use two indexes that move toward each other (or at different speeds), usually on a **sorted** array or a string.\n\n_In simple words (Two Sum II):_ the list is sorted; find two numbers that add up to the target. Start with one pointer at each end: if the sum is too small, move the left one up; if too big, move the right one down.\n\n```python\n# Two Sum II — sorted input (LeetCode 167)\ndef two_sum_sorted(nums, target):\n    l, r = 0, len(nums) - 1\n    while l < r:\n        s = nums[l] + nums[r]\n        if s == target: return [l + 1, r + 1]\n        if s < target: l += 1      # need bigger\n        else: r -= 1               # need smaller\n\nprint(two_sum_sorted([2, 7, 11, 15], 9))\n```\n\n**Input and output:**\n\n| Input (`nums`) | `target` | Output |\n|---|---|---|\n| `[2, 7, 11, 15]` | `9` | `[1, 2]` |\n\nAlso used for: reversing, removing duplicates in place, palindromes, 3Sum.",
       "summary": "Use two indexes that move toward each other (or at different speeds), usually on a sorted array or a string.",
       "codeBlocks": [
         {
           "language": "python",
           "code": "# Two Sum II — sorted input (LeetCode 167)\ndef two_sum_sorted(nums, target):\n    l, r = 0, len(nums) - 1\n    while l < r:\n        s = nums[l] + nums[r]\n        if s == target: return [l + 1, r + 1]\n        if s < target: l += 1      # need bigger\n        else: r -= 1               # need smaller\n\nprint(two_sum_sorted([2, 7, 11, 15], 9))"
-        },
-        {
-          "language": "text",
-          "code": "[1, 2]"
         }
       ],
       "visuals": [],
@@ -38065,7 +38053,7 @@
         "startLine": 156,
         "endLine": 183
       },
-      "contentHash": "6a8980380486fca8"
+      "contentHash": "490c73033c1bbba7"
     },
     {
       "id": "interview/coding/02-DSA-Patterns.md#what-is-the-fast-and-slow-pointer-pattern",
@@ -38073,16 +38061,12 @@
       "parentId": null,
       "question": "What is the fast and slow pointer pattern?",
       "prompt": null,
-      "answer": "One pointer moves 1 step, the other 2 steps.\n\n- **Middle of a linked list (LeetCode 876):** when fast reaches the end, slow is in the middle.\n- **Cycle detection (LeetCode 141):** if there is a loop, fast eventually meets slow.\n\n```python\ndef middle(head):\n    slow = fast = head\n    while fast and fast.next:\n        slow, fast = slow.next, fast.next.next\n    return slow\n\n# from_list / to_list build and print linked lists (see the LeetCode notes)\nprint(middle(from_list([1, 2, 3, 4, 5])).val)\n```\n\n**Output:**\n\n```text\n3\n```",
+      "answer": "One pointer moves 1 step, the other 2 steps.\n\n- **Middle of a linked list (LeetCode 876):** when fast reaches the end, slow is in the middle.\n- **Cycle detection (LeetCode 141):** if there is a loop, fast eventually meets slow.\n\n```python\ndef middle(head):\n    slow = fast = head\n    while fast and fast.next:\n        slow, fast = slow.next, fast.next.next\n    return slow\n\n# from_list / to_list build and print linked lists (see the LeetCode notes)\nprint(middle(from_list([1, 2, 3, 4, 5])).val)\n```\n\n**Input and output:**\n\n| Input (`head`) | Output |\n|---|---|\n| `[1, 2, 3, 4, 5]` | `3` |",
       "summary": "One pointer moves 1 step, the other 2 steps.",
       "codeBlocks": [
         {
           "language": "python",
           "code": "def middle(head):\n    slow = fast = head\n    while fast and fast.next:\n        slow, fast = slow.next, fast.next.next\n    return slow\n\n# from_list / to_list build and print linked lists (see the LeetCode notes)\nprint(middle(from_list([1, 2, 3, 4, 5])).val)"
-        },
-        {
-          "language": "text",
-          "code": "3"
         }
       ],
       "visuals": [],
@@ -38107,7 +38091,7 @@
         "startLine": 187,
         "endLine": 211
       },
-      "contentHash": "596b9e906b407c34"
+      "contentHash": "1c4715d2229c3a60"
     },
     {
       "id": "interview/coding/02-DSA-Patterns.md#what-is-the-prefix-sum-pattern",
@@ -38115,16 +38099,12 @@
       "parentId": null,
       "question": "What is the prefix sum pattern?",
       "prompt": null,
-      "answer": "Pre-compute running totals so any range sum is **O(1)**: `sum(i..j) = prefix[j+1] - prefix[i]`.\n\n**Subarray Sum Equals K (LeetCode 560)** — count subarrays summing to k (works with negatives):\n\n_In simple words:_ count the runs of consecutive numbers that add up to exactly `k`. If the running total is now `T` and was `T - k` earlier, the numbers in between sum to `k` — so count how often each running total has appeared.\n\n```python\ndef subarray_sum(nums, k):\n    count = total = 0\n    seen = {0: 1}                         # prefix sum → how many times seen\n    for x in nums:\n        total += x\n        count += seen.get(total - k, 0)   # an earlier prefix that leaves exactly k\n        seen[total] = seen.get(total, 0) + 1\n    return count\n\nprint(subarray_sum([1, 1, 1], 2))\nprint(subarray_sum([1, 2, 3], 3))\n```\n\n**Output:**\n\n```text\n2\n2\n```",
+      "answer": "Pre-compute running totals so any range sum is **O(1)**: `sum(i..j) = prefix[j+1] - prefix[i]`.\n\n**Subarray Sum Equals K (LeetCode 560)** — count subarrays summing to k (works with negatives):\n\n_In simple words:_ count the runs of consecutive numbers that add up to exactly `k`. If the running total is now `T` and was `T - k` earlier, the numbers in between sum to `k` — so count how often each running total has appeared.\n\n```python\ndef subarray_sum(nums, k):\n    count = total = 0\n    seen = {0: 1}                         # prefix sum → how many times seen\n    for x in nums:\n        total += x\n        count += seen.get(total - k, 0)   # an earlier prefix that leaves exactly k\n        seen[total] = seen.get(total, 0) + 1\n    return count\n\nprint(subarray_sum([1, 1, 1], 2))\nprint(subarray_sum([1, 2, 3], 3))\n```\n\n**Input and output:**\n\n| Input (`nums`) | `k` | Output |\n|---|---|---|\n| `[1, 1, 1]` | `2` | `2` |\n| `[1, 2, 3]` | `3` | `2` |",
       "summary": "Pre-compute running totals so any range sum is O(1): sum(i..j) = prefix[j+1] - prefix[i].",
       "codeBlocks": [
         {
           "language": "python",
           "code": "def subarray_sum(nums, k):\n    count = total = 0\n    seen = {0: 1}                         # prefix sum → how many times seen\n    for x in nums:\n        total += x\n        count += seen.get(total - k, 0)   # an earlier prefix that leaves exactly k\n        seen[total] = seen.get(total, 0) + 1\n    return count\n\nprint(subarray_sum([1, 1, 1], 2))\nprint(subarray_sum([1, 2, 3], 3))"
-        },
-        {
-          "language": "text",
-          "code": "2\n2"
         }
       ],
       "visuals": [],
@@ -38150,7 +38130,7 @@
         "startLine": 215,
         "endLine": 244
       },
-      "contentHash": "173dce9900736d1b"
+      "contentHash": "99651418a33318ff"
     },
     {
       "id": "interview/coding/02-DSA-Patterns.md#what-is-a-binary-search-template-that-avoids-off-by-one-bugs",
@@ -38158,16 +38138,12 @@
       "parentId": null,
       "question": "What is a binary search template that avoids off-by-one bugs?",
       "prompt": null,
-      "answer": "Search on a **sorted** range by halving it: **O(log n)**.\n\n```python\ndef lower_bound(nums, target):     # first index with nums[i] >= target\n    lo, hi = 0, len(nums)          # hi is exclusive\n    while lo < hi:\n        mid = (lo + hi) // 2\n        if nums[mid] < target: lo = mid + 1\n        else: hi = mid\n    return lo\n\nprint(lower_bound([1, 3, 5, 6], 5))\nprint(lower_bound([1, 3, 5, 6], 2))\n```\n\n**Output:**\n\n```text\n2\n1\n```\n\nPython has it built in: `bisect.bisect_left(nums, target)`.\n\n**Binary search on the answer:** \"smallest speed/capacity that works\" — search over the answer range and test each guess (e.g. Koko Eating Bananas, LeetCode 875).",
+      "answer": "Search on a **sorted** range by halving it: **O(log n)**.\n\n```python\ndef lower_bound(nums, target):     # first index with nums[i] >= target\n    lo, hi = 0, len(nums)          # hi is exclusive\n    while lo < hi:\n        mid = (lo + hi) // 2\n        if nums[mid] < target: lo = mid + 1\n        else: hi = mid\n    return lo\n\nprint(lower_bound([1, 3, 5, 6], 5))\nprint(lower_bound([1, 3, 5, 6], 2))\n```\n\n**Input and output:**\n\n| Input (`nums`) | `target` | Output |\n|---|---|---|\n| `[1, 3, 5, 6]` | `5` | `2` |\n| `[1, 3, 5, 6]` | `2` | `1` |\n\nPython has it built in: `bisect.bisect_left(nums, target)`.\n\n**Binary search on the answer:** \"smallest speed/capacity that works\" — search over the answer range and test each guess (e.g. Koko Eating Bananas, LeetCode 875).",
       "summary": "Search on a sorted range by halving it: O(log n).",
       "codeBlocks": [
         {
           "language": "python",
           "code": "def lower_bound(nums, target):     # first index with nums[i] >= target\n    lo, hi = 0, len(nums)          # hi is exclusive\n    while lo < hi:\n        mid = (lo + hi) // 2\n        if nums[mid] < target: lo = mid + 1\n        else: hi = mid\n    return lo\n\nprint(lower_bound([1, 3, 5, 6], 5))\nprint(lower_bound([1, 3, 5, 6], 2))"
-        },
-        {
-          "language": "text",
-          "code": "2\n1"
         }
       ],
       "visuals": [],
@@ -38196,7 +38172,7 @@
         "startLine": 248,
         "endLine": 276
       },
-      "contentHash": "e578852a7d2dbc2d"
+      "contentHash": "e42df66b10de0b43"
     },
     {
       "id": "interview/coding/02-DSA-Patterns.md#what-is-the-monotonic-stack-pattern",
@@ -38204,16 +38180,12 @@
       "parentId": null,
       "question": "What is the monotonic stack pattern?",
       "prompt": null,
-      "answer": "A stack kept in increasing or decreasing order. Answers \"**next greater/smaller element**\" in **O(n)**.\n\n**Daily Temperatures (LeetCode 739)** — days to wait for a warmer day:\n\n_In simple words:_ for each day, how many days until a warmer one? Keep a stack of the days still waiting; when a warmer day arrives, it answers every cooler day on top of the stack.\n\n```python\ndef daily_temperatures(t):\n    ans = [0] * len(t); stack = []        # indexes, temps decreasing\n    for i, temp in enumerate(t):\n        while stack and t[stack[-1]] < temp:\n            j = stack.pop(); ans[j] = i - j\n        stack.append(i)\n    return ans\n\nprint(daily_temperatures([73, 74, 75, 71, 69, 72, 76, 73]))\n```\n\n**Output:**\n\n```text\n[1, 1, 4, 2, 1, 1, 0, 0]\n```",
+      "answer": "A stack kept in increasing or decreasing order. Answers \"**next greater/smaller element**\" in **O(n)**.\n\n**Daily Temperatures (LeetCode 739)** — days to wait for a warmer day:\n\n_In simple words:_ for each day, how many days until a warmer one? Keep a stack of the days still waiting; when a warmer day arrives, it answers every cooler day on top of the stack.\n\n```python\ndef daily_temperatures(t):\n    ans = [0] * len(t); stack = []        # indexes, temps decreasing\n    for i, temp in enumerate(t):\n        while stack and t[stack[-1]] < temp:\n            j = stack.pop(); ans[j] = i - j\n        stack.append(i)\n    return ans\n\nprint(daily_temperatures([73, 74, 75, 71, 69, 72, 76, 73]))\n```\n\n**Input and output:**\n\n| Input (`t`) | Output |\n|---|---|\n| `[73, 74, 75, 71, 69, 72, 76, 73]` | `[1, 1, 4, 2, 1, 1, 0, 0]` |",
       "summary": "A stack kept in increasing or decreasing order. Answers \"next greater/smaller element\" in O(n).",
       "codeBlocks": [
         {
           "language": "python",
           "code": "def daily_temperatures(t):\n    ans = [0] * len(t); stack = []        # indexes, temps decreasing\n    for i, temp in enumerate(t):\n        while stack and t[stack[-1]] < temp:\n            j = stack.pop(); ans[j] = i - j\n        stack.append(i)\n    return ans\n\nprint(daily_temperatures([73, 74, 75, 71, 69, 72, 76, 73]))"
-        },
-        {
-          "language": "text",
-          "code": "[1, 1, 4, 2, 1, 1, 0, 0]"
         }
       ],
       "visuals": [],
@@ -38240,7 +38212,7 @@
         "startLine": 280,
         "endLine": 306
       },
-      "contentHash": "7993379579203d84"
+      "contentHash": "ab4c0364dd83ca80"
     },
     {
       "id": "interview/coding/02-DSA-Patterns.md#how-do-bfs-and-dfs-work-and-when-do-you-use-each",
@@ -38288,16 +38260,12 @@
       "parentId": null,
       "question": "Binary Tree Level Order Traversal (LeetCode 102)",
       "prompt": null,
-      "answer": "**In simple words:** Return the tree's values level by level: first the root, then its children, then their children.\n\n**How to approach it:**\n\n1. Use a queue (BFS), starting with the root.\n2. Each round, take exactly the nodes now in the queue — that is one level.\n3. Add their children to the queue for the next round.\n\nBFS, processing one level at a time.\n\n```python\ndef level_order(root):\n    if not root: return []\n    result, q = [], deque([root])\n    while q:\n        level = []\n        for _ in range(len(q)):            # exactly this level's nodes\n            node = q.popleft(); level.append(node.val)\n            if node.left: q.append(node.left)\n            if node.right: q.append(node.right)\n        result.append(level)\n    return result\n\nroot = TreeNode(3, TreeNode(9), TreeNode(20, TreeNode(15), TreeNode(7)))\nprint(level_order(root))\n```\n\n**Output:**\n\n```text\n[[3], [9, 20], [15, 7]]\n```",
+      "answer": "**In simple words:** Return the tree's values level by level: first the root, then its children, then their children.\n\n**How to approach it:**\n\n1. Use a queue (BFS), starting with the root.\n2. Each round, take exactly the nodes now in the queue — that is one level.\n3. Add their children to the queue for the next round.\n\nBFS, processing one level at a time.\n\n```python\ndef level_order(root):\n    if not root: return []\n    result, q = [], deque([root])\n    while q:\n        level = []\n        for _ in range(len(q)):            # exactly this level's nodes\n            node = q.popleft(); level.append(node.val)\n            if node.left: q.append(node.left)\n            if node.right: q.append(node.right)\n        result.append(level)\n    return result\n\nroot = TreeNode(3, TreeNode(9), TreeNode(20, TreeNode(15), TreeNode(7)))\nprint(level_order(root))\n```\n\n**Input and output:**\n\n| Input (`root`) | Output |\n|---|---|\n| `[3, 9, 20, null, null, 15, 7]` | `[[3], [9, 20], [15, 7]]` |",
       "summary": "In simple words: Return the tree's values level by level: first the root, then its children, then their children.",
       "codeBlocks": [
         {
           "language": "python",
           "code": "def level_order(root):\n    if not root: return []\n    result, q = [], deque([root])\n    while q:\n        level = []\n        for _ in range(len(q)):            # exactly this level's nodes\n            node = q.popleft(); level.append(node.val)\n            if node.left: q.append(node.left)\n            if node.right: q.append(node.right)\n        result.append(level)\n    return result\n\nroot = TreeNode(3, TreeNode(9), TreeNode(20, TreeNode(15), TreeNode(7)))\nprint(level_order(root))"
-        },
-        {
-          "language": "text",
-          "code": "[[3], [9, 20], [15, 7]]"
         }
       ],
       "visuals": [],
@@ -38324,7 +38292,7 @@
         "startLine": 341,
         "endLine": 376
       },
-      "contentHash": "e1333600b208f81a"
+      "contentHash": "24fba2402cf190d9"
     },
     {
       "id": "interview/coding/02-DSA-Patterns.md#validate-binary-search-tree-leetcode-98",
@@ -38332,16 +38300,12 @@
       "parentId": null,
       "question": "Validate Binary Search Tree (LeetCode 98)",
       "prompt": null,
-      "answer": "**In simple words:** Check that every node's left side holds only smaller values and its right side only bigger ones — all the way down, not just its direct children.\n\n**How to approach it:**\n\n1. Give each node an allowed range (low, high); the root can be anything.\n2. Going left, the node's value becomes the new upper limit; going right, the new lower limit.\n3. Any value outside its range → not a valid BST.\n\nEach node must be inside a **range** that narrows as you go down — checking only the direct children is a common bug.\n\n```python\ndef is_valid_bst(node, low=float(\"-inf\"), high=float(\"inf\")):\n    if not node: return True\n    if not (low < node.val < high): return False\n    return is_valid_bst(node.left, low, node.val) and is_valid_bst(node.right, node.val, high)\n\nprint(is_valid_bst(TreeNode(2, TreeNode(1), TreeNode(3))))\nprint(is_valid_bst(TreeNode(5, TreeNode(1), TreeNode(4, TreeNode(3), TreeNode(6)))))\n```\n\n**Output:**\n\n```text\nTrue\nFalse\n```\n\n> ⚠️ **Trap:** a right grandchild smaller than the root breaks the BST even if it's bigger than its own parent.",
+      "answer": "**In simple words:** Check that every node's left side holds only smaller values and its right side only bigger ones — all the way down, not just its direct children.\n\n**How to approach it:**\n\n1. Give each node an allowed range (low, high); the root can be anything.\n2. Going left, the node's value becomes the new upper limit; going right, the new lower limit.\n3. Any value outside its range → not a valid BST.\n\nEach node must be inside a **range** that narrows as you go down — checking only the direct children is a common bug.\n\n```python\ndef is_valid_bst(node, low=float(\"-inf\"), high=float(\"inf\")):\n    if not node: return True\n    if not (low < node.val < high): return False\n    return is_valid_bst(node.left, low, node.val) and is_valid_bst(node.right, node.val, high)\n\nprint(is_valid_bst(TreeNode(2, TreeNode(1), TreeNode(3))))\nprint(is_valid_bst(TreeNode(5, TreeNode(1), TreeNode(4, TreeNode(3), TreeNode(6)))))\n```\n\n**Input and output:**\n\n| Input (`node`) | Output |\n|---|---|\n| `[2, 1, 3]` | `True` |\n| `[5, 1, 4, null, null, 3, 6]` | `False` |\n\n> ⚠️ **Trap:** a right grandchild smaller than the root breaks the BST even if it's bigger than its own parent.",
       "summary": "In simple words: Check that every node's left side holds only smaller values and its right side only bigger ones — all the way down, not just its direct children.",
       "codeBlocks": [
         {
           "language": "python",
           "code": "def is_valid_bst(node, low=float(\"-inf\"), high=float(\"inf\")):\n    if not node: return True\n    if not (low < node.val < high): return False\n    return is_valid_bst(node.left, low, node.val) and is_valid_bst(node.right, node.val, high)\n\nprint(is_valid_bst(TreeNode(2, TreeNode(1), TreeNode(3))))\nprint(is_valid_bst(TreeNode(5, TreeNode(1), TreeNode(4, TreeNode(3), TreeNode(6)))))"
-        },
-        {
-          "language": "text",
-          "code": "True\nFalse"
         }
       ],
       "visuals": [],
@@ -38368,7 +38332,7 @@
         "startLine": 380,
         "endLine": 411
       },
-      "contentHash": "5b4fabe7d7fc0f16"
+      "contentHash": "c4c61ce855cce0c2"
     },
     {
       "id": "interview/coding/02-DSA-Patterns.md#lowest-common-ancestor-of-a-binary-tree-leetcode-236",
@@ -38376,16 +38340,12 @@
       "parentId": null,
       "question": "Lowest Common Ancestor of a Binary Tree (LeetCode 236)",
       "prompt": null,
-      "answer": "**In simple words:** Find the lowest node that has both `p` and `q` below it (a node can be its own ancestor).\n\n**How to approach it:**\n\n1. Search for `p` and `q` in the left and right subtrees.\n2. If one is found on each side, the current node is where they split — that's the answer.\n3. If both are on one side, the answer is on that side.\n\nSearch both sides; the node where `p` and `q` come from different sides is the LCA.\n\n```python\ndef lca(root, p, q):\n    if not root or root in (p, q): return root\n    left, right = lca(root.left, p, q), lca(root.right, p, q)\n    if left and right: return root        # one on each side\n    return left or right\n\np, q = TreeNode(5), TreeNode(1)\nroot = TreeNode(3, p, q)\nprint(lca(root, p, q).val)\n```\n\n**Output:**\n\n```text\n3\n```",
+      "answer": "**In simple words:** Find the lowest node that has both `p` and `q` below it (a node can be its own ancestor).\n\n**How to approach it:**\n\n1. Search for `p` and `q` in the left and right subtrees.\n2. If one is found on each side, the current node is where they split — that's the answer.\n3. If both are on one side, the answer is on that side.\n\nSearch both sides; the node where `p` and `q` come from different sides is the LCA.\n\n```python\ndef lca(root, p, q):\n    if not root or root in (p, q): return root\n    left, right = lca(root.left, p, q), lca(root.right, p, q)\n    if left and right: return root        # one on each side\n    return left or right\n\np, q = TreeNode(5), TreeNode(1)\nroot = TreeNode(3, p, q)\nprint(lca(root, p, q).val)\n```\n\n**Input and output:**\n\n| Input (`root`) | `p` | `q` | Output |\n|---|---|---|---|\n| `[3, 5, 1]` | `5` | `1` | `3` |",
       "summary": "In simple words: Find the lowest node that has both p and q below it (a node can be its own ancestor).",
       "codeBlocks": [
         {
           "language": "python",
           "code": "def lca(root, p, q):\n    if not root or root in (p, q): return root\n    left, right = lca(root.left, p, q), lca(root.right, p, q)\n    if left and right: return root        # one on each side\n    return left or right\n\np, q = TreeNode(5), TreeNode(1)\nroot = TreeNode(3, p, q)\nprint(lca(root, p, q).val)"
-        },
-        {
-          "language": "text",
-          "code": "3"
         }
       ],
       "visuals": [],
@@ -38412,7 +38372,7 @@
         "startLine": 415,
         "endLine": 445
       },
-      "contentHash": "c4088e198b096500"
+      "contentHash": "b395f540660ad765"
     },
     {
       "id": "interview/coding/02-DSA-Patterns.md#what-is-topological-sort-course-schedule-leetcode-207",
@@ -38420,16 +38380,12 @@
       "parentId": null,
       "question": "What is topological sort? (Course Schedule, LeetCode 207)",
       "prompt": null,
-      "answer": "**In simple words:** Some courses need others first. Can you finish all of them, or do the requirements go round in a circle?\n\n**How to approach it:**\n\n1. Count each course's unmet prerequisites.\n2. Start with the courses that need nothing; \"take\" them and lower the count of the courses that depend on them.\n3. If you take every course, it's possible; if some are left over, there's a circle.\n\nAn order of tasks where every task comes **after its prerequisites**. Only possible if there is **no cycle**.\n\n**Kahn's algorithm:** start with tasks that have no prerequisites, remove them, repeat.\n\n```python\ndef can_finish(n, prerequisites):\n    graph = [[] for _ in range(n)]; indegree = [0] * n\n    for course, pre in prerequisites:\n        graph[pre].append(course); indegree[course] += 1\n    q = deque(i for i in range(n) if indegree[i] == 0)\n    done = 0\n    while q:\n        c = q.popleft(); done += 1\n        for nxt in graph[c]:\n            indegree[nxt] -= 1\n            if indegree[nxt] == 0: q.append(nxt)\n    return done == n          # False → there is a cycle\n\nprint(can_finish(2, [[1, 0]]))            # take 0, then 1\nprint(can_finish(2, [[1, 0], [0, 1]]))    # each needs the other: a cycle\n```\n\n**Output:**\n\n```text\nTrue\nFalse\n```\n\nReal use: build systems, package installs, the study-path order in this repository.",
+      "answer": "**In simple words:** Some courses need others first. Can you finish all of them, or do the requirements go round in a circle?\n\n**How to approach it:**\n\n1. Count each course's unmet prerequisites.\n2. Start with the courses that need nothing; \"take\" them and lower the count of the courses that depend on them.\n3. If you take every course, it's possible; if some are left over, there's a circle.\n\nAn order of tasks where every task comes **after its prerequisites**. Only possible if there is **no cycle**.\n\n**Kahn's algorithm:** start with tasks that have no prerequisites, remove them, repeat.\n\n```python\ndef can_finish(n, prerequisites):\n    graph = [[] for _ in range(n)]; indegree = [0] * n\n    for course, pre in prerequisites:\n        graph[pre].append(course); indegree[course] += 1\n    q = deque(i for i in range(n) if indegree[i] == 0)\n    done = 0\n    while q:\n        c = q.popleft(); done += 1\n        for nxt in graph[c]:\n            indegree[nxt] -= 1\n            if indegree[nxt] == 0: q.append(nxt)\n    return done == n          # False → there is a cycle\n\nprint(can_finish(2, [[1, 0]]))            # take 0, then 1\nprint(can_finish(2, [[1, 0], [0, 1]]))    # each needs the other: a cycle\n```\n\n**Input and output:**\n\n| Input (`n`) | `prerequisites` | Output |\n|---|---|---|\n| `2` | `[[1, 0]]` | `True` |\n| `2` | `[[1, 0], [0, 1]]` | `False` |\n\nReal use: build systems, package installs, the study-path order in this repository.",
       "summary": "In simple words: Some courses need others first. Can you finish all of them, or do the requirements go round in a circle?",
       "codeBlocks": [
         {
           "language": "python",
           "code": "def can_finish(n, prerequisites):\n    graph = [[] for _ in range(n)]; indegree = [0] * n\n    for course, pre in prerequisites:\n        graph[pre].append(course); indegree[course] += 1\n    q = deque(i for i in range(n) if indegree[i] == 0)\n    done = 0\n    while q:\n        c = q.popleft(); done += 1\n        for nxt in graph[c]:\n            indegree[nxt] -= 1\n            if indegree[nxt] == 0: q.append(nxt)\n    return done == n          # False → there is a cycle\n\nprint(can_finish(2, [[1, 0]]))            # take 0, then 1\nprint(can_finish(2, [[1, 0], [0, 1]]))    # each needs the other: a cycle"
-        },
-        {
-          "language": "text",
-          "code": "True\nFalse"
         }
       ],
       "visuals": [],
@@ -38457,7 +38413,7 @@
         "startLine": 449,
         "endLine": 490
       },
-      "contentHash": "70f066425dcefee0"
+      "contentHash": "11b5a2cdafd6689a"
     },
     {
       "id": "interview/coding/02-DSA-Patterns.md#what-is-dijkstra-s-algorithm",
@@ -38503,16 +38459,12 @@
       "parentId": null,
       "question": "What is backtracking? (Subsets and Permutations)",
       "prompt": null,
-      "answer": "Build a solution step by step; when a choice is done (or fails), **undo it and try the next**.\n\n_In simple words:_ **subsets** — for each number, choose \"take it\" or \"skip it\"; **permutations** — choose which number goes first, then arrange the rest the same way.\n\n```python\ndef subsets(nums):                         # LeetCode 78 → 2ⁿ results\n    result, path = [], []\n    def go(i):\n        if i == len(nums): result.append(path[:]); return\n        path.append(nums[i]); go(i + 1)    # take it\n        path.pop();           go(i + 1)    # skip it\n    go(0); return result\n\ndef permutations(nums):                    # LeetCode 46 → n! results\n    result = []\n    def go(path, rest):\n        if not rest: result.append(path); return\n        for i in range(len(rest)):\n            go(path + [rest[i]], rest[:i] + rest[i+1:])\n    go([], nums); return result\n\nprint(subsets([1, 2, 3]))\nprint(permutations([1, 2, 3]))\n```\n\n**Output:**\n\n```text\n[[1, 2, 3], [1, 2], [1, 3], [1], [2, 3], [2], [3], []]\n[[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]]\n```\n\nUsed for: subsets, permutations, combinations, N-Queens, Sudoku, word search.",
+      "answer": "Build a solution step by step; when a choice is done (or fails), **undo it and try the next**.\n\n_In simple words:_ **subsets** — for each number, choose \"take it\" or \"skip it\"; **permutations** — choose which number goes first, then arrange the rest the same way.\n\n```python\ndef subsets(nums):                         # LeetCode 78 → 2ⁿ results\n    result, path = [], []\n    def go(i):\n        if i == len(nums): result.append(path[:]); return\n        path.append(nums[i]); go(i + 1)    # take it\n        path.pop();           go(i + 1)    # skip it\n    go(0); return result\n\ndef permutations(nums):                    # LeetCode 46 → n! results\n    result = []\n    def go(path, rest):\n        if not rest: result.append(path); return\n        for i in range(len(rest)):\n            go(path + [rest[i]], rest[:i] + rest[i+1:])\n    go([], nums); return result\n\nprint(subsets([1, 2, 3]))\nprint(permutations([1, 2, 3]))\n```\n\n**Input and output:**\n\n_`subsets`_\n\n| Input (`nums`) | Output |\n|---|---|\n| `[1, 2, 3]` | `[[1, 2, 3], [1, 2], [1, 3], [1], [2, 3], [2], [3], []]` |\n\n_`permutations`_\n\n| Input (`nums`) | Output |\n|---|---|\n| `[1, 2, 3]` | `[[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]]` |\n\nUsed for: subsets, permutations, combinations, N-Queens, Sudoku, word search.",
       "summary": "Build a solution step by step; when a choice is done (or fails), undo it and try the next.",
       "codeBlocks": [
         {
           "language": "python",
           "code": "def subsets(nums):                         # LeetCode 78 → 2ⁿ results\n    result, path = [], []\n    def go(i):\n        if i == len(nums): result.append(path[:]); return\n        path.append(nums[i]); go(i + 1)    # take it\n        path.pop();           go(i + 1)    # skip it\n    go(0); return result\n\ndef permutations(nums):                    # LeetCode 46 → n! results\n    result = []\n    def go(path, rest):\n        if not rest: result.append(path); return\n        for i in range(len(rest)):\n            go(path + [rest[i]], rest[:i] + rest[i+1:])\n    go([], nums); return result\n\nprint(subsets([1, 2, 3]))\nprint(permutations([1, 2, 3]))"
-        },
-        {
-          "language": "text",
-          "code": "[[1, 2, 3], [1, 2], [1, 3], [1], [2, 3], [2], [3], []]\n[[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]]"
         }
       ],
       "visuals": [],
@@ -38535,9 +38487,9 @@
       "source": {
         "path": "interview/coding/02-DSA-Patterns.md",
         "startLine": 516,
-        "endLine": 552
+        "endLine": 559
       },
-      "contentHash": "ffcad927ad94a6dd"
+      "contentHash": "a7352ff495c13aab"
     },
     {
       "id": "interview/coding/02-DSA-Patterns.md#how-do-you-approach-a-dynamic-programming-problem",
@@ -38545,16 +38497,12 @@
       "parentId": null,
       "question": "How do you approach a dynamic programming problem?",
       "prompt": null,
-      "answer": "DP = solve small subproblems once, **save the answers**, build up the big one. Use it when a problem has **overlapping subproblems** (same calls repeat).\n\nSteps:\n\n1. Define the state: `dp[i]` = best answer for the first i items.\n2. Write the choice: `dp[i] = max(dp[i-1], dp[i-2] + nums[i])`.\n3. Set base cases.\n4. Fill in order (bottom-up) or recurse with a cache (top-down, `@lru_cache`).\n\n**House Robber (LeetCode 198)** — can't rob two neighbours:\n\n_In simple words:_ rob houses for the most money, but never two next to each other. At each house, either skip it (keep the best so far) or rob it (the best from two houses back + this one).\n\n```python\ndef rob(nums):\n    prev2 = prev1 = 0\n    for x in nums:\n        prev2, prev1 = prev1, max(prev1, prev2 + x)   # skip it, or take it\n    return prev1\nprint(rob([2, 7, 9, 3, 1]))          # 2 + 9 + 1\n```\n\n**Output:**\n\n```text\n12\n```",
+      "answer": "DP = solve small subproblems once, **save the answers**, build up the big one. Use it when a problem has **overlapping subproblems** (same calls repeat).\n\nSteps:\n\n1. Define the state: `dp[i]` = best answer for the first i items.\n2. Write the choice: `dp[i] = max(dp[i-1], dp[i-2] + nums[i])`.\n3. Set base cases.\n4. Fill in order (bottom-up) or recurse with a cache (top-down, `@lru_cache`).\n\n**House Robber (LeetCode 198)** — can't rob two neighbours:\n\n_In simple words:_ rob houses for the most money, but never two next to each other. At each house, either skip it (keep the best so far) or rob it (the best from two houses back + this one).\n\n```python\ndef rob(nums):\n    prev2 = prev1 = 0\n    for x in nums:\n        prev2, prev1 = prev1, max(prev1, prev2 + x)   # skip it, or take it\n    return prev1\nprint(rob([2, 7, 9, 3, 1]))          # 2 + 9 + 1\n```\n\n**Input and output:**\n\n| Input (`nums`) | Output |\n|---|---|\n| `[2, 7, 9, 3, 1]` | `12` |",
       "summary": "DP = solve small subproblems once, save the answers, build up the big one. Use it when a problem has overlapping subproblems (same calls repeat).",
       "codeBlocks": [
         {
           "language": "python",
           "code": "def rob(nums):\n    prev2 = prev1 = 0\n    for x in nums:\n        prev2, prev1 = prev1, max(prev1, prev2 + x)   # skip it, or take it\n    return prev1\nprint(rob([2, 7, 9, 3, 1]))          # 2 + 9 + 1"
-        },
-        {
-          "language": "text",
-          "code": "12"
         }
       ],
       "visuals": [],
@@ -38579,10 +38527,10 @@
       ],
       "source": {
         "path": "interview/coding/02-DSA-Patterns.md",
-        "startLine": 556,
-        "endLine": 586
+        "startLine": 563,
+        "endLine": 593
       },
-      "contentHash": "2787cc96323e27e9"
+      "contentHash": "887195b798e5d49d"
     },
     {
       "id": "interview/coding/02-DSA-Patterns.md#memoization-vs-tabulation",
@@ -38610,8 +38558,8 @@
       ],
       "source": {
         "path": "interview/coding/02-DSA-Patterns.md",
-        "startLine": 588,
-        "endLine": 590
+        "startLine": 595,
+        "endLine": 597
       },
       "contentHash": "8901a8e9fb9e1a97"
     },
@@ -38621,16 +38569,12 @@
       "parentId": null,
       "question": "Longest Common Subsequence (LeetCode 1143)",
       "prompt": null,
-      "answer": "**In simple words:** Find the length of the longest sequence of letters that appears in both words in the same order, not necessarily side by side. \"abcde\" and \"ace\" share \"ace\" → 3.\n\n**How to approach it:**\n\n1. Build a table where `dp[i][j]` = the answer for the first `i` letters of one word and the first `j` of the other.\n2. If the current letters match, take the answer without both letters, plus 1.\n3. If not, take the better of dropping a letter from either word.\n\nClassic 2-D DP: compare the last characters.\n\n```python\ndef lcs(a, b):\n    dp = [[0] * (len(b) + 1) for _ in range(len(a) + 1)]\n    for i in range(1, len(a) + 1):\n        for j in range(1, len(b) + 1):\n            if a[i-1] == b[j-1]: dp[i][j] = dp[i-1][j-1] + 1\n            else:                dp[i][j] = max(dp[i-1][j], dp[i][j-1])\n    return dp[-1][-1]\nprint(lcs(\"abcde\", \"ace\"))          # \"ace\"\n```\n\n**Output:**\n\n```text\n3\n```\n\nO(m × n) time and space.",
+      "answer": "**In simple words:** Find the length of the longest sequence of letters that appears in both words in the same order, not necessarily side by side. \"abcde\" and \"ace\" share \"ace\" → 3.\n\n**How to approach it:**\n\n1. Build a table where `dp[i][j]` = the answer for the first `i` letters of one word and the first `j` of the other.\n2. If the current letters match, take the answer without both letters, plus 1.\n3. If not, take the better of dropping a letter from either word.\n\nClassic 2-D DP: compare the last characters.\n\n```python\ndef lcs(a, b):\n    dp = [[0] * (len(b) + 1) for _ in range(len(a) + 1)]\n    for i in range(1, len(a) + 1):\n        for j in range(1, len(b) + 1):\n            if a[i-1] == b[j-1]: dp[i][j] = dp[i-1][j-1] + 1\n            else:                dp[i][j] = max(dp[i-1][j], dp[i][j-1])\n    return dp[-1][-1]\nprint(lcs(\"abcde\", \"ace\"))          # \"ace\"\n```\n\n**Input and output:**\n\n| Input (`a`) | `b` | Output |\n|---|---|---|\n| `\"abcde\"` | `\"ace\"` | `3` |\n\nO(m × n) time and space.",
       "summary": "In simple words: Find the length of the longest sequence of letters that appears in both words in the same order, not necessarily side by side. \"abcde\" and \"ace\" share \"ace\" → 3.",
       "codeBlocks": [
         {
           "language": "python",
           "code": "def lcs(a, b):\n    dp = [[0] * (len(b) + 1) for _ in range(len(a) + 1)]\n    for i in range(1, len(a) + 1):\n        for j in range(1, len(b) + 1):\n            if a[i-1] == b[j-1]: dp[i][j] = dp[i-1][j-1] + 1\n            else:                dp[i][j] = max(dp[i-1][j], dp[i][j-1])\n    return dp[-1][-1]\nprint(lcs(\"abcde\", \"ace\"))          # \"ace\""
-        },
-        {
-          "language": "text",
-          "code": "3"
         }
       ],
       "visuals": [],
@@ -38652,10 +38596,10 @@
       ],
       "source": {
         "path": "interview/coding/02-DSA-Patterns.md",
-        "startLine": 594,
-        "endLine": 625
+        "startLine": 601,
+        "endLine": 632
       },
-      "contentHash": "c70634270417685f"
+      "contentHash": "8e6720057ab4722b"
     },
     {
       "id": "interview/coding/02-DSA-Patterns.md#lru-cache-leetcode-146",
@@ -38663,16 +38607,12 @@
       "parentId": null,
       "question": "LRU Cache (LeetCode 146)",
       "prompt": null,
-      "answer": "**In simple words:** Build a cache with a size limit that, when full, throws out the item used longest ago. Both `get` and `put` must be fast (`O(1)`).\n\n**How to approach it:**\n\n1. A dictionary finds items quickly; an ordering tracks which were used recently.\n2. On every `get` or `put`, move that key to the \"recently used\" end.\n3. When over capacity, remove the item at the \"oldest\" end. Python's `OrderedDict` gives you both.\n\nKeep items in **use order**; when full, evict the **least recently used**. Both `get` and `put` must be O(1): a hash map + a doubly linked list. In Python, `OrderedDict` does both.\n\n```python\nfrom collections import OrderedDict\n\nclass LRUCache:\n    def __init__(self, capacity):\n        self.cap, self.data = capacity, OrderedDict()\n    def get(self, key):\n        if key not in self.data: return -1\n        self.data.move_to_end(key)          # mark as recently used\n        return self.data[key]\n    def put(self, key, value):\n        self.data[key] = value; self.data.move_to_end(key)\n        if len(self.data) > self.cap:\n            self.data.popitem(last=False)   # remove the oldest\n\ncache = LRUCache(2)\ncache.put(1, \"a\")\ncache.put(2, \"b\")\nprint(cache.get(1))      # 1 is now the most recent\ncache.put(3, \"c\")         # full: evicts 2, the least recently used\nprint(cache.get(2))\nprint(cache.get(3))\n```\n\n**Output:**\n\n```text\na\n-1\nc\n```",
+      "answer": "**In simple words:** Build a cache with a size limit that, when full, throws out the item used longest ago. Both `get` and `put` must be fast (`O(1)`).\n\n**How to approach it:**\n\n1. A dictionary finds items quickly; an ordering tracks which were used recently.\n2. On every `get` or `put`, move that key to the \"recently used\" end.\n3. When over capacity, remove the item at the \"oldest\" end. Python's `OrderedDict` gives you both.\n\nKeep items in **use order**; when full, evict the **least recently used**. Both `get` and `put` must be O(1): a hash map + a doubly linked list. In Python, `OrderedDict` does both.\n\n```python\nfrom collections import OrderedDict\n\nclass LRUCache:\n    def __init__(self, capacity):\n        self.cap, self.data = capacity, OrderedDict()\n    def get(self, key):\n        if key not in self.data: return -1\n        self.data.move_to_end(key)          # mark as recently used\n        return self.data[key]\n    def put(self, key, value):\n        self.data[key] = value; self.data.move_to_end(key)\n        if len(self.data) > self.cap:\n            self.data.popitem(last=False)   # remove the oldest\n\ncache = LRUCache(2)\ncache.put(1, \"a\")\ncache.put(2, \"b\")\nprint(cache.get(1))      # 1 is now the most recent\ncache.put(3, \"c\")         # full: evicts 2, the least recently used\nprint(cache.get(2))\nprint(cache.get(3))\n```\n\n**Input and output:**\n\n| Operation | Output |\n|---|---|\n| `cache = LRUCache(2)` | — |\n| `cache.put(1, \"a\")` | — |\n| `cache.put(2, \"b\")` | — |\n| `cache.get(1)` | `\"a\"` |\n| `cache.put(3, \"c\")` | — |\n| `cache.get(2)` | `-1` |\n| `cache.get(3)` | `\"c\"` |",
       "summary": "In simple words: Build a cache with a size limit that, when full, throws out the item used longest ago. Both get and put must be fast (O(1)).",
       "codeBlocks": [
         {
           "language": "python",
           "code": "from collections import OrderedDict\n\nclass LRUCache:\n    def __init__(self, capacity):\n        self.cap, self.data = capacity, OrderedDict()\n    def get(self, key):\n        if key not in self.data: return -1\n        self.data.move_to_end(key)          # mark as recently used\n        return self.data[key]\n    def put(self, key, value):\n        self.data[key] = value; self.data.move_to_end(key)\n        if len(self.data) > self.cap:\n            self.data.popitem(last=False)   # remove the oldest\n\ncache = LRUCache(2)\ncache.put(1, \"a\")\ncache.put(2, \"b\")\nprint(cache.get(1))      # 1 is now the most recent\ncache.put(3, \"c\")         # full: evicts 2, the least recently used\nprint(cache.get(2))\nprint(cache.get(3))"
-        },
-        {
-          "language": "text",
-          "code": "a\n-1\nc"
         }
       ],
       "visuals": [],
@@ -38695,10 +38635,10 @@
       ],
       "source": {
         "path": "interview/coding/02-DSA-Patterns.md",
-        "startLine": 629,
-        "endLine": 673
+        "startLine": 636,
+        "endLine": 684
       },
-      "contentHash": "adbbb35efd860e7f"
+      "contentHash": "a462f7b5875d371b"
     },
     {
       "id": "interview/coding/02-DSA-Patterns.md#merge-k-sorted-lists-leetcode-23",
@@ -38706,16 +38646,12 @@
       "parentId": null,
       "question": "Merge K Sorted Lists (LeetCode 23)",
       "prompt": null,
-      "answer": "**In simple words:** Join `k` sorted chains into one sorted chain.\n\n**How to approach it:**\n\n1. The next smallest node is always at the front of one of the lists.\n2. Keep the `k` front nodes in a min-heap; take the smallest and attach it.\n3. Push that node's next node into the heap, and repeat until the heap is empty.\n\nPut the head of each list in a **min-heap**; repeatedly take the smallest and push its next node. O(N log k).\n\n```python\ndef merge_k_lists(lists):\n    heap = [(node.val, i, node) for i, node in enumerate(lists) if node]\n    heapq.heapify(heap)\n    dummy = tail = ListNode()\n    while heap:\n        _, i, node = heapq.heappop(heap)    # i breaks ties (nodes can't be compared)\n        tail.next = tail = node\n        if node.next: heapq.heappush(heap, (node.next.val, i, node.next))\n    return dummy.next\n\nprint(to_list(merge_k_lists([from_list([1, 4, 5]), from_list([1, 3, 4]), from_list([2, 6])])))\n```\n\n**Output:**\n\n```text\n[1, 1, 2, 3, 4, 4, 5, 6]\n```",
+      "answer": "**In simple words:** Join `k` sorted chains into one sorted chain.\n\n**How to approach it:**\n\n1. The next smallest node is always at the front of one of the lists.\n2. Keep the `k` front nodes in a min-heap; take the smallest and attach it.\n3. Push that node's next node into the heap, and repeat until the heap is empty.\n\nPut the head of each list in a **min-heap**; repeatedly take the smallest and push its next node. O(N log k).\n\n```python\ndef merge_k_lists(lists):\n    heap = [(node.val, i, node) for i, node in enumerate(lists) if node]\n    heapq.heapify(heap)\n    dummy = tail = ListNode()\n    while heap:\n        _, i, node = heapq.heappop(heap)    # i breaks ties (nodes can't be compared)\n        tail.next = tail = node\n        if node.next: heapq.heappush(heap, (node.next.val, i, node.next))\n    return dummy.next\n\nprint(to_list(merge_k_lists([from_list([1, 4, 5]), from_list([1, 3, 4]), from_list([2, 6])])))\n```\n\n**Input and output:**\n\n| Input (`lists`) | Output |\n|---|---|\n| `[[1, 4, 5], [1, 3, 4], [2, 6]]` | `[1, 1, 2, 3, 4, 4, 5, 6]` |",
       "summary": "In simple words: Join k sorted chains into one sorted chain.",
       "codeBlocks": [
         {
           "language": "python",
           "code": "def merge_k_lists(lists):\n    heap = [(node.val, i, node) for i, node in enumerate(lists) if node]\n    heapq.heapify(heap)\n    dummy = tail = ListNode()\n    while heap:\n        _, i, node = heapq.heappop(heap)    # i breaks ties (nodes can't be compared)\n        tail.next = tail = node\n        if node.next: heapq.heappush(heap, (node.next.val, i, node.next))\n    return dummy.next\n\nprint(to_list(merge_k_lists([from_list([1, 4, 5]), from_list([1, 3, 4]), from_list([2, 6])])))"
-        },
-        {
-          "language": "text",
-          "code": "[1, 1, 2, 3, 4, 4, 5, 6]"
         }
       ],
       "visuals": [],
@@ -38738,10 +38674,10 @@
       ],
       "source": {
         "path": "interview/coding/02-DSA-Patterns.md",
-        "startLine": 677,
-        "endLine": 709
+        "startLine": 688,
+        "endLine": 720
       },
-      "contentHash": "247b54f506c3c2aa"
+      "contentHash": "21ee094aa39bd520"
     },
     {
       "id": "interview/coding/02-DSA-Patterns.md#how-do-the-main-sorting-algorithms-compare",
@@ -38773,8 +38709,8 @@
       ],
       "source": {
         "path": "interview/coding/02-DSA-Patterns.md",
-        "startLine": 715,
-        "endLine": 727
+        "startLine": 726,
+        "endLine": 738
       },
       "contentHash": "ae25fbdae2d188d5"
     },
@@ -38809,8 +38745,8 @@
       ],
       "source": {
         "path": "interview/coding/02-DSA-Patterns.md",
-        "startLine": 729,
-        "endLine": 731
+        "startLine": 740,
+        "endLine": 742
       },
       "contentHash": "89a0ab136b90a0fd"
     },
@@ -38842,8 +38778,8 @@
       ],
       "source": {
         "path": "interview/coding/02-DSA-Patterns.md",
-        "startLine": 733,
-        "endLine": 735
+        "startLine": 744,
+        "endLine": 746
       },
       "contentHash": "2024370720a8f52f"
     },
@@ -38882,8 +38818,8 @@
       ],
       "source": {
         "path": "interview/coding/02-DSA-Patterns.md",
-        "startLine": 741,
-        "endLine": 763
+        "startLine": 752,
+        "endLine": 774
       },
       "contentHash": "5c34daa4b2a3789b"
     },
@@ -38920,8 +38856,8 @@
       ],
       "source": {
         "path": "interview/coding/02-DSA-Patterns.md",
-        "startLine": 767,
-        "endLine": 771
+        "startLine": 778,
+        "endLine": 782
       },
       "contentHash": "df162fbfa3ba50e9"
     },
@@ -65640,16 +65576,12 @@
       "parentId": null,
       "question": "Two Sum (LeetCode 1)",
       "prompt": "Given an array `nums` and an integer `target`, return the indices of the two numbers that add up to `target`. Exactly one solution exists, and the same element can't be used twice.\n\nExample: `nums = [2, 7, 11, 15], target = 9` → `[0, 1]`",
-      "answer": "**In simple words:** Find two numbers in the list that add up to the target, and return their positions.\n\n**How to approach it:**\n\n1. For each number, the partner you need is `target - number` (for `7` with target `9`, you need `2`).\n2. Keep a dictionary of the numbers already seen → their index.\n3. If the partner is already in the dictionary, you're done; otherwise store the current number and move on.\n\n**Pattern:** hash map. For each number, check whether its complement (`target - num`) was already seen.\n\n```python\ndef two_sum(nums: list[int], target: int) -> list[int]:\n    seen = {}                        # value -> index\n    for i, num in enumerate(nums):\n        need = target - num\n        if need in seen:\n            return [seen[need], i]\n        seen[num] = i\n    return []\n\nprint(two_sum([2, 7, 11, 15], 9))   # [0, 1]\nprint(two_sum([3, 2, 4], 6))        # [1, 2]\n```\n\n**Output:**\n\n```text\n[0, 1]\n[1, 2]\n```\n\n**Complexity:** `O(n)` time, `O(n)` space. The brute-force double loop is `O(n²)`.",
+      "answer": "**In simple words:** Find two numbers in the list that add up to the target, and return their positions.\n\n**How to approach it:**\n\n1. For each number, the partner you need is `target - number` (for `7` with target `9`, you need `2`).\n2. Keep a dictionary of the numbers already seen → their index.\n3. If the partner is already in the dictionary, you're done; otherwise store the current number and move on.\n\n**Pattern:** hash map. For each number, check whether its complement (`target - num`) was already seen.\n\n```python\ndef two_sum(nums: list[int], target: int) -> list[int]:\n    seen = {}                        # value -> index\n    for i, num in enumerate(nums):\n        need = target - num\n        if need in seen:\n            return [seen[need], i]\n        seen[num] = i\n    return []\n\nprint(two_sum([2, 7, 11, 15], 9))   # [0, 1]\nprint(two_sum([3, 2, 4], 6))        # [1, 2]\n```\n\n**Input and output:**\n\n| Input (`nums`) | `target` | Output |\n|---|---|---|\n| `[2, 7, 11, 15]` | `9` | `[0, 1]` |\n| `[3, 2, 4]` | `6` | `[1, 2]` |\n\n**Complexity:** `O(n)` time, `O(n)` space. The brute-force double loop is `O(n²)`.",
       "summary": "In simple words: Find two numbers in the list that add up to the target, and return their positions.",
       "codeBlocks": [
         {
           "language": "python",
           "code": "def two_sum(nums: list[int], target: int) -> list[int]:\n    seen = {}                        # value -> index\n    for i, num in enumerate(nums):\n        need = target - num\n        if need in seen:\n            return [seen[need], i]\n        seen[num] = i\n    return []\n\nprint(two_sum([2, 7, 11, 15], 9))   # [0, 1]\nprint(two_sum([3, 2, 4], 6))        # [1, 2]"
-        },
-        {
-          "language": "text",
-          "code": "[0, 1]\n[1, 2]"
         }
       ],
       "visuals": [],
@@ -65675,7 +65607,7 @@
         "startLine": 5,
         "endLine": 44
       },
-      "contentHash": "e6075fb07f4ee006"
+      "contentHash": "1d5e7f7965de2c22"
     },
     {
       "id": "practice/coding/python/01-LeetCode-Python.md#three-sum-leetcode-15",
@@ -65683,16 +65615,12 @@
       "parentId": null,
       "question": "Three Sum (LeetCode 15)",
       "prompt": "Given an array `nums`, return all **unique** triplets `[a, b, c]` with `a + b + c == 0`.\n\nExample: `nums = [-1, 0, 1, 2, -1, -4]` → `[[-1, -1, 2], [-1, 0, 1]]`",
-      "answer": "**In simple words:** Find every group of three numbers that adds up to 0, without repeating the same group.\n\n**How to approach it:**\n\n1. Sort the list, so equal numbers sit together and you can move left or right by size.\n2. Fix one number, then look for two more that add up to its negative, with one pointer at each end of the rest.\n3. Sum too small → move the left pointer right; too big → move the right pointer left.\n4. Skip a number equal to the previous one, so no group repeats.\n\n**Pattern:** sort, then fix one number and find the other two with **two pointers**. Skip equal neighbours to avoid duplicate triplets.\n\n```python\ndef three_sum(nums: list[int]) -> list[list[int]]:\n    nums.sort()\n    result = []\n    for i in range(len(nums) - 2):\n        if i > 0 and nums[i] == nums[i - 1]:\n            continue                     # same first number: skip duplicates\n        if nums[i] > 0:\n            break                        # sorted: three positives can't sum to 0\n        left, right = i + 1, len(nums) - 1\n        while left < right:\n            total = nums[i] + nums[left] + nums[right]\n            if total < 0:\n                left += 1                # need a bigger sum\n            elif total > 0:\n                right -= 1               # need a smaller sum\n            else:\n                result.append([nums[i], nums[left], nums[right]])\n                left += 1\n                right -= 1\n                while left < right and nums[left] == nums[left - 1]:\n                    left += 1            # skip duplicate second numbers\n    return result\n\nprint(three_sum([-1, 0, 1, 2, -1, -4]))  # [[-1, -1, 2], [-1, 0, 1]]\nprint(three_sum([0, 0, 0, 0]))           # [[0, 0, 0]]\n```\n\n**Output:**\n\n```text\n[[-1, -1, 2], [-1, 0, 1]]\n[[0, 0, 0]]\n```\n\n**Complexity:** `O(n²)` time (sorting is `O(n log n)`), `O(1)` extra space apart from the output.",
+      "answer": "**In simple words:** Find every group of three numbers that adds up to 0, without repeating the same group.\n\n**How to approach it:**\n\n1. Sort the list, so equal numbers sit together and you can move left or right by size.\n2. Fix one number, then look for two more that add up to its negative, with one pointer at each end of the rest.\n3. Sum too small → move the left pointer right; too big → move the right pointer left.\n4. Skip a number equal to the previous one, so no group repeats.\n\n**Pattern:** sort, then fix one number and find the other two with **two pointers**. Skip equal neighbours to avoid duplicate triplets.\n\n```python\ndef three_sum(nums: list[int]) -> list[list[int]]:\n    nums.sort()\n    result = []\n    for i in range(len(nums) - 2):\n        if i > 0 and nums[i] == nums[i - 1]:\n            continue                     # same first number: skip duplicates\n        if nums[i] > 0:\n            break                        # sorted: three positives can't sum to 0\n        left, right = i + 1, len(nums) - 1\n        while left < right:\n            total = nums[i] + nums[left] + nums[right]\n            if total < 0:\n                left += 1                # need a bigger sum\n            elif total > 0:\n                right -= 1               # need a smaller sum\n            else:\n                result.append([nums[i], nums[left], nums[right]])\n                left += 1\n                right -= 1\n                while left < right and nums[left] == nums[left - 1]:\n                    left += 1            # skip duplicate second numbers\n    return result\n\nprint(three_sum([-1, 0, 1, 2, -1, -4]))  # [[-1, -1, 2], [-1, 0, 1]]\nprint(three_sum([0, 0, 0, 0]))           # [[0, 0, 0]]\n```\n\n**Input and output:**\n\n| Input (`nums`) | Output |\n|---|---|\n| `[-1, 0, 1, 2, -1, -4]` | `[[-1, -1, 2], [-1, 0, 1]]` |\n| `[0, 0, 0, 0]` | `[[0, 0, 0]]` |\n\n**Complexity:** `O(n²)` time (sorting is `O(n log n)`), `O(1)` extra space apart from the output.",
       "summary": "In simple words: Find every group of three numbers that adds up to 0, without repeating the same group.",
       "codeBlocks": [
         {
           "language": "python",
           "code": "def three_sum(nums: list[int]) -> list[list[int]]:\n    nums.sort()\n    result = []\n    for i in range(len(nums) - 2):\n        if i > 0 and nums[i] == nums[i - 1]:\n            continue                     # same first number: skip duplicates\n        if nums[i] > 0:\n            break                        # sorted: three positives can't sum to 0\n        left, right = i + 1, len(nums) - 1\n        while left < right:\n            total = nums[i] + nums[left] + nums[right]\n            if total < 0:\n                left += 1                # need a bigger sum\n            elif total > 0:\n                right -= 1               # need a smaller sum\n            else:\n                result.append([nums[i], nums[left], nums[right]])\n                left += 1\n                right -= 1\n                while left < right and nums[left] == nums[left - 1]:\n                    left += 1            # skip duplicate second numbers\n    return result\n\nprint(three_sum([-1, 0, 1, 2, -1, -4]))  # [[-1, -1, 2], [-1, 0, 1]]\nprint(three_sum([0, 0, 0, 0]))           # [[0, 0, 0]]"
-        },
-        {
-          "language": "text",
-          "code": "[[-1, -1, 2], [-1, 0, 1]]\n[[0, 0, 0]]"
         }
       ],
       "visuals": [],
@@ -65719,7 +65647,7 @@
         "startLine": 48,
         "endLine": 102
       },
-      "contentHash": "f82c3ef30c11572b"
+      "contentHash": "acc4e0666b0146e7"
     },
     {
       "id": "practice/coding/python/01-LeetCode-Python.md#contains-duplicate-leetcode-217",
@@ -65727,16 +65655,12 @@
       "parentId": null,
       "question": "Contains Duplicate (LeetCode 217)",
       "prompt": "Return `True` if any value appears at least twice in `nums`.",
-      "answer": "**In simple words:** Does any number appear more than once?\n\n**How to approach it:**\n\n1. A set keeps only unique values.\n2. If the set is smaller than the list, something was repeated.\n\n```python\ndef contains_duplicate(nums: list[int]) -> bool:\n    return len(set(nums)) != len(nums)\n\nprint(contains_duplicate([1, 2, 3, 1]))\nprint(contains_duplicate([1, 2, 3, 4]))\n```\n\n**Output:**\n\n```text\nTrue\nFalse\n```\n\n**Complexity:** `O(n)` time, `O(n)` space.",
+      "answer": "**In simple words:** Does any number appear more than once?\n\n**How to approach it:**\n\n1. A set keeps only unique values.\n2. If the set is smaller than the list, something was repeated.\n\n```python\ndef contains_duplicate(nums: list[int]) -> bool:\n    return len(set(nums)) != len(nums)\n\nprint(contains_duplicate([1, 2, 3, 1]))\nprint(contains_duplicate([1, 2, 3, 4]))\n```\n\n**Input and output:**\n\n| Input (`nums`) | Output |\n|---|---|\n| `[1, 2, 3, 1]` | `True` |\n| `[1, 2, 3, 4]` | `False` |\n\n**Complexity:** `O(n)` time, `O(n)` space.",
       "summary": "In simple words: Does any number appear more than once?",
       "codeBlocks": [
         {
           "language": "python",
           "code": "def contains_duplicate(nums: list[int]) -> bool:\n    return len(set(nums)) != len(nums)\n\nprint(contains_duplicate([1, 2, 3, 1]))\nprint(contains_duplicate([1, 2, 3, 4]))"
-        },
-        {
-          "language": "text",
-          "code": "True\nFalse"
         }
       ],
       "visuals": [],
@@ -65762,7 +65686,7 @@
         "startLine": 106,
         "endLine": 134
       },
-      "contentHash": "e95d184464de4095"
+      "contentHash": "4108a57b16e44abc"
     },
     {
       "id": "practice/coding/python/01-LeetCode-Python.md#valid-anagram-leetcode-242",
@@ -65770,16 +65694,12 @@
       "parentId": null,
       "question": "Valid Anagram (LeetCode 242)",
       "prompt": "Return `True` if `t` is an anagram of `s` (same letters, same counts).\n\nExample: `s = \"anagram\", t = \"nagaram\"` → `True`",
-      "answer": "**In simple words:** Do both words use exactly the same letters, the same number of times? (\"listen\" and \"silent\" do.)\n\n**How to approach it:**\n\n1. Count each letter in both words.\n2. If the counts match, they are anagrams.\n\n```python\nfrom collections import Counter\n\ndef is_anagram(s: str, t: str) -> bool:\n    return Counter(s) == Counter(t)\n\nprint(is_anagram(\"anagram\", \"nagaram\"))\nprint(is_anagram(\"rat\", \"car\"))\n```\n\n**Output:**\n\n```text\nTrue\nFalse\n```\n\n**Complexity:** `O(n)` time, `O(k)` space for `k` distinct characters.",
+      "answer": "**In simple words:** Do both words use exactly the same letters, the same number of times? (\"listen\" and \"silent\" do.)\n\n**How to approach it:**\n\n1. Count each letter in both words.\n2. If the counts match, they are anagrams.\n\n```python\nfrom collections import Counter\n\ndef is_anagram(s: str, t: str) -> bool:\n    return Counter(s) == Counter(t)\n\nprint(is_anagram(\"anagram\", \"nagaram\"))\nprint(is_anagram(\"rat\", \"car\"))\n```\n\n**Input and output:**\n\n| Input (`s`) | `t` | Output |\n|---|---|---|\n| `\"anagram\"` | `\"nagaram\"` | `True` |\n| `\"rat\"` | `\"car\"` | `False` |\n\n**Complexity:** `O(n)` time, `O(k)` space for `k` distinct characters.",
       "summary": "In simple words: Do both words use exactly the same letters, the same number of times? (\"listen\" and \"silent\" do.)",
       "codeBlocks": [
         {
           "language": "python",
           "code": "from collections import Counter\n\ndef is_anagram(s: str, t: str) -> bool:\n    return Counter(s) == Counter(t)\n\nprint(is_anagram(\"anagram\", \"nagaram\"))\nprint(is_anagram(\"rat\", \"car\"))"
-        },
-        {
-          "language": "text",
-          "code": "True\nFalse"
         }
       ],
       "visuals": [],
@@ -65805,7 +65725,7 @@
         "startLine": 138,
         "endLine": 170
       },
-      "contentHash": "0febc3bb93747c30"
+      "contentHash": "db68827d936ec61d"
     },
     {
       "id": "practice/coding/python/01-LeetCode-Python.md#group-anagrams-leetcode-49",
@@ -65813,16 +65733,12 @@
       "parentId": null,
       "question": "Group Anagrams (LeetCode 49)",
       "prompt": "Group the words that are anagrams of each other.\n\nExample: `[\"eat\", \"tea\", \"tan\", \"ate\", \"nat\", \"bat\"]` → `[[\"eat\", \"tea\", \"ate\"], [\"tan\", \"nat\"], [\"bat\"]]`",
-      "answer": "**In simple words:** Put words made of the same letters into the same group.\n\n**How to approach it:**\n\n1. Sort each word's letters: \"eat\", \"tea\" and \"ate\" all become \"aet\".\n2. Use that sorted form as a dictionary key and add the word to its list.\n3. The dictionary's lists are the groups.\n\n**Pattern:** anagrams share the same sorted letters, so use those as the dictionary key.\n\n```python\nfrom collections import defaultdict\n\ndef group_anagrams(words: list[str]) -> list[list[str]]:\n    groups = defaultdict(list)\n    for word in words:\n        groups[\"\".join(sorted(word))].append(word)\n    return list(groups.values())\n\nprint(group_anagrams([\"eat\", \"tea\", \"tan\", \"ate\", \"nat\", \"bat\"]))\n```\n\n**Output:**\n\n```text\n[['eat', 'tea', 'ate'], ['tan', 'nat'], ['bat']]\n```\n\n**Complexity:** `O(n · k log k)` for `n` words of length `k`.",
+      "answer": "**In simple words:** Put words made of the same letters into the same group.\n\n**How to approach it:**\n\n1. Sort each word's letters: \"eat\", \"tea\" and \"ate\" all become \"aet\".\n2. Use that sorted form as a dictionary key and add the word to its list.\n3. The dictionary's lists are the groups.\n\n**Pattern:** anagrams share the same sorted letters, so use those as the dictionary key.\n\n```python\nfrom collections import defaultdict\n\ndef group_anagrams(words: list[str]) -> list[list[str]]:\n    groups = defaultdict(list)\n    for word in words:\n        groups[\"\".join(sorted(word))].append(word)\n    return list(groups.values())\n\nprint(group_anagrams([\"eat\", \"tea\", \"tan\", \"ate\", \"nat\", \"bat\"]))\n```\n\n**Input and output:**\n\n| Input (`words`) | Output |\n|---|---|\n| `[\"eat\", \"tea\", \"tan\", \"ate\", \"nat\", \"bat\"]` | `[[\"eat\", \"tea\", \"ate\"], [\"tan\", \"nat\"], [\"bat\"]]` |\n\n**Complexity:** `O(n · k log k)` for `n` words of length `k`.",
       "summary": "In simple words: Put words made of the same letters into the same group.",
       "codeBlocks": [
         {
           "language": "python",
           "code": "from collections import defaultdict\n\ndef group_anagrams(words: list[str]) -> list[list[str]]:\n    groups = defaultdict(list)\n    for word in words:\n        groups[\"\".join(sorted(word))].append(word)\n    return list(groups.values())\n\nprint(group_anagrams([\"eat\", \"tea\", \"tan\", \"ate\", \"nat\", \"bat\"]))"
-        },
-        {
-          "language": "text",
-          "code": "[['eat', 'tea', 'ate'], ['tan', 'nat'], ['bat']]"
         }
       ],
       "visuals": [],
@@ -65848,7 +65764,7 @@
         "startLine": 174,
         "endLine": 210
       },
-      "contentHash": "0ad6f71495a44131"
+      "contentHash": "fdc4d7ca37e0b97a"
     },
     {
       "id": "practice/coding/python/01-LeetCode-Python.md#top-k-frequent-elements-leetcode-347",
@@ -65856,16 +65772,12 @@
       "parentId": null,
       "question": "Top K Frequent Elements (LeetCode 347)",
       "prompt": "Return the `k` most frequent numbers.\n\nExample: `nums = [1, 1, 1, 2, 2, 3], k = 2` → `[1, 2]`",
-      "answer": "**In simple words:** Return the `k` numbers that appear most often.\n\n**How to approach it:**\n\n1. Count how often each number appears.\n2. Pick the `k` numbers with the highest counts (a heap does this without sorting everything).\n\n```python\nimport heapq\nfrom collections import Counter\n\ndef top_k_frequent(nums: list[int], k: int) -> list[int]:\n    counts = Counter(nums)\n    return heapq.nlargest(k, counts.keys(), key=counts.get)\n\nprint(top_k_frequent([1, 1, 1, 2, 2, 3], 2))\n```\n\n**Output:**\n\n```text\n[1, 2]\n```\n\n**Complexity:** `O(n log k)` time, `O(n)` space.",
+      "answer": "**In simple words:** Return the `k` numbers that appear most often.\n\n**How to approach it:**\n\n1. Count how often each number appears.\n2. Pick the `k` numbers with the highest counts (a heap does this without sorting everything).\n\n```python\nimport heapq\nfrom collections import Counter\n\ndef top_k_frequent(nums: list[int], k: int) -> list[int]:\n    counts = Counter(nums)\n    return heapq.nlargest(k, counts.keys(), key=counts.get)\n\nprint(top_k_frequent([1, 1, 1, 2, 2, 3], 2))\n```\n\n**Input and output:**\n\n| Input (`nums`) | `k` | Output |\n|---|---|---|\n| `[1, 1, 1, 2, 2, 3]` | `2` | `[1, 2]` |\n\n**Complexity:** `O(n log k)` time, `O(n)` space.",
       "summary": "In simple words: Return the k numbers that appear most often.",
       "codeBlocks": [
         {
           "language": "python",
           "code": "import heapq\nfrom collections import Counter\n\ndef top_k_frequent(nums: list[int], k: int) -> list[int]:\n    counts = Counter(nums)\n    return heapq.nlargest(k, counts.keys(), key=counts.get)\n\nprint(top_k_frequent([1, 1, 1, 2, 2, 3], 2))"
-        },
-        {
-          "language": "text",
-          "code": "[1, 2]"
         }
       ],
       "visuals": [],
@@ -65892,7 +65804,7 @@
         "startLine": 214,
         "endLine": 246
       },
-      "contentHash": "b8c81b28253e3f6a"
+      "contentHash": "f0ec6168e0527ea2"
     },
     {
       "id": "practice/coding/python/01-LeetCode-Python.md#product-of-array-except-self-leetcode-238",
@@ -65900,16 +65812,12 @@
       "parentId": null,
       "question": "Product of Array Except Self (LeetCode 238)",
       "prompt": "Return an array where `answer[i]` is the product of all numbers except `nums[i]`, without using division, in `O(n)`.\n\nExample: `[1, 2, 3, 4]` → `[24, 12, 8, 6]`",
-      "answer": "**In simple words:** For each position, multiply all the other numbers together — without using division.\n\n**How to approach it:**\n\n1. The answer at `i` = (product of everything to its left) × (product of everything to its right).\n2. Pass 1, left to right: store the running product of the left side.\n3. Pass 2, right to left: multiply in the running product of the right side.\n\n_Example:_ in `[1, 2, 3, 4]`, position 2 → left `1 × 2 = 2`, right `4`, answer `8`.\n\n**Pattern:** prefix and suffix products. First store the product of everything to the left, then multiply by the product of everything to the right.\n\n```python\ndef product_except_self(nums: list[int]) -> list[int]:\n    n = len(nums)\n    result = [1] * n\n    prefix = 1\n    for i in range(n):\n        result[i] = prefix           # product of nums[0..i-1]\n        prefix *= nums[i]\n    suffix = 1\n    for i in range(n - 1, -1, -1):\n        result[i] *= suffix          # times product of nums[i+1..]\n        suffix *= nums[i]\n    return result\n\nprint(product_except_self([1, 2, 3, 4]))\n```\n\n**Output:**\n\n```text\n[24, 12, 8, 6]\n```\n\n**Complexity:** `O(n)` time, `O(1)` extra space apart from the output.",
+      "answer": "**In simple words:** For each position, multiply all the other numbers together — without using division.\n\n**How to approach it:**\n\n1. The answer at `i` = (product of everything to its left) × (product of everything to its right).\n2. Pass 1, left to right: store the running product of the left side.\n3. Pass 2, right to left: multiply in the running product of the right side.\n\n_Example:_ in `[1, 2, 3, 4]`, position 2 → left `1 × 2 = 2`, right `4`, answer `8`.\n\n**Pattern:** prefix and suffix products. First store the product of everything to the left, then multiply by the product of everything to the right.\n\n```python\ndef product_except_self(nums: list[int]) -> list[int]:\n    n = len(nums)\n    result = [1] * n\n    prefix = 1\n    for i in range(n):\n        result[i] = prefix           # product of nums[0..i-1]\n        prefix *= nums[i]\n    suffix = 1\n    for i in range(n - 1, -1, -1):\n        result[i] *= suffix          # times product of nums[i+1..]\n        suffix *= nums[i]\n    return result\n\nprint(product_except_self([1, 2, 3, 4]))\n```\n\n**Input and output:**\n\n| Input (`nums`) | Output |\n|---|---|\n| `[1, 2, 3, 4]` | `[24, 12, 8, 6]` |\n\n**Complexity:** `O(n)` time, `O(1)` extra space apart from the output.",
       "summary": "In simple words: For each position, multiply all the other numbers together — without using division.",
       "codeBlocks": [
         {
           "language": "python",
           "code": "def product_except_self(nums: list[int]) -> list[int]:\n    n = len(nums)\n    result = [1] * n\n    prefix = 1\n    for i in range(n):\n        result[i] = prefix           # product of nums[0..i-1]\n        prefix *= nums[i]\n    suffix = 1\n    for i in range(n - 1, -1, -1):\n        result[i] *= suffix          # times product of nums[i+1..]\n        suffix *= nums[i]\n    return result\n\nprint(product_except_self([1, 2, 3, 4]))"
-        },
-        {
-          "language": "text",
-          "code": "[24, 12, 8, 6]"
         }
       ],
       "visuals": [],
@@ -65937,7 +65845,7 @@
         "startLine": 250,
         "endLine": 293
       },
-      "contentHash": "cce496140346373d"
+      "contentHash": "25e77bcd117859ea"
     },
     {
       "id": "practice/coding/python/01-LeetCode-Python.md#search-insert-position-leetcode-35",
@@ -65945,16 +65853,12 @@
       "parentId": null,
       "question": "Search Insert Position (LeetCode 35)",
       "prompt": "Given a sorted array of distinct integers and a target, return the index of the target. If it is absent, return the index where it would be inserted to keep the array sorted.\n\nExample: `nums = [1, 3, 5, 6], target = 2` → `1`",
-      "answer": "**In simple words:** Find the target in a sorted list; if it isn't there, say where it would go.\n\n**How to approach it:**\n\n1. The list is sorted, so use binary search: look at the middle and throw away the half that can't hold the answer.\n2. Look for the first position whose value is `>= target`. That is the index if the target is there, and the insert spot if it isn't.\n\n**Pattern:** binary search for the first position whose value is `>= target` (the \"lower bound\").\n\n```python\ndef search_insert(nums: list[int], target: int) -> int:\n    left, right = 0, len(nums)       # the answer can be len(nums)\n    while left < right:\n        mid = (left + right) // 2\n        if nums[mid] < target:\n            left = mid + 1           # answer is to the right of mid\n        else:\n            right = mid              # mid may be the answer\n    return left\n\nprint(search_insert([1, 3, 5, 6], 5))  # 2 (found)\nprint(search_insert([1, 3, 5, 6], 2))  # 1 (insert between 1 and 3)\nprint(search_insert([1, 3, 5, 6], 7))  # 4 (insert at the end)\nprint(search_insert([1, 3, 5, 6], 0))  # 0 (insert at the start)\n```\n\n**Output:**\n\n```text\n2\n1\n4\n0\n```\n\nPython's standard library does the same: `bisect.bisect_left(nums, target)`.\n\n**Complexity:** `O(log n)` time, `O(1)` space.",
+      "answer": "**In simple words:** Find the target in a sorted list; if it isn't there, say where it would go.\n\n**How to approach it:**\n\n1. The list is sorted, so use binary search: look at the middle and throw away the half that can't hold the answer.\n2. Look for the first position whose value is `>= target`. That is the index if the target is there, and the insert spot if it isn't.\n\n**Pattern:** binary search for the first position whose value is `>= target` (the \"lower bound\").\n\n```python\ndef search_insert(nums: list[int], target: int) -> int:\n    left, right = 0, len(nums)       # the answer can be len(nums)\n    while left < right:\n        mid = (left + right) // 2\n        if nums[mid] < target:\n            left = mid + 1           # answer is to the right of mid\n        else:\n            right = mid              # mid may be the answer\n    return left\n\nprint(search_insert([1, 3, 5, 6], 5))  # 2 (found)\nprint(search_insert([1, 3, 5, 6], 2))  # 1 (insert between 1 and 3)\nprint(search_insert([1, 3, 5, 6], 7))  # 4 (insert at the end)\nprint(search_insert([1, 3, 5, 6], 0))  # 0 (insert at the start)\n```\n\n**Input and output:**\n\n| Input (`nums`) | `target` | Output |\n|---|---|---|\n| `[1, 3, 5, 6]` | `5` | `2` |\n| `[1, 3, 5, 6]` | `2` | `1` |\n| `[1, 3, 5, 6]` | `7` | `4` |\n| `[1, 3, 5, 6]` | `0` | `0` |\n\nPython's standard library does the same: `bisect.bisect_left(nums, target)`.\n\n**Complexity:** `O(log n)` time, `O(1)` space.",
       "summary": "In simple words: Find the target in a sorted list; if it isn't there, say where it would go.",
       "codeBlocks": [
         {
           "language": "python",
           "code": "def search_insert(nums: list[int], target: int) -> int:\n    left, right = 0, len(nums)       # the answer can be len(nums)\n    while left < right:\n        mid = (left + right) // 2\n        if nums[mid] < target:\n            left = mid + 1           # answer is to the right of mid\n        else:\n            right = mid              # mid may be the answer\n    return left\n\nprint(search_insert([1, 3, 5, 6], 5))  # 2 (found)\nprint(search_insert([1, 3, 5, 6], 2))  # 1 (insert between 1 and 3)\nprint(search_insert([1, 3, 5, 6], 7))  # 4 (insert at the end)\nprint(search_insert([1, 3, 5, 6], 0))  # 0 (insert at the start)"
-        },
-        {
-          "language": "text",
-          "code": "2\n1\n4\n0"
         }
       ],
       "visuals": [],
@@ -65981,7 +65885,7 @@
         "startLine": 297,
         "endLine": 342
       },
-      "contentHash": "3419e262e7751fdc"
+      "contentHash": "5f108699400e3f5e"
     },
     {
       "id": "practice/coding/python/01-LeetCode-Python.md#search-in-rotated-sorted-array-leetcode-33",
@@ -65989,16 +65893,12 @@
       "parentId": null,
       "question": "Search in Rotated Sorted Array (LeetCode 33)",
       "prompt": "A sorted array was rotated at an unknown pivot (e.g. `[4, 5, 6, 7, 0, 1, 2]`). Return the index of `target`, or `-1`, in `O(log n)`.",
-      "answer": "**In simple words:** A sorted list was \"rotated\" (its end moved to the front). Find the target quickly, in `O(log n)`.\n\n**How to approach it:**\n\n1. Use binary search, but first check which half around the middle is still in order.\n2. If the target fits inside the ordered half's range, search there; otherwise search the other half.\n\n**Pattern:** binary search. At every step one half is still sorted; check whether the target lies inside that sorted half.\n\n```python\ndef search_rotated(nums: list[int], target: int) -> int:\n    left, right = 0, len(nums) - 1\n    while left <= right:\n        mid = (left + right) // 2\n        if nums[mid] == target:\n            return mid\n        if nums[left] <= nums[mid]:              # left half is sorted\n            if nums[left] <= target < nums[mid]:\n                right = mid - 1\n            else:\n                left = mid + 1\n        else:                                    # right half is sorted\n            if nums[mid] < target <= nums[right]:\n                left = mid + 1\n            else:\n                right = mid - 1\n    return -1\n\nprint(search_rotated([4, 5, 6, 7, 0, 1, 2], 0))  # 4\nprint(search_rotated([4, 5, 6, 7, 0, 1, 2], 3))\n```\n\n**Output:**\n\n```text\n4\n-1\n```\n\n**Complexity:** `O(log n)` time, `O(1)` space.",
+      "answer": "**In simple words:** A sorted list was \"rotated\" (its end moved to the front). Find the target quickly, in `O(log n)`.\n\n**How to approach it:**\n\n1. Use binary search, but first check which half around the middle is still in order.\n2. If the target fits inside the ordered half's range, search there; otherwise search the other half.\n\n**Pattern:** binary search. At every step one half is still sorted; check whether the target lies inside that sorted half.\n\n```python\ndef search_rotated(nums: list[int], target: int) -> int:\n    left, right = 0, len(nums) - 1\n    while left <= right:\n        mid = (left + right) // 2\n        if nums[mid] == target:\n            return mid\n        if nums[left] <= nums[mid]:              # left half is sorted\n            if nums[left] <= target < nums[mid]:\n                right = mid - 1\n            else:\n                left = mid + 1\n        else:                                    # right half is sorted\n            if nums[mid] < target <= nums[right]:\n                left = mid + 1\n            else:\n                right = mid - 1\n    return -1\n\nprint(search_rotated([4, 5, 6, 7, 0, 1, 2], 0))  # 4\nprint(search_rotated([4, 5, 6, 7, 0, 1, 2], 3))\n```\n\n**Input and output:**\n\n| Input (`nums`) | `target` | Output |\n|---|---|---|\n| `[4, 5, 6, 7, 0, 1, 2]` | `0` | `4` |\n| `[4, 5, 6, 7, 0, 1, 2]` | `3` | `-1` |\n\n**Complexity:** `O(log n)` time, `O(1)` space.",
       "summary": "In simple words: A sorted list was \"rotated\" (its end moved to the front). Find the target quickly, in O(log n).",
       "codeBlocks": [
         {
           "language": "python",
           "code": "def search_rotated(nums: list[int], target: int) -> int:\n    left, right = 0, len(nums) - 1\n    while left <= right:\n        mid = (left + right) // 2\n        if nums[mid] == target:\n            return mid\n        if nums[left] <= nums[mid]:              # left half is sorted\n            if nums[left] <= target < nums[mid]:\n                right = mid - 1\n            else:\n                left = mid + 1\n        else:                                    # right half is sorted\n            if nums[mid] < target <= nums[right]:\n                left = mid + 1\n            else:\n                right = mid - 1\n    return -1\n\nprint(search_rotated([4, 5, 6, 7, 0, 1, 2], 0))  # 4\nprint(search_rotated([4, 5, 6, 7, 0, 1, 2], 3))"
-        },
-        {
-          "language": "text",
-          "code": "4\n-1"
         }
       ],
       "visuals": [],
@@ -66026,7 +65926,7 @@
         "startLine": 346,
         "endLine": 391
       },
-      "contentHash": "49ff8986c69bfee1"
+      "contentHash": "acfc81d06be3e935"
     },
     {
       "id": "practice/coding/python/01-LeetCode-Python.md#valid-palindrome-leetcode-125",
@@ -66034,16 +65934,12 @@
       "parentId": null,
       "question": "Valid Palindrome (LeetCode 125)",
       "prompt": "After lower-casing and removing non-alphanumeric characters, is the string a palindrome?\n\nExample: `\"A man, a plan, a canal: Panama\"` → `True`",
-      "answer": "**In simple words:** Ignoring spaces, punctuation and case, does the text read the same forwards and backwards?\n\n**How to approach it:**\n\n1. Keep only letters and digits, in lower case.\n2. Compare the cleaned text with its reverse.\n\n```python\ndef is_palindrome(s: str) -> bool:\n    cleaned = [ch.lower() for ch in s if ch.isalnum()]\n    return cleaned == cleaned[::-1]\n\nprint(is_palindrome(\"A man, a plan, a canal: Panama\"))\nprint(is_palindrome(\"race a car\"))\n```\n\n**Output:**\n\n```text\nTrue\nFalse\n```\n\n**Complexity:** `O(n)` time, `O(n)` space. A two-pointer version that skips non-alphanumeric characters uses `O(1)` space.",
+      "answer": "**In simple words:** Ignoring spaces, punctuation and case, does the text read the same forwards and backwards?\n\n**How to approach it:**\n\n1. Keep only letters and digits, in lower case.\n2. Compare the cleaned text with its reverse.\n\n```python\ndef is_palindrome(s: str) -> bool:\n    cleaned = [ch.lower() for ch in s if ch.isalnum()]\n    return cleaned == cleaned[::-1]\n\nprint(is_palindrome(\"A man, a plan, a canal: Panama\"))\nprint(is_palindrome(\"race a car\"))\n```\n\n**Input and output:**\n\n| Input (`s`) | Output |\n|---|---|\n| `\"A man, a plan, a canal: Panama\"` | `True` |\n| `\"race a car\"` | `False` |\n\n**Complexity:** `O(n)` time, `O(n)` space. A two-pointer version that skips non-alphanumeric characters uses `O(1)` space.",
       "summary": "In simple words: Ignoring spaces, punctuation and case, does the text read the same forwards and backwards?",
       "codeBlocks": [
         {
           "language": "python",
           "code": "def is_palindrome(s: str) -> bool:\n    cleaned = [ch.lower() for ch in s if ch.isalnum()]\n    return cleaned == cleaned[::-1]\n\nprint(is_palindrome(\"A man, a plan, a canal: Panama\"))\nprint(is_palindrome(\"race a car\"))"
-        },
-        {
-          "language": "text",
-          "code": "True\nFalse"
         }
       ],
       "visuals": [],
@@ -66069,7 +65965,7 @@
         "startLine": 395,
         "endLine": 426
       },
-      "contentHash": "84376ce9e92555ff"
+      "contentHash": "76f23b81a9b43f56"
     },
     {
       "id": "practice/coding/python/01-LeetCode-Python.md#container-with-most-water-leetcode-11",
@@ -66077,16 +65973,12 @@
       "parentId": null,
       "question": "Container With Most Water (LeetCode 11)",
       "prompt": "Given wall heights, choose two walls that hold the most water: `width × min(height)`.\n\nExample: `[1, 8, 6, 2, 5, 4, 8, 3, 7]` → `49`",
-      "answer": "**In simple words:** Each number is the height of a wall. Pick two walls; the water between them = the distance between them × the shorter wall. Find the most water.\n\n**How to approach it:**\n\n1. Start with the widest container: one pointer at each end.\n2. Work out the water and remember the best so far.\n3. Move the **shorter** wall inward. The water is limited by the shorter wall, so moving the taller one can only make it worse.\n4. Stop when the pointers meet.\n\n_Example:_ walls `8` (index 1) and `7` (index 8) → width `7` × shorter wall `7` = `49`.\n\n**Pattern:** two pointers at both ends. Always move the **shorter** wall inward — moving the taller one can never increase the area.\n\n```python\ndef max_area(height: list[int]) -> int:\n    left, right = 0, len(height) - 1\n    best = 0\n    while left < right:\n        best = max(best, (right - left) * min(height[left], height[right]))\n        if height[left] < height[right]:\n            left += 1\n        else:\n            right -= 1\n    return best\n\nprint(max_area([1, 8, 6, 2, 5, 4, 8, 3, 7]))\n```\n\n**Output:**\n\n```text\n49\n```\n\n**Complexity:** `O(n)` time, `O(1)` space.",
+      "answer": "**In simple words:** Each number is the height of a wall. Pick two walls; the water between them = the distance between them × the shorter wall. Find the most water.\n\n**How to approach it:**\n\n1. Start with the widest container: one pointer at each end.\n2. Work out the water and remember the best so far.\n3. Move the **shorter** wall inward. The water is limited by the shorter wall, so moving the taller one can only make it worse.\n4. Stop when the pointers meet.\n\n_Example:_ walls `8` (index 1) and `7` (index 8) → width `7` × shorter wall `7` = `49`.\n\n**Pattern:** two pointers at both ends. Always move the **shorter** wall inward — moving the taller one can never increase the area.\n\n```python\ndef max_area(height: list[int]) -> int:\n    left, right = 0, len(height) - 1\n    best = 0\n    while left < right:\n        best = max(best, (right - left) * min(height[left], height[right]))\n        if height[left] < height[right]:\n            left += 1\n        else:\n            right -= 1\n    return best\n\nprint(max_area([1, 8, 6, 2, 5, 4, 8, 3, 7]))\n```\n\n**Input and output:**\n\n| Input (`height`) | Output |\n|---|---|\n| `[1, 8, 6, 2, 5, 4, 8, 3, 7]` | `49` |\n\n**Complexity:** `O(n)` time, `O(1)` space.",
       "summary": "In simple words: Each number is the height of a wall. Pick two walls; the water between them = the distance between them × the shorter wall. Find the most water.",
       "codeBlocks": [
         {
           "language": "python",
           "code": "def max_area(height: list[int]) -> int:\n    left, right = 0, len(height) - 1\n    best = 0\n    while left < right:\n        best = max(best, (right - left) * min(height[left], height[right]))\n        if height[left] < height[right]:\n            left += 1\n        else:\n            right -= 1\n    return best\n\nprint(max_area([1, 8, 6, 2, 5, 4, 8, 3, 7]))"
-        },
-        {
-          "language": "text",
-          "code": "49"
         }
       ],
       "visuals": [],
@@ -66113,7 +66005,7 @@
         "startLine": 430,
         "endLine": 472
       },
-      "contentHash": "911aada9d533d976"
+      "contentHash": "cd253e314cb3ea56"
     },
     {
       "id": "practice/coding/python/01-LeetCode-Python.md#longest-substring-without-repeating-characters-leetcode-3",
@@ -66121,16 +66013,12 @@
       "parentId": null,
       "question": "Longest Substring Without Repeating Characters (LeetCode 3)",
       "prompt": "Return the length of the longest substring with no repeated characters.\n\nExample: `\"abcabcbb\"` → `3` (`\"abc\"`)",
-      "answer": "**In simple words:** Find the longest stretch of the text where no character repeats (\"abcabcbb\" → \"abc\", length 3).\n\n**How to approach it:**\n\n1. Keep a \"window\" of characters with no repeats, and grow it one character at a time.\n2. When a character repeats inside the window, move the window's start just past its earlier copy.\n3. Track the biggest window size seen.\n\n**Pattern:** sliding window. Remember where each character was last seen; when a character repeats inside the window, move the window's start past it.\n\n```python\ndef length_of_longest_substring(s: str) -> int:\n    last_seen = {}                   # character -> last index\n    start = best = 0\n    for i, ch in enumerate(s):\n        if ch in last_seen and last_seen[ch] >= start:\n            start = last_seen[ch] + 1\n        last_seen[ch] = i\n        best = max(best, i - start + 1)\n    return best\n\nprint(length_of_longest_substring(\"abcabcbb\"))  # 3\nprint(length_of_longest_substring(\"pwwkew\"))    # 3\n```\n\n**Output:**\n\n```text\n3\n3\n```\n\n**Complexity:** `O(n)` time, `O(k)` space for `k` distinct characters.",
+      "answer": "**In simple words:** Find the longest stretch of the text where no character repeats (\"abcabcbb\" → \"abc\", length 3).\n\n**How to approach it:**\n\n1. Keep a \"window\" of characters with no repeats, and grow it one character at a time.\n2. When a character repeats inside the window, move the window's start just past its earlier copy.\n3. Track the biggest window size seen.\n\n**Pattern:** sliding window. Remember where each character was last seen; when a character repeats inside the window, move the window's start past it.\n\n```python\ndef length_of_longest_substring(s: str) -> int:\n    last_seen = {}                   # character -> last index\n    start = best = 0\n    for i, ch in enumerate(s):\n        if ch in last_seen and last_seen[ch] >= start:\n            start = last_seen[ch] + 1\n        last_seen[ch] = i\n        best = max(best, i - start + 1)\n    return best\n\nprint(length_of_longest_substring(\"abcabcbb\"))  # 3\nprint(length_of_longest_substring(\"pwwkew\"))    # 3\n```\n\n**Input and output:**\n\n| Input (`s`) | Output |\n|---|---|\n| `\"abcabcbb\"` | `3` |\n| `\"pwwkew\"` | `3` |\n\n**Complexity:** `O(n)` time, `O(k)` space for `k` distinct characters.",
       "summary": "In simple words: Find the longest stretch of the text where no character repeats (\"abcabcbb\" → \"abc\", length 3).",
       "codeBlocks": [
         {
           "language": "python",
           "code": "def length_of_longest_substring(s: str) -> int:\n    last_seen = {}                   # character -> last index\n    start = best = 0\n    for i, ch in enumerate(s):\n        if ch in last_seen and last_seen[ch] >= start:\n            start = last_seen[ch] + 1\n        last_seen[ch] = i\n        best = max(best, i - start + 1)\n    return best\n\nprint(length_of_longest_substring(\"abcabcbb\"))  # 3\nprint(length_of_longest_substring(\"pwwkew\"))    # 3"
-        },
-        {
-          "language": "text",
-          "code": "3\n3"
         }
       ],
       "visuals": [],
@@ -66159,7 +66047,7 @@
         "startLine": 476,
         "endLine": 516
       },
-      "contentHash": "d40f37db1a13333b"
+      "contentHash": "81a4aa8d47055291"
     },
     {
       "id": "practice/coding/python/01-LeetCode-Python.md#best-time-to-buy-and-sell-stock-leetcode-121",
@@ -66167,16 +66055,12 @@
       "parentId": null,
       "question": "Best Time to Buy and Sell Stock (LeetCode 121)",
       "prompt": "`prices[i]` is the price on day `i`. Buy once and sell later; return the maximum profit (0 if none).\n\nExample: `[7, 1, 5, 3, 6, 4]` → `5` (buy at 1, sell at 6)",
-      "answer": "**In simple words:** Pick one day to buy and a later day to sell, for the biggest profit.\n\n**How to approach it:**\n\n1. Walk through the days, remembering the cheapest price so far.\n2. On each day, the profit if you sold today = today's price − the cheapest so far.\n3. Keep the best profit.\n\nTrack the lowest price so far and the best profit from selling today.\n\n```python\ndef max_profit(prices: list[int]) -> int:\n    min_price = float(\"inf\")\n    best = 0\n    for price in prices:\n        min_price = min(min_price, price)\n        best = max(best, price - min_price)\n    return best\n\nprint(max_profit([7, 1, 5, 3, 6, 4]))\nprint(max_profit([7, 6, 4, 3, 1]))\n```\n\n**Output:**\n\n```text\n5\n0\n```\n\n**Complexity:** `O(n)` time, `O(1)` space.",
+      "answer": "**In simple words:** Pick one day to buy and a later day to sell, for the biggest profit.\n\n**How to approach it:**\n\n1. Walk through the days, remembering the cheapest price so far.\n2. On each day, the profit if you sold today = today's price − the cheapest so far.\n3. Keep the best profit.\n\nTrack the lowest price so far and the best profit from selling today.\n\n```python\ndef max_profit(prices: list[int]) -> int:\n    min_price = float(\"inf\")\n    best = 0\n    for price in prices:\n        min_price = min(min_price, price)\n        best = max(best, price - min_price)\n    return best\n\nprint(max_profit([7, 1, 5, 3, 6, 4]))\nprint(max_profit([7, 6, 4, 3, 1]))\n```\n\n**Input and output:**\n\n| Input (`prices`) | Output |\n|---|---|\n| `[7, 1, 5, 3, 6, 4]` | `5` |\n| `[7, 6, 4, 3, 1]` | `0` |\n\n**Complexity:** `O(n)` time, `O(1)` space.",
       "summary": "In simple words: Pick one day to buy and a later day to sell, for the biggest profit.",
       "codeBlocks": [
         {
           "language": "python",
           "code": "def max_profit(prices: list[int]) -> int:\n    min_price = float(\"inf\")\n    best = 0\n    for price in prices:\n        min_price = min(min_price, price)\n        best = max(best, price - min_price)\n    return best\n\nprint(max_profit([7, 1, 5, 3, 6, 4]))\nprint(max_profit([7, 6, 4, 3, 1]))"
-        },
-        {
-          "language": "text",
-          "code": "5\n0"
         }
       ],
       "visuals": [],
@@ -66205,7 +66089,7 @@
         "startLine": 520,
         "endLine": 558
       },
-      "contentHash": "189388819c3a0472"
+      "contentHash": "232b34049075bc7c"
     },
     {
       "id": "practice/coding/python/01-LeetCode-Python.md#valid-parentheses-leetcode-20",
@@ -66213,16 +66097,12 @@
       "parentId": null,
       "question": "Valid Parentheses (LeetCode 20)",
       "prompt": "Given a string of `()[]{}`, check that every bracket is closed in the correct order.\n\nExample: `\"()[]{}\"` → `True`, `\"(]\"` → `False`",
-      "answer": "**In simple words:** Is every opening bracket closed by the right kind of bracket, in the right order? `\"([])\"` is fine, `\"(]\"` is not.\n\n**How to approach it:**\n\n1. Push each opening bracket onto a stack.\n2. On a closing bracket, the top of the stack must be its matching opener; pop it.\n3. At the end, the stack must be empty.\n\n**Pattern:** stack. Push opening brackets; each closing bracket must match the top of the stack.\n\n```python\ndef is_valid(s: str) -> bool:\n    pairs = {\")\": \"(\", \"]\": \"[\", \"}\": \"{\"}\n    stack = []\n    for ch in s:\n        if ch in pairs:\n            if not stack or stack.pop() != pairs[ch]:\n                return False\n        else:\n            stack.append(ch)\n    return not stack                 # every bracket must be closed\n\nprint(is_valid(\"()[]{}\"))\nprint(is_valid(\"(]\"))\nprint(is_valid(\"([)]\"))\n```\n\n**Output:**\n\n```text\nTrue\nFalse\nFalse\n```\n\n**Complexity:** `O(n)` time, `O(n)` space.",
+      "answer": "**In simple words:** Is every opening bracket closed by the right kind of bracket, in the right order? `\"([])\"` is fine, `\"(]\"` is not.\n\n**How to approach it:**\n\n1. Push each opening bracket onto a stack.\n2. On a closing bracket, the top of the stack must be its matching opener; pop it.\n3. At the end, the stack must be empty.\n\n**Pattern:** stack. Push opening brackets; each closing bracket must match the top of the stack.\n\n```python\ndef is_valid(s: str) -> bool:\n    pairs = {\")\": \"(\", \"]\": \"[\", \"}\": \"{\"}\n    stack = []\n    for ch in s:\n        if ch in pairs:\n            if not stack or stack.pop() != pairs[ch]:\n                return False\n        else:\n            stack.append(ch)\n    return not stack                 # every bracket must be closed\n\nprint(is_valid(\"()[]{}\"))\nprint(is_valid(\"(]\"))\nprint(is_valid(\"([)]\"))\n```\n\n**Input and output:**\n\n| Input (`s`) | Output |\n|---|---|\n| `\"()[]{}\"` | `True` |\n| `\"(]\"` | `False` |\n| `\"([)]\"` | `False` |\n\n**Complexity:** `O(n)` time, `O(n)` space.",
       "summary": "In simple words: Is every opening bracket closed by the right kind of bracket, in the right order? \"([])\" is fine, \"(]\" is not.",
       "codeBlocks": [
         {
           "language": "python",
           "code": "def is_valid(s: str) -> bool:\n    pairs = {\")\": \"(\", \"]\": \"[\", \"}\": \"{\"}\n    stack = []\n    for ch in s:\n        if ch in pairs:\n            if not stack or stack.pop() != pairs[ch]:\n                return False\n        else:\n            stack.append(ch)\n    return not stack                 # every bracket must be closed\n\nprint(is_valid(\"()[]{}\"))\nprint(is_valid(\"(]\"))\nprint(is_valid(\"([)]\"))"
-        },
-        {
-          "language": "text",
-          "code": "True\nFalse\nFalse"
         }
       ],
       "visuals": [],
@@ -66248,7 +66128,7 @@
         "startLine": 562,
         "endLine": 605
       },
-      "contentHash": "ea9d823b90064db9"
+      "contentHash": "e4db4034adf22427"
     },
     {
       "id": "practice/coding/python/01-LeetCode-Python.md#merge-intervals-leetcode-56",
@@ -66256,16 +66136,12 @@
       "parentId": null,
       "question": "Merge Intervals (LeetCode 56)",
       "prompt": "Merge all overlapping intervals.\n\nExample: `[[1, 3], [2, 6], [8, 10], [15, 18]]` → `[[1, 6], [8, 10], [15, 18]]`",
-      "answer": "**In simple words:** Combine ranges that overlap into one range: `[1, 3]` and `[2, 6]` become `[1, 6]`.\n\n**How to approach it:**\n\n1. Sort the ranges by their start.\n2. If a range starts before the last merged one ends, they overlap — extend the end.\n3. Otherwise, start a new merged range.\n\nSort by start; extend the last merged interval while the next one overlaps.\n\n```python\ndef merge(intervals: list[list[int]]) -> list[list[int]]:\n    intervals.sort(key=lambda interval: interval[0])\n    merged = []\n    for start, end in intervals:\n        if merged and start <= merged[-1][1]:\n            merged[-1][1] = max(merged[-1][1], end)   # overlaps: extend\n        else:\n            merged.append([start, end])\n    return merged\n\nprint(merge([[1, 3], [2, 6], [8, 10], [15, 18]]))\n```\n\n**Output:**\n\n```text\n[[1, 6], [8, 10], [15, 18]]\n```\n\n**Complexity:** `O(n log n)` time (sorting), `O(n)` space.",
+      "answer": "**In simple words:** Combine ranges that overlap into one range: `[1, 3]` and `[2, 6]` become `[1, 6]`.\n\n**How to approach it:**\n\n1. Sort the ranges by their start.\n2. If a range starts before the last merged one ends, they overlap — extend the end.\n3. Otherwise, start a new merged range.\n\nSort by start; extend the last merged interval while the next one overlaps.\n\n```python\ndef merge(intervals: list[list[int]]) -> list[list[int]]:\n    intervals.sort(key=lambda interval: interval[0])\n    merged = []\n    for start, end in intervals:\n        if merged and start <= merged[-1][1]:\n            merged[-1][1] = max(merged[-1][1], end)   # overlaps: extend\n        else:\n            merged.append([start, end])\n    return merged\n\nprint(merge([[1, 3], [2, 6], [8, 10], [15, 18]]))\n```\n\n**Input and output:**\n\n| Input (`intervals`) | Output |\n|---|---|\n| `[[1, 3], [2, 6], [8, 10], [15, 18]]` | `[[1, 6], [8, 10], [15, 18]]` |\n\n**Complexity:** `O(n log n)` time (sorting), `O(n)` space.",
       "summary": "In simple words: Combine ranges that overlap into one range: [1, 3] and [2, 6] become [1, 6].",
       "codeBlocks": [
         {
           "language": "python",
           "code": "def merge(intervals: list[list[int]]) -> list[list[int]]:\n    intervals.sort(key=lambda interval: interval[0])\n    merged = []\n    for start, end in intervals:\n        if merged and start <= merged[-1][1]:\n            merged[-1][1] = max(merged[-1][1], end)   # overlaps: extend\n        else:\n            merged.append([start, end])\n    return merged\n\nprint(merge([[1, 3], [2, 6], [8, 10], [15, 18]]))"
-        },
-        {
-          "language": "text",
-          "code": "[[1, 6], [8, 10], [15, 18]]"
         }
       ],
       "visuals": [],
@@ -66291,7 +66167,7 @@
         "startLine": 609,
         "endLine": 647
       },
-      "contentHash": "abbccf11555f354a"
+      "contentHash": "86cf41d17758db7a"
     },
     {
       "id": "practice/coding/python/01-LeetCode-Python.md#kth-largest-element-in-an-array-leetcode-215",
@@ -66299,16 +66175,12 @@
       "parentId": null,
       "question": "Kth Largest Element in an Array (LeetCode 215)",
       "prompt": "Return the `k`-th largest element.\n\nExample: `nums = [3, 2, 1, 5, 6, 4], k = 2` → `5`",
-      "answer": "**In simple words:** Find the number that would be at position `k` if the list were sorted from largest to smallest.\n\n**How to approach it:**\n\n1. Keep a small min-heap holding the `k` largest numbers seen so far.\n2. When it grows past `k`, drop its smallest.\n3. At the end, the smallest of those `k` numbers is the k-th largest.\n\n**Pattern:** keep a min-heap of the `k` largest values seen; its smallest element is the answer.\n\n```python\nimport heapq\n\ndef find_kth_largest(nums: list[int], k: int) -> int:\n    heap = []\n    for num in nums:\n        heapq.heappush(heap, num)\n        if len(heap) > k:\n            heapq.heappop(heap)      # drop the smallest\n    return heap[0]\n\nprint(find_kth_largest([3, 2, 1, 5, 6, 4], 2))\n```\n\n**Output:**\n\n```text\n5\n```\n\n**Complexity:** `O(n log k)` time, `O(k)` space.",
+      "answer": "**In simple words:** Find the number that would be at position `k` if the list were sorted from largest to smallest.\n\n**How to approach it:**\n\n1. Keep a small min-heap holding the `k` largest numbers seen so far.\n2. When it grows past `k`, drop its smallest.\n3. At the end, the smallest of those `k` numbers is the k-th largest.\n\n**Pattern:** keep a min-heap of the `k` largest values seen; its smallest element is the answer.\n\n```python\nimport heapq\n\ndef find_kth_largest(nums: list[int], k: int) -> int:\n    heap = []\n    for num in nums:\n        heapq.heappush(heap, num)\n        if len(heap) > k:\n            heapq.heappop(heap)      # drop the smallest\n    return heap[0]\n\nprint(find_kth_largest([3, 2, 1, 5, 6, 4], 2))\n```\n\n**Input and output:**\n\n| Input (`nums`) | `k` | Output |\n|---|---|---|\n| `[3, 2, 1, 5, 6, 4]` | `2` | `5` |\n\n**Complexity:** `O(n log k)` time, `O(k)` space.",
       "summary": "In simple words: Find the number that would be at position k if the list were sorted from largest to smallest.",
       "codeBlocks": [
         {
           "language": "python",
           "code": "import heapq\n\ndef find_kth_largest(nums: list[int], k: int) -> int:\n    heap = []\n    for num in nums:\n        heapq.heappush(heap, num)\n        if len(heap) > k:\n            heapq.heappop(heap)      # drop the smallest\n    return heap[0]\n\nprint(find_kth_largest([3, 2, 1, 5, 6, 4], 2))"
-        },
-        {
-          "language": "text",
-          "code": "5"
         }
       ],
       "visuals": [],
@@ -66336,7 +66208,7 @@
         "startLine": 651,
         "endLine": 689
       },
-      "contentHash": "474cd80c61c630a2"
+      "contentHash": "ebd189db8eea5084"
     },
     {
       "id": "practice/coding/python/01-LeetCode-Python.md#reverse-a-linked-list-leetcode-206",
@@ -66344,16 +66216,12 @@
       "parentId": null,
       "question": "Reverse a Linked List (LeetCode 206)",
       "prompt": "Reverse a singly linked list and return the new head.",
-      "answer": "**In simple words:** Turn the chain `1 → 2 → 3` into `3 → 2 → 1`.\n\n**How to approach it:**\n\n1. Walk the list, keeping `prev` (the part already reversed; empty at first).\n2. For each node: remember the next node, point the current node back to `prev`, then step forward.\n3. When you run off the end, `prev` is the new head.\n\nWalk the list once, turning each `next` pointer backwards.\n\n```python\nclass ListNode:\n    def __init__(self, val=0, next=None):\n        self.val = val\n        self.next = next\n\ndef reverse_list(head: ListNode | None) -> ListNode | None:\n    prev = None\n    while head:\n        nxt = head.next      # remember the rest of the list\n        head.next = prev     # reverse this pointer\n        prev = head\n        head = nxt\n    return prev\n\ndef from_list(values):               # [1, 2, 3] -> 1 -> 2 -> 3\n    dummy = tail = ListNode()\n    for v in values:\n        tail.next = ListNode(v)\n        tail = tail.next\n    return dummy.next\n\ndef to_list(head):                   # 1 -> 2 -> 3 -> [1, 2, 3]\n    values = []\n    while head:\n        values.append(head.val)\n        head = head.next\n    return values\n\nprint(to_list(reverse_list(from_list([1, 2, 3, 4, 5]))))\n```\n\n**Output:**\n\n```text\n[5, 4, 3, 2, 1]\n```\n\n**Complexity:** `O(n)` time, `O(1)` space.",
+      "answer": "**In simple words:** Turn the chain `1 → 2 → 3` into `3 → 2 → 1`.\n\n**How to approach it:**\n\n1. Walk the list, keeping `prev` (the part already reversed; empty at first).\n2. For each node: remember the next node, point the current node back to `prev`, then step forward.\n3. When you run off the end, `prev` is the new head.\n\nWalk the list once, turning each `next` pointer backwards.\n\n```python\nclass ListNode:\n    def __init__(self, val=0, next=None):\n        self.val = val\n        self.next = next\n\ndef reverse_list(head: ListNode | None) -> ListNode | None:\n    prev = None\n    while head:\n        nxt = head.next      # remember the rest of the list\n        head.next = prev     # reverse this pointer\n        prev = head\n        head = nxt\n    return prev\n\ndef from_list(values):               # [1, 2, 3] -> 1 -> 2 -> 3\n    dummy = tail = ListNode()\n    for v in values:\n        tail.next = ListNode(v)\n        tail = tail.next\n    return dummy.next\n\ndef to_list(head):                   # 1 -> 2 -> 3 -> [1, 2, 3]\n    values = []\n    while head:\n        values.append(head.val)\n        head = head.next\n    return values\n\nprint(to_list(reverse_list(from_list([1, 2, 3, 4, 5]))))\n```\n\n**Input and output:**\n\n| Input (`head`) | Output |\n|---|---|\n| `[1, 2, 3, 4, 5]` | `[5, 4, 3, 2, 1]` |\n\n**Complexity:** `O(n)` time, `O(1)` space.",
       "summary": "In simple words: Turn the chain 1 → 2 → 3 into 3 → 2 → 1.",
       "codeBlocks": [
         {
           "language": "python",
           "code": "class ListNode:\n    def __init__(self, val=0, next=None):\n        self.val = val\n        self.next = next\n\ndef reverse_list(head: ListNode | None) -> ListNode | None:\n    prev = None\n    while head:\n        nxt = head.next      # remember the rest of the list\n        head.next = prev     # reverse this pointer\n        prev = head\n        head = nxt\n    return prev\n\ndef from_list(values):               # [1, 2, 3] -> 1 -> 2 -> 3\n    dummy = tail = ListNode()\n    for v in values:\n        tail.next = ListNode(v)\n        tail = tail.next\n    return dummy.next\n\ndef to_list(head):                   # 1 -> 2 -> 3 -> [1, 2, 3]\n    values = []\n    while head:\n        values.append(head.val)\n        head = head.next\n    return values\n\nprint(to_list(reverse_list(from_list([1, 2, 3, 4, 5]))))"
-        },
-        {
-          "language": "text",
-          "code": "[5, 4, 3, 2, 1]"
         }
       ],
       "visuals": [],
@@ -66380,7 +66248,7 @@
         "startLine": 693,
         "endLine": 747
       },
-      "contentHash": "1540e544ed226cfd"
+      "contentHash": "9fd64e47a309fc5d"
     },
     {
       "id": "practice/coding/python/01-LeetCode-Python.md#merge-two-sorted-lists-leetcode-21",
@@ -66388,16 +66256,12 @@
       "parentId": null,
       "question": "Merge Two Sorted Lists (LeetCode 21)",
       "prompt": "Merge two sorted linked lists into one sorted list.",
-      "answer": "**In simple words:** Join two sorted chains into one sorted chain.\n\n**How to approach it:**\n\n1. Compare the two front nodes and attach the smaller one to the result.\n2. Move forward in the list you took it from, and repeat.\n3. When one list runs out, attach the rest of the other.\n\nA dummy head avoids special cases for the first node.\n\n```python\ndef merge_two_lists(a: ListNode | None, b: ListNode | None) -> ListNode | None:\n    dummy = tail = ListNode()\n    while a and b:\n        if a.val <= b.val:\n            tail.next, a = a, a.next\n        else:\n            tail.next, b = b, b.next\n        tail = tail.next\n    tail.next = a or b       # attach whatever remains\n    return dummy.next\n\nprint(to_list(merge_two_lists(from_list([1, 2, 4]), from_list([1, 3, 4]))))\n```\n\n**Output:**\n\n```text\n[1, 1, 2, 3, 4, 4]\n```\n\n**Complexity:** `O(n + m)` time, `O(1)` space.",
+      "answer": "**In simple words:** Join two sorted chains into one sorted chain.\n\n**How to approach it:**\n\n1. Compare the two front nodes and attach the smaller one to the result.\n2. Move forward in the list you took it from, and repeat.\n3. When one list runs out, attach the rest of the other.\n\nA dummy head avoids special cases for the first node.\n\n```python\ndef merge_two_lists(a: ListNode | None, b: ListNode | None) -> ListNode | None:\n    dummy = tail = ListNode()\n    while a and b:\n        if a.val <= b.val:\n            tail.next, a = a, a.next\n        else:\n            tail.next, b = b, b.next\n        tail = tail.next\n    tail.next = a or b       # attach whatever remains\n    return dummy.next\n\nprint(to_list(merge_two_lists(from_list([1, 2, 4]), from_list([1, 3, 4]))))\n```\n\n**Input and output:**\n\n| Input (`a`) | `b` | Output |\n|---|---|---|\n| `[1, 2, 4]` | `[1, 3, 4]` | `[1, 1, 2, 3, 4, 4]` |\n\n**Complexity:** `O(n + m)` time, `O(1)` space.",
       "summary": "In simple words: Join two sorted chains into one sorted chain.",
       "codeBlocks": [
         {
           "language": "python",
           "code": "def merge_two_lists(a: ListNode | None, b: ListNode | None) -> ListNode | None:\n    dummy = tail = ListNode()\n    while a and b:\n        if a.val <= b.val:\n            tail.next, a = a, a.next\n        else:\n            tail.next, b = b, b.next\n        tail = tail.next\n    tail.next = a or b       # attach whatever remains\n    return dummy.next\n\nprint(to_list(merge_two_lists(from_list([1, 2, 4]), from_list([1, 3, 4]))))"
-        },
-        {
-          "language": "text",
-          "code": "[1, 1, 2, 3, 4, 4]"
         }
       ],
       "visuals": [],
@@ -66425,7 +66289,7 @@
         "startLine": 751,
         "endLine": 788
       },
-      "contentHash": "a08c28a9d365a565"
+      "contentHash": "106f7ca2569d2d4b"
     },
     {
       "id": "practice/coding/python/01-LeetCode-Python.md#linked-list-cycle-leetcode-141",
@@ -66433,16 +66297,12 @@
       "parentId": null,
       "question": "Linked List Cycle (LeetCode 141)",
       "prompt": "Return `True` if the linked list has a cycle.",
-      "answer": "**In simple words:** Does the chain loop back on itself instead of ending?\n\n**How to approach it:**\n\n1. Move a slow pointer 1 step and a fast pointer 2 steps at a time.\n2. If there is a loop, the fast one laps the slow one and they meet.\n3. If the fast one reaches the end, there is no loop.\n\n**Pattern:** Floyd's fast and slow pointers. If there is a cycle, the fast pointer eventually meets the slow one.\n\n```python\ndef has_cycle(head: ListNode | None) -> bool:\n    slow = fast = head\n    while fast and fast.next:\n        slow = slow.next\n        fast = fast.next.next\n        if slow is fast:\n            return True\n    return False\n\nhead = from_list([3, 2, 0, -4])\nhead.next.next.next.next = head.next   # -4 points back to 2: a cycle\nprint(has_cycle(head))\nprint(has_cycle(from_list([1, 2])))\n```\n\n**Output:**\n\n```text\nTrue\nFalse\n```\n\n**Complexity:** `O(n)` time, `O(1)` space.",
+      "answer": "**In simple words:** Does the chain loop back on itself instead of ending?\n\n**How to approach it:**\n\n1. Move a slow pointer 1 step and a fast pointer 2 steps at a time.\n2. If there is a loop, the fast one laps the slow one and they meet.\n3. If the fast one reaches the end, there is no loop.\n\n**Pattern:** Floyd's fast and slow pointers. If there is a cycle, the fast pointer eventually meets the slow one.\n\n```python\ndef has_cycle(head: ListNode | None) -> bool:\n    slow = fast = head\n    while fast and fast.next:\n        slow = slow.next\n        fast = fast.next.next\n        if slow is fast:\n            return True\n    return False\n\nhead = from_list([3, 2, 0, -4])\nhead.next.next.next.next = head.next   # -4 points back to 2: a cycle\nprint(has_cycle(head))\nprint(has_cycle(from_list([1, 2])))\n```\n\n**Input and output:**\n\n| Input (`head`) | Output |\n|---|---|\n| `[3, 2, 0, -4] (last node links back to 2)` | `True` |\n| `[1, 2]` | `False` |\n\n**Complexity:** `O(n)` time, `O(1)` space.",
       "summary": "In simple words: Does the chain loop back on itself instead of ending?",
       "codeBlocks": [
         {
           "language": "python",
           "code": "def has_cycle(head: ListNode | None) -> bool:\n    slow = fast = head\n    while fast and fast.next:\n        slow = slow.next\n        fast = fast.next.next\n        if slow is fast:\n            return True\n    return False\n\nhead = from_list([3, 2, 0, -4])\nhead.next.next.next.next = head.next   # -4 points back to 2: a cycle\nprint(has_cycle(head))\nprint(has_cycle(from_list([1, 2])))"
-        },
-        {
-          "language": "text",
-          "code": "True\nFalse"
         }
       ],
       "visuals": [],
@@ -66469,7 +66329,7 @@
         "startLine": 792,
         "endLine": 831
       },
-      "contentHash": "a6560d4e0c5a513b"
+      "contentHash": "e839659a73dd651d"
     },
     {
       "id": "practice/coding/python/01-LeetCode-Python.md#maximum-depth-of-binary-tree-leetcode-104",
@@ -66477,16 +66337,12 @@
       "parentId": null,
       "question": "Maximum Depth of Binary Tree (LeetCode 104)",
       "prompt": "Return the number of nodes on the longest path from the root down to a leaf.",
-      "answer": "**In simple words:** How many levels does the tree have, from the top down to its deepest leaf?\n\n**How to approach it:**\n\n1. An empty tree has depth 0.\n2. A node's depth = 1 + the deeper of its left and right subtrees.\n3. Recursion works this out from the leaves upward.\n\n```python\nclass TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\ndef max_depth(root: TreeNode | None) -> int:\n    if not root:\n        return 0\n    return 1 + max(max_depth(root.left), max_depth(root.right))\n\n#     3\n#    / \\\n#   9  20\n#     /  \\\n#    15   7\nroot = TreeNode(3, TreeNode(9), TreeNode(20, TreeNode(15), TreeNode(7)))\nprint(max_depth(root))\n```\n\n**Output:**\n\n```text\n3\n```\n\n**Complexity:** `O(n)` time, `O(h)` space for tree height `h` (recursion stack).",
+      "answer": "**In simple words:** How many levels does the tree have, from the top down to its deepest leaf?\n\n**How to approach it:**\n\n1. An empty tree has depth 0.\n2. A node's depth = 1 + the deeper of its left and right subtrees.\n3. Recursion works this out from the leaves upward.\n\n```python\nclass TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\ndef max_depth(root: TreeNode | None) -> int:\n    if not root:\n        return 0\n    return 1 + max(max_depth(root.left), max_depth(root.right))\n\n#     3\n#    / \\\n#   9  20\n#     /  \\\n#    15   7\nroot = TreeNode(3, TreeNode(9), TreeNode(20, TreeNode(15), TreeNode(7)))\nprint(max_depth(root))\n```\n\n**Input and output:**\n\n| Input (`root`) | Output |\n|---|---|\n| `[3, 9, 20, null, null, 15, 7]` | `3` |\n\n**Complexity:** `O(n)` time, `O(h)` space for tree height `h` (recursion stack).",
       "summary": "In simple words: How many levels does the tree have, from the top down to its deepest leaf?",
       "codeBlocks": [
         {
           "language": "python",
           "code": "class TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\ndef max_depth(root: TreeNode | None) -> int:\n    if not root:\n        return 0\n    return 1 + max(max_depth(root.left), max_depth(root.right))\n\n#     3\n#    / \\\n#   9  20\n#     /  \\\n#    15   7\nroot = TreeNode(3, TreeNode(9), TreeNode(20, TreeNode(15), TreeNode(7)))\nprint(max_depth(root))"
-        },
-        {
-          "language": "text",
-          "code": "3"
         }
       ],
       "visuals": [],
@@ -66514,7 +66370,7 @@
         "startLine": 835,
         "endLine": 876
       },
-      "contentHash": "1f819a7922289f11"
+      "contentHash": "2bf8d090c42cd6a2"
     },
     {
       "id": "practice/coding/python/01-LeetCode-Python.md#number-of-islands-leetcode-200",
@@ -66522,16 +66378,12 @@
       "parentId": null,
       "question": "Number of Islands (LeetCode 200)",
       "prompt": "Given a grid of `\"1\"` (land) and `\"0\"` (water), count the islands (groups of land connected up, down, left or right).",
-      "answer": "**In simple words:** In a map of land (`\"1\"`) and water (`\"0\"`), count the separate pieces of land. Land touching up, down, left or right belongs to the same island.\n\n**How to approach it:**\n\n1. Scan every cell.\n2. When you find land, count one island, then \"sink\" it: turn it and all land connected to it into water.\n3. Because each island is sunk when first found, it is counted only once.\n\n**Pattern:** DFS flood fill. When you find land, count an island and \"sink\" all land connected to it.\n\n```python\ndef num_islands(grid: list[list[str]]) -> int:\n    rows, cols = len(grid), len(grid[0])\n\n    def sink(r, c):\n        if r < 0 or c < 0 or r >= rows or c >= cols or grid[r][c] != \"1\":\n            return\n        grid[r][c] = \"0\"             # mark as visited\n        sink(r + 1, c)\n        sink(r - 1, c)\n        sink(r, c + 1)\n        sink(r, c - 1)\n\n    count = 0\n    for r in range(rows):\n        for c in range(cols):\n            if grid[r][c] == \"1\":\n                count += 1\n                sink(r, c)\n    return count\n\ngrid = [\n    [\"1\", \"1\", \"0\", \"0\", \"0\"],\n    [\"1\", \"1\", \"0\", \"0\", \"0\"],\n    [\"0\", \"0\", \"1\", \"0\", \"0\"],\n    [\"0\", \"0\", \"0\", \"1\", \"1\"],\n]\nprint(num_islands(grid))\n```\n\n**Output:**\n\n```text\n3\n```\n\n**Complexity:** `O(rows × cols)` time and space. For very large grids, use BFS with `collections.deque` to avoid Python's recursion limit.",
+      "answer": "**In simple words:** In a map of land (`\"1\"`) and water (`\"0\"`), count the separate pieces of land. Land touching up, down, left or right belongs to the same island.\n\n**How to approach it:**\n\n1. Scan every cell.\n2. When you find land, count one island, then \"sink\" it: turn it and all land connected to it into water.\n3. Because each island is sunk when first found, it is counted only once.\n\n**Pattern:** DFS flood fill. When you find land, count an island and \"sink\" all land connected to it.\n\n```python\ndef num_islands(grid: list[list[str]]) -> int:\n    rows, cols = len(grid), len(grid[0])\n\n    def sink(r, c):\n        if r < 0 or c < 0 or r >= rows or c >= cols or grid[r][c] != \"1\":\n            return\n        grid[r][c] = \"0\"             # mark as visited\n        sink(r + 1, c)\n        sink(r - 1, c)\n        sink(r, c + 1)\n        sink(r, c - 1)\n\n    count = 0\n    for r in range(rows):\n        for c in range(cols):\n            if grid[r][c] == \"1\":\n                count += 1\n                sink(r, c)\n    return count\n\ngrid = [\n    [\"1\", \"1\", \"0\", \"0\", \"0\"],\n    [\"1\", \"1\", \"0\", \"0\", \"0\"],\n    [\"0\", \"0\", \"1\", \"0\", \"0\"],\n    [\"0\", \"0\", \"0\", \"1\", \"1\"],\n]\nprint(num_islands(grid))\n```\n\n**Input and output:**\n\n| Input (`grid`) | Output |\n|---|---|\n| `[[\"1\", \"1\", \"0\", \"0\", \"0\"], [\"1\", \"1\", \"0\", \"0\", \"0\"], [\"0\", \"0\", \"1\", \"0\", \"0\"], [\"0\", \"0\", \"0\", \"1\", \"1\"]]` | `3` |\n\n**Complexity:** `O(rows × cols)` time and space. For very large grids, use BFS with `collections.deque` to avoid Python's recursion limit.",
       "summary": "In simple words: In a map of land (\"1\") and water (\"0\"), count the separate pieces of land. Land touching up, down, left or right belongs to the same island.",
       "codeBlocks": [
         {
           "language": "python",
           "code": "def num_islands(grid: list[list[str]]) -> int:\n    rows, cols = len(grid), len(grid[0])\n\n    def sink(r, c):\n        if r < 0 or c < 0 or r >= rows or c >= cols or grid[r][c] != \"1\":\n            return\n        grid[r][c] = \"0\"             # mark as visited\n        sink(r + 1, c)\n        sink(r - 1, c)\n        sink(r, c + 1)\n        sink(r, c - 1)\n\n    count = 0\n    for r in range(rows):\n        for c in range(cols):\n            if grid[r][c] == \"1\":\n                count += 1\n                sink(r, c)\n    return count\n\ngrid = [\n    [\"1\", \"1\", \"0\", \"0\", \"0\"],\n    [\"1\", \"1\", \"0\", \"0\", \"0\"],\n    [\"0\", \"0\", \"1\", \"0\", \"0\"],\n    [\"0\", \"0\", \"0\", \"1\", \"1\"],\n]\nprint(num_islands(grid))"
-        },
-        {
-          "language": "text",
-          "code": "3"
         }
       ],
       "visuals": [],
@@ -66557,7 +66409,7 @@
         "startLine": 880,
         "endLine": 932
       },
-      "contentHash": "599f80aea8e13959"
+      "contentHash": "1d260e71c98646a1"
     },
     {
       "id": "practice/coding/python/01-LeetCode-Python.md#climbing-stairs-leetcode-70",
@@ -66565,16 +66417,12 @@
       "parentId": null,
       "question": "Climbing Stairs (LeetCode 70)",
       "prompt": "You can climb 1 or 2 steps at a time. How many distinct ways are there to reach step `n`?\n\nExample: `n = 3` → `3` (1+1+1, 1+2, 2+1)",
-      "answer": "**In simple words:** You climb 1 or 2 steps at a time. How many different ways can you reach the top?\n\n**How to approach it:**\n\n1. Your last move onto step `n` came either from step `n-1` or from step `n-2`.\n2. So ways(`n`) = ways(`n-1`) + ways(`n-2`) — the Fibonacci sequence.\n3. Keep only the last two counts as you go up.\n\nWays to reach step `n` = ways to reach `n-1` + ways to reach `n-2` — the Fibonacci pattern.\n\n```python\ndef climb_stairs(n: int) -> int:\n    a, b = 1, 1              # ways to reach the previous two steps\n    for _ in range(n - 1):\n        a, b = b, a + b\n    return b\n\nprint(climb_stairs(5))       # 8\n```\n\n**Output:**\n\n```text\n8\n```\n\n**Complexity:** `O(n)` time, `O(1)` space.",
+      "answer": "**In simple words:** You climb 1 or 2 steps at a time. How many different ways can you reach the top?\n\n**How to approach it:**\n\n1. Your last move onto step `n` came either from step `n-1` or from step `n-2`.\n2. So ways(`n`) = ways(`n-1`) + ways(`n-2`) — the Fibonacci sequence.\n3. Keep only the last two counts as you go up.\n\nWays to reach step `n` = ways to reach `n-1` + ways to reach `n-2` — the Fibonacci pattern.\n\n```python\ndef climb_stairs(n: int) -> int:\n    a, b = 1, 1              # ways to reach the previous two steps\n    for _ in range(n - 1):\n        a, b = b, a + b\n    return b\n\nprint(climb_stairs(5))       # 8\n```\n\n**Input and output:**\n\n| Input (`n`) | Output |\n|---|---|\n| `5` | `8` |\n\n**Complexity:** `O(n)` time, `O(1)` space.",
       "summary": "In simple words: You climb 1 or 2 steps at a time. How many different ways can you reach the top?",
       "codeBlocks": [
         {
           "language": "python",
           "code": "def climb_stairs(n: int) -> int:\n    a, b = 1, 1              # ways to reach the previous two steps\n    for _ in range(n - 1):\n        a, b = b, a + b\n    return b\n\nprint(climb_stairs(5))       # 8"
-        },
-        {
-          "language": "text",
-          "code": "8"
         }
       ],
       "visuals": [],
@@ -66600,7 +66448,7 @@
         "startLine": 936,
         "endLine": 970
       },
-      "contentHash": "c2b6556b0d8932ad"
+      "contentHash": "97396da90c385b86"
     },
     {
       "id": "practice/coding/python/01-LeetCode-Python.md#maximum-subarray-leetcode-53",
@@ -66608,16 +66456,12 @@
       "parentId": null,
       "question": "Maximum Subarray (LeetCode 53)",
       "prompt": "Find the contiguous subarray with the largest sum.\n\nExample: `[-2, 1, -3, 4, -1, 2, 1, -5, 4]` → `6` (`[4, -1, 2, 1]`)",
-      "answer": "**In simple words:** Find the block of consecutive numbers with the biggest total.\n\n**How to approach it:**\n\n1. Walk the list, keeping the best total of a block that ends at the current number.\n2. At each number: if the block so far has a negative total it only hurts, so start fresh here; otherwise add the number to it.\n3. Track the best total seen.\n\n**Pattern:** Kadane's algorithm. At each number, either extend the current subarray or start a new one there.\n\n```python\ndef max_sub_array(nums: list[int]) -> int:\n    best = current = nums[0]\n    for num in nums[1:]:\n        current = max(num, current + num)\n        best = max(best, current)\n    return best\n\nprint(max_sub_array([-2, 1, -3, 4, -1, 2, 1, -5, 4]))\n```\n\n**Output:**\n\n```text\n6\n```\n\n**Complexity:** `O(n)` time, `O(1)` space.",
+      "answer": "**In simple words:** Find the block of consecutive numbers with the biggest total.\n\n**How to approach it:**\n\n1. Walk the list, keeping the best total of a block that ends at the current number.\n2. At each number: if the block so far has a negative total it only hurts, so start fresh here; otherwise add the number to it.\n3. Track the best total seen.\n\n**Pattern:** Kadane's algorithm. At each number, either extend the current subarray or start a new one there.\n\n```python\ndef max_sub_array(nums: list[int]) -> int:\n    best = current = nums[0]\n    for num in nums[1:]:\n        current = max(num, current + num)\n        best = max(best, current)\n    return best\n\nprint(max_sub_array([-2, 1, -3, 4, -1, 2, 1, -5, 4]))\n```\n\n**Input and output:**\n\n| Input (`nums`) | Output |\n|---|---|\n| `[-2, 1, -3, 4, -1, 2, 1, -5, 4]` | `6` |\n\n**Complexity:** `O(n)` time, `O(1)` space.",
       "summary": "In simple words: Find the block of consecutive numbers with the biggest total.",
       "codeBlocks": [
         {
           "language": "python",
           "code": "def max_sub_array(nums: list[int]) -> int:\n    best = current = nums[0]\n    for num in nums[1:]:\n        current = max(num, current + num)\n        best = max(best, current)\n    return best\n\nprint(max_sub_array([-2, 1, -3, 4, -1, 2, 1, -5, 4]))"
-        },
-        {
-          "language": "text",
-          "code": "6"
         }
       ],
       "visuals": [],
@@ -66643,7 +66487,7 @@
         "startLine": 974,
         "endLine": 1009
       },
-      "contentHash": "130f3e9bc72a6a0f"
+      "contentHash": "bfd2f08bcce1aa03"
     },
     {
       "id": "practice/coding/python/01-LeetCode-Python.md#coin-change-leetcode-322",
@@ -66651,16 +66495,12 @@
       "parentId": null,
       "question": "Coin Change (LeetCode 322)",
       "prompt": "Return the fewest coins needed to make `amount`, or `-1` if it can't be made.\n\nExample: `coins = [1, 2, 5], amount = 11` → `3` (5 + 5 + 1)",
-      "answer": "**In simple words:** Using the given coin values (as many of each as you like), make the amount with the fewest coins.\n\n**How to approach it:**\n\n1. Solve every smaller amount first: `dp[v]` = fewest coins for value `v`, with `dp[0] = 0`.\n2. For each value, try each coin as the last coin: `dp[v - coin] + 1`, and keep the smallest.\n3. If the amount still can't be made, return `-1`.\n\n_Example:_ `11` with coins `[1, 2, 5]` → `5 + 5 + 1`, 3 coins.\n\n`dp[v]` = fewest coins for value `v`, built up from smaller values.\n\n```python\ndef coin_change(coins: list[int], amount: int) -> int:\n    dp = [0] + [float(\"inf\")] * amount\n    for value in range(1, amount + 1):\n        for coin in coins:\n            if coin <= value:\n                dp[value] = min(dp[value], dp[value - coin] + 1)\n    return dp[amount] if dp[amount] != float(\"inf\") else -1\n\nprint(coin_change([1, 2, 5], 11))\nprint(coin_change([2], 3))\n```\n\n**Output:**\n\n```text\n3\n-1\n```\n\n**Complexity:** `O(amount × len(coins))` time, `O(amount)` space.",
+      "answer": "**In simple words:** Using the given coin values (as many of each as you like), make the amount with the fewest coins.\n\n**How to approach it:**\n\n1. Solve every smaller amount first: `dp[v]` = fewest coins for value `v`, with `dp[0] = 0`.\n2. For each value, try each coin as the last coin: `dp[v - coin] + 1`, and keep the smallest.\n3. If the amount still can't be made, return `-1`.\n\n_Example:_ `11` with coins `[1, 2, 5]` → `5 + 5 + 1`, 3 coins.\n\n`dp[v]` = fewest coins for value `v`, built up from smaller values.\n\n```python\ndef coin_change(coins: list[int], amount: int) -> int:\n    dp = [0] + [float(\"inf\")] * amount\n    for value in range(1, amount + 1):\n        for coin in coins:\n            if coin <= value:\n                dp[value] = min(dp[value], dp[value - coin] + 1)\n    return dp[amount] if dp[amount] != float(\"inf\") else -1\n\nprint(coin_change([1, 2, 5], 11))\nprint(coin_change([2], 3))\n```\n\n**Input and output:**\n\n| Input (`coins`) | `amount` | Output |\n|---|---|---|\n| `[1, 2, 5]` | `11` | `3` |\n| `[2]` | `3` | `-1` |\n\n**Complexity:** `O(amount × len(coins))` time, `O(amount)` space.",
       "summary": "In simple words: Using the given coin values (as many of each as you like), make the amount with the fewest coins.",
       "codeBlocks": [
         {
           "language": "python",
           "code": "def coin_change(coins: list[int], amount: int) -> int:\n    dp = [0] + [float(\"inf\")] * amount\n    for value in range(1, amount + 1):\n        for coin in coins:\n            if coin <= value:\n                dp[value] = min(dp[value], dp[value - coin] + 1)\n    return dp[amount] if dp[amount] != float(\"inf\") else -1\n\nprint(coin_change([1, 2, 5], 11))\nprint(coin_change([2], 3))"
-        },
-        {
-          "language": "text",
-          "code": "3\n-1"
         }
       ],
       "visuals": [],
@@ -66686,7 +66526,7 @@
         "startLine": 1013,
         "endLine": 1053
       },
-      "contentHash": "899a4eb5333e4cf7"
+      "contentHash": "20928ffa0284400b"
     },
     {
       "id": "practice/coding/python/01-LeetCode-Python.md#which-problem-solving-pattern-fits-which-kind-of-question",

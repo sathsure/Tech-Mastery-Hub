@@ -1431,6 +1431,17 @@ const ATLAS = {
    */
   taxes: {
     asOf: "November 2026",
+    /* What the same money buys in each country: World Bank PPP conversion factor, private consumption
+       (local currency per international $), 2024, data updated 8 Oct 2026. Re-check yearly. */
+    ppp: {
+      source: "World Bank — PPP conversion factor, private consumption (PA.NUS.PRVT.PP), 2024",
+      url: "https://data.worldbank.org/indicator/PA.NUS.PRVT.PP",
+      rates: {
+        "India": 19.897, "United States": 1, "United Kingdom": 0.683, "Canada": 1.241, "Germany": 0.702,
+        "Netherlands": 0.742, "Ireland": 0.882, "Singapore": 1.042, "Japan": 99.385, "Australia": 1.427,
+        "UAE (Dubai/Abu Dhabi)": 2.563
+      }
+    },
     note: "Rules for a single employee who is tax resident there, with salary as the only income. Local taxes, family allowances and many credits are left out, so treat estimates as a guide and use the official calculator linked on each card for exact numbers. Moving abroad from India? Check the India–country tax treaty (DTAA): it decides where you pay, and Form 67 lets you claim credit in India for tax paid abroad.",
     countries: [
       {

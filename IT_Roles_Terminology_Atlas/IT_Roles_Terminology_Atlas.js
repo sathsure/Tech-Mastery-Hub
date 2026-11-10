@@ -59,6 +59,7 @@
     file: '<path d="M14 3H6v18h12V7zM14 3v4h4"/>',
     target: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
     info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>',
+    lock: '<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
     bulb: '<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/>',
     bolt: '<path d="M13 2 4 14h7l-1 8 9-12h-7z"/>',
     sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
@@ -179,7 +180,7 @@
       b.classList.toggle("active", on);
       if (on) b.scrollIntoView({ block: "nearest", inline: "nearest" });
     });
-    if (location.hash.slice(1) !== hash) history.replaceState(null, "", `#${hash}`);
+    if (location.hash.slice(1) !== hash) window.atlasNav.go(hash);
     if (scroll) scrollTo({ top: 0 });
     onShow[id]?.();
     return shown;
@@ -215,7 +216,7 @@
     if (tab === "compare") return compareList.length >= 2 ? openCompare() : showTab("roles");
     showTab(tab || "overview");
   }
-  addEventListener("hashchange", route);
+  addEventListener("hashchange", () => window.atlasNav.follow(route));
 
   /* ---------- Overview ---------- */
   $("#heroCounts").textContent = `${A.roles.length} roles · ${A.glossary.length} terms · ${A.stack.reduce((n, s) => n + s.items.length, 0)} technologies · salaries & visas — explained simply, with examples.`;
@@ -467,7 +468,7 @@
       $("#roles > .panel-head").after(el);
       views.role = { el, i, inGrid: false };
       renderRoleView();
-      history.replaceState(null, "", `#roles/${slug(A.roles[i].name)}`);
+      window.atlasNav.go(`roles/${slug(A.roles[i].name)}`);
       el.querySelector("h2")?.focus({ preventScroll: true });
       return;
     }
@@ -480,7 +481,7 @@
     }
     renderRoleView();
     // The tab buttons switch at once; the panel may still be animating in.
-    if ($(".tabs button.active")?.dataset.tab === "roles") history.replaceState(null, "", `#roles/${slug(A.roles[i].name)}`);
+    if ($(".tabs button.active")?.dataset.tab === "roles") window.atlasNav.go(`roles/${slug(A.roles[i].name)}`);
     reveal(views.role.el);
   }
   // The roles grid is re-rendered on filter/sort/save; put an open panel back under its card.
@@ -716,6 +717,25 @@
   $("#salMode").innerHTML = opts(S.workModes, (c) => c.n);
   $("#skillList").innerHTML = S.skills.map((s) => `<option value="${esc(s.n)}">${esc(s.c)}</option>`).join("");
   $("#salaryNote").textContent = S.disclaimer;
+  /** Pages that need your profile: without one they explain how to enable them, and their menu item shows a lock. */
+  function lockUntilProfile(id, title, text) {
+    $(`#${id}`).classList.add("locked");
+    $(`#${id} > .panel-head`).insertAdjacentHTML("afterend", `<div class="locked-card">${icon("lock")}<div><b>${title}</b><p>${text}</p><a class="btn" href="welcome.html">Set up profile →</a></div></div>`);
+    markNeedsProfile(id);
+  }
+  /** The lock symbol on a menu item whose page depends on your profile. */
+  function markNeedsProfile(id) {
+    const tab = document.querySelector(`.tabs [data-tab="${id}"]`);
+    if (!tab) return;
+    tab.classList.add("is-locked");
+    tab.insertAdjacentHTML("beforeend", `<span class="tab-lock" title="Enabled once you fill in your profile">${icon("lock")}</span>`);
+    tab.title = "Enabled once you fill in your profile";
+  }
+  if (!personal) {
+    lockUntilProfile("salary", "Salary estimates are off until you fill in your profile", "Tell us your role, experience and skills, and this page shows your likely pay range and how to raise it.");
+    lockUntilProfile("mypath", "My path is off until you fill in your profile", "Tell us your role, experience and skills, and this page shows your next moves, a plan to switch roles and the roles and terms you save.");
+    lockUntilProfile("abroad", "Work abroad is off until you fill in your profile", "Tell us your role, experience and skills, and this page shows the countries where they're in demand, the pay there and how to get hired.");
+  }
   $("#reality").innerHTML = `<b>Market reality · ${esc(S.asOf)}</b>` + S.reality.map((r) =>
     `<span>${esc(r.f)} <a href="${esc(r.src)}" target="_blank" rel="noopener" title="Source">↗</a></span>`).join("");
   const syncControls = () => {
@@ -1288,6 +1308,7 @@
   $("#feedFilter").addEventListener("input", () => { feed.limit = 25; renderFeed(); });
   $("#feedList").addEventListener("click", (e) => { if (e.target.closest("[data-feed-more]")) { feed.limit += 25; renderFeed(); } });
   onShow.abroad = () => {
+    if (!personal) return;
     renderCountries(); // picks up role/experience changes made in the Salary tab
     if (!feed.loaded) { feed.loaded = true; loadFeed(); }
     else if (Date.now() - feed.fetched > 30 * 60 * 1000) loadFeed(true);
@@ -1930,7 +1951,6 @@
     roles: "Titles and tools vary by company — treat as a guide.",
     lifecycle: "Who owns each step varies by company — treat as a guide.",
     stack: "Tools vary by company — treat as a guide.",
-    salary: "Estimates — pay varies by company and city.",
   };
   Object.entries(GUIDE_NOTES).forEach(([id, text]) => {
     document.querySelector(`#${id} > .panel-head`)?.insertAdjacentHTML("beforeend", `<p class="guide-note" role="note">${icon("info")}<span>${esc(text)}</span></p>`);
@@ -1954,7 +1974,7 @@
   /* ---------- Init ---------- */
   onShow.roles = renderRoles; // picks up skill changes for match badges
   renderRoleChips(); renderRoles(); renderCatChips(); renderGlossary(); renderSalary(); renderTray();
-  route();
+  window.atlasNav.follow(route);
 
   // Offline support once served over http(s); file:// can't register a service worker.
   if ("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js").catch(() => {});
