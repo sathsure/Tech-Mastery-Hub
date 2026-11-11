@@ -72,10 +72,19 @@
 1. [What are the main AWS AI & Machine Learning services (SageMaker, Bedrock, Rekognition, Comprehend)?](../../interview/architecture/02-aws-cloud.md)
 2. [AWS AI & Machine Learning: which service fits each scenario?](../../interview/architecture/02-aws-cloud.md)
 
+## 8. The full journey of one question (AI & LLMs, any language)
+
+1. [What happens, step by step, when you send a message to an AI chatbot like ChatGPT or Claude?](../../interview/under-the-hood/14-How-AI-Chatbots-Work.md)
+2. [How does an LLM break text into tokens and turn them into numbers?](../../interview/under-the-hood/14-How-AI-Chatbots-Work.md)
+3. [How does an LLM pick the right next word and build a sentence?](../../interview/under-the-hood/14-How-AI-Chatbots-Work.md)
+4. [Where does an AI chatbot get its knowledge, and how does it fetch new data?](../../interview/under-the-hood/14-How-AI-Chatbots-Work.md)
+5. [Why do AI models run on GPUs instead of normal CPUs?](../../interview/under-the-hood/14-How-AI-Chatbots-Work.md)
+
 ## Diagrams
 
 - [AWS_AI_ML](../../knowledge/visual-notes/aws-ai-ml.png)
 - [AWS_Architecture](../../knowledge/visual-notes/aws-architecture.png)
+- [Word vectors: man and woman are separated by the same direction as king and queen](../../knowledge/visual-notes/under-the-hood/word-vectors.jpg)
 
 ## Related roles
 

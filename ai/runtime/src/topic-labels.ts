@@ -46,7 +46,7 @@ export const TOPIC_DESCRIPTIONS: Record<string, string> = {
   "web-vitals": "Measuring and improving page experience: loading, interactivity and visual stability.",
   dsa: "Data structures and algorithms for coding interviews: Big O, patterns and LeetCode problems solved in Python.",
   messaging: "Asynchronous messaging: RabbitMQ task queues, Kafka event streams, and when to choose which.",
-  "under-the-hood": "How software works inside, explained simply with pictures: how code runs, memory, threads, data structures, databases, browsers, web servers, networks, containers and multi-server systems.",
+  "under-the-hood": "How computers and software work inside, explained simply with pictures: bits, bytes, text encoding (ASCII, Unicode), images, CPU and RAM, booting, files on disk, how code runs, memory, threads, data structures, databases, browsers, web servers, how the internet is connected (cables, fibre, Wi-Fi), how AI chatbots and LLMs work, CPU vs GPU vs NPU, localhost and dev servers, IP addresses and NAT, firewalls, compression, QR codes, password hashing, encryption, email, UPI, GPS, npm and Maven, logins (cookies, sessions, JWT), config files (YAML, manifest.yml), containers and multi-server systems.",
   ai: "AI for developers: LLMs, tokens, RAG, embeddings, vector databases, agents, MCP and Spring Boot integration.",
   "system-design": "Designing systems that scale: load balancers, caches, databases, classic design questions and distributed-systems basics.",
   "design-patterns": "Code that is easy to change: the SOLID principles and the most used design patterns, with Java examples.",

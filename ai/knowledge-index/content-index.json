@@ -1735,7 +1735,7 @@
                           "domain":  "under-the-hood",
                           "canonical_concept":  "under-the-hood",
                           "extension":  ".md",
-                          "size_bytes":  8603,
+                          "size_bytes":  3386,
                           "source_of_truth":  true,
                           "related_concepts":  [
 
@@ -2516,6 +2516,124 @@
                                                    "caching",
                                                    "messaging",
                                                    "microservices"
+                                               ]
+                      },
+                      {
+                          "id":  "interview.under-the-hood.11-bits-text-and-pictures.md",
+                          "path":  "interview/under-the-hood/11-Bits-Text-and-Pictures.md",
+                          "content_type":  "interview",
+                          "domain":  "under-the-hood",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  11493,
+                          "source_of_truth":  false,
+                          "related_concepts":  [
+                                                   "under-the-hood"
+                                               ]
+                      },
+                      {
+                          "id":  "interview.under-the-hood.12-cpu-ram-boot-and-files.md",
+                          "path":  "interview/under-the-hood/12-CPU-RAM-Boot-and-Files.md",
+                          "content_type":  "interview",
+                          "domain":  "under-the-hood",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  15280,
+                          "source_of_truth":  false,
+                          "related_concepts":  [
+                                                   "under-the-hood"
+                                               ]
+                      },
+                      {
+                          "id":  "interview.under-the-hood.13-how-the-internet-is-connected.md",
+                          "path":  "interview/under-the-hood/13-How-the-Internet-Is-Connected.md",
+                          "content_type":  "interview",
+                          "domain":  "under-the-hood",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  8141,
+                          "source_of_truth":  false,
+                          "related_concepts":  [
+                                                   "under-the-hood",
+                                                   "networking"
+                                               ]
+                      },
+                      {
+                          "id":  "interview.under-the-hood.14-how-ai-chatbots-work.md",
+                          "path":  "interview/under-the-hood/14-How-AI-Chatbots-Work.md",
+                          "content_type":  "interview",
+                          "domain":  "under-the-hood",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  7143,
+                          "source_of_truth":  false,
+                          "related_concepts":  [
+                                                   "under-the-hood",
+                                                   "ai"
+                                               ]
+                      },
+                      {
+                          "id":  "interview.under-the-hood.15-staying-logged-in-cookies-sessions-jwt.md",
+                          "path":  "interview/under-the-hood/15-Staying-Logged-In-Cookies-Sessions-JWT.md",
+                          "content_type":  "interview",
+                          "domain":  "under-the-hood",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  3263,
+                          "source_of_truth":  false,
+                          "related_concepts":  [
+                                                   "under-the-hood",
+                                                   "security",
+                                                   "spring-security"
+                                               ]
+                      },
+                      {
+                          "id":  "interview.under-the-hood.16-config-files-in-microservices.md",
+                          "path":  "interview/under-the-hood/16-Config-Files-in-Microservices.md",
+                          "content_type":  "interview",
+                          "domain":  "under-the-hood",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  5757,
+                          "source_of_truth":  false,
+                          "related_concepts":  [
+                                                   "under-the-hood",
+                                                   "microservices",
+                                                   "spring",
+                                                   "spring-cloud",
+                                                   "devops"
+                                               ]
+                      },
+                      {
+                          "id":  "interview.under-the-hood.17-local-servers-and-finding-devices.md",
+                          "path":  "interview/under-the-hood/17-Local-Servers-and-Finding-Devices.md",
+                          "content_type":  "interview",
+                          "domain":  "under-the-hood",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  8083,
+                          "source_of_truth":  false,
+                          "related_concepts":  [
+                                                   "under-the-hood",
+                                                   "networking",
+                                                   "angular",
+                                                   "security"
+                                               ]
+                      },
+                      {
+                          "id":  "interview.under-the-hood.18-how-everyday-tech-works.md",
+                          "path":  "interview/under-the-hood/18-How-Everyday-Tech-Works.md",
+                          "content_type":  "interview",
+                          "domain":  "under-the-hood",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  14520,
+                          "source_of_truth":  false,
+                          "related_concepts":  [
+                                                   "under-the-hood",
+                                                   "security",
+                                                   "networking",
+                                                   "devops"
                                                ]
                       }
                   ]

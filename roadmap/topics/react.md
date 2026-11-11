@@ -6,7 +6,7 @@
 - [JavaScript](../topics/javascript.md)
 - Overview: [React concepts](../../knowledge/concepts/react/README.md)
 
-## 1. 06-React
+## 1. React
 
 1. [What are the main differences between React class components and function components?](../../interview/frontend/06-React.md)
 2. [Explain React Hooks rules. What happens if you break them?](../../interview/frontend/06-React.md)

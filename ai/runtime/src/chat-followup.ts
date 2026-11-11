@@ -163,8 +163,8 @@ export function composeFollowUpAnswer(message: string, search: SearchResult, evi
  * titles as links; that is not an answer, so the full entry should still be shown.
  */
 function alreadyAnswered(entry: Evidence, previousAnswer: string): boolean {
-  if (!previousAnswer.includes(entry.question)) return false;
+  // Answers no longer repeat the question as a title, so the entry's own text is what shows it was explained.
   const body = paragraphs(entry.answer ?? "").filter(part => part.length > 40);
-  if (!body.length) return true;
+  if (!body.length) return previousAnswer.includes(entry.question);
   return body.some(part => alreadySaid(part, previousAnswer));
 }

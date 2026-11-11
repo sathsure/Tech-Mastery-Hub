@@ -75,7 +75,11 @@
     ["solid", "single responsibility", "open closed", "liskov", "interface segregation", "dependency inversion"],
     ["lifecycle", "life cycle", "life-cycle"],
     ["vs", "versus", "difference", "compare"],
-    ["salary", "pay", "earn", "earns", "earning", "package", "ctc", "lpa"]
+    ["salary", "pay", "earn", "earns", "earning", "package", "ctc", "lpa"],
+    ["delete", "deleted", "deleting", "remove", "removed", "erase", "erased"],
+    ["boot", "boots", "booting", "start up", "startup", "power on", "switch on"],
+    ["icon", "icons", "image", "images", "picture", "pictures"],
+    ["computer", "laptop", "pc", "machine"]
   ],
   "domainAliases": {
     "frontend": ["frontend", "front end", "front-end", "ui", "browser", "client side"],

@@ -109,14 +109,14 @@ await check("system prompt is stable and evidence cannot pose as instructions", 
   assert.equal(turn.match(/<question>/g)?.length, 1);
 });
 
-await check("notes-only answer: concise title, streamed, with follow-ups", async () => {
+await check("notes-only answer: starts with the answer, streamed, with follow-ups", async () => {
   const { events, meta, done, answer } = await collect({ message: "closures" }, null);
   assert.equal(events[0].type, "meta");
   assert.equal(events.at(-1)?.type, "done");
   assert.equal(meta?.answerMode, "repository");
   assert.match(meta?.evidence[0].question ?? "", /closures/i);
-  assert.match(answer, /^\*\*How would you explain closures[^\n]*\*\*\n/, "the title is the entry itself");
-  assert.doesNotMatch(answer.split("\n")[0], /\[\d\]/, "no source numbers in the title");
+  assert.doesNotMatch(answer, /^\*\*How would you explain closures/, "the question is not repeated above its answer");
+  assert.match(answer, /^A \*\*closure\*\* is a function/, "the answer comes first");
   assert.equal(done?.answerMode, "repository");
   assert.ok(!done?.grounding.uncited && !done?.grounding.generatedSection && done?.grounding.invalid.length === 0);
   assert.ok((done?.followUps.length ?? 0) >= 2, `follow-ups: ${done?.followUps}`);
@@ -458,7 +458,7 @@ await check("Claude path: model error falls back to the notes", async () => {
   assert.ok(events.some(event => event.type === "status" && event.stage === "fallback"));
   assert.equal(done?.answerMode, "repository");
   assert.match(done?.notice ?? "", /failed/);
-  assert.match(answer, /How would you explain closures/);
+  assert.match(answer, /remembers variables/);
 });
 
 await check("Claude path: failure mid-answer keeps the partial text and appends the notes", async () => {
@@ -479,7 +479,7 @@ await check("Claude path: a declined request is answered from the notes", async 
   const { done, answer } = await collect({ message: "closures" }, model);
   assert.equal(done?.notice, "The AI model declined this request.");
   assert.equal(done?.answerMode, "repository");
-  assert.match(answer, /closures/i);
+  assert.match(answer, /closure/i);
 });
 
 await check("Claude path: cancelled requests stop without a done event", async () => {
@@ -613,7 +613,7 @@ await check("API: /chat streams events, JSON mode, validation, and /visuals", as
 
     const json = await post({ message: "closures", stream: false });
     const body = (await json.json()) as { data: { answer: string; done: { grounding: { uncited: boolean } } } };
-    assert.match(body.data.answer, /closures/i);
+    assert.match(body.data.answer, /closure/i);
     assert.equal(body.data.done.grounding.uncited, false);
 
     assert.equal((await post({ message: "" })).status, 400);

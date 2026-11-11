@@ -6,7 +6,7 @@
 - None. This is a starting point.
 - Overview: [SQL concepts](../../knowledge/concepts/database/sql/README.md)
 
-## 1. 08-MySQL
+## 1. MySQL
 
 1. [What is an RDBMS?](../../interview/backend/java/08-MySQL.md)
    - [How is RDBMS different from DBMS?](../../interview/backend/java/08-MySQL.md)

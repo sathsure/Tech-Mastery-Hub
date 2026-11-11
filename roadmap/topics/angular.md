@@ -134,6 +134,17 @@
 4. [How do frameworks like Angular and React update the screen efficiently?](../../interview/under-the-hood/06-Inside-the-Browser.md)
 5. [How do cookies, localStorage, sessionStorage and IndexedDB differ?](../../interview/under-the-hood/06-Inside-the-Browser.md)
 
+## 19. Servers on your own computer (frontend and backend)
+
+1. [Does my computer have its own local server? What is localhost?](../../interview/under-the-hood/17-Local-Servers-and-Finding-Devices.md)
+2. [What is the "server" in Angular's ng serve, and why does a frontend framework need a server?](../../interview/under-the-hood/17-Local-Servers-and-Finding-Devices.md)
+
+## 20. Finding a server or device on the internet (networking, all languages)
+
+1. [How is a server identified — hostname, domain name, IP address, port, or something else?](../../interview/under-the-hood/17-Local-Servers-and-Finding-Devices.md)
+2. [How does the internet know which phone or computer to send data to?](../../interview/under-the-hood/17-Local-Servers-and-Finding-Devices.md)
+3. [What is a firewall?](../../interview/under-the-hood/17-Local-Servers-and-Finding-Devices.md)
+
 ## Practice
 
 1. [Build a small Angular application that manages users. It should load initial data from an API, allow CRUD operations, use forms, routing, dialogs, caching, and some custom Angular features. Explain your design decisions.](../../practice/coding/03-angular-coding.md)
@@ -145,6 +156,7 @@
 - [Angular component lifecycle hooks, from constructor to ngOnDestroy](../../knowledge/visual-notes/angular-lifecycle.png)
 - [Browser rendering: HTML and CSS are parsed into trees, combined, laid out and painted](../../knowledge/visual-notes/browser-render.png)
 - [Event loop: the call stack, Web APIs, the microtask queue and the task queue](../../knowledge/visual-notes/event-loop.png)
+- [NAT: the router maps a private IP and port (192.168.100.3:3855) to its public IP and port (145.12.131.7:6282) and back](../../knowledge/visual-notes/under-the-hood/nat-router.jpg)
 
 ## Related roles
 
