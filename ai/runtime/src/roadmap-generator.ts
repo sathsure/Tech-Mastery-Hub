@@ -165,7 +165,8 @@ function topicPath(topic: string, entries: QuestionEntry[], plans: RolePlan[]): 
   const files = new Set(material.questions.map(entry => entry.source.path));
   const stages = [...groups.entries()].map(([key, list], index) => {
     const [path, section] = key.split("|");
-    const title = section || (files.size > 1 ? posix.basename(path, ".md") : "Questions");
+    // Several files: name the section after its file, without the number ("06-Spring-Cloud" → "Spring Cloud").
+    const title = section || (files.size > 1 ? posix.basename(path, ".md").replace(/^\d+[-_]/, "").replace(/[-_]+/g, " ") : "Questions");
     const lines = list.flatMap((entry, position) => [item(entry, dir, position + 1), ...(material.followUps.get(entry.id) ?? []).map(child => childItem(child, dir))]);
     return [`## ${index + 1}. ${title}`, "", ...lines, ""].join("\n");
   });

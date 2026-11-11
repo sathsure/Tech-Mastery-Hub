@@ -82,6 +82,13 @@
 2. [How does a circuit breaker work?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)
 3. [What does the CAP theorem mean in practice?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)
 
+## 11. Reading config files (microservices: Spring Boot, Cloud Foundry, Docker, Kubernetes)
+
+1. [How do you read a YAML file?](../../interview/under-the-hood/16-Config-Files-in-Microservices.md)
+2. [What do the common settings in a microservice's application.yml mean?](../../interview/under-the-hood/16-Config-Files-in-Microservices.md)
+3. [What is manifest.yml, and how do you read one?](../../interview/under-the-hood/16-Config-Files-in-Microservices.md)
+4. [Which config file does what in a microservice project?](../../interview/under-the-hood/16-Config-Files-in-Microservices.md)
+
 ## Related roles
 
 [Backend Developer](../roles/backend-developer.md) · [Solution Architect](../roles/solution-architect.md)

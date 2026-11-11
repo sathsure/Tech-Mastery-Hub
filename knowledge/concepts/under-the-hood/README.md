@@ -20,6 +20,14 @@ Understand what really happens when code runs — explained simply, with an ever
 | 8 | How data travels: TCP/IP layers, DNS, TCP vs UDP, HTTPS/TLS | Networking — every language |
 | 9 | Virtual machines & containers: VM vs container, Docker images, Kubernetes, CI/CD | Cloud & DevOps |
 | 10 | Many servers: scaling, caching, message queues, resilience, CAP | System design — every language |
+| 11 | Bits, text and pictures: bits and bytes, data type sizes, 32 vs 64-bit, ASCII and Unicode, key codes, how images and icons are stored | Every computer |
+| 12 | Inside the machine: why the CPU works from RAM, cores and GHz, booting, what an OS does, deleting and recovering files | Every computer |
+| 13 | How the internet is connected: ISPs and backbones, fibre and undersea cables, light speed, Wi-Fi and mobile radio, modem vs router, IP vs MAC | Networking — everyone |
+| 14 | How AI chatbots work: the full question-to-answer flow, tokens and embeddings, next-word prediction, fetching data (RAG, tools), GPUs | AI & LLMs — any language |
+| 15 | Staying logged in: how sites remember you, cookies vs sessions vs JWT | Web — any backend |
+| 16 | Config files in microservices: reading YAML, application.yml, manifest.yml, which file does what | Microservices (Spring Boot, Cloud Foundry, Kubernetes) |
+| 17 | Local servers and finding devices: localhost, what ng serve really is, how servers are identified, how the internet finds your device (DHCP, NAT), firewalls | Frontend, backend and networking |
+| 18 | Everyday tech: ZIP and JPEG compression, QR codes, password hashing, encryption and keys, sending an email, UPI payments, GPS, npm and Maven downloads | Everyone |
 
 ## How each answer is written
 
@@ -30,4 +38,4 @@ Understand what really happens when code runs — explained simply, with an ever
 
 ## Where to Practise
 
-- `interview/under-the-hood/` — 10 short files, one per section above.
+- `interview/under-the-hood/` — 18 short files, one per section above.

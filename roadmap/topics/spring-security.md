@@ -74,3 +74,8 @@
 19. [How do you prevent CSRF when tokens are stored in cookies?](../../interview/backend/java/09-JWT-Access-Refresh-Tokens.md)
 20. [What should a senior Spring Boot developer know about JWT authentication?](../../interview/backend/java/09-JWT-Access-Refresh-Tokens.md)
 
+## 4. How a website remembers you (web, any backend)
+
+1. [How does a website remember that you are logged in?](../../interview/under-the-hood/15-Staying-Logged-In-Cookies-Sessions-JWT.md)
+2. [Cookies vs sessions vs JWT — which is best, and where is each used?](../../interview/under-the-hood/15-Staying-Logged-In-Cookies-Sessions-JWT.md)
+

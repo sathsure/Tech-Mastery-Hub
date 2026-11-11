@@ -99,6 +99,104 @@
 2. [How does a circuit breaker work?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)
 3. [What does the CAP theorem mean in practice?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)
 
+## 16. Bits and bytes: the smallest pieces of data (all computers)
+
+1. [What are bits and bytes?](../../interview/under-the-hood/11-Bits-Text-and-Pictures.md)
+2. [How much memory does an int, a char or a boolean take?](../../interview/under-the-hood/11-Bits-Text-and-Pictures.md)
+3. [How much memory do Strings, arrays, objects, dates and other data types take?](../../interview/under-the-hood/11-Bits-Text-and-Pictures.md)
+4. [What is the difference between 32-bit and 64-bit?](../../interview/under-the-hood/11-Bits-Text-and-Pictures.md)
+5. [Why is 0.1 + 0.2 not exactly 0.3 in most programming languages?](../../interview/under-the-hood/11-Bits-Text-and-Pictures.md)
+
+## 17. Text and keys: how letters become numbers (all computers)
+
+1. [How does a computer store letters, digits and symbols if it only knows 0s and 1s?](../../interview/under-the-hood/11-Bits-Text-and-Pictures.md)
+2. [What are ASCII and Unicode, and what are the codes for Space, Enter, Tab and other keys?](../../interview/under-the-hood/11-Bits-Text-and-Pictures.md)
+
+## 18. Pictures and icons: how images become numbers (all computers)
+
+1. [How does a computer read and show an image or an icon?](../../interview/under-the-hood/11-Bits-Text-and-Pictures.md)
+
+## 19. CPU and RAM: why programs run from memory (all computers)
+
+1. [How do the CPU, RAM, ROM, disk, motherboard and OS connect, and what happens when you open an app?](../../interview/under-the-hood/12-CPU-RAM-Boot-and-Files.md)
+2. [Why does the CPU always work with RAM and not directly with the disk?](../../interview/under-the-hood/12-CPU-RAM-Boot-and-Files.md)
+3. [What do CPU cores and GHz mean?](../../interview/under-the-hood/12-CPU-RAM-Boot-and-Files.md)
+4. [CPU vs GPU vs TPU vs NPU vs DPU vs APU vs QPU — what is each one for?](../../interview/under-the-hood/12-CPU-RAM-Boot-and-Files.md)
+5. [Why does a computer get slow, and when does more RAM help?](../../interview/under-the-hood/12-CPU-RAM-Boot-and-Files.md)
+
+## 20. Starting up: from the power button to the login screen (all computers)
+
+1. [What happens when you press the power button — what starts first, the CPU or the OS?](../../interview/under-the-hood/12-CPU-RAM-Boot-and-Files.md)
+2. [What does an operating system actually do?](../../interview/under-the-hood/12-CPU-RAM-Boot-and-Files.md)
+
+## 21. Files on disk: deleting and recovering (all computers)
+
+1. [What happens inside the disk when you delete a file?](../../interview/under-the-hood/12-CPU-RAM-Boot-and-Files.md)
+2. [How do admins recover a deleted or corrupted file?](../../interview/under-the-hood/12-CPU-RAM-Boot-and-Files.md)
+3. [How does a computer know whether a file is a PDF, a photo or a program?](../../interview/under-the-hood/12-CPU-RAM-Boot-and-Files.md)
+
+## 22. The physical internet: who connects you to a website (networking, all languages)
+
+1. [How is the internet connected — what links my laptop to a website?](../../interview/under-the-hood/13-How-the-Internet-Is-Connected.md)
+2. [Do data packets travel at the speed of light? Which cables carry them, and why?](../../interview/under-the-hood/13-How-the-Internet-Is-Connected.md)
+3. [How does data travel without wires (Wi-Fi, mobile data, Bluetooth)?](../../interview/under-the-hood/13-How-the-Internet-Is-Connected.md)
+
+## 23. Home network devices and addresses (networking, all languages)
+
+1. [What is the difference between a modem, a router and a switch?](../../interview/under-the-hood/13-How-the-Internet-Is-Connected.md)
+2. [What is the difference between an IP address and a MAC address?](../../interview/under-the-hood/13-How-the-Internet-Is-Connected.md)
+
+## 24. The full journey of one question (AI & LLMs, any language)
+
+1. [What happens, step by step, when you send a message to an AI chatbot like ChatGPT or Claude?](../../interview/under-the-hood/14-How-AI-Chatbots-Work.md)
+2. [How does an LLM break text into tokens and turn them into numbers?](../../interview/under-the-hood/14-How-AI-Chatbots-Work.md)
+3. [How does an LLM pick the right next word and build a sentence?](../../interview/under-the-hood/14-How-AI-Chatbots-Work.md)
+4. [Where does an AI chatbot get its knowledge, and how does it fetch new data?](../../interview/under-the-hood/14-How-AI-Chatbots-Work.md)
+5. [Why do AI models run on GPUs instead of normal CPUs?](../../interview/under-the-hood/14-How-AI-Chatbots-Work.md)
+
+## 25. How a website remembers you (web, any backend)
+
+1. [How does a website remember that you are logged in?](../../interview/under-the-hood/15-Staying-Logged-In-Cookies-Sessions-JWT.md)
+2. [Cookies vs sessions vs JWT — which is best, and where is each used?](../../interview/under-the-hood/15-Staying-Logged-In-Cookies-Sessions-JWT.md)
+
+## 26. Reading config files (microservices: Spring Boot, Cloud Foundry, Docker, Kubernetes)
+
+1. [How do you read a YAML file?](../../interview/under-the-hood/16-Config-Files-in-Microservices.md)
+2. [What do the common settings in a microservice's application.yml mean?](../../interview/under-the-hood/16-Config-Files-in-Microservices.md)
+3. [What is manifest.yml, and how do you read one?](../../interview/under-the-hood/16-Config-Files-in-Microservices.md)
+4. [Which config file does what in a microservice project?](../../interview/under-the-hood/16-Config-Files-in-Microservices.md)
+
+## 27. Servers on your own computer (frontend and backend)
+
+1. [Does my computer have its own local server? What is localhost?](../../interview/under-the-hood/17-Local-Servers-and-Finding-Devices.md)
+2. [What is the "server" in Angular's ng serve, and why does a frontend framework need a server?](../../interview/under-the-hood/17-Local-Servers-and-Finding-Devices.md)
+
+## 28. Finding a server or device on the internet (networking, all languages)
+
+1. [How is a server identified — hostname, domain name, IP address, port, or something else?](../../interview/under-the-hood/17-Local-Servers-and-Finding-Devices.md)
+2. [How does the internet know which phone or computer to send data to?](../../interview/under-the-hood/17-Local-Servers-and-Finding-Devices.md)
+3. [What is a firewall?](../../interview/under-the-hood/17-Local-Servers-and-Finding-Devices.md)
+
+## 29. Making data smaller and scannable: compression and QR codes (all computers)
+
+1. [How does ZIP or JPEG compression make files smaller?](../../interview/under-the-hood/18-How-Everyday-Tech-Works.md)
+2. [How does a QR code store data?](../../interview/under-the-hood/18-How-Everyday-Tech-Works.md)
+
+## 30. Keeping secrets: hashing and encryption (security, any language)
+
+1. [How are passwords stored safely, and why can't the website see yours?](../../interview/under-the-hood/18-How-Everyday-Tech-Works.md)
+2. [What is encryption, in plain words — and what are public and private keys?](../../interview/under-the-hood/18-How-Everyday-Tech-Works.md)
+
+## 31. Everyday journeys: email, payments and location (how it works)
+
+1. [What happens when you click "Send" on an email?](../../interview/under-the-hood/18-How-Everyday-Tech-Works.md)
+2. [How does a UPI payment travel from your phone to the shop's bank?](../../interview/under-the-hood/18-How-Everyday-Tech-Works.md)
+3. [How does GPS find your location?](../../interview/under-the-hood/18-How-Everyday-Tech-Works.md)
+
+## 32. Where code libraries come from (npm, Maven — any project)
+
+1. [What happens during npm install or a Maven build — where do the libraries come from?](../../interview/under-the-hood/18-How-Everyday-Tech-Works.md)
+
 ## Diagrams
 
 - [How a compiler works: source code is analysed and translated into machine code](../../knowledge/visual-notes/under-the-hood/compiler.svg)
@@ -121,6 +219,27 @@
 - [TLS handshake: hello messages, certificate, key exchange, then encrypted application data](../../knowledge/visual-notes/under-the-hood/tls-handshake.svg)
 - [Containers share one OS kernel through the container engine; each VM carries its own guest operating system](../../knowledge/visual-notes/under-the-hood/containers-vs-vms.png)
 - [Kubernetes architecture: the control plane manages worker nodes that run pods](../../knowledge/visual-notes/under-the-hood/kubernetes-architecture.png)
+- [IEEE 754 double: 1 sign bit, 11 exponent bits and 52 fraction bits](../../knowledge/visual-notes/under-the-hood/double-format.svg)
+- [ASCII table: decimal code, hex code and character for all 128 ASCII characters](../../knowledge/visual-notes/under-the-hood/ascii-table.svg)
+- [A small smiley icon zoomed in: it is a grid of pixels, and each pixel is a mix of red, green and blue](../../knowledge/visual-notes/under-the-hood/image-pixels-rgb.svg)
+- [Zooming in: a raster image becomes blocky pixels, a vector image stays smooth](../../knowledge/visual-notes/under-the-hood/raster-vs-vector.svg)
+- [System bus: the CPU, memory, and input/output devices share a control bus, an address bus and a data bus](../../knowledge/visual-notes/under-the-hood/system-bus.svg)
+- [Von Neumann architecture: the CPU (control unit and arithmetic/logic unit) exchanges data with the memory unit, with input and output devices on either side](../../knowledge/visual-notes/under-the-hood/cpu-memory-von-neumann.svg)
+- [Computer booting sequence: power button, the CPU runs the BIOS from ROM, the power-on self-test, then the bootloader loads the OS kernel into RAM](../../knowledge/visual-notes/under-the-hood/boot-sequence.svg)
+- [Disk layout: (A) a track, (B) a sector of the disk, (C) a track sector, (D) a cluster of sectors](../../knowledge/visual-notes/under-the-hood/disk-structure.svg)
+- [Internet structure: users connect to Tier 3 ISPs, which connect to Tier 2 networks and exchange points, which connect to the global Tier 1 networks](../../knowledge/visual-notes/under-the-hood/internet-tiers.svg)
+- [Optical fibre: light enters the core and keeps reflecting off the cladding as it travels along](../../knowledge/visual-notes/under-the-hood/optical-fibre.svg)
+- [World map of undersea communication cables connecting the continents](../../knowledge/visual-notes/under-the-hood/submarine-cables.png)
+- [The electromagnetic spectrum: radio and microwaves (used by Wi-Fi and phones) have long wavelengths; visible light, X-rays and gamma rays have shorter ones](../../knowledge/visual-notes/under-the-hood/em-spectrum.svg)
+- [A home network: PCs, a TV and a console connect to the router by cable; laptops, phones and a printer by Wi-Fi; the router connects through the modem to the ISP](../../knowledge/visual-notes/under-the-hood/home-network.png)
+- [Word vectors: man and woman are separated by the same direction as king and queen](../../knowledge/visual-notes/under-the-hood/word-vectors.jpg)
+- [NAT: the router maps a private IP and port (192.168.100.3:3855) to its public IP and port (145.12.131.7:6282) and back](../../knowledge/visual-notes/under-the-hood/nat-router.jpg)
+- [Huffman tree for "TO BE OR NOT TO BE": frequent symbols like space and O get 2-bit codes, rare ones like N and R get 4-bit codes](../../knowledge/visual-notes/under-the-hood/huffman-tree.svg)
+- [The same photo saved with stronger and stronger JPEG compression: the file gets smaller and the close-ups get blockier](../../knowledge/visual-notes/under-the-hood/jpeg-quality.png)
+- [QR code parts: three big position squares in the corners, smaller alignment squares, timing dots, format and version information, and the data area](../../knowledge/visual-notes/under-the-hood/qr-code-structure.svg)
+- [A hash function turns any input into a fixed-length digest; changing one letter gives a completely different digest](../../knowledge/visual-notes/under-the-hood/hash-function.svg)
+- [Public-key encryption: Bob encrypts "Hello Alice!" with Alice's public key; only Alice's private key can decrypt it](../../knowledge/visual-notes/under-the-hood/public-key-encryption.svg)
+- [The GPS constellation: satellites on several orbits around the Earth, so at least four are visible from almost anywhere](../../knowledge/visual-notes/under-the-hood/gps-constellation.jpg)
 
 ## Related roles
 

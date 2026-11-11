@@ -6,7 +6,7 @@
 - [JavaScript](../topics/javascript.md)
 - Overview: [Node.js concepts](../../knowledge/concepts/nodejs/README.md)
 
-## 1. 01-Node.js
+## 1. Node.js
 
 1. [What is Node.js and why was it created?](../../interview/backend/node/01-Node.js.md)
 2. [What is Express.js and why do we need it?](../../interview/backend/node/01-Node.js.md)

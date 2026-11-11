@@ -100,10 +100,43 @@
 3. [How does Kubernetes keep applications running?](../../interview/under-the-hood/09-Virtual-Machines-and-Containers.md)
 4. [How does code get from a developer's laptop to production?](../../interview/under-the-hood/09-Virtual-Machines-and-Containers.md)
 
+## 11. Reading config files (microservices: Spring Boot, Cloud Foundry, Docker, Kubernetes)
+
+1. [How do you read a YAML file?](../../interview/under-the-hood/16-Config-Files-in-Microservices.md)
+2. [What do the common settings in a microservice's application.yml mean?](../../interview/under-the-hood/16-Config-Files-in-Microservices.md)
+3. [What is manifest.yml, and how do you read one?](../../interview/under-the-hood/16-Config-Files-in-Microservices.md)
+4. [Which config file does what in a microservice project?](../../interview/under-the-hood/16-Config-Files-in-Microservices.md)
+
+## 12. Making data smaller and scannable: compression and QR codes (all computers)
+
+1. [How does ZIP or JPEG compression make files smaller?](../../interview/under-the-hood/18-How-Everyday-Tech-Works.md)
+2. [How does a QR code store data?](../../interview/under-the-hood/18-How-Everyday-Tech-Works.md)
+
+## 13. Keeping secrets: hashing and encryption (security, any language)
+
+1. [How are passwords stored safely, and why can't the website see yours?](../../interview/under-the-hood/18-How-Everyday-Tech-Works.md)
+2. [What is encryption, in plain words — and what are public and private keys?](../../interview/under-the-hood/18-How-Everyday-Tech-Works.md)
+
+## 14. Everyday journeys: email, payments and location (how it works)
+
+1. [What happens when you click "Send" on an email?](../../interview/under-the-hood/18-How-Everyday-Tech-Works.md)
+2. [How does a UPI payment travel from your phone to the shop's bank?](../../interview/under-the-hood/18-How-Everyday-Tech-Works.md)
+3. [How does GPS find your location?](../../interview/under-the-hood/18-How-Everyday-Tech-Works.md)
+
+## 15. Where code libraries come from (npm, Maven — any project)
+
+1. [What happens during npm install or a Maven build — where do the libraries come from?](../../interview/under-the-hood/18-How-Everyday-Tech-Works.md)
+
 ## Diagrams
 
 - [Containers share one OS kernel through the container engine; each VM carries its own guest operating system](../../knowledge/visual-notes/under-the-hood/containers-vs-vms.png)
 - [Kubernetes architecture: the control plane manages worker nodes that run pods](../../knowledge/visual-notes/under-the-hood/kubernetes-architecture.png)
+- [Huffman tree for "TO BE OR NOT TO BE": frequent symbols like space and O get 2-bit codes, rare ones like N and R get 4-bit codes](../../knowledge/visual-notes/under-the-hood/huffman-tree.svg)
+- [The same photo saved with stronger and stronger JPEG compression: the file gets smaller and the close-ups get blockier](../../knowledge/visual-notes/under-the-hood/jpeg-quality.png)
+- [QR code parts: three big position squares in the corners, smaller alignment squares, timing dots, format and version information, and the data area](../../knowledge/visual-notes/under-the-hood/qr-code-structure.svg)
+- [A hash function turns any input into a fixed-length digest; changing one letter gives a completely different digest](../../knowledge/visual-notes/under-the-hood/hash-function.svg)
+- [Public-key encryption: Bob encrypts "Hello Alice!" with Alice's public key; only Alice's private key can decrypt it](../../knowledge/visual-notes/under-the-hood/public-key-encryption.svg)
+- [The GPS constellation: satellites on several orbits around the Earth, so at least four are visible from almost anywhere](../../knowledge/visual-notes/under-the-hood/gps-constellation.jpg)
 
 ## Related roles
 
