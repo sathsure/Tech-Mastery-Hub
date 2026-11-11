@@ -130,6 +130,9 @@ export function composeRepositoryAnswer(search: SearchResult, evidence: Evidence
   // The best match only; related entries are offered as follow-up questions.
   const [top] = evidence;
   const body = (top.answer ?? top.summary).trim() || COMING_SOON;
+  // A well-matched interview question answers what was just asked: start with the answer, not the
+  // question again. Notes, roles, terms and roadmaps keep their title; it names the subject.
+  if (search.confidence === "high" && (top.kind === "question" || top.kind === "follow-up")) return body;
   const intro = search.confidence === "medium" ? "_Closest entry in your notes; it may not cover everything you asked._\n\n" : "";
   const title = `**${conciseTitle(top)}**`;
   // Glossary answers already open with the term in bold.

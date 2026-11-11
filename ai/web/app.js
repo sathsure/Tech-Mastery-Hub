@@ -133,7 +133,8 @@ function replaceScreen(id) {
 }
 
 function updateNavButtons() {
-  $("#back").hidden = nav.at <= 0;
+  // A new, empty chat is a fresh start: no Back there (the browser's own Back still works).
+  $("#back").hidden = nav.at <= 0 || !state.conversation?.messages.length;
   $("#forward").hidden = nav.at >= nav.max;
 }
 
@@ -240,8 +241,10 @@ function jumpToLatest() {
       steadySince = now;
     }
     // Let the smooth scroll run first, then keep pinned to the end as the content grows.
-    if (now - started > 450 && thread.scrollHeight - thread.scrollTop - thread.clientHeight > 2) thread.scrollTo({ top: thread.scrollHeight, behavior: "auto" });
-    if (!state.controller && now - steadySince > 900) return stopFollowing();
+    const atEnd = thread.scrollHeight - thread.scrollTop - thread.clientHeight <= 2;
+    if (now - started > 450 && !atEnd) thread.scrollTo({ top: thread.scrollHeight, behavior: "auto" });
+    // Stop once the end is reached and stays put; a phone's fling can hold the scroll for a moment.
+    if (!state.controller && now - steadySince > 900 && (atEnd || now - started > 4000)) return stopFollowing();
     requestAnimationFrame(step);
   };
   requestAnimationFrame(step);
@@ -371,7 +374,7 @@ function renderRecent() {
   const list = listConversations();
   $("#recent-list").innerHTML = list.length
     ? list
-        .map(item => `<li class="${item.id === state.conversation.id ? "active" : ""}"><button type="button" class="nav-item" data-open="${escapeHtml(item.id)}">${icon("message", "nav-ic")}<span>${escapeHtml(item.title)}</span></button><button type="button" class="recent-del" data-delete="${escapeHtml(item.id)}" aria-label="Delete chat">${icon("trash")}</button></li>`)
+        .map(item => `<li class="${item.id === state.conversation.id ? "active" : ""}"><button type="button" class="nav-item" data-open="${escapeHtml(item.id)}">${icon("message", "nav-ic")}<span>${escapeHtml(item.title)}</span></button><button type="button" class="recent-del" data-delete="${escapeHtml(item.id)}" aria-label="Delete chat">${icon("trash")}<span class="del-confirm">Delete?</span></button></li>`)
         .join("")
     : `<li class="recent-empty">No chats yet</li>`;
 }
@@ -710,6 +713,7 @@ function updateAssistant(element, message, { final, status } = {}) {
 function renderThread({ scrollTop } = {}) {
   const messages = state.conversation.messages;
   $("#chat-title").textContent = state.conversation.title;
+  updateNavButtons();
   if (!messages.length) {
     renderWelcome();
     updateComposerHint();
@@ -906,6 +910,7 @@ async function send(rawText, { replaceFrom, plan, overview, mock } = {}) {
   const user = { role: "user", content: text, ...(plan ? { plan } : {}), ...(overview ? { overview } : {}), ...(mock ? { mock } : {}) };
   const assistant = { role: "assistant", content: "", meta: null, done: null, checks: {} };
   conversation.messages.push(user, assistant);
+  updateNavButtons();
   const index = conversation.messages.length - 1;
   const questionView = userView(user);
   questionView.classList.add("enter");
@@ -1041,6 +1046,17 @@ const ACTIONS = {
   },
 };
 
+/**
+ * Touch screens have no hover to reveal the trash icon on purpose, so it is always shown there and
+ * the first tap only asks "Delete?"; a second tap deletes. A mouse click deletes at once.
+ */
+function confirmDelete(id, button) {
+  if (matchMedia("(hover: hover)").matches || button.classList.contains("armed")) return deleteChat(id);
+  for (const other of document.querySelectorAll(".recent-del.armed")) other.classList.remove("armed");
+  button.classList.add("armed");
+  setTimeout(() => button.classList.remove("armed"), 3000);
+}
+
 function deleteChat(id) {
   deleteConversation(id);
   if (id === state.conversation.id) loadConversation(null);
@@ -1072,7 +1088,7 @@ const DATA_HANDLERS = [
       closeSidebar();
     },
   ],
-  ["delete", value => deleteChat(value)],
+  ["delete", (value, target) => confirmDelete(value, target)],
   ["entryOpen", value => openEntry(value)],
   ["copyPath", value => copyText(value, "Path copied")],
   ["copy", (_, target) => copyText(target.closest(".code-block")?.querySelector("pre")?.innerText ?? "", "Code copied")],

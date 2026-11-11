@@ -133,6 +133,14 @@ details[open] > summary .chevron { transform: rotate(90deg); }
 .recent-del .icon { width: 14px; height: 14px; }
 .recent-list li:hover .recent-del, .recent-del:focus-visible { opacity: 1; }
 .recent-del:hover { color: var(--danger); }
+.recent-del { display: inline-flex; align-items: center; gap: 4px; flex: none; }
+.del-confirm { display: none; font-size: 12px; font-weight: 600; }
+/* Touch screens: the trash icon is always visible; the first tap asks "Delete?". */
+@media (hover: none) {
+  .recent-del { opacity: 0.7; min-height: 44px; padding: 0 12px; }
+  .recent-del.armed { opacity: 1; color: var(--danger); }
+  .recent-del.armed .del-confirm { display: inline; }
+}
 .recent-empty { padding: 4px 10px 4px 28px; font-size: 13px; color: var(--muted); }
 
 .side-foot { padding: 10px 16px 12px; border-top: 1px solid var(--border-muted); }
@@ -152,7 +160,7 @@ details[open] > summary .chevron { transform: rotate(90deg); }
 .thread { position: relative; flex: 1; overflow-y: auto; scrollbar-gutter: stable; padding: 32px 24px 24px; overflow-anchor: none; }
 /* Room under the newest answer so its question can sit at the top of the view while it streams. */
 .msg.assistant.latest { min-height: calc(var(--thread-h, 70vh) - 140px); }
-.jump-btn { position: absolute; left: 50%; bottom: 128px; transform: translateX(-50%); z-index: 4; display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border: 1px solid var(--border); border-radius: 999px; background: var(--bg); color: var(--text-2); font-size: 13px; box-shadow: var(--shadow); }
+.jump-btn { position: absolute; left: 50%; bottom: 128px; translate: -50% 0; /* not transform: the press effect and pop-in animation set transform */ z-index: 4; display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border: 1px solid var(--border); border-radius: 999px; background: var(--bg); color: var(--text-2); font-size: 13px; box-shadow: var(--shadow); }
 .jump-btn .icon { width: 14px; height: 14px; transform: rotate(90deg); }
 .jump-btn:hover { color: var(--accent); border-color: var(--accent); }
 .thread > * { max-width: var(--content); margin-left: auto; margin-right: auto; }
@@ -604,7 +612,11 @@ html.theming .thread, html.atlas-switch .thread { view-transition-name: none; }
 .side-link-ic { width: 13px; height: 13px; transition: transform var(--fast) var(--ease); }
 .side-link:hover .side-link-ic { color: var(--accent); transform: translate(1px, -1px); }
 /* "Use suggestion": only where there is no Tab key (touch screens). */
-.suggest-use { color: var(--accent); border-color: var(--accent); }
+.suggest-use { flex: none; white-space: nowrap; color: var(--accent); border-color: var(--accent); }
+/* The topic filter gives up width first, so the buttons beside it stay on one line. */
+.composer-tools > * { flex: none; }
+.composer-tools > .topic-filter { flex: 0 1 auto; min-width: 0; }
+.topic-filter select { width: 100%; text-overflow: ellipsis; }
 @media (hover: hover) and (pointer: fine) { .suggest-use { display: none !important; } }
 .forward-btn { width: 32px; height: 32px; }
 
