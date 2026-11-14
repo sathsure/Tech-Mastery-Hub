@@ -322,6 +322,103 @@ await check("home page hubs: Explore topics and Roadmaps list choices instead of
   assert.ok(cards.some(card => card.title === "Backend with Java"), "learning tracks are listed too");
 });
 
+await check("cheat sheets: /cheat-sheet lists every technical topic, a pick shows that topic's sheet as written", async () => {
+  const picker = await collect({ message: "Cheat sheets" }, null);
+  assert.equal(picker.done?.view, "overview");
+  assert.equal(picker.meta?.answerMode, "repository", "no model needed");
+  const asks = cardsIn(picker.answer).flatMap(card => (card.type === "topic" ? card.items.map(item => item.ask) : []));
+  for (const ask of ["Java cheat sheet", "Angular cheat sheet", "React cheat sheet", "JavaScript cheat sheet", "SQL cheat sheet", "System Design cheat sheet"]) {
+    assert.ok(asks.includes(ask), `picker offers ${ask}`);
+  }
+  assert.ok(!asks.includes("Behavioral & HR cheat sheet"), "career topics are not technical sheets");
+  // Every technical topic in the Explore topics hub has a sheet and a quick-traps page.
+  const { TOPIC_GROUPS } = await import("./chat-guidance.js");
+  const { revisionPath } = await import("./chat-revision.js");
+  const technical = TOPIC_GROUPS.filter(([title]) => title !== "Career & soft skills").flatMap(([, , topics]) => topics).filter(topic => topic !== "under-the-hood");
+  for (const kind of ["sheet", "traps"] as const) {
+    const missing = technical.filter(topic => !existsSync(resolve(REPOSITORY_ROOT, revisionPath(kind, topic))));
+    assert.deepEqual(missing, [], `every technical topic has a ${kind} page`);
+  }
+
+  const java = await collect({ message: "Java cheat sheet" }, null);
+  assert.match(java.answer, /^# Java — Cheat Sheet/);
+  assert.match(java.answer, /HashMap/);
+  assert.doesNotMatch(java.answer, /Quick traps/i, "traps live on their own page");
+  assert.deepEqual(java.done?.followUps, ["Java quick traps", "Quiz me on Java", "Cheat sheets"]);
+  // Other ways to ask, and aliases.
+  assert.match((await collect({ message: "cheat sheet for k8s" }, null)).answer, /^# DevOps/);
+  assert.match((await collect({ message: "Spring Security filters cheat sheet" }, null)).answer, /^# Spring Security/);
+  assert.match((await collect({ message: "JS cheatsheet" }, null)).answer, /^# JavaScript/);
+  const unknown = await collect({ message: "COBOL cheat sheet" }, null);
+  assert.match(unknown.answer, /no cheat sheet for \*\*COBOL\*\* yet/);
+  // Ordinary questions are untouched.
+  assert.notEqual((await collect({ message: "What is a closure?" }, null)).done?.view, "overview");
+});
+
+await check("quick traps: /quick-traps lists topics, a pick shows each trap with the mistake and the right answer", async () => {
+  const picker = await collect({ message: "Quick traps" }, null);
+  assert.equal(picker.done?.view, "overview");
+  const asks = cardsIn(picker.answer).flatMap(card => (card.type === "topic" ? card.items.map(item => item.ask) : []));
+  assert.ok(asks.includes("Java quick traps") && asks.includes("React quick traps"));
+  const java = await collect({ message: "Java quick traps" }, null);
+  assert.match(java.answer, /^# Java — Quick Traps/);
+  assert.ok((java.answer.match(/^### /gm) ?? []).length >= 8, "a good number of traps");
+  assert.deepEqual(java.done?.followUps, ["Java cheat sheet", "Quiz me on Java", "Quick traps"]);
+  for (const message of ["quick traps for k8s", "SQL traps", "React gotchas", "traps in Spring Security"]) {
+    assert.match((await collect({ message }, null)).answer, /— Quick Traps/, message);
+  }
+  assert.match((await collect({ message: "COBOL quick traps" }, null)).answer, /no quick traps page for \*\*COBOL\*\* yet/);
+});
+
+await check("revision pages: one-liners, comparisons, predict-the-output, code snippets and ELI5 open by picker or by name", async () => {
+  const { KINDS, revisionGroups } = await import("./chat-revision.js");
+  const pages: Array<[string, string, RegExp]> = [
+    ["One-liners", "Java one-liners", /^# Java — One-liners/],
+    ["Comparisons", "Java comparisons", /^# Java — Comparisons/],
+    ["Predict the output", "JavaScript predict the output", /^# JavaScript — Predict the Output/],
+    ["Code snippets", "React code snippets", /^# React — Code Snippets/],
+    ["Explain like I'm 5", "Explain Kafka like I'm 5", /^# Kafka & RabbitMQ — Explain Like I'm 5/],
+  ];
+  for (const [bare, named, title] of pages) {
+    const picker = await collect({ message: bare }, null);
+    assert.equal(picker.done?.view, "overview", bare);
+    assert.ok(cardsIn(picker.answer).length > 0, `${bare} shows a topic picker`);
+    assert.match((await collect({ message: named }, null)).answer, title, named);
+  }
+  // Every technical topic has one-liners, comparisons and ELI5 pages.
+  for (const kind of ["oneliners", "vs", "eli5"] as const) {
+    assert.equal(revisionGroups(kind).flatMap(group => group.topics).length, 34, `${KINDS[kind].dir} covers all 34 topics`);
+  }
+  // Answers are hidden until tapped, and every one-liner line is in the expected format.
+  assert.match((await collect({ message: "Java predict the output" }, null)).answer, /<details class="reveal"><summary>Show answer<\/summary>/);
+  for (const topic of revisionGroups("oneliners").flatMap(group => group.topics)) {
+    const { loadRevisionPage } = await import("./chat-revision.js");
+    const text = (await loadRevisionPage("oneliners", topic)) ?? "";
+    const items = text.split("\n").filter(line => /^\d+\./.test(line));
+    assert.ok(items.length >= 15 && items.every(line => /^\d+\.\s+\*\*.+?\*\*\s+—\s+.+/.test(line)), `${topic} one-liners are well-formed`);
+  }
+  // A concept that isn't a topic goes to the normal tutor answer, not a picker.
+  assert.notEqual((await collect({ message: "Explain closures like I'm 5" }, null)).done?.view, "overview");
+  assert.notEqual((await collect({ message: "let vs var comparisons" }, null)).done?.view, "overview");
+});
+
+await check("revise: ten fresh flashcards from one-liners and traps, for one topic, several, or all", async () => {
+  const java = await collect({ message: "Revise Java" }, null);
+  assert.match(java.answer, /^\*\*Quick revision — Java\*\* · 10 cards/);
+  assert.equal((java.answer.match(/<details class="reveal">/g) ?? []).length, 10);
+  assert.ok(java.answer.includes("Spot the trap"), "mixes in quick traps");
+  assert.deepEqual(java.done?.followUps, ["Revise Java again", "Java quick traps", "Revise"]);
+  const mixed = await collect({ message: "Revise Java, React" }, null);
+  assert.match(mixed.answer, /Quick revision — Java, React/);
+  assert.match(mixed.answer, /_\((?:Java|React)\)_/, "cards say which topic they came from");
+  assert.match((await collect({ message: "Revise Java and React again" }, null)).answer, /Quick revision — Java, React/);
+  assert.match((await collect({ message: "Revise all topics" }, null)).answer, /Quick revision — all topics/);
+  const picker = await collect({ message: "Revise" }, null);
+  assert.ok(cardsIn(picker.answer).some(card => card.title === "Mixed"), "picker offers all topics");
+  // Not a topic → normal answer.
+  assert.notEqual((await collect({ message: "Revise my resume" }, null)).answer.startsWith("**Quick revision"), true);
+});
+
 await check("home page hubs: Career atlas shows its three parts (no glossary), Interview prep offers roles and topics", async () => {
   const cardsOf = (answer: string): Card[] => JSON.parse(/```tmh-cards\n([\s\S]*?)```/.exec(answer)?.[1] ?? "[]");
   const atlas = await collect({ message: "Explore the Career Atlas", overview: "career-atlas" }, null);

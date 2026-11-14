@@ -143,7 +143,7 @@ export const TOPICS_HUB = "topics";
 export const ROADMAPS_HUB = "roadmaps-hub";
 
 /** Every learning topic, grouped the way people think about them. */
-const TOPIC_GROUPS: Array<[string, string, string[]]> = [
+export const TOPIC_GROUPS: Array<[string, string, string[]]> = [
   ["Frontend", "What runs in the browser: pages, styling, JavaScript and UI frameworks.", ["html", "css", "javascript", "typescript", "angular", "react", "rxjs", "web-vitals"]],
   ["Backend", "Server-side languages, frameworks and APIs.", ["java", "spring", "spring-security", "spring-cloud", "python", "nodejs", "rest-api", "microservices", "messaging"]],
   ["Data", "Storing, querying and moving data.", ["database/sql", "caching", "data-engineering"]],

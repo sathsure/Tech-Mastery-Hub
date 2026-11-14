@@ -37,6 +37,14 @@ const COMMANDS = [
   { name: "debug", hint: "problem", text: "Help me debug: {}", desc: "Root-cause checklist" },
   { name: "roadmap", hint: "role or topic", text: "Roadmap to become a {}", desc: "Step-by-step checklist" },
   { name: "role", hint: "role", text: "What does a {} do?", desc: "Role, skills, salary, next moves" },
+  { name: "cheat-sheet", hint: "topic (optional)", text: "{} cheat sheet", bare: "Cheat sheets", desc: "Key concepts of a topic on one page" },
+  { name: "quick-traps", hint: "topic (optional)", text: "{} quick traps", bare: "Quick traps", aliases: ["traps"], desc: "Tricky spots interviewers love, with the right answer" },
+  { name: "one-liners", hint: "topic (optional)", text: "{} one-liners", bare: "One-liners", desc: "Top questions, each answered in one sentence" },
+  { name: "vs", hint: "topic, or A vs B", text: "{} comparisons", bare: "Comparisons", pair: "Compare {}", desc: "Side-by-side “X vs Y” tables" },
+  { name: "predict-output", hint: "topic (optional)", text: "{} predict the output", bare: "Predict the output", aliases: ["output"], desc: "What does this code print?" },
+  { name: "code-snippets", hint: "topic (optional)", text: "{} code snippets", bare: "Code snippets", aliases: ["snippets"], desc: "Must-know code to write from memory" },
+  { name: "explain-like-5", hint: "topic or concept", text: "Explain {} like I'm 5", bare: "Explain like I'm 5", aliases: ["eli5"], desc: "Hard ideas as everyday analogies" },
+  { name: "revise", hint: "topics (optional)", text: "Revise {}", bare: "Revise", desc: "10 random flashcards; tap to check" },
 ];
 
 // ---------- Small helpers ----------
@@ -795,7 +803,7 @@ function movePalette(delta) {
 // ---------- Slash commands ----------
 
 function slashMatches() {
-  const match = /^\/(\w*)$/.exec(input.value);
+  const match = /^\/([\w-]*)$/.exec(input.value);
   return match ? COMMANDS.filter(command => command.name.startsWith(match[1].toLowerCase())) : [];
 }
 
@@ -821,9 +829,13 @@ function expandCommand(text) {
   if (!trimmed.startsWith("/")) return trimmed;
   const space = trimmed.search(/\s/);
   const name = (space < 0 ? trimmed.slice(1) : trimmed.slice(1, space)).toLowerCase();
-  const command = COMMANDS.find(item => item.name === name);
+  const command = COMMANDS.find(item => item.name === name || item.name.replace(/-/g, "") === name || item.aliases?.includes(name));
   if (!command) return trimmed;
   const typed = space < 0 ? "" : trimmed.slice(space).trim();
+  // Commands with a list of their own ("/cheat-sheet") show that list when no argument is typed.
+  if (!typed && command.bare) return command.bare;
+  // "/vs let vs var" compares that pair; "/vs java" opens the topic's comparison tables.
+  if (typed && command.pair && /\s(?:vs\.?|versus)\s/i.test(typed)) return command.pair.replace("{}", typed);
   const argument = typed || (state.conversation.topic ? topicLabel(state.conversation.topic) : "");
   return argument ? command.text.replace("{}", argument) : command.text.replace(" {}", "").replace("{}", "this");
 }
@@ -1199,7 +1211,13 @@ input.addEventListener("keydown", event => {
   }
   if (menuOpen && (event.key === "Tab" || event.key === "Enter")) {
     event.preventDefault();
-    return completeSlash(slashMatches()[slashActive].name);
+    const picked = slashMatches()[slashActive];
+    // "/cheat-sheet" typed in full + Enter: open its topic list straight away.
+    if (event.key === "Enter" && picked.bare && input.value.slice(1).toLowerCase() === picked.name) {
+      $("#slash-menu").hidden = true;
+      return $("#composer").requestSubmit();
+    }
+    return completeSlash(picked.name);
   }
   const atEnd = input.selectionStart === input.value.length && input.selectionEnd === input.value.length;
   if (suggest.text && !event.shiftKey && !event.ctrlKey && !event.altKey && (event.key === "Tab" || (event.key === "ArrowRight" && atEnd))) {
