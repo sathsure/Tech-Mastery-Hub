@@ -4,6 +4,8 @@
 
 ### ❓ Two Sum (LeetCode 1)
 
+**Level:** 🟢 Beginner
+
 Given an array `nums` and an integer `target`, return the indices of the two numbers that add up to `target`. Exactly one solution exists, and the same element can't be used twice.
 
 Example: `nums = [2, 7, 11, 15], target = 9` → `[0, 1]`
@@ -46,6 +48,8 @@ print(two_sum([3, 2, 4], 6))        # [1, 2]
 ---
 
 ### ❓ Three Sum (LeetCode 15)
+
+**Level:** 🟡 Intermediate
 
 Given an array `nums`, return all **unique** triplets `[a, b, c]` with `a + b + c == 0`.
 
@@ -105,6 +109,8 @@ print(three_sum([0, 0, 0, 0]))           # [[0, 0, 0]]
 
 ### ❓ Contains Duplicate (LeetCode 217)
 
+**Level:** 🟢 Beginner
+
 Return `True` if any value appears at least twice in `nums`.
 
 ### 📝 Answer
@@ -136,6 +142,8 @@ print(contains_duplicate([1, 2, 3, 4]))
 ---
 
 ### ❓ Valid Anagram (LeetCode 242)
+
+**Level:** 🟢 Beginner
 
 Return `True` if `t` is an anagram of `s` (same letters, same counts).
 
@@ -172,6 +180,8 @@ print(is_anagram("rat", "car"))
 ---
 
 ### ❓ Group Anagrams (LeetCode 49)
+
+**Level:** 🟡 Intermediate
 
 Group the words that are anagrams of each other.
 
@@ -213,6 +223,8 @@ print(group_anagrams(["eat", "tea", "tan", "ate", "nat", "bat"]))
 
 ### ❓ Top K Frequent Elements (LeetCode 347)
 
+**Level:** 🟡 Intermediate
+
 Return the `k` most frequent numbers.
 
 Example: `nums = [1, 1, 1, 2, 2, 3], k = 2` → `[1, 2]`
@@ -248,6 +260,8 @@ print(top_k_frequent([1, 1, 1, 2, 2, 3], 2))
 ---
 
 ### ❓ Product of Array Except Self (LeetCode 238)
+
+**Level:** 🟡 Intermediate
 
 Return an array where `answer[i]` is the product of all numbers except `nums[i]`, without using division, in `O(n)`.
 
@@ -295,6 +309,8 @@ print(product_except_self([1, 2, 3, 4]))
 ## Python: Binary Search
 
 ### ❓ Search Insert Position (LeetCode 35)
+
+**Level:** 🟢 Beginner
 
 Given a sorted array of distinct integers and a target, return the index of the target. If it is absent, return the index where it would be inserted to keep the array sorted.
 
@@ -345,6 +361,8 @@ Python's standard library does the same: `bisect.bisect_left(nums, target)`.
 
 ### ❓ Search in Rotated Sorted Array (LeetCode 33)
 
+**Level:** 🟡 Intermediate
+
 A sorted array was rotated at an unknown pivot (e.g. `[4, 5, 6, 7, 0, 1, 2]`). Return the index of `target`, or `-1`, in `O(log n)`.
 
 ### 📝 Answer
@@ -394,6 +412,8 @@ print(search_rotated([4, 5, 6, 7, 0, 1, 2], 3))
 
 ### ❓ Valid Palindrome (LeetCode 125)
 
+**Level:** 🟢 Beginner
+
 After lower-casing and removing non-alphanumeric characters, is the string a palindrome?
 
 Example: `"A man, a plan, a canal: Panama"` → `True`
@@ -428,6 +448,8 @@ print(is_palindrome("race a car"))
 ---
 
 ### ❓ Container With Most Water (LeetCode 11)
+
+**Level:** 🟡 Intermediate
 
 Given wall heights, choose two walls that hold the most water: `width × min(height)`.
 
@@ -475,6 +497,8 @@ print(max_area([1, 8, 6, 2, 5, 4, 8, 3, 7]))
 
 ### ❓ Longest Substring Without Repeating Characters (LeetCode 3)
 
+**Level:** 🟡 Intermediate
+
 Return the length of the longest substring with no repeated characters.
 
 Example: `"abcabcbb"` → `3` (`"abc"`)
@@ -519,6 +543,8 @@ print(length_of_longest_substring("pwwkew"))    # 3
 
 ### ❓ Best Time to Buy and Sell Stock (LeetCode 121)
 
+**Level:** 🟢 Beginner
+
 `prices[i]` is the price on day `i`. Buy once and sell later; return the maximum profit (0 if none).
 
 Example: `[7, 1, 5, 3, 6, 4]` → `5` (buy at 1, sell at 6)
@@ -560,6 +586,8 @@ print(max_profit([7, 6, 4, 3, 1]))
 ## Python: Stack, Intervals and Heaps
 
 ### ❓ Valid Parentheses (LeetCode 20)
+
+**Level:** 🟢 Beginner
 
 Given a string of `()[]{}`, check that every bracket is closed in the correct order.
 
@@ -608,6 +636,8 @@ print(is_valid("([)]"))
 
 ### ❓ Merge Intervals (LeetCode 56)
 
+**Level:** 🟡 Intermediate
+
 Merge all overlapping intervals.
 
 Example: `[[1, 3], [2, 6], [8, 10], [15, 18]]` → `[[1, 6], [8, 10], [15, 18]]`
@@ -650,6 +680,8 @@ print(merge([[1, 3], [2, 6], [8, 10], [15, 18]]))
 
 ### ❓ Kth Largest Element in an Array (LeetCode 215)
 
+**Level:** 🟡 Intermediate
+
 Return the `k`-th largest element.
 
 Example: `nums = [3, 2, 1, 5, 6, 4], k = 2` → `5`
@@ -691,6 +723,8 @@ print(find_kth_largest([3, 2, 1, 5, 6, 4], 2))
 ## Python: Linked Lists
 
 ### ❓ Reverse a Linked List (LeetCode 206)
+
+**Level:** 🟢 Beginner
 
 Reverse a singly linked list and return the new head.
 
@@ -750,6 +784,8 @@ print(to_list(reverse_list(from_list([1, 2, 3, 4, 5]))))
 
 ### ❓ Merge Two Sorted Lists (LeetCode 21)
 
+**Level:** 🟢 Beginner
+
 Merge two sorted linked lists into one sorted list.
 
 ### 📝 Answer
@@ -790,6 +826,8 @@ print(to_list(merge_two_lists(from_list([1, 2, 4]), from_list([1, 3, 4]))))
 ---
 
 ### ❓ Linked List Cycle (LeetCode 141)
+
+**Level:** 🟢 Beginner
 
 Return `True` if the linked list has a cycle.
 
@@ -833,6 +871,8 @@ print(has_cycle(from_list([1, 2])))
 ## Python: Trees and Graphs
 
 ### ❓ Maximum Depth of Binary Tree (LeetCode 104)
+
+**Level:** 🟢 Beginner
 
 Return the number of nodes on the longest path from the root down to a leaf.
 
@@ -878,6 +918,8 @@ print(max_depth(root))
 ---
 
 ### ❓ Number of Islands (LeetCode 200)
+
+**Level:** 🟡 Intermediate
 
 Given a grid of `"1"` (land) and `"0"` (water), count the islands (groups of land connected up, down, left or right).
 
@@ -935,6 +977,8 @@ print(num_islands(grid))
 
 ### ❓ Climbing Stairs (LeetCode 70)
 
+**Level:** 🟢 Beginner
+
 You can climb 1 or 2 steps at a time. How many distinct ways are there to reach step `n`?
 
 Example: `n = 3` → `3` (1+1+1, 1+2, 2+1)
@@ -972,6 +1016,8 @@ print(climb_stairs(5))       # 8
 ---
 
 ### ❓ Maximum Subarray (LeetCode 53)
+
+**Level:** 🟡 Intermediate
 
 Find the contiguous subarray with the largest sum.
 
@@ -1011,6 +1057,8 @@ print(max_sub_array([-2, 1, -3, 4, -1, 2, 1, -5, 4]))
 ---
 
 ### ❓ Coin Change (LeetCode 322)
+
+**Level:** 🟡 Intermediate
 
 Return the fewest coins needed to make `amount`, or `-1` if it can't be made.
 
@@ -1055,6 +1103,8 @@ print(coin_change([2], 3))
 ## Python: Patterns
 
 ### ❓ Which problem-solving pattern fits which kind of question?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 

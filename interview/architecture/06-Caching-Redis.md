@@ -73,6 +73,8 @@ Practical approach:
 
 ### ❓ What are cache stampede, cache penetration and cache avalanche?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 | Problem | What happens | Fix |
@@ -88,6 +90,8 @@ Duration ttl = Duration.ofMinutes(10).plusSeconds(random.nextInt(60)); // jitter
 ---
 
 ### ❓ Local (in-memory) cache vs distributed cache?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -105,6 +109,8 @@ Common combo: a small local cache (seconds) in front of Redis (minutes) — a **
 ## Redis
 
 ### ❓ What data types does Redis support, with examples?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -129,6 +135,8 @@ ZREVRANGE leaderboard 0 2 WITHSCORES # top 3
 
 ### ❓ How does Redis persistence work (RDB vs AOF)?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 | RDB (snapshot) | AOF (append-only file) |
@@ -142,6 +150,8 @@ Use both for important data, or none for a pure cache.
 ---
 
 ### ❓ What are TTL and key expiry in Redis?
+
+**Level:** 🟢 Beginner
 
 ### 📝 Answer
 
@@ -159,6 +169,8 @@ Perfect for OTPs, sessions, rate-limit windows and cache entries.
 
 ### ❓ Is Redis single-threaded?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Commands run **one at a time on one main thread**, which makes each command atomic and avoids locks. Since Redis 6, network I/O can use extra threads, but command execution stays single-threaded.
@@ -168,6 +180,8 @@ Consequence: a **slow command blocks everyone** — avoid `KEYS *` on large data
 ---
 
 ### ❓ How do Redis replication, Sentinel and Cluster differ?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -194,6 +208,8 @@ flowchart LR
 ---
 
 ### ❓ How do you use Redis with Spring Boot?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -227,6 +243,8 @@ spring.cache.redis.time-to-live=10m
 
 ### ❓ Tricky: How do you store user sessions when you have many app servers?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Put sessions in **Redis** (Spring Session) so every server reads the same session, or avoid server sessions entirely with **JWT** tokens. Sticky sessions on the load balancer also work but break when a server dies.
@@ -234,6 +252,8 @@ Put sessions in **Redis** (Spring Session) so every server reads the same sessio
 ---
 
 ### ❓ Tricky: How do you build a leaderboard for millions of players?
+
+**Level:** 🔴 Advanced
 
 ### 📝 Answer
 
@@ -243,6 +263,8 @@ A Redis **sorted set**: `ZINCRBY board 50 player42` on each score, `ZREVRANGE bo
 
 ### ❓ Tricky: Redis vs Memcached?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Memcached is a simple, multi-threaded string cache. Redis has rich data types, persistence, replication, Pub/Sub, Lua scripts and transactions. Choose Redis unless you only need a plain cache and want Memcached's simplicity.
@@ -251,6 +273,84 @@ Memcached is a simple, multi-threaded string cache. Redis has rich data types, p
 
 ### ❓ Tricky: Can Redis lose data?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Yes. Without persistence, a restart loses everything; with AOF `everysec` you can lose about one second; replication is asynchronous, so a failover can lose the latest writes. Treat Redis as a cache or keep the source of truth in a database for anything critical.
+
+
+
+---
+
+## Caching Patterns (Intermediate)
+
+### ❓ What are the caching strategies — cache-aside, read-through, write-through, write-behind?
+
+### 📝 Answer
+
+```mermaid
+flowchart LR
+  subgraph CA[Cache-aside — app manages the cache]
+    a1[App] -- 1 get --> c1[(Cache)]
+    a1 -- "2 miss → read" --> d1[(DB)]
+    a1 -- 3 put --> c1
+  end
+  subgraph WT[Write-through]
+    a2[App] -- write --> c2[(Cache)] -- same time --> d2[(DB)]
+  end
+  subgraph WB[Write-behind]
+    a3[App] -- write --> c3[(Cache)] -. later, in batches .-> d3[(DB)]
+  end
+```
+
+| Strategy | Read | Write | ✅ | ❌ |
+|---|---|---|---|---|
+| **Cache-aside** (lazy loading) | app checks cache, on miss loads DB and fills cache | app writes DB, **deletes** the key | simple, only caches what's used, cache failure isn't fatal | first read is slow; brief staleness |
+| **Read-through** | the **cache** loads from DB on a miss | — | app code stays simple | needs a cache that supports loaders |
+| **Write-through** | — | write cache **and** DB together | cache always fresh | slower writes; caches data nobody reads |
+| **Write-behind** (write-back) | — | write cache now, DB **later** in batches | very fast writes | data loss if the cache dies first |
+| **Write-around** | — | write DB only | no cache pollution | next read is a miss |
+
+**Most common in interviews and real apps:** cache-aside + TTL + delete-on-update.
+
+#### ↳ Follow-up: Why delete the key on update instead of writing the new value?
+
+↪ Two concurrent updates can write cache values in the wrong order and leave stale data; deleting lets the next read load the truth.
+
+---
+
+### ❓ How do you implement a distributed lock with Redis?
+
+### 📝 Answer
+
+A **distributed lock** makes sure only **one instance** in the cluster does something at a time (run a nightly job, process one order).
+
+```text
+# acquire: only if nobody holds it, auto-expire after 30 s
+SET lock:order:42 <random-token> NX EX 30   → OK  (got it)   / nil (someone else has it)
+
+# ... do the work ...
+
+# release: only if we still own it (Lua keeps check + delete atomic)
+if redis.call("GET", KEYS[1]) == ARGV[1] then
+  return redis.call("DEL", KEYS[1])
+end
+return 0
+```
+
+**Why each part matters:**
+- `NX` — set only if absent (mutual exclusion).
+- `EX 30` — expiry, so a crashed holder doesn't lock forever.
+- **Random token** — you never delete a lock that expired and was taken by someone else.
+- **Lua script** — "check owner" and "delete" happen as one step.
+
+In Java, **Redisson** (`RLock`) handles this plus automatic lock renewal ("watchdog").
+
+**Limits:** if work takes longer than the TTL, two holders can overlap → use **fencing tokens** (an increasing number checked by the database) for critical data. Redlock spreads the lock over several Redis nodes, but its safety is debated.
+
+#### ↳ Follow-up: Alternatives?
+
+↪ A database row lock (`SELECT … FOR UPDATE`), ZooKeeper/etcd locks, or ShedLock for scheduled jobs in Spring.
+
+---

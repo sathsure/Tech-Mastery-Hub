@@ -4,6 +4,8 @@
 
 ### ❓ What are the SOLID principles?
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 Five rules that keep code easy to change:
@@ -23,6 +25,8 @@ Five rules that keep code easy to change:
 ---
 
 ### ❓ Explain the Single Responsibility Principle with an example.
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -52,6 +56,8 @@ Now a change to the email template never touches the tax calculation.
 
 ### ❓ Explain the Open/Closed Principle with an example.
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Code should be **open for extension, closed for modification**: add a new case by adding a class, not by editing a growing `if/else`.
@@ -78,6 +84,8 @@ class UpiFee  implements PaymentFee { public double fee(double a) { return 0; } 
 
 ### ❓ Explain the Liskov Substitution Principle with an example.
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 If `B extends A`, you must be able to use a `B` anywhere an `A` is expected **without surprises**.
@@ -98,6 +106,8 @@ Another sign of a violation: a subclass that throws `UnsupportedOperationExcepti
 ---
 
 ### ❓ Explain the Interface Segregation Principle with an example.
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -125,6 +135,8 @@ class Human implements Workable, Eatable { ... }
 ---
 
 ### ❓ Explain the Dependency Inversion Principle with an example.
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -154,6 +166,8 @@ Switching from Razorpay to Stripe = a new class; `OrderService` doesn't change.
 
 ### ❓ What are design patterns and what are the three types?
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 Design patterns are **proven solutions to common design problems** — named, so developers can talk about them quickly.
@@ -167,6 +181,8 @@ Design patterns are **proven solutions to common design problems** — named, so
 ---
 
 ### ❓ What is the Singleton pattern and how do you write a thread-safe one?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -210,6 +226,8 @@ The JVM loads `Holder` only on first use, and class loading is thread-safe.
 
 ### ❓ What is the Factory pattern?
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 A factory **creates objects for you**, so callers don't use `new` with concrete classes or know which one to pick.
@@ -241,6 +259,8 @@ JDK examples: `List.of()`, `Calendar.getInstance()`, `NumberFormat.getInstance()
 
 ### ❓ What is the Builder pattern?
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 Builder creates an object **step by step**, which is clearer than a constructor with many parameters (especially optional ones).
@@ -261,6 +281,8 @@ In Java projects, Lombok's `@Builder` generates it. JDK example: `StringBuilder`
 
 ### ❓ What is the Prototype pattern?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Create new objects by **copying an existing one** instead of building from scratch — useful when setup is expensive.
@@ -276,6 +298,8 @@ Watch for **shallow vs deep copy**: a shallow copy shares inner lists/objects wi
 ## Part 3 — Structural Patterns
 
 ### ❓ What is the Adapter pattern?
+
+**Level:** 🟢 Beginner
 
 ### 📝 Answer
 
@@ -304,6 +328,8 @@ JDK example: `Arrays.asList()` (array → List), `InputStreamReader` (bytes → 
 
 ### ❓ What is the Decorator pattern?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 A decorator **wraps an object to add behaviour** without changing its class — and wrappers can be stacked.
@@ -323,6 +349,8 @@ JDK example: `new BufferedReader(new InputStreamReader(new FileInputStream("a.tx
 
 ### ❓ What is the Proxy pattern?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 A proxy is a **stand-in object** that controls access to the real one — adding checks, caching, lazy loading or logging before passing the call on.
@@ -340,6 +368,8 @@ Spring uses proxies everywhere: `@Transactional`, `@Cacheable` and `@Async` work
 ---
 
 ### ❓ What is the Facade pattern?
+
+**Level:** 🟢 Beginner
 
 ### 📝 Answer
 
@@ -363,6 +393,8 @@ The controller calls `checkout()` and doesn't need to know the four services.
 ## Part 4 — Behavioral Patterns
 
 ### ❓ What is the Strategy pattern?
+
+**Level:** 🟢 Beginner
 
 ### 📝 Answer
 
@@ -397,6 +429,8 @@ strategies.get("festiveDiscount").apply(1000);
 
 ### ❓ What is the Observer pattern?
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 When one object changes, **all its subscribers are notified automatically** — like YouTube subscribers getting a new-video alert.
@@ -417,6 +451,8 @@ Real uses: Spring `ApplicationEventPublisher` + `@EventListener`, RxJS Observabl
 
 ### ❓ What is the Template Method pattern?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 A base class defines the **fixed steps** of an algorithm; subclasses fill in some steps.
@@ -434,6 +470,8 @@ Spring examples: `JdbcTemplate`, `RestTemplate` — they handle connections and 
 ---
 
 ### ❓ What is the Chain of Responsibility pattern?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -454,6 +492,8 @@ flowchart LR
 
 ### ❓ What is the Command pattern?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Wrap an action as an **object**, so it can be queued, logged, retried or undone.
@@ -465,6 +505,8 @@ Example: a text editor stores each edit as a `Command` with `execute()` and `und
 ## Part 5 — Tricky Questions
 
 ### ❓ Tricky: Which design patterns does Spring use?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -483,6 +525,8 @@ Example: a text editor stores each edit as a `Command` with `execute()` and `und
 
 ### ❓ Tricky: Is Singleton an anti-pattern?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 It can be. A hand-written static singleton is **global state**: hidden dependencies, hard to mock in tests, and risky with threads. Prefer letting a framework (Spring) manage one instance and inject it — you get one object without the downsides.
@@ -490,6 +534,8 @@ It can be. A hand-written static singleton is **global state**: hidden dependenc
 ---
 
 ### ❓ Tricky: What is composition over inheritance?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -505,6 +551,8 @@ Inheritance tightly couples to the parent and breaks easily when the parent chan
 ---
 
 ### ❓ Tricky: What are DRY, KISS and YAGNI?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 

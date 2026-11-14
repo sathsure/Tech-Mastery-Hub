@@ -1,5 +1,7 @@
 ### ❓ What are the main differences between React class components and function components?
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 - Function components are simpler, use hooks, and are now the recommended approach.
@@ -19,6 +21,8 @@ function Counter() {
 ---
 
 ### ❓ Explain React Hooks rules. What happens if you break them?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -57,6 +61,8 @@ The `eslint-plugin-react-hooks` rule catches these mistakes.
 
 ### ❓ Why are keys important in lists? What are bad keys?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 - Keys tell React **which item is which** between renders, so each item keeps its own state and DOM node.
@@ -78,6 +84,8 @@ items.map((item) => <Row key={item.id} />);
 ---
 
 ### ❓ What is `useEffect` and common pitfalls?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -103,6 +111,8 @@ useEffect(() => {
 
 ### ❓ What’s the difference between `useEffect` and `useLayoutEffect`?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 - `useEffect` runs after paint (async, non-blocking).
@@ -121,6 +131,8 @@ useLayoutEffect(() => {
 ---
 
 ### ❓ Explain `useMemo` and `useCallback`. When to use them?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -145,6 +157,8 @@ const handleClick = useCallback(() => {
 
 ### ❓ What is React’s Strict Mode and why might effects run twice in dev?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 - `<React.StrictMode>` helps find side-effect bugs early.
@@ -165,6 +179,8 @@ root.render(
 ---
 
 ### ❓ Explain React 18 concurrent rendering in simple terms.
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -193,6 +209,8 @@ function onChange(e) {
 
 ### ❓ What is `Suspense` and how is it used?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 - `Suspense` shows a **fallback** (spinner, skeleton) while something inside it isn't ready yet: a lazy-loaded component, or data loaded with a Suspense-aware tool (React 19 `use(promise)`, React Query, Next.js).
@@ -211,6 +229,8 @@ const UserProfile = React.lazy(() => import("./UserProfile"));
 ---
 
 ### ❓ How does server-side rendering (SSR) work with React?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -232,6 +252,8 @@ res.send(`<!doctype html><div id="root">${html}</div>`);
 
 ### ❓ What is hydration and what can go wrong?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 - Hydration attaches event listeners to existing server-rendered HTML.
@@ -251,6 +273,8 @@ function Now() {
 ---
 
 ### ❓ How do you manage global state in a large React app?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -285,6 +309,8 @@ function Button() {
 
 ### ❓ What are common performance optimization techniques in React?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 - Memoization: `React.memo`, `useMemo`, `useCallback`.
@@ -305,6 +331,8 @@ const ListItem = React.memo(function ListItem({ item }) {
 ---
 
 ### ❓ Explain controlled vs uncontrolled components in forms.
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -327,6 +355,8 @@ const ref = useRef();
 ---
 
 ### ❓ How do you handle errors in React components?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -354,6 +384,8 @@ class ErrorBoundary extends React.Component {
 ---
 
 ### ❓ How do you test React components?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -385,6 +417,8 @@ test("shows greeting", () => {
 
 ### ❓ What are custom hooks and why use them?
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 - Custom hooks are functions that use hooks and start with `use`.
@@ -409,6 +443,8 @@ function useWindowWidth() {
 
 ### ❓ How do you handle authentication flows in React?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 - Store auth state (token/user) in context or global store.
@@ -428,6 +464,8 @@ function PrivateRoute({ children }) {
 ---
 
 ### ❓ How to avoid prop drilling?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -462,6 +500,8 @@ function Header() {
 
 ### ❓ Explain “lifting state up” with an example.
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 - When two or more components need to share state, move that state to their closest common parent and pass down via props.
@@ -483,6 +523,8 @@ function Parent() {
 ---
 
 ### ❓ What is `React.forwardRef` and when to use it?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -510,6 +552,8 @@ const ref = useRef(null);
 
 ### ❓ What is the difference between `useRef` and `useState`?
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 - `useRef`:
@@ -536,6 +580,8 @@ function handleClick() {
 
 ### ❓ How do you handle large lists efficiently in React?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 - Use **windowing/virtualization**: render only the rows on screen (plus a few extra), and swap them as the user scrolls. 10,000 items → ~20 DOM rows.
@@ -558,6 +604,8 @@ import { FixedSizeList as List } from "react-window";
 
 ### ❓ How do you ensure accessibility (a11y) in React apps?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 - Use semantic HTML (`<button>`, `<nav>`, `<header>`).
@@ -576,6 +624,8 @@ import { FixedSizeList as List } from "react-window";
 ---
 
 ### ❓ How do you prevent unnecessary re-renders in child components?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -599,6 +649,8 @@ const onClick = useCallback(() => {
 
 ### ❓ What’s the difference between `ReactDOM.render` and `createRoot`?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 - `ReactDOM.render` is the old API (React 17). It was deprecated in 18 and **removed in React 19**.
@@ -618,6 +670,8 @@ root.render(<App />);
 ---
 
 ### ❓ How do you organize a large-scale React project?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -641,6 +695,8 @@ src/
 ---
 
 ### ❓ How do you handle side effects like API calls in React?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -669,6 +725,8 @@ useEffect(() => {
 
 ### ❓ Explain a “trick” question: Why doesn’t this state update immediately?
 
+**Level:** 🟡 Intermediate
+
 ```jsx
 const [count, setCount] = useState(0);
 setCount(count + 1);
@@ -693,6 +751,8 @@ useEffect(() => {
 
 ### ❓ Trick: What’s wrong with this effect?
 
+**Level:** 🟡 Intermediate
+
 ```jsx
 useEffect(() => {
   setCount(count + 1);
@@ -716,6 +776,8 @@ useEffect(() => {
 
 ### ❓ Trick: Why is this component re-rendering even with `React.memo`?
 
+**Level:** 🟡 Intermediate
+
 ```jsx
 const List = React.memo(function List({ items }) { ... });
 <List items={[]} />
@@ -736,6 +798,8 @@ const memoItems = useMemo(() => [], []);
 ---
 
 ### ❓ How do you type React components and hooks with TypeScript?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -770,6 +834,8 @@ function List<T>({ items, render }: { items: T[]; render: (item: T) => React.Rea
 
 ### ❓ How do you implement code-splitting in React?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 - Use `React.lazy` and `Suspense` to lazy-load components.
@@ -788,6 +854,8 @@ const Settings = React.lazy(() => import("./Settings"));
 ---
 
 ### ❓ How do you debounce or throttle events in React?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -815,6 +883,8 @@ Alternative without a library: keep the input in state and debounce the **value*
 ---
 
 ### ❓ How do you make a reusable modal component in React?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -844,6 +914,8 @@ function Modal({ isOpen, onClose, children }) {
 
 ### ❓ How do you implement dark/light theme toggling?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 - Store `theme` in context or global store.
@@ -867,6 +939,8 @@ useEffect(() => {
 ---
 
 ### ❓ How do you handle file uploads in React?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -892,6 +966,8 @@ function Upload() {
 
 ### ❓ How do you secure a React app against XSS?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 - Never inject unsanitized HTML.
@@ -911,6 +987,8 @@ function Upload() {
 ---
 
 ### ❓ What's new in React 19?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -949,6 +1027,8 @@ function AddTodo() {
 
 ### ❓ How do you debug React performance issues?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 - Use React DevTools Profiler to see slow components.
@@ -969,5 +1049,156 @@ function AddTodo() {
   <App />
 </React.Profiler>
 ```
+
+---
+
+
+## Rendering Internals (Intermediate)
+
+### ❓ What is the virtual DOM, and how does reconciliation work?
+
+### 📝 Answer
+
+The **virtual DOM** is a plain JavaScript copy of what the UI should look like. On every render React builds a new copy, **compares** it with the previous one (**reconciliation** / "diffing"), and changes only the real DOM nodes that differ.
+
+```mermaid
+flowchart LR
+  S[State changes] --> R[Render: new virtual tree]
+  R --> D[Diff with previous tree]
+  D --> P[Patch only the changed real DOM nodes]
+```
+
+React's diffing rules (they keep it fast, O(n)):
+
+1. **Different element type** (`<div>` → `<span>`, or `ComponentA` → `ComponentB`) → throw away the old subtree and build a new one (state is lost).
+2. **Same type** → keep the node, update only changed attributes/props.
+3. **Lists** → match children by **`key`**. Stable keys let React move items instead of recreating them.
+
+```jsx
+{items.map(item => <Row key={item.id} item={item} />)}   // ✅ stable keys
+```
+
+**Fiber** (React 16+) splits this work into small units so React can pause, prioritise urgent updates (typing) and resume — the base of concurrent rendering.
+
+#### ↳ Follow-up: Is the virtual DOM always faster than direct DOM updates?
+
+↪ No — hand-written DOM updates can be faster. The virtual DOM's win is that you write simple "UI = f(state)" code and still get reasonably minimal updates.
+
+#### ↳ Follow-up: Render phase vs commit phase?
+
+↪ Render: React calls components and diffs (no DOM changes, can be interrupted). Commit: React applies the changes to the DOM and runs effects (cannot be interrupted).
+
+---
+
+### ❓ What are React Server Components?
+
+### 📝 Answer
+
+**Server Components** run **only on the server**. They can read the database or files directly, and they send **rendered output, not JavaScript**, to the browser. **Client Components** (marked `"use client"`) are the interactive ones.
+
+```jsx
+// app/products/page.jsx — Server Component (default in Next.js App Router)
+import { db } from "@/lib/db";
+import AddToCart from "./AddToCart";
+
+export default async function ProductsPage() {
+  const products = await db.product.findMany();      // runs on the server
+  return products.map(p => (
+    <div key={p.id}>
+      {p.name} — ₹{p.price}
+      <AddToCart id={p.id} />                         {/* client island */}
+    </div>
+  ));
+}
+```
+
+```jsx
+// AddToCart.jsx
+"use client";
+export default function AddToCart({ id }) {
+  const [added, setAdded] = useState(false);
+  return <button onClick={() => setAdded(true)}>{added ? "Added" : "Add"}</button>;
+}
+```
+
+| | Server Component | Client Component |
+|---|---|---|
+| Runs | server only | server (SSR) + browser |
+| `useState`, `useEffect`, `onClick` | ❌ | ✅ |
+| Direct DB / secrets | ✅ | ❌ |
+| JS sent to browser | none | yes |
+
+#### ↳ Follow-up: Server Components vs SSR?
+
+↪ SSR renders **client** components to HTML and then ships their JS for hydration. Server Components never ship their JS at all.
+
+---
+
+### ❓ When would you use `useReducer` instead of `useState`?
+
+### 📝 Answer
+
+Use **`useReducer`** when state has **several related fields** or **many ways to change**. All changes go through one pure function, which is easier to read and test.
+
+```jsx
+const initial = { items: [], status: "idle", error: null };
+
+function reducer(state, action) {
+  switch (action.type) {
+    case "loading": return { ...state, status: "loading", error: null };
+    case "loaded":  return { ...state, status: "done", items: action.items };
+    case "failed":  return { ...state, status: "error", error: action.error };
+    default: return state;
+  }
+}
+
+function Products() {
+  const [state, dispatch] = useReducer(reducer, initial);
+  useEffect(() => {
+    dispatch({ type: "loading" });
+    fetchProducts()
+      .then(items => dispatch({ type: "loaded", items }))
+      .catch(error => dispatch({ type: "failed", error }));
+  }, []);
+  …
+}
+```
+
+| `useState` | `useReducer` |
+|---|---|
+| one simple value | related values that change together |
+| logic in event handlers | logic in one reducer (testable alone) |
+
+#### ↳ Follow-up: Is `dispatch` stable?
+
+↪ Yes — it never changes, so it's safe to pass to children or effect dependencies.
+
+---
+
+### ❓ What are React portals, and when do you use them?
+
+### 📝 Answer
+
+A **portal** renders a component into a **different DOM node** (often `document.body`) while it stays in the same React tree — props, context and events still work.
+
+```jsx
+import { createPortal } from "react-dom";
+
+function Modal({ open, onClose, children }) {
+  if (!open) return null;
+  return createPortal(
+    <div className="overlay" onClick={onClose}>
+      <div role="dialog" aria-modal="true" onClick={e => e.stopPropagation()}>{children}</div>
+    </div>,
+    document.body,
+  );
+}
+```
+
+**Use for:** modals, tooltips, dropdowns and toasts that must escape a parent with `overflow: hidden` or a low `z-index`.
+
+#### ↳ Follow-up: Do events from a portal bubble to its React parent?
+
+↪ Yes — events bubble through the **React** tree, not the DOM tree.
 
 ---

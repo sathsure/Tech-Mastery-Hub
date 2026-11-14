@@ -4,6 +4,8 @@
 
 ### ❓ How does RabbitMQ deliver messages?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 RabbitMQ is a **message broker** that typically **pushes** messages to consumers:
@@ -26,6 +28,8 @@ flowchart LR
 ---
 
 ### ❓ How does Kafka deliver events?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -50,6 +54,8 @@ Because events aren't removed on read, consumers can **replay** them by moving t
 
 ### ❓ What is the difference between RabbitMQ and Kafka?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 | Concept | RabbitMQ | Kafka |
@@ -66,6 +72,8 @@ Because events aren't removed on read, consumers can **replay** them by moving t
 
 ### ❓ What are common misconceptions about RabbitMQ and Kafka?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 | Statement | Correction |
@@ -77,6 +85,8 @@ Because events aren't removed on read, consumers can **replay** them by moving t
 ## When to Use Which
 
 ### ❓ When should you use RabbitMQ (use cases)?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -91,6 +101,8 @@ Use RabbitMQ for **task-based communication** — one service hands work to anot
 
 ### ❓ When should you use Kafka (use cases)?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Use Kafka for **event streaming** — business events that must be stored and consumed by several independent systems, often at high volume.
@@ -102,6 +114,8 @@ Use Kafka for **event streaming** — business events that must be stored and co
 ---
 
 ### ❓ How do you choose between RabbitMQ and Kafka for a requirement?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -196,3 +210,175 @@ Each partition is **copied (replicated)** to several brokers (servers).
 #### ↳ Follow-up: What is a typical replication factor?
 
 ↪ 3 — the data survives one broker failure, and usually two.
+
+
+
+---
+
+## Reliability & Delivery (Intermediate)
+
+### ❓ What delivery guarantees does Kafka give, and how do you avoid losing or duplicating messages?
+
+### 📝 Answer
+
+![Kafka: producers write to topic partitions on brokers; consumer groups read them](../../knowledge/visual-notes/interview/kafka-overview.svg)
+
+_Image: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Overview_of_Apache_Kafka.svg) · Ch.ko123 · CC BY 4.0_
+
+| Guarantee | Can lose? | Can duplicate? | How |
+|---|---|---|---|
+| **At most once** | ✅ | ❌ | commit the offset **before** processing |
+| **At least once** (most common) | ❌ | ✅ | process **then** commit |
+| **Exactly once** | ❌ | ❌ | idempotent producer + transactions (Kafka → Kafka) |
+
+**Not losing messages (producer side):**
+```properties
+acks=all                      # wait until all in-sync replicas have it
+enable.idempotence=true       # retries can't create duplicates in the log
+retries=2147483647
+```
+and on the topic: `replication.factor=3`, `min.insync.replicas=2`.
+
+**Not losing messages (consumer side):** turn off auto-commit, commit **after** processing.
+
+**Duplicates still happen** (a consumer crashes after processing but before committing) → make consumers **idempotent**: store processed event ids, or use upserts.
+
+#### ↳ Follow-up: Does exactly-once cover writing to my database?
+
+↪ No — Kafka's transactions cover Kafka-to-Kafka. For an external DB, use idempotent writes or store the offset in the same DB transaction.
+
+---
+
+### ❓ What is a dead letter queue, and how do you handle failed messages?
+
+### 📝 Answer
+
+A **poison message** (bad data, a bug) fails every time. Retrying it forever blocks everything behind it. A **dead letter queue (DLQ)** is where such messages are parked after a few tries.
+
+```mermaid
+flowchart LR
+  T[orders] --> C[Consumer]
+  C -- fail --> R1[orders.retry-1m] --> C
+  C -- fail again --> R2[orders.retry-10m] --> C
+  C -- still failing --> DLQ[orders.DLQ] --> A[Alert + manual fix / replay]
+```
+
+- **Kafka:** retry topics with delays, then a `.DLT` topic (Spring Kafka `DefaultErrorHandler` + `DeadLetterPublishingRecoverer`).
+- **RabbitMQ:** set `x-dead-letter-exchange` on the queue; rejected or expired messages go there. Add a TTL queue for delayed retries.
+
+**Good practice:** retry only **temporary** errors (timeouts, 503) with backoff; send **permanent** errors (invalid data) straight to the DLQ; alert on DLQ size; build a tool to replay fixed messages.
+
+#### ↳ Follow-up: Why not just retry in a loop inside the consumer?
+
+↪ It blocks the partition (Kafka keeps order), so every message behind it waits.
+
+---
+
+### ❓ What is consumer group rebalancing in Kafka?
+
+### 📝 Answer
+
+In a **consumer group**, each partition is read by exactly one consumer. A **rebalance** reassigns partitions when the group changes:
+
+- a consumer **joins** (scale up) or **leaves** (shutdown, crash)
+- a consumer misses heartbeats (`session.timeout.ms`) or takes too long between polls (`max.poll.interval.ms`)
+- partitions are added to the topic
+
+```text
+Before: C1 ← P0, P1    C2 ← P2, P3
+C3 joins → rebalance
+After:  C1 ← P0, P1    C2 ← P2    C3 ← P3
+```
+
+**Problems:** while rebalancing, consumption pauses; uncommitted work may be processed again (duplicates).
+
+**Reduce the pain:**
+- **Cooperative sticky** assignor — only moved partitions pause (`partition.assignment.strategy=CooperativeStickyAssignor`).
+- **Static membership** (`group.instance.id`) — a quick restart doesn't trigger a rebalance.
+- Keep processing per poll short, or lower `max.poll.records`.
+- Commit offsets before partitions are revoked.
+
+#### ↳ Follow-up: Why do my consumers keep rebalancing in a loop?
+
+↪ Usually processing a batch takes longer than `max.poll.interval.ms`, so Kafka thinks the consumer died. Process faster or poll fewer records.
+
+---
+
+### ❓ What are RabbitMQ exchange types?
+
+### 📝 Answer
+
+Producers never send straight to a queue — they send to an **exchange**, which routes copies to queues by **bindings**.
+
+```mermaid
+flowchart LR
+  P[Producer] -->|routing key| X{Exchange}
+  X -->|binding| Q1[(Queue A)]
+  X -->|binding| Q2[(Queue B)]
+  Q1 --> C1[Consumer]
+  Q2 --> C2[Consumer]
+```
+
+| Exchange | Routes to queues whose binding… | Example |
+|---|---|---|
+| **Direct** | equals the routing key | `payment.failed` → the failed-payments queue |
+| **Topic** | matches a pattern (`*` = one word, `#` = zero or more) | `order.*.created`, `order.#` |
+| **Fanout** | — sends to **all** bound queues | broadcast "cache cleared" to every service |
+| **Headers** | matches message headers | route by `format=pdf` |
+| Default (`""`) | equals the queue name | simple "send to this queue" |
+
+#### ↳ Follow-up: Kafka has no exchanges — how does it route?
+
+↪ By **topic** and **key** only. Consumers subscribe to topics; any filtering happens in the consumer or a stream processor.
+
+---
+
+### ❓ What is an idempotent consumer, and how do you build one?
+
+### 📝 Answer
+
+Brokers deliver **at least once**, so the same message can arrive twice (retries, rebalances, network errors). An **idempotent consumer** gives the same result whether it handles a message once or five times.
+
+**Ways to build one:**
+
+1. **Store processed ids** — skip if seen:
+```sql
+-- in the same transaction as the business change
+INSERT INTO processed_events (event_id) VALUES (:id);   -- primary key → duplicate fails
+UPDATE accounts SET balance = balance - 500 WHERE id = 7;
+```
+2. **Naturally idempotent writes** — `UPSERT`, `SET status = 'PAID'` (not `balance = balance - 500`).
+3. **Version / sequence checks** — ignore events older than the stored version.
+
+#### ↳ Follow-up: How long do you keep processed ids?
+
+↪ Longer than the longest possible redelivery window (often days), then expire them.
+
+---
+
+### ❓ What ordering guarantees do Kafka and RabbitMQ give?
+
+### 📝 Answer
+
+| | Ordering |
+|---|---|
+| **Kafka** | guaranteed **within a partition** only. Same **key** → same partition → ordered |
+| **RabbitMQ** | FIFO **within a queue**, but several consumers or requeues break it |
+
+```java
+kafka.send("orders", order.id(), event);   // all events of one order stay in order
+```
+
+**Order can still break when:**
+- you use no key (round-robin across partitions)
+- the producer retries without idempotence (`max.in.flight.requests` > 1)
+- you add partitions (keys move to new partitions)
+- RabbitMQ has many consumers on one queue, or a message is requeued
+
+**Need global order?** One partition / one consumer — at the cost of throughput. Usually **per-entity order** (per order, per account) is enough.
+
+#### ↳ Follow-up: An event arrives out of order anyway. What can the consumer do?
+
+↪ Carry a version or sequence number and ignore or buffer older events.
+
+---

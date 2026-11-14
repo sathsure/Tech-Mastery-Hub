@@ -2,6 +2,8 @@
 
 ### ❓ Our data table loads very slowly when there are thousands of rows. How would you improve its performance?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 I would use `virtual scrolling` so only visible rows are rendered. I’d also enable `OnPush change detection` to avoid unnecessary re-renders and load data using `pagination` instead of fetching everything at once.
@@ -10,6 +12,8 @@ I would use `virtual scrolling` so only visible rows are rendered. I’d also en
 
 ### ❓ Scrolling the data table feels laggy. What would you check first?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 First, I’d check if the table is rendering too many DOM elements. I’d use `cdk-virtual-scroll-viewport` and make sure `trackBy` is used in `*ngFor` to reduce DOM updates.
@@ -17,6 +21,8 @@ First, I’d check if the table is rendering too many DOM elements. I’d use `c
 ---
 
 ### ❓ Sorting and filtering freeze the UI for a moment. How would you fix this?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -30,6 +36,8 @@ I would move heavy operations like sorting and filtering to the backend or use `
 
 ### ❓ After adding a data-table library, the bundle size increased a lot. What would you do?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 I’d analyze the bundle using `source-map-explorer` or `webpack-bundle-analyzer`. Then I’d import only required modules and remove unused features using `tree-shaking`.
@@ -37,6 +45,8 @@ I’d analyze the bundle using `source-map-explorer` or `webpack-bundle-analyzer
 ---
 
 ### ❓ The data table is not needed on the home page, but it still affects load time. How would you handle this?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -49,6 +59,8 @@ I’d use `lazy loading` so the table module loads only when the user navigates 
 
 ### ❓ The table works fine locally but is slow in production. How would you debug this?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 I’d check if `production mode` is enabled and verify network performance. I’d also confirm that `GZip` compression is enabled on the server and inspect API response sizes in DevTools.
@@ -56,6 +68,8 @@ I’d check if `production mode` is enabled and verify network performance. I’
 ---
 
 ### ❓ API responses are very large and slow down table loading. What would you suggest?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -68,6 +82,8 @@ I’d reduce payload size by sending only required fields and enable `GZip` comp
 
 ### ❓ How would you verify if GZip compression is working?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 I’d open browser DevTools → Network tab and check the response headers for `content-encoding: gzip`. I’d also compare response size before and after compression.
@@ -76,6 +92,8 @@ I’d open browser DevTools → Network tab and check the response headers for `
 
 ### ❓ Two users see different data in the table at the same time. How would you handle this?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 I’d make sure data comes from a centralized backend and handle updates using `WebSockets` or periodic polling. I’d avoid sharing table state in global memory without isolation.
@@ -83,6 +101,8 @@ I’d make sure data comes from a centralized backend and handle updates using `
 ---
 
 ### ❓ Filters applied by one user should not affect another user. How would you ensure this?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -94,6 +114,8 @@ I’d keep filters in `component-level state` or `route query params`, not in sh
 ---
 
 ### ❓ The table data reloads again and again when navigating back. How would you optimize this?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -110,6 +132,8 @@ orders$ = this.http.get<Order[]>('/api/orders').pipe(shareReplay(1));
 
 ### ❓ How would you decide between using a table library or building your own?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 I’d check requirements like performance, customization, and bundle size. If needs are simple, I’d build a custom table. For complex features, I’d choose a well-optimized library.
@@ -117,6 +141,8 @@ I’d check requirements like performance, customization, and bundle size. If ne
 ---
 
 ### ❓ A table library causes performance issues but is used across the app. What would you do?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -128,6 +154,8 @@ I’d first profile it using `Angular DevTools`. If issues persist, I’d wrap i
 ---
 
 ### ❓ The table shows user-generated content. How would you keep it secure?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -141,6 +169,8 @@ I’d rely on Angular’s built-in `XSS protection` and avoid using `innerHTML`.
 
 ### ❓ How would you measure table performance in real user environments?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 I’d use `browser performance APIs`, add custom metrics, and monitor using tools like `Lighthouse` or real-user monitoring dashboards.
@@ -152,6 +182,8 @@ I’d use `browser performance APIs`, add custom metrics, and monitor using tool
 ---
 
 ### ❓ A fix for table performance needs major refactoring. How would you plan it?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -166,6 +198,8 @@ I’d break it into phases, start with high-impact fixes like `lazy loading` and
 
 ### ❓ Our REST API is getting hard to maintain as features grow. How would you structure controllers better?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 I’d keep controllers thin and move logic to `Service` classes. Each controller should handle only request/response mapping using `@RestController`.
@@ -178,6 +212,8 @@ I’d keep controllers thin and move logic to `Service` classes. Each controller
 
 ### ❓ Multiple controllers are returning different response formats. How would you standardize this?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 I’d create a common response wrapper and use `ResponseEntity`. For errors, I’d centralize handling using `@ControllerAdvice`.
@@ -189,6 +225,8 @@ I’d create a common response wrapper and use `ResponseEntity`. For errors, I�
 ---
 
 ### ❓ One controller method is doing validation, business logic, and DB calls. How would you fix this?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -205,9 +243,11 @@ public ResponseEntity<OrderDto> create(@Valid @RequestBody CreateOrderRequest re
 
 ---
 
-## 🚀 Performance & Scalability
+## 🚀 Performance & Scalability (Spring Boot)
 
 ### ❓ Our API becomes slow when traffic increases. What would you check first?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -221,6 +261,8 @@ I’d check DB queries, add `indexes`, and monitor thread usage. I’d also revi
 
 ### ❓ A single API call returns a very large response and affects performance. How would you optimize it?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 I’d introduce `pagination`, return only required fields using DTOs, and enable `GZip` compression at the server level.
@@ -232,6 +274,8 @@ I’d introduce `pagination`, return only required fields using DTOs, and enable
 ---
 
 ### ❓ How would you reduce repeated database calls for the same data?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -251,6 +295,8 @@ public Product getProduct(Long id) { return repo.findById(id).orElseThrow(); }
 
 ### ❓ Our application behaves differently in local and production environments. How would you manage this?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 I’d use `Spring Profiles` with separate configs like `application-dev.yml` and `application-prod.yml`.
@@ -263,6 +309,8 @@ I’d use `Spring Profiles` with separate configs like `application-dev.yml` and
 
 ### ❓ How would you make sure debug logs don’t affect production performance?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 I’d control logging using `logback` levels and disable unnecessary logs in the `prod` profile.
@@ -274,6 +322,8 @@ I’d control logging using `logback` levels and disable unnecessary logs in the
 ---
 
 ### ❓ The app startup time increased after adding new modules. How would you improve it?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -288,6 +338,8 @@ I’d review unnecessary `@ComponentScan`, reduce auto-configurations, and enabl
 ## 🔐 Security & Validation
 
 ### ❓ How do you protect REST APIs from invalid or malicious input?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -304,6 +356,8 @@ public record CreateUserRequest(@NotBlank String name, @Email String email, @Siz
 
 ### ❓ How would you secure APIs so only authorized users can access them?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 I’d use `Spring Security` with `JWT` or `OAuth2`, and secure endpoints using `@PreAuthorize`.
@@ -314,9 +368,11 @@ I’d use `Spring Security` with `JWT` or `OAuth2`, and secure endpoints using `
 
 ---
 
-## 🧠 Exception Handling & Reliability
+## 🧠 Exception Handling & Reliability (Spring Boot)
 
 ### ❓ When an exception happens, users see different error messages. How would you fix this?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -338,6 +394,8 @@ class GlobalErrors {
 
 ### ❓ How would you handle checked and unchecked exceptions in services?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 I’d convert low-level exceptions into meaningful custom exceptions and handle them globally.
@@ -348,9 +406,11 @@ I’d convert low-level exceptions into meaningful custom exceptions and handle 
 
 ---
 
-## 👥 Concurrent Users & Data Consistency
+## 👥 Concurrent Users & Data Consistency (Spring Boot & SQL)
 
 ### ❓ Two users update the same record at the same time. How would you handle this?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -360,9 +420,22 @@ I’d use `optimistic locking` with `@Version` to avoid data conflicts.
 - If someone else saved first, the version no longer matches, and the second save fails with `OptimisticLockException`.
 - The app then tells the user "this record changed, please reload" instead of silently overwriting their work.
 
+```java
+@Entity
+class Product {
+  @Id Long id;
+  @Version private Long version;   // JPA increments it on every update
+}
+```
+
+- Best when conflicts are **rare** — nothing is locked while users read. On `OptimisticLockException`, retry or ask the user to reload.
+- When conflicts are **frequent and costly** (last seat, last item in stock), use pessimistic locking instead (see below).
+
 ---
 
 ### ❓ How do you ensure thread safety in a Spring Boot application?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -377,6 +450,8 @@ I’d keep beans `stateless`, avoid shared mutable data, and rely on Spring’s 
 ## 🧪 Testing & Monitoring
 
 ### ❓ How would you test REST controllers properly?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -401,6 +476,8 @@ class OrderControllerTest {
 
 ### ❓ How would you monitor API performance in production?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 I’d use `Spring Actuator` for health and metrics, and integrate with monitoring tools like `Prometheus`.
@@ -411,9 +488,11 @@ I’d use `Spring Actuator` for health and metrics, and integrate with monitorin
 
 ---
 
-## 🧭 Managerial & Design Decisions
+## 🧭 Managerial & Design Decisions (Leadership)
 
 ### ❓ The team is divided between quick fixes and long-term refactoring. How would you decide?
+
+**Level:** 🔴 Advanced
 
 ### 📝 Answer
 
@@ -427,6 +506,8 @@ I’d prioritize business impact, fix critical issues first, and plan refactorin
 
 ### ❓ How would you explain a REST API performance issue to a non-technical manager?
 
+**Level:** 🔴 Advanced
+
 ### 📝 Answer
 
 I’d explain it in terms of slow data fetching and system load, then outline clear steps and timelines to fix it.
@@ -439,6 +520,8 @@ I’d explain it in terms of slow data fetching and system load, then outline cl
 
 ### ❓ If a breaking change is required in an API, how would you manage it?
 
+**Level:** 🔴 Advanced
+
 ### 📝 Answer
 
 I’d version the API using `/v1` and `/v2`, communicate changes early, and support backward compatibility.
@@ -449,9 +532,11 @@ I’d version the API using `/v1` and `/v2`, communicate changes early, and supp
 
 ---
 
-## 🗄️ Database Design & Access (Spring Boot + MySQL)
+## 🗄️ Database Design & Access (Spring Boot + SQL / MySQL)
 
 ### ❓ Our database tables are growing very fast and queries are getting slow. What would you check first?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -465,6 +550,8 @@ I’d first analyze slow queries using `EXPLAIN` and add proper `indexes`. I’d
 
 ### ❓ A single API call is hitting the database multiple times. How would you optimize this?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 I’d check for `N+1 query` issues and fix them using `JOIN FETCH` or proper `@EntityGraph` usage.
@@ -477,6 +564,8 @@ I’d check for `N+1 query` issues and fix them using `JOIN FETCH` or proper `@E
 
 ### ❓ The same data is being read again and again from MySQL. How would you reduce DB load?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 I’d add caching using `@Cacheable` with tools like `Redis` or in-memory cache to avoid repeated DB hits.
@@ -487,9 +576,11 @@ I’d add caching using `@Cacheable` with tools like `Redis` or in-memory cache 
 
 ---
 
-## ⚙️ JPA / Hibernate Performance
+## ⚙️ JPA / Hibernate Performance (Spring Boot & SQL)
 
 ### ❓ Our API is slow even though the database is fast. What could be the issue?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -503,6 +594,8 @@ It could be inefficient ORM usage. I’d review `lazy vs eager fetching`, unnece
 
 ### ❓ How do you decide between `Lazy` and `Eager` fetching?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 I’d default to `FetchType.LAZY` and fetch data explicitly when needed to avoid loading unnecessary relations.
@@ -515,6 +608,8 @@ I’d default to `FetchType.LAZY` and fetch data explicitly when needed to avoid
 
 ### ❓ Large result sets are causing memory issues. How would you handle this?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 I’d use `pagination` with `LIMIT / OFFSET` and stream results when possible instead of loading everything into memory.
@@ -525,9 +620,11 @@ I’d use `pagination` with `LIMIT / OFFSET` and stream results when possible in
 
 ---
 
-## 🔄 Transactions & Data Consistency
+## 🔄 Transactions & Data Consistency (Spring Boot & SQL)
 
 ### ❓ Multiple DB operations must succeed or fail together. How would you handle this?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -539,19 +636,9 @@ I’d wrap the logic in a `@Transactional` service method to ensure atomicity.
 
 ---
 
-### ❓ Two users update the same record at the same time. How do you prevent data conflicts?
-
-### 📝 Answer
-
-I’d use `optimistic locking` with `@Version` to detect concurrent updates.
-
-- Add a `@Version private Long version;` field; JPA increments it on every update.
-- The second update fails with `OptimisticLockException`; retry it or ask the user to reload.
-- Best when conflicts are rare, because nothing is locked while users read.
-
----
-
 ### ❓ When would you use pessimistic locking?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -563,9 +650,11 @@ I’d use it only for critical updates where conflicts are costly, using `SELECT
 
 ---
 
-## 👥 Concurrent Users & Scalability
+## 👥 Concurrent Users & Scalability (Spring Boot & SQL)
 
 ### ❓ Under high traffic, DB connections are getting exhausted. How would you fix this?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -579,6 +668,8 @@ I’d tune the connection pool using `HikariCP` and make sure connections are re
 
 ### ❓ How do you make sure multiple users don’t affect each other’s data?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 I’d enforce data isolation using proper `WHERE` clauses, user-level filters, and avoid shared mutable state.
@@ -589,9 +680,11 @@ I’d enforce data isolation using proper `WHERE` clauses, user-level filters, a
 
 ---
 
-## 📦 Query Design & DTO Usage
+## 📦 Query Design & DTO Usage (Spring Boot & SQL)
 
 ### ❓ Entities are large but APIs need only a few fields. What would you do?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -604,6 +697,8 @@ I’d use `DTO projections` or `JPQL constructor expressions` instead of returni
 
 ### ❓ Why should controllers not return JPA entities directly?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Because entities can expose unwanted data and cause `lazy loading` issues. DTOs give better control and performance.
@@ -614,9 +709,11 @@ Because entities can expose unwanted data and cause `lazy loading` issues. DTOs 
 
 ---
 
-## 🚀 Production Issues & Debugging
+## 🚀 Production Issues & Debugging (SQL & Observability)
 
 ### ❓ Queries work fine locally but are slow in production. How would you debug this?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -630,6 +727,8 @@ I’d check real data size, indexes, execution plans, and enable `slow query log
 
 ### ❓ After a release, database CPU usage increased suddenly. What would you check?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 I’d review new queries, check missing indexes, and inspect Hibernate-generated SQL logs.
@@ -640,9 +739,11 @@ I’d review new queries, check missing indexes, and inspect Hibernate-generated
 
 ---
 
-## 🔐 Data Safety & Integrity
+## 🔐 Data Safety & Integrity (SQL)
 
 ### ❓ How do you prevent invalid data from being saved in MySQL?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -655,6 +756,8 @@ I’d use `Bean Validation` annotations and database constraints like `NOT NULL`
 ---
 
 ### ❓ How do you handle soft deletes instead of hard deletes?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -670,6 +773,8 @@ I’d use a status flag like `is_deleted` and filter records at query level inst
 
 ### ❓ How do you manage database schema changes safely?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 I’d use `Flyway` or `Liquibase` for versioned DB migrations instead of manual changes.
@@ -682,6 +787,8 @@ I’d use `Flyway` or `Liquibase` for versioned DB migrations instead of manual 
 
 ### ❓ How would you test database logic without affecting real data?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 I’d use `Testcontainers` or an in-memory DB for integration testing.
@@ -692,9 +799,11 @@ I’d use `Testcontainers` or an in-memory DB for integration testing.
 
 ---
 
-## 🧭 Managerial / Architectural Decisions
+## 🧭 Managerial / Architectural Decisions (Leadership)
 
 ### ❓ When would you avoid using JPA and write native SQL instead?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -708,6 +817,8 @@ When performance is critical or queries are complex, I’d use `native queries` 
 
 ### ❓ How would you explain a database performance issue to management?
 
+**Level:** 🔴 Advanced
+
 ### 📝 Answer
 
 I’d explain it as inefficient data access and show how indexing, caching, and query optimization will reduce response time.
@@ -720,6 +831,8 @@ I’d explain it as inefficient data access and show how indexing, caching, and 
 
 ### ❓ If database refactoring is risky, how would you plan it?
 
+**Level:** 🔴 Advanced
+
 ### 📝 Answer
 
 I’d plan phased changes, add monitoring, test with real data volume, and roll out gradually.
@@ -730,9 +843,11 @@ I’d plan phased changes, add monitoring, test with real data volume, and roll 
 
 ---
 
-## 🔁 End-to-End System Thinking
+## 🔁 End-to-End System Thinking (System Design)
 
 ### ❓ A screen loads slowly, but it’s unclear whether the issue is frontend, API, or DB. How would you approach this?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -741,6 +856,8 @@ I’d break it down layer by layer: Angular network timing, REST API response ti
 ---
 
 ### ❓ Frontend says backend is slow, backend says frontend is inefficient. How would you resolve this?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -752,9 +869,11 @@ I’d rely on data, not opinions. I’d capture `API response times`, payload si
 
 ---
 
-## 🌐 API Design & Communication
+## 🌐 API Design & Communication (REST API)
 
 ### ❓ Frontend needs frequent API changes, but backend releases are slower. How would you manage this?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -768,6 +887,8 @@ I’d design APIs to be flexible using `DTOs`, optional fields, and backward com
 
 ### ❓ Angular team requests more data “just in case.” How would you respond?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 I’d push back politely and return only required fields. Over-fetching increases `payload size`, memory usage, and response time.
@@ -778,9 +899,11 @@ I’d push back politely and return only required fields. Over-fetching increase
 
 ---
 
-## 📦 Deployment & Release Management
+## 📦 Deployment & Release Management (DevOps)
 
 ### ❓ A backend change breaks the Angular app after deployment. How would you prevent this?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -794,6 +917,8 @@ I’d add `contract testing`, validate APIs before release, and use feature flag
 
 ### ❓ How would you roll out a risky backend change safely?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 I’d use `API versioning`, deploy gradually, monitor errors, and keep rollback ready.
@@ -804,9 +929,11 @@ I’d use `API versioning`, deploy gradually, monitor errors, and keep rollback 
 
 ---
 
-## ⚙️ Configuration & Environment Issues
+## ⚙️ Configuration & Environment Issues (DevOps)
 
 ### ❓ Everything works locally but fails in staging or production. What would you check?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -819,6 +946,8 @@ I’d verify `Spring Profiles`, environment variables, DB configs, and security 
 ---
 
 ### ❓ How do you ensure Angular points to the correct backend per environment?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -834,6 +963,8 @@ I’d use Angular `environment.ts` files and avoid hardcoding URLs.
 
 ### ❓ Cached data improves performance but users see outdated data. How would you balance this?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 I’d apply `cache TTL`, invalidate cache on updates, and cache only read-heavy data.
@@ -845,6 +976,8 @@ I’d apply `cache TTL`, invalidate cache on updates, and cache only read-heavy 
 ---
 
 ### ❓ When should data be cached on frontend vs backend?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -860,6 +993,8 @@ Frontend cache is good for UI speed. Backend cache is better for DB load reducti
 
 ### ❓ Angular needs user-specific data. How do you ensure users see only their own data?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 I’d enforce authorization in the backend using user context, not rely on frontend filtering.
@@ -871,6 +1006,8 @@ I’d enforce authorization in the backend using user context, not rely on front
 ---
 
 ### ❓ How do you prevent sensitive DB fields from reaching the UI?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -886,6 +1023,8 @@ I’d use `DTOs` and avoid exposing JPA entities directly.
 
 ### ❓ Bugs keep appearing at integration points. How would you improve quality?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 I’d strengthen `integration tests`, mock fewer things, and test Angular ↔ API flows together.
@@ -898,6 +1037,8 @@ I’d strengthen `integration tests`, mock fewer things, and test Angular ↔ AP
 
 ### ❓ How do you ensure performance does not degrade over time?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 I’d add baseline performance metrics and monitor API response time and DB query execution regularly.
@@ -908,9 +1049,11 @@ I’d add baseline performance metrics and monitor API response time and DB quer
 
 ---
 
-## 👥 Team & Ownership Questions (Very Managerial)
+## 👥 Team & Ownership Questions (Leadership)
 
 ### ❓ A feature works but is poorly designed. Do you ship or refactor?
+
+**Level:** 🔴 Advanced
 
 ### 📝 Answer
 
@@ -924,6 +1067,8 @@ I’d ship only if risk is low and plan refactoring immediately. Technical debt 
 
 ### ❓ A junior developer wrote a slow query. How would you handle it?
 
+**Level:** 🔴 Advanced
+
 ### 📝 Answer
 
 I’d review it together, explain indexing and query design, and treat it as a learning opportunity.
@@ -936,6 +1081,8 @@ I’d review it together, explain indexing and query design, and treat it as a l
 
 ### ❓ How do you make sure frontend and backend teams stay aligned?
 
+**Level:** 🔴 Advanced
+
 ### 📝 Answer
 
 I’d encourage early API discussions, shared contracts, and regular syncs before implementation.
@@ -946,9 +1093,11 @@ I’d encourage early API discussions, shared contracts, and regular syncs befor
 
 ---
 
-## 🚨 Production Incident Handling
+## 🚨 Production Incident Handling (Observability)
 
 ### ❓ Production is slow and users are complaining. What are your first 3 actions?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -964,6 +1113,8 @@ Check monitoring dashboards, identify the slow layer, and reduce impact first be
 
 ### ❓ A hotfix is needed quickly. How do you balance speed and safety?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 I’d apply the smallest safe change, test critical paths, deploy fast, and monitor closely.
@@ -974,9 +1125,11 @@ I’d apply the smallest safe change, test critical paths, deploy fast, and moni
 
 ---
 
-## 🧭 Architectural Judgment
+## 🧭 Architectural Judgment (System Design)
 
 ### ❓ When would you split a monolithic Spring Boot app?
+
+**Level:** 🔴 Advanced
 
 ### 📝 Answer
 
@@ -990,6 +1143,8 @@ When independent scaling, deployment speed, or ownership becomes a problem—not
 
 ### ❓ How do you decide if a problem should be solved in Angular or backend?
 
+**Level:** 🔴 Advanced
+
 ### 📝 Answer
 
 UI logic stays in Angular. Data validation, security, and performance-critical logic stay in backend.
@@ -1001,6 +1156,8 @@ UI logic stays in Angular. Data validation, security, and performance-critical l
 ---
 
 ### ❓ What challenges you encountered while upgrading Spring or Java?
+
+**Level:** 🔴 Advanced
 
 ### 📝 Answer
 
@@ -1102,6 +1259,8 @@ SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 ---
 
 ### ❓ What is Idempotency?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 

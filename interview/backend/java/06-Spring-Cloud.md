@@ -2,6 +2,8 @@
 
 ### ❓ Why did your team choose microservices over monolith?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 > We chose microservices to align system boundaries with business domains, enable independent deployments, and allow teams to scale autonomously.
@@ -25,6 +27,8 @@
 ---
 
 ### ❓ What problems does a microservices architecture introduce, and how does Spring Cloud address those problems?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -906,6 +910,8 @@ management:
 
 ### ❓ How do you decide where to split services?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 - Use **Bounded Context**
@@ -934,6 +940,8 @@ Order Service → Order DB
 ---
 
 ### ❓ How do you design REST APIs for microservices?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -966,6 +974,8 @@ public class OrderController {
 
 ### ❓ Why can’t we use static URLs?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 - Containers restart
@@ -992,34 +1002,11 @@ spring:
 
 ## Synchronous vs Asynchronous Communication
 
-### ❓ When would you avoid REST between services?
-
-### 📝 Answer
-
-REST causes:
-
-- Latency
-- Cascading failures
-- Tight coupling
-
-```java
-@EventListener
-public void handleOrderCreated(OrderCreatedEvent event) {
-  inventoryService.reserve(event.getProductId());
-}
-```
-
-🧠 RULES
-
-✔ Sync = simple but risky
-✔ Async = scalable and resilient
-✔ Critical workflows → events
-
----
-
 ## Configuration Management (Production Critical)
 
 ### ❓ How do you change config without redeploying?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -1045,6 +1032,8 @@ spring:
 ## Fault Tolerance
 
 ### ❓ Inventory service is slow. What happens?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -1080,36 +1069,11 @@ public InventoryResponse fallback(Long productId, Throwable ex) {
 
 ## API Gateway (Not Just Routing)
 
-### ❓ Why do we need a gateway?
-
-### 📝 Answer
-
-- Centralized security
-- Traffic control
-- Routing & aggregation
-
-```yaml
-spring:
-  cloud:
-    gateway:
-      routes:
-        - id: order
-          uri: lb://order-service
-          predicates:
-            - Path=/orders/**
-```
-
-🧠 RULES
-
-❌ No business logic
-✔ Security belongs here
-✔ Rate limiting belongs here
-
----
-
 ## Security (Zero Trust Model)
 
 ### ❓ How do services trust each other?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -1137,6 +1101,8 @@ http
 
 ### ❓ How do you debug prod issues?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 You never debug single service — you debug **flows**.
@@ -1160,6 +1126,8 @@ management:
 
 ### ❓ You are asked to split a monolith into microservices. What criteria do you use to identify service boundaries?
 
+**Level:** 🔴 Advanced
+
 ### 📝 Answer
 
 - Use **Domain-Driven Design (DDD)**
@@ -1175,6 +1143,8 @@ No. Each service owns its data. Sharing DB causes tight coupling, schema lockste
 ---
 
 ### ❓ How does Spring Boot help microservices compared to plain Spring?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -1197,6 +1167,8 @@ public class OrderServiceApplication {
 ---
 
 ### ❓ How Load Balancing Works in Spring Boot?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -1287,6 +1259,8 @@ Other strategies:
 
 ### ❓ How Router Traffic Is Handled (API Gateway)
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Routing decides:
@@ -1325,6 +1299,8 @@ Gateway:
 
 ### ❓ How Traffic Routing Works in Kubernetes
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 If running on Kubernetes:
@@ -1351,6 +1327,8 @@ Kubernetes handles everything.
 ## Service Communication & Discovery
 
 ### ❓ When would you avoid synchronous REST calls between services?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -1384,11 +1362,15 @@ flowchart LR
 
 Keep REST for **queries that need an immediate answer** ("is this item in stock?"), with timeouts and a circuit breaker.
 
+**Rule of thumb:** sync is simple but risky; async is scalable and resilient; critical multi-step workflows → events.
+
 ---
 
 ## Configuration Management
 
 ### ❓ How do you manage configuration across environments for 20+ microservices?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -1416,6 +1398,8 @@ It breaks 12-factor principles and requires rebuild for config change.
 
 ### ❓ Difference between Retry and Circuit Breaker?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 | Retry                 | Circuit Breaker             |
@@ -1429,6 +1413,8 @@ It breaks 12-factor principles and requires rebuild for config change.
 ## API Gateway
 
 ### ❓ Why do we need an API Gateway in microservices?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -1453,11 +1439,15 @@ spring:
 
 No. Gateway handles cross-cutting concerns only.
 
+**What belongs in the gateway:** authentication, rate limiting, routing, CORS, request logging — cross-cutting concerns only. ❌ No business logic.
+
 ---
 
 ## Security
 
 ### ❓ How do you secure communication between microservices?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -1488,6 +1478,8 @@ public class SecurityConfig {
 
 ### ❓ How do you debug issues in production across 15 microservices?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 - Centralized logging (ELK)
@@ -1509,6 +1501,8 @@ Logs without traceId are useless in microservices.
 ## Deployment & Scalability
 
 ### ❓ How does Kubernetes change microservices design?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 

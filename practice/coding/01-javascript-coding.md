@@ -7,6 +7,8 @@
 
 ### ❓ Move all `0`s to the end without changing the order of other elements
 
+**Level:** 🟢 Beginner
+
 > **Input:** `[0, 1, 0, 3, 12]`
 > **Output:** `[1, 3, 12, 0, 0]`
 
@@ -36,6 +38,8 @@ console.log(moveZeros([0, 1, 0, 3, 12]));   // [1, 3, 12, 0, 0]
 
 ### ❓ Write a function that checks whether two arrays are equal — same elements in the same order. How would you handle edge cases like different lengths or nested arrays?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 ```js
@@ -57,6 +61,8 @@ console.log(arraysEqual([1, 2, 3], [1, 2, 4]));   // false
 
 ### ❓ Split an array into chunks
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 ```js
@@ -75,6 +81,8 @@ console.log(chunk([1, 2, 3, 4, 5], 3));      // [[1,2,3], [4,5]]
 ---
 
 ### ❓ Flatten a nested array
+
+**Level:** 🟢 Beginner
 
 ### 📝 Answer
 
@@ -111,6 +119,8 @@ console.log(flatten([[1, 2], [3, [4, 5]], [6, 7]]));   // [1, 2, 3, 4, 5, 6, 7]
 
 ### ❓ Find max and min values in an array
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 **With spread (cleanest):**
@@ -139,6 +149,8 @@ function minMax(arr) {
 ---
 
 ### ❓ Remove duplicates from an array
+
+**Level:** 🟢 Beginner
 
 ### 📝 Answer
 
@@ -183,6 +195,8 @@ function unique(arr) {
 
 ### ❓ Find the second largest number in an array
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 **Sort approach (simple but O(n log n)):**
@@ -221,6 +235,8 @@ console.log(secondLargest([1, 3, 5, 7, 9, 10]));   // 9
 # 🔤 Part 2 — String Problems
 
 ### ❓ Check if two strings are anagrams
+
+**Level:** 🟢 Beginner
 
 > **Input:** `"listen"`, `"silent"` → **Output:** `true`
 
@@ -263,6 +279,8 @@ console.log(isAnagram("triangle", "integral"));   // true
 
 ### ❓ Find the first non-repeating character in a string
 
+**Level:** 🟢 Beginner
+
 > **Input:** `"recurring"` → **Output:** `"e"`
 
 ### 📝 Answer
@@ -288,6 +306,8 @@ console.log(firstNonRepeating("aabbcc"));      // null
 
 ### ❓ Find the frequency of each character in a string
 
+**Level:** 🟢 Beginner
+
 > **Input:** `"hello world"`
 > **Output:** `{ h: 1, e: 1, l: 3, o: 2, ' ': 1, w: 1, r: 1, d: 1 }`
 
@@ -308,6 +328,8 @@ console.log(charFrequency("hello world"));
 ---
 
 ### ❓ Find the length of a string without using built-in methods
+
+**Level:** 🟢 Beginner
 
 ### 📝 Answer
 
@@ -331,6 +353,8 @@ console.log(getLength("hello"));   // 5
 ---
 
 ### ❓ Reverse a string
+
+**Level:** 🟢 Beginner
 
 > **Input:** `"hello world"` → **Output:** `"dlrow olleh"`
 
@@ -360,6 +384,8 @@ function reverse(str) {
 ---
 
 ### ❓ Reverse a string while preserving word order
+
+**Level:** 🟢 Beginner
 
 > **Input:** `"hello world"` → **Output:** `"olleh dlrow"`
 
@@ -397,6 +423,8 @@ function reverseWords(str) {
 
 ### ❓ Difference between `substring()` and `slice()`?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Both extract a portion of a string, but they handle **negative numbers and reversed ranges differently**.
@@ -427,6 +455,8 @@ Both extract a portion of a string, but they handle **negative numbers and rever
 # 🧮 Part 3 — Algorithms
 
 ### ❓ Generate the Fibonacci series
+
+**Level:** 🟢 Beginner
 
 ### 📝 Answer
 
@@ -463,6 +493,8 @@ console.log(nthFibonacci(10));   // 55
 
 ### ❓ Implement FizzBuzz
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 ```js
@@ -488,6 +520,8 @@ fizzBuzz(15);
 # 💾 Part 4 — Functional Programming
 
 ### ❓ Implement memoization
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -553,6 +587,8 @@ fastSquare(5);   // 25 (cached, no log)
 
 ### ❓ Implement debounce
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 **Debounce** = wait until events **stop firing** for X ms, then execute.
@@ -577,6 +613,8 @@ input.addEventListener("input", (e) => handleSearch(e.target.value));
 ---
 
 ### ❓ Implement throttle
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -608,6 +646,8 @@ window.addEventListener("scroll", throttle(() => {
 ---
 
 ### ❓ Implement a deep clone function
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -645,6 +685,8 @@ console.log(original.b.c);   // 2 (unaffected)
 ---
 
 ### ❓ Implement a Promise.all from scratch
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 

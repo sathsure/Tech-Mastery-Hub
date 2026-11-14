@@ -6,6 +6,8 @@
 
 ### ❓ In simple terms, what is CSS and how does it relate to HTML?
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 CSS (**Cascading Style Sheets**) describes **how elements should look** — colors, spacing, layout, and positioning.
@@ -17,6 +19,8 @@ CSS (**Cascading Style Sheets**) describes **how elements should look** — colo
 ---
 
 ### ❓ How does the browser decide which styles to apply?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -51,6 +55,8 @@ p              { color: blue; }    /* (0,0,0,1) */
 
 ### ❓ How do inline, internal, and external styles differ?
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 ```html
@@ -74,6 +80,8 @@ p              { color: blue; }    /* (0,0,0,1) */
 
 ### ❓ What are CSS selectors and what types are available?
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 Selectors define **which elements** a style rule applies to.
@@ -96,6 +104,8 @@ Selectors define **which elements** a style rule applies to.
 ---
 
 ### ❓ Descendant vs child selectors
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -122,6 +132,8 @@ Selectors define **which elements** a style rule applies to.
 ---
 
 ### ❓ What are pseudo-classes vs pseudo-elements?
+
+**Level:** 🟢 Beginner
 
 ### 📝 Answer
 
@@ -155,6 +167,8 @@ p::after        { content: " ←"; }
 ---
 
 ### ❓ Can you walk me through CSS specificity and how it affects style resolution?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -210,6 +224,8 @@ p { color: red !important; }
 
 ### ❓ How does the CSS box model work?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Every element is a rectangle made of:
@@ -236,6 +252,8 @@ Misunderstanding this causes the **majority of layout bugs**.
 ---
 
 ### ❓ Difference between `content-box` and `border-box`?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -282,6 +300,8 @@ Misunderstanding this causes the **majority of layout bugs**.
 ---
 
 ### ❓ What are the different CSS display types?
+
+**Level:** 🟢 Beginner
 
 ### 📝 Answer
 
@@ -335,6 +355,8 @@ Percentage heights work **only if the parent has an explicit height**. Without i
 
 ### ❓ How do CSS units differ?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 | Unit  | Based On         | What It Means                  |
@@ -368,6 +390,8 @@ Percentage heights work **only if the parent has an explicit height**. Without i
 
 ### ❓ Why is `100vh` tricky on mobile?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Mobile browsers dynamically change viewport height when the address bar shows/hides. This causes **layout jumps** when using a`100vh`.
@@ -390,6 +414,8 @@ Mobile browsers dynamically change viewport height when the address bar shows/hi
 # 🎯 Part 3 — Positioning
 
 ### ❓ What CSS position types exist?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -422,6 +448,8 @@ relative parent
 
 ### ❓ How does the `inset` shorthand work in CSS and what problem does it solve?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 `inset` is shorthand for `top`, `right`, `bottom`, `left` — used with `position: absolute/fixed/sticky`.
@@ -446,6 +474,8 @@ relative parent
 # 📐 Part 4 — Flexbox
 
 ### ❓ What problem does Flexbox solve?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -550,6 +580,8 @@ These three together decide **how items share available space**.
 
 ### ❓ How does CSS Grid work, and how is it different from Flexbox?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 **Grid is a 2-dimensional layout system** — it controls rows AND columns at the same time.
@@ -614,6 +646,8 @@ Grid:    2D (row AND column simultaneously)
 
 ### ❓ What are logical properties and why prefer them over physical ones?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 **Logical properties define layout based on content flow, not physical screen directions.** They adapt automatically to writing direction (LTR/RTL) and writing mode (horizontal/vertical).
@@ -651,6 +685,8 @@ padding-block-start: 8px;
 # ✨ Part 7 — Modern CSS
 
 ### ❓ What are CSS Custom Properties (Variables)?
+
+**Level:** 🟢 Beginner
 ### 📝 Answer
 
 CSS Custom Properties allow you to define **reusable values** that can be inherited and updated dynamically.
@@ -686,6 +722,8 @@ document.documentElement.style.setProperty('--primary-color', '#ff0000');
 ---
 
 ### ❓ What are container queries?
+
+**Level:** 🟡 Intermediate
 ### 📝 Answer
 
 **Container queries let elements respond to their parent's size**, not the viewport's. This is huge for component-driven design.
@@ -710,6 +748,8 @@ document.documentElement.style.setProperty('--primary-color', '#ff0000');
 ---
 
 ### ❓ Can you explain the `:has()` selector and give a real-world example of where you'd use it?
+
+**Level:** 🟡 Intermediate
 ### 📝 Answer
 
 **`:has()` is the "parent selector"** — it lets you style an element based on its descendants.
@@ -737,6 +777,8 @@ tr:has(input[type="checkbox"]:checked) {
 
 ### ❓ What's the difference between `*`, `:root`, and `body`?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 | Selector | What it affects | Key use                   |
@@ -750,6 +792,8 @@ tr:has(input[type="checkbox"]:checked) {
 # ⚡ Part 8 — Performance & Animation
 
 ### ❓ Why do some animations feel janky?
+
+**Level:** 🟡 Intermediate
 ### 📝 Answer
 
 Animating layout properties forces the browser to **recalculate layout (reflow) and repaint** every frame — expensive at 60fps.
@@ -786,6 +830,8 @@ Tells browser to promote element to its own GPU layer in advance.
 
 ### ❓ Why styles sometimes don't apply?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Common causes:
@@ -802,6 +848,8 @@ Common causes:
 ---
 
 ### ❓ Why is `z-index` not working?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -826,6 +874,8 @@ Common causes:
 ---
 
 ### ❓ Why doesn't `text-overflow: ellipsis` work?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -855,6 +905,8 @@ Ellipsis works **only when ALL three conditions** are met:
 
 ### ❓ Why does `position: sticky` fail?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Sticky positioning depends on a **scrollable ancestor**.
@@ -873,6 +925,8 @@ Sticky positioning depends on a **scrollable ancestor**.
 ---
 
 ### ❓ Why does margin collapse happen?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -901,6 +955,8 @@ Vertical margins of adjacent block elements **collapse** into a single margin �
 
 ### ❓ Why do inline elements ignore width and height?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 ```css
@@ -919,6 +975,8 @@ span { display: inline-block; }   /* respects dimensions, stays inline */
 
 ### ❓ Why does `flex: 1` ignore width?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 ```css
@@ -936,6 +994,8 @@ span { display: inline-block; }   /* respects dimensions, stays inline */
 ---
 
 ### ❓ Why is `!important` not working here?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -963,6 +1023,8 @@ p       { color: red   !important; }
 
 ### ❓ Why does this child selector not match?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 ```css
@@ -989,6 +1051,8 @@ The `>` selector matches **only direct children**. `.title` here is a grandchild
 
 ### ❓ Why does `overflow: hidden` break dropdowns?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 `overflow: hidden` clips content outside the container. Dropdowns rely on overflowing content to extend beyond their parent.
@@ -1003,6 +1067,8 @@ The `>` selector matches **only direct children**. `.title` here is a grandchild
 
 ### ❓ Why does absolute positioning break layout height?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Absolutely positioned elements are **removed from document flow**, so parents no longer calculate height based on them.
@@ -1012,6 +1078,8 @@ Absolutely positioned elements are **removed from document flow**, so parents no
 ---
 
 ### ❓ Why does Grid overflow unexpectedly?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -1033,6 +1101,8 @@ Grid items have a default `min-width: auto`, based on **content size**. Long con
 
 ### ❓ Why does `:hover` not work on mobile?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Touch devices don't have a true hover state. Browsers simulate it inconsistently after a tap.
@@ -1048,6 +1118,8 @@ Touch devices don't have a true hover state. Browsers simulate it inconsistently
 ---
 
 ### ❓ How would you build a sticky header inside a scroll container?
+
+**Level:** 🟡 Intermediate
 ### 📝 Answer
 
 ```html
@@ -1072,5 +1144,105 @@ Touch devices don't have a true hover state. Browsers simulate it inconsistently
 ```
 
 > ⚠️ **Don't add `overflow: hidden` to any ancestor** — it breaks sticky.
+
+---
+
+
+
+---
+
+## Animation & CSS Architecture (Intermediate)
+
+### ❓ CSS transitions vs `@keyframes` animations — when do you use each?
+
+### 📝 Answer
+
+| | Transition | Animation (`@keyframes`) |
+|---|---|---|
+| Steps | from A to B | any number of steps |
+| Starts when | a property **changes** (hover, class added) | on its own, when applied |
+| Loops / runs on load | ❌ | ✅ (`infinite`, `alternate`) |
+| Use for | hover effects, opening menus | spinners, attention pulses, skeleton loaders |
+
+```css
+/* Transition: smooth change between two states */
+.button { transition: transform 0.2s ease, background-color 0.2s ease; }
+.button:hover { transform: translateY(-2px); background-color: #0b5ed7; }
+
+/* Animation: runs by itself */
+@keyframes spin { to { transform: rotate(360deg); } }
+.spinner { animation: spin 1s linear infinite; }
+
+/* Respect users who get motion sick */
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
+```
+
+**Performance:** animate only `transform` and `opacity` — the GPU handles them without recalculating layout. Animating `width`, `height`, `top` or `margin` causes reflow on every frame (janky).
+
+#### ↳ Follow-up: Can you transition to `height: auto`?
+
+↪ Not directly in older CSS; use `grid-template-rows: 0fr → 1fr`, a `max-height` trick, or the newer `interpolate-size: allow-keywords`.
+
+---
+
+### ❓ How do you organise CSS in a large project — BEM, CSS Modules, Tailwind?
+
+### 📝 Answer
+
+The problem: in big apps, global class names clash, and nobody dares delete old CSS.
+
+| Approach | How | ✅ | ❌ |
+|---|---|---|---|
+| **BEM** naming | `.card`, `.card__title`, `.card--featured` | plain CSS, clear meaning, flat specificity | long names, discipline needed |
+| **CSS Modules** | `import styles from "./Card.module.css"` → class names made unique at build | no clashes, CSS lives with the component | another build step |
+| **Utility-first (Tailwind)** | small single-purpose classes in the HTML: `class="p-4 rounded-lg shadow"` | very fast to build, tiny final CSS, consistent spacing | busy markup, learning the classes |
+| **CSS-in-JS** (styled-components, Emotion) | styles written in JS | dynamic styles from props | runtime cost, less popular now |
+| **Framework scoping** | Angular `ViewEncapsulation`, Vue `scoped` | automatic isolation | framework-specific |
+
+```css
+/* BEM */
+.card { padding: 1rem; }
+.card__title { font-size: 1.25rem; }
+.card--featured { border: 2px solid gold; }
+```
+
+**Whatever you choose:** design tokens as CSS variables (`--color-primary`, `--space-2`), a shared component library, and `@layer` to control which styles win.
+
+#### ↳ Follow-up: Why does BEM avoid nesting selectors?
+
+↪ It keeps every selector one class deep, so specificity stays equal and overriding is predictable.
+
+---
+
+### ❓ What is the difference between reflow and repaint, and how do you avoid layout thrashing?
+
+### 📝 Answer
+
+How the browser draws a frame: **Style → Layout (reflow) → Paint → Composite**.
+
+| Step | Triggered by | Cost |
+|---|---|---|
+| **Reflow** (layout) | size/position changes: `width`, `height`, `margin`, `top`, adding elements, font changes | **expensive** — may re-measure much of the page |
+| **Repaint** | look-only changes: `color`, `background`, `visibility`, `box-shadow` | cheaper |
+| **Composite only** | `transform`, `opacity` | cheapest — GPU |
+
+**Layout thrashing** = reading layout and writing styles in a loop. Each read forces the browser to recalculate layout right away:
+
+```js
+// ❌ forces a reflow on every iteration
+items.forEach(el => { el.style.width = box.offsetWidth + "px"; });
+
+// ✅ read once, then write
+const width = box.offsetWidth;
+items.forEach(el => { el.style.width = width + "px"; });
+```
+
+**Avoid reflows:** batch DOM changes, change a class instead of many inline styles, animate `transform`/`opacity`, use `requestAnimationFrame` for visual updates, and `content-visibility: auto` for long off-screen sections.
+
+#### ↳ Follow-up: Which JavaScript reads force a reflow?
+
+↪ `offsetWidth/Height`, `getBoundingClientRect()`, `scrollTop`, `getComputedStyle()` — anything that needs up-to-date layout.
 
 ---

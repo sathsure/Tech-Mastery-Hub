@@ -2,6 +2,8 @@
 
 ### ❓ What are Core Web Vitals?
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 Three numbers Google uses to measure **real user experience** (and as a search ranking signal):
@@ -23,6 +25,8 @@ A page "passes" when **75% of real visits** are in the good range.
 ---
 
 ### ❓ What is Largest Contentful Paint (LCP) and how do you improve it?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -46,6 +50,8 @@ LCP is when the **largest visible element** (usually the hero image or main head
 
 ### ❓ How to reduce CLS?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 CLS (Cumulative Layout Shift) grows when content **moves after it appears** — e.g. an image loads and pushes text down while you're reading or about to tap. Fix it by **reserving space** before things load.
@@ -68,6 +74,8 @@ CLS (Cumulative Layout Shift) grows when content **moves after it appears** — 
 ---
 
 ### ❓ What is INP and how do you improve it?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -93,6 +101,8 @@ Newer browsers also offer `await scheduler.yield()` for step 2.
 ---
 
 ### ❓ How to reduce JS main-thread blocking time?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -120,6 +130,8 @@ worker.onmessage = (e) => console.log("Result from worker:", e.data);
 ---
 
 ### ❓ How to implement image optimization?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -151,6 +163,8 @@ The browser picks the first format it supports, and the best width for the scree
 
 ### ❓ Server-side rendering vs client-side rendering performance.
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 | | SSR (server-side rendering) | CSR (client-side rendering) |
@@ -180,6 +194,8 @@ app.get("*", (req, res) => {
 
 ### ❓ Lazy loading non-critical JS.
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Don't download code until it's needed: on **user action**, when it **scrolls into view**, or when the browser is **idle**. Use dynamic `import()`, which bundlers turn into a separate chunk.
@@ -207,6 +223,8 @@ In frameworks: React `lazy()` + `Suspense`, Angular `loadComponent` / `@defer` b
 
 ### ❓ How do you measure Core Web Vitals — lab vs field data?
 
+**Level:** 🟡 Intermediate
+
 - **Lab data** comes from a test you run (Lighthouse, the lab section of PageSpeed Insights, the Chrome DevTools Performance panel) on one device and network. Good for debugging and for catching regressions in CI.
 - **Field data** comes from real users (the Chrome UX Report / CrUX, or your own RUM with the `web-vitals` library). This is what Google uses for ranking, measured at the **75th percentile** of visits.
 
@@ -223,6 +241,8 @@ Lab and field results often disagree — real users have slower phones and netwo
 
 ### ❓ What are TTFB and FCP?
 
+**Level:** 🟢 Beginner
+
 - **TTFB (Time to First Byte):** time until the first byte of the HTML arrives. Good: ≤ 0.8 s. Improve it with a CDN, caching, faster server code and fewer redirects.
 - **FCP (First Contentful Paint):** time until anything (text or an image) first appears. Good: ≤ 1.8 s.
 
@@ -231,6 +251,8 @@ They are not Core Web Vitals themselves, but a slow TTFB or FCP makes a good **L
 ---
 
 ### ❓ How do you stop CSS and fonts from slowing down the first render?
+
+**Level:** 🟡 Intermediate
 
 - **CSS blocks rendering:** inline the small "critical" CSS for above-the-fold content, load the rest asynchronously, and remove unused CSS.
 - **Scripts:** use `defer` or `type="module"` so scripts don't block parsing; use `async` only for independent scripts such as analytics.
@@ -244,6 +266,8 @@ They are not Core Web Vitals themselves, but a slow TTFB or FCP makes a good **L
 
 ### ❓ How do third-party scripts hurt performance, and how do you control them?
 
+**Level:** 🟡 Intermediate
+
 Chat widgets, ads, tag managers and A/B testing tools often add hundreds of KB of JavaScript and long tasks that hurt **INP** and **LCP**.
 
 - Audit them (DevTools coverage, Lighthouse's third-party summary) and remove unused ones.
@@ -253,6 +277,8 @@ Chat widgets, ads, tag managers and A/B testing tools often add hundreds of KB o
 ---
 
 ### ❓ How do you reduce JavaScript bundle size?
+
+**Level:** 🟡 Intermediate
 
 - **Code splitting:** split by route and load features on demand (`import()`, React `lazy`, Angular `@defer`).
 - **Tree shaking:** import only what you use (`import { debounce } from "lodash-es"`, not the whole library).

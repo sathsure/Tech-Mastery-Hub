@@ -101,6 +101,8 @@ Ways to get a real boundary:
 
 ### ❓ Which exceptions make @Transactional roll back?
 
+**Level:** 🟡 Intermediate
+
 **Problem:** A method throws `IOException` (a checked exception), but the database changes are committed anyway.
 
 ### 📝 Answer
@@ -126,6 +128,8 @@ public void importFile(Path file) throws IOException {
 
 ### ❓ What are REQUIRED and REQUIRES_NEW propagation?
 
+**Level:** 🟡 Intermediate
+
 **Problem:** One `@Transactional` method calls another `@Transactional` method in a different bean. Should the second one share the first one's transaction, or have its own?
 
 ### 📝 Answer
@@ -150,6 +154,8 @@ Use `REQUIRES_NEW` for work that must survive the outer transaction's rollback, 
 ---
 
 ### ❓ What happens when both methods are in the same service and one uses REQUIRES_NEW?
+
+**Level:** 🟡 Intermediate
 
 **Problem:** The audit log should be saved even when the order fails:
 
@@ -212,6 +218,8 @@ public class OrderService {
 
 ### ❓ How does Spring know when to commit or roll back?
 
+**Level:** 🟡 Intermediate
+
 **Problem:** Nothing in the method body says "commit" or "rollback", yet Spring does one or the other.
 
 ### 📝 Answer
@@ -233,6 +241,8 @@ The decision is made **after** the method finishes, in the proxy — not at the 
 ---
 
 ### ❓ What is the difference between save and commit?
+
+**Level:** 🟡 Intermediate
 
 **Problem:** `repository.save(order)` returned without error, but another connection can't see the order yet — and later it disappears after an exception.
 

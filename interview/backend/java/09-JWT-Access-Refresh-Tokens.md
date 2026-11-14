@@ -6,6 +6,8 @@ Setup used in the examples: Angular front end, Spring Boot REST APIs, MySQL, JWT
 
 ### ❓ What are access tokens and refresh tokens, and why use both?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 | | Access token | Refresh token |
@@ -22,6 +24,8 @@ A short-lived access token limits the damage if it leaks; the refresh token keep
 ---
 
 ### ❓ What is the complete login-to-dashboard flow with JWT?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -62,6 +66,8 @@ sequenceDiagram
 ---
 
 ### ❓ What happens when the access token expires?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -119,6 +125,8 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
 ### ❓ What happens when the refresh token expires?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Example: the user comes back after 8 days; the 7-day refresh token has expired.
@@ -145,6 +153,8 @@ flowchart LR
 ---
 
 ### ❓ How do you implement the token refresh API in Spring Boot?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -192,6 +202,8 @@ Design points:
 
 ### ❓ Can an expired access token be used to get a new access token?
 
+**Level:** 🟡 Intermediate
+
 No. Only a valid refresh token can. Otherwise anyone holding an old, leaked access token could stay logged in forever.
 
 - The expiry is part of the signed token (the `exp` claim), so the server rejects it once that time has passed.
@@ -200,6 +212,8 @@ No. Only a valid refresh token can. Otherwise anyone holding an old, leaked acce
 ---
 
 ### ❓ Does the refresh API need a valid access token?
+
+**Level:** 🟡 Intermediate
 
 No. It authenticates with the refresh token — the access token is usually already expired when refresh is called.
 
@@ -210,11 +224,15 @@ No. It authenticates with the refresh token — the access token is usually alre
 
 ### ❓ What happens if five API calls return 401 at the same time?
 
+**Level:** 🟡 Intermediate
+
 Each would start its own refresh. With rotation, only the first succeeds and the others fail (and may even trigger reuse detection). Make **one** refresh call, queue the other requests, and retry them all with the new token.
 
 ---
 
 ### ❓ What happens if a refresh token is stolen?
+
+**Level:** 🟡 Intermediate
 
 The attacker can mint new access tokens until it expires. Mitigations: `HttpOnly` cookie storage, rotation with reuse detection (revoke the whole token family), binding to device or session metadata, short absolute lifetime, and revoking on logout or password change.
 
@@ -222,17 +240,23 @@ The attacker can mint new access tokens until it expires. Mitigations: `HttpOnly
 
 ### ❓ Can a JWT be invalidated immediately?
 
+**Level:** 🟡 Intermediate
+
 Not with purely stateless validation — a signed JWT stays valid until `exp`. Options: short expiry, a denylist of token IDs (`jti`) until expiry, or a per-user token version checked on each request.
 
 ---
 
 ### ❓ What should happen when the user logs out?
 
+**Level:** 🟡 Intermediate
+
 Revoke the refresh token on the server (delete it or mark it revoked), clear the refresh-token cookie, and discard the access token in the app. The access token may remain technically valid until it expires — another reason to keep it short-lived.
 
 ---
 
 ### ❓ What is the difference between 401 and 403?
+
+**Level:** 🟢 Beginner
 
 `401 Unauthorized` = not authenticated (missing, invalid or expired token). `403 Forbidden` = authenticated but not allowed to perform this action.
 
@@ -244,11 +268,15 @@ Revoke the refresh token on the server (delete it or mark it revoked), clear the
 
 ### ❓ What happens if a user's role changes while their JWT is still valid?
 
+**Level:** 🟡 Intermediate
+
 The token still carries the old role claims until it expires. If immediate effect matters, check current roles in the database for sensitive actions, use a token version, or force a refresh.
 
 ---
 
 ### ❓ Should a JWT be stored in localStorage?
+
+**Level:** 🟡 Intermediate
 
 It's risky: any XSS script can read localStorage and steal the token. Prefer keeping the access token in memory and the refresh token in an `HttpOnly`, `Secure`, `SameSite` cookie that JavaScript can't read.
 
@@ -256,11 +284,15 @@ It's risky: any XSS script can read localStorage and steal the token. Prefer kee
 
 ### ❓ Can two refresh requests with the same refresh token both succeed?
 
+**Level:** 🟡 Intermediate
+
 With rotation, no — the second finds the token already used and fails (or triggers reuse detection). Handle concurrency on the client (one refresh at a time) and consider a short grace period on the server for lost responses.
 
 ---
 
 ### ❓ What if the refresh token is valid but the user account has been disabled?
+
+**Level:** 🟡 Intermediate
 
 Refresh must fail. Always check the account status during refresh, not only at login.
 
@@ -272,6 +304,8 @@ Refresh must fail. Always check the account status during refresh, not only at l
 
 ### ❓ What if a refresh token is revoked before its expiry date?
 
+**Level:** 🟡 Intermediate
+
 The backend rejects it. Revocation is checked in the database, independently of the expiry date.
 
 - Example: on logout or "log out of all devices", the server marks the token as revoked (or deletes it) in the database.
@@ -280,6 +314,8 @@ The backend rejects it. Revocation is checked in the database, independently of 
 ---
 
 ### ❓ Can the refresh token's expiry be extended every time the user is active?
+
+**Level:** 🟡 Intermediate
 
 Yes — sliding expiration. Enforce an **absolute maximum** session lifetime as well, so a stolen token can't be kept alive forever.
 
@@ -290,6 +326,8 @@ Yes — sliding expiration. Enforce an **absolute maximum** session lifetime as 
 
 ### ❓ What happens if the access token expires while a long request is running?
 
+**Level:** 🟡 Intermediate
+
 Nothing. The token is validated when the request enters the API; a request already authorized is not cancelled midway.
 
 - Example: a 2-minute report starts with a token that expires after 30 seconds — the report still finishes.
@@ -299,11 +337,15 @@ Nothing. The token is validated when the request enters the API; a request alrea
 
 ### ❓ If the refresh token is in an HttpOnly cookie, how does Angular send it?
 
+**Level:** 🟡 Intermediate
+
 It doesn't read it at all — the browser attaches the cookie automatically to requests for the matching domain and path (use `withCredentials: true` for cross-origin calls).
 
 ---
 
 ### ❓ What if the refresh token expires while the user is actively using the app?
+
+**Level:** 🟡 Intermediate
 
 The next refresh attempt fails with 401, and the user has to log in again. Sliding expiration or a warning before the session ends improves the experience.
 
@@ -314,11 +356,15 @@ The next refresh attempt fails with 401, and the user has to log in again. Slidi
 
 ### ❓ What if the backend issues a new token but the response never reaches Angular?
 
+**Level:** 🟡 Intermediate
+
 The client still holds the old refresh token, which rotation has already marked as used, so the retry fails. Handle it with a short reuse grace window, idempotent refresh within a few seconds, or by sending the user back to login.
 
 ---
 
 ### ❓ Should every 401 response trigger a token refresh?
+
+**Level:** 🟡 Intermediate
 
 No. Exclude the login, refresh and logout endpoints, refresh at most once per failed request, and never retry in a loop — otherwise a bad refresh token causes endless 401 → refresh → 401 cycles.
 
@@ -326,11 +372,15 @@ No. Exclude the login, refresh and logout endpoints, refresh at most once per fa
 
 ### ❓ How do you prevent CSRF when tokens are stored in cookies?
 
+**Level:** 🟡 Intermediate
+
 Cookies are sent automatically, so a malicious site could trigger requests. Use `SameSite=Strict` or `Lax` cookies, restrict the refresh cookie's `Path` to `/api/auth/refresh`, and add CSRF tokens (Spring Security's `CsrfTokenRepository`) where state-changing requests rely on cookies.
 
 ---
 
 ### ❓ What should a senior Spring Boot developer know about JWT authentication?
+
+**Level:** 🔴 Advanced
 
 | Area | Topics |
 |---|---|

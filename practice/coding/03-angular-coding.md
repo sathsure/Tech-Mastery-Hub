@@ -7,6 +7,8 @@
 
 ### ❓ Build a small Angular application that manages users. It should load initial data from an API, allow CRUD operations, use forms, routing, dialogs, caching, and some custom Angular features. Explain your design decisions.
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 This is a **classic senior-level mock**. Interviewers want to see you cover:
@@ -543,6 +545,8 @@ export class AdminComponent {}
 
 ### ❓ You are building a search autocomplete. You must debounce user input, avoid multiple API calls, cache results for 5 minutes, and cancel stale requests. How would you design this in Angular using RxJS?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 This is a **multi-concept question** — interviewers want to see all four in your code:
@@ -705,6 +709,8 @@ If you used `mergeMap` here, all in-flight requests resolve and **race condition
 # Part 3 — Modern Signal-based Autocomplete
 
 ### ❓ Rebuild the autocomplete using Angular Signals + RxJS interop. How does it differ from the classic approach?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 

@@ -7,6 +7,8 @@
 
 ### ❓ Explain the high-level MEAN stack architecture
 
+**Level:** 🟡 Intermediate
+
 ![Image](https://media.geeksforgeeks.org/wp-content/uploads/20200601200043/mean-stack-flow.png)
 
 ![Image](https://res.cloudinary.com/hevo/image/upload/v1712838834/Hevo%20Wordpress/Concept/architecture_wui9ol.png)
@@ -30,6 +32,8 @@ This architecture is typically deployed in a **stateless** manner, allowing hori
 ---
 
 ### ❓ Explain the complete request lifecycle in a MEAN application
+
+**Level:** 🟡 Intermediate
 
 ![Image](https://markovate.com/wp-content/uploads/2023/06/Understanding-the-MEAN-Stack.webp)
 
@@ -59,6 +63,8 @@ A user action in Angular triggers an HTTP request through a service. Before the 
 
 ### ❓ How does Express middleware execution order work?
 
+**Level:** 🟡 Intermediate
+
 ![Image](https://media2.dev.to/dynamic/image/width%3D800%2Cheight%3D%2Cfit%3Dscale-down%2Cgravity%3Dauto%2Cformat%3Dauto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fi%2F73eusy0bc095c9w8tstw.png)
 
 ![Image](https://d2mk45aasx86xg.cloudfront.net/Express_middleware_11zon_bf752a6bd4.webp)
@@ -86,6 +92,8 @@ app.use(globalErrorHandler);      // 5. Catch any error from above
 # Part 2 — Authentication, Authorization & Security
 
 ### ❓ How do you implement authentication in MEAN applications?
+
+**Level:** 🟡 Intermediate
 
 ![Image](https://docs.oracle.com/en/applications/jd-edwards/administration/9.2.x/eotsc/images/jwt_token.png)
 
@@ -138,6 +146,8 @@ app.delete('/api/users/:id', requireRole(['admin']), deleteUser);
 
 ### ❓ How do you secure APIs beyond authentication?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Security is **multi-layered** — defense in depth:
@@ -155,6 +165,8 @@ Security is **multi-layered** — defense in depth:
 ---
 
 ### ❓ How do you prevent XSS and injection attacks?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -186,6 +198,8 @@ User.findOne({ $where: `this.email === '${req.body.email}'` });
 
 ### ❓ Explain CORS and how you configure it correctly
 
+**Level:** 🟡 Intermediate
+
 ![Image](https://mdn.github.io/shared-assets/images/diagrams/http/cors/fetching-page-cors.svg)
 
 ![Image](https://drek4537l1klr.cloudfront.net/hossain/Figures/04fig18_alt.jpg)
@@ -215,6 +229,8 @@ For unsafe operations (PUT/DELETE/custom headers), the browser sends a **preflig
 
 ### ❓ How do you structure a large Node.js backend?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 I use a **layered architecture** with clear separation of concerns:
@@ -243,6 +259,8 @@ I use a **layered architecture** with clear separation of concerns:
 # Part 4 — Backend-for-Frontend (BFF) Pattern
 
 ### ❓ Can you walk me through the Backend-for-Frontend pattern and describe a situation where you'd recommend it?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -337,6 +355,8 @@ A BFF is an architectural *opinion*: each client deserves an API tailored to its
 
 ### ❓ How do you optimize Angular performance?
 
+**Level:** 🟡 Intermediate
+
 ![Image](https://www.thinktecture.com/storage/2021/08/cd_default-1024x399.png)
 
 ![Image](https://dotnettrickscloud.blob.core.windows.net/article/angular/3720240602200739.com-png-to-webp-converter%20%281%29)
@@ -367,6 +387,8 @@ A multi-pronged approach:
 
 ### ❓ Explain Angular route guards
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Route guards prevent unauthorized navigation and improve UX:
@@ -386,6 +408,8 @@ Route guards prevent unauthorized navigation and improve UX:
 # Part 6 — Node.js Internals & Concurrency
 
 ### ❓ Why is Node.js suitable for high-concurrency systems?
+
+**Level:** 🟡 Intermediate
 
 ![Image](https://media.geeksforgeeks.org/wp-content/uploads/20200224050909/nodejs2.png)
 
@@ -465,6 +489,8 @@ queue.process(async (job) => {
 
 ### ❓ How do you design scalable APIs?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Scalable APIs follow these principles:
@@ -483,6 +509,8 @@ Scalable APIs follow these principles:
 ---
 
 ### ❓ How would you explain API idempotency, and can you give an example of where it could go wrong if ignored?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -511,6 +539,8 @@ The server stores the key + result. A retry with the same key returns the cached
 ---
 
 ### ❓ How do you implement caching effectively?
+
+**Level:** 🟡 Intermediate
 
 ![Image](https://miro.medium.com/v2/resize%3Afit%3A1400/1%2AopKChmV6oVr3aI2zaQIMVg.png)
 
@@ -551,6 +581,8 @@ async function getUser(id) {
 # Part 8 — MongoDB Best Practices
 
 ### ❓ How do you optimize MongoDB performance?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -599,6 +631,8 @@ function getUser(doc) {
 
 ### ❓ How do you handle secure file uploads?
 
+**Level:** 🟡 Intermediate
+
 ![Image](https://www.finra.org/sites/default/files/2022-03/large-file-service.png)
 
 ![Image](https://www.alter-solutions.com/hs-fs/hubfs/S3%20presigned%20URL%201.png?height=382&name=S3+presigned+URL+1.png&width=936)
@@ -636,6 +670,8 @@ res.json({ uploadUrl });       // the browser PUTs the file straight to this URL
 
 ### ❓ How do you prevent API abuse?
 
+**Level:** 🟡 Intermediate
+
 ![Image](https://thealgoristsblob.blob.core.windows.net/thealgoristsimages/rate-limiter-sys-design-3.jpeg)
 
 ![Image](https://miro.medium.com/v2/resize%3Afit%3A1400/1%2AkHKqwQZRi_i0lX2L_X9ivg.png)
@@ -666,6 +702,8 @@ app.post('/login', loginLimiter, loginHandler);
 
 ### ❓ How do you prevent accidental data leaks?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 APIs return only the fields they should — using **DTOs** or **MongoDB projections**:
@@ -689,6 +727,8 @@ res.json(toUserDto(user));
 
 ### ❓ What happens if MongoDB goes down?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Graceful degradation:
@@ -704,6 +744,8 @@ Graceful degradation:
 ---
 
 ### ❓ What happens when Node.js crashes in production?
+
+**Level:** 🟡 Intermediate
 
 ![Image](https://imagedelivery.betterstackcdn.com/xZXo0QFi-1_4Zimer-T0XQ/07356f0c-10cf-418a-5318-73b045db4f00/orig)
 
@@ -733,6 +775,8 @@ process.on('uncaughtException', (err) => {
 # Part 10 — Observability, Deployments & HA
 
 ### ❓ How do you design logging for production?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -773,6 +817,8 @@ logger.info({
 
 ### ❓ How do you manage secrets securely?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 | ❌ Don't | ✅ Do |
@@ -787,6 +833,8 @@ logger.info({
 ---
 
 ### ❓ How do you handle deployments?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -813,6 +861,8 @@ flowchart LR
 ---
 
 ### ❓ How do you ensure high availability?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -849,6 +899,8 @@ flowchart TB
 
 ### ❓ How do you debug slow APIs in production?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 A systematic approach:
@@ -866,6 +918,8 @@ A systematic approach:
 
 ### ❓ How do you protect frontend applications?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 | Layer | Defense |
@@ -880,6 +934,8 @@ A systematic approach:
 ---
 
 ### ❓ How do you design for traffic spikes?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -899,6 +955,8 @@ A systematic approach:
 # Part 11 — Final System Design Question
 
 ### ❓ Final Question: Design a MEAN system for 1 million users
+
+**Level:** 🔴 Advanced
 
 ![Image](https://evincedev.com/blog/wp-content/uploads/2021/08/Mean-Architecture-1.png)
 
@@ -973,3 +1031,110 @@ A blueprint for 1M users:
 ---
 
 > 🚀 **You're now ready to architect at scale.** Master these patterns and you'll handle any system design interview with confidence.
+
+
+## Rendering & Frontend Architecture (Intermediate)
+
+### ❓ CSR vs SSR vs SSG vs ISR — how do you choose?
+
+### 📝 Answer
+
+They differ in **where and when the HTML is built**.
+
+```mermaid
+flowchart LR
+  subgraph CSR[CSR]
+    c1[Empty HTML + JS] --> c2[Browser runs JS] --> c3[Page appears]
+  end
+  subgraph SSR[SSR]
+    s1[Server builds HTML per request] --> s2[Page appears] --> s3[JS hydrates]
+  end
+  subgraph SSG[SSG]
+    g1[HTML built at deploy time] --> g2[Served from CDN] --> g3[JS hydrates]
+  end
+```
+
+| | HTML built | First view | SEO | Fresh data | Good for |
+|---|---|---|---|---|---|
+| **CSR** | in the browser | slow | weak | ✅ | dashboards, apps behind login |
+| **SSR** | on the server, every request | fast | ✅ | ✅ | e-commerce, news, personalised pages |
+| **SSG** | once at build time | fastest | ✅ | ❌ (rebuild) | blogs, docs, marketing |
+| **ISR** | static, rebuilt in the background every N seconds | fastest | ✅ | mostly | product catalogues |
+
+**Hydration** = the browser downloads the JS and attaches event handlers to server-made HTML.
+
+Rule of thumb: public pages that need SEO → SSG/ISR if content rarely changes, SSR if it's per user or real-time. Private app screens → CSR is fine.
+
+#### ↳ Follow-up: Does SSR make everything faster?
+
+↪ No. Time to first byte depends on your slowest API call, and the page isn't interactive until hydration finishes. Stream SSR and cache where possible.
+
+---
+
+### ❓ What are micro-frontends, and when are they worth it?
+
+### 📝 Answer
+
+**Micro-frontends** split one web app into parts owned, built and **deployed by different teams** — like microservices for the UI.
+
+```mermaid
+flowchart TB
+  Shell[App shell: layout, routing, login] --> A[Search team<br/>/search]
+  Shell --> B[Cart team<br/>/cart]
+  Shell --> C[Account team<br/>/account]
+```
+
+**Ways to build:** Webpack/Rspack **Module Federation** (load other apps' code at runtime), Web Components, separate apps per route behind a reverse proxy, iframes (strong isolation, poor UX).
+
+| ✅ Benefits | ❌ Costs |
+|---|---|
+| teams release independently | duplicate libraries → bigger downloads |
+| different stacks possible | consistent look needs a shared design system |
+| smaller codebases | shared state and routing get harder |
+
+**Worth it** for large organisations with many teams on one product. **Not worth it** for one or two teams — a well-structured monorepo is simpler.
+
+#### ↳ Follow-up: How do micro-frontends share data?
+
+↪ Keep it minimal: URL params, custom browser events, or a tiny shared store — never import each other's internals.
+
+---
+
+### ❓ What is a Progressive Web App (PWA), and what does a Service Worker do?
+
+### 📝 Answer
+
+A **PWA** is a web app that feels like an installed app: works **offline**, can be **installed** on the home screen, and can receive **push notifications**.
+
+It needs three things:
+1. **HTTPS**
+2. A **web app manifest** (`manifest.webmanifest`: name, icons, colours, start URL)
+3. A **Service Worker**
+
+A **Service Worker** is a background script that sits **between the page and the network**. It can answer requests from a cache.
+
+```mermaid
+flowchart LR
+  P[Page] -- fetch --> SW[Service Worker]
+  SW -- cache hit --> P
+  SW -- cache miss --> N[(Network)] --> SW
+```
+
+```js
+// sw.js — cache-first for static files
+self.addEventListener("fetch", event => {
+  event.respondWith(caches.match(event.request).then(hit => hit ?? fetch(event.request)));
+});
+```
+
+Common strategies: **cache-first** (static assets), **network-first** (API data), **stale-while-revalidate** (show cached, refresh in the background).
+
+#### ↳ Follow-up: Service Worker vs Web Worker?
+
+↪ A Web Worker runs heavy computation for one page. A Service Worker proxies network requests, lives beyond the tab, and handles offline and push.
+
+#### ↳ Follow-up: Why do users sometimes see an old version?
+
+↪ The old Service Worker keeps serving cached files until the new one activates. Version your caches and prompt users to refresh.
+
+---

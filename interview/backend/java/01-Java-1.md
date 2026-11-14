@@ -2,6 +2,8 @@
 
 ### ❓ Why OOP was introduced?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Imagine writing a **bank application**.
@@ -267,6 +269,8 @@ User u = new User(); // u is a reference, not a pointer
 ---
 
 ### ❓ How do you design a system where the same operation behaves differently based on the object type, without changing the calling code?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -565,6 +569,8 @@ Variable access depends on reference type. Java does not override variables. Thi
 
 ### ❓ How do you apply OOP principles in real-world systems?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 - Where have you used abstraction effectively?
@@ -587,6 +593,8 @@ Variable access depends on reference type. Java does not override variables. Thi
 
 ### ❓ Have you ever violated OOP principles intentionally?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Yes, Skipped abstractions to keep code simple and readable
@@ -604,6 +612,8 @@ class FileCleaner {
 ---
 
 ### ❓ What design principles do you follow while writing Java code?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -850,6 +860,8 @@ SRP (Single Responsibility Principle)
 
 ### ❓ Difference between == and equals()?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 `==` compares references **(memory addresses)**.
@@ -869,6 +881,8 @@ System.out.println(a.equals(b)); // true  (same content)
 ---
 
 ### ❓ String vs StringBuilder vs StringBuffer?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -899,6 +913,8 @@ for(int i = 0; i < 1000; i++) {
 ---
 
 ### ❓ final vs finally vs finalize?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -955,6 +971,8 @@ try (Resource res = new Resource()) {
 ---
 
 ### ❓ What are the design patterns that you used in Java?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -1181,6 +1199,8 @@ interface Command {
 
 ### ❓ Checked Exception vs Unchecked Exception
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 ```mermaid
@@ -1263,6 +1283,8 @@ void read() throws IOException {}
 
 ### ❓ What is JNA?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 **JNA** (Java Native Access) is a Java library that lets Java code **call native OS libraries (C/C++)** directly without writing JNI code.
@@ -1314,6 +1336,8 @@ public class JnaDemo {
 
 ### ❓ What is the Collections Framework?
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 Definition: A unified architecture to store, retrieve, and manipulate groups of objects.
@@ -1331,6 +1355,8 @@ list.add("Python");
 ```
 
 ### ❓ Difference between `Collection` and `Collections`
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -1372,6 +1398,8 @@ System.out.println(list); // [1, 2, 3]
 
 ### ❓ Difference between `List`, `Set`, and `Map`
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 ```mermaid
@@ -1403,6 +1431,8 @@ map.put(1, "Java");
 ---
 
 ### ❓ Why does `Map` not extend `Collection`?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -1451,6 +1481,8 @@ map.entrySet()    // Set of key-value pairs
 ---
 
 ### ❓ Why `LinkedList` supports Queue and Deque?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -1526,6 +1558,8 @@ head=0, tail=5
 
 ### ❓ How does ConcurrentHashMap work internally?
 
+**Level:** 🔴 Advanced
+
 ### 📝 Answer
 
 `ConcurrentHashMap` does NOT use `HashMap` internally.
@@ -1549,6 +1583,8 @@ When a thread writes (put or remove), it locks only the bucket where the key bel
 ---
 
 ### ❓ Difference between `HashMap`, `LinkedHashMap`, `TreeMap`
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -1627,6 +1663,8 @@ System.out.println(map); // Output: {2=B, 1=A}
 
 ### ❓ What is fail-fast vs fail-safe iterator?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 A **fail-fast iterator** immediately **throws `ConcurrentModificationException`** if the collection is structurally modified **after the iterator is created**, except through the iterator itself.
@@ -1687,6 +1725,8 @@ for (int i : list) {
 ---
 
 ### ❓ Difference between `Iterator` and `ListIterator`
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -1749,6 +1789,8 @@ System.out.println(it.previousIndex()); // Output: 1
 ---
 
 ### ❓ Difference between `Comparable` and `Comparator`
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -1896,6 +1938,8 @@ Collections.sort(list, Comparator.reverseOrder());
 
 ### ❓ What is `WeakHashMap`?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 A WeakHashMap is a special Map where the **keys** are weakly referenced
@@ -1926,6 +1970,8 @@ System.out.println("After GC: " + map); // Output: After GC: {java.lang.Object@7
 ---
 
 ### ❓ When would you prefer immutable collections?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -2062,6 +2108,8 @@ Map.Entry.comparingByValue()                 // Sort map by value
 
 ### ❓ How do equals() and hashCode() work together?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 - `equals() `is a normal instance method and can be called independently.
@@ -2137,6 +2185,8 @@ System.out.println(set.contains(new User(1))); // false ❌
 ## 4️⃣ Java 8+ Features
 
 ### ❓ What major changes did Java 8 introduce?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -2381,6 +2431,8 @@ class ElectricCar extends Machine implements Vehicle { } // ✅ still allowed
 
 ### ❓ `input.toCharArray()` vs `input.chars()`?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 `input.toCharArray()` 👉 Converts the `String` into a **char[] (character array)**
@@ -2418,6 +2470,8 @@ input.chars()
 ---
 
 ### ❓ map vs mapToInt vs mapToObj vs mapToLong vs mapToDouble vs flatMap?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -2503,6 +2557,8 @@ System.out.println(flat); // [A, B, C, D]
 
 ### ❓ Collectors to Remember
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 ```java
@@ -2577,6 +2633,8 @@ Collectors.counting()
 
 ### ❓ Optional.isPresent vs Optional.IfPresent
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 `Optional.isPresent()` - To check if the Optional instance contains a non-null value
@@ -2608,6 +2666,8 @@ Usage: It takes a lambda expression (or method reference) as an argument
 ---
 
 ### ❓ `filter()` vs `peek()`
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -2649,6 +2709,8 @@ nums.stream()
 
 ### ❓ `findFirst()` vs `findAny()`
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 🔹 `findFirst()`
@@ -2683,6 +2745,8 @@ nums.parallelStream()
 ---
 
 ### ❓ `map()` vs `flatMap()`
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -2723,6 +2787,8 @@ list.stream()
 
 ### ❓ Intermediate vs Terminal Operations
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 🔹 Intermediate Operations
@@ -2761,6 +2827,8 @@ stream.filter(...).collect(Collectors.toList());
 ---
 
 ### ❓ Types of Functional Interfaces
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -2892,6 +2960,8 @@ Functional Interface = **Exactly one abstract method**
 
 ### ❓ Features of `Optional`
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 🔹 Why Optional?
@@ -2919,6 +2989,8 @@ opt.ifPresent(System.out::println);
 ---
 
 ### ❓ Why `Optional` Should NOT Be Used as Method Parameter?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -3083,6 +3155,8 @@ public class Cat extends Animal {
 
 ### ❓ Why do you prefer immutable objects?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Immutable Object - An object whose state cannot change after it is created.
@@ -3092,6 +3166,8 @@ Useful for **Thread Safety** (Without Synchronization)
 ---
 
 ### ❓ How do you design immutable classes?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -3138,6 +3214,8 @@ Caller can mutate: `skills.add("Hacking");` . Use `List.copyOf(skills);`
 ---
 
 ### ❓ How Do You Design a Singleton Class?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -3347,6 +3425,8 @@ The JVM guarantees one instance, thread-safe creation, and protection against re
 
 ### ❓ AutoBoxing & AutoUnboxing
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 - Introduced in Java 5 to support Collections & Generics.
@@ -3460,6 +3540,8 @@ byte b = (byte) x;  // -126 (overflow)
 
 ### ❓ JVM Internal Question
 
+**Level:** 🔴 Advanced
+
 ### 📝 Answer
 
 ```java
@@ -3518,3 +3600,205 @@ for (long i = 0; i < 1_000_000; i++) {
 ```java
 long sum = 0L;
 ```
+
+
+## Must-Know Core Java (Intermediate)
+
+### ❓ How does HashMap work internally?
+
+### 📝 Answer
+
+A `HashMap` is an **array of buckets**. The key's hash decides the bucket, so `get` and `put` are **O(1)** on average.
+
+![A hash function turns each key into a bucket index](../../../knowledge/visual-notes/under-the-hood/hash-table.svg)
+
+_Image: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Hash_table_3_1_1_0_1_0_0_SP.svg) · Jorge Stolfi · CC BY-SA 3.0_
+
+**`put(key, value)` step by step:**
+1. `key.hashCode()` → spread the bits (`h ^ (h >>> 16)`).
+2. Bucket index = `hash & (capacity - 1)` (capacity is a power of 2, default **16**).
+3. Empty bucket → store the entry.
+4. Same bucket already used (**collision**) → walk the entries; if `equals()` finds the same key, **replace** the value, else **add** a node.
+5. A bucket with **more than 8** entries (and table ≥ 64) becomes a **red-black tree** → worst case O(log n) instead of O(n).
+6. When size > capacity × **0.75** (load factor), the table **doubles** and entries are redistributed (**rehashing**).
+
+```mermaid
+flowchart TD
+  K["put(key, value)"] --> H["hash(key)"] --> I["index = hash & (n-1)"]
+  I --> E{Bucket empty?}
+  E -- yes --> N[Store entry]
+  E -- no --> Q{"equals() matches a key?"}
+  Q -- yes --> R[Replace value]
+  Q -- no --> L["Add to list<br/>(tree if more than 8)"]
+```
+
+#### ↳ Follow-up: Why must `equals()` and `hashCode()` agree?
+
+↪ `hashCode` picks the bucket and `equals` finds the key inside it. Equal keys with different hash codes land in different buckets, so `get` misses.
+
+#### ↳ Follow-up: Why shouldn't a key be mutable?
+
+↪ If a field used in `hashCode` changes after `put`, the entry sits in the wrong bucket and can never be found.
+
+#### ↳ Follow-up: Is HashMap thread-safe?
+
+↪ No. Concurrent writes can lose entries. Use `ConcurrentHashMap`.
+
+---
+
+### ❓ Abstract class vs interface — what's the difference and when do you use each?
+
+### 📝 Answer
+
+| | Abstract class | Interface |
+|---|---|---|
+| Fields | any (instance state) | only `public static final` constants |
+| Constructors | ✅ | ❌ |
+| Methods with code | ✅ | `default`, `static`, `private` (Java 8/9+) |
+| How many a class can use | **one** (`extends`) | **many** (`implements`) |
+| Access modifiers | any | methods are public by default |
+| Meaning | "**is a**" — shared base with common code | "**can do**" — a capability/contract |
+
+```java
+interface Payable { BigDecimal amountDue(); }               // capability
+interface Notifiable { void notify(String msg); }
+
+abstract class Employee implements Payable {                 // shared base
+  protected final String name;
+  protected Employee(String name) { this.name = name; }
+  public String badge() { return "EMP-" + name; }            // shared code
+}
+
+class Contractor extends Employee implements Notifiable {
+  Contractor(String n) { super(n); }
+  public BigDecimal amountDue() { return new BigDecimal("50000"); }
+  public void notify(String msg) { … }
+}
+```
+
+**Rule of thumb:** start with an **interface**. Add an abstract class when several implementations share real **code or state**.
+
+#### ↳ Follow-up: Why were `default` methods added in Java 8?
+
+↪ To add methods (like `List.forEach`) to existing interfaces without breaking every class that implements them.
+
+#### ↳ Follow-up: Two interfaces have the same default method. What happens?
+
+↪ Compile error until the class overrides it; it can call one with `InterfaceA.super.method()`.
+
+---
+
+### ❓ How do generics work in Java — wildcards, type erasure and PECS?
+
+### 📝 Answer
+
+**Generics** let one class or method work with many types **with compile-time checks**: `List<String>` can't accidentally hold an `Integer`.
+
+```java
+public static <T extends Comparable<T>> T max(List<T> items) {   // bounded type parameter
+  T best = items.get(0);
+  for (T item : items) if (item.compareTo(best) > 0) best = item;
+  return best;
+}
+```
+
+**Wildcards:**
+
+| Wildcard | Means | You can |
+|---|---|---|
+| `List<?>` | a list of something | read as `Object` |
+| `List<? extends Number>` | Number or a subtype | **read** Numbers (producer) |
+| `List<? super Integer>` | Integer or a supertype | **add** Integers (consumer) |
+
+**PECS — Producer Extends, Consumer Super:**
+
+```java
+static double sum(List<? extends Number> nums) { … }           // reads → extends
+static void fill(List<? super Integer> out) { out.add(42); }    // writes → super
+// Collections.copy(List<? super T> dest, List<? extends T> src)
+```
+
+**Type erasure:** generic types exist **only at compile time**. At runtime `List<String>` and `List<Integer>` are both just `List`. So you **can't**:
+- `new T()` or `new T[10]`
+- `if (obj instanceof List<String>)`
+- overload `m(List<String>)` and `m(List<Integer>)`
+
+#### ↳ Follow-up: Why isn't `List<Integer>` a `List<Number>`?
+
+↪ Otherwise you could add a `Double` to a list of Integers through the `List<Number>` reference. Use `List<? extends Number>` to read them.
+
+---
+
+### ❓ What garbage collectors does the JVM have, and how do they work?
+
+### 📝 Answer
+
+The GC frees objects that are no longer **reachable** from roots (thread stacks, static fields).
+
+![The JVM: class loader, runtime data areas (heap, stacks, method area) and execution engine with the garbage collector](../../../knowledge/visual-notes/interview/jvm-architecture.png)
+
+_Image: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:JvmSpec7.png) · Michelle Ridomi · CC BY-SA 4.0_
+
+**Generational idea:** most objects die young.
+- **Young generation** (Eden + 2 Survivor spaces) — new objects; cleaned often and fast (**minor GC**).
+- **Old generation** — objects that survived several minor GCs; cleaned less often (**major/full GC**).
+
+| Collector | Best for | Note |
+|---|---|---|
+| **Serial** | tiny apps, single CPU | one thread, stops the app |
+| **Parallel** | batch jobs, max throughput | many threads, still pauses |
+| **G1** (default since Java 9) | most servers | splits heap into regions, aims for a pause target (`-XX:MaxGCPauseMillis=200`) |
+| **ZGC** | large heaps, low latency | pauses under ~1 ms, mostly concurrent; generational since Java 21 |
+| **Shenandoah** | low latency | concurrent compaction |
+
+**Stop-the-world pause** = all app threads stop while the GC works. Modern collectors keep these very short.
+
+```bash
+java -Xms2g -Xmx2g -XX:+UseZGC -Xlog:gc -jar app.jar
+```
+
+#### ↳ Follow-up: The app has long GC pauses. What do you check?
+
+↪ GC logs (`-Xlog:gc`), heap size vs live data, memory leaks (heap dump), allocation rate; then tune heap size or switch to G1/ZGC.
+
+#### ↳ Follow-up: Does `System.gc()` force a collection?
+
+↪ It only *suggests* one. Don't rely on it.
+
+---
+
+### ❓ What is the Java Memory Model and the "happens-before" rule?
+
+### 📝 Answer
+
+Each CPU core has caches, and the compiler/CPU may **reorder** instructions. So one thread's write isn't automatically **visible** to another thread. The **Java Memory Model (JMM)** defines when a write **is guaranteed** to be seen: when it **happens-before** the read.
+
+**Main happens-before rules:**
+1. **Program order** — inside one thread, earlier statements happen-before later ones.
+2. **Monitor lock** — unlocking a lock happens-before the next lock of the same lock (`synchronized`, `ReentrantLock`).
+3. **`volatile`** — a write to a volatile field happens-before every later read of it.
+4. **Thread start** — `thread.start()` happens-before anything in that thread.
+5. **Thread join** — everything in a thread happens-before `join()` returns.
+6. **Transitivity** — A → B and B → C means A → C.
+
+```java
+class Task {
+  private int result;
+  private volatile boolean done;           // the volatile write "publishes" result too
+
+  void finish() { result = 42; done = true; }                     // thread A
+  void check() { if (done) System.out.println(result); }          // thread B: always 42
+}
+```
+
+Without `volatile`, thread B might **never** see `done = true`, or see it but read an old `result`.
+
+#### ↳ Follow-up: Does `volatile` make `count++` safe?
+
+↪ No. It guarantees visibility, not atomicity — `count++` is read, add, write. Use `AtomicInteger` or a lock.
+
+#### ↳ Follow-up: What is safe publication?
+
+↪ Making a newly built object visible to other threads correctly: through a `final` field, a `volatile` field, a lock, or a concurrent collection.
+
+---

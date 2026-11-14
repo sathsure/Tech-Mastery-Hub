@@ -169,6 +169,17 @@ export function extractKeywords(question: string, answer: string, topics: string
   return [...words].slice(0, 24);
 }
 
+/** A question's own level line, written right under the question: "**Level:** 🟢 Beginner". */
+const LEVEL_LINE = /^\s*\*\*Level:\*\*\s*(?:🟢|🟡|🔴)?\s*(beginner|intermediate|advanced)\s*$/i;
+
+/** Takes the level line out of a question's lines (the first non-empty line), returning its level. */
+export function takeLevelLine(lines: string[]): { level: Difficulty | null; lines: string[] } {
+  const first = lines.findIndex(line => line.trim() !== "");
+  const match = first >= 0 ? LEVEL_LINE.exec(lines[first]) : null;
+  if (!match) return { level: null, lines };
+  return { level: match[1].toLowerCase() as Difficulty, lines: trimBlock([...lines.slice(0, first), ...lines.slice(first + 1)]) };
+}
+
 function difficultyFrom(section: string[]): Difficulty | null {
   const text = section.join(" ").toLowerCase();
   if (/\b(advanced|expert|senior)\b/.test(text)) return "advanced";
@@ -488,6 +499,13 @@ function buildEntries(sourcePath: string, content: string, lookups: Lookups): Qu
       answerLines = promptLines;
       promptLines = [];
     }
+    // "**Level:** 🟢 Beginner" under the question sets its level; it isn't part of the answer text.
+    let level: Difficulty | null = null;
+    if (draft.kind === "question") {
+      const fromPrompt = takeLevelLine(promptLines);
+      if (fromPrompt.level) ({ level, lines: promptLines } = fromPrompt);
+      else ({ level, lines: answerLines } = takeLevelLine(answerLines));
+    }
     const answer = answerLines.join("\n");
     const prompt = promptLines.length ? promptLines.join("\n") : null;
     const visuals = [
@@ -527,7 +545,7 @@ function buildEntries(sourcePath: string, content: string, lookups: Lookups): Qu
       domain: document?.domain ?? sourcePath.split("/")[1] ?? "",
       topics,
       section: draft.section,
-      difficulty: difficultyFrom(draft.section),
+      difficulty: level ?? difficultyFrom(draft.section),
       keywords: extractKeywords(draft.title, answer, topics),
       source: { path: sourcePath, startLine: draft.startLine, endLine },
       contentHash: hash(`${draft.title}\n${prompt ?? ""}\n${answer}`),

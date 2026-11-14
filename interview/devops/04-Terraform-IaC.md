@@ -56,6 +56,8 @@ Always read the **plan** before applying — look especially for anything marked
 
 ### ❓ What is Terraform state, and why does it matter?
 
+**Level:** 🟡 Intermediate
+
 The state file maps your code to real resources (resource IDs, attributes) so Terraform knows what it already created and what to change.
 
 - **Store it remotely**, never only on a laptop: an S3 bucket with locking (S3 native lock files, or a DynamoDB table on older setups), Terraform Cloud, or Azure Blob storage.
@@ -79,6 +81,8 @@ terraform {
 
 ### ❓ What is drift, and how do you handle it?
 
+**Level:** 🟡 Intermediate
+
 **Drift** is when real infrastructure no longer matches the code — someone changed a setting in the console, or another tool changed it.
 
 - `terraform plan` shows drift as changes Terraform wants to make to restore the code's version.
@@ -88,6 +92,8 @@ terraform {
 ---
 
 ### ❓ How do you bring existing resources under Terraform?
+
+**Level:** 🟡 Intermediate
 
 Use **import**, so Terraform starts managing something that was created by hand without recreating it.
 
@@ -105,6 +111,8 @@ Run `terraform plan -generate-config-out=generated.tf` to have Terraform draft t
 ## Writing Good Terraform
 
 ### ❓ What are variables, outputs and locals?
+
+**Level:** 🟡 Intermediate
 
 - **Variables** — inputs that make code reusable (`var.environment`).
 - **Locals** — named values computed inside the module, to avoid repetition.
@@ -131,6 +139,8 @@ Set values per environment with `.tfvars` files: `terraform apply -var-file=prod
 
 ### ❓ What are modules, and why use them?
 
+**Level:** 🟡 Intermediate
+
 A module is a reusable folder of Terraform code with inputs (variables) and outputs — like a function for infrastructure.
 
 ```hcl
@@ -146,6 +156,8 @@ Build a standard module once (for example "VPC with public and private subnets")
 ---
 
 ### ❓ What is the difference between `count` and `for_each` in Terraform?
+
+**Level:** 🟡 Intermediate
 
 Both create several copies of a resource.
 
@@ -163,6 +175,8 @@ resource "aws_iam_user" "devs" {
 
 ### ❓ How do you manage multiple environments (dev, staging, prod)?
 
+**Level:** 🟡 Intermediate
+
 Common approaches:
 
 1. **Separate folders per environment** that call the same modules with different `.tfvars` — the clearest and safest; each environment has its own state.
@@ -175,6 +189,8 @@ Keep prod in a separate cloud account or subscription with stricter permissions.
 
 ### ❓ How do you handle secrets in Terraform?
 
+**Level:** 🟡 Intermediate
+
 - Don't hard-code secrets in `.tf` files or commit them in `.tfvars`.
 - Read them at apply time from a secrets manager (AWS Secrets Manager, Vault) using **data sources**, or from CI secret variables.
 - Mark variables and outputs `sensitive = true` so they aren't printed in plans and logs.
@@ -183,6 +199,8 @@ Keep prod in a separate cloud account or subscription with stricter permissions.
 ---
 
 ### ❓ How do you protect important resources from being destroyed?
+
+**Level:** 🟡 Intermediate
 
 ```hcl
 resource "aws_db_instance" "orders" {
@@ -204,6 +222,8 @@ Also: review every plan, run applies only from CI with approvals for prod, and k
 
 ### ❓ How do you run Terraform in a CI/CD pipeline?
 
+**Level:** 🟡 Intermediate
+
 1. On a pull request: `fmt -check`, `validate`, security scanning (Checkov, tfsec / Trivy), then `plan` — post the plan as a PR comment.
 2. A reviewer approves the code **and** the plan.
 3. On merge to main: `apply` that reviewed plan, with a manual approval step for prod.
@@ -214,6 +234,8 @@ Tools: GitHub Actions, GitLab CI, Atlantis, HCP Terraform, Spacelift.
 ---
 
 ### ❓ Terraform vs CloudFormation vs Pulumi vs Ansible — what's the difference?
+
+**Level:** 🟡 Intermediate
 
 | Tool | What it is | Best for |
 |---|---|---|

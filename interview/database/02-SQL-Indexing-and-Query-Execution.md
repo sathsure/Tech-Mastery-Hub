@@ -4,6 +4,8 @@
 
 ### ❓ How does an index work?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 An index lets the database find rows **without scanning the whole table**.
@@ -25,6 +27,8 @@ Actual speed also depends on data distribution, caching and the execution plan t
 ---
 
 ### ❓ Is an index a separate table?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -69,6 +73,8 @@ A query through a secondary index first finds the primary keys, then looks each 
 
 ### ❓ Where is an index stored?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 | Location | What |
@@ -82,6 +88,8 @@ Index metadata and index data are different things: the dictionary says the inde
 ---
 
 ### ❓ Why might MySQL do a full table scan even though there is an index on employee_id?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -98,6 +106,8 @@ Check with `EXPLAIN`; `type = ALL` means a full scan.
 ---
 
 ### ❓ How does an index improve a JOIN on customer_id?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -121,6 +131,8 @@ Index the join column of the table being looked up (foreign keys usually; InnoDB
 
 ### ❓ Why not index every column?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Every index:
@@ -134,6 +146,8 @@ Index columns used in `WHERE`, `JOIN`, `ORDER BY` and `GROUP BY` of frequent que
 ## Query Execution Order
 
 ### ❓ What is the logical query execution order in SQL?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -164,6 +178,8 @@ That's why a `SELECT` alias can be used in `ORDER BY` but not in `WHERE` (MySQL 
 
 ### ❓ Where do indexes fit when a SQL query runs?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 **Nowhere — an index is not a SQL clause.** The optimizer considers indexes while **planning** the query, before execution starts. It can use them to speed up:
@@ -179,6 +195,8 @@ The physical execution plan can therefore differ from the logical clause order.
 ## WHERE, HAVING and GROUP BY
 
 ### ❓ What is the difference between the WHERE and HAVING clauses?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -221,6 +239,8 @@ Sample `employees` table:
 
 ### ❓ Does HAVING require the aggregate column in SELECT?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 No. `SELECT` decides what is **displayed**; `HAVING` decides which groups are **kept**.
@@ -242,6 +262,8 @@ HAVING COUNT(*) > 2;
 
 ### ❓ What happens if you add a non-aggregated column (name) to SELECT without adding it to GROUP BY?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 ```sql
@@ -260,6 +282,8 @@ To show names, either aggregate them (`GROUP_CONCAT(name)`) or join the grouped 
 ---
 
 ### ❓ What happens if you add name to GROUP BY as well?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -287,6 +311,8 @@ Every group has one row, so `HAVING COUNT(*) > 2` removes them all: the result i
 
 ### ❓ Can you use HAVING without GROUP BY?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Yes. Without `GROUP BY`, the whole result set is treated as **one group**:
@@ -302,6 +328,8 @@ This returns one row (`total = 6`) because the condition holds; with `> 10` it r
 ## Quick Revision
 
 ### ❓ What are the key SQL indexing and GROUP BY interview answers?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 

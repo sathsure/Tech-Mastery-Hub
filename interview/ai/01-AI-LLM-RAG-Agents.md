@@ -4,6 +4,8 @@
 
 ### ❓ What is AI?
 
+**Level:** 🟢 Beginner
+
 Machines performing tasks that normally need human intelligence: understanding language, recognising images, making decisions, learning from examples.
 
 - Examples you use daily: spam filters, Google Maps traffic predictions, face unlock, and chatbots like ChatGPT or Claude.
@@ -12,6 +14,8 @@ Machines performing tasks that normally need human intelligence: understanding l
 ---
 
 ### ❓ What is the difference between AI, Machine Learning and Deep Learning?
+
+**Level:** 🟢 Beginner
 
 | Term | Meaning |
 |---|---|
@@ -26,11 +30,15 @@ AI ⊃ ML ⊃ Deep Learning ⊃ (most of) Generative AI.
 
 ### ❓ What is Generative AI?
 
+**Level:** 🟢 Beginner
+
 AI that generates new content — text, code, images, audio or video — from a prompt, instead of only classifying or predicting. ChatGPT, Claude and image generators are examples.
 
 ---
 
 ### ❓ What is an LLM (Large Language Model)?
+
+**Level:** 🟢 Beginner
 
 A deep-learning model (usually a Transformer) trained on very large amounts of text to predict the next token. That simple objective, at scale, lets it answer questions, summarise, translate and write code.
 
@@ -38,17 +46,23 @@ A deep-learning model (usually a Transformer) trained on very large amounts of t
 
 ### ❓ What is NLP?
 
+**Level:** 🟢 Beginner
+
 Natural Language Processing: the field of making computers understand and produce human language — tokenisation, sentiment analysis, translation, question answering. LLMs are today's dominant NLP technique.
 
 ---
 
 ### ❓ What is a neural network?
 
+**Level:** 🟢 Beginner
+
 A computational model of layers of connected "neurons". Each connection has a weight; training adjusts the weights so the network's outputs match the expected ones. Deep learning means many such layers.
 
 ---
 
 ### ❓ What is the difference between supervised and unsupervised learning?
+
+**Level:** 🟡 Intermediate
 
 | Supervised | Unsupervised |
 |---|---|
@@ -62,11 +76,15 @@ LLM pre-training is **self-supervised**: the "label" is simply the next token in
 
 ### ❓ What is ChatGPT (or Claude) based on internally?
 
+**Level:** 🟡 Intermediate
+
 **Transformer**-based large language models. The Transformer's **attention** mechanism lets every token weigh every other token in the context. The models are pre-trained on large text corpora, then fine-tuned with instruction data and human feedback (RLHF) to follow instructions and be helpful.
 
 ---
 
 ### ❓ How does an LLM work at a high level?
+
+**Level:** 🟡 Intermediate
 
 1. The input text is split into **tokens**.
 2. Each token becomes a vector (an **embedding**).
@@ -89,17 +107,23 @@ The model doesn't look facts up; it predicts likely text — which is why ground
 
 ### ❓ What is a token?
 
+**Level:** 🟢 Beginner
+
 A unit of text the model processes — a word, part of a word or a punctuation mark. Roughly 1 token ≈ 4 English characters ≈ ¾ of a word. API pricing, rate limits and context windows are measured in tokens.
 
 ---
 
 ### ❓ What is a context window?
 
+**Level:** 🟢 Beginner
+
 The maximum number of tokens (prompt + conversation history + retrieved documents + the generated answer) the model can handle in one request. Anything beyond it must be truncated, summarised or retrieved selectively.
 
 ---
 
 ### ❓ What is temperature?
+
+**Level:** 🟢 Beginner
 
 A setting that controls randomness. Low (≈0) → focused, repeatable answers (good for extraction, code, factual Q&A). High (≈1) → more varied, creative output.
 
@@ -110,11 +134,15 @@ A setting that controls randomness. Low (≈0) → focused, repeatable answers (
 
 ### ❓ What is hallucination?
 
+**Level:** 🟢 Beginner
+
 When the model produces confident but incorrect or invented information — fake facts, citations or APIs. It happens because the model predicts plausible text rather than checking facts.
 
 ---
 
 ### ❓ What is prompt engineering?
+
+**Level:** 🟢 Beginner
 
 Designing instructions that get reliable results: a clear role and task, relevant context, constraints, examples (few-shot) and a required output format such as JSON.
 
@@ -122,11 +150,15 @@ Designing instructions that get reliable results: a clear role and task, relevan
 
 ### ❓ What is fine-tuning?
 
+**Level:** 🟢 Beginner
+
 Further training a pre-trained model on task-specific examples so its **behaviour** changes — a style, format or domain skill. It is costly to maintain and doesn't add up-to-date facts well; RAG is usually the first choice for private knowledge.
 
 ## RAG, Embeddings and Vector Databases
 
 ### ❓ What is RAG (Retrieval-Augmented Generation)?
+
+**Level:** 🟢 Beginner
 
 Before calling the LLM, the application **retrieves** relevant pieces of its own documents and puts them into the prompt. The model then answers **from that context**, ideally with citations.
 
@@ -138,11 +170,15 @@ Question → embed → vector search → top-k chunks → prompt (question + chu
 
 ### ❓ Why do we need RAG?
 
+**Level:** 🟡 Intermediate
+
 LLMs don't know your private or recent data and may hallucinate. RAG supplies company documents at query time without retraining, keeps answers current (update the index, not the model), and makes answers traceable to sources.
 
 ---
 
 ### ❓ What are embeddings?
+
+**Level:** 🟢 Beginner
 
 Numeric vectors that represent the **meaning** of text (or images). Similar meanings produce vectors that are close together, measured with cosine similarity, for example. "Reset my password" and "I forgot my login" end up near each other.
 
@@ -150,17 +186,23 @@ Numeric vectors that represent the **meaning** of text (or images). Similar mean
 
 ### ❓ What is a vector database?
 
+**Level:** 🟢 Beginner
+
 A database that stores embeddings and finds the nearest vectors to a query vector quickly (approximate nearest-neighbour indexes such as HNSW). Examples: pgvector, Pinecone, Weaviate, Milvus, Elasticsearch, Redis.
 
 ---
 
 ### ❓ What is semantic search?
 
+**Level:** 🟢 Beginner
+
 Search by **meaning** instead of exact keywords: the query is embedded and compared with document embeddings. Often combined with keyword search (hybrid search) for names and codes.
 
 ---
 
 ### ❓ What is the difference between RAG and fine-tuning?
+
+**Level:** 🟢 Beginner
 
 | | RAG | Fine-tuning |
 |---|---|---|
@@ -174,11 +216,15 @@ Search by **meaning** instead of exact keywords: the query is embedded and compa
 
 ### ❓ What is chunking?
 
+**Level:** 🟢 Beginner
+
 Splitting documents into smaller pieces (for example 300–800 tokens with some overlap) before embedding them, so retrieval returns focused passages that fit the context window. Chunk size and overlap strongly affect answer quality.
 
 ## AI Agents and MCP
 
 ### ❓ What is an AI agent?
+
+**Level:** 🟢 Beginner
 
 An AI system that can **reason about a goal, choose tools, act, observe the results and continue** until the task is done — for example, look up an order, check stock and draft a reply.
 
@@ -186,11 +232,15 @@ An AI system that can **reason about a goal, choose tools, act, observe the resu
 
 ### ❓ What is the difference between an LLM and an AI agent?
 
+**Level:** 🟢 Beginner
+
 An LLM produces a response to one prompt. An agent wraps the LLM in a **loop with tools and memory**: it decides which action to take, executes it (API call, database query), feeds the result back to the model, and repeats.
 
 ---
 
 ### ❓ What is tool calling (function calling)?
+
+**Level:** 🟢 Beginner
 
 The model returns a structured request to call a function you defined (name plus JSON arguments) instead of plain text. Your application executes it and sends the result back; the model then continues. It is how LLMs reach real systems safely — the application stays in control of what actually runs.
 
@@ -198,17 +248,23 @@ The model returns a structured request to call a function you defined (name plus
 
 ### ❓ What is MCP (Model Context Protocol)?
 
+**Level:** 🟢 Beginner
+
 An open standard for connecting AI applications to tools and data sources. An **MCP server** exposes tools, resources and prompts (for example GitHub, a database, internal APIs); any MCP-capable client or agent can use them without a custom integration for each pair.
 
 ---
 
 ### ❓ What is a multi-agent architecture?
 
+**Level:** 🔴 Advanced
+
 Several specialised agents (planner, researcher, coder, reviewer) cooperate on a task, usually coordinated by an orchestrator. It helps with complex work but adds latency, cost and debugging complexity.
 
 ---
 
 ### ❓ What is an agentic workflow?
+
+**Level:** 🟢 Beginner
 
 A workflow in which the AI decides and executes the next steps itself (plan → act → check → adjust) rather than following a fixed sequence — typically with guardrails, limits and human approval for risky actions.
 
@@ -225,6 +281,8 @@ flowchart LR
 ## AI Integration in Spring Boot
 
 ### ❓ How would you integrate an LLM API (OpenAI, Claude…) into Spring Boot?
+
+**Level:** 🟡 Intermediate
 
 Use **Spring AI**: add the starter for your provider, put the API key in configuration (from an environment variable or a secrets manager, never in code), and inject a `ChatClient`.
 
@@ -257,6 +315,8 @@ Alternatively call the provider's REST API with `RestClient`/`WebClient` or its 
 
 ### ❓ How would you build an AI chatbot with Spring Boot and Angular?
 
+**Level:** 🔴 Advanced
+
 - **Angular:** chat UI, sends the message plus a conversation id, renders the streamed answer (Markdown, code blocks).
 - **Spring Boot:** authenticates the user, loads recent conversation history, optionally retrieves documents (RAG), calls the LLM through Spring AI, streams the answer back over Server-Sent Events, stores the conversation.
 - **Cross-cutting:** rate limiting per user, logging of token usage, content filtering, timeouts and fallbacks.
@@ -264,6 +324,8 @@ Alternatively call the provider's REST API with `RestClient`/`WebClient` or its 
 ---
 
 ### ❓ How would you implement RAG using company documents in Spring Boot?
+
+**Level:** 🟡 Intermediate
 
 **Ingestion (offline):** read documents → split into chunks → create embeddings → store in a vector store.
 **Query time:** retrieve the top-k chunks for the question → build a prompt with them → ask the LLM to answer only from them and cite sources.
@@ -305,6 +367,8 @@ Also apply access control to retrieval: users must only retrieve documents they 
 
 ### ❓ How would you secure sensitive data sent to an external LLM?
 
+**Level:** 🟡 Intermediate
+
 - Send only what's needed; **mask or remove PII** and secrets before the call.
 - Use providers and plans with data-processing agreements and no training on your data; choose a region if required.
 - Enforce authorization before retrieval, so the model never sees documents the user can't access.
@@ -315,6 +379,8 @@ Also apply access control to retrieval: users must only retrieve documents they 
 
 ### ❓ How would you handle LLM API rate limits and token costs?
 
+**Level:** 🟡 Intermediate
+
 - Retry `429` responses with exponential backoff and jitter (e.g. Resilience4j), with a cap.
 - Rate-limit per user and per tenant; queue non-urgent work.
 - Reduce tokens: trim history, summarise long conversations, retrieve fewer and smaller chunks, set `max_tokens`.
@@ -324,6 +390,8 @@ Also apply access control to retrieval: users must only retrieve documents they 
 ---
 
 ### ❓ How would you implement streaming AI responses?
+
+**Level:** 🟡 Intermediate
 
 Stream tokens as they are generated, so users see the answer start in about a second instead of waiting for the whole response.
 
@@ -340,17 +408,23 @@ On the Angular side, read the Server-Sent Events stream (`EventSource`, or `fetc
 
 ### ❓ How would you reduce hallucinations?
 
+**Level:** 🟡 Intermediate
+
 Ground answers with RAG and require citations; instruct the model to say "I don't know" when the context lacks the answer; use low temperature; validate outputs (schemas, business rules, checking cited sources exist); use confidence thresholds or a second verification pass; add human review for high-risk answers.
 
 ---
 
 ### ❓ How would you evaluate the accuracy of AI-generated answers?
 
+**Level:** 🟡 Intermediate
+
 Build a **test set** of real questions with expected answers or sources. Measure retrieval quality (did the right chunks come back?), answer correctness and faithfulness to sources (human review or an LLM-as-judge with a rubric), and track user feedback. Run the evaluation on every prompt, model or chunking change, like regression tests.
 
 ---
 
 ### ❓ How would you implement AI response caching?
+
+**Level:** 🟡 Intermediate
 
 - **Exact cache:** key = hash of (model, prompt, parameters) → stored answer in Redis with a TTL.
 - **Semantic cache:** embed the question and reuse an answer when a previous question is very similar.
@@ -360,11 +434,15 @@ Build a **test set** of real questions with expected answers or sources. Measure
 
 ### ❓ How would you design fallbacks if the LLM provider is unavailable?
 
+**Level:** 🔴 Advanced
+
 Set timeouts, use a circuit breaker (Resilience4j), and on failure fall back to a secondary provider or model, a cached answer, or a non-AI path (search results, "try again later"). Show a clear message and never block core business flows on the LLM.
 
 ## Scenario-Based Questions
 
 ### ❓ Your company has 10,000 PDF documents. Employees want answers based only on those documents. How would you design it?
+
+**Level:** 🔴 Advanced
 
 Document ingestion (PDF parsing, OCR if needed) → chunking with metadata (title, page, permissions) → embeddings → vector database → at query time: retrieval with access control → LLM prompt restricted to the retrieved chunks → answer **with citations**. Add re-indexing when documents change, an evaluation set, and monitoring.
 
@@ -381,11 +459,15 @@ flowchart LR
 
 ### ❓ An LLM API takes 20 seconds to respond. How would you improve the user experience?
 
+**Level:** 🟡 Intermediate
+
 Stream the response; process long tasks asynchronously with progress updates; cache frequent answers; use a faster or smaller model where quality allows; shorten prompts and retrieved context; run independent calls in parallel.
 
 ---
 
 ### ❓ The AI gives incorrect answers about financial information. How would you minimise this?
+
+**Level:** 🟡 Intermediate
 
 Use RAG over authoritative data, require source citations, compute numbers in code from the database rather than letting the model calculate, validate outputs against business rules, use confidence thresholds, and route uncertain or high-impact answers to human review.
 
@@ -393,10 +475,81 @@ Use RAG over authoritative data, require source citations, compute numbers in co
 
 ### ❓ How would you prevent prompt injection attacks?
 
+**Level:** 🟡 Intermediate
+
 Treat all user input and retrieved content as **data, not instructions**: keep system instructions separate, delimit untrusted content, give tools least-privilege permissions, require confirmation for sensitive actions, validate and filter outputs, and never let model output directly run commands or queries without checks.
 
 ---
 
 ### ❓ How would you build a secure enterprise AI chatbot?
 
+**Level:** 🔴 Advanced
+
 SSO authentication and role-based authorization; RAG with per-user document permissions; PII masking before external calls; prompt-injection defences; audit logging of prompts, sources and answers (redacted); rate limits and cost controls; provider data agreements; evaluation and monitoring of answer quality.
+
+
+
+---
+
+## Model Customisation & Deployment (Advanced)
+
+### ❓ What are LoRA and quantization?
+
+### 📝 Answer
+
+Both make big models **cheaper** to adapt or run.
+
+**LoRA (Low-Rank Adaptation)** — a cheap way to **fine-tune**. Instead of updating all billions of weights, you **freeze** the model and train small extra matrices ("adapters") added to some layers.
+
+```mermaid
+flowchart LR
+  X[Input] --> W[Frozen original weights W]
+  X --> A[Small matrix A] --> B[Small matrix B]
+  W --> S((+))
+  B --> S
+  S --> Y[Output]
+```
+
+- Trains well under 1% of the parameters → fits on one GPU, hours instead of days.
+- The adapter is a small file (MBs); you can keep many (one per customer/task) for one base model.
+- **QLoRA** = LoRA on a quantized base model → even less memory.
+
+**Quantization** — store weights with **fewer bits** to make the model smaller and faster.
+
+| Precision | Memory for a 7B-parameter model | Quality |
+|---|---|---|
+| FP16 / BF16 (16-bit) | ~14 GB | full |
+| INT8 (8-bit) | ~7 GB | nearly the same |
+| INT4 (4-bit, e.g. GGUF, AWQ, GPTQ) | ~3.5–4 GB | small drop |
+
+Quantization is how large open-weight models run on laptops and phones.
+
+#### ↳ Follow-up: Should you fine-tune to teach the model company facts?
+
+↪ Usually no — use RAG for facts. Fine-tune (often with LoRA) for style, format or a narrow task.
+
+---
+
+### ❓ Open-weight models vs API (hosted) models — how do you choose?
+
+### 📝 Answer
+
+| | API models (Claude, GPT, Gemini…) | Open-weight models (Llama, Mistral, Qwen, Gemma…) |
+|---|---|---|
+| Where it runs | provider's servers | your servers / cloud / laptop |
+| Quality on hard tasks | usually the strongest | good and improving; smaller ones weaker |
+| Setup and ops | almost none | GPUs, serving (vLLM, Ollama), scaling, monitoring |
+| Cost | pay per token | pay for hardware — cheaper at very high, steady volume |
+| Data control | under the provider's terms (enterprise tiers often don't train on your data) | full — data never leaves |
+| Customisation | prompting, some fine-tuning | full fine-tuning, LoRA, quantization |
+| Latency control | provider's | yours |
+
+**Choose API** for the best quality, fast start, variable traffic. **Choose open-weight** for strict data residency/air-gapped setups, very high steady volume, offline/edge use, or deep customisation.
+
+Many teams **mix**: a small open model for simple high-volume steps (classification, routing) and an API model for the hard ones.
+
+#### ↳ Follow-up: Is "open-weight" the same as "open source"?
+
+↪ Not exactly — the trained weights are downloadable, but training data and code often aren't, and licences may restrict use.
+
+---

@@ -57,6 +57,8 @@ Careful with `rm -rf` — there is no recycle bin.
 
 ### ❓ How do file permissions work in Linux?
 
+**Level:** 🟢 Beginner
+
 Every file has an owner, a group, and three sets of permissions — for the **user** (owner), the **group**, and **others**. Each set can allow **r**ead, **w**rite and e**x**ecute.
 
 ```text
@@ -83,6 +85,8 @@ chown app:devs deploy.sh   # change owner and group
 
 ### ❓ What is sudo and the root user?
 
+**Level:** 🟢 Beginner
+
 **root** is the all-powerful admin account. **sudo** runs a single command as root, so you don't stay logged in as root.
 
 - `sudo systemctl restart nginx` — restart a service.
@@ -94,6 +98,8 @@ chown app:devs deploy.sh   # change owner and group
 ## Processes & Services
 
 ### ❓ How do you find and stop a process?
+
+**Level:** 🟡 Intermediate
 
 A process is a running program with an ID (PID).
 
@@ -110,6 +116,8 @@ Always try plain `kill` first: SIGTERM lets the app close connections and finish
 ---
 
 ### ❓ What is systemd and how do you manage a service?
+
+**Level:** 🟡 Intermediate
 
 systemd starts programs at boot, restarts them if they crash, and collects their logs. A program it manages is a **service** (unit).
 
@@ -142,6 +150,8 @@ WantedBy=multi-user.target
 
 ### ❓ What is the difference between a process and a thread in Linux?
 
+**Level:** 🟡 Intermediate
+
 A **process** has its own memory; a **thread** runs inside a process and shares its memory with the other threads. Processes are isolated and safer; threads are lighter and share data easily but need locking.
 
 **Example:** one JVM is one process with many threads — one per request in Tomcat. `top -H -p <pid>` shows the threads of a process.
@@ -151,6 +161,8 @@ A **process** has its own memory; a **thread** runs inside a process and shares 
 ## Shell Scripting & Pipes
 
 ### ❓ What are pipes and redirection?
+
+**Level:** 🟢 Beginner
 
 A **pipe** `|` sends one command's output into the next command. **Redirection** sends output to a file.
 
@@ -166,6 +178,8 @@ echo "done" >> run.log                       # append instead of overwrite
 ---
 
 ### ❓ How do you write a simple shell script?
+
+**Level:** 🟡 Intermediate
 
 A shell script is a text file of commands run in order. Start with a shebang line, make it executable, and stop on errors.
 
@@ -192,6 +206,8 @@ Run it with `chmod +x deploy.sh && ./deploy.sh`. Always quote variables (`"$LOG"
 
 ### ❓ What are grep, sed and awk used for?
 
+**Level:** 🟡 Intermediate
+
 Three text tools for logs and files:
 
 - **grep** finds lines: `grep -i "timeout" app.log`
@@ -203,6 +219,8 @@ Three text tools for logs and files:
 ---
 
 ### ❓ What are environment variables?
+
+**Level:** 🟢 Beginner
 
 Named values the shell passes to programs, used for configuration and secrets so they aren't hard-coded.
 
@@ -219,6 +237,8 @@ Put permanent ones in `~/.bashrc` (one user) or the service's systemd file (`Env
 ## Troubleshooting
 
 ### ❓ A server is slow. What do you check first?
+
+**Level:** 🟡 Intermediate
 
 Check the four resources, then the app:
 
@@ -238,6 +258,8 @@ Check the four resources, then the app:
 
 ### ❓ How do you check which process is using a port?
 
+**Level:** 🟡 Intermediate
+
 ```bash
 sudo ss -tulpn | grep :8080      # modern
 sudo lsof -i :8080               # alternative
@@ -248,6 +270,8 @@ Common when an app fails with "Address already in use": an old instance is still
 ---
 
 ### ❓ How do you connect to a server securely and copy files?
+
+**Level:** 🟡 Intermediate
 
 Use **SSH** with a key pair instead of a password.
 
@@ -260,3 +284,140 @@ rsync -avz ./dist/ app@10.0.1.5:/var/www/ # sync a folder (only changes)
 ```
 
 Keep the private key secret (permission `600`); disable password login on servers.
+
+
+
+---
+
+## Files, Processes & Scheduling (Intermediate)
+
+### ❓ Hard link vs soft (symbolic) link — what's the difference?
+
+### 📝 Answer
+
+Every file's data and details live in an **inode**; a file **name** is just a pointer to an inode.
+
+- **Hard link** — a second **name for the same inode**. Both names are equal; the data stays until the last name is deleted.
+- **Soft link (symlink)** — a small file that holds a **path** to another file, like a shortcut.
+
+```bash
+echo "hello" > notes.txt
+ln notes.txt hard.txt        # hard link
+ln -s notes.txt soft.txt     # soft link
+ls -li                       # -i shows inode numbers: notes.txt and hard.txt share one
+rm notes.txt
+cat hard.txt                 # hello  (data still there)
+cat soft.txt                 # No such file or directory  (broken link)
+```
+
+| | Hard link | Soft link |
+|---|---|---|
+| Points to | the inode (data) | a path (name) |
+| Original deleted | still works | **breaks** |
+| Across file systems/partitions | ❌ | ✅ |
+| To a directory | ❌ | ✅ |
+| Typical use | backups that share data | `current → app-v2.3`, config shortcuts |
+
+#### ↳ Follow-up: How do deploy scripts use symlinks?
+
+↪ Upload `app-v2.4/`, then switch `current` to it with `ln -sfn app-v2.4 current` — instant release and instant rollback.
+
+---
+
+### ❓ What is an inode? Why can a disk be "full" when `df -h` shows free space?
+
+### 📝 Answer
+
+An **inode** stores everything about a file **except its name and data**: size, owner, permissions, timestamps, link count and **where the data blocks are**.
+
+![An inode holds metadata and pointers to the file's data blocks](../../knowledge/visual-notes/interview/inode-structure.svg)
+
+_Image: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Ext2-inode.svg) · timtjtim · CC BY-SA 4.0_
+
+A file system has a **fixed number of inodes**. Millions of tiny files (cache files, session files, mail queues) can use them all up while blocks are still free → **"No space left on device"**.
+
+```bash
+df -h      # blocks (space) used
+df -i      # inodes used — 100% here is the culprit
+# find the folder with the most files
+for d in /var/*; do echo "$(find "$d" -xdev | wc -l) $d"; done | sort -n | tail
+```
+
+**Fix:** delete or archive the tiny files, then stop whatever creates them (log rotation, cache cleanup).
+
+**Other "disk full" cause:** a **deleted file still held open** by a process — space isn't freed until the process closes it. Find it with `lsof | grep deleted` and restart that process.
+
+#### ↳ Follow-up: Where is the file name stored if not in the inode?
+
+↪ In the **directory**, which is a table of name → inode number. That's why hard links (two names, one inode) are possible.
+
+---
+
+### ❓ How do you schedule jobs with cron?
+
+### 📝 Answer
+
+**cron** runs commands on a schedule. Edit your jobs with `crontab -e`; list them with `crontab -l`.
+
+```text
+┌──── minute (0–59)
+│ ┌──── hour (0–23)
+│ │ ┌──── day of month (1–31)
+│ │ │ ┌──── month (1–12)
+│ │ │ │ ┌──── day of week (0–7, Sun = 0 or 7)
+│ │ │ │ │
+* * * * *  command
+```
+
+| Schedule | Means |
+|---|---|
+| `0 2 * * *` | every day at 02:00 |
+| `*/15 * * * *` | every 15 minutes |
+| `0 9 * * 1-5` | 09:00 on weekdays |
+| `0 0 1 * *` | midnight on the 1st of every month |
+
+```bash
+# Backup every night; log output, because cron has no terminal
+0 2 * * * /opt/scripts/backup.sh >> /var/log/backup.log 2>&1
+```
+
+**Common traps:**
+- cron runs with a **tiny PATH** and no shell profile → use full paths (`/usr/bin/python3`) or set `PATH=` at the top of the crontab.
+- `%` must be escaped as `\%` inside crontab lines.
+- Times use the **server's time zone**.
+- Two overlapping runs → guard with `flock -n /tmp/backup.lock /opt/scripts/backup.sh`.
+
+#### ↳ Follow-up: Alternatives to cron?
+
+↪ systemd timers (logging, missed-run catch-up), Kubernetes CronJobs, or a scheduler like Airflow for pipelines.
+
+---
+
+### ❓ `kill -15` vs `kill -9` — what's the difference?
+
+### 📝 Answer
+
+`kill` sends a **signal** to a process.
+
+| Signal | Number | Meaning | Can the process handle it? |
+|---|---|---|---|
+| **SIGTERM** | 15 (default) | "please stop" | ✅ — it can finish work, close files and connections, then exit |
+| **SIGKILL** | 9 | "stop **now**" | ❌ — the kernel ends it immediately, no cleanup |
+| SIGINT | 2 | Ctrl+C | ✅ |
+| SIGHUP | 1 | terminal closed / often "reload config" | ✅ |
+
+```bash
+kill 4321          # SIGTERM: graceful
+sleep 10
+kill -9 4321       # only if it's still running
+```
+
+**Always try SIGTERM first.** `kill -9` can leave half-written files, stale lock files, uncommitted transactions and orphaned child processes.
+
+Docker and Kubernetes do the same: `docker stop` / pod deletion send SIGTERM, wait a grace period (10 s / 30 s), then SIGKILL.
+
+#### ↳ Follow-up: A process ignores `kill -9`. Why?
+
+↪ It's in uninterruptible sleep (state `D`, usually stuck on disk/NFS I/O) or it's a zombie (already dead; its parent must collect it).
+
+---

@@ -6,6 +6,8 @@
 
 ### ❓ What are the main AWS Compute services (EC2, Lambda, Auto Scaling, Elastic Beanstalk, ECS, EKS, Fargate)?
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 **Core Compute Services (VERY IMPORTANT)**
@@ -48,6 +50,8 @@
 ---
 
 ### ❓ AWS Compute: which service fits each scenario?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -97,6 +101,8 @@
 
 ### ❓ What are the main AWS Storage services (S3, Glacier, EBS, EFS, FSx)?
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 | **Service**                          | **Storage Type**        | **Explanation**                                                                                                                                                                  |
@@ -113,6 +119,8 @@
 ![AWS_Storage Image](/src/assets/aws-storage.png)
 
 ### ❓ AWS Storage: which service fits each scenario?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -161,6 +169,8 @@
 ## 🗄️ AWS DATABASE SERVICES
 
 ### ❓ What are the main AWS Database services (RDS, Aurora, DynamoDB, ElastiCache, Redshift)?
+
+**Level:** 🟢 Beginner
 
 ### 📝 Answer
 
@@ -213,6 +223,8 @@
 
 ### ❓ AWS Database: which service fits each scenario?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 1️⃣ A business needs a fully managed relational database with automated backups and patching → **Amazon RDS**
@@ -261,6 +273,8 @@
 
 ### ❓ What are the main AWS Networking & Content Delivery services (VPC, Route 53, CloudFront, API Gateway)?
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 ![AWS_DNS Image](/src/assets/aws-dns.png)
@@ -285,6 +299,8 @@
 ![AWS_Network Image](/src/assets/aws-network.png)
 
 ### ❓ AWS Networking & Content Delivery: which service fits each scenario?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -334,6 +350,8 @@
 
 ### ❓ What are the main AWS Security, Identity & Compliance services (IAM, KMS, Shield, WAF, GuardDuty)?
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 | **Service**                                  | **Explanation**                                                                                                                  |
@@ -357,6 +375,8 @@
 ![AWS_Compliance Image](/src/assets/aws-compliance.png)
 
 ### ❓ AWS Security, Identity & Compliance: which service fits each scenario?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -406,6 +426,8 @@
 
 ### ❓ What are the main AWS Management & Monitoring services (CloudWatch, CloudTrail, Config, Systems Manager)?
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 | **Service**                   | **Explanation**                                                                                                                                                                                   |
@@ -423,6 +445,8 @@
 | **AWS Auto Scaling**          | Automatically adjusts capacity across services (EC2, ECS, DynamoDB). Ensures **availability and cost efficiency** during demand changes.                                                          |
 
 ### ❓ AWS Management & Monitoring: which service fits each scenario?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -472,6 +496,8 @@
 
 ### ❓ What are the main AWS Pricing & Cost Management services (Cost Explorer, Budgets, Pricing Calculator, Savings Plans)?
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 | **Service**                          | **Explanation**                                                                                                                                                                                                                             |
@@ -486,6 +512,8 @@
 ![AWS_Pricing Image](/src/assets/aws-pricing.png)
 
 ### ❓ AWS Pricing & Cost Management: which service fits each scenario?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -535,6 +563,8 @@
 
 ### ❓ What are the main AWS Deployment & Migration services?
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 **📦 DEPLOYMENT SERVICES (Application & Infrastructure Deployment)**
@@ -551,6 +581,8 @@
 
 ### ❓ What are the main AWS Migration Planning & Discovery services?
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 | **Service**                           | **Explanation**                                                                                  |
@@ -563,6 +595,8 @@
 
 ### ❓ What are the main AWS Application & Server Migration services?
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 | **Service**                                 | **Explanation**                                                                             |
@@ -574,6 +608,8 @@
 
 ### ❓ What are the main AWS Database Migration services?
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 | **Service**                              | **Explanation**                                                                                       |
@@ -583,6 +619,8 @@
 ## 📦 DATA TRANSFER (ONLINE & HYBRID)
 
 ### ❓ What are the main AWS Data Transfer services?
+
+**Level:** 🟢 Beginner
 
 ### 📝 Answer
 
@@ -597,6 +635,8 @@
 ![AWS_Migration Image](/src/assets/aws-migration.png)
 
 ### ❓ AWS Deployment & Migration: which service fits each scenario?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -636,6 +676,8 @@
 
 ### ❓ What are the main AWS Application Integration services (SQS, SNS, EventBridge, Step Functions)?
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 | **Service**                                  | **Explanation**                                                                                                                                                                                                                                                            |
@@ -650,6 +692,8 @@
 ![AWS_Integration Image](/src/assets/aws-integration.png)
 
 ### ❓ AWS Application Integration: which service fits each scenario?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -685,6 +729,8 @@
 
 ### ❓ What are the main AWS Analytics services (Athena, Kinesis, Glue, QuickSight)?
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 | **Service**                      | **Explanation**                                                                                                                                                                                                                           |
@@ -702,6 +748,8 @@
 ![AWS_Analytics Image](/src/assets/aws-analytics.png)
 
 ### ❓ AWS Analytics: which service fits each scenario?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -741,6 +789,8 @@
 
 ### ❓ What are the main AWS AI & Machine Learning services (SageMaker, Bedrock, Rekognition, Comprehend)?
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 | **Service**               | **Explanation**                                                                                                            |
@@ -762,6 +812,8 @@
 ![AWS_AI_ML Image](/src/assets/aws-ai-ml.png)
 
 ### ❓ AWS AI & Machine Learning: which service fits each scenario?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -862,3 +914,137 @@ A **VPC (Virtual Private Cloud)** is **your own private network** inside AWS, wh
 - **Security groups:** firewall rules on each server ("allow port 443 from anywhere").
 
 Example: the load balancer sits in a public subnet; the app servers and database sit in private subnets.
+
+
+
+---
+
+## Core AWS Interview Questions (Intermediate)
+
+### ❓ RDS Multi-AZ vs read replicas — what's the difference?
+
+### 📝 Answer
+
+```mermaid
+flowchart LR
+  App[App] -- reads + writes --> P[(Primary<br/>AZ-a)]
+  P -- synchronous copy --> S[(Standby<br/>AZ-b)]
+  P -- asynchronous copy --> R1[(Read replica)]
+  App -- reads only --> R1
+```
+
+| | Multi-AZ | Read replica |
+|---|---|---|
+| Purpose | **availability** (survive an AZ/instance failure) | **read scaling** (more read capacity) |
+| Copy | synchronous | asynchronous (small lag) |
+| Serves traffic | ❌ standby is idle (classic Multi-AZ) | ✅ reads |
+| Failover | automatic, ~1–2 minutes, same endpoint | manual promotion |
+| Other region | ❌ | ✅ (cross-region replicas) |
+
+**Use both** in production: Multi-AZ for safety, replicas for heavy reads (reports, dashboards).
+
+#### ↳ Follow-up: Can a read replica return old data?
+
+↪ Yes — replication is asynchronous. Read your own writes from the primary when freshness matters.
+
+---
+
+### ❓ What is the AWS shared responsibility model?
+
+### 📝 Answer
+
+**AWS secures the cloud; you secure what you put in the cloud.**
+
+| AWS is responsible for | You are responsible for |
+|---|---|
+| data centres, hardware, networking | your data and its encryption |
+| the hypervisor and host OS | IAM users, roles, policies, MFA |
+| managed-service infrastructure (RDS engine patching, S3 durability) | guest OS patching on EC2 |
+| physical security | security groups, NACLs, network design |
+| | application code and its secrets |
+
+The split moves with the service: on **EC2** you patch the OS; on **RDS** AWS patches the database; on **Lambda** you only handle code and permissions.
+
+#### ↳ Follow-up: An S3 bucket was made public and data leaked. Whose fault?
+
+↪ The customer's — bucket permissions are configuration, which is your side of the model.
+
+---
+
+### ❓ Security Group vs Network ACL — what's the difference?
+
+### 📝 Answer
+
+```mermaid
+flowchart LR
+  I((Internet)) --> IGW[Internet Gateway]
+  IGW --> NACL{{NACL<br/>subnet firewall<br/>stateless}}
+  NACL --> SG{{Security Group<br/>instance firewall<br/>stateful}}
+  SG --> EC2[EC2 instance]
+```
+
+| | Security Group | Network ACL |
+|---|---|---|
+| Applies to | an instance / network interface | a whole subnet |
+| Stateful? | ✅ replies are allowed automatically | ❌ allow inbound **and** outbound separately |
+| Rules | **allow only** | allow **and deny** |
+| Evaluation | all rules together | numbered, lowest first, first match wins |
+| Default | deny all in, allow all out | default NACL allows all |
+
+**Typical use:** security groups for normal access control ("app servers accept 8080 only from the load balancer's SG"); NACLs for coarse subnet rules, like **blocking a bad IP range**.
+
+#### ↳ Follow-up: Why can a NACL block replies?
+
+↪ It's stateless: the response leaves on a random high port (1024–65535), which needs its own outbound rule.
+
+---
+
+### ❓ What is a Lambda cold start, and how do you reduce it?
+
+### 📝 Answer
+
+When a Lambda function is called and **no warm environment is free**, AWS must create one: download the code, start the runtime, run your init code. That extra delay is a **cold start** — from ~100 ms (Node/Python) to several seconds (large Java apps).
+
+```mermaid
+flowchart LR
+  R[Request] --> W{Warm environment free?}
+  W -- yes --> H[Run handler — fast]
+  W -- no --> C[Create environment<br/>load code + runtime<br/>run init] --> H
+```
+
+**Reduce it:**
+- **Provisioned concurrency** — keep N environments always warm.
+- **SnapStart** (Java, Python, .NET) — restore from a snapshot of an initialised environment.
+- Smaller deployment package, fewer dependencies.
+- Lighter runtimes (Node, Python, Go) or GraalVM native images for Java.
+- Do expensive init (DB clients) **outside** the handler so warm calls reuse it.
+- More memory → more CPU → faster init.
+
+#### ↳ Follow-up: Does putting Lambda in a VPC still add big cold starts?
+
+↪ Not anymore — since 2019 VPC networking is set up in advance, so the old multi-second penalty is gone.
+
+---
+
+### ❓ What are the pillars of the AWS Well-Architected Framework?
+
+### 📝 Answer
+
+A checklist AWS uses to review architectures. **Six pillars:**
+
+| Pillar | Key question | Example practices |
+|---|---|---|
+| **Operational excellence** | Can we run and improve it? | IaC, CI/CD, runbooks, small frequent changes |
+| **Security** | Is data and access protected? | least-privilege IAM, encryption, logging, MFA |
+| **Reliability** | Does it recover from failure? | Multi-AZ, auto scaling, backups, health checks |
+| **Performance efficiency** | Do we use resources well? | right instance types, caching, serverless, CDNs |
+| **Cost optimization** | Are we wasting money? | right-sizing, Savings Plans, Spot, turn off idle resources |
+| **Sustainability** | Can we reduce environmental impact? | high utilisation, efficient regions and hardware |
+
+The **Well-Architected Tool** in the console walks you through the questions for a workload.
+
+#### ↳ Follow-up: How would you use this in a design interview?
+
+↪ After drawing the design, briefly check it against each pillar — it shows you think beyond "it works".
+
+---

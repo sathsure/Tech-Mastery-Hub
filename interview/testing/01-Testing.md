@@ -116,6 +116,8 @@ Coverage = the percentage of lines/branches **executed** by tests (tool: JaCoCo 
 
 ### ❓ What are the main JUnit 5 annotations?
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 | Annotation | Purpose |
@@ -145,6 +147,8 @@ void rejectsNegativePrice() {
 
 ### ❓ What is mocking and why do we need it?
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 A **mock** is a fake object that stands in for a real dependency (database, payment API) in a unit test. It lets you test one class **alone, fast, and without side effects**, and lets you control what the dependency returns.
@@ -171,6 +175,8 @@ class OrderServiceTest {
 
 ### ❓ Mock vs stub vs spy vs fake?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 | Double | What it is | Example |
@@ -187,6 +193,8 @@ class OrderServiceTest {
 ---
 
 ### ❓ How do you test a method that throws an exception or a `void` method?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -207,6 +215,8 @@ doThrow(new MailException("down")).when(mailer).sendWelcome(any());
 
 ### ❓ What is an `ArgumentCaptor`?
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 It **captures the argument** passed to a mock so you can check its details.
@@ -220,6 +230,8 @@ assertEquals("Welcome, Asha!", captor.getValue().subject());
 ---
 
 ### ❓ Can Mockito mock static methods, final classes and private methods?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -241,6 +253,8 @@ Better design: inject a `Clock` instead of calling `LocalDate.now()` directly.
 ## Part 3 — Spring Boot Testing
 
 ### ❓ `@SpringBootTest` vs `@WebMvcTest` vs `@DataJpaTest`?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -274,6 +288,8 @@ class UserControllerTest {
 
 ### ❓ What is Testcontainers?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 A library that starts **real services in Docker** (Postgres, Kafka, Redis) for your tests, then removes them.
@@ -294,6 +310,8 @@ Better than H2 because you test against the **same database as production** — 
 ## Part 4 — Frontend Testing
 
 ### ❓ How do you test a React component?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -317,6 +335,8 @@ Prefer queries in this order: `getByRole` → `getByLabelText` → `getByText` �
 
 ### ❓ How do you test an Angular service that makes HTTP calls?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Use `HttpTestingController` to intercept requests and send fake responses.
@@ -337,6 +357,8 @@ Setup: `provideHttpClient()` and `provideHttpClientTesting()` in `TestBed`.
 
 ### ❓ What are E2E testing tools for web apps?
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 **Playwright** and **Cypress** run the real app in a browser and act like a user (click, type, check text). Playwright supports Chromium, Firefox and WebKit and runs tests in parallel; Cypress has a very friendly debugging UI. Selenium is the older standard.
@@ -346,6 +368,8 @@ Setup: `provideHttpClient()` and `provideHttpClientTesting()` in `TestBed`.
 ## Part 5 — Tricky Questions
 
 ### ❓ Tricky: What is a flaky test and how do you fix it?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -362,6 +386,8 @@ Common causes and fixes:
 
 ### ❓ Tricky: Should you test private methods?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 No — test them **through the public methods** that use them. If a private method feels like it needs its own tests, it probably belongs in its own class.
@@ -374,6 +400,8 @@ No — test them **through the public methods** that use them. If a private meth
 
 ### ❓ Tricky: Why can too many mocks be a problem?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Tests that mock everything check **how** the code works (which calls happen) instead of **what** it does. They pass even when the real integration is broken, and break on every refactor. Mock only the boundaries (external APIs, time, email) and use real objects for the rest.
@@ -382,6 +410,104 @@ Tests that mock everything check **how** the code works (which calls happen) ins
 
 ### ❓ Tricky: Unit test vs integration test — where's the line?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 If the test touches something **outside your process** — a database, network, file system, message broker — it is an integration test. A unit test runs entirely in memory and finishes in milliseconds.
+
+
+
+---
+
+## Advanced Testing Techniques (Intermediate)
+
+### ❓ What is contract testing (Pact), and why use it for microservices?
+
+### 📝 Answer
+
+When service A (the **consumer**) calls service B (the **provider**), a change in B can break A — and end-to-end tests that start every service are slow and flaky. **Contract testing** checks the agreement between the two, separately and fast.
+
+```mermaid
+sequenceDiagram
+  participant C as Consumer test (Order service)
+  participant M as Pact mock provider
+  participant B as Pact Broker
+  participant P as Provider test (Inventory service)
+  C->>M: GET /stock/42 → expects { sku, available: number }
+  M-->>C: mocked response (test passes)
+  C->>B: publish the contract (pact file)
+  B->>P: provider downloads the contract
+  P->>P: replays the request against the real provider
+  P-->>B: verified ✅ / broken ❌
+```
+
+1. The **consumer** writes a test describing the request it sends and the response it needs → a **contract** (pact file).
+2. The contract is shared through a **Pact Broker**.
+3. The **provider's** CI replays every consumer's requests against the real provider and checks the responses still match.
+4. `can-i-deploy` checks the broker before a release: "does this version still satisfy everyone who calls it?"
+
+| | Contract tests | End-to-end tests |
+|---|---|---|
+| Needs all services running | ❌ | ✅ |
+| Speed | seconds | minutes |
+| Tells you exactly which change broke whom | ✅ | rarely |
+
+Tools: **Pact** (consumer-driven, many languages), **Spring Cloud Contract** (provider-driven, Java).
+
+#### ↳ Follow-up: Does contract testing replace integration tests?
+
+↪ No — it checks the **shape** of requests/responses between services, not business logic. Keep unit and a few end-to-end tests.
+
+---
+
+### ❓ How do you test asynchronous code?
+
+### 📝 Answer
+
+Async code finishes **later**, so a test can end before the work does — and pass by accident. Three rules: **wait for the result, control time, never `sleep`.**
+
+**JavaScript (Jest / Vitest):**
+```js
+test("loads the user", async () => {
+  const user = await loadUser(7);            // await the promise
+  expect(user.name).toBe("Asha");
+});
+
+test("debounced search fires once", () => {
+  vi.useFakeTimers();                        // control time
+  const spy = vi.fn();
+  const search = debounce(spy, 300);
+  search("a"); search("ab"); search("abc");
+  vi.advanceTimersByTime(300);
+  expect(spy).toHaveBeenCalledTimes(1);
+});
+```
+
+**Java:**
+```java
+@Test
+void sendsEmailAsync() {
+  service.placeOrder(order);                                // emails on another thread
+  await().atMost(Duration.ofSeconds(5))                     // Awaitility: poll until true
+         .untilAsserted(() -> verify(mailer).send(any()));
+}
+
+@Test
+void futureCompletes() throws Exception {
+  assertEquals("done", service.process().get(2, TimeUnit.SECONDS));   // wait with a timeout
+}
+```
+
+| ❌ Avoid | ✅ Instead |
+|---|---|
+| `Thread.sleep(2000)` | Awaitility / `waitFor` / `findBy…` (poll until true) |
+| real timers | fake timers / an injected `Clock` |
+| forgetting `await` / `return` on a promise | `async` tests, lint rule `no-floating-promises` |
+| real message brokers in unit tests | in-memory fakes; Testcontainers for integration |
+
+#### ↳ Follow-up: Why is `Thread.sleep` in tests bad?
+
+↪ Too short → flaky on slow CI machines; too long → slow suite. Polling with a timeout finishes as soon as the condition is true.
+
+---

@@ -4,6 +4,8 @@
 
 ### ❓ How do you design exception handling in large Java applications?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Three simple rules:
@@ -53,6 +55,8 @@ public class GlobalExceptionHandler {
 
 ### ❓ Checked vs unchecked exceptions – what is your strategy?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 **The difference:** the compiler **forces** you to handle or declare a **checked** exception; it doesn't for an **unchecked** one. Both happen at runtime.
@@ -86,6 +90,8 @@ void setAge(int age) {
 
 ### ❓ How do you implement global HTTP status handling in Spring Boot without setting the status code in each controller method?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Three options, from most to least common:
@@ -116,6 +122,8 @@ flowchart LR
 
 ### ❓ Important HTTP Status Codes to Know
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 | Code | Meaning | Typical use |
@@ -144,6 +152,8 @@ flowchart LR
 
 ### ❓ If I replace GET with PUT, can I still fetch records?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Technically **yes** — the method just returns data. But it's **wrong for REST**:
@@ -156,6 +166,8 @@ Using PUT to read loses caching, confuses API consumers and documentation (OpenA
 ---
 
 ### ❓ Can we get Request Body in GET?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -177,6 +189,8 @@ For very complex searches, use `POST /users/search` with a JSON body.
 ---
 
 ### ❓ Without @Controller, can we receive API?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -200,6 +214,8 @@ Yes. `@Controller` is the most common way, but not the only one:
 
 ### ❓ What makes an API RESTful?
 
+**Level:** 🟡 Intermediate
+
 REST is an architectural style where everything is a **resource** with a URL, and standard HTTP methods say what to do with it. Key ideas:
 
 - **Resources, not actions:** `/orders/42`, not `/getOrder?id=42`.
@@ -212,6 +228,8 @@ REST is an architectural style where everything is a **resource** with a URL, an
 ---
 
 ### ❓ What is the difference between PUT, PATCH and POST? Which are idempotent?
+
+**Level:** 🟡 Intermediate
 
 | Method | Meaning | Idempotent? | Safe (read-only)? |
 |---|---|---|---|
@@ -227,6 +245,8 @@ REST is an architectural style where everything is a **resource** with a URL, an
 
 ### ❓ How do you name REST endpoints well?
 
+**Level:** 🟡 Intermediate
+
 - Plural nouns for collections: `/orders`, `/orders/{id}`.
 - Nest only for clear ownership, one level deep: `/customers/{id}/orders`.
 - Lowercase with hyphens: `/payment-methods`.
@@ -236,6 +256,8 @@ REST is an architectural style where everything is a **resource** with a URL, an
 ---
 
 ### ❓ How do you paginate large lists?
+
+**Level:** 🟡 Intermediate
 
 | Style | Request | Pros | Cons |
 |---|---|---|---|
@@ -254,6 +276,8 @@ Use cursor pagination for feeds and big tables; offset is fine for small admin l
 
 ### ❓ How do you version a REST API?
 
+**Level:** 🟡 Intermediate
+
 Version only for **breaking changes** (removing or renaming fields, changing meaning). Adding optional fields is not breaking.
 
 - **URL path:** `/api/v1/orders` — the most common, and the easiest to see and route.
@@ -263,6 +287,8 @@ Version only for **breaking changes** (removing or renaming fields, changing mea
 ---
 
 ### ❓ What should an API error response look like?
+
+**Level:** 🟡 Intermediate
 
 A consistent JSON body with the right status code. A common standard is **Problem Details** (RFC 9457, `application/problem+json`):
 
@@ -283,6 +309,8 @@ A consistent JSON body with the right status code. A common standard is **Proble
 
 ### ❓ How do you cache REST responses?
 
+**Level:** 🟡 Intermediate
+
 - **`Cache-Control`** tells clients and CDNs how long to keep a response: `Cache-Control: public, max-age=300`.
 - **`ETag`** + **`If-None-Match`**: the client sends the version it has; if nothing changed, the server replies **304 Not Modified** with no body, saving bandwidth.
 - Cache only safe GETs; never cache personal data publicly (use `private` or `no-store`).
@@ -292,6 +320,8 @@ A consistent JSON body with the right status code. A common standard is **Proble
 ---
 
 ### ❓ How do you secure a REST API?
+
+**Level:** 🟡 Intermediate
 
 - **HTTPS only.**
 - **Authentication:** OAuth 2.0 / OpenID Connect with short-lived JWT access tokens for users; API keys or client credentials for server-to-server calls.
@@ -305,6 +335,8 @@ See also: [Web application security (OWASP)](../../security/01-Web-Security-OWAS
 ---
 
 ### ❓ REST vs GraphQL vs gRPC — when would you use each?
+
+**Level:** 🟡 Intermediate
 
 | | REST | GraphQL | gRPC |
 |---|---|---|---|

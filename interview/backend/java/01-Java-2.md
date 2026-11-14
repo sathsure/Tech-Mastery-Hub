@@ -2,6 +2,8 @@
 
 ### ❓ What are the major java features introduced after 8?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 1️⃣ **Java Module System (Java 9)**
@@ -418,6 +420,8 @@ static String handleResponse(Object response) {
 
 ### ❓ How do you handle concurrency in Java applications?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 🎯 **Key Understanding**
@@ -495,6 +499,8 @@ See "How does ConcurrentHashMap work internally?" in the Java Collections notes 
 ---
 
 ### ❓ Deadlocks – How do they occur and how do you prevent them?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -590,6 +596,8 @@ executor.submit(() -> {
 
 ### ❓ `volatile` Keyword?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 - Ensures **visibility of changes** across threads.
@@ -634,6 +642,8 @@ class FlagTest {
 ---
 
 ### ❓ Callable vs Runnable
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -684,6 +694,8 @@ executor.shutdown();
 
 ### ❓ Fixed Thread Pool vs Cached Thread Pool
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 **Fixed Thread Pool**
@@ -727,6 +739,8 @@ ExecutorService executor = Executors.newCachedThreadPool();
 ## JVM Deep Dive
 
 ### ❓ What does Serializable mean?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -858,6 +872,8 @@ session.setAttribute("user", user);   // User should implement Serializable
 
 ### ❓ Explain JVM memory structure. Heap vs Stack vs Metaspace
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 | Area           | What Lives Here               |
@@ -900,6 +916,8 @@ public class MemoryDemo { // Metaspace (class metadata: methods, field layout)
 ---
 
 ### ❓ What causes memory leaks in Java?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -965,6 +983,8 @@ for (int i = 0; i < 1_000_000; i++) map.put(new Key("same"), "x");   // 1,000,00
 ## JVM vs JRE vs JDK
 
 ### ❓ JVM Internals
+
+**Level:** 🔴 Advanced
 
 ### 📝 Answer
 
@@ -1043,6 +1063,8 @@ Contains:
 ---
 
 ### ❓ How Do You Build a Java Application?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 

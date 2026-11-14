@@ -2,6 +2,8 @@
 
 ### ❓ Merge Two Arrays Alternately
 
+**Level:** 🟡 Intermediate
+
 > ```java
 > // INPUT
 > int[] x = {6, 4, 8, 3, 5};
@@ -30,6 +32,8 @@ static int[] mergeAlternately(int[] x, int[] y) {
 ---
 
 ### ❓ Reverse an Array
+
+**Level:** 🟢 Beginner
 
 ### 📝 Answer
 
@@ -61,6 +65,8 @@ System.out.println(Arrays.toString(boxed));  // [4, 3, 2, 1]
 
 ### ❓ Find First Non-Repeating Character
 
+**Level:** 🟢 Beginner
+
 > Input: `"swiss"` → Output: `'w'`
 
 ### 📝 Answer
@@ -88,6 +94,8 @@ public static Character firstNonRepeating(String input) {
 
 ### ❓ Remove Duplicates from a List (Preserve Order)
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 ```java
@@ -104,6 +112,8 @@ List<Integer> unique = list.stream().distinct().toList();
 ---
 
 ### ❓ Count Word Occurrences
+
+**Level:** 🟡 Intermediate
 
 > Input: `"java spring java angular spring java"` → `{java=3, spring=2, angular=1}`
 
@@ -124,6 +134,8 @@ public static Map<String, Long> wordCount(String input) {
 ---
 
 ### ❓ Check if String is Palindrome (Ignore Case & Spaces)
+
+**Level:** 🟢 Beginner
 
 ### 📝 Answer
 
@@ -153,6 +165,8 @@ return true;
 
 ### ❓ Find Second Highest Number in Array
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 ```java
@@ -178,6 +192,8 @@ public static int secondHighest(int[] arr) {
 
 ### ❓ Thread-Safe Counter
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 ```java
@@ -194,6 +210,8 @@ class Counter {
 ---
 
 ### ❓ Reverse Words in a Sentence
+
+**Level:** 🟢 Beginner
 
 > Input: `"Java is powerful"` → Output: `"powerful is Java"`
 
@@ -212,6 +230,8 @@ public static String reverseWords(String s) {
 ---
 
 ### ❓ Reverse a LinkedList
+
+**Level:** 🟢 Beginner
 
 ### 📝 Answer
 
@@ -255,6 +275,8 @@ O(n) time, O(1) space.
 ---
 
 ### ❓ Employee–Department Related Questions
+
+**Level:** 🟡 Intermediate
 
 > You are given two classes, `Employee` and `Department`.
 > Each department row references an employee using `empId`.
@@ -304,6 +326,8 @@ double avgScore = employees.stream()
 
 ### ❓ Perfect Numbers
 
+**Level:** 🟢 Beginner
+
 > Write a program to find all **perfect numbers** up to a given input `N`.
 > A perfect number equals the sum of its positive divisors excluding itself (6 = 1 + 2 + 3).
 
@@ -332,6 +356,8 @@ static List<Integer> findPerfectNumbers(int n) {
 ---
 
 ### ❓ Two Sum Problem
+
+**Level:** 🟡 Intermediate
 
 > Given an integer array and a target value, return the indices of two numbers that add up to the target.
 >
@@ -371,6 +397,8 @@ static int[] twoSum(int[] nums, int target) {
 ---
 
 ### ❓ Count Segments in a String
+
+**Level:** 🟡 Intermediate
 
 > ```text
 > Input:  "Hello, my name is John"  → Output: 5

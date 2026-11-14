@@ -80,6 +80,8 @@ In interviews, "complexity" normally means the **worst-case Big O**.
 
 ### ❓ What is O(1) — constant time?
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 The work does not depend on the input size.
@@ -95,6 +97,8 @@ def get_price(prices, product):
 ---
 
 ### ❓ What is O(log n) — logarithmic time?
+
+**Level:** 🟢 Beginner
 
 ### 📝 Answer
 
@@ -120,6 +124,8 @@ Searching 1,000,000 sorted items takes at most about 20 comparisons.
 
 ### ❓ What is O(√n) — square-root time?
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 The loop runs up to the square root of `n`. Classic example: checking whether a number is prime — if `n` has a factor, one factor is at most `√n`.
@@ -140,6 +146,8 @@ def is_prime(n):
 
 ### ❓ What is O(n) — linear time?
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 The work grows in direct proportion to the input: one pass over the data.
@@ -156,6 +164,8 @@ def find_max(nums):
 ---
 
 ### ❓ What is O(n log n) — linearithmic time?
+
+**Level:** 🟢 Beginner
 
 ### 📝 Answer
 
@@ -183,6 +193,8 @@ def merge_sort(nums):
 
 ### ❓ What is O(n²) — quadratic time?
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 A loop inside a loop, both over the input. Doubling the input makes it 4× slower.
@@ -201,6 +213,8 @@ The `O(n)` alternative uses a set: `return len(set(nums)) != len(nums)`.
 ---
 
 ### ❓ What is O(n³) — cubic time?
+
+**Level:** 🟢 Beginner
 
 ### 📝 Answer
 
@@ -222,6 +236,8 @@ Sorting plus two pointers brings the "three numbers that sum to zero" problem do
 ---
 
 ### ❓ What is O(2ⁿ) — exponential time?
+
+**Level:** 🟢 Beginner
 
 ### 📝 Answer
 
@@ -245,6 +261,8 @@ Remembering results (memoization or dynamic programming) usually removes the exp
 ## Calculating Complexity
 
 ### ❓ How do you calculate the time complexity of a piece of code?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -270,6 +288,8 @@ def example(a, b):
 
 ### ❓ What is amortized time complexity?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 The **average cost per operation over a long sequence**, even if a single operation is occasionally expensive.
@@ -279,6 +299,8 @@ Python's `list.append()` is `O(1)` amortized: when the internal array is full, P
 ---
 
 ### ❓ What is the time complexity of common Python operations?
+
+**Level:** 🟢 Beginner
 
 ### 📝 Answer
 
