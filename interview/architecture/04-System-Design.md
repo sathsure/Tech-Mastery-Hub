@@ -213,6 +213,8 @@ Examples: RabbitMQ, Kafka, AWS SQS. See the RabbitMQ vs Kafka notes for when to 
 
 ### ❓ Design a URL shortener (like bit.ly).
 
+**Level:** 🔴 Advanced
+
 ### 📝 Answer
 
 **Requirements:** long URL → short code; visiting the short URL redirects; very read-heavy (≈100 reads per write).
@@ -247,6 +249,8 @@ flowchart LR
 
 ### ❓ Design a rate limiter.
 
+**Level:** 🔴 Advanced
+
 ### 📝 Answer
 
 A rate limiter stops a client from sending too many requests (e.g. **100 requests per minute per user**). Extra requests get **HTTP 429 Too Many Requests**.
@@ -275,6 +279,8 @@ if value > 100 → return 429
 ---
 
 ### ❓ Design a chat application (like WhatsApp).
+
+**Level:** 🔴 Advanced
 
 ### 📝 Answer
 
@@ -306,6 +312,8 @@ sequenceDiagram
 
 ### ❓ Design a news feed (like Twitter/Instagram home).
 
+**Level:** 🔴 Advanced
+
 ### 📝 Answer
 
 The main choice is **when** to build each user's feed.
@@ -326,6 +334,8 @@ Post by celebrity    → fetched when a follower opens the feed
 ---
 
 ### ❓ Design a notification service.
+
+**Level:** 🔴 Advanced
 
 ### 📝 Answer
 
@@ -352,6 +362,8 @@ flowchart LR
 
 ### ❓ Design a file storage / photo upload service (like Google Drive).
 
+**Level:** 🔴 Advanced
+
 ### 📝 Answer
 
 - Store **files in object storage** (S3); store **metadata** (name, owner, size, S3 key) in a database.
@@ -366,6 +378,8 @@ flowchart LR
 ---
 
 ### ❓ How do you stop two people buying the last item in stock at the same time?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -390,6 +404,8 @@ WHERE product_id = 42 AND quantity > 0;
 
 ### ❓ What is a single point of failure and how do you remove it?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 A **single point of failure (SPOF)** is one part whose failure takes down the whole system — one server, one database, one load balancer.
@@ -411,6 +427,8 @@ Remove it with **redundancy**: two or more of everything important, in different
 
 ### ❓ How would you make a slow API fast?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Measure first, then fix the biggest cost.
@@ -430,6 +448,8 @@ Measure first, then fix the biggest cost.
 
 ### ❓ What is the difference between latency and throughput?
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 - **Latency** — how long **one** request takes (e.g. 120 ms).
@@ -444,6 +464,8 @@ Example: a highway's speed limit is latency; the number of lanes is throughput. 
 ---
 
 ### ❓ What are idempotent APIs and why do they matter?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -466,6 +488,8 @@ Idempotency-Key: 7f1c-42ab
 ---
 
 ### ❓ What is a circuit breaker?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -495,6 +519,8 @@ In Java: Resilience4j `@CircuitBreaker(name = "inventory", fallbackMethod = "cac
 
 ### ❓ Tricky: "Just add more servers" — when doesn't horizontal scaling help?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 When the bottleneck isn't the app servers:
@@ -510,6 +536,8 @@ Fix the bottleneck (cache, shard, queue, make stateless) before adding servers.
 
 ### ❓ Tricky: Should you cache everything?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 No. Cache data that is **read often, changes rarely, and can be slightly stale** (product pages, user profiles). Avoid caching data that must be exact right now (account balance at payment time) or is rarely read twice. Every cache adds the problem of keeping it fresh.
@@ -517,6 +545,8 @@ No. Cache data that is **read often, changes rarely, and can be slightly stale**
 ---
 
 ### ❓ Tricky: Monolith or microservices for a new startup product?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -835,3 +865,211 @@ class OrderService {
 #### ↳ Follow-up: Which do most teams start with?
 
 ↪ A well-structured monolith; they split it later when they really need to.
+
+
+
+---
+
+## Part 9 — More Classic Designs (Advanced)
+
+### ❓ What is database sharding, and how do you choose a shard key?
+
+### 📝 Answer
+
+**Sharding** splits one big table across **several database servers**; each server (shard) holds part of the rows. It's how you scale **writes and storage** beyond one machine.
+
+```mermaid
+flowchart LR
+  App --> R{"Router: shard = hash(user_id) % 4"}
+  R --> S0[(Shard 0)]
+  R --> S1[(Shard 1)]
+  R --> S2[(Shard 2)]
+  R --> S3[(Shard 3)]
+```
+
+| Strategy | How | ✅ | ❌ |
+|---|---|---|---|
+| **Hash** | `hash(key) % N` (or consistent hashing) | even spread | range queries hit every shard; resharding moves data |
+| **Range** | A–F, G–M… or by date | range queries are easy | hot spots (everyone writes "today") |
+| **Directory / lookup** | a table says where each key lives | flexible moves | the lookup is an extra hop and a single point of failure |
+| **Geo** | by region | data near users, data-residency laws | uneven regions |
+
+**A good shard key:** high cardinality, spreads load evenly, and is part of **most queries** (so a query hits one shard). For a social app, `user_id` usually works.
+
+**Costs:** cross-shard joins and transactions are hard, global unique ids need a generator (Snowflake), rebalancing is painful. **Try first:** indexes, caching, read replicas, partitioning, a bigger machine.
+
+#### ↳ Follow-up: Partitioning vs sharding?
+
+↪ Partitioning splits a table **inside one** database server; sharding spreads it **across** servers.
+
+#### ↳ Follow-up: What is a hot shard, and how do you fix it?
+
+↪ One shard gets far more traffic (a celebrity account). Split that key further, add a cache in front, or pick a better key.
+
+---
+
+### ❓ Design a video streaming platform like YouTube.
+
+### 📝 Answer
+
+**Requirements:** upload videos, watch smoothly on any device and network, search, view counts. Read-heavy (~100 views per upload), huge storage.
+
+```mermaid
+flowchart LR
+  U[Uploader] --> API[Upload API] --> RAW[(Object storage<br/>raw videos)]
+  RAW --> Q[[Transcode queue]] --> W[Transcoding workers<br/>240p … 4K, HLS/DASH chunks]
+  W --> OUT[(Object storage<br/>processed chunks)] --> CDN[CDN edge servers]
+  V[Viewer] --> CDN
+  V --> MAPI[Metadata API] --> DB[(Video metadata DB)]
+  MAPI --> C[(Cache)]
+  W --> DB
+```
+
+**Key ideas:**
+1. **Upload** straight to object storage with a **pre-signed URL** (resumable/chunked uploads for big files).
+2. **Transcoding** — a queue fans work out to workers that convert each video to many resolutions and cut it into **2–10 second chunks** (HLS/DASH).
+3. **Adaptive bitrate streaming** — the player switches between qualities chunk by chunk based on the viewer's bandwidth.
+4. **CDN** serves almost all video bytes; popular videos are cached at the edge, long-tail videos come from origin.
+5. **Metadata** (title, owner, chunk URLs) in a DB + cache; **search** in Elasticsearch.
+6. **View counts** — events into Kafka, aggregated in batches (not one DB update per view).
+
+**Numbers to mention:** 500 hours uploaded per minute → petabytes per day; egress cost is the biggest bill → CDN and efficient codecs (AV1/VP9).
+
+#### ↳ Follow-up: How do you show a thumbnail and start playback fast?
+
+↪ Generate thumbnails during transcoding, pre-load the first chunk at a low bitrate, and keep the manifest file small and cached.
+
+---
+
+### ❓ Design a ride-hailing app like Uber.
+
+### 📝 Answer
+
+**Requirements:** riders request rides, nearby drivers are matched within seconds, live location tracking, pricing, payments.
+
+```mermaid
+flowchart LR
+  D[Driver app] -- location every 4 s --> LS[Location service]
+  LS --> GEO[(In-memory geo index<br/>Redis GEO / geohash cells)]
+  R[Rider app] --> RS[Ride service]
+  RS --> M[Matching service]
+  M -- nearby drivers --> GEO
+  M -- offer ride --> D
+  RS --> DB[(Trips DB)]
+  RS --> P[Pricing + payments]
+  RS -- trip updates via WebSocket --> R
+```
+
+**Key ideas:**
+1. **Location updates** — drivers send GPS every few seconds. Millions of writes → keep only the **latest** position in memory, not every point in the main DB (store history in a time-series/log store).
+2. **Finding nearby drivers** — split the map into cells (**geohash**, **H3** hexagons or a **quadtree**); look up drivers in the rider's cell and neighbours. Redis `GEOSEARCH` does this.
+3. **Matching** — pick the best driver by ETA (not just distance), send an offer, timeout → next driver. Make the assignment atomic so one driver can't get two rides.
+4. **Real-time updates** — WebSockets / push notifications for trip status.
+5. **Surge pricing** — compare demand vs supply per cell.
+6. **Payments** — idempotent, after the trip.
+
+#### ↳ Follow-up: What is a geohash?
+
+↪ A short string for a map cell; nearby places share a prefix, so "drivers near me" becomes a quick prefix lookup.
+
+---
+
+### ❓ Design a typeahead / search autocomplete system.
+
+### 📝 Answer
+
+**Requirements:** as the user types, show the top 5–10 suggestions in **under ~100 ms**; ranked by popularity; updated daily (or faster for trending terms).
+
+![A trie stores words by their shared prefixes](../../knowledge/visual-notes/interview/trie.svg)
+
+_Image: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Trie_example.svg) · Booyabazooka · Public domain_
+
+**Data structure:** a **trie** (prefix tree). Each node can store its **top-K completions precomputed**, so a lookup is just "walk the prefix, return the stored list" — O(length of prefix).
+
+```mermaid
+flowchart LR
+  U[User types 'jav'] --> FE[Debounce 150 ms] --> API[Suggest API]
+  API --> C[(Cache / CDN<br/>popular prefixes)]
+  API --> T[Trie servers<br/>in memory, sharded by prefix]
+  L[Search logs] --> AGG[Daily aggregation<br/>Spark] --> B[Build new trie] --> T
+```
+
+**Key ideas:**
+- **Build offline** from search logs (counts per query), swap the new trie in; add a fast path for trending terms.
+- **Cache** results for short popular prefixes ("a", "ja") — they're most of the traffic.
+- **Shard** tries by prefix range when they don't fit on one server.
+- **Client side:** debounce keystrokes, cancel old requests (`switchMap`), cache recent prefixes in the browser.
+- Filter offensive terms; personalise by blending in the user's own history.
+
+#### ↳ Follow-up: Why not `SELECT … WHERE query LIKE 'jav%' ORDER BY count`?
+
+↪ Far too slow at this traffic; a precomputed in-memory trie answers in microseconds.
+
+---
+
+### ❓ Design a web crawler.
+
+### 📝 Answer
+
+**Requirements:** download billions of pages, follow links, revisit pages periodically, be **polite** to websites, skip duplicates.
+
+```mermaid
+flowchart LR
+  S[Seed URLs] --> F[[URL frontier<br/>priority + per-host queues]]
+  F --> FW[Fetcher workers<br/>respect robots.txt, rate per host]
+  FW --> DNS[DNS cache]
+  FW --> ST[(Raw page storage)]
+  FW --> P[Parser: extract links + text]
+  P --> DD{Seen before?<br/>Bloom filter}
+  DD -- new --> F
+  P --> CD{Duplicate content?<br/>hash / simhash}
+  CD -- unique --> IDX[Indexer]
+```
+
+**Key ideas:**
+1. **URL frontier** — priority (important pages first) + **one queue per host**, so each site gets at most ~1 request per second (**politeness**).
+2. **robots.txt** — fetch and cache it per host; obey it.
+3. **URL dedup** — billions of URLs → a **Bloom filter** answers "seen?" in very little memory (small false-positive rate is fine).
+4. **Content dedup** — hash page content; **simhash** catches near-duplicates.
+5. **Scale out** — partition the frontier by host hash across many crawler machines.
+6. **Traps** — limit URL length/depth, cap pages per host (infinite calendars).
+
+![A Bloom filter sets several bits per item; if any bit is unset, the item was definitely never added](../../knowledge/visual-notes/interview/bloom-filter.svg)
+
+_Image: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Bloom_filter.svg) · David Eppstein · Public domain_
+
+#### ↳ Follow-up: Why a Bloom filter and not a hash set?
+
+↪ A set of billions of URLs needs hundreds of GB; a Bloom filter needs a few GB and never says "no" for a URL that was added.
+
+---
+
+### ❓ Design a distributed key-value cache (like Redis Cluster or Memcached).
+
+### 📝 Answer
+
+**Requirements:** `get`/`put`/`delete` in about a millisecond, terabytes of data across many nodes, survive node failures, evict old data.
+
+```mermaid
+flowchart LR
+  C[Client library] -- "hash(key) on ring" --> N1[Node A]
+  C --> N2[Node B]
+  C --> N3[Node C]
+  N1 -- replicate --> N2
+  N2 -- replicate --> N3
+  N3 -- replicate --> N1
+```
+
+**Key ideas:**
+1. **Partitioning** — **consistent hashing** (or fixed **hash slots** like Redis's 16,384) so adding a node moves only a small share of keys. **Virtual nodes** even out the load.
+2. **Single node** — a hash table in memory + **LRU** eviction (hash map + doubly linked list), TTL per key, a memory limit.
+3. **Replication** — each key also stored on 1–2 other nodes; **leader–follower** per partition; failover when the leader dies (gossip/heartbeats to detect failure).
+4. **Consistency** — usually asynchronous replication (fast, may lose the last writes on failure); quorum reads/writes if stronger guarantees are needed.
+5. **Hot keys** — replicate them to several nodes or add a small local cache in clients.
+6. **Persistence (optional)** — snapshots + an append-only log.
+
+#### ↳ Follow-up: Why consistent hashing instead of `hash(key) % N`?
+
+↪ With `% N`, changing N remaps almost every key (a cache wipe). Consistent hashing moves only about 1/N of them.
+
+---

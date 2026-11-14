@@ -1,5 +1,7 @@
 ### ❓ What is an RDBMS?
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 An RDBMS stores data in **structured tables**, enforces **relationships using keys**, and guarantees **data integrity through constraints and transactions**.
@@ -28,6 +30,8 @@ Vertically very well, horizontally with sharding/replication.
 ---
 
 ### ❓ Primary Key vs Unique Key vs Foreign Key?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -97,6 +101,8 @@ CREATE TABLE Employee_Project (
 ---
 
 ### ❓ What is Normalization?
+
+**Level:** 🟢 Beginner
 
 ### 📝 Answer
 
@@ -274,6 +280,8 @@ dept_id | dept_name | dept_location
 
 ### ❓ What is Index?
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 An Index is a database object that improves the **speed of data retrieval** operations on a table.
@@ -341,6 +349,8 @@ SELECT * FROM employee WHERE email = 'abc@xyz.com';
 
 ### ❓ Which performs better, `JOIN` or `SUBQUERY`?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 👉 Often they perform the **same**: modern MySQL (8.0+) and PostgreSQL rewrite `IN (subquery)` into a join (*semi-join*). Check with `EXPLAIN`.
@@ -369,6 +379,8 @@ WHERE d.location = 'NY';
 
 ### ❓ What is a View?
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 A View is a **virtual table** created from a SQL query.
@@ -391,6 +403,8 @@ SELECT * FROM active_employees;
 ---
 
 ### ❓ What is a Stored Procedure?
+
+**Level:** 🟢 Beginner
 
 ### 📝 Answer
 
@@ -643,6 +657,8 @@ Both store text
 
 ### ❓ I see there is a performance issue with the DB. How will you identify the issue? Is there any log you can check?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 🟢 STEP 1: CHECK MYSQL LOGS
@@ -711,6 +727,8 @@ SELECT * FROM sys.schema_unused_indexes;   -- indexes not used since the server 
 
 ### ❓ EXPLAIN / ANALYZE Query
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 `EXPLAIN` - shows **how MySQL executes a query**:
@@ -768,6 +786,8 @@ CREATE INDEX idx_orders_user_id ON orders(user_id);
 
 ### ❓ JOIN Types (INNER, LEFT, RIGHT)
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Assume:
@@ -823,6 +843,8 @@ RIGHT JOIN orders o ON u.id = o.user_id;
 
 ### ❓ Database Sharing
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Multiple applications or services **using the same database**
@@ -846,6 +868,8 @@ Multiple applications or services **using the same database**
 ---
 
 ### ❓ Database Replication
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -958,6 +982,8 @@ public class OrderService {
 
 ### ❓ Production Bug / SQL Issue – Root Cause Analysis
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 1.  Configuration
@@ -1068,6 +1094,8 @@ SELECT * FROM users WHERE email LIKE '%gmail.com';
 
 ### ❓ What happens internally when a transaction fails midway in a Spring Boot application?
 
+**Level:** 🔴 Advanced
+
 ### 📝 Answer
 
 When a transaction fails midway in Spring Boot, the transaction is rolled back to maintain data consistency. Spring manages the transaction using `@Transactional`, but the actual rollback and consistency guarantees are enforced by the database.
@@ -1161,6 +1189,8 @@ In Spring:
 ---
 
 ### ❓ How do you handle if multiple users / threads access same DB data at the same time?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 

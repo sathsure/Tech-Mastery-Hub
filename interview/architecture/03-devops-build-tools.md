@@ -221,6 +221,8 @@ Agents are needed so builds don't overload the controller, many builds can run i
 
 ### ❓ What kind of applications run on Tomcat?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Java web applications and REST APIs built on **servlets**: Spring MVC / Spring Boot, JSP pages, plain servlet apps. It's common with Java because it's lightweight, free, stable, and the **default embedded server in Spring Boot**.
@@ -228,6 +230,8 @@ Java web applications and REST APIs built on **servlets**: Spring MVC / Spring B
 ---
 
 ### ❓ How does Tomcat handle incoming requests?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -238,6 +242,8 @@ If all threads are busy (slow database calls), new requests wait in a queue — 
 ---
 
 ### ❓ What is a WAR file?
+
+**Level:** 🟢 Beginner
 
 ### 📝 Answer
 
@@ -250,6 +256,8 @@ Spring Boot apps are usually packaged as an executable **JAR** with Tomcat embed
 ---
 
 ### ❓ Difference between embedded Tomcat and external Tomcat?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -265,6 +273,8 @@ Spring Boot uses embedded Tomcat because the app becomes **self-contained** — 
 
 ### ❓ What are common issues seen in Tomcat?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 - **Port conflicts** — "Address already in use: 8080" → stop the other process or change `server.port`.
@@ -275,6 +285,8 @@ Spring Boot uses embedded Tomcat because the app becomes **self-contained** — 
 ---
 
 ### ❓ How do you restart or redeploy applications in Tomcat?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -287,6 +299,8 @@ Spring Boot uses embedded Tomcat because the app becomes **self-contained** — 
 
 ### ❓ What is Maven and why is it used?
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 Maven is a **build and dependency management tool** for Java. It solves:
@@ -298,6 +312,8 @@ Maven is a **build and dependency management tool** for Java. It solves:
 ---
 
 ### ❓ What is a `pom.xml` file?
+
+**Level:** 🟢 Beginner
 
 ### 📝 Answer
 
@@ -313,6 +329,8 @@ The **Project Object Model** — Maven's configuration file. It contains the pro
 ---
 
 ### ❓ What is dependency management in Maven?
+
+**Level:** 🟢 Beginner
 
 ### 📝 Answer
 
@@ -336,6 +354,8 @@ flowchart LR
 
 ### ❓ What are Maven repositories?
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 - **Local** — `~/.m2/repository` on your machine; a cache of everything downloaded.
@@ -347,6 +367,8 @@ Lookup order: local → remote/central.
 ---
 
 ### ❓ What is the Maven build lifecycle?
+
+**Level:** 🟢 Beginner
 
 ### 📝 Answer
 
@@ -374,6 +396,8 @@ flowchart LR
 
 ### ❓ What is a Maven plugin?
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 Plugins do the **actual work** of each phase — Maven itself is mostly a framework that runs them. Examples: `maven-compiler-plugin` (compile), `maven-surefire-plugin` (unit tests), `maven-failsafe-plugin` (integration tests), `spring-boot-maven-plugin` (executable JAR), `jacoco-maven-plugin` (coverage).
@@ -381,6 +405,8 @@ Plugins do the **actual work** of each phase — Maven itself is mostly a framew
 ---
 
 ### ❓ What is a multi-module Maven project?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -400,6 +426,8 @@ Teams use it to share code and dependency versions, keep clear module boundaries
 
 ### ❓ How does Maven help maintain consistency across environments?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 **Same build everywhere:** the `pom.xml` pins dependency and plugin versions, and Maven uses the same lifecycle on every laptop and CI agent. The **Maven Wrapper** (`./mvnw`) even pins the Maven version itself. Result: the JAR built in CI is the same one that was tested.
@@ -409,6 +437,8 @@ Teams use it to share code and dependency versions, keep clear module boundaries
 ## 5️⃣ How the Tools Work Together
 
 ### ❓ Typical CI/CD flow using these tools?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -430,6 +460,8 @@ flowchart LR
 
 ### ❓ How do Maven, Jenkins, and Docker work together?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Each tool has one responsibility:
@@ -442,6 +474,8 @@ Each tool has one responsibility:
 
 ### ❓ Where does Tomcat fit in this flow?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 At **runtime**. In modern Spring Boot apps, Tomcat is **embedded in the JAR**, which runs **inside the Docker container** — no separate Tomcat installation. In older setups, Maven builds a WAR that is deployed to a standalone Tomcat server.
@@ -449,6 +483,8 @@ At **runtime**. In modern Spring Boot apps, Tomcat is **embedded in the JAR**, w
 ---
 
 ### ❓ What problems do these tools solve together?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 

@@ -4,6 +4,8 @@
 
 ### ❓ What will be the output? (return in try and in finally)
 
+**Level:** 🟡 Intermediate
+
 > ```java
 > static int test() {
 >     try {
@@ -26,6 +28,8 @@
 ---
 
 ### ❓ What will be the output? (return in catch and in finally)
+
+**Level:** 🟡 Intermediate
 
 > ```java
 > static int test() {
@@ -52,6 +56,8 @@
 
 ### ❓ What will be the output? (changing a primitive in finally)
 
+**Level:** 🟡 Intermediate
+
 > ```java
 > static int test() {
 >     int x = 10;
@@ -74,6 +80,8 @@
 ---
 
 ### ❓ What will be the output? (changing an object in finally)
+
+**Level:** 🟡 Intermediate
 
 > ```java
 > class Test { int x = 10; }
@@ -103,6 +111,8 @@
 
 ### ❓ What will be the output? (System.exit in try)
 
+**Level:** 🟡 Intermediate
+
 > ```java
 > try {
 >     System.exit(0);
@@ -122,6 +132,8 @@
 ---
 
 ### ❓ What will be the output? (return in finally swallows an exception)
+
+**Level:** 🟡 Intermediate
 
 > ```java
 > static int test() {
@@ -145,6 +157,8 @@
 ---
 
 ### ❓ What will be the output? (try-with-resources closing order)
+
+**Level:** 🟡 Intermediate
 
 > ```java
 > class A implements AutoCloseable { public void close() { System.out.println("A Closed"); } }
@@ -171,6 +185,8 @@ A Closed
 
 ### ❓ What will be the output? (overloaded main method)
 
+**Level:** 🟡 Intermediate
+
 > ```java
 > public static void main(String[] args) {
 >     main(10);
@@ -192,6 +208,8 @@ A Closed
 ---
 
 ### ❓ What will be the output? (static blocks and main)
+
+**Level:** 🟡 Intermediate
 
 > ```java
 > static { System.out.println("Before Main"); }
@@ -217,6 +235,8 @@ Main
 
 ### ❓ What will be the output? (instance block and constructor)
 
+**Level:** 🟡 Intermediate
+
 > ```java
 > class Test {
 >     { System.out.println("Instance"); }
@@ -237,6 +257,8 @@ Constructor
 ---
 
 ### ❓ What will be the output? (static, instance block and constructor)
+
+**Level:** 🟡 Intermediate
 
 > ```java
 > class Test {
@@ -264,6 +286,8 @@ Constructor
 
 ### ❓ What will be the output? (static blocks in parent and child)
 
+**Level:** 🟡 Intermediate
+
 > ```java
 > class A { static { System.out.println("A Static"); } }
 > class B extends A { static { System.out.println("B Static"); } }
@@ -283,6 +307,8 @@ B Static
 ---
 
 ### ❓ What will be the output? (parent and child constructors)
+
+**Level:** 🟡 Intermediate
 
 > ```java
 > class A { A() { System.out.println("A"); } }
@@ -306,6 +332,8 @@ B
 
 ### ❓ What will be the output? (== on string literals)
 
+**Level:** 🟡 Intermediate
+
 > ```java
 > String a = "Java";
 > String b = "Java";
@@ -323,6 +351,8 @@ true
 ---
 
 ### ❓ What will be the output? (== on new String objects)
+
+**Level:** 🟡 Intermediate
 
 > ```java
 > String a = new String("Java");
@@ -342,6 +372,8 @@ false
 
 ### ❓ What will be the output? (String intern)
 
+**Level:** 🟡 Intermediate
+
 > ```java
 > String a = new String("Java").intern();
 > String b = "Java";
@@ -359,6 +391,8 @@ true
 ---
 
 ### ❓ What will be the output? (String concat is immutable)
+
+**Level:** 🟡 Intermediate
 
 > ```java
 > String s = "Java";
@@ -378,6 +412,8 @@ Java
 
 ### ❓ What will be the output? (final StringBuilder)
 
+**Level:** 🟡 Intermediate
+
 > ```java
 > final StringBuilder sb = new StringBuilder("Java");
 > sb.append(" World");
@@ -395,6 +431,8 @@ Java World
 ---
 
 ### ❓ What will be the output? (StringBuilder passed to a method)
+
+**Level:** 🟡 Intermediate
 
 > ```java
 > static void change(StringBuilder sb) {
@@ -419,6 +457,8 @@ AB
 
 ### ❓ What will be the output? (Integer == with 127)
 
+**Level:** 🟡 Intermediate
+
 > ```java
 > Integer a = 127;
 > Integer b = 127;
@@ -437,6 +477,8 @@ true
 
 ### ❓ What will be the output? (Integer == with 128)
 
+**Level:** 🟡 Intermediate
+
 > ```java
 > Integer a = 128;
 > Integer b = 128;
@@ -454,6 +496,8 @@ false
 ---
 
 ### ❓ What will be the output? (unboxing null)
+
+**Level:** 🟡 Intermediate
 
 > ```java
 > Integer a = null;
@@ -474,6 +518,8 @@ NullPointerException
 
 ### ❓ What will be the output? (null with Object and String overloads)
 
+**Level:** 🟡 Intermediate
+
 > ```java
 > static void test(Object o) { System.out.println("Object"); }
 > static void test(String s) { System.out.println("String"); }
@@ -492,6 +538,8 @@ String
 ---
 
 ### ❓ What will be the output? (null with Integer and Long overloads)
+
+**Level:** 🟡 Intermediate
 
 > ```java
 > static void test(Integer a) { System.out.println("Integer"); }
@@ -512,6 +560,8 @@ Compile-time error: reference to test is ambiguous
 
 ### ❓ What will be the output? (overloading: widening vs boxing)
 
+**Level:** 🟡 Intermediate
+
 > ```java
 > static void test(long a)    { System.out.println("long"); }
 > static void test(Integer a) { System.out.println("Integer"); }
@@ -530,6 +580,8 @@ long
 ---
 
 ### ❓ What will be the output? (overloading: exact match vs varargs)
+
+**Level:** 🟡 Intermediate
 
 > ```java
 > static void test(int a)    { System.out.println("int"); }
@@ -550,6 +602,8 @@ int
 
 ### ❓ What will be the output? (static method "overriding")
 
+**Level:** 🟡 Intermediate
+
 > ```java
 > class A { static void show() { System.out.println("A"); } }
 > class B extends A { static void show() { System.out.println("B"); } }
@@ -569,6 +623,8 @@ A
 ---
 
 ### ❓ What will be the output? (instance method overriding)
+
+**Level:** 🟡 Intermediate
 
 > ```java
 > class A { void show() { System.out.println("A"); } }
@@ -592,6 +648,8 @@ B
 
 ### ❓ What will be the output? (Collections.sort on a Collection)
 
+**Level:** 🟡 Intermediate
+
 > ```java
 > Collection<Integer> c = new ArrayList<>();
 > c.add(3); c.add(1); c.add(2);
@@ -609,6 +667,8 @@ Compile-time error: no suitable method found for sort(Collection<Integer>)
 ---
 
 ### ❓ What will be the output? (List remove by index vs by value)
+
+**Level:** 🟡 Intermediate
 
 > ```java
 > List<Integer> list = new ArrayList<>();
@@ -628,6 +688,8 @@ IndexOutOfBoundsException: Index 10 out of bounds for length 2
 ---
 
 ### ❓ What will be the output? (removing from a list inside a for-each loop)
+
+**Level:** 🟡 Intermediate
 
 > ```java
 > List<String> list = new ArrayList<>(List.of("A", "B"));
@@ -664,6 +726,8 @@ for (int i = list.size() - 1; i >= 0; i--) list.remove(i);   // or go backwards 
 
 ### ❓ What will be the output? (HashSet with duplicates)
 
+**Level:** 🟡 Intermediate
+
 > ```java
 > Set<Integer> set = new HashSet<>();
 > set.add(10);
@@ -683,6 +747,8 @@ for (int i = list.size() - 1; i >= 0; i--) list.remove(i);   // or go backwards 
 ---
 
 ### ❓ What will be the output? (HashSet without equals and hashCode)
+
+**Level:** 🟡 Intermediate
 
 > ```java
 > class Employee {
@@ -714,6 +780,8 @@ record Employee(int id) { }   // equals/hashCode by id → set.size() == 1
 
 ### ❓ What will be the output? (HashMap with null keys)
 
+**Level:** 🟡 Intermediate
+
 > ```java
 > Map<String, Integer> map = new HashMap<>();
 > map.put(null, 1);
@@ -732,6 +800,8 @@ record Employee(int id) { }   // equals/hashCode by id → set.size() == 1
 ---
 
 ### ❓ What will be the output? (changing a key after putting it in a HashMap)
+
+**Level:** 🟡 Intermediate
 
 > ```java
 > Map<StringBuilder, String> map = new HashMap<>();
@@ -768,6 +838,8 @@ Rule: use **immutable keys** (`String`, `Integer`, records).
 
 ### ❓ What will be the output? (adding to a HashMap while looping over it)
 
+**Level:** 🟡 Intermediate
+
 > ```java
 > Map<String, String> map = new HashMap<>();
 > map.put("A", "1");
@@ -794,6 +866,8 @@ With **two or more** entries (e.g. `"A"` and `"C"`), the next `next()` call dete
 
 ### ❓ What will be the output? (orElse vs orElseGet)
 
+**Level:** 🟡 Intermediate
+
 > ```java
 > static String getDefault() {
 >     System.out.println("Default called");
@@ -817,6 +891,8 @@ Dev
 
 ### ❓ What will be the output? (Optional.get on empty)
 
+**Level:** 🟡 Intermediate
+
 > ```java
 > Optional<String> name = Optional.empty();
 > System.out.println(name.get());
@@ -835,6 +911,8 @@ NoSuchElementException: No value present
 ## Miscellaneous Traps
 
 ### ❓ What will be the output? (finalize and System.gc)
+
+**Level:** 🟡 Intermediate
 
 > ```java
 > class Test {
@@ -859,6 +937,8 @@ May or may not print "Finalize"
 ---
 
 ### ❓ What will be the output? (a++ + ++a + a++)
+
+**Level:** 🟡 Intermediate
 
 > ```java
 > int a = 10;
@@ -885,6 +965,8 @@ May or may not print "Finalize"
 
 ### ❓ What will be the output? (Thread run instead of start)
 
+**Level:** 🟡 Intermediate
+
 > ```java
 > Thread t = new Thread(() -> System.out.println("Run " + Thread.currentThread().getName()));
 > t.run();
@@ -901,6 +983,8 @@ Run main
 ---
 
 ### ❓ What will be the output? (if (true) else)
+
+**Level:** 🟡 Intermediate
 
 > ```java
 > if (true)
@@ -921,6 +1005,8 @@ A
 
 ### ❓ What will be the output? (casting an Integer to String)
 
+**Level:** 🟡 Intermediate
+
 > ```java
 > Object o = Integer.valueOf(10);
 > String s = (String) o;
@@ -937,6 +1023,8 @@ ClassCastException: class java.lang.Integer cannot be cast to class java.lang.St
 ---
 
 ### ❓ What will be the output? (volatile flag between threads)
+
+**Level:** 🟡 Intermediate
 
 > ```java
 > static volatile boolean flag = false;

@@ -13,6 +13,8 @@ orders(id, customer_id, amount, order_date)
 
 ### ❓ What are the types of SQL joins? Explain with an example.
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 A join combines rows from two tables using a matching column.
@@ -47,6 +49,8 @@ LEFT JOIN orders o ON o.customer_id = c.id;
 
 ### ❓ Find customers who have never placed an order.
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 ```sql
@@ -68,6 +72,8 @@ WHERE NOT EXISTS (SELECT 1 FROM orders o WHERE o.customer_id = c.id);
 
 ### ❓ Find employees who earn more than their manager.
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 A **self join**: the same table twice, once as employee and once as manager.
@@ -84,6 +90,8 @@ WHERE e.salary > m.salary;
 ## Window Functions
 
 ### ❓ What are window functions, and how do they differ from GROUP BY?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -102,6 +110,8 @@ FROM employees;
 ---
 
 ### ❓ ROW_NUMBER vs RANK vs DENSE_RANK?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -129,6 +139,8 @@ FROM employees;
 ---
 
 ### ❓ Find the Nth highest salary (e.g. the 3rd).
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -162,6 +174,8 @@ WHERE salary < (SELECT MAX(salary) FROM employees
 
 ### ❓ Find the highest-paid employee in each department.
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 ```sql
@@ -180,6 +194,8 @@ The same pattern gives **top N per group**: `WHERE r <= 3`.
 
 ### ❓ How do you calculate a running total?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 ```sql
@@ -193,6 +209,8 @@ Add `PARTITION BY customer_id` to restart the total for each customer.
 ---
 
 ### ❓ What do LAG and LEAD do?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -213,6 +231,8 @@ The first row of each group gets NULL (no previous row).
 
 ### ❓ Find duplicate rows.
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 ```sql
@@ -225,6 +245,8 @@ HAVING COUNT(*) > 1;
 ---
 
 ### ❓ Delete duplicate rows but keep one.
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -253,6 +275,8 @@ DELETE FROM employees WHERE id IN (
 
 ### ❓ DELETE vs TRUNCATE vs DROP?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 | | `DELETE` | `TRUNCATE` | `DROP` |
@@ -269,6 +293,8 @@ DELETE FROM employees WHERE id IN (
 
 ### ❓ What is the difference between COUNT(*), COUNT(column) and COUNT(DISTINCT column)?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 - `COUNT(*)` — all rows, including NULLs.
@@ -280,6 +306,8 @@ Example: 5 employees, 1 has no manager → `COUNT(*) = 5`, `COUNT(manager_id) = 
 ---
 
 ### ❓ How do you turn rows into columns (pivot)?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -299,6 +327,8 @@ GROUP BY customer_id;
 
 ### ❓ UNION vs UNION ALL?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Both stack the results of two queries.
@@ -313,6 +343,8 @@ Both queries must return the same number of columns with compatible types.
 ## CTEs & Recursion
 
 ### ❓ What is a CTE (WITH clause)?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -330,6 +362,8 @@ WHERE t.total > 1000;
 ---
 
 ### ❓ How do you query a hierarchy (org chart) with a recursive CTE?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -351,6 +385,8 @@ SELECT name, level FROM chain ORDER BY level, name;
 ## Transactions & Isolation
 
 ### ❓ What are transaction isolation levels and which problems do they prevent?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -377,6 +413,8 @@ Higher isolation = safer but slower (more locking or retries).
 
 ### ❓ What is a deadlock in a database?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Two transactions each lock a row the other needs:
@@ -396,6 +434,8 @@ The database detects it and **rolls back one transaction**; the app should retry
 
 ### ❓ OFFSET pagination vs keyset (cursor) pagination?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 ```sql
@@ -412,6 +452,8 @@ Keyset is fast on any page and doesn't skip/repeat rows when new rows are insert
 
 ### ❓ Tricky: Why does `WHERE YEAR(order_date) = 2026` ignore the index on order_date?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Wrapping the column in a function means the database must compute it for **every row** — the index is on `order_date`, not on `YEAR(order_date)`. Rewrite as a range:
@@ -426,6 +468,8 @@ Same for `WHERE LOWER(email) = ...` or `WHERE salary + 100 > 1000`.
 
 ### ❓ Tricky: What does `SELECT NULL = NULL` return?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 `NULL` (unknown), not true. NULL means "unknown", so comparing it with anything is unknown. Use `IS NULL` / `IS NOT NULL`. This is also why `WHERE manager_id = NULL` returns no rows.
@@ -433,6 +477,8 @@ Same for `WHERE LOWER(email) = ...` or `WHERE salary + 100 > 1000`.
 ---
 
 ### ❓ Tricky: Can you use a column alias in WHERE?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -444,3 +490,152 @@ SELECT salary * 12 AS yearly FROM employees WHERE salary * 12 > 100000; -- ✅
 ```
 
 You **can** use it in `ORDER BY` (runs after `SELECT`), and MySQL also allows it in `HAVING`.
+
+
+
+---
+
+## Indexes & Transactions Deep Dive (Intermediate)
+
+### ❓ What is ACID? Explain each property with an example.
+
+### 📝 Answer
+
+ACID is the set of guarantees a database transaction gives. Example: transfer ₹500 from Asha to Ravi.
+
+```sql
+START TRANSACTION;
+UPDATE accounts SET balance = balance - 500 WHERE name = 'Asha';
+UPDATE accounts SET balance = balance + 500 WHERE name = 'Ravi';
+COMMIT;
+```
+
+| Property | Means | In the example | How databases do it |
+|---|---|---|---|
+| **Atomicity** | all or nothing | money never leaves Asha without reaching Ravi | undo log / rollback |
+| **Consistency** | rules always hold | balance can't go negative (CHECK), foreign keys stay valid | constraints, triggers |
+| **Isolation** | transactions don't see each other's half-done work | another query never sees ₹500 "in the air" | locks, MVCC, isolation levels |
+| **Durability** | once committed, it survives a crash | power cut after COMMIT → the transfer is still there | write-ahead log (redo log) flushed to disk |
+
+#### ↳ Follow-up: ACID vs BASE?
+
+↪ BASE (Basically Available, Soft state, Eventually consistent) is the trade-off many distributed NoSQL systems make: stay available and scale, accept short-lived inconsistency.
+
+---
+
+### ❓ Clustered vs non-clustered index — what's the difference?
+
+### 📝 Answer
+
+| | Clustered index | Non-clustered (secondary) index |
+|---|---|---|
+| What it stores | **the table rows themselves**, sorted by the key | key values + a **pointer** to the row |
+| How many per table | **one** (rows can be sorted only one way) | many |
+| In MySQL InnoDB | the **primary key** | every other index; its pointer is the primary key value |
+| Range scans on the key | very fast (rows are next to each other) | needs a lookup per row (unless covering) |
+
+```mermaid
+flowchart LR
+  subgraph SI[Secondary index on email]
+    e1[a@x.com → id 7]
+    e2[b@x.com → id 3]
+  end
+  subgraph CI["Clustered index = the table, sorted by id"]
+    r3[id 3 · Ravi · …]
+    r7[id 7 · Asha · …]
+  end
+  e1 --> r7
+  e2 --> r3
+```
+
+A query by `email` in InnoDB: search the secondary B+ tree → get the primary key → search the clustered index for the row (**two lookups**).
+
+#### ↳ Follow-up: Why is a random UUID a poor InnoDB primary key?
+
+↪ New rows land in random places in the clustered index, causing page splits and fragmentation. Prefer auto-increment or time-ordered ids (UUIDv7, ULID).
+
+---
+
+### ❓ How do composite indexes work? What is the leftmost prefix rule?
+
+### 📝 Answer
+
+A **composite index** covers several columns, sorted by the first, then the second within it, and so on — like a phone book sorted by last name, then first name.
+
+```sql
+CREATE INDEX idx_orders ON orders (customer_id, status, created_at);
+```
+
+**Leftmost prefix rule** — the index helps only when the query uses columns **from the left**, without gaps:
+
+| Query filters on | Uses the index? |
+|---|---|
+| `customer_id` | ✅ |
+| `customer_id, status` | ✅ |
+| `customer_id, status, created_at` | ✅ |
+| `customer_id` + `ORDER BY status` | ✅ (sort comes free) |
+| `status` only | ❌ |
+| `created_at` only | ❌ |
+| `customer_id, created_at` (skips status) | partly — only the `customer_id` part |
+
+**Column order tip:** equality filters first (`=`), then the range or sort column (`>`, `BETWEEN`, `ORDER BY`). A range stops the index from being used for the columns after it.
+
+#### ↳ Follow-up: One composite index or several single-column indexes?
+
+↪ For a query that filters on several columns together, one composite index in the right order is usually much faster.
+
+---
+
+### ❓ What is a covering index?
+
+### 📝 Answer
+
+An index that contains **every column a query needs**, so the database answers from the index alone and **never reads the table rows** ("index-only scan"). `EXPLAIN` in MySQL shows `Using index`.
+
+```sql
+CREATE INDEX idx_cust_status_total ON orders (customer_id, status, total);
+
+SELECT status, total            -- every column is in the index
+FROM orders
+WHERE customer_id = 42;         -- ✅ covering: no table lookups
+```
+
+```sql
+SELECT status, total, shipping_address  -- shipping_address isn't in the index
+FROM orders WHERE customer_id = 42;     -- ❌ needs a row lookup per match
+```
+
+PostgreSQL and SQL Server can add extra non-key columns with `INCLUDE (...)`.
+
+**Trade-off:** wider indexes use more disk and slow down writes — cover only your hottest queries.
+
+#### ↳ Follow-up: Why does `SELECT *` hurt?
+
+↪ It can never be covered by an index and sends more data over the network.
+
+---
+
+### ❓ What is MVCC (Multi-Version Concurrency Control)?
+
+### 📝 Answer
+
+With **MVCC**, an update doesn't overwrite a row in place; it creates a **new version**. Each transaction reads a **snapshot**: the versions that were committed when its snapshot was taken.
+
+```text
+Row "Asha, balance": v1 = 1000 (committed)
+T1 (snapshot at 10:00) reads → 1000
+T2 updates to 500 → creates v2 = 500, commits at 10:01
+T1 reads again → still 1000 (its snapshot)  ← Repeatable Read
+New transaction at 10:02 → 500
+```
+
+**Why it matters:** **readers don't block writers and writers don't block readers** — big concurrency win. Two writers updating the **same** row still wait for each other (row lock).
+
+- **PostgreSQL** keeps old versions in the table; **VACUUM** removes dead ones.
+- **MySQL InnoDB** keeps old versions in the **undo log**.
+
+#### ↳ Follow-up: Can a long-running transaction cause problems?
+
+↪ Yes — old versions can't be cleaned up while it's open, so tables/undo logs grow (bloat) and performance drops.
+
+---

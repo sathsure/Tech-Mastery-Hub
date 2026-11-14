@@ -729,3 +729,9 @@ html.theming .thread, html.atlas-switch .thread { view-transition-name: none; }
 body.atlas-open .shell { visibility: hidden; }
 @keyframes atlas-in { from { opacity: 0; } to { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .atlas-view { animation: none; } }
+
+/* Tap-to-reveal answers (revise flashcards, predict-the-output) */
+.md details.reveal { margin: -6px 0 16px; padding: 8px 12px; border: 1px solid var(--border-muted); border-radius: var(--radius); background: var(--bg-muted); }
+.md details.reveal > summary { cursor: pointer; color: var(--accent); font-size: 0.92em; user-select: none; }
+.md details.reveal[open] > summary { margin-bottom: 8px; }
+.md details.reveal > :last-child { margin-bottom: 0; }

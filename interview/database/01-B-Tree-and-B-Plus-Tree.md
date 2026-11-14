@@ -4,6 +4,8 @@
 
 ### ❓ What is a Binary Search Tree (BST), and what is its limitation?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Rules:
@@ -23,6 +25,8 @@ Rules:
 ---
 
 ### ❓ What is an M-way search tree?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -48,6 +52,8 @@ C1: < 20 · C2: 20–40 · C3: 40–60 · C4: > 60
 
 ### ❓ Why must all leaf nodes be at the same level?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 To keep the tree **balanced**. If one leaf were at depth 2 and another at depth 5, some searches would take far longer than others. With all leaves at the same depth, every search costs the same number of node visits — the tree height, `O(log n)` — so performance is predictable.
@@ -55,6 +61,8 @@ To keep the tree **balanced**. If one leaf were at depth 2 and another at depth 
 ---
 
 ### ❓ Where does a search start in a B-Tree or B+ Tree?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -69,6 +77,8 @@ Always at the **root**: Root → internal nodes → leaf.
 ---
 
 ### ❓ Why are B+ Tree leaves (leaf nodes) linked?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -103,6 +113,8 @@ Benefits: efficient `BETWEEN`, `>`, `<` and `ORDER BY`, and no repeated tree tra
 
 ### ❓ What is the difference between multilevel indexing and a B+ Tree?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 **Multilevel indexing** is a general idea: an index over an index over the data, so the database narrows down step by step instead of scanning everything.
@@ -124,6 +136,8 @@ A **B+ Tree is one specific, self-balancing implementation** of that idea.
 
 ### ❓ Which index structure do SQL databases use?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 | Database | Standard index |
@@ -144,6 +158,8 @@ In InnoDB this index supports equality lookups, range scans, sorting and filteri
 ## Insertion
 
 ### ❓ How does insertion work in a B-Tree? (Order 6 example)
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -203,6 +219,8 @@ Keys are sorted, no node exceeds 5 keys, every non-root node has at least 2, and
 
 ### ❓ How does insertion work in a B+ Tree? (Order 6 example)
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Order 6: leaves hold **max 5 keys**. A leaf that reaches 6 keys splits 3 + 3, and the first key of the right leaf is **copied** up to the parent — it **stays in the leaf** too (unlike a B-Tree, where it moves).
@@ -246,6 +264,8 @@ Separator keys (20, 25, 31) appear in the root **and** in the leaves; every data
 ## Deletion
 
 ### ❓ How does deletion work in a B-Tree?
+
+**Level:** 🔴 Advanced
 
 ### 📝 Answer
 
@@ -305,6 +325,8 @@ If removing the successor made its leaf underflow, fix it by borrowing or mergin
 
 ### ❓ How does deletion work in a B+ Tree?
 
+**Level:** 🔴 Advanced
+
 ### 📝 Answer
 
 Order 6: leaves hold 3–5 keys (min 3); internal nodes have 3–6 children (the root may have 2).
@@ -357,6 +379,8 @@ If the parent then underflows, the same borrow/merge rules apply one level up; i
 
 ### ❓ How does B-Tree deletion differ from B+ Tree deletion?
 
+**Level:** 🔴 Advanced
+
 ### 📝 Answer
 
 | Situation | B-Tree | B+ Tree |
@@ -371,6 +395,8 @@ If the parent then underflows, the same borrow/merge rules apply one level up; i
 ## Quick Revision
 
 ### ❓ What are the most important B-Tree and B+ Tree interview questions?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 

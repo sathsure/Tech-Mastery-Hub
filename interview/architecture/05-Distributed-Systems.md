@@ -4,6 +4,8 @@
 
 ### ❓ What is the CAP theorem?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 When the network between servers breaks (a **partition**), a distributed database must choose between:
@@ -39,6 +41,8 @@ flowchart TD
 
 ### ❓ What is eventual consistency?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 After a write, replicas may disagree for a short time, but **if no new writes come, they all end up the same**.
@@ -55,6 +59,8 @@ Example: you change your profile photo; a friend in another country still sees t
 ---
 
 ### ❓ What are ACID and BASE?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -75,6 +81,8 @@ Example: transferring ₹100 — ACID guarantees money is never deducted from A 
 
 ### ❓ Why can't you use a normal database transaction across microservices?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Each microservice owns **its own database**. A single `@Transactional` covers one database connection only — it can't roll back another service's database.
@@ -86,6 +94,8 @@ Options: **Saga** (preferred), or **two-phase commit** (rarely used — slow and
 ---
 
 ### ❓ What is the Transactional Outbox pattern?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -110,6 +120,8 @@ Because both rows commit together, an event is never lost. The relay may publish
 
 ### ❓ What are "at most once", "at least once" and "exactly once" delivery?
 
+**Level:** 🔴 Advanced
+
 ### 📝 Answer
 
 | Guarantee | Meaning | Risk |
@@ -130,6 +142,8 @@ In practice: use **at least once + idempotent consumers** (remember processed me
 
 ### ❓ What is a quorum?
 
+**Level:** 🔴 Advanced
+
 ### 📝 Answer
 
 A **majority** of nodes that must agree before an action counts.
@@ -141,6 +155,8 @@ Example: N = 3, W = 2, R = 2 → 2 + 2 > 3, so a read always includes at least o
 ---
 
 ### ❓ How do you generate unique IDs across many servers?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -161,6 +177,8 @@ Snowflake: | 41 bits time (ms) | 10 bits machine | 12 bits counter |
 
 ### ❓ What are retries with exponential backoff and jitter?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 When a call fails, wait and try again — waiting **longer each time** (1 s, 2 s, 4 s, 8 s) so a struggling service isn't flooded. **Jitter** adds a little randomness so thousands of clients don't all retry at the same moment.
@@ -175,6 +193,8 @@ Only retry **idempotent** operations and **temporary** errors (timeouts, 503) �
 
 ### ❓ What is a timeout and why should every remote call have one?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 A timeout is the longest you will wait for a reply. Without one, a slow service makes your threads wait forever; soon all threads are stuck and your service is down too (**cascading failure**).
@@ -184,6 +204,8 @@ Rule of thumb: set connect and read timeouts on every HTTP/database call, a bit 
 ---
 
 ### ❓ What is the bulkhead pattern?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -197,6 +219,8 @@ Give each downstream dependency its **own limited pool** of threads/connections,
 
 ### ❓ Tricky: The network is reliable, right?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 No. The "fallacies of distributed computing" are false assumptions: the network is reliable, latency is zero, bandwidth is infinite, the network is secure, topology doesn't change, there is one admin, transport cost is zero, the network is the same everywhere. Design for every remote call to be slow, fail, or happen twice.
@@ -204,6 +228,8 @@ No. The "fallacies of distributed computing" are false assumptions: the network 
 ---
 
 ### ❓ Tricky: A request timed out — did the operation happen?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 

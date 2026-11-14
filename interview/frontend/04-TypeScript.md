@@ -72,6 +72,8 @@ const user = { name: "Alice", age: 30 };       // inferred: { name: string; age:
 
 ### ❓ Difference between `type` and `interface`. When do you use each?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 | Feature                  | `interface`                    | `type` alias                            |
@@ -130,6 +132,8 @@ const cfg: Config = { apiUrl: "...", timeout: 5000 };
 
 ### ❓ Explain Generics with constraints
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 **Generic** = placeholder type that makes code reusable for many types.
@@ -173,6 +177,8 @@ const ids = new Store<number>();    // T = number (given explicitly)
 
 ### ❓ What are mapped types?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 **Mapped types** apply a transformation to each property of an existing type to produce a new type.
@@ -204,6 +210,8 @@ type AllRequired<T> = { [K in keyof T]-?: T[K] };   // same as the built-in Requ
 # 🛠️ Part 4 — Utility Types
 
 ### ❓ Explain `Partial`, `Pick`, `Omit`, `ReturnType`
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -249,6 +257,8 @@ type UserData = ReturnType<typeof getUserData>;
 ---
 
 ### ❓ Other commonly-used utility types
+
+**Level:** 🟡 Intermediate
 ### 📝 Answer
 
 | Utility            | What it does                                      |
@@ -289,6 +299,8 @@ type Result = Awaited<Promise<Promise<number>>>;      // number
 # 🔍 Part 5 — Type Guards & Narrowing
 
 ### ❓ What are `never`, `unknown`, and `void`? When to use each?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -617,5 +629,281 @@ const n = get(user, "name");        // type: string
 ```
 
 > 💡 The combination `T[keyof T]` extracts the union of all value types in `T`.
+
+---
+
+
+## Core Type System (Intermediate)
+
+### ❓ What are union and intersection types?
+
+### 📝 Answer
+
+- **Union `A | B`** — the value is **one of** the types.
+- **Intersection `A & B`** — the value has **everything from both**.
+
+```ts
+type Id = string | number;                       // union
+type Status = "loading" | "success" | "error";   // union of literal values
+
+type Timestamps = { createdAt: Date };
+type User = { id: number; name: string };
+type SavedUser = User & Timestamps;              // intersection: id, name, createdAt
+```
+
+With a union you may only use what **all** members share, until you narrow it:
+
+```ts
+function show(id: Id) {
+  id.toUpperCase();                                // ❌ number has no toUpperCase
+  if (typeof id === "string") id.toUpperCase();    // ✅
+}
+```
+
+#### ↳ Follow-up: What is `string & number`?
+
+↪ `never` — no value can be both.
+
+---
+
+### ❓ What is type narrowing, and what are type guards?
+
+### 📝 Answer
+
+**Narrowing** means TypeScript learns a more exact type inside a block, from a check you write.
+
+| Guard | Example |
+|---|---|
+| `typeof` | `typeof x === "string"` |
+| `instanceof` | `err instanceof HttpError` |
+| `in` | `"email" in user` |
+| Equality / truthiness | `if (user)`, `x === null` |
+| Custom guard (`is`) | `function isCat(p): p is Cat` |
+
+```ts
+interface Cat { meow(): void }
+interface Dog { bark(): void }
+
+function isCat(pet: Cat | Dog): pet is Cat {   // custom type guard
+  return "meow" in pet;
+}
+
+function speak(pet: Cat | Dog) {
+  if (isCat(pet)) pet.meow();   // Cat here
+  else pet.bark();              // Dog here
+}
+```
+
+#### ↳ Follow-up: What is an assertion function?
+
+↪ `function assertIsString(x: unknown): asserts x is string { … }` — it throws if the check fails, and after the call TypeScript treats `x` as a string.
+
+---
+
+### ❓ What is a discriminated union, and why is it useful?
+
+### 📝 Answer
+
+A union where every member has the **same literal field** (the "tag", e.g. `kind` or `status`). Checking the tag narrows to exactly one member.
+
+```ts
+type Result =
+  | { status: "ok"; data: User[] }
+  | { status: "error"; message: string }
+  | { status: "loading" };
+
+function render(r: Result) {
+  switch (r.status) {
+    case "ok": return r.data.length;      // data exists here
+    case "error": return r.message;       // message exists here
+    case "loading": return "…";
+    default: {
+      const unreachable: never = r;       // compile error if a new case isn't handled
+      return unreachable;
+    }
+  }
+}
+```
+
+**Why it helps:** impossible states disappear (no `data` together with `error`), and the `never` check makes the compiler remind you when a new case is added.
+
+#### ↳ Follow-up: Where is this used in real apps?
+
+↪ API results, Redux/NgRx actions (the `type` field), form states, payment statuses.
+
+---
+
+### ❓ Enum vs union of string literals — which should you use?
+
+### 📝 Answer
+
+```ts
+enum Role { Admin = "ADMIN", User = "USER" }   // generates a real JS object
+type RoleU = "ADMIN" | "USER";                  // disappears after compiling
+```
+
+| | `enum` | String literal union |
+|---|---|---|
+| Runtime code | ✅ (an object) | ❌ (zero cost) |
+| Loop over the values | ✅ `Object.values(Role)` | use an `as const` array |
+| Numeric enums accept any number | ⚠️ yes | — |
+| Works with plain JSON strings | needs mapping | ✅ directly |
+
+Most teams prefer **unions**, plus an `as const` array when they need the list at runtime:
+
+```ts
+const ROLES = ["ADMIN", "USER"] as const;
+type Role = typeof ROLES[number];   // "ADMIN" | "USER"
+```
+
+#### ↳ Follow-up: What is a `const enum`?
+
+↪ An enum inlined at compile time (no object). It breaks with some build tools (`isolatedModules`), so many teams avoid it.
+
+---
+
+### ❓ What are conditional types and `infer`?
+
+### 📝 Answer
+
+A **conditional type** picks a type with a condition: `T extends X ? A : B`.
+`infer` **pulls out** a type from inside another type.
+
+```ts
+type IsString<T> = T extends string ? "yes" : "no";
+type A = IsString<"hi">;                 // "yes"
+
+type ElementOf<T> = T extends (infer E)[] ? E : T;
+type B = ElementOf<number[]>;            // number
+
+type UnwrapPromise<T> = T extends Promise<infer R> ? R : T;
+type C = UnwrapPromise<Promise<User>>;   // User
+```
+
+Built-in utilities work this way: `ReturnType`, `Parameters`, `Awaited`, `Exclude`, `Extract`, `NonNullable`.
+
+**Distributive:** on a union, a conditional type runs **per member** —
+`Exclude<"a" | "b" | "c", "a">` → `"b" | "c"`.
+
+#### ↳ Follow-up: How do you stop it from distributing?
+
+↪ Wrap both sides in a tuple: `[T] extends [string] ? … : …`.
+
+---
+
+### ❓ What do `keyof`, `typeof` and indexed access types do?
+
+### 📝 Answer
+
+| Operator | Gives | Example |
+|---|---|---|
+| `keyof T` | a union of property names | `keyof User` → `"id" \| "name"` |
+| `typeof value` | the type of a **value** | `typeof config` |
+| `T[K]` | the type of one property | `User["name"]` → `string` |
+
+```ts
+const config = { apiUrl: "/api", retries: 3 };
+type Config = typeof config;                 // { apiUrl: string; retries: number }
+type ConfigKey = keyof Config;               // "apiUrl" | "retries"
+
+function get<K extends keyof Config>(key: K): Config[K] {
+  return config[key];
+}
+get("retries");   // number
+```
+
+#### ↳ Follow-up: How do you get a union of all value types?
+
+↪ `T[keyof T]` — for example `Config[keyof Config]` → `string | number`.
+
+---
+
+### ❓ What does the `satisfies` operator do?
+
+### 📝 Answer
+
+`satisfies` **checks** a value against a type but **keeps the value's exact inferred type**. A normal annotation (`: Type`) widens it.
+
+```ts
+type Theme = Record<string, string | number[]>;
+
+const a: Theme = { primary: "#06f", spacing: [4, 8] };
+a.primary.toUpperCase();      // ❌ type is string | number[] — widened
+
+const b = { primary: "#06f", spacing: [4, 8] } satisfies Theme;
+b.primary.toUpperCase();      // ✅ still string
+b.spacing.map(n => n * 2);    // ✅ still number[]
+```
+
+Use it for config objects and route maps: you get validation **and** precise types.
+
+#### ↳ Follow-up: `satisfies` vs `as`?
+
+↪ `as` silences the compiler (no check). `satisfies` really checks and errors if the value doesn't fit.
+
+---
+
+### ❓ What does `strict` mode in `tsconfig.json` turn on, and why use it?
+
+### 📝 Answer
+
+`"strict": true` turns on a family of checks. The most important:
+
+| Option | Catches |
+|---|---|
+| `strictNullChecks` | using a value that may be `null` / `undefined` |
+| `noImplicitAny` | parameters silently becoming `any` |
+| `strictFunctionTypes` | unsafe function parameter types |
+| `strictPropertyInitialization` | class fields that are never assigned |
+| `useUnknownInCatchVariables` | `catch (e)` gives `unknown`, not `any` |
+
+```ts
+function len(s?: string) {
+  return s.length;   // ❌ with strict: 's' is possibly 'undefined'
+}
+```
+
+Other useful settings: `noUncheckedIndexedAccess` (array/map reads may be `undefined`), `target`, `module`, `paths` (import aliases), `outDir`.
+
+#### ↳ Follow-up: How do you turn on strict in an old codebase?
+
+↪ Turn on one flag at a time (`strictNullChecks` first is the biggest win) and fix errors folder by folder.
+
+---
+
+### ❓ How do access modifiers and abstract classes work in TypeScript?
+
+### 📝 Answer
+
+| Modifier | Accessible from |
+|---|---|
+| `public` (default) | anywhere |
+| `protected` | the class and its subclasses |
+| `private` | only the class (checked at compile time only) |
+| `#field` | only the class — **real** JavaScript privacy at runtime |
+| `readonly` | set only in the declaration or the constructor |
+
+```ts
+abstract class Shape {
+  constructor(protected readonly name: string) {}   // parameter property
+  abstract area(): number;                           // subclasses must implement it
+  describe() { return `${this.name}: ${this.area()}`; }
+}
+
+class Circle extends Shape {
+  constructor(private r: number) { super("circle"); }
+  area() { return Math.PI * this.r ** 2; }
+}
+
+new Shape("x");   // ❌ cannot create an instance of an abstract class
+```
+
+#### ↳ Follow-up: `private` vs `#private`?
+
+↪ `private` disappears after compiling (`(obj as any).x` still works). `#x` is enforced by JavaScript itself.
+
+#### ↳ Follow-up: Abstract class vs interface?
+
+↪ An interface is only a shape (no code). An abstract class can share code and state, but a class can extend only one.
 
 ---

@@ -5,6 +5,8 @@
 
 ### ❓ How would you center a div both vertically and horizontally? Walk me through the different approaches.
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 **Method 1: Flexbox (most common)**
@@ -45,6 +47,8 @@
 
 ### ❓ How would you convert a row layout to a column layout on mobile using CSS?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 ```css
@@ -66,6 +70,8 @@
 
 ### ❓ How would you make a div perfectly circular using only CSS?
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 ```html
@@ -86,6 +92,8 @@
 ---
 
 ### ❓ How do you make an element stick to the top of the viewport while the user scrolls?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -120,6 +128,8 @@
 
 ### ❓ A developer used `margin: auto` expecting vertical centering, but it didn't work. What's the issue and how would you fix it?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 In normal block flow, `margin: auto` centers **horizontally only** because the block direction has no spare space to distribute.
@@ -142,6 +152,8 @@ In normal block flow, `margin: auto` centers **horizontally only** because the b
 ---
 
 ### ❓ How would you build a responsive 3-column grid that collapses to a single column on mobile?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -172,6 +184,8 @@ This creates as many columns as fit, each at least 250px wide. On mobile, it nat
 
 ### ❓ How do you truncate overflowing text with an ellipsis after exactly 2 lines?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 ```css
@@ -200,6 +214,8 @@ For **single-line truncation**:
 ---
 
 ### ❓ How would you build a full-page modal overlay using CSS?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -240,6 +256,8 @@ For **single-line truncation**:
 
 ### ❓ Can you create a loading spinner using only CSS — no JavaScript, no images?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 ```css
@@ -262,6 +280,8 @@ For **single-line truncation**:
 ---
 
 ### ❓ How would you build a custom styled checkbox or toggle switch using only CSS?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -326,6 +346,8 @@ For **single-line truncation**:
 # 🎯 Mock Interview Question
 
 ### ❓ Design a User Profile Card UI component using CSS — what would your approach be?
+
+**Level:** 🟡 Intermediate
 
 > **Requirements:**
 >

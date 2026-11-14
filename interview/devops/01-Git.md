@@ -55,6 +55,8 @@ The staging area lets you commit only part of your changes.
 
 ### ❓ git fetch vs git pull?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 - `git fetch` — **downloads** new commits from the remote but doesn't change your files. Safe; lets you look first.
@@ -68,6 +70,8 @@ git log HEAD..origin/main --oneline   # see what's new before merging
 ---
 
 ### ❓ git merge vs git rebase?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -104,6 +108,8 @@ rebase:          A---B---C---D'---E'  feature  (D, E replayed on top of C — st
 
 ### ❓ How do you resolve a merge conflict?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 A conflict happens when both branches changed the **same lines**. Git marks them:
@@ -126,6 +132,8 @@ To give up: `git merge --abort` / `git rebase --abort`.
 
 ### ❓ What is squashing commits?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Combining several small commits ("fix typo", "wip", "fix again") into **one clean commit**. Done with `git rebase -i` or the "Squash and merge" button on a pull request.
@@ -133,6 +141,8 @@ Combining several small commits ("fix typo", "wip", "fix again") into **one clea
 ---
 
 ### ❓ What are common branching strategies?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -164,6 +174,8 @@ gitGraph
 
 ### ❓ git reset vs git revert?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 - `git revert <commit>` — makes a **new commit that undoes** an old one. History is kept → **safe on shared branches**.
@@ -192,6 +204,8 @@ flowchart LR
 
 ### ❓ How do you undo common mistakes?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 | Mistake | Fix |
@@ -207,6 +221,8 @@ flowchart LR
 
 ### ❓ What is git reflog and how does it save you?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 `git reflog` lists **every place `HEAD` has been** — even commits no longer on any branch. After a bad `reset --hard` or a messy rebase:
@@ -221,6 +237,8 @@ Lost commits stay recoverable for about 90 days by default.
 ---
 
 ### ❓ What is git stash?
+
+**Level:** 🟢 Beginner
 
 ### 📝 Answer
 
@@ -239,6 +257,8 @@ git stash pop        # bring changes back
 
 ### ❓ What is git cherry-pick?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Copies **one specific commit** from another branch onto your current branch.
@@ -256,6 +276,8 @@ Use it for back-porting a fix to a release branch. The copied commit gets a new 
 
 ### ❓ What is a pull request, and what makes a good one?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 A pull request (PR) asks to merge your branch into another, with a **code review** and automatic checks (tests, lint).
@@ -265,6 +287,8 @@ A good PR is: **small** (easy to review), has a clear title and description (wha
 ---
 
 ### ❓ What is .gitignore?
+
+**Level:** 🟢 Beginner
 
 ### 📝 Answer
 
@@ -289,6 +313,8 @@ dist/
 
 ### ❓ What is a Git tag?
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 A name pointing to a specific commit, used to mark **releases**.
@@ -306,6 +332,8 @@ Annotated tags (`-a`) store author, date and message; lightweight tags are just 
 
 ### ❓ Tricky: What is a detached HEAD?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 `HEAD` points directly to a **commit instead of a branch** (e.g. after `git checkout a1b2c3d` or a tag). You can look around and even commit, but new commits belong to no branch and are easy to lose. Keep them with `git switch -c new-branch`.
@@ -313,6 +341,8 @@ Annotated tags (`-a`) store author, date and message; lightweight tags are just 
 ---
 
 ### ❓ Tricky: What does `git push --force` risk, and what's safer?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -322,6 +352,8 @@ Annotated tags (`-a`) store author, date and message; lightweight tags are just 
 
 ### ❓ Tricky: What is HEAD~1 vs HEAD^?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Both mean "the parent of HEAD". They differ only on merge commits: `HEAD^2` is the **second parent** (the merged branch), while `HEAD~2` is the **grandparent** along the first-parent line.
@@ -329,6 +361,8 @@ Both mean "the parent of HEAD". They differ only on merge commits: `HEAD^2` is t
 ---
 
 ### ❓ Tricky: How do you find which commit introduced a bug?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 

@@ -6,6 +6,8 @@
 
 ### ❓ What does "semantic HTML" mean?
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 Semantic HTML means **using HTML tags that describe the meaning of content**, not just how it looks.
@@ -54,6 +56,8 @@ The browser, search engines, and screen readers rely on semantics to understand 
 
 ### ❓ Difference between `<div>` and `<span>`?
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 Both are **non-semantic** elements, but they differ in **display behavior**.
@@ -76,6 +80,8 @@ Both are **non-semantic** elements, but they differ in **display behavior**.
 
 ### ❓ Difference between `id` and `class`?
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 They are identifiers, but serve **very different purposes**.
@@ -97,6 +103,8 @@ They are identifiers, but serve **very different purposes**.
 ---
 
 ### ❓ Difference between `<section>`, `<article>`, and `<div>`?
+
+**Level:** 🟢 Beginner
 ### 📝 Answer
 
 | Tag         | When to Use |
@@ -129,6 +137,8 @@ They are identifiers, but serve **very different purposes**.
 
 ### ❓ What are `data-*` attributes?
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 `data-*` attributes let you attach **custom data** to HTML elements without affecting layout or semantics.
@@ -159,6 +169,8 @@ btn.dataset.action;   // "delete"
 
 ### ❓ Difference between `<script>`, `async`, and `defer`?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 ```html
@@ -184,6 +196,8 @@ btn.dataset.action;   // "delete"
 ---
 
 ### ❓ How would you explain the difference between preload, prefetch, and preconnect — and when would you reach for each?
+
+**Level:** 🟡 Intermediate
 ### 📝 Answer
 
 These are **resource hints** that help the browser optimize loading.
@@ -207,6 +221,8 @@ These are **resource hints** that help the browser optimize loading.
 ## ♿ Part 4 — Accessibility (a11y)
 
 ### ❓ How do you approach accessibility (a11y) in HTML, and what does it mean to you in practice?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -268,6 +284,8 @@ Accessibility ensures websites are usable by everyone, including:
 
 ### ❓ What are Web Components?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Web Components allow you to create **custom HTML elements** with isolated styles and behavior — built into the browser, **no framework required**.
@@ -324,6 +342,8 @@ document.body.appendChild(tpl.content.cloneNode(true));
 ## 🔍 Part 6 — SEO
 
 ### ❓ How does HTML structure impact SEO?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -383,6 +403,8 @@ Search engines analyze **HTML structure**, not visuals.
 
 ### ❓ Is ARIA better than semantic HTML?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 ❌ **No. ARIA is a fallback, not a replacement.**
@@ -401,6 +423,8 @@ Search engines analyze **HTML structure**, not visuals.
 
 ### ❓ Does HTML support multithreading?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 ❌ **No.**
@@ -415,6 +439,8 @@ Search engines analyze **HTML structure**, not visuals.
 ---
 
 ### ❓ Why does broken HTML still work?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -435,6 +461,8 @@ Browser auto-corrects:
 ---
 
 ### ❓ Does `display: none` remove an element from the DOM?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -461,6 +489,8 @@ opacity: 0;        /* invisible, takes space, still clickable */
 
 ### ❓ We're getting complaints that the page feels slow, but the HTML is pretty small. Where would you start debugging?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 - Blocking `<script>` tags without `defer` / `async`
@@ -475,6 +505,8 @@ opacity: 0;        /* invisible, takes space, still clickable */
 
 ### ❓ A QA engineer filed a bug — screen reader users are hearing content in the wrong order. How would you investigate that?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 - Check semantic tags (avoid `<div>` for buttons, links, etc.)
@@ -487,6 +519,8 @@ opacity: 0;        /* invisible, takes space, still clickable */
 
 ### ❓ Our mobile users are seeing a broken layout, but everything looks fine on desktop. What would you look for?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 - Missing viewport meta tag: `<meta name="viewport" content="width=device-width, initial-scale=1">`
@@ -498,6 +532,8 @@ opacity: 0;        /* invisible, takes space, still clickable */
 ---
 
 ### ❓ A user reported they can't operate our form using only the keyboard — the buttons aren't responding. What could be causing that?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -518,6 +554,8 @@ opacity: 0;        /* invisible, takes space, still clickable */
 
 ### ❓ After a major redesign, our SEO rankings dropped significantly. What HTML-related things would you investigate?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 - Lost semantic structure (replaced `<article>`/`<section>` with `<div>`)
@@ -531,6 +569,8 @@ opacity: 0;        /* invisible, takes space, still clickable */
 ---
 
 ### ❓ After a dynamic DOM update, click handlers on some elements stop working. Why does this happen and how would you fix it?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -553,6 +593,8 @@ document.body.addEventListener('click', (e) => {
 ---
 
 ### ❓ Our page scores poorly on CLS in Lighthouse. Walk me through how you'd reduce it.
+
+**Level:** 🟡 Intermediate
 ### 📝 Answer
 
 **CLS** measures unexpected layout movement. To reduce it:
@@ -568,5 +610,132 @@ document.body.addEventListener('click', (e) => {
 ```
 
 > 💡 CLS is one of the three **Core Web Vitals** (along with LCP and INP).
+
+---
+
+
+
+---
+
+## Forms, Media & Embeds (Beginner)
+
+### ❓ How do HTML forms and built-in validation work?
+
+### 📝 Answer
+
+A **form** collects input and sends it to a server. Browsers can **validate** it before sending — no JavaScript needed.
+
+```html
+<form action="/signup" method="post">
+  <label for="email">Email</label>
+  <input id="email" name="email" type="email" required autocomplete="email">
+
+  <label for="age">Age</label>
+  <input id="age" name="age" type="number" min="18" max="99">
+
+  <label for="pin">PIN code</label>
+  <input id="pin" name="pin" pattern="[0-9]{6}" title="6 digits" inputmode="numeric">
+
+  <button type="submit">Sign up</button>
+</form>
+```
+
+| Attribute | Checks |
+|---|---|
+| `required` | not empty |
+| `type="email"`, `url`, `number`, `date` | right format (and the right mobile keyboard) |
+| `min`, `max`, `step` | number/date range |
+| `minlength`, `maxlength` | text length |
+| `pattern` | a regular expression |
+
+- The browser blocks submit and shows a message; style invalid fields with `:user-invalid` (after the user has typed) or `:invalid`.
+- `novalidate` on the form turns it off (when you validate with JS).
+- JS API: `input.setCustomValidity("Passwords don't match")`, `form.checkValidity()`.
+- **`name` is what gets sent** — an input without `name` isn't submitted.
+
+#### ↳ Follow-up: Is browser validation enough?
+
+↪ No — anyone can skip it (DevTools, curl). Always validate again on the server.
+
+#### ↳ Follow-up: GET or POST for a form?
+
+↪ GET for searches/filters (data in the URL, bookmarkable); POST for anything that changes data or contains secrets.
+
+---
+
+### ❓ How do you serve responsive images with `srcset`, `sizes`, `<picture>` and lazy loading?
+
+### 📝 Answer
+
+Goal: each device downloads the **smallest image that still looks sharp**.
+
+**1. Same image, different sizes — `srcset` + `sizes`:**
+
+```html
+<img src="hero-800.jpg"
+     srcset="hero-400.jpg 400w, hero-800.jpg 800w, hero-1600.jpg 1600w"
+     sizes="(max-width: 600px) 100vw, 800px"
+     width="800" height="450" alt="Team at work">
+```
+The browser knows the screen width and pixel density, reads how wide the image will be (`sizes`), and picks the best file.
+
+**2. Different formats or crops — `<picture>`:**
+
+```html
+<picture>
+  <source type="image/avif" srcset="hero.avif">
+  <source type="image/webp" srcset="hero.webp">
+  <source media="(max-width: 600px)" srcset="hero-square.jpg">   <!-- different crop on phones -->
+  <img src="hero.jpg" alt="Team at work" width="800" height="450">
+</picture>
+```
+
+**3. Load only when needed:**
+
+| Image | Do |
+|---|---|
+| Below the fold | `loading="lazy"` |
+| The main / hero image (LCP) | **never** lazy; add `fetchpriority="high"` |
+| Every image | `width` + `height` (or CSS `aspect-ratio`) to stop layout shift |
+
+#### ↳ Follow-up: `srcset` with `w` vs `x` descriptors?
+
+↪ `400w` describes the file's width (works with `sizes` for fluid layouts); `2x` describes pixel density (for fixed-size images like logos).
+
+---
+
+### ❓ What is an `<iframe>`, and how does the `sandbox` attribute keep it safe?
+
+### 📝 Answer
+
+An **iframe** embeds another web page inside yours (maps, videos, payment widgets, ads).
+
+```html
+<iframe src="https://www.youtube.com/embed/abc123"
+        title="Product demo video"
+        loading="lazy"
+        sandbox="allow-scripts allow-same-origin allow-presentation"
+        allow="fullscreen"
+        referrerpolicy="strict-origin-when-cross-origin">
+</iframe>
+```
+
+**`sandbox`** (empty) blocks almost everything: scripts, forms, popups, top-page navigation, and treats the content as a unique origin. You add back only what's needed:
+
+| Token | Allows |
+|---|---|
+| `allow-scripts` | JavaScript |
+| `allow-forms` | form submission |
+| `allow-popups` | `window.open`, `target="_blank"` |
+| `allow-same-origin` | keep its real origin (cookies, storage) |
+| `allow-top-navigation` | navigating your whole page |
+
+⚠️ Never combine `allow-scripts` + `allow-same-origin` for content **from your own origin** — the frame could remove its own sandbox.
+
+**Protecting your page from being framed** (clickjacking) is the other direction: send `Content-Security-Policy: frame-ancestors 'self'` (or `X-Frame-Options: DENY`).
+
+#### ↳ Follow-up: How do the page and an iframe talk?
+
+↪ With `postMessage` — and always check `event.origin` on the receiving side.
 
 ---

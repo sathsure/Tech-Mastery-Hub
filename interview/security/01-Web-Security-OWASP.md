@@ -38,6 +38,8 @@ Compared with 2021: supply chain and error handling are new; SSRF was merged int
 
 ### ❓ What is SQL injection and how do you prevent it?
 
+**Level:** 🟢 Beginner
+
 SQL injection happens when user input is pasted into a SQL query, so the input can change the query itself.
 
 ```java
@@ -57,6 +59,8 @@ ps.setString(1, email);
 
 ### ❓ What is XSS (Cross-Site Scripting) and how do you prevent it?
 
+**Level:** 🟡 Intermediate
+
 XSS lets an attacker run their JavaScript in another user's browser, usually by saving a script in data the site later shows (a comment, a profile name). The script can steal session tokens or act as the user.
 
 - **Escape output** for the context where it appears (HTML, attribute, URL, JavaScript). Angular and React escape by default — avoid `innerHTML` / `dangerouslySetInnerHTML` with user data.
@@ -70,6 +74,8 @@ XSS lets an attacker run their JavaScript in another user's browser, usually by 
 
 ### ❓ What is CSRF and how do you prevent it?
 
+**Level:** 🟢 Beginner
+
 Cross-Site Request Forgery tricks a logged-in user's browser into sending a request they didn't intend — the browser attaches their cookies automatically.
 
 - Use **CSRF tokens** in forms (Spring Security enables this by default for cookie sessions).
@@ -82,6 +88,8 @@ Cross-Site Request Forgery tricks a logged-in user's browser into sending a requ
 ---
 
 ### ❓ What is broken access control? Give an example.
+
+**Level:** 🟡 Intermediate
 
 The app checks that you are logged in but not that the data or action belongs to you. It is number 1 on the OWASP Top 10.
 
@@ -100,6 +108,8 @@ Deny by default, check permissions in one place (e.g. Spring Security `@PreAutho
 
 ### ❓ What is SSRF (Server-Side Request Forgery)?
 
+**Level:** 🟡 Intermediate
+
 SSRF tricks your server into making a request to a place the attacker chooses — often internal systems the attacker can't reach directly. In the 2025 OWASP Top 10 it is part of broken access control.
 
 **Example:** an "import image from URL" feature is given `http://169.254.169.254/latest/meta-data/` — the cloud metadata address — and leaks the server's cloud credentials.
@@ -111,6 +121,8 @@ SSRF tricks your server into making a request to a place the attacker chooses �
 ## Data Protection
 
 ### ❓ How should passwords be stored?
+
+**Level:** 🟡 Intermediate
 
 Never store passwords as plain text or with fast hashes like MD5 or SHA-256. Use a slow, salted password hash so stolen hashes are expensive to crack.
 
@@ -127,6 +139,8 @@ boolean ok = passwordEncoder.matches(rawPassword, hash);  // on login
 
 ### ❓ What is the difference between encryption, hashing and encoding?
 
+**Level:** 🟡 Intermediate
+
 | | Reversible? | Purpose | Example |
 |---|---|---|---|
 | **Encoding** | Yes, by anyone | Change format for transport | Base64, URL encoding |
@@ -139,6 +153,8 @@ A common mistake: thinking Base64 is "encryption" — anyone can decode it.
 
 ### ❓ How do you handle secrets like API keys and DB passwords?
 
+**Level:** 🟡 Intermediate
+
 - Never commit them to Git — scan repositories with tools like gitleaks; rotate any secret that was ever committed.
 - Store them in a **secrets manager** (AWS Secrets Manager, HashiCorp Vault, Azure Key Vault) or the platform's secret store, and inject them at runtime.
 - Give each service its own credentials with the least privilege, and rotate them regularly.
@@ -150,6 +166,8 @@ A common mistake: thinking Base64 is "encryption" — anyone can decode it.
 ## Secure Development
 
 ### ❓ What security headers should a web app send?
+
+**Level:** 🟡 Intermediate
 
 | Header | What it does |
 |---|---|
@@ -165,6 +183,8 @@ Cookies: `Secure; HttpOnly; SameSite=Lax`.
 
 ### ❓ How do you keep third-party libraries secure?
 
+**Level:** 🟡 Intermediate
+
 Most code in an app is libraries, and known vulnerabilities (CVEs) in them are a top attack path — Log4Shell (CVE-2021-44228) is the famous example. "Software supply chain failures" is now #3 in the OWASP Top 10.
 
 - Scan dependencies in CI: OWASP Dependency-Check, Snyk, GitHub Dependabot, `npm audit`.
@@ -175,6 +195,8 @@ Most code in an app is libraries, and known vulnerabilities (CVEs) in them are a
 
 ### ❓ What is the difference between SAST, DAST and penetration testing?
 
+**Level:** 🟡 Intermediate
+
 - **SAST** scans source code for insecure patterns without running it (SonarQube, Semgrep) — early, in CI.
 - **DAST** attacks the running app from outside (OWASP ZAP, Burp Suite) — finds misconfiguration and runtime issues.
 - **Penetration testing** is a human expert attacking the system with permission, chaining weaknesses together like a real attacker.
@@ -184,6 +206,8 @@ Use all three: SAST on every commit, DAST on staging, pen tests before major rel
 ---
 
 ### ❓ What does "least privilege" mean in practice?
+
+**Level:** 🟡 Intermediate
 
 Give every user, service and token only the access it needs, for only as long as it needs it. Then a stolen credential or bug can do limited damage.
 

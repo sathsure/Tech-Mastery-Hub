@@ -2,6 +2,8 @@
 
 ### ❓ What is Spring, Why it was introduced?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Spring is a **lightweight, modular, inversion-of-control (IoC) based framework** that helps build loosely coupled, testable, enterprise Java applications.
@@ -18,6 +20,8 @@ Spring is a **lightweight, modular, inversion-of-control (IoC) based framework**
 ---
 
 ### ❓ What are the different bean configuration approaches used to implement IoC in Spring?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -72,6 +76,8 @@ public class AppConfig {
 ---
 
 ### ❓ Common Spring Dependency Injection Errors – Why Do They Happen?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -278,6 +284,8 @@ public void saveOrder() {
 
 ### ❓ Can you explain the different bean scopes in Spring?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Spring controls **how many instances** of a bean exist.
@@ -299,6 +307,8 @@ public class ReportGenerator {}
 ---
 
 ### ❓ Explain the lifecycle of a Spring bean and how you can intervene at different stages of its initialization and destruction.
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -540,6 +550,8 @@ preInstantiateSingletons()
 
 ### ❓ What is Spring Profile?
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 A Spring Profile is a way to activate different configurations for different environments (like `dev`, `test`, `qa`, `prod`) without changing code.
@@ -717,6 +729,8 @@ public class AppConfig {
 
 ### ❓ What is Spring Boot Actuator?
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 **Spring Boot Actuator** is a production-ready feature of Spring Boot that helps you **monitor, manage, and inspect your application** while it is running.
@@ -792,6 +806,8 @@ management.endpoints.web.exposure.include=health,info
 ---
 
 ### ❓ What is Spring AOP, Why it was introduced?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -898,6 +914,8 @@ Same trap as `@Transactional`: when one method calls another **in the same class
 
 ### ❓ What is Spring Modular Design?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 ![ModularDesign Image](/src/assets/backend/spring-modular-design.png)
@@ -919,6 +937,8 @@ Same trap as `@Transactional`: when one method calls another **in the same class
 ## Other Spring Concepts
 
 ### ❓ Spring HATEOAS
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -950,6 +970,8 @@ model.add(linkTo(methodOn(UserController.class).getAll()).withRel("all-users"));
 ---
 
 ### ❓ Thymeleaf
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -984,6 +1006,8 @@ model.addAttribute("user", user);
 ---
 
 ### ❓ application.properties vs application.yml?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -1027,6 +1051,8 @@ spring:
 ---
 
 ### ❓ What Unit Testing technique you used in Java and Spring?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -1107,5 +1133,185 @@ class UserControllerTest {
 ```
 
 > Write unit tests with Mockito and integration tests using `@SpringBootTest`.
+
+---
+
+
+## Spring Boot Essentials (Intermediate)
+
+### ❓ How does Spring Boot auto-configuration work?
+
+### 📝 Answer
+
+**Auto-configuration** creates sensible beans for you, based on **what's on the classpath** and **what you've already defined**.
+
+Add `spring-boot-starter-data-jpa` + a PostgreSQL driver → you get a `DataSource`, an `EntityManagerFactory` and a `TransactionManager` without writing any config.
+
+**How:**
+1. `@EnableAutoConfiguration` (inside `@SpringBootApplication`) loads the list of auto-configuration classes from
+   `META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports` in each starter JAR.
+2. Each class is guarded by **conditions**, so it only applies when it makes sense:
+
+| Condition | Applies when |
+|---|---|
+| `@ConditionalOnClass(DataSource.class)` | the class is on the classpath |
+| `@ConditionalOnMissingBean` | **you haven't** defined your own bean |
+| `@ConditionalOnProperty("app.cache.enabled")` | a property is set |
+| `@ConditionalOnWebApplication` | it's a web app |
+
+```java
+@AutoConfiguration
+@ConditionalOnClass(ObjectMapper.class)
+class JacksonAutoConfiguration {
+  @Bean
+  @ConditionalOnMissingBean          // your own ObjectMapper bean wins
+  ObjectMapper objectMapper() { return new ObjectMapper(); }
+}
+```
+
+**Your bean always wins** — define it and the auto-configured one backs off.
+
+#### ↳ Follow-up: How do you see what was auto-configured?
+
+↪ Run with `--debug` (prints the conditions report) or open `/actuator/conditions`.
+
+#### ↳ Follow-up: How do you turn one off?
+
+↪ `@SpringBootApplication(exclude = DataSourceAutoConfiguration.class)` or `spring.autoconfigure.exclude` in properties.
+
+---
+
+### ❓ What does `@SpringBootApplication` do?
+
+### 📝 Answer
+
+It's three annotations in one:
+
+| Part | Does |
+|---|---|
+| `@SpringBootConfiguration` | marks the class as a configuration class (a special `@Configuration`) |
+| `@EnableAutoConfiguration` | turns on auto-configuration |
+| `@ComponentScan` | finds `@Component`, `@Service`, `@Repository`, `@Controller` in **this package and below** |
+
+```java
+@SpringBootApplication
+public class ShopApplication {
+  public static void main(String[] args) {
+    SpringApplication.run(ShopApplication.class, args);   // start the context + embedded server
+  }
+}
+```
+
+`SpringApplication.run` creates the `ApplicationContext`, loads properties, runs auto-configuration, creates beans, and starts the embedded Tomcat.
+
+#### ↳ Follow-up: Why put the main class in the root package?
+
+↪ Component scanning starts from its package. Classes in a sibling package (e.g. `com.other`) won't be found.
+
+---
+
+### ❓ Explain the Spring MVC request flow (DispatcherServlet).
+
+### 📝 Answer
+
+Every HTTP request goes through one **front controller**, the `DispatcherServlet`.
+
+```mermaid
+sequenceDiagram
+  participant C as Client
+  participant F as Filters (security, CORS)
+  participant D as DispatcherServlet
+  participant HM as HandlerMapping
+  participant I as Interceptors
+  participant Ctl as @RestController
+  participant MC as HttpMessageConverter (Jackson)
+  C->>F: GET /api/users/7
+  F->>D: request
+  D->>HM: which method handles this?
+  HM-->>D: UserController.get(Long)
+  D->>I: preHandle()
+  D->>Ctl: get(7) — args resolved (@PathVariable, @RequestBody…)
+  Ctl-->>D: UserDto
+  D->>MC: convert to JSON
+  D->>I: postHandle / afterCompletion
+  D-->>C: 200 OK + JSON
+```
+
+1. **Filters** run first (servlet level — Spring Security lives here).
+2. `DispatcherServlet` asks **HandlerMapping** which controller method matches the URL and HTTP method.
+3. **Interceptors** `preHandle` run.
+4. **Argument resolvers** build the parameters (`@PathVariable`, `@RequestParam`, `@RequestBody` + validation).
+5. The controller runs.
+6. **Message converters** (Jackson) turn the return value into JSON.
+7. Exceptions go to `@ExceptionHandler` / `@RestControllerAdvice`.
+
+#### ↳ Follow-up: Filter vs interceptor?
+
+↪ Filters are servlet-level and see every request (even non-Spring ones). Interceptors are Spring MVC-level and know which controller method will run.
+
+---
+
+### ❓ Constructor injection vs field injection — which is better?
+
+### 📝 Answer
+
+```java
+// ❌ Field injection
+@Service
+class OrderService {
+  @Autowired private PaymentClient payments;
+}
+
+// ✅ Constructor injection
+@Service
+class OrderService {
+  private final PaymentClient payments;
+  OrderService(PaymentClient payments) { this.payments = payments; }   // @Autowired optional with one constructor
+}
+```
+
+| | Constructor | Field |
+|---|---|---|
+| Fields can be `final` (immutable) | ✅ | ❌ |
+| Easy unit test (`new OrderService(mock)`) | ✅ | ❌ needs reflection / Spring |
+| Missing dependency | fails at startup | `NullPointerException` later |
+| Hidden dependencies | ❌ visible in the constructor | ✅ hidden |
+| Too many dependencies | obvious (long constructor = class does too much) | hidden |
+
+**Setter injection** is for **optional** dependencies only.
+
+#### ↳ Follow-up: How does constructor injection reveal circular dependencies?
+
+↪ A needs B in its constructor and B needs A → Spring can't create either and fails at startup, forcing you to fix the design.
+
+---
+
+### ❓ `@Component` vs `@Bean` — what's the difference?
+
+### 📝 Answer
+
+| | `@Component` (and `@Service`, …) | `@Bean` |
+|---|---|---|
+| Placed on | **your class** | a **method** in a `@Configuration` class |
+| Found by | component scanning | Spring calling the method |
+| Use for | classes you wrote | **third-party classes** you can't annotate, or beans needing custom setup |
+| Control over creation | Spring calls the constructor | you write the creation code |
+
+```java
+@Service                                   // your own class
+class InvoiceService { … }
+
+@Configuration
+class HttpConfig {
+  @Bean                                    // third-party class
+  RestClient paymentClient(@Value("${payment.url}") String url) {
+    return RestClient.builder().baseUrl(url).build();
+  }
+}
+```
+
+#### ↳ Follow-up: Why must `@Bean` methods be in a `@Configuration` class?
+
+↪ In a `@Configuration` class Spring proxies the methods, so calling one `@Bean` method from another returns the **same singleton** instead of creating a new object.
 
 ---

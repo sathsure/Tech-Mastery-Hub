@@ -2,6 +2,8 @@
 
 ### ❓ Write a country-wise order analytics query (orders, highest/lowest/average amount, unique customers, orders between 1000 and 5000)
 
+**Level:** 🟡 Intermediate
+
 > Given a `customer` table and an `orders` table:
 >
 > - total number of orders per country
@@ -37,6 +39,8 @@ ORDER BY c.country;
 
 ### ❓ What is the output of `WHERE salary = NULL`?
 
+**Level:** 🟢 Beginner
+
 > ```sql
 > SELECT * FROM employee WHERE salary = NULL;
 > ```
@@ -57,6 +61,8 @@ SELECT * FROM employee WHERE salary IS NULL;
 
 ### ❓ What is the difference between COUNT(*) and COUNT(column)?
 
+**Level:** 🟢 Beginner
+
 > ```sql
 > SELECT COUNT(*), COUNT(salary) FROM employee;
 > ```
@@ -71,6 +77,8 @@ Example: 5 employees, 2 without a salary → `COUNT(*) = 5`, `COUNT(salary) = 3`
 ---
 
 ### ❓ How do you find the second highest salary?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -95,6 +103,8 @@ For the Nth highest, `DENSE_RANK()` is the cleanest — see the SQL interview qu
 
 ### ❓ How do you find duplicate records?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 ```sql
@@ -109,6 +119,8 @@ HAVING COUNT(*) > 1;
 ---
 
 ### ❓ EXISTS vs IN — what's the difference?
+
+**Level:** 🟡 Intermediate
 
 > employee
 >

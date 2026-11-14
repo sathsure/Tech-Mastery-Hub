@@ -103,6 +103,8 @@ A **generator expression** (round brackets) produces items lazily, so it uses al
 
 ### ❓ What are `*args` and `**kwargs`?
 
+**Level:** 🟢 Beginner
+
 They let a function accept any number of extra arguments: `*args` collects extra **positional** arguments into a tuple, `**kwargs` collects extra **keyword** arguments into a dict.
 
 ```python
@@ -117,6 +119,8 @@ They are common in wrappers and decorators that pass arguments through unchanged
 ---
 
 ### ❓ What is a decorator?
+
+**Level:** 🟡 Intermediate
 
 A function that takes a function and returns a new one, adding behaviour **around** it without changing its code. Written with `@` above the function.
 
@@ -143,6 +147,8 @@ Real uses: `@app.get("/orders")` in FastAPI, `@pytest.fixture`, `@functools.lru_
 
 ### ❓ What is a generator, and what does `yield` do?
 
+**Level:** 🟡 Intermediate
+
 A generator is a function that produces values **one at a time**, pausing at each `yield` and resuming where it left off. It doesn't build the whole result in memory.
 
 ```python
@@ -161,6 +167,8 @@ Use generators for large files, streams and pipelines.
 ---
 
 ### ❓ What is a context manager (the `with` statement)?
+
+**Level:** 🟢 Beginner
 
 An object that sets something up and **always** cleans it up, even if an error happens — closing files, releasing locks, committing or rolling back transactions.
 
@@ -183,6 +191,8 @@ It works through the `__enter__` and `__exit__` methods.
 
 ### ❓ How does exception handling work in Python?
 
+**Level:** 🟡 Intermediate
+
 ```python
 try:
     amount = int(user_input)
@@ -204,6 +214,8 @@ finally:
 ## Object-Oriented Python
 
 ### ❓ How do classes work in Python? What are `__init__`, `self` and dunder methods?
+
+**Level:** 🟡 Intermediate
 
 - `__init__` sets up a new object's attributes; `self` is the object itself, passed automatically.
 - **Dunder** ("double underscore") methods let your objects work with built-in syntax: `__str__`/`__repr__` (printing), `__eq__` (`==`), `__len__` (`len()`), `__lt__` (sorting).
@@ -229,6 +241,8 @@ Python has no `private` keyword: a leading `_name` means "internal, please don't
 
 ### ❓ What is a dataclass?
 
+**Level:** 🟢 Beginner
+
 `@dataclass` writes `__init__`, `__repr__` and `__eq__` for you from the field list — ideal for simple data objects.
 
 ```python
@@ -249,6 +263,8 @@ For input validation (e.g. API bodies), use **Pydantic** models instead.
 
 ### ❓ What is the difference between `@staticmethod`, `@classmethod` and an instance method?
 
+**Level:** 🟡 Intermediate
+
 - **Instance method** — gets `self`; works with one object's data.
 - **`@classmethod`** — gets `cls`; often used as an alternative constructor.
 - **`@staticmethod`** — gets neither; a plain function kept inside the class for organisation.
@@ -268,6 +284,8 @@ class User:
 
 ### ❓ What is the GIL?
 
+**Level:** 🟡 Intermediate
+
 The **Global Interpreter Lock** in CPython lets only one thread run Python bytecode at a time. So threads don't speed up **CPU-bound** Python code, but they work fine for **I/O-bound** work, because a thread releases the GIL while waiting for the network or disk.
 
 - CPU-bound → use `multiprocessing` / `ProcessPoolExecutor` (separate processes, separate GILs), or libraries like NumPy that run in C.
@@ -277,6 +295,8 @@ The **Global Interpreter Lock** in CPython lets only one thread run Python bytec
 ---
 
 ### ❓ When do you use threading, multiprocessing or asyncio?
+
+**Level:** 🟡 Intermediate
 
 | Tool | Best for | Example |
 |---|---|---|
@@ -299,6 +319,8 @@ Never call a blocking function (like `time.sleep` or `requests.get`) inside asyn
 
 ### ❓ How does Python manage memory?
 
+**Level:** 🟡 Intermediate
+
 CPython uses **reference counting**: each object counts how many references point to it and is freed when the count hits zero. A **cyclic garbage collector** cleans up groups of objects that only reference each other.
 
 **Practical tips:** use generators for big data, `del` large objects you no longer need, and profile with `tracemalloc` or `memory_profiler`.
@@ -306,6 +328,8 @@ CPython uses **reference counting**: each object counts how many references poin
 ---
 
 ### ❓ What is the difference between a shallow copy and a deep copy?
+
+**Level:** 🟡 Intermediate
 
 A **shallow copy** makes a new outer container but shares the inner objects; a **deep copy** copies everything recursively.
 
@@ -325,6 +349,8 @@ deep[0]      # [1, 2]     — independent
 
 ### ❓ What are virtual environments, pip and requirements files?
 
+**Level:** 🟡 Intermediate
+
 A **virtual environment** is a per-project folder of installed packages, so projects don't clash over versions.
 
 ```bash
@@ -340,6 +366,8 @@ Modern projects often use `pyproject.toml` with tools like **uv** or **Poetry** 
 ---
 
 ### ❓ What is FastAPI, and why is it popular?
+
+**Level:** 🟡 Intermediate
 
 FastAPI is a Python web framework for building APIs from **type hints**. It validates requests with Pydantic, generates OpenAPI (Swagger) docs automatically, and supports `async` for high concurrency.
 
@@ -366,6 +394,8 @@ Run with `uvicorn main:app --reload`; docs appear at `/docs`. A body with `quant
 
 ### ❓ What is the difference between Django, Flask and FastAPI?
 
+**Level:** 🟡 Intermediate
+
 | | Django | Flask | FastAPI |
 |---|---|---|---|
 | Style | "Batteries included" full framework | Minimal micro-framework | Modern API framework |
@@ -375,6 +405,8 @@ Run with `uvicorn main:app --reload`; docs appear at `/docs`. A body with `quant
 ---
 
 ### ❓ How do you test Python code with pytest?
+
+**Level:** 🟡 Intermediate
 
 pytest finds functions starting with `test_` and uses plain `assert`.
 
@@ -401,6 +433,8 @@ Use **fixtures** for shared setup and `unittest.mock` / `pytest-mock` to fake ex
 
 ### ❓ What is pandas used for?
 
+**Level:** 🟢 Beginner
+
 pandas is the standard library for working with **tabular data** in Python — loading, cleaning, joining and summarising data in a `DataFrame` (like a spreadsheet or SQL table in memory).
 
 ```python
@@ -413,3 +447,194 @@ print(daily.tail())
 ```
 
 For data larger than memory, use Polars, DuckDB or Spark.
+
+
+
+---
+
+## Language Internals (Intermediate)
+
+### ❓ What is the LEGB rule, and how do closures work in Python?
+
+### 📝 Answer
+
+When Python looks up a name, it searches four scopes in order — **LEGB**:
+
+1. **L**ocal — inside the current function
+2. **E**nclosing — inside outer functions
+3. **G**lobal — the module
+4. **B**uilt-in — `len`, `print`, …
+
+```python
+x = "global"
+
+def outer():
+    x = "enclosing"
+    def inner():
+        return x            # finds the enclosing x
+    return inner
+
+print(outer()())            # enclosing
+```
+
+A **closure** is an inner function that **remembers** variables from its enclosing function, even after it returned:
+
+```python
+def make_counter():
+    count = 0
+    def inc():
+        nonlocal count      # needed to *change* an enclosing variable
+        count += 1
+        return count
+    return inc
+
+c = make_counter()
+c(); c()                    # 2
+```
+
+`global x` changes a module variable; `nonlocal x` changes an enclosing one.
+
+#### ↳ Follow-up: Why does `count += 1` fail without `nonlocal`?
+
+↪ Assigning makes `count` local to `inc`, so reading it first raises `UnboundLocalError`.
+
+---
+
+### ❓ Why is a mutable default argument a bug?
+
+### 📝 Answer
+
+Default values are created **once**, when the function is defined — not on every call. A mutable default (list, dict, set) is **shared** by all calls.
+
+```python
+def add_item(item, cart=[]):        # ❌ one list for every call
+    cart.append(item)
+    return cart
+
+add_item("pen")      # ['pen']
+add_item("book")     # ['pen', 'book']  ← surprise
+```
+
+```python
+def add_item(item, cart=None):      # ✅
+    if cart is None:
+        cart = []
+    cart.append(item)
+    return cart
+```
+
+Same rule for dataclasses: `tags: list = field(default_factory=list)`.
+
+#### ↳ Follow-up: Is it ever useful?
+
+↪ Rarely, as a tiny cache — but `functools.lru_cache` is clearer.
+
+---
+
+### ❓ Iterator vs iterable — what's the difference?
+
+### 📝 Answer
+
+- **Iterable** — anything you can loop over; has `__iter__()` that returns an iterator (`list`, `str`, `dict`, files).
+- **Iterator** — the object doing the walking; has `__next__()` and remembers its position. Raises `StopIteration` at the end. Used up after one pass.
+
+```python
+nums = [1, 2]          # iterable
+it = iter(nums)        # iterator
+next(it)               # 1
+next(it)               # 2
+next(it)               # StopIteration
+```
+
+`for x in nums` is just `iter()` + repeated `next()` until `StopIteration`.
+
+```python
+class Countdown:                      # a custom iterable
+    def __init__(self, start): self.start = start
+    def __iter__(self):
+        n = self.start
+        while n > 0:
+            yield n                   # a generator is the easy way to write an iterator
+            n -= 1
+
+list(Countdown(3))                    # [3, 2, 1]
+```
+
+#### ↳ Follow-up: Why can you loop over a list twice but not a generator?
+
+↪ A list makes a fresh iterator each time; a generator **is** an iterator, so it's exhausted after one pass.
+
+---
+
+### ❓ How does multiple inheritance and the MRO work in Python?
+
+### 📝 Answer
+
+A class can inherit from several parents. The **Method Resolution Order (MRO)** is the order Python searches for a method — computed with the **C3 linearization** (children before parents, left-to-right order kept).
+
+```python
+class A:
+    def hello(self): return "A"
+class B(A):
+    def hello(self): return "B → " + super().hello()
+class C(A):
+    def hello(self): return "C → " + super().hello()
+class D(B, C):
+    pass
+
+print(D().hello())                 # B → C → A
+print([k.__name__ for k in D.__mro__])   # ['D', 'B', 'C', 'A', 'object']
+```
+
+```mermaid
+flowchart BT
+  D --> B
+  D --> C
+  B --> A
+  C --> A
+```
+
+`super()` means "**next class in the MRO**", not "my parent" — that's why `B`'s `super()` calls `C`. This solves the **diamond problem**: `A` runs only once.
+
+#### ↳ Follow-up: What is a mixin?
+
+↪ A small class that adds one feature (e.g. `JsonMixin` with `to_json()`) and is combined with others through multiple inheritance.
+
+---
+
+### ❓ `__new__` vs `__init__` — what's the difference?
+
+### 📝 Answer
+
+| | `__new__` | `__init__` |
+|---|---|---|
+| Job | **creates** the object | **sets up** the object |
+| Receives | the class (`cls`) | the new object (`self`) |
+| Returns | the new instance | nothing (`None`) |
+| Runs | first | second |
+
+```python
+class Point:
+    def __new__(cls, *args):
+        print("creating")
+        return super().__new__(cls)
+    def __init__(self, x, y):
+        print("initialising")
+        self.x, self.y = x, y
+
+Point(1, 2)    # creating → initialising
+```
+
+You almost always only write `__init__`. Override `__new__` for **immutable types** (subclassing `int`, `str`, `tuple`) or to control instance creation (e.g. a singleton).
+
+```python
+class Celsius(float):
+    def __new__(cls, value):
+        return super().__new__(cls, round(value, 1))   # value must be set at creation
+```
+
+#### ↳ Follow-up: If `__new__` returns an object of another class, does `__init__` run?
+
+↪ No — `__init__` only runs when `__new__` returns an instance of `cls`.
+
+---

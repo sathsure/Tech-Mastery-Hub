@@ -27,6 +27,8 @@
 
 ### ❓ What types of data binding does Angular support?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Angular has **four primary types of binding**, plus a custom two-way pattern.
@@ -128,6 +130,8 @@ export class InputComponent {
 
 ### ❓ Can you walk me through the difference between Components and Directives in Angular?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 A **Component** is essentially a **Directive with a template** — it controls a piece of UI.
@@ -190,6 +194,8 @@ export class HighlightDirective {
 ---
 
 ### ❓ Can you explain ViewEncapsulation in Angular and the trade-offs between the available modes?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -261,6 +267,8 @@ Uses **real browser Shadow DOM**.
 
 ### ❓ When would you use `::ng-deep` in Angular, and what are the risks of relying on it?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 To **override styles of child or third-party components** that use Emulated encapsulation.
@@ -281,6 +289,8 @@ To **override styles of child or third-party components** that use Emulated enca
 # ♻️ Part 3 — Lifecycle Hooks
 
 ### ❓ Can you walk through a comprehensive Angular lifecycle example?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -376,6 +386,8 @@ export class ChildComponent
 
 ### ❓ How do `*ngIf` and `*ngFor` work conceptually?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Both are **structural directives** — they manipulate the DOM by adding/removing elements.
@@ -434,6 +446,8 @@ trackById(index: number, user: User): number {
 
 ### ❓ How do attribute directives work internally?
 
+**Level:** 🔴 Advanced
+
 ### 📝 Answer
 
 Attribute directives modify an element's appearance or behavior — they don't change the DOM structure.
@@ -460,6 +474,8 @@ export class HighlightDirective {
 ---
 
 ### ❓ What are the new control flow blocks `@if`, `@for`, `@switch`?
+
+**Level:** 🟡 Intermediate
 ### 📝 Answer
 
 Angular 17+ introduced **built-in control flow** — replacing `*ngIf`, `*ngFor`, and `*ngSwitch` with cleaner syntax.
@@ -502,6 +518,8 @@ Angular 17+ introduced **built-in control flow** — replacing `*ngIf`, `*ngFor`
 
 ### ❓ How do Standalone Components differ from NgModules?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 | Feature              | NgModules                         | Standalone Components            |
@@ -533,6 +551,8 @@ export class UserComponent {
 # 👁️ Part 6 — View & DOM Interaction
 
 ### ❓ How does `@ViewChild` work, and when would you use it over other approaches to access child elements?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -577,6 +597,8 @@ export class MyComponent {
 
 ### ❓ Why is direct DOM manipulation via `ElementRef` discouraged? Use `Renderer2` instead?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 **Problems with `el.nativeElement.style.color = "red"`:**
@@ -607,6 +629,8 @@ export class HighlightDirective {
 # 🔄 Part 7 — Pipes
 
 ### ❓ What are Angular pipes? Pure vs Impure?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -741,6 +765,8 @@ If `AsyncPipe` were pure → it would run only once → UI would never update.
 
 ### ❓ Difference between `providedIn: 'root'` vs `'any'` vs `'platform'`?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 | Scope        | Behavior                                                |
@@ -759,6 +785,8 @@ export class UserService { /* ... */ }
 ---
 
 ### ❓ Can you explain multi-providers in Angular and give a real-world scenario where you'd use one?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -786,6 +814,8 @@ constructor(@Inject(VALIDATORS) private validators: Validator[]) {
 ---
 
 ### ❓ What are Injection Tokens, and why are they required?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -815,6 +845,8 @@ constructor(@Inject(APP_CONFIG) private config: AppConfig) {}
 ---
 
 ### ❓ If a service is provided in both root and a lazy-loaded module, how many instances exist?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -860,6 +892,8 @@ export class LazyModule {}
 # 🚦 Part 9 — Routing
 
 ### ❓ What are the core concepts of Angular routing?
+
+**Level:** 🟢 Beginner
 
 ### 📝 Answer
 
@@ -974,6 +1008,8 @@ ngOnInit() {
 
 ### ❓ Differences between Template-driven and Reactive forms?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 | Feature             | Template-driven           | Reactive                    |
@@ -1012,6 +1048,8 @@ submit() {
 
 ### ❓ What happens when you mix `[(ngModel)]` with Reactive Forms?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 ❌ **Don't do it.** It mixes paradigms and causes:
@@ -1024,6 +1062,8 @@ submit() {
 ---
 
 ### ❓ How do you create a custom form control in Angular? (`ControlValueAccessor`)
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -1146,6 +1186,8 @@ useExisting: forwardRef(() => CustomInputComponent);   // ✅ delayed
 
 ### ❓ How would you globally trim leading and trailing spaces from user input?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 **Approach 1: Sanitize in NgRx effect (if using NgRx):**
@@ -1197,6 +1239,8 @@ providers: [provideHttpClient(withInterceptors([trimInterceptor]))]
 
 ### ❓ Which newer Angular APIs return signals (input, output, model, httpResource)?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 A **signal** is a reactive value: `count = signal(0)`, read it with `count()`, change it with `count.set(1)`, and everything that read it updates automatically. Modern Angular (17.1+) replaces many decorators with functions that return signals:
@@ -1211,5 +1255,255 @@ A **signal** is a reactive value: `count = signal(0)`, read it with `count()`, c
 | `resource()` / `httpResource()` | Load async data into signals (value, loading, error) | `user = httpResource(() => \`/api/users/${id()}\`);` |
 
 Because inputs are signals, you can use them in `computed()` directly instead of writing `ngOnChanges`.
+
+---
+
+
+## Must-Know Angular Concepts (Intermediate)
+
+### ❓ How does change detection work in Angular?
+
+### 📝 Answer
+
+**Change detection** is how Angular keeps the screen in sync with your data: it walks the component tree and updates any binding whose value changed.
+
+**What starts it (classic apps):** **Zone.js** patches browser async APIs — clicks, timers, HTTP, promises. When one finishes, Zone tells Angular "something may have changed", and Angular checks the tree from the root down.
+
+```mermaid
+flowchart TD
+  E[Click / timer / HTTP response] --> Z[Zone.js notices]
+  Z --> CD[Angular runs change detection]
+  CD --> R[AppComponent]
+  R --> A[HeaderComponent]
+  R --> B[ListComponent]
+  B --> C[RowComponent ×100]
+  C --> U[Update changed bindings in the DOM]
+```
+
+- Each check compares the old and new value of every binding (`{{ }}`, `[prop]`).
+- In dev mode it runs twice to catch values that change during a check (`ExpressionChangedAfterItHasBeenCheckedError`).
+- **Zoneless Angular** (v18+, stable in v20) drops Zone.js: changes are triggered by **signals**, events and `markForCheck()` instead.
+
+#### ↳ Follow-up: How do you run code without triggering change detection?
+
+↪ `inject(NgZone).runOutsideAngular(() => …)` — useful for scroll listeners, animations and polling that don't change bindings.
+
+#### ↳ Follow-up: Why is calling a method in a template slow?
+
+↪ It runs on **every** check. Use a pure pipe, a `computed()` signal or a precomputed field.
+
+---
+
+### ❓ What is the difference between Default and OnPush change detection?
+
+### 📝 Answer
+
+| | Default | OnPush |
+|---|---|---|
+| When the component is checked | on every change detection run | only when something relevant happens |
+| Triggers | any event anywhere in the app | a new **input reference**, an event **inside** it, an `async` pipe emission, a **signal** it reads changing, `markForCheck()` |
+| Speed in big apps | slower | much faster (skips whole subtrees) |
+| Requires | nothing | immutable updates |
+
+```ts
+@Component({
+  selector: 'app-user-list',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `@for (u of users; track u.id) { <li>{{ u.name }}</li> }`,
+})
+export class UserListComponent { @Input() users: User[] = []; }
+```
+
+```ts
+// Parent
+this.users.push(newUser);               // ❌ same array reference → OnPush child does NOT update
+this.users = [...this.users, newUser];  // ✅ new reference → updates
+```
+
+#### ↳ Follow-up: Data arrives from a service subscription inside an OnPush component. Why doesn't it show?
+
+↪ The subscription isn't an input, event or async pipe. Use the `async` pipe, a signal, or call `cdr.markForCheck()`.
+
+---
+
+### ❓ What are Angular signals — `signal`, `computed` and `effect`?
+
+### 📝 Answer
+
+A **signal** is a value that tells Angular exactly who uses it, so only those parts update.
+
+```ts
+export class CartComponent {
+  items = signal<Item[]>([]);                                    // writable
+  total = computed(() => this.items().reduce((s, i) => s + i.price, 0));   // derived, cached
+  count = computed(() => this.items().length);
+
+  constructor() {
+    effect(() => localStorage.setItem('cart', JSON.stringify(this.items())));   // side effect
+  }
+
+  add(item: Item) { this.items.update(list => [...list, item]); }
+  clear() { this.items.set([]); }
+}
+```
+
+```html
+<p>{{ count() }} items · ₹{{ total() }}</p>
+```
+
+| API | Use for |
+|---|---|
+| `signal()` | state you change (`set`, `update`) |
+| `computed()` | values derived from other signals — recalculated only when they change |
+| `effect()` | side effects (logging, storage, syncing) — not for setting other state |
+| `input()`, `output()`, `model()` | signal-based component inputs/outputs |
+| `toSignal()` / `toObservable()` | bridge to RxJS |
+
+**Why signals:** fine-grained updates, no subscriptions to clean up, works with OnPush and zoneless apps.
+
+#### ↳ Follow-up: Signals or RxJS?
+
+↪ Signals for **state** (what is true now). RxJS for **events over time** (typing, WebSockets, retries, cancellation). They work together via `toSignal`.
+
+---
+
+### ❓ How do Angular components communicate with each other?
+
+### 📝 Answer
+
+```mermaid
+flowchart LR
+  P[Parent] -- "@Input / input()" --> C[Child]
+  C -- "@Output / output() event" --> P
+  S1[Sibling A] -- "next() / set()" --> SV[(Shared service<br/>signal or BehaviorSubject)]
+  SV -- "subscribe / read" --> S2[Sibling B]
+```
+
+| Relationship | Way |
+|---|---|
+| Parent → child | `@Input()` / `input()` |
+| Child → parent | `@Output()` + `EventEmitter` / `output()` |
+| Parent reads child | `@ViewChild` / `viewChild()` |
+| Unrelated components | a shared **service** holding a signal or `BehaviorSubject` |
+| Across routes | route params, query params, router state |
+| Large apps | a store (NgRx, NgRx Signal Store) |
+
+```ts
+// child
+name = input.required<string>();
+saved = output<string>();
+save() { this.saved.emit(this.name()); }
+```
+
+```html
+<!-- parent -->
+<app-editor [name]="user.name" (saved)="onSaved($event)" />
+```
+
+#### ↳ Follow-up: Why not just use a global variable?
+
+↪ No change detection, no typing, hard to test. A service with a signal gives the same sharing safely.
+
+---
+
+### ❓ What is an HTTP interceptor, and what is it used for?
+
+### 📝 Answer
+
+An **interceptor** is code that runs on **every** HTTP request and response, in one place.
+
+```mermaid
+flowchart LR
+  C[Component / service] --> I1[Auth interceptor<br/>adds token] --> I2[Error interceptor<br/>handles 401/500] --> S[(Server)]
+  S --> I2 --> I1 --> C
+```
+
+Common uses: add the auth token, show a loading spinner, handle errors globally, retry, logging, add headers.
+
+```ts
+export const authInterceptor: HttpInterceptorFn = (req, next) => {
+  const token = inject(AuthService).token();
+  const router = inject(Router);              // inject() only works here, not inside callbacks
+  const authReq = token ? req.clone({ setHeaders: { Authorization: `Bearer ${token}` } }) : req;
+  return next(authReq).pipe(
+    catchError((err: HttpErrorResponse) => {
+      if (err.status === 401) router.navigate(['/login']);
+      return throwError(() => err);
+    }),
+  );
+};
+
+// app.config.ts
+provideHttpClient(withInterceptors([authInterceptor]))
+```
+
+Requests are **immutable** — always `req.clone(...)`.
+
+#### ↳ Follow-up: In what order do interceptors run?
+
+↪ Requests go through them in the order listed; responses come back in reverse order.
+
+---
+
+### ❓ How does lazy loading work in Angular routing?
+
+### 📝 Answer
+
+**Lazy loading** downloads a page's code only when the user first visits it, so the first load is smaller and faster.
+
+```ts
+export const routes: Routes = [
+  { path: '', component: HomeComponent },                         // eager
+  {
+    path: 'admin',
+    canMatch: [adminGuard],                                        // don't even download if not allowed
+    loadChildren: () => import('./admin/admin.routes').then(m => m.ADMIN_ROUTES),
+  },
+  { path: 'reports', loadComponent: () => import('./reports/reports.component').then(m => m.ReportsComponent) },
+];
+```
+
+The build creates a separate **chunk** for each lazy route.
+
+**Preloading:** `withPreloading(PreloadAllModules)` downloads lazy chunks in the background after the app starts, so later navigation is instant.
+
+#### ↳ Follow-up: `canActivate` vs `canMatch`?
+
+↪ `canMatch` runs before the code is downloaded, so unauthorised users never fetch the chunk. `canActivate` runs after.
+
+---
+
+### ❓ What is `@defer` in Angular templates?
+
+### 📝 Answer
+
+`@defer` lazy-loads **part of a template** (and its components' code) until a trigger fires.
+
+```html
+@defer (on viewport; prefetch on idle) {
+  <app-comments [postId]="post.id" />
+} @placeholder {
+  <p>Comments</p>
+} @loading (minimum 300ms) {
+  <app-spinner />
+} @error {
+  <p>Couldn't load comments.</p>
+}
+```
+
+| Trigger | Loads when |
+|---|---|
+| `on idle` (default) | the browser is idle |
+| `on viewport` | the placeholder scrolls into view |
+| `on interaction` | the user clicks/focuses the placeholder |
+| `on hover` | the user hovers it |
+| `on timer(2s)` | after a delay |
+| `when condition` | an expression becomes true |
+
+Good for heavy below-the-fold parts: charts, comments, maps, editors.
+
+#### ↳ Follow-up: `@defer` vs lazy routes?
+
+↪ Lazy routes split code per **page**; `@defer` splits code **inside** a page.
 
 ---

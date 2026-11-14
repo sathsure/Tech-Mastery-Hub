@@ -2,6 +2,8 @@
 
 ### ❓ What is DataSource?
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 DataSource = Connection factory to DB.
@@ -26,6 +28,8 @@ spring.datasource.hikari.maximum-pool-size=20
 ---
 
 ### ❓ How do I allow only certain threads to use certain DB connections?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -162,6 +166,8 @@ public class ApplicationRepository {
 ## Spring Data JPA
 
 ### ❓ What is Declarative Transactions, Spring Transactions & Spring Data JPA?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -312,6 +318,8 @@ Use `rollbackFor = Exception.class` to explicitly roll back for checked exceptio
 ---
 
 ### ❓ What is a JPA Entity class, and how do you map relationships between entities?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -540,6 +548,8 @@ s.getCourses(); // courses loaded now
 ---
 
 ### ❓ How do Pagination and Sorting work in Spring Data JPA?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -906,6 +916,8 @@ public record UserDto(Long id, String name, String email) {
 
 ### ❓ What is the **N+1 Problem**? How to solve it?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 ❌ Problem
@@ -958,6 +970,8 @@ spring.jpa.properties.hibernate.default_batch_fetch_size=50
 
 ### ❓ JPA vs Hibernate
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 | JPA            | Hibernate                   |
@@ -973,6 +987,8 @@ JPA is a contract. Hibernate is an implementation.
 ---
 
 ### ❓ Is @JoinColumn mandatory? If not, what happens if we don’t use it?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -996,6 +1012,8 @@ It tells:
 ---
 
 ### ❓ JPQL vs Native Query
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -1028,6 +1046,8 @@ List<Employee> findHighPaid(double salary);
 ---
 
 ### ❓ First-Level vs Second-Level Cache
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -1075,6 +1095,8 @@ Good for data that is read often and changes rarely (countries, product categori
 ---
 
 ### ❓ Spring JPA Inheritance
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 

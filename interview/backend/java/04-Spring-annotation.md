@@ -1,10 +1,29 @@
 ### ❓ What are some commonly used Spring annotations and what are they used for?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 ![SpringAnnotations Image](/src/assets/backend/spring-annotations.png)
 
-🔹 **Bean Creation (Stereotype Annotations)**
+Spring's most used annotations fall into six groups — each has its own question below:
+
+- **Bean Creation (Stereotype Annotations)** — What are the Spring stereotype annotations (`@Component`, `@Service`, `@Repository`)?
+- **Dependency Injection Annotations** — Which annotations are used for dependency injection in Spring?
+- **Bean Lifecycle Annotations** — Which annotations control a Spring bean's lifecycle and scope?
+- **Transaction & AOP Annotations** — Which annotations handle transactions and AOP in Spring?
+- **Web & REST Annotations** — Which annotations are used to build REST APIs in Spring?
+- **Spring Boot Core Annotations** — What are the core Spring Boot annotations?
+
+---
+
+### ❓ What are the Spring stereotype annotations (`@Component`, `@Service`, `@Repository`)?
+
+**Level:** 🟡 Intermediate
+
+### 📝 Answer
+
+Stereotype annotations mark a class as a **Spring bean**, so component scanning finds it and Spring creates it. The specific ones also say which **layer** the class belongs to.
 
 | Annotation    | Where It Is Used | Explanation                                          |
 | ------------- | ---------------- | ---------------------------------------------------- |
@@ -12,7 +31,19 @@
 | `@Service`    | Class level      | Marks service/business logic class.                  |
 | `@Repository` | Class level      | Marks DAO class; enables DB exception translation.   |
 
-🔹 **Dependency Injection Annotations**
+#### ↳ Follow-up: Is there a functional difference between `@Component` and `@Service`?
+
+↪ No — `@Service` is a `@Component` with a clearer name. Only `@Repository` adds behaviour: it translates database exceptions into Spring's `DataAccessException`.
+
+---
+
+### ❓ Which annotations are used for dependency injection in Spring?
+
+**Level:** 🟡 Intermediate
+
+### 📝 Answer
+
+These annotations tell Spring **which bean to hand in** where. Prefer constructor injection; with a single constructor, `@Autowired` isn't even needed.
 
 | Annotation   | Where It Is Used             | Explanation                                                                                         |
 | ------------ | ---------------------------- | --------------------------------------------------------------------------------------------------- |
@@ -23,7 +54,19 @@
 | `@Inject`    | Field / Constructor / Setter | Similar to `@Autowired` (from JSR-330); injects by type.                                            |
 | `@Lookup`    | Method level                 | Tells Spring to return a new bean instance dynamically (used for prototype beans inside singleton). |
 
-🔹 **Bean Lifecycle Annotations**
+#### ↳ Follow-up: Two beans implement the same interface. How does Spring choose?
+
+↪ Mark one `@Primary` (the default), or name the one you want with `@Qualifier("beanName")` at the injection point.
+
+---
+
+### ❓ Which annotations control a Spring bean's lifecycle and scope?
+
+**Level:** 🟡 Intermediate
+
+### 📝 Answer
+
+Lifecycle annotations run your code **after a bean is created** and **before it is destroyed**; scope annotations decide **how many instances** exist.
 
 | Annotation                   | Where It Is Used                   | Explanation                                                                                  |
 | ---------------------------- | ---------------------------------- | -------------------------------------------------------------------------------------------- |
@@ -41,7 +84,19 @@
 | `@SessionScope`              | Class level                        | One bean instance per HTTP session (per user session).                                       |
 | `@ApplicationScope`          | Class level                        | One bean per ServletContext (shared across the whole web app).                               |
 
-🔹 **Transaction & AOP Annotations**
+#### ↳ Follow-up: Why might `@PreDestroy` not run on a prototype bean?
+
+↪ Spring creates prototype beans but doesn't manage them afterwards, so it never calls their destroy callbacks.
+
+---
+
+### ❓ Which annotations handle transactions and AOP in Spring?
+
+**Level:** 🟡 Intermediate
+
+### 📝 Answer
+
+`@Transactional` wraps a method in a database transaction; the AOP annotations add cross-cutting behaviour (logging, timing, security) around methods. Both work through **proxies**.
 
 | Annotation                     | Where It Is Used                  | Explanation                                                               |
 | ------------------------------ | --------------------------------- | ------------------------------------------------------------------------- |
@@ -57,7 +112,19 @@
 | `@Pointcut`                    | Method level (inside Aspect)      | Defines reusable method execution expressions.                            |
 | `@Order`                       | Class level (Aspect class)        | Defines execution order when multiple aspects exist.                      |
 
-🔹 **Web & REST Annotations**
+#### ↳ Follow-up: Why doesn't `@Transactional` work when a method calls another method in the same class?
+
+↪ The call doesn't go through the Spring proxy, so no transaction (or aspect) is applied. Move the method to another bean.
+
+---
+
+### ❓ Which annotations are used to build REST APIs in Spring?
+
+**Level:** 🟡 Intermediate
+
+### 📝 Answer
+
+These map HTTP requests to controller methods and read parts of the request (path, query, body, headers).
 
 | Annotation              | Where It Is Used         | Explanation                                           |
 | ----------------------- | ------------------------ | ----------------------------------------------------- |
@@ -80,7 +147,19 @@
 | `@ExceptionHandler`     | Method level             | Handles exceptions inside controller.                 |
 | `@RestControllerAdvice` | Class level              | Global exception handling for REST APIs.              |
 
-🔹 **Spring Boot Core Annotations**
+#### ↳ Follow-up: `@PathVariable` vs `@RequestParam`?
+
+↪ `/users/7` → `@PathVariable` (identifies the resource); `/users?page=2` → `@RequestParam` (filters, paging).
+
+---
+
+### ❓ What are the core Spring Boot annotations?
+
+**Level:** 🟢 Beginner
+
+### 📝 Answer
+
+These start the application, turn on auto-configuration, read properties, and create beans only when conditions are met.
 
 | Annotation                       | Where It Is Used                | Explanation                                                                                    |
 | -------------------------------- | ------------------------------- | ---------------------------------------------------------------------------------------------- |
@@ -100,3 +179,9 @@
 | `@Import`                        | Class level                     | Imports other configuration classes.                                                           |
 | `@EnableScheduling`              | Class level                     | Enables scheduled task execution.                                                              |
 | `@EnableAsync`                   | Class level                     | Enables asynchronous method execution.                                                         |
+
+#### ↳ Follow-up: How does `@ConditionalOnMissingBean` let you override auto-configuration?
+
+↪ The auto-configured bean is created only if you haven't defined one yourself — so your own bean always wins.
+
+---

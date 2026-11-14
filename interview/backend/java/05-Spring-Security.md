@@ -2,6 +2,8 @@
 
 ### ❓ What is Spring Security and why do we need it?
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 **Spring Security** is a **framework that handles authentication, authorization, and protection against security vulnerabilities** in Spring-based applications.
@@ -18,6 +20,8 @@ Spring Security solves this using **filters**, **contexts**, and **standard secu
 
 ### ❓ Can authorization happen without authentication?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 **Not really — it always knows "who" first.** If no one logged in, Spring Security treats the caller as an **anonymous user** (`AnonymousAuthenticationToken`). Authorization rules then decide what that anonymous user may do: `permitAll()` lets them in; `authenticated()` sends a 401.
@@ -25,6 +29,8 @@ Spring Security solves this using **filters**, **contexts**, and **standard secu
 ---
 
 ### ❓ What happens when we add `spring-boot-starter-security`?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -40,6 +46,8 @@ This is called **auto-configuration**.
 ---
 
 ### ❓ Explain Spring Security architecture.
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -98,6 +106,8 @@ PasswordEncoder passwordEncoder() {
 
 ### ❓ Difference between Roles and Authorities in Spring Security?
 
+**Level:** 🟡 Intermediate
+
 - **Role** → High-level permission (coarse-grained)
 - **Authority** → Low-level permission (fine-grained)
 
@@ -114,6 +124,8 @@ Spring Security doesn’t require roles at all.
 ---
 
 ### ❓ Explain JWT authentication flow.
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -384,6 +396,8 @@ http.csrf(csrf -> csrf.disable());
 
 ### ❓ CORS vs CSRF vs OAuth2 vs JWT?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 - **CORS** is a **browser security mechanism** that controls _which origins can call your API_
@@ -600,6 +614,8 @@ You must balance two threats:
 
 ### ❓ Filters vs Interceptors
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 🔹 Spring Security **Filters**
@@ -643,6 +659,8 @@ Client → Filters → Interceptors → Controller
 ---
 
 ### ❓ How Role-Based Access is Implemented in Spring Security
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -696,6 +714,8 @@ SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
 ### ❓ What is SAML?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 **SAML (Security Assertion Markup Language)** is an **XML-based authentication protocol** used for **Single Sign-On (SSO)**.
@@ -722,6 +742,8 @@ SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
 ### ❓ SAML vs JWT
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 | Feature         | SAML             | JWT         |
@@ -738,6 +760,8 @@ SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 ---
 
 ### ❓ SAML vs OAuth vs OIDC
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -776,3 +800,146 @@ SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 | Modern APIs    | ❌             | ✅            | ✅             |
 | Mobile Support | ❌             | ✅            | ✅             |
 | Best For       | Enterprise SSO | API Access    | Login / SSO    |
+
+
+
+---
+
+## OAuth2 & Modern Configuration (Intermediate)
+
+### ❓ Explain the OAuth2 flows — Authorization Code + PKCE and Client Credentials.
+
+### 📝 Answer
+
+OAuth2 lets an app get an **access token** without ever seeing the user's password.
+
+**1. Authorization Code + PKCE** — for apps with a **user** (web, mobile, SPA):
+
+```mermaid
+sequenceDiagram
+  participant U as User
+  participant A as App (client)
+  participant AS as Authorization server (Keycloak, Google…)
+  participant API as Resource server (your API)
+  A->>A: make code_verifier, code_challenge = SHA256(verifier)
+  A->>AS: redirect user to /authorize?code_challenge=…
+  U->>AS: logs in, approves
+  AS-->>A: redirect back with ?code=abc
+  A->>AS: POST /token (code + code_verifier)
+  AS-->>A: access token (+ refresh token, + ID token with OIDC)
+  A->>API: GET /orders  Authorization: Bearer <token>
+  API-->>A: 200 OK
+```
+
+**PKCE** ("pixie") proves the app that asks for the token is the same one that started the login, so a stolen `code` is useless.
+
+**2. Client Credentials** — **service-to-service**, no user:
+
+```text
+Order service → POST /token (client_id + client_secret, grant_type=client_credentials)
+             ← access token
+Order service → Inventory API with Bearer token
+```
+
+| Flow | Use |
+|---|---|
+| Authorization Code + PKCE | any app with a user |
+| Client Credentials | backend jobs, microservice calls |
+| Device Code | TVs, CLIs |
+| ~~Implicit~~, ~~Password~~ | deprecated — don't use |
+
+**In Spring:** a login app uses `spring-boot-starter-oauth2-client` (`.oauth2Login()`); an API uses `spring-boot-starter-oauth2-resource-server` (`.oauth2ResourceServer(o -> o.jwt(...))`).
+
+#### ↳ Follow-up: OAuth2 vs OIDC?
+
+↪ OAuth2 gives **access** (access token). OIDC adds **login**: an **ID token** saying who the user is.
+
+---
+
+### ❓ How do you configure Spring Security 6 with `SecurityFilterChain`?
+
+### 📝 Answer
+
+Since Spring Security 6 (Boot 3), `WebSecurityConfigurerAdapter` is **removed**. You declare one or more `SecurityFilterChain` beans using lambdas.
+
+```java
+@Configuration
+@EnableMethodSecurity
+class SecurityConfig {
+
+  @Bean
+  @Order(1)
+  SecurityFilterChain api(HttpSecurity http) throws Exception {
+    return http
+      .securityMatcher("/api/**")                                   // this chain only for /api
+      .csrf(csrf -> csrf.disable())                                 // stateless bearer tokens
+      .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+      .authorizeHttpRequests(auth -> auth
+        .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll()
+        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+        .anyRequest().authenticated())
+      .oauth2ResourceServer(o -> o.jwt(Customizer.withDefaults()))
+      .build();
+  }
+
+  @Bean
+  @Order(2)
+  SecurityFilterChain web(HttpSecurity http) throws Exception {   // everything else: form login
+    return http
+      .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
+      .formLogin(Customizer.withDefaults())
+      .build();
+  }
+
+  @Bean
+  PasswordEncoder passwordEncoder() { return PasswordEncoderFactories.createDelegatingPasswordEncoder(); }
+}
+```
+
+Key changes from older versions: `authorizeRequests` → `authorizeHttpRequests`, `antMatchers` → `requestMatchers`, lambda DSL only, `@EnableGlobalMethodSecurity` → `@EnableMethodSecurity`.
+
+#### ↳ Follow-up: Why have two filter chains?
+
+↪ An app can serve a stateless JSON API and a browser UI with sessions; each needs different rules (CSRF, sessions, login).
+
+---
+
+### ❓ How does method-level security with `@PreAuthorize` work?
+
+### 📝 Answer
+
+URL rules protect endpoints; **method security** protects **service methods**, wherever they are called from.
+
+```java
+@Configuration
+@EnableMethodSecurity                 // required
+class MethodSecurityConfig {}
+
+@Service
+class AccountService {
+
+  @PreAuthorize("hasRole('ADMIN')")
+  public void closeAccount(long id) { … }
+
+  @PreAuthorize("hasAuthority('account:read') and #ownerId == authentication.name")
+  public Account get(String ownerId, long id) { … }          // users see only their own account
+
+  @PostAuthorize("returnObject.owner == authentication.name")
+  public Invoice invoice(long id) { … }                      // check after loading
+}
+```
+
+| Annotation | Runs |
+|---|---|
+| `@PreAuthorize` | before the method (SpEL expression) |
+| `@PostAuthorize` | after, can check `returnObject` |
+| `@PreFilter` / `@PostFilter` | filter collections |
+| `@Secured("ROLE_ADMIN")` | simple role list, no SpEL |
+
+It works through a **proxy**, so a call from another method in the **same class** skips the check.
+
+#### ↳ Follow-up: URL security or method security?
+
+↪ Both: URL rules as a coarse first gate, method rules for business rules like "only the owner may edit".
+
+---

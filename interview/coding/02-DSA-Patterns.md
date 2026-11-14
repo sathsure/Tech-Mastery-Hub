@@ -4,6 +4,8 @@
 
 ### ❓ Array vs linked list — when do you use which?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 | Operation | Array (Python `list`) | Linked list |
@@ -18,6 +20,8 @@ Use an array by default. Use a linked list when you insert/remove in the middle 
 ---
 
 ### ❓ Stack vs queue vs deque?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -35,6 +39,8 @@ q = deque(); q.append(1); q.popleft()             # O(1)  (list.pop(0) is O(n)!)
 ---
 
 ### ❓ What are a binary tree and a binary search tree (BST)?
+
+**Level:** 🟢 Beginner
 
 ### 📝 Answer
 
@@ -60,6 +66,8 @@ q = deque(); q.append(1); q.popleft()             # O(1)  (list.pop(0) is O(n)!)
 
 ### ❓ How do you represent a graph?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 ```python
@@ -76,6 +84,8 @@ Use an **adjacency list** for most problems (graphs are usually sparse).
 ---
 
 ### ❓ What is a trie?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -102,6 +112,8 @@ class Trie:
 ## Patterns with Templates
 
 ### ❓ What is the sliding window pattern? Give a template.
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -155,6 +167,8 @@ print(min_sub_array_len(7, [2, 3, 1, 2, 4, 3]))
 
 ### ❓ What is the two pointers pattern?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Use two indexes that move toward each other (or at different speeds), usually on a **sorted** array or a string.
@@ -186,6 +200,8 @@ Also used for: reversing, removing duplicates in place, palindromes, 3Sum.
 
 ### ❓ What is the fast and slow pointer pattern?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 One pointer moves 1 step, the other 2 steps.
@@ -213,6 +229,8 @@ print(middle(from_list([1, 2, 3, 4, 5])).val)
 ---
 
 ### ❓ What is the prefix sum pattern?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -247,6 +265,8 @@ print(subarray_sum([1, 2, 3], 3))
 
 ### ❓ What is a binary search template that avoids off-by-one bugs?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Search on a **sorted** range by halving it: **O(log n)**.
@@ -279,6 +299,8 @@ Python has it built in: `bisect.bisect_left(nums, target)`.
 
 ### ❓ What is the monotonic stack pattern?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 A stack kept in increasing or decreasing order. Answers "**next greater/smaller element**" in **O(n)**.
@@ -308,6 +330,8 @@ print(daily_temperatures([73, 74, 75, 71, 69, 72, 76, 73]))
 ---
 
 ### ❓ How do BFS and DFS work, and when do you use each?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -339,6 +363,8 @@ Both are **O(V + E)**.
 ---
 
 ### ❓ Binary Tree Level Order Traversal (LeetCode 102)
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -379,6 +405,8 @@ print(level_order(root))
 
 ### ❓ Validate Binary Search Tree (LeetCode 98)
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 **In simple words:** Check that every node's left side holds only smaller values and its right side only bigger ones — all the way down, not just its direct children.
@@ -414,6 +442,8 @@ print(is_valid_bst(TreeNode(5, TreeNode(1), TreeNode(4, TreeNode(3), TreeNode(6)
 
 ### ❓ Lowest Common Ancestor of a Binary Tree (LeetCode 236)
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 **In simple words:** Find the lowest node that has both `p` and `q` below it (a node can be its own ancestor).
@@ -447,6 +477,8 @@ print(lca(root, p, q).val)
 ---
 
 ### ❓ What is topological sort? (Course Schedule, LeetCode 207)
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -493,6 +525,8 @@ Real use: build systems, package installs, the study-path order in this reposito
 
 ### ❓ What is Dijkstra's algorithm?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Finds the **shortest path from one node** in a graph with **non-negative weights**. Always expand the closest unvisited node, using a min-heap.
@@ -514,6 +548,8 @@ O((V + E) log V). Negative weights → use Bellman-Ford.
 ---
 
 ### ❓ What is backtracking? (Subsets and Permutations)
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -562,6 +598,8 @@ Used for: subsets, permutations, combinations, N-Queens, Sudoku, word search.
 
 ### ❓ How do you approach a dynamic programming problem?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 DP = solve small subproblems once, **save the answers**, build up the big one. Use it when a problem has **overlapping subproblems** (same calls repeat).
@@ -600,6 +638,8 @@ print(rob([2, 7, 9, 3, 1]))          # 2 + 9 + 1
 
 ### ❓ Longest Common Subsequence (LeetCode 1143)
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 **In simple words:** Find the length of the longest sequence of letters that appears in both words in the same order, not necessarily side by side. "abcde" and "ace" share "ace" → 3.
@@ -634,6 +674,8 @@ O(m × n) time and space.
 ---
 
 ### ❓ LRU Cache (LeetCode 146)
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -687,6 +729,8 @@ print(cache.get(3))
 
 ### ❓ Merge K Sorted Lists (LeetCode 23)
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 **In simple words:** Join `k` sorted chains into one sorted chain.
@@ -725,6 +769,8 @@ print(to_list(merge_k_lists([from_list([1, 4, 5]), from_list([1, 3, 4]), from_li
 
 ### ❓ How do the main sorting algorithms compare?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 | Algorithm | Best | Average | Worst | Space | Stable |
@@ -750,6 +796,8 @@ print(to_list(merge_k_lists([from_list([1, 4, 5]), from_list([1, 3, 4]), from_li
 ## Interview Tricks
 
 ### ❓ How do you approach a coding problem you haven't seen before?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -777,6 +825,395 @@ print(to_list(merge_k_lists([from_list([1, 4, 5]), from_list([1, 3, 4]), from_li
 
 ### ❓ Tricky: What is the time complexity of `x in my_list` vs `x in my_set`?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 `x in list` is **O(n)** — it checks each item. `x in set` (and `dict`) is **O(1)** on average — a hash lookup. Converting a list to a set before many lookups is a common easy speed-up.
+
+
+
+---
+
+## More Core Patterns (Intermediate)
+
+### ❓ How does a hash table handle collisions?
+
+### 📝 Answer
+
+A hash table turns a key into an array index with a **hash function**. A **collision** is when two keys get the **same index** — unavoidable, since there are more possible keys than slots.
+
+![A hash function maps keys to buckets; two keys can land in the same bucket](../../knowledge/visual-notes/under-the-hood/hash-table.svg)
+
+_Image: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Hash_table_3_1_1_0_1_0_0_SP.svg) · Jorge Stolfi · CC BY-SA 3.0_
+
+| Method | How | Used by |
+|---|---|---|
+| **Separate chaining** | each slot holds a small list; colliding keys go in the list | Java `HashMap` (list → tree after 8) |
+| **Open addressing** | on a collision, probe for another free slot (linear, quadratic, double hashing) | Python `dict` and `set` |
+
+**Keeping it O(1):** a good hash spreads keys evenly, and when the table gets too full (**load factor** ~0.66–0.75) it **resizes** (usually doubles) and re-inserts everything. Average O(1); worst case O(n) if everything collides.
+
+#### ↳ Follow-up: Why is resizing still O(1) "on average"?
+
+↪ Doubling is rare: n inserts cause total copying work of about 2n, so each insert costs O(1) **amortized**.
+
+---
+
+### ❓ What is a heap / priority queue, and when do you use it?
+
+### 📝 Answer
+
+A **heap** is a complete binary tree where every parent is ≤ its children (**min-heap**) or ≥ them (**max-heap**). The smallest (or largest) item is always at the top. It's stored compactly in an array: children of index `i` are `2i+1` and `2i+2`.
+
+![A max-heap: every parent is larger than its children](../../knowledge/visual-notes/interview/max-heap.svg)
+
+_Image: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Max-Heap.svg) · Ermishin · CC BY-SA 3.0_
+
+| Operation | Cost |
+|---|---|
+| peek min/max | O(1) |
+| push | O(log n) — add at the end, "bubble up" |
+| pop | O(log n) — move last to top, "sift down" |
+| build from a list | O(n) — `heapify` |
+
+```python
+import heapq
+tasks = []
+heapq.heappush(tasks, (2, "write report"))     # (priority, item)
+heapq.heappush(tasks, (1, "fix prod bug"))
+heapq.heappop(tasks)                            # (1, 'fix prod bug')
+
+# Max-heap trick: push negatives
+heapq.heappush(h, -score)
+```
+
+**Use it for:** top-K / K-th largest, merging K sorted lists, Dijkstra, scheduling by priority, a running median (two heaps).
+
+#### ↳ Follow-up: K-th largest of n numbers — sort or heap?
+
+↪ A min-heap of size K: O(n log K), better than sorting's O(n log n) when K is small.
+
+---
+
+### ❓ What is the greedy approach, and when does it work?
+
+### 📝 Answer
+
+A **greedy** algorithm makes the **best choice right now** and never goes back. It's fast and simple — but only correct when local best choices add up to the global best.
+
+**Example — schedule the most meetings in one room:** always pick the meeting that **ends earliest**.
+
+```python
+def max_meetings(meetings):            # [(start, end), ...]
+    count, last_end = 0, float("-inf")
+    for start, end in sorted(meetings, key=lambda m: m[1]):   # earliest end first
+        if start >= last_end:
+            count += 1
+            last_end = end
+    return count
+
+print(max_meetings([(1, 3), (2, 5), (4, 6), (6, 8)]))   # 3
+```
+
+**Classic greedy problems:** interval scheduling, Jump Game, Gas Station, assigning cookies, Huffman coding, Dijkstra, Kruskal/Prim minimum spanning tree.
+
+**When greedy fails:** coin change with coins `[1, 3, 4]` and amount 6 — greedy takes 4+1+1 (3 coins), the best is 3+3 (2 coins). Use **DP** there.
+
+#### ↳ Follow-up: How do you know greedy is safe?
+
+↪ Find a counter-example first. If none, argue that swapping any other choice for the greedy one never makes the answer worse ("exchange argument").
+
+---
+
+### ❓ What is union-find (disjoint set union), and where is it used?
+
+### 📝 Answer
+
+**Union-find** tracks which items belong to the **same group**, with two fast operations:
+- `find(x)` — which group (its root) is x in?
+- `union(a, b)` — merge the groups of a and b.
+
+```mermaid
+flowchart BT
+  B((B)) --> A((A))
+  C((C)) --> A
+  E((E)) --> D((D))
+```
+Two groups: {A, B, C} with root A, and {D, E} with root D. `union(C, E)` links root D under A.
+
+```python
+class UnionFind:
+    def __init__(self, n):
+        self.parent = list(range(n))
+        self.size = [1] * n
+
+    def find(self, x):
+        while self.parent[x] != x:
+            self.parent[x] = self.parent[self.parent[x]]   # path compression (halving)
+            x = self.parent[x]
+        return x
+
+    def union(self, a, b):
+        ra, rb = self.find(a), self.find(b)
+        if ra == rb:
+            return False                  # already connected → would form a cycle
+        if self.size[ra] < self.size[rb]:
+            ra, rb = rb, ra
+        self.parent[rb] = ra              # union by size: small tree under big tree
+        self.size[ra] += self.size[rb]
+        return True
+
+uf = UnionFind(5)
+uf.union(0, 1); uf.union(3, 4)
+print(uf.find(1) == uf.find(0), uf.find(1) == uf.find(4))   # True False
+```
+
+With path compression + union by size, each operation is almost O(1) (inverse Ackermann).
+
+**Use for:** number of connected components, detecting a cycle in an undirected graph, Kruskal's minimum spanning tree, "accounts merge", friend circles.
+
+#### ↳ Follow-up: Union-find or BFS for connected components?
+
+↪ Either works for a fixed graph. Union-find shines when edges arrive **one by one** and you must answer "connected?" after each.
+
+---
+
+### ❓ What bit manipulation tricks should you know for interviews?
+
+### 📝 Answer
+
+| Trick | Code | Example |
+|---|---|---|
+| Is bit `i` set? | `(n >> i) & 1` | `(5 >> 0) & 1` → 1 (5 = `101`) |
+| Set bit `i` | `n \| (1 << i)` | |
+| Clear bit `i` | `n & ~(1 << i)` | |
+| Remove lowest set bit | `n & (n - 1)` | `12 & 11` → 8 (`1100` → `1000`) |
+| Power of two? | `n > 0 and n & (n - 1) == 0` | 16 → True |
+| Count set bits | loop `n &= n - 1`, or `bin(n).count("1")` | 7 → 3 |
+| Odd? | `n & 1` | |
+| Swap without temp | `a ^= b; b ^= a; a ^= b` | |
+
+**XOR facts:** `x ^ x = 0`, `x ^ 0 = x`, order doesn't matter. So XOR-ing a list cancels pairs:
+
+```python
+def single_number(nums):          # LeetCode 136: every number appears twice except one
+    result = 0
+    for n in nums:
+        result ^= n
+    return result
+
+print(single_number([4, 1, 2, 1, 2]))   # 4
+```
+
+**Other classics:** Missing Number (XOR 0..n with the list), Counting Bits (`dp[i] = dp[i >> 1] + (i & 1)`), Subsets with bitmasks (`for mask in range(1 << n)`).
+
+#### ↳ Follow-up: Why is `n & (n - 1)` so useful?
+
+↪ Subtracting 1 flips the lowest set bit and every 0 below it, so the AND removes exactly that bit.
+
+---
+
+## More LeetCode Classics (Advanced)
+
+### ❓ Trapping Rain Water (LeetCode 42)
+
+### 📝 Answer
+
+**In simple words:** Bars of different heights stand in a row. After rain, how much water is trapped between them? Water above a bar = `min(tallest on the left, tallest on the right) − its height`.
+
+**How to approach it:**
+
+1. Use two pointers, one at each end, and remember the tallest bar seen from each side.
+2. Move the side with the **lower** bar: its water level is decided by its own side's maximum.
+3. Add `max_so_far − height` at each step.
+
+```python
+def trap(height):
+    left, right = 0, len(height) - 1
+    left_max = right_max = water = 0
+    while left < right:
+        if height[left] < height[right]:
+            left_max = max(left_max, height[left])
+            water += left_max - height[left]
+            left += 1
+        else:
+            right_max = max(right_max, height[right])
+            water += right_max - height[right]
+            right -= 1
+    return water
+
+print(trap([0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1]))   # 6
+```
+
+**Input and output:**
+
+| Input | Output |
+|---|---|
+| `[0,1,0,2,1,0,1,3,2,1,2,1]` | `6` |
+| `[4,2,0,3,2,5]` | `9` |
+
+O(n) time, O(1) space.
+
+---
+
+### ❓ Word Break (LeetCode 139)
+
+### 📝 Answer
+
+**In simple words:** Can the string be split into words that are all in the dictionary? `"leetcode"` with `["leet", "code"]` → yes.
+
+**How to approach it:**
+
+1. `dp[i]` = can the first `i` letters be split into dictionary words?
+2. `dp[0]` is True (empty string).
+3. `dp[i]` is True if some earlier `dp[j]` is True and `s[j:i]` is a word.
+
+```python
+def word_break(s, words):
+    words = set(words)
+    dp = [True] + [False] * len(s)
+    for i in range(1, len(s) + 1):
+        for j in range(i):
+            if dp[j] and s[j:i] in words:
+                dp[i] = True
+                break
+    return dp[-1]
+
+print(word_break("leetcode", ["leet", "code"]))                          # True
+print(word_break("catsandog", ["cats", "dog", "sand", "and", "cat"]))    # False
+```
+
+**Input and output:**
+
+| `s` | Dictionary | Output |
+|---|---|---|
+| `"leetcode"` | `["leet","code"]` | `True` |
+| `"applepenapple"` | `["apple","pen"]` | `True` |
+| `"catsandog"` | `["cats","dog","sand","and","cat"]` | `False` |
+
+O(n²) time (plus substring cost), O(n) space.
+
+---
+
+### ❓ House Robber (LeetCode 198)
+
+### 📝 Answer
+
+**In simple words:** Houses in a row hold money. You can't rob two neighbours. What's the most you can take?
+
+**How to approach it:**
+
+1. At each house choose: **rob it** (money + best total up to two houses back) or **skip it** (best total up to the previous house).
+2. Keep only two running numbers instead of a whole table.
+
+```python
+def rob(nums):
+    take, skip = 0, 0           # best total if we rob / don't rob the previous house
+    for n in nums:
+        take, skip = skip + n, max(take, skip)
+    return max(take, skip)
+
+print(rob([2, 7, 9, 3, 1]))     # 12  (2 + 9 + 1)
+```
+
+**Input and output:**
+
+| Input | Output |
+|---|---|
+| `[1,2,3,1]` | `4` |
+| `[2,7,9,3,1]` | `12` |
+
+O(n) time, O(1) space.
+
+---
+
+### ❓ Longest Palindromic Substring (LeetCode 5)
+
+### 📝 Answer
+
+**In simple words:** Find the longest part of the string that reads the same backwards. `"babad"` → `"bab"`.
+
+**How to approach it:**
+
+1. Every palindrome has a centre: one letter (odd length) or between two letters (even length).
+2. For each centre, expand outwards while both sides match.
+3. Keep the longest found.
+
+```python
+def longest_palindrome(s):
+    best = ""
+    for centre in range(len(s)):
+        for left, right in ((centre, centre), (centre, centre + 1)):   # odd and even
+            while left >= 0 and right < len(s) and s[left] == s[right]:
+                left -= 1
+                right += 1
+            if right - left - 1 > len(best):
+                best = s[left + 1:right]
+    return best
+
+print(longest_palindrome("babad"))   # bab
+print(longest_palindrome("cbbd"))    # bb
+```
+
+**Input and output:**
+
+| Input | Output |
+|---|---|
+| `"babad"` | `"bab"` (`"aba"` is also correct) |
+| `"cbbd"` | `"bb"` |
+
+O(n²) time, O(1) space.
+
+---
+
+### ❓ Rotting Oranges (LeetCode 994)
+
+### 📝 Answer
+
+**In simple words:** In a grid, `2` is a rotten orange, `1` fresh, `0` empty. Each minute, rot spreads to the 4 neighbours. How many minutes until no fresh orange is left (or −1 if impossible)?
+
+**How to approach it:**
+
+1. **Multi-source BFS:** put **all** rotten oranges in the queue at the start.
+2. Process the queue **level by level** — one level = one minute.
+3. Count fresh oranges; when it reaches 0, return the minutes.
+
+```python
+from collections import deque
+
+def oranges_rotting(grid):
+    rows, cols = len(grid), len(grid[0])
+    queue, fresh = deque(), 0
+    for r in range(rows):
+        for c in range(cols):
+            if grid[r][c] == 2:
+                queue.append((r, c))
+            elif grid[r][c] == 1:
+                fresh += 1
+    minutes = 0
+    while queue and fresh:
+        for _ in range(len(queue)):                 # one minute
+            r, c = queue.popleft()
+            for nr, nc in ((r + 1, c), (r - 1, c), (r, c + 1), (r, c - 1)):
+                if 0 <= nr < rows and 0 <= nc < cols and grid[nr][nc] == 1:
+                    grid[nr][nc] = 2
+                    fresh -= 1
+                    queue.append((nr, nc))
+        minutes += 1
+    return minutes if fresh == 0 else -1
+
+print(oranges_rotting([[2, 1, 1], [1, 1, 0], [0, 1, 1]]))   # 4
+```
+
+**Input and output:**
+
+| Input | Output |
+|---|---|
+| `[[2,1,1],[1,1,0],[0,1,1]]` | `4` |
+| `[[2,1,1],[0,1,1],[1,0,1]]` | `-1` (bottom-left can't be reached) |
+| `[[0,2]]` | `0` |
+
+O(rows × cols) time and space.
+
+---

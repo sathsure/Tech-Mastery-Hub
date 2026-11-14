@@ -67,6 +67,8 @@ It is a CNCF project and is now the default choice for new instrumentation.
 
 ### ❓ What are the golden signals (and RED / USE)?
 
+**Level:** 🟡 Intermediate
+
 Simple checklists for what to measure:
 
 - **Four golden signals** (Google SRE): **latency**, **traffic**, **errors**, **saturation** (how full a resource is).
@@ -79,6 +81,8 @@ Simple checklists for what to measure:
 
 ### ❓ Why look at p95/p99 latency instead of the average?
 
+**Level:** 🟡 Intermediate
+
 The average hides slow requests. p95 means 95% of requests were faster than this value; p99 shows the slowest 1% — often your most active users with the biggest carts or accounts.
 
 **Example:** average 200 ms looks fine, but p99 is 4 s, so 1 in 100 checkouts is painfully slow. Set targets and alerts on percentiles.
@@ -86,6 +90,8 @@ The average hides slow requests. p95 means 95% of requests were faster than this
 ---
 
 ### ❓ What makes a good alert?
+
+**Level:** 🟡 Intermediate
 
 An alert should mean "a human must act now", and it should be about user impact.
 
@@ -102,6 +108,8 @@ An alert should mean "a human must act now", and it should be about user impact.
 
 ### ❓ What is SRE (Site Reliability Engineering)?
 
+**Level:** 🟡 Intermediate
+
 SRE is Google's approach to running production systems: software engineers apply engineering to operations — automating toil, measuring reliability with SLOs, and sharing responsibility for production with development teams.
 
 Core ideas: SLIs and SLOs, **error budgets**, blameless postmortems, limiting manual toil (Google suggests under 50% of an SRE's time), and designing for failure.
@@ -109,6 +117,8 @@ Core ideas: SLIs and SLOs, **error budgets**, blameless postmortems, limiting ma
 ---
 
 ### ❓ What are SLI, SLO, SLA and an error budget?
+
+**Level:** 🟡 Intermediate
 
 - **SLI** (indicator): what you measure — e.g. % of requests that succeed in under 300 ms.
 - **SLO** (objective): your target for it — e.g. 99.9% over 30 days.
@@ -120,6 +130,8 @@ Core ideas: SLIs and SLOs, **error budgets**, blameless postmortems, limiting ma
 ---
 
 ### ❓ How do you handle a production incident?
+
+**Level:** 🟡 Intermediate
 
 1. **Detect & declare:** an alert fires; name an incident commander and open a channel.
 2. **Mitigate first:** stop the user impact — roll back the last deploy, switch traffic, scale up, turn off a feature flag. Root cause can wait.
@@ -133,6 +145,8 @@ Core ideas: SLIs and SLOs, **error budgets**, blameless postmortems, limiting ma
 
 ### ❓ What is a blameless postmortem?
 
+**Level:** 🟡 Intermediate
+
 A written review after an incident that focuses on **what in the system allowed the failure**, not who to blame. People share details honestly only when they won't be punished, and that is how the real fixes are found.
 
 Contents: summary, impact (users, duration, money), timeline, root cause and contributing factors, what went well, and action items with owners and dates.
@@ -140,6 +154,8 @@ Contents: summary, impact (users, duration, money), timeline, root cause and con
 ---
 
 ### ❓ What are MTTD, MTTR and MTBF?
+
+**Level:** 🟡 Intermediate
 
 - **MTTD** — mean time to **detect** a problem.
 - **MTTR** — mean time to **recover** (or repair).
@@ -151,6 +167,8 @@ Teams usually get the most value from cutting MTTD (better alerts) and MTTR (rol
 
 ### ❓ What is toil, and how do SREs reduce it?
 
+**Level:** 🟡 Intermediate
+
 Toil is manual, repetitive operational work that adds no lasting value and grows with the system — restarting stuck jobs, hand-running deploys, clearing disks.
 
 Reduce it by automating (scripts, self-healing such as Kubernetes restarts, auto-scaling), fixing root causes, and tracking how much time toil takes.
@@ -158,6 +176,8 @@ Reduce it by automating (scripts, self-healing such as Kubernetes restarts, auto
 ---
 
 ### ❓ What is chaos engineering?
+
+**Level:** 🟡 Intermediate
 
 Deliberately injecting failures in a controlled way — killing instances, adding latency, blocking a dependency — to check that the system copes before a real outage does it for you.
 

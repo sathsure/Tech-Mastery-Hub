@@ -152,6 +152,8 @@ Always call `wait()` inside a `while` loop that re-checks the condition — thre
 
 ### ❓ What is a deadlock? Show an example and how to prevent it.
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Two threads each hold a lock the other needs, so both **wait forever**.
@@ -187,6 +189,8 @@ Thread 1 holds A, wants B  ⇄  Thread 2 holds B, wants A   → stuck
 
 ### ❓ Why use a thread pool instead of creating threads?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Creating a thread is expensive (memory for its stack, OS work). A pool **reuses a fixed set of threads** and queues extra tasks, so 10,000 tasks don't create 10,000 threads and crash the app.
@@ -201,6 +205,8 @@ pool.awaitTermination(1, TimeUnit.MINUTES);
 ---
 
 ### ❓ What are the types of thread pools in `Executors`?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -222,6 +228,8 @@ In production, prefer a `ThreadPoolExecutor` with a **bounded queue** and a reje
 
 ### ❓ `Runnable` vs `Callable`?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 | `Runnable` | `Callable<T>` |
@@ -233,6 +241,8 @@ In production, prefer a `ThreadPoolExecutor` with a **bounded queue** and a reje
 ---
 
 ### ❓ What is `Future` and what is its limitation?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -248,6 +258,8 @@ Limitation: `get()` **blocks**, and you can't chain steps ("when ready, then do 
 ---
 
 ### ❓ What is `CompletableFuture`? Show an example.
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -280,6 +292,8 @@ Dashboard d = dashboard.join();
 
 ### ❓ What are virtual threads (Java 21)?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Very **lightweight threads managed by the JVM**, not the OS. You can run millions. When a virtual thread waits on I/O, it frees its carrier (OS) thread for others.
@@ -302,6 +316,8 @@ Great for apps that mostly **wait** (HTTP, DB). No gain for CPU-heavy work. In S
 
 ### ❓ Why is `HashMap` not thread-safe, and what should you use instead?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Two threads writing a `HashMap` at once can **lose entries** or corrupt its internal structure.
@@ -323,6 +339,8 @@ hits.merge("home", 1, Integer::sum); // atomic increment
 
 ### ❓ What are `CountDownLatch`, `CyclicBarrier` and `Semaphore`?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 | Tool | What it does | Example |
@@ -341,6 +359,8 @@ try { callApi(); } finally { permits.release(); }
 
 ### ❓ What is `ThreadLocal` and what is the risk?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 `ThreadLocal` gives **each thread its own copy** of a variable — e.g. the current user or a request ID.
@@ -357,6 +377,8 @@ Risk: in a **thread pool**, threads are reused, so a value can leak into the nex
 ## Part 5 — Tricky Questions
 
 ### ❓ Tricky: Is `i++` thread-safe if `i` is `volatile`?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -378,6 +400,8 @@ sequenceDiagram
 
 ### ❓ Tricky: What is printed?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 ```java
@@ -392,6 +416,8 @@ Always **`AB`** — `run()` executes on the main thread (no new thread). With `t
 
 ### ❓ Tricky: What happens if you forget `shutdown()` on an `ExecutorService`?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Its threads are non-daemon, so the **JVM may never exit** after `main` ends. Use `shutdown()` (finish queued tasks) or `shutdownNow()` (interrupt), or try-with-resources on Java 19+ (`ExecutorService` is `AutoCloseable`).
@@ -399,6 +425,8 @@ Its threads are non-daemon, so the **JVM may never exit** after `main` ends. Use
 ---
 
 ### ❓ Tricky: Why is `ConcurrentModificationException` thrown in a single-threaded loop?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -414,6 +442,8 @@ The iterator detects the change (its "modCount" check) and fails fast.
 ---
 
 ### ❓ Tricky: Concurrency vs parallelism?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 

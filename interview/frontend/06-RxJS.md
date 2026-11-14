@@ -7,6 +7,8 @@
 
 ### ❓ How would you explain RxJS to a developer who's never used reactive programming before?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 RxJS (Reactive Extensions for JavaScript) is a library for **reactive programming** using **Observables**. It lets you compose async and event-based programs using a functional, declarative pipeline of operators.
@@ -16,6 +18,8 @@ RxJS (Reactive Extensions for JavaScript) is a library for **reactive programmin
 ---
 
 ### ❓ Can you walk me through what an Observable is and how it differs from a Promise?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -30,6 +34,8 @@ A **lazy, push-based collection** that emits values over time and notifies obser
 ---
 
 ### ❓ What role does an Observer play in RxJS, and how does it interact with an Observable?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -49,6 +55,8 @@ source$.subscribe(observer);
 
 ### ❓ What does a Subscription represent in RxJS, and why is managing it important?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 The object returned from `observable.subscribe(...)` that represents the **active execution**. You use it to **unsubscribe** and stop receiving values.
@@ -63,6 +71,8 @@ sub.unsubscribe();
 
 ### ❓ Can you explain what an RxJS operator is and how operators are composed in a pipeline?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 A **pure function** that takes an Observable as input and returns a new Observable as output. Operators don't modify the source — they create a new stream.
@@ -72,6 +82,8 @@ Examples: `map`, `filter`, `switchMap`, `take`, `debounceTime`.
 ---
 
 ### ❓ What's the difference between Pipeable and Creation operators?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -92,6 +104,8 @@ const doubled$ = numbers$.pipe(map(n => n * 2));
 
 ### ❓ Is an Observable lazy or eager?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 **Lazy.** It does **not** start producing values until someone subscribes.
@@ -101,6 +115,8 @@ const doubled$ = numbers$.pipe(map(n => n * 2));
 ---
 
 ### ❓ Can Observables be synchronous?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -114,6 +130,8 @@ console.log('after');                 // prints 'after' AFTER 1, 2, 3
 ---
 
 ### ❓ What are the three notifications an Observable can emit?
+
+**Level:** 🟢 Beginner
 
 ### 📝 Answer
 
@@ -129,6 +147,8 @@ console.log('after');                 // prints 'after' AFTER 1, 2, 3
 
 ### ❓ Can an Observable emit after `complete`?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 **No.** After `complete` or `error`, the stream is terminal — no further emissions are allowed by the contract.
@@ -138,6 +158,8 @@ console.log('after');                 // prints 'after' AFTER 1, 2, 3
 # Part 2 — Cold vs Hot & Multicasting
 
 ### ❓ How would you describe a Cold Observable, and when does it matter whether an Observable is cold or hot?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -183,6 +205,8 @@ Through **multicasting** — sharing one execution across multiple subscribers:
 ---
 
 ### ❓ `share()` vs `shareReplay()` — explain with example
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -239,6 +263,8 @@ B: 2 👈 REPLAYED
 
 ### ❓ 🪤 Trick: What's a common memory leak pitfall with `shareReplay`?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Using `shareReplay({ refCount: false })` (or the legacy signature) over an **infinite stream** keeps the source subscription alive **forever**, even when no consumers exist.
@@ -256,6 +282,8 @@ shareReplay({ bufferSize: 1, refCount: true })
 # Part 3 — Subjects
 
 ### ❓ Can you explain what a Subject is in RxJS and when you'd reach for it over a plain Observable?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -306,6 +334,8 @@ r$.subscribe(v => console.log(v));  // ✅ Receives 2, 3
 
 ### ❓ 🪤 Trick: Does `BehaviorSubject` emit its current value immediately on subscription?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 **Yes** — synchronously, the moment you subscribe.
@@ -324,6 +354,8 @@ user$.subscribe(v => console.log(v)); // 'sam', right away
 
 ### ❓ 🪤 Trick: Can a `Subject` emit values before anyone subscribes?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Yes — it can. But those values are **lost** (no replay). Future subscribers will only see emissions that happen *after* they subscribe.
@@ -341,6 +373,8 @@ s$.next(2);                        // logs 2
 
 ### ❓ 🪤 Trick: What happens if you call `.next()` on a completed `Subject`?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 **Nothing happens.** Subscribers receive nothing after completion — the Subject is sealed. A **new** subscriber to a completed `Subject` immediately receives just the `complete` notification.
@@ -348,6 +382,8 @@ s$.next(2);                        // logs 2
 ---
 
 ### ❓ Why is exposing a `BehaviorSubject` directly from a service considered a design smell?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -383,6 +419,8 @@ export class UserService {
 # Part 4 — Transformation Operators
 
 ### ❓ What does `map` do?
+
+**Level:** 🟢 Beginner
 
 ### 📝 Answer
 
@@ -443,6 +481,8 @@ of(1, 2, 3).pipe(scan((acc, n) => acc + n, 0)).subscribe(console.log);
 
 ### ❓ Difference between `map` and `switchMap`?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 | Operator | Purpose |
@@ -461,6 +501,8 @@ input$.pipe(switchMap(query => http.get(`/search?q=${query}`)));
 ---
 
 ### ❓ Explain `mergeMap` (a.k.a. `flatMap`)
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -505,6 +547,8 @@ Queues inner Observables and subscribes to them **sequentially**. Each one waits
 
 ### ❓ 🪤 Trick: For autocomplete search, which operator is best?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 **`switchMap`** — when the user types a new query, cancel the previous in-flight HTTP request. We only care about the latest.
@@ -521,6 +565,8 @@ search$.pipe(
 
 ### ❓ 🪤 Trick: For a login button that must ignore double-clicks, which operator?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 **`exhaustMap`** — while the login request is in flight, all extra clicks are ignored.
@@ -535,6 +581,8 @@ loginClicks$.pipe(
 
 ### ❓ 🪤 Trick: For a queue of tasks executed strictly in order, which operator?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 **`concatMap`** — preserves order; each task waits for the previous one to finish.
@@ -544,6 +592,8 @@ loginClicks$.pipe(
 # Part 6 — Combination Operators
 
 ### ❓ Difference between `combineLatest` and `forkJoin`?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -564,6 +614,8 @@ forkJoin([http.get('/a'), http.get('/b')]).subscribe(([a, b]) => /* ... */);
 
 ### ❓ Difference between `merge` and `concat`?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 | Operator | Behavior |
@@ -574,6 +626,8 @@ forkJoin([http.get('/a'), http.get('/b')]).subscribe(([a, b]) => /* ... */);
 ---
 
 ### ❓ What does `withLatestFrom` do?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -592,6 +646,8 @@ formSubmit$.pipe(
 
 ### ❓ Use case for `race`?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 When you want to **listen to several Observables but only react to the one that emits first** (like `Promise.race`).
@@ -604,6 +660,8 @@ race(http.get('/cdn1'), http.get('/cdn2')).subscribe(/* fastest wins */);
 
 ### ❓ 🪤 Trick: Does `combineLatest([a$, b$])` emit if `a$` emits but `b$` has never emitted?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 **No.** It waits until **each** source has emitted at least once.
@@ -615,6 +673,8 @@ race(http.get('/cdn1'), http.get('/cdn2')).subscribe(/* fastest wins */);
 # Part 7 — Error Handling & Retry
 
 ### ❓ How does `catchError` work?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -689,6 +749,8 @@ http.get('/data').pipe(
 
 ### ❓ 🪤 Trick: If you `catchError` and return `EMPTY`, does the stream complete?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 **Yes.** `EMPTY` is an Observable that completes immediately with no emissions.
@@ -699,6 +761,8 @@ http.get('/data').pipe(
 ---
 
 ### ❓ 🪤 Trick: Can `catchError` swallow an error and keep the outer stream alive?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -720,6 +784,8 @@ input$.pipe(
 
 ### ❓ Can you explain what a Scheduler is in RxJS and when you'd need to explicitly specify one?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 A centralized way to control **when** and **in which execution context** Observable notifications are delivered.
@@ -735,6 +801,8 @@ A centralized way to control **when** and **in which execution context** Observa
 
 ### ❓ Why might you use `observeOn(asyncScheduler)`?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 To **make a synchronous stream async** — useful for:
@@ -748,6 +816,8 @@ To **make a synchronous stream async** — useful for:
 
 ### ❓ How do RxJS streams interact with zone.js, and when should they run outside the Angular zone?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Angular patches async APIs (including many RxJS sources) via **zone.js**. Emissions that run **inside** the Angular zone trigger change detection. You can use `NgZone.runOutsideAngular()` to run heavy streams outside the zone for performance, then re-enter the zone with `NgZone.run()` when you need to update the view.
@@ -755,6 +825,8 @@ Angular patches async APIs (including many RxJS sources) via **zone.js**. Emissi
 ---
 
 ### ❓ How does Angular's `HttpClient` use RxJS?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -767,6 +839,8 @@ this.http.get<User[]>('/api/users').subscribe(users => /* ... */);
 ---
 
 ### ❓ 🪤 Trick: If you subscribe twice to the same `this.http.get(...)`, how many HTTP calls happen?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -781,6 +855,8 @@ req$.subscribe();   // Request #2
 ---
 
 ### ❓ How do you avoid multiple HTTP calls when many components need the same data?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -801,6 +877,8 @@ Now any component subscribing to `userService.users$` reuses the same HTTP respo
 
 ### ❓ What does the `async` pipe do?
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 Subscribes to an Observable/Promise in a template, exposes the latest value, and **automatically unsubscribes on component destroy**.
@@ -817,6 +895,8 @@ Subscribes to an Observable/Promise in a template, exposes the latest value, and
 
 ### ❓ When should you NOT use the `async` pipe?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 - When you need **imperative control** over subscription/timing
@@ -826,6 +906,8 @@ Subscribes to an Observable/Promise in a template, exposes the latest value, and
 ---
 
 ### ❓ How would you model component state using RxJS?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -844,6 +926,8 @@ updateName(name: string) {
 
 ### ❓ Example: How to debounce a search input in Angular?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 ```ts
@@ -857,6 +941,8 @@ this.searchControl.valueChanges.pipe(
 ---
 
 ### ❓ How does RxJS fit into NgRx?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -881,6 +967,8 @@ Operators like `ofType`, `mergeMap`, `switchMap`, `catchError` are the building 
 # Part 10 — Memory Leaks & Unsubscribe Patterns
 
 ### ❓ How do memory leaks occur with RxJS in Angular?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -951,6 +1039,8 @@ interval(1000).pipe(
 
 ### ❓ 🪤 Trick: Does a `BehaviorSubject` with no subscribers cause a memory leak by itself?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 **Not by itself.** But if the Subject is held by a long-lived service and stores large objects, those references stay in memory as long as the Subject is referenced.
@@ -958,6 +1048,8 @@ interval(1000).pipe(
 ---
 
 ### ❓ 🪤 Trick: Does `subscribe` return a Promise?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -973,6 +1065,8 @@ const value = await firstValueFrom(this.http.get('/data'));
 
 ### ❓ 🪤 Trick: If you call `unsubscribe()` on a completed stream, what happens?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 **Nothing special.** Completion already cleaned up. Calling `unsubscribe` again is a safe no-op.
@@ -982,6 +1076,8 @@ const value = await firstValueFrom(this.http.get('/data'));
 # Part 11 — Trick Questions Round
 
 ### ❓ 🪤 Trick: Will `map` execute if no one subscribes?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -999,6 +1095,8 @@ n$.subscribe(); // now 'mapping 1', 'mapping 2'
 
 ### ❓ 🪤 Trick: Does `tap` change the emitted values?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 **No.** It's strictly for side effects; the original values pass through unchanged.
@@ -1011,6 +1109,8 @@ n$.subscribe(); // now 'mapping 1', 'mapping 2'
 
 ### ❓ 🪤 Trick: `interval(1000).pipe(take(0))` — does it emit anything?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 **No.** `take(0)` completes immediately with zero emissions.
@@ -1022,6 +1122,8 @@ n$.subscribe(); // now 'mapping 1', 'mapping 2'
 
 ### ❓ 🪤 Trick: `from([1,2,3]).pipe(switchMap(x => of(x)))` — can any values be cancelled?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 **No.** `of(x)` completes synchronously, so `switchMap` doesn't have time to cancel — every value emerges.
@@ -1032,6 +1134,8 @@ n$.subscribe(); // now 'mapping 1', 'mapping 2'
 ---
 
 ### ❓ 🪤 Trick: `share()` vs `shareReplay(1)` for HTTP caching?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -1045,6 +1149,8 @@ n$.subscribe(); // now 'mapping 1', 'mapping 2'
 # Part 12 — Real-World Mock Scenarios
 
 ### ❓ Mock: You have an infinite WebSocket stream. Some components need it; others don't. Design?
+
+**Level:** 🔴 Advanced
 
 ### 📝 Answer
 
@@ -1063,6 +1169,8 @@ export class WsService {
 ---
 
 ### ❓ Mock: File upload progress with cancel support. RxJS approach?
+
+**Level:** 🔴 Advanced
 
 ### 📝 Answer
 
@@ -1092,6 +1200,8 @@ cancelUpload() { this.cancel$.next(); }
 
 ### ❓ Mock: Poll a backend every 10s, but stop on navigation away or error.
 
+**Level:** 🔴 Advanced
+
 ### 📝 Answer
 
 ```ts
@@ -1109,6 +1219,8 @@ timer(0, 10000).pipe(
 
 ### ❓ Mock: Combine backend prefs + local UI overrides. Model with RxJS?
 
+**Level:** 🔴 Advanced
+
 ### 📝 Answer
 
 ```ts
@@ -1120,6 +1232,8 @@ combineLatest([this.backendPrefs$, this.uiOverrides$]).pipe(
 ---
 
 ### ❓ Mock: Three dependent HTTP calls — B depends on A, C depends on B. Implementation?
+
+**Level:** 🔴 Advanced
 
 ### 📝 Answer
 
@@ -1135,6 +1249,8 @@ this.http.get<A>('/a').pipe(
 ---
 
 ### ❓ Mock: Debounce keystrokes, but execute immediately on Enter key.
+
+**Level:** 🔴 Advanced
 
 ### 📝 Answer
 
@@ -1160,6 +1276,8 @@ merge(debounced$, enter$).pipe(
 
 ### ❓ Mock: Wizard where each step depends on the previous result and can be retried. Operator choices?
 
+**Level:** 🔴 Advanced
+
 ### 📝 Answer
 
 - **`concatMap`** — preserve step order
@@ -1169,6 +1287,8 @@ merge(debounced$, enter$).pipe(
 ---
 
 ### ❓ You have two REST APIs:
+
+**Level:** 🟡 Intermediate
 > - `https://jsonplaceholder.typicode.com/users` → 10 user records
 > - `https://jsonplaceholder.typicode.com/photos` → many photo records
 > Both contain an `id` field. Fetch both, match users with photos by `id`, and merge matched photos into each user.

@@ -25,6 +25,7 @@ import { getFollowUps, getNextQuestions, getQuestionsByTopic, isContextQuestion,
 import { buildInterviewPrep, findRole, interviewPicker, LAYERS, interviewPrepRole, interviewTopics, PICKER_PREFIX } from "./chat-interview.js";
 import { ANOTHER_SET, buildQuestionSet, isAnotherSetRequest, isQuestionSetRequest, previousQuestionSet, questionSetSetup } from "./chat-question-set.js";
 import { continueMock, isMockRequest, startMock } from "./chat-mock.js";
+import { buildRevision, loadRevisionPage, reviseFollowUps, revisePicker, reviseRequest, revisionFollowUps, revisionPicker, revisionRequest } from "./chat-revision.js";
 import type { MockState } from "./chat-contracts.js";
 import { questionKey, searchQuestions, type SearchConfidence, type SearchResult } from "./question-search.js";
 import { needsProfile, PROFILE_NEEDED_MARKDOWN, withoutProfileChips } from "./profile-gate.js";
@@ -199,6 +200,24 @@ async function directAnswer(request: ChatRequest, model: AnswerModel | null = nu
   if (request.mock && request.mock.index < request.mock.ids.length) {
     const turn = await continueMock(request.message, request.mock, model, signal);
     return builtAnswer(request, emptySearch({ intents: ["quiz"] }), "mock", turn.markdown, turn.followUps, [], turn.state);
+  }
+  // "/cheat-sheet" or "/quick-traps": the list of topics; "Java cheat sheet" / "Java quick traps": that page, exactly as written.
+  const plain = !request.plan && !request.overview;
+  // "/revise" → topic picker; "Revise Java and React" → a fresh set of flashcards.
+  const revise = plain ? reviseRequest(request.message) : null;
+  if (revise) {
+    return revise.length
+      ? builtAnswer(request, emptySearch({ mode: "browse", intents: ["quiz"] }), "overview", await buildRevision(revise), reviseFollowUps(revise))
+      : builtAnswer(request, emptySearch({ mode: "browse" }), "overview", revisePicker(), ["Quick traps", "One-liners"]);
+  }
+  // Cheat sheets, quick traps, one-liners, comparisons…: "/<kind>" → topic picker; "<Topic> <kind>" → that page.
+  const revision = plain ? revisionRequest(request.message) : null;
+  if (revision) {
+    const markdown = revision.topic ? await loadRevisionPage(revision.kind, revision.topic) : null;
+    const other = revision.kind === "sheet" ? "Quick traps" : "Cheat sheets";
+    return markdown && revision.topic
+      ? builtAnswer(request, emptySearch({ mode: "browse" }), "overview", markdown, revisionFollowUps(revision.kind, revision.topic))
+      : builtAnswer(request, emptySearch({ mode: "browse" }), "overview", revisionPicker(revision.kind, revision.unknown), [other, "Interview prep"]);
   }
   if (!request.plan && !request.overview && isMockRequest(request.message)) {
     const start = await startMock(request.message);

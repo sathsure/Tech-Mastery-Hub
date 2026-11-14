@@ -1,5 +1,7 @@
 ### ❓ What is Node.js and why was it created?
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 - **Node.js** is a JavaScript runtime environment that allows JavaScript to run outside the browser, mainly on servers.
@@ -22,6 +24,8 @@
 
 ### ❓ What is Express.js and why do we need it?
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 - **Express.js** is a minimal web framework built on top of Node.js.
@@ -40,6 +44,8 @@
 ---
 
 ### ❓ What does non-blocking I/O mean in Node.js?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -72,6 +78,8 @@ The file read happens in the background, and Node.js continues executing other r
 ---
 
 ### ❓ Explain the Node.js Event Loop in detail.
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -133,6 +141,8 @@ immediate
 
 ### ❓ Is Node.js single-threaded?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 **Your JavaScript runs on one main thread — but Node.js itself uses more threads.**
@@ -151,6 +161,8 @@ So one slow CPU loop in your code blocks every request, while thousands of waiti
 ---
 
 ### ❓ What are Worker Threads and when should they be used?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -211,6 +223,8 @@ parentPort.postMessage(result);
 ---
 
 ### ❓ What are Streams and why are they important?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -397,6 +411,8 @@ In contrast, `Buffer` is just a memory container and provides **no built-in flow
 
 ### ❓ What is middleware in Express.js?
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 - Middleware functions execute sequentially between the incoming request and outgoing response.
@@ -434,6 +450,8 @@ app.use((err, req, res, next) => {
 
 ### ❓ How do you manage environment configuration?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Keep settings that change per environment (URLs, ports, keys) **outside the code** in environment variables, so the same build runs in dev, staging and production.
@@ -457,6 +475,8 @@ if (!process.env.DB_URL) throw new Error("DB_URL is required");   // fail fast o
 
 ### ❓ How does load balancing work in Node.js?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 One Node.js process uses **one CPU core** for JavaScript. To use all cores and survive crashes, run **several instances** and spread requests across them.
@@ -471,6 +491,8 @@ Because any instance can get the next request, keep the app **stateless**: sessi
 ---
 
 ### ❓ Explain routing, route params, and query params.
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -495,6 +517,8 @@ Group routes with `express.Router()` (e.g. `app.use("/users", usersRouter)`).
 
 ### ❓ How do you profile Node.js applications?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Profiling finds **where time and memory go**.
@@ -507,6 +531,8 @@ Profiling finds **where time and memory go**.
 ---
 
 ### ❓ How does logging work in production?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -528,6 +554,8 @@ log.info({ orderId: 42, ms: 120 }, "order created");
 ---
 
 ### ❓ Explain memory management and garbage collection.
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -551,6 +579,8 @@ Find them with heap snapshots (see profiling). Raise the old-space limit only wh
 
 ### ❓ Compare npm, yarn, pnpm, and npx.
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 | Tool | What it is | Key point |
@@ -565,6 +595,8 @@ All three managers read the same `package.json`; commit **one** lock file so eve
 ---
 
 ### ❓ What is the Node.js REPL?
+
+**Level:** 🟢 Beginner
 
 ### 📝 Answer
 
@@ -587,6 +619,8 @@ Useful for trying out an API quickly, testing a regex, or inspecting a library. 
 
 ### ❓ How does the File System module work?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 The `fs` module reads, writes and watches files. It has three styles:
@@ -607,6 +641,8 @@ await writeFile("b.txt", text.toUpperCase());
 ---
 
 ### ❓ What is caching and why is it important?
+
+**Level:** 🟢 Beginner
 
 ### 📝 Answer
 
@@ -631,6 +667,8 @@ async function getProduct(id) {
 ---
 
 ### ❓ Does `async/await` create threads in Node.js?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -662,5 +700,167 @@ fetchData();
 - The function pauses at `await`, and the event loop continues processing other tasks.
 - After one second, the Promise resolves.
 - `"End"` is executed as a microtask after the current event loop phase completes.
+
+---
+
+
+## Node.js Runtime Deep Dive (Intermediate)
+
+### ❓ `process.nextTick` vs `setImmediate` vs `setTimeout(0)` — what's the order?
+
+### 📝 Answer
+
+```mermaid
+flowchart LR
+  T[timers<br/>setTimeout] --> P[poll<br/>I/O callbacks] --> C[check<br/>setImmediate] --> X[close] --> T
+  N((nextTick queue,<br/>then promise microtasks)) -. "runs between every phase" .-> T
+```
+
+| API | Runs |
+|---|---|
+| `process.nextTick(fn)` | right after the current operation, **before** promises |
+| `Promise.then` / `await` | after the nextTick queue |
+| `setTimeout(fn, 0)` | next **timers** phase |
+| `setImmediate(fn)` | next **check** phase (right after I/O) |
+
+```js
+setTimeout(() => console.log("timeout"));
+setImmediate(() => console.log("immediate"));
+Promise.resolve().then(() => console.log("promise"));
+process.nextTick(() => console.log("nextTick"));
+// nextTick, promise, then timeout/immediate (order varies in the main module)
+```
+
+Inside an I/O callback, `setImmediate` **always** runs before `setTimeout(0)`.
+
+#### ↳ Follow-up: Can `nextTick` starve the event loop?
+
+↪ Yes — recursively calling `nextTick` never lets I/O run. Use `setImmediate` to yield.
+
+---
+
+### ❓ What is the EventEmitter, and how is it used?
+
+### 📝 Answer
+
+`EventEmitter` is Node's built-in **publish/subscribe** class. Streams, HTTP servers and sockets all extend it.
+
+```js
+import { EventEmitter } from "node:events";
+
+class OrderEvents extends EventEmitter {}
+const orders = new OrderEvents();
+
+orders.on("placed", order => sendEmail(order));        // listener
+orders.once("placed", () => console.log("first order!"));
+orders.emit("placed", { id: 1, total: 500 });          // calls listeners synchronously, in order
+```
+
+| Method | Does |
+|---|---|
+| `on` / `addListener` | subscribe |
+| `once` | subscribe for one call |
+| `off` / `removeListener` | unsubscribe |
+| `emit` | call every listener **synchronously** |
+
+**Must know:**
+- An `"error"` event with **no listener** crashes the process — always handle `"error"`.
+- More than 10 listeners on one event prints a **possible memory leak** warning (listeners added but never removed).
+
+#### ↳ Follow-up: Is `emit` async?
+
+↪ No — listeners run immediately, inside the `emit` call.
+
+---
+
+### ❓ How do you shut down a Node.js server gracefully?
+
+### 📝 Answer
+
+When Kubernetes or PM2 stops your app, it sends **SIGTERM**. A graceful shutdown **stops taking new requests, finishes current ones, closes connections, then exits**.
+
+```js
+const server = app.listen(3000);
+
+async function shutdown(signal) {
+  console.log(`${signal} received, shutting down`);
+  server.close(async () => {                 // stop accepting; wait for in-flight requests
+    await db.end();                          // close DB pool, Redis, Kafka consumers…
+    process.exit(0);
+  });
+  setTimeout(() => process.exit(1), 10_000).unref();   // force exit if it hangs
+}
+
+process.on("SIGTERM", shutdown);
+process.on("SIGINT", shutdown);              // Ctrl+C
+```
+
+In Kubernetes, also fail the **readiness probe** first so no new traffic is routed, and keep the shutdown shorter than `terminationGracePeriodSeconds` (default 30 s).
+
+#### ↳ Follow-up: Why does it matter?
+
+↪ Without it, deploys cut off requests mid-way (failed payments, half-written data).
+
+---
+
+### ❓ How do you handle unhandled promise rejections and uncaught exceptions?
+
+### 📝 Answer
+
+Since **Node 15**, an unhandled promise rejection **crashes the process** by default.
+
+```js
+async function load() { throw new Error("DB down"); }
+load();                      // ❌ no await / no .catch → process exits
+
+await load();                // ✅ inside try/catch
+load().catch(log);           // ✅
+```
+
+**Last-resort handlers** — log and exit, don't keep running in an unknown state:
+
+```js
+process.on("unhandledRejection", reason => { logger.fatal({ reason }, "unhandled rejection"); process.exit(1); });
+process.on("uncaughtException", err => { logger.fatal(err, "uncaught exception"); process.exit(1); });
+```
+
+A process manager (Kubernetes, PM2, systemd) restarts it.
+
+In Express 4, errors in `async` route handlers need `try/catch` + `next(err)`; **Express 5** forwards rejected promises to the error handler automatically.
+
+#### ↳ Follow-up: Why exit instead of continuing?
+
+↪ After an unexpected error the app may hold broken state (half-open connections, locks). Restarting clean is safer.
+
+---
+
+### ❓ `cluster` vs `worker_threads` — when do you use each?
+
+### 📝 Answer
+
+| | `cluster` | `worker_threads` |
+|---|---|---|
+| Creates | **processes** (one per core) | **threads** inside one process |
+| Memory | separate | can share (`SharedArrayBuffer`) |
+| Use for | serving more **HTTP requests** on all cores | **CPU-heavy** work without blocking the event loop |
+| Example | a web server on an 8-core VM | image resizing, PDF generation, hashing |
+
+```js
+// cluster: one worker process per CPU core, all sharing port 3000
+import cluster from "node:cluster";
+import os from "node:os";
+if (cluster.isPrimary) {
+  os.cpus().forEach(() => cluster.fork());
+  cluster.on("exit", () => cluster.fork());   // restart crashed workers
+} else {
+  app.listen(3000);
+}
+```
+
+In containers, teams often skip `cluster` and run **one process per container**, letting Kubernetes scale the pods.
+
+#### ↳ Follow-up: Doesn't the libuv thread pool already use threads?
+
+↪ Only for built-in I/O (files, DNS, crypto). Your own JavaScript loops still run on the main thread — that's what `worker_threads` is for.
 
 ---

@@ -6,6 +6,8 @@
 
 ### ❓ Can you walk me through `call()`, `apply()`, and `bind()` — how they differ and when you'd use each?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 All three set the value of `this` for a function — they differ in **how arguments are passed and when the function runs**.
@@ -42,6 +44,8 @@ greetDev("India");
 ---
 
 ### ❓ How would you explain closures to someone new to JavaScript, and can you give a real-world use case?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -85,6 +89,8 @@ for (let i = 0; i < 3; i++) {
 
 ### ❓ Can you explain currying and walk through how you'd implement it?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 **Currying** = converting a function that takes multiple arguments into a sequence of functions, each taking ONE argument at a time.
@@ -122,6 +128,8 @@ console.log(add1and2(3));                // 6
 
 ### ❓ What are higher-order functions?
 
+**Level:** 🟢 Beginner
+
 ### 📝 Answer
 
 A **Higher Order Function (HOF)** is a function that:
@@ -157,6 +165,8 @@ console.log(double(5));                  // 10
 # 🎭 Part 2 — `this` and Prototypes
 
 ### ❓ How does JavaScript prototype inheritance work?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -197,6 +207,8 @@ p2.sayHi();   // "Hi, I am Raj"
 ---
 
 ### ❓ Why does `this` behave differently in arrow vs normal functions?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -239,6 +251,8 @@ obj.arrow();    // undefined
 # 🪜 Part 3 — Hoisting & TDZ
 
 ### ❓ Can you walk me through how hoisting works in JavaScript and where it can catch developers off guard?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -304,6 +318,8 @@ f();                               // Never reached
 
 ### ❓ Explain why `[] == ![]` is `true`
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 This is a famous JavaScript quirk that catches everyone.
@@ -360,6 +376,8 @@ Everything else is truthy — including `[]`, `{}`, `"0"`, `"false"`.
 
 ### ❓ Why does `typeof null === "object"`?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 This is a **historical bug in JavaScript**, not a design decision.
@@ -397,6 +415,8 @@ if (value === null) { ... }
 # 🔄 Part 5 — Event Loop & Async
 
 ### ❓ What will this code output, and why?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -441,6 +461,8 @@ setTimeout-0ms
 ---
 
 ### ❓ Difference between `Promise.all`, `allSettled`, `race`, and `any`?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -559,6 +581,8 @@ Promise.race([fetch("/api"), timeout(5000)]);
 
 ### ❓ If `Array.prototype.map` is removed, how do you recreate it?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 ```js
@@ -649,6 +673,8 @@ console.log([1, 2, 3, 4].myReduce((sum, n) => sum + n, 0));   // 10
 ---
 
 ### ❓ How would you implement a debounce function?
+
+**Level:** 🟡 Intermediate
 ### 📝 Answer
 
 **Debounce** = wait until user **stops** firing events for X ms, then execute.
@@ -705,6 +731,8 @@ window.addEventListener("scroll", throttle(() => {
 
 # ✨ Part 7 — Modern JS Features
 ### ❓ How does optional chaining work and when would you reach for it over a manual null check?
+
+**Level:** 🟡 Intermediate
 ### 📝 Answer
 
 `?.` safely accesses nested properties. If any link is `null`/`undefined`, the expression returns `undefined` instead of throwing.
@@ -746,6 +774,8 @@ undefined ?? "default"  // "default"
 ---
 
 ### ❓ Difference between `Map` and `Object`?
+
+**Level:** 🟡 Intermediate
 ### 📝 Answer
 
 | Feature             | `Object`               | `Map`                       |
@@ -772,6 +802,8 @@ map.size;                            // 2
 ---
 
 ### ❓ What are Generators (`function*`)?
+
+**Level:** 🟡 Intermediate
 ### 📝 Answer
 
 Generators produce values **lazily**, one at a time, and can pause/resume execution.
@@ -795,6 +827,8 @@ console.log(c.next().value);         // 2
 ---
 
 ### ❓ Can you explain the difference between shallow and deep copies — and what pitfalls come with each?
+
+**Level:** 🟡 Intermediate
 ### 📝 Answer
 
 ```js
@@ -822,6 +856,8 @@ const deep2 = JSON.parse(JSON.stringify(original));
 ---
 
 ### ❓ What's the difference between `for...in` and `for...of`?
+
+**Level:** 🟡 Intermediate
 ### 📝 Answer
 
 | Loop       | Iterates over     | Use for                         |
@@ -1050,3 +1086,87 @@ console.log(fns.map((f) => f()));   // [3, 3, 3]
 ```
 
 All three functions share **one** `var i`, which is 3 when they run. Fix with `let` (a new `i` per iteration) → `[0, 1, 2]`.
+
+
+## Must-Know Internals (Intermediate)
+
+### ❓ Explain the JavaScript event loop — call stack, microtasks and macrotasks.
+
+### 📝 Answer
+
+JavaScript runs **one thing at a time** on one thread. The event loop decides **what runs next** when the current code finishes.
+
+```mermaid
+flowchart LR
+  A[Run all sync code<br/>on the call stack] --> B{Call stack empty?}
+  B -- yes --> C[Run ALL microtasks<br/>Promise.then, await, queueMicrotask]
+  C --> D[Browser may paint]
+  D --> E[Run ONE macrotask<br/>setTimeout, click, I/O]
+  E --> A
+```
+
+- **Call stack** — the function running right now.
+- **Microtask queue** — promise callbacks. Emptied **completely** after each task.
+- **Macrotask (task) queue** — timers, events, network callbacks. **One** per loop turn.
+
+```js
+console.log("A");
+setTimeout(() => console.log("B"), 0);
+Promise.resolve().then(() => console.log("C"));
+console.log("D");
+// A D C B
+```
+
+`setTimeout(fn, 0)` means "after the current code and all microtasks" — not "right now".
+
+#### ↳ Follow-up: Why does `await` let other code run?
+
+↪ Everything after `await` becomes a microtask. The function pauses, the caller continues, and the rest resumes later.
+
+#### ↳ Follow-up: Can microtasks block the page?
+
+↪ Yes. A promise chain that keeps adding microtasks never lets the loop reach rendering or clicks — the page freezes.
+
+#### ↳ Follow-up: Where do Web APIs fit?
+
+↪ `setTimeout`, `fetch` and DOM events are handled by the browser outside the JS thread; when ready, their callbacks are queued as tasks.
+
+---
+
+### ❓ What causes memory leaks in JavaScript, and how do you find them?
+
+### 📝 Answer
+
+The garbage collector frees objects **nothing points to** (mark-and-sweep). A leak is memory you no longer need but still **point to**, so it's never freed.
+
+![Mark and sweep: the collector marks everything reachable from the roots, then frees the rest](../../knowledge/visual-notes/under-the-hood/mark-and-sweep-gc.gif)
+
+_Image: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Animation_of_the_Naive_Mark_and_Sweep_Garbage_Collector_Algorithm.gif) · M17 · CC0_
+
+| Common leak | Example | Fix |
+|---|---|---|
+| Forgotten timers | `setInterval` in a component never cleared | `clearInterval` on unmount/destroy |
+| Event listeners | `window.addEventListener` never removed | `removeEventListener`, or `AbortController` |
+| Detached DOM nodes | removed element still stored in a variable/array | drop the reference |
+| Growing caches | a `Map` that only ever grows | size limit, or `WeakMap` for object keys |
+| Closures | a long-lived callback holding a big object | keep only what you need |
+| Accidental globals | `leak = []` without `let` (non-strict) | strict mode, modules |
+
+```js
+// ✅ remove listeners in one go
+const controller = new AbortController();
+window.addEventListener("resize", onResize, { signal: controller.signal });
+controller.abort();   // removes it
+```
+
+**Finding leaks:** Chrome DevTools → **Memory** → take a heap snapshot, repeat the action a few times, take another, compare. Look for **Detached** DOM trees and objects that keep growing.
+
+#### ↳ Follow-up: Why does `WeakMap` help?
+
+↪ Its keys are held weakly: when nothing else references the key object, the entry can be garbage-collected.
+
+#### ↳ Follow-up: Do single-page apps leak more?
+
+↪ Yes — the page never reloads, so un-cleaned subscriptions and listeners pile up over hours of use.
+
+---

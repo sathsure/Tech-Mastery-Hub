@@ -89,9 +89,27 @@ await check("files without questions become section notes", () => {
 
 await check("AWS notes are split into questions per service area, with their diagrams", () => {
   const aws = index.entries.filter(entry => entry.source.path === "interview/architecture/02-aws-cloud.md");
-  assert.ok(aws.length >= 20 && aws.every(entry => entry.kind === "question"));
+  assert.ok(aws.length >= 20 && aws.every(entry => entry.kind === "question" || entry.kind === "follow-up"));
   assert.ok(aws.some(entry => entry.visuals.some(visual => visual.path === "knowledge/visual-notes/aws-compute.png")));
   assert.match(find("interview/architecture/02-aws-cloud.md", "main AWS Compute services")?.answer ?? "", /Amazon EC2/);
+});
+
+await check("every technical question has a topic and a level; the level line never shows in the answer", () => {
+  const technical = index.entries.filter(entry => entry.kind === "question"
+    && /^(interview|practice)\//.test(entry.source.path)
+    && !/under-the-hood|career|behavioral|leadership|process\//.test(entry.source.path));
+  assert.ok(technical.length > 1200);
+  assert.deepEqual(technical.filter(entry => !entry.topics.length).map(entry => entry.id), [], "every question has a topic");
+  assert.deepEqual(technical.filter(entry => !entry.difficulty).map(entry => entry.id), [], "every question has a level");
+  assert.ok(!technical.some(entry => /\*\*Level:\*\*/.test(`${entry.prompt ?? ""}\n${entry.answer}`)), "level lines are stripped");
+  assert.equal(find("interview/frontend/03-JavaScript.md", "call()")?.difficulty, "intermediate");
+  assert.equal(find("interview/devops/01-Git.md", "What is .gitignore")?.difficulty, "beginner");
+});
+
+await check("the Spring annotations note is split into one question per group", () => {
+  const notes = index.entries.filter(entry => entry.kind === "question" && entry.source.path === "interview/backend/java/04-Spring-annotation.md");
+  assert.ok(notes.length >= 7, "overview + six groups");
+  assert.ok(notes.some(entry => /REST APIs/.test(entry.question) && entry.answer.includes("@GetMapping")));
 });
 
 await check("quoted snippets are captured as the question prompt", () => {

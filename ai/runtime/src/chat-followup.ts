@@ -92,10 +92,15 @@ function nothingNew(what: string, subject: string, query: string, topics: string
  * otherwise the ones from the previous answer, shown on their own without the explanation around them.
  */
 function pickPieces(
-  evidence: Evidence[],
+  found: Evidence[],
   previous: PreviousTurn,
   piecesOf: (item: Evidence) => string[],
 ): { item: Evidence; pieces: string[]; repeated: boolean } | null {
+  // Stay on the subject's topic: after a JavaScript answer, "show me the code" shows JavaScript,
+  // even when a note on another language ranks second.
+  const subject = new Set(found[0]?.topics ?? []);
+  const onTopic = (item: Evidence) => item.topics.some(topic => subject.has(topic));
+  const evidence = subject.size ? [...found.filter(onTopic), ...found.filter(item => !onTopic(item))] : found;
   for (const item of evidence) {
     const pieces = piecesOf(item).filter(piece => !alreadySaid(piece, previous.answer));
     if (pieces.length) return { item, pieces, repeated: false };

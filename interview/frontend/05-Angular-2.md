@@ -7,6 +7,8 @@
 
 ### ❓ Explain Angular's building tools and how they have evolved.
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Modern Angular's build pipeline is a coordinated effort of **5 things** working together:
@@ -92,6 +94,8 @@ Angular 17+ →  Ivy          +  esbuild (build) + Vite (dev server) — default
 
 ### ❓ Can you walk me through how HMR works and how Angular integrates it into the dev server?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 **HMR** updates code in the browser **without a full page reload** — preserving app state like form inputs, scroll position, and component state.
@@ -166,6 +170,8 @@ Source (.ts + .html) ──► Ivy Compiler ──► Pure JS ──► esbuild 
 
 ### ❓ How do you preserve form data on refresh but clear it on browser close?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Use **`sessionStorage`** — perfect for this exact behavior.
@@ -227,6 +233,8 @@ ngOnInit() {
 
 ### ❓ How do you hide backend endpoints from the browser's Network tab?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 **🚫 You can't hide them — and that's a fundamental constraint.**
@@ -264,6 +272,8 @@ Angular ──► /api/users ──► API Gateway ──► User Microservice
 
 ### ❓ Can we jump from Angular 5 → Angular 19 directly?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 **🚫 Not recommended — and almost guaranteed to break things.**
@@ -291,6 +301,8 @@ Where `N` is the next major version number.
 ---
 
 ### ❓ Name some deprecated/removed concepts from Angular 5 → 19.
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 

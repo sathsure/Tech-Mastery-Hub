@@ -351,6 +351,8 @@ helm rollback orders 1
 
 ### ❓ Which kubectl commands do you use every day?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 ```bash
@@ -367,6 +369,8 @@ kubectl top pods                          # CPU and memory use
 
 ### ❓ What do CrashLoopBackOff, ImagePullBackOff, Pending and OOMKilled mean?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 | Status | Meaning | First thing to check |
@@ -382,6 +386,8 @@ kubectl top pods                          # CPU and memory use
 
 ### ❓ Tricky: Docker vs Kubernetes — do you need both?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Docker **builds and runs** containers on one machine. Kubernetes **orchestrates** containers across many machines. Kubernetes no longer uses Docker Engine itself (it uses containerd), but images built with Docker run on it unchanged.
@@ -389,6 +395,8 @@ Docker **builds and runs** containers on one machine. Kubernetes **orchestrates*
 ---
 
 ### ❓ Tricky: Why does my Java app get OOMKilled although the heap is smaller than the limit?
+
+**Level:** 🟡 Intermediate
 
 ### 📝 Answer
 
@@ -398,6 +406,169 @@ The JVM uses memory **outside the heap** too: metaspace, thread stacks, direct b
 
 ### ❓ Tricky: A Pod is running but users get 503 errors. Why?
 
+**Level:** 🟡 Intermediate
+
 ### 📝 Answer
 
 Likely the Pod is **not ready** (readiness probe failing) so the Service has no endpoints, or the Service's **label selector doesn't match** the Pod labels. Check `kubectl get endpoints <service>` — an empty list confirms it.
+
+
+
+---
+
+## Container Fundamentals (Beginner)
+
+### ❓ Container vs virtual machine — what's the difference?
+
+### 📝 Answer
+
+```mermaid
+flowchart TB
+  subgraph VM[Virtual machines]
+    direction TB
+    va[App A] --- vga[Guest OS]
+    vb[App B] --- vgb[Guest OS]
+    vga --- hv[Hypervisor]
+    vgb --- hv
+    hv --- h1[Host hardware]
+  end
+  subgraph CT[Containers]
+    direction TB
+    ca[App A + libs] --- eng[Container runtime]
+    cb[App B + libs] --- eng
+    eng --- hos[Host OS kernel]
+    hos --- h2[Host hardware]
+  end
+```
+
+| | Container | Virtual machine |
+|---|---|---|
+| What's inside | app + its libraries | app + a **full operating system** |
+| Shares | the host's **kernel** | only the hardware (via a hypervisor) |
+| Size | MBs | GBs |
+| Start time | seconds or less | minutes |
+| Isolation | process-level (namespaces, cgroups) | stronger (separate kernel) |
+| Density | many per host | fewer per host |
+| Example | Docker, containerd | VMware, VirtualBox, EC2 |
+
+Containers use Linux **namespaces** (what a process can see) and **cgroups** (how much CPU/memory it can use).
+
+In the cloud you usually run **containers inside VMs** — VMs for strong isolation between customers, containers for packaging apps.
+
+#### ↳ Follow-up: Can a Linux container run on Windows?
+
+↪ Not directly — it needs a Linux kernel. Docker Desktop runs a small Linux VM (WSL 2) underneath.
+
+---
+
+### ❓ What is the difference between a Docker image and a container?
+
+### 📝 Answer
+
+- **Image** — a **read-only template**: your app, its libraries and settings, built in **layers** from a Dockerfile. Like a class, or a recipe.
+- **Container** — a **running instance** of an image, with a thin **writable layer** on top. Like an object, or the cake made from the recipe.
+
+```bash
+docker build -t shop-api:1.4 .          # Dockerfile → image
+docker run -d --name api1 shop-api:1.4  # image → container
+docker run -d --name api2 shop-api:1.4  # second container, same image
+docker ps                               # running containers
+docker images                           # images on this machine
+```
+
+```mermaid
+flowchart LR
+  DF[Dockerfile] -- docker build --> IMG[Image<br/>read-only layers]
+  IMG -- docker run --> C1[Container 1]
+  IMG -- docker run --> C2[Container 2]
+  IMG -- docker push --> REG[(Registry)]
+```
+
+Changes inside a container are **lost when it's removed** — use volumes for data that must persist.
+
+#### ↳ Follow-up: Why are images built in layers?
+
+↪ Each Dockerfile step is a cached layer. Unchanged layers are reused, so rebuilds and downloads are fast.
+
+---
+
+## Release Strategies (Intermediate)
+
+### ❓ Blue-green vs canary vs rolling deployments — how do they differ?
+
+### 📝 Answer
+
+```mermaid
+flowchart LR
+  subgraph RO[Rolling]
+    r1[v1 v1 v1 v1] --> r2[v2 v1 v1 v1] --> r3[v2 v2 v2 v2]
+  end
+  subgraph BG[Blue-green]
+    b1[Blue v1 ← 100% traffic] --> b2[Green v2 ready] --> b3[switch → Green 100%]
+  end
+  subgraph CA[Canary]
+    c1[v2 gets 5%] --> c2[metrics OK → 25%] --> c3[→ 100%]
+  end
+```
+
+| Strategy | How | Rollback | Extra cost | Best for |
+|---|---|---|---|---|
+| **Rolling** | replace instances a few at a time | roll forward/back gradually | none | most stateless services (Kubernetes default) |
+| **Blue-green** | run a full new copy (green), switch all traffic at once | **instant** — switch back | double the infrastructure during release | big releases, easy rollback |
+| **Canary** | send a small % of users to the new version, watch metrics, increase | shift traffic back | needs traffic splitting + good monitoring | risky changes at scale |
+| **Recreate** | stop all old, start new | redeploy | downtime | dev environments |
+| **Feature flags** | deploy code switched off; turn on per user | flip the flag | flag management | separating deploy from release |
+
+#### ↳ Follow-up: What makes blue-green hard with databases?
+
+↪ Both versions share the database, so schema changes must be **backward-compatible** (expand → migrate → contract).
+
+#### ↳ Follow-up: How does a canary decide to continue?
+
+↪ Compare the canary's error rate and latency with the old version; tools like Argo Rollouts or Flagger promote or roll back automatically.
+
+---
+
+
+
+## Docker Networking (Intermediate)
+
+### ❓ How does Docker networking work — bridge, host and custom networks?
+
+### 📝 Answer
+
+```mermaid
+flowchart LR
+  subgraph Host[Host machine]
+    subgraph Net[app-net: user-defined bridge]
+      API[api container] -- "http://db:5432" --> DB[(db container)]
+    end
+  end
+  User((Browser)) -- "localhost:8080 → port mapping -p 8080:8080" --> API
+```
+
+| Network | What it does | Use for |
+|---|---|---|
+| **bridge** (default) | private network on the host; containers get internal IPs; reach them from outside with `-p host:container` | single containers |
+| **user-defined bridge** | like bridge, plus **DNS by container name** | multi-container apps (Compose does this for you) |
+| **host** | container shares the host's network directly, no isolation | max network performance, Linux only |
+| **none** | no network | locked-down batch jobs |
+| **overlay** | spans several hosts | Docker Swarm |
+
+```bash
+docker network create app-net
+docker run -d --name db  --network app-net postgres:16
+docker run -d --name api --network app-net -p 8080:8080 shop-api
+# inside "api", the database is reachable at  db:5432
+```
+
+**Must know:**
+- Inside a container, `localhost` means **the container itself**, not your machine → call other containers by **name**.
+- `-p 8080:80` = host port 8080 → container port 80. `EXPOSE` in a Dockerfile is only documentation.
+- From a container to your laptop: `host.docker.internal` (Docker Desktop).
+
+#### ↳ Follow-up: Why can't my API connect to `localhost:5432`?
+
+↪ The database runs in another container. Put both on one network and use the container name (`db:5432`).
+
+---
