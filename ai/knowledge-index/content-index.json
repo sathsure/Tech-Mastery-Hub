@@ -60,7 +60,7 @@
                           "domain":  "architecture",
                           "canonical_concept":  null,
                           "extension":  ".md",
-                          "size_bytes":  5627,
+                          "size_bytes":  15912,
                           "source_of_truth":  false,
                           "related_concepts":  [
                                                    "microservices"
@@ -73,7 +73,7 @@
                           "domain":  "backend",
                           "canonical_concept":  null,
                           "extension":  ".md",
-                          "size_bytes":  95931,
+                          "size_bytes":  103526,
                           "source_of_truth":  false,
                           "related_concepts":  [
                                                    "java"
@@ -112,7 +112,7 @@
                           "domain":  "backend",
                           "canonical_concept":  null,
                           "extension":  ".md",
-                          "size_bytes":  30384,
+                          "size_bytes":  39475,
                           "source_of_truth":  false,
                           "related_concepts":  [
                                                    "spring"
@@ -125,7 +125,7 @@
                           "domain":  "backend",
                           "canonical_concept":  null,
                           "extension":  ".md",
-                          "size_bytes":  29987,
+                          "size_bytes":  36817,
                           "source_of_truth":  false,
                           "related_concepts":  [
                                                    "spring"
@@ -281,7 +281,7 @@
                           "domain":  "frontend",
                           "canonical_concept":  null,
                           "extension":  ".md",
-                          "size_bytes":  35644,
+                          "size_bytes":  45565,
                           "source_of_truth":  false,
                           "related_concepts":  [
                                                    "angular"
@@ -1696,7 +1696,7 @@
                           "domain":  "README.md",
                           "canonical_concept":  null,
                           "extension":  ".md",
-                          "size_bytes":  711,
+                          "size_bytes":  1099,
                           "source_of_truth":  false,
                           "related_concepts":  [
 
@@ -1787,7 +1787,7 @@
                           "domain":  "backend",
                           "canonical_concept":  null,
                           "extension":  ".md",
-                          "size_bytes":  11263,
+                          "size_bytes":  12025,
                           "source_of_truth":  false,
                           "related_concepts":  [
                                                    "spring"
@@ -1866,7 +1866,7 @@
                           "domain":  "architecture",
                           "canonical_concept":  null,
                           "extension":  ".md",
-                          "size_bytes":  20996,
+                          "size_bytes":  42208,
                           "source_of_truth":  false,
                           "related_concepts":  [
                                                    "system-design"
@@ -1879,7 +1879,7 @@
                           "domain":  "architecture",
                           "canonical_concept":  null,
                           "extension":  ".md",
-                          "size_bytes":  10496,
+                          "size_bytes":  10500,
                           "source_of_truth":  false,
                           "related_concepts":  [
                                                    "system-design",
@@ -1907,7 +1907,7 @@
                           "domain":  "backend",
                           "canonical_concept":  null,
                           "extension":  ".md",
-                          "size_bytes":  13193,
+                          "size_bytes":  15183,
                           "source_of_truth":  false,
                           "related_concepts":  [
                                                    "java"
@@ -1946,7 +1946,7 @@
                           "domain":  "database",
                           "canonical_concept":  null,
                           "extension":  ".md",
-                          "size_bytes":  11788,
+                          "size_bytes":  20683,
                           "source_of_truth":  false,
                           "related_concepts":  [
                                                    "database/sql"
@@ -2375,7 +2375,7 @@
                           "domain":  "under-the-hood",
                           "canonical_concept":  null,
                           "extension":  ".md",
-                          "size_bytes":  4289,
+                          "size_bytes":  7436,
                           "source_of_truth":  false,
                           "related_concepts":  [
                                                    "under-the-hood",
@@ -2390,7 +2390,7 @@
                           "domain":  "under-the-hood",
                           "canonical_concept":  null,
                           "extension":  ".md",
-                          "size_bytes":  5727,
+                          "size_bytes":  11946,
                           "source_of_truth":  false,
                           "related_concepts":  [
                                                    "under-the-hood",
@@ -2405,7 +2405,7 @@
                           "domain":  "under-the-hood",
                           "canonical_concept":  null,
                           "extension":  ".md",
-                          "size_bytes":  3679,
+                          "size_bytes":  5921,
                           "source_of_truth":  false,
                           "related_concepts":  [
                                                    "under-the-hood",
@@ -2419,7 +2419,7 @@
                           "domain":  "under-the-hood",
                           "canonical_concept":  null,
                           "extension":  ".md",
-                          "size_bytes":  4309,
+                          "size_bytes":  7842,
                           "source_of_truth":  false,
                           "related_concepts":  [
                                                    "under-the-hood",
@@ -2434,7 +2434,7 @@
                           "domain":  "under-the-hood",
                           "canonical_concept":  null,
                           "extension":  ".md",
-                          "size_bytes":  4811,
+                          "size_bytes":  9120,
                           "source_of_truth":  false,
                           "related_concepts":  [
                                                    "under-the-hood",
@@ -2448,7 +2448,7 @@
                           "domain":  "under-the-hood",
                           "canonical_concept":  null,
                           "extension":  ".md",
-                          "size_bytes":  4901,
+                          "size_bytes":  9650,
                           "source_of_truth":  false,
                           "related_concepts":  [
                                                    "under-the-hood",
@@ -2465,7 +2465,7 @@
                           "domain":  "under-the-hood",
                           "canonical_concept":  null,
                           "extension":  ".md",
-                          "size_bytes":  4550,
+                          "size_bytes":  9896,
                           "source_of_truth":  false,
                           "related_concepts":  [
                                                    "under-the-hood",
@@ -2479,7 +2479,7 @@
                           "domain":  "under-the-hood",
                           "canonical_concept":  null,
                           "extension":  ".md",
-                          "size_bytes":  4296,
+                          "size_bytes":  6512,
                           "source_of_truth":  false,
                           "related_concepts":  [
                                                    "under-the-hood",
@@ -2494,7 +2494,7 @@
                           "domain":  "under-the-hood",
                           "canonical_concept":  null,
                           "extension":  ".md",
-                          "size_bytes":  4209,
+                          "size_bytes":  6550,
                           "source_of_truth":  false,
                           "related_concepts":  [
                                                    "under-the-hood",
@@ -2508,7 +2508,7 @@
                           "domain":  "under-the-hood",
                           "canonical_concept":  null,
                           "extension":  ".md",
-                          "size_bytes":  5738,
+                          "size_bytes":  10770,
                           "source_of_truth":  false,
                           "related_concepts":  [
                                                    "under-the-hood",
@@ -2525,7 +2525,7 @@
                           "domain":  "under-the-hood",
                           "canonical_concept":  null,
                           "extension":  ".md",
-                          "size_bytes":  11493,
+                          "size_bytes":  13694,
                           "source_of_truth":  false,
                           "related_concepts":  [
                                                    "under-the-hood"
@@ -2538,7 +2538,7 @@
                           "domain":  "under-the-hood",
                           "canonical_concept":  null,
                           "extension":  ".md",
-                          "size_bytes":  15280,
+                          "size_bytes":  16353,
                           "source_of_truth":  false,
                           "related_concepts":  [
                                                    "under-the-hood"
@@ -2551,7 +2551,7 @@
                           "domain":  "under-the-hood",
                           "canonical_concept":  null,
                           "extension":  ".md",
-                          "size_bytes":  8141,
+                          "size_bytes":  9985,
                           "source_of_truth":  false,
                           "related_concepts":  [
                                                    "under-the-hood",
@@ -2565,7 +2565,7 @@
                           "domain":  "under-the-hood",
                           "canonical_concept":  null,
                           "extension":  ".md",
-                          "size_bytes":  7143,
+                          "size_bytes":  8386,
                           "source_of_truth":  false,
                           "related_concepts":  [
                                                    "under-the-hood",
@@ -2579,7 +2579,7 @@
                           "domain":  "under-the-hood",
                           "canonical_concept":  null,
                           "extension":  ".md",
-                          "size_bytes":  3263,
+                          "size_bytes":  4032,
                           "source_of_truth":  false,
                           "related_concepts":  [
                                                    "under-the-hood",
@@ -2594,7 +2594,7 @@
                           "domain":  "under-the-hood",
                           "canonical_concept":  null,
                           "extension":  ".md",
-                          "size_bytes":  5757,
+                          "size_bytes":  7481,
                           "source_of_truth":  false,
                           "related_concepts":  [
                                                    "under-the-hood",
@@ -2611,7 +2611,7 @@
                           "domain":  "under-the-hood",
                           "canonical_concept":  null,
                           "extension":  ".md",
-                          "size_bytes":  8083,
+                          "size_bytes":  8117,
                           "source_of_truth":  false,
                           "related_concepts":  [
                                                    "under-the-hood",
@@ -2627,13 +2627,73 @@
                           "domain":  "under-the-hood",
                           "canonical_concept":  null,
                           "extension":  ".md",
-                          "size_bytes":  14520,
+                          "size_bytes":  14448,
                           "source_of_truth":  false,
                           "related_concepts":  [
                                                    "under-the-hood",
                                                    "security",
                                                    "networking",
                                                    "devops"
+                                               ]
+                      },
+                      {
+                          "id":  "interview.under-the-hood.19-inside-spring-boot.md",
+                          "path":  "interview/under-the-hood/19-Inside-Spring-Boot.md",
+                          "content_type":  "interview",
+                          "domain":  "under-the-hood",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  53152,
+                          "source_of_truth":  false,
+                          "related_concepts":  [
+                                                   "under-the-hood",
+                                                   "java",
+                                                   "spring"
+                                               ]
+                      },
+                      {
+                          "id":  "interview.under-the-hood.20-inside-jpa-and-hibernate.md",
+                          "path":  "interview/under-the-hood/20-Inside-JPA-and-Hibernate.md",
+                          "content_type":  "interview",
+                          "domain":  "under-the-hood",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  70406,
+                          "source_of_truth":  false,
+                          "related_concepts":  [
+                                                   "under-the-hood",
+                                                   "java",
+                                                   "spring",
+                                                   "database/sql"
+                                               ]
+                      },
+                      {
+                          "id":  "interview.under-the-hood.21-inside-microservices.md",
+                          "path":  "interview/under-the-hood/21-Inside-Microservices.md",
+                          "content_type":  "interview",
+                          "domain":  "under-the-hood",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  93599,
+                          "source_of_truth":  false,
+                          "related_concepts":  [
+                                                   "under-the-hood",
+                                                   "microservices",
+                                                   "spring-cloud",
+                                                   "messaging"
+                                               ]
+                      },
+                      {
+                          "id":  "roadmap.big-picture.readme.md",
+                          "path":  "roadmap/big-picture/README.md",
+                          "content_type":  "roadmap",
+                          "domain":  "big-picture",
+                          "canonical_concept":  null,
+                          "extension":  ".md",
+                          "size_bytes":  78775,
+                          "source_of_truth":  false,
+                          "related_concepts":  [
+
                                                ]
                       }
                   ]

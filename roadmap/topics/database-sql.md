@@ -6,7 +6,49 @@
 - None. This is a starting point.
 - Overview: [SQL concepts](../../knowledge/concepts/database/sql/README.md)
 
-## 1. MySQL
+## 1. Concurrent Users & Data Consistency (Spring Boot & SQL)
+
+1. [Two users update the same record at the same time. How would you handle this?](../../interview/backend/java/08-Architecture.md)
+2. [How do you ensure thread safety in a Spring Boot application?](../../interview/backend/java/08-Architecture.md)
+
+## 2. Database Design & Access (Spring Boot + SQL / MySQL)
+
+1. [Our database tables are growing very fast and queries are getting slow. What would you check first?](../../interview/backend/java/08-Architecture.md)
+2. [A single API call is hitting the database multiple times. How would you optimize this?](../../interview/backend/java/08-Architecture.md)
+3. [The same data is being read again and again from MySQL. How would you reduce DB load?](../../interview/backend/java/08-Architecture.md)
+
+## 3. JPA / Hibernate Performance (Spring Boot & SQL)
+
+1. [Our API is slow even though the database is fast. What could be the issue?](../../interview/backend/java/08-Architecture.md)
+2. [How do you decide between `Lazy` and `Eager` fetching?](../../interview/backend/java/08-Architecture.md)
+3. [Large result sets are causing memory issues. How would you handle this?](../../interview/backend/java/08-Architecture.md)
+
+## 4. Transactions & Data Consistency (Spring Boot & SQL)
+
+1. [Multiple DB operations must succeed or fail together. How would you handle this?](../../interview/backend/java/08-Architecture.md)
+2. [When would you use pessimistic locking?](../../interview/backend/java/08-Architecture.md)
+
+## 5. Concurrent Users & Scalability (Spring Boot & SQL)
+
+1. [Under high traffic, DB connections are getting exhausted. How would you fix this?](../../interview/backend/java/08-Architecture.md)
+2. [How do you make sure multiple users don’t affect each other’s data?](../../interview/backend/java/08-Architecture.md)
+
+## 6. Query Design & DTO Usage (Spring Boot & SQL)
+
+1. [Entities are large but APIs need only a few fields. What would you do?](../../interview/backend/java/08-Architecture.md)
+2. [Why should controllers not return JPA entities directly?](../../interview/backend/java/08-Architecture.md)
+
+## 7. Production Issues & Debugging (SQL & Observability)
+
+1. [Queries work fine locally but are slow in production. How would you debug this?](../../interview/backend/java/08-Architecture.md)
+2. [After a release, database CPU usage increased suddenly. What would you check?](../../interview/backend/java/08-Architecture.md)
+
+## 8. Data Safety & Integrity (SQL)
+
+1. [How do you prevent invalid data from being saved in MySQL?](../../interview/backend/java/08-Architecture.md)
+2. [How do you handle soft deletes instead of hard deletes?](../../interview/backend/java/08-Architecture.md)
+
+## 9. MySQL
 
 1. [What is an RDBMS?](../../interview/backend/java/08-MySQL.md)
    - [How is RDBMS different from DBMS?](../../interview/backend/java/08-MySQL.md)
@@ -43,7 +85,7 @@
 14. [What happens internally when a transaction fails midway in a Spring Boot application?](../../interview/backend/java/08-MySQL.md)
 15. [How do you handle if multiple users / threads access same DB data at the same time?](../../interview/backend/java/08-MySQL.md)
 
-## 2. Tree Types
+## 10. Tree Types
 
 1. [What is a Binary Search Tree (BST), and what is its limitation?](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
 2. [What is an M-way search tree?](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
@@ -52,26 +94,26 @@
 5. [Why are B+ Tree leaves (leaf nodes) linked?](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
 6. [What is the difference between multilevel indexing and a B+ Tree?](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
 
-## 3. B-Tree vs B+ Tree
+## 11. B-Tree vs B+ Tree
 
 1. [Which index structure do SQL databases use?](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
 
-## 4. Insertion
+## 12. Insertion
 
 1. [How does insertion work in a B-Tree? (Order 6 example)](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
 2. [How does insertion work in a B+ Tree? (Order 6 example)](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
 
-## 5. Deletion
+## 13. Deletion
 
 1. [How does deletion work in a B-Tree?](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
 2. [How does deletion work in a B+ Tree?](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
 3. [How does B-Tree deletion differ from B+ Tree deletion?](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
 
-## 6. Quick Revision
+## 14. Quick Revision
 
 1. [What are the most important B-Tree and B+ Tree interview questions?](../../interview/database/01-B-Tree-and-B-Plus-Tree.md)
 
-## 7. Indexes
+## 15. Indexes
 
 1. [How does an index work?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
 2. [Is an index a separate table?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
@@ -80,12 +122,12 @@
 5. [How does an index improve a JOIN on customer_id?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
 6. [Why not index every column?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
 
-## 8. Query Execution Order
+## 16. Query Execution Order
 
 1. [What is the logical query execution order in SQL?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
 2. [Where do indexes fit when a SQL query runs?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
 
-## 9. WHERE, HAVING and GROUP BY
+## 17. WHERE, HAVING and GROUP BY
 
 1. [What is the difference between the WHERE and HAVING clauses?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
 2. [Does HAVING require the aggregate column in SELECT?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
@@ -93,18 +135,18 @@
 4. [What happens if you add name to GROUP BY as well?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
 5. [Can you use HAVING without GROUP BY?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
 
-## 10. Quick Revision
+## 18. Quick Revision
 
 1. [What are the key SQL indexing and GROUP BY interview answers?](../../interview/database/02-SQL-Indexing-and-Query-Execution.md)
 
-## 11. Joins
+## 19. Joins
 
 1. [What are the types of SQL joins? Explain with an example.](../../interview/database/03-SQL-Interview-Queries.md)
    - [Why did my LEFT JOIN behave like an INNER JOIN?](../../interview/database/03-SQL-Interview-Queries.md)
 2. [Find customers who have never placed an order.](../../interview/database/03-SQL-Interview-Queries.md)
 3. [Find employees who earn more than their manager.](../../interview/database/03-SQL-Interview-Queries.md)
 
-## 12. Window Functions
+## 20. Window Functions
 
 1. [What are window functions, and how do they differ from GROUP BY?](../../interview/database/03-SQL-Interview-Queries.md)
 2. [ROW_NUMBER vs RANK vs DENSE_RANK?](../../interview/database/03-SQL-Interview-Queries.md)
@@ -113,53 +155,143 @@
 5. [How do you calculate a running total?](../../interview/database/03-SQL-Interview-Queries.md)
 6. [What do LAG and LEAD do?](../../interview/database/03-SQL-Interview-Queries.md)
 
-## 13. Duplicates & Data Cleanup
+## 21. Duplicates & Data Cleanup
 
 1. [Find duplicate rows.](../../interview/database/03-SQL-Interview-Queries.md)
 2. [Delete duplicate rows but keep one.](../../interview/database/03-SQL-Interview-Queries.md)
 3. [DELETE vs TRUNCATE vs DROP?](../../interview/database/03-SQL-Interview-Queries.md)
 
-## 14. Aggregation Tricks
+## 22. Aggregation Tricks
 
 1. [What is the difference between COUNT(*), COUNT(column) and COUNT(DISTINCT column)?](../../interview/database/03-SQL-Interview-Queries.md)
 2. [How do you turn rows into columns (pivot)?](../../interview/database/03-SQL-Interview-Queries.md)
 3. [UNION vs UNION ALL?](../../interview/database/03-SQL-Interview-Queries.md)
 
-## 15. CTEs & Recursion
+## 23. CTEs & Recursion
 
 1. [What is a CTE (WITH clause)?](../../interview/database/03-SQL-Interview-Queries.md)
 2. [How do you query a hierarchy (org chart) with a recursive CTE?](../../interview/database/03-SQL-Interview-Queries.md)
 
-## 16. Transactions & Isolation
+## 24. Transactions & Isolation
 
 1. [What are transaction isolation levels and which problems do they prevent?](../../interview/database/03-SQL-Interview-Queries.md)
 2. [What is a deadlock in a database?](../../interview/database/03-SQL-Interview-Queries.md)
 
-## 17. Performance
+## 25. Performance
 
 1. [OFFSET pagination vs keyset (cursor) pagination?](../../interview/database/03-SQL-Interview-Queries.md)
 2. [Tricky: Why does `WHERE YEAR(order_date) = 2026` ignore the index on order_date?](../../interview/database/03-SQL-Interview-Queries.md)
 3. [Tricky: What does `SELECT NULL = NULL` return?](../../interview/database/03-SQL-Interview-Queries.md)
 4. [Tricky: Can you use a column alias in WHERE?](../../interview/database/03-SQL-Interview-Queries.md)
 
-## 18. Where data lives: RAM, disk and many servers (the big picture)
+## 26. Indexes & Transactions Deep Dive (Intermediate)
+
+1. [What is ACID? Explain each property with an example.](../../interview/database/03-SQL-Interview-Queries.md)
+   - [ACID vs BASE?](../../interview/database/03-SQL-Interview-Queries.md)
+2. [Clustered vs non-clustered index — what's the difference?](../../interview/database/03-SQL-Interview-Queries.md)
+   - [Why is a random UUID a poor InnoDB primary key?](../../interview/database/03-SQL-Interview-Queries.md)
+3. [How do composite indexes work? What is the leftmost prefix rule?](../../interview/database/03-SQL-Interview-Queries.md)
+   - [One composite index or several single-column indexes?](../../interview/database/03-SQL-Interview-Queries.md)
+4. [What is a covering index?](../../interview/database/03-SQL-Interview-Queries.md)
+   - [Why does `SELECT *` hurt?](../../interview/database/03-SQL-Interview-Queries.md)
+5. [What is MVCC (Multi-Version Concurrency Control)?](../../interview/database/03-SQL-Interview-Queries.md)
+   - [Can a long-running transaction cause problems?](../../interview/database/03-SQL-Interview-Queries.md)
+6. [CTE vs subquery — what's the difference?](../../interview/database/03-SQL-Interview-Queries.md)
+   - [Is a CTE always computed once?](../../interview/database/03-SQL-Interview-Queries.md)
+7. [Normalization vs denormalization — when do you use each?](../../interview/database/03-SQL-Interview-Queries.md)
+   - [Isn't storing the shipping address on the order denormalization?](../../interview/database/03-SQL-Interview-Queries.md)
+
+## 27. Where data lives: RAM, disk and many servers (the big picture)
 
 1. [What is the difference between data structures, a database and a data warehouse?](../../interview/under-the-hood/02-Memory-and-Data.md)
 2. [What is the difference between CPU cache, RAM and disk?](../../interview/under-the-hood/02-Memory-and-Data.md)
 
-## 19. Stack and heap: memory inside a running program (all languages)
+## 28. Stack and heap: memory inside a running program (all languages)
 
 1. [What are stack and heap memory?](../../interview/under-the-hood/02-Memory-and-Data.md)
-2. [How does garbage collection work?](../../interview/under-the-hood/02-Memory-and-Data.md)
-3. [What is virtual memory?](../../interview/under-the-hood/02-Memory-and-Data.md)
+2. [How does the JVM manage memory when you create an object?](../../interview/under-the-hood/02-Memory-and-Data.md)
+3. [How does garbage collection work?](../../interview/under-the-hood/02-Memory-and-Data.md)
+4. [What is virtual memory?](../../interview/under-the-hood/02-Memory-and-Data.md)
 
-## 20. Inside a SQL database: storage, indexes and transactions (MySQL, PostgreSQL, Oracle…)
+## 29. Inside a SQL database: storage, indexes and transactions (MySQL, PostgreSQL, Oracle…)
 
 1. [How does a database store data on disk?](../../interview/under-the-hood/05-Inside-a-Database.md)
 2. [How does a database index work?](../../interview/under-the-hood/05-Inside-a-Database.md)
 3. [How do transactions keep data safe (ACID)?](../../interview/under-the-hood/05-Inside-a-Database.md)
 4. [How does a database let many users read and write at the same time?](../../interview/under-the-hood/05-Inside-a-Database.md)
 5. [What is the difference between replication and sharding?](../../interview/under-the-hood/05-Inside-a-Database.md)
+
+## 30. Entity management and the persistence context (Java / JPA / Hibernate)
+
+1. [What happens internally when an EntityManager is created?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+2. [What is the persistence context, and why was it introduced?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+3. [How does Hibernate manage entity objects in memory?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+4. [What are the transient, managed, detached and removed entity states?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+5. [How does Hibernate identify whether an entity has changed?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+6. [How does dirty checking work internally?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+7. [What happens when `save()` is called in Spring Data JPA?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+8. [What is the difference between `persist()` and `merge()`?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+9. [How does the first-level cache work?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+10. [How does the second-level cache work?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+11. [What is the query cache?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+12. [How does Hibernate manage entity identity?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+13. [What is the identity map pattern?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+14. [What happens when the same entity is fetched multiple times in one persistence context?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+15. [How does the persistence context synchronize with the database?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+
+## 31. SQL generation and query execution (Java / JPA / Hibernate)
+
+1. [How does Hibernate generate SQL from entity operations?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+2. [What happens internally when `find()` is called?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+3. [How does JPQL get converted into SQL?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+4. [How does Hibernate execute native SQL queries?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+5. [How does Spring Data JPA generate repository implementations?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+6. [How does `findByEmployeeName()` become an SQL query?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+7. [What is the difference between JPQL and the Criteria API internally?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+8. [How does Hibernate batch INSERT and UPDATE statements?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+9. [How does JDBC batching improve performance?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+10. [What is the purpose of Hibernate flush modes?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+11. [When does Hibernate automatically flush?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+12. [How does Hibernate handle database-generated IDs?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+13. [How do the IDENTITY, SEQUENCE and TABLE generation strategies work?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+14. [Why can IDENTITY generation affect INSERT batching?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+15. [How does Hibernate handle optimistic locking using `@Version`?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+
+## 32. Relationships and fetching strategies (Java / JPA / Hibernate)
+
+1. [How does Hibernate manage one-to-one relationships internally?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+2. [How does one-to-many mapping work internally?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+3. [How does many-to-many mapping work internally?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+4. [How does Hibernate manage foreign-key relationships?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+5. [What happens when CascadeType.ALL is used?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+6. [How does orphanRemoval work internally?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+7. [What is lazy loading, and how does Hibernate implement it?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+8. [How does Hibernate create proxy objects for lazy relationships?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+9. [What happens when a lazy relationship is accessed outside a session?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+10. [What is the N+1 query problem?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+11. [Why does N+1 happen even when relationships are correctly mapped?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+12. [How does JOIN FETCH solve the N+1 problem?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+13. [How does EntityGraph work internally?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+14. [What happens when EAGER fetching is used excessively?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+15. [How do batch fetching and subselect fetching work?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+
+## 33. Transactions and concurrency (Java / JPA / Hibernate)
+
+1. [How does JPA transaction management work internally?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+2. [How does the EntityManager participate in Spring transactions?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+3. [How does Hibernate synchronize the persistence context with database transactions?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+4. [How does optimistic locking work internally?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+5. [How does pessimistic locking work internally?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+6. [What happens when two users update the same entity simultaneously?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+7. [How does `@Version` prevent lost updates?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+8. [What is the difference between database locking and application-level locking?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+9. [How do transaction isolation levels affect JPA operations?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+10. [What causes LazyInitializationException?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+11. [What happens when an EntityManager is closed?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+12. [How does Open Session in View work?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+13. [How does Hibernate handle bulk UPDATE and DELETE queries?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+14. [Why can bulk JPQL operations cause stale entities in the persistence context?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+15. [How do you prevent database connection leaks in JPA applications?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
 
 ## Practice
 

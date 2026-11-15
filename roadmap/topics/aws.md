@@ -85,6 +85,19 @@
 4. [What are IAM users, roles and policies?](../../interview/architecture/02-aws-cloud.md)
 5. [What is a VPC?](../../interview/architecture/02-aws-cloud.md)
 
+## 17. Core AWS Interview Questions (Intermediate)
+
+1. [RDS Multi-AZ vs read replicas — what's the difference?](../../interview/architecture/02-aws-cloud.md)
+   - [Can a read replica return old data?](../../interview/architecture/02-aws-cloud.md)
+2. [What is the AWS shared responsibility model?](../../interview/architecture/02-aws-cloud.md)
+   - [An S3 bucket was made public and data leaked. Whose fault?](../../interview/architecture/02-aws-cloud.md)
+3. [Security Group vs Network ACL — what's the difference?](../../interview/architecture/02-aws-cloud.md)
+   - [Why can a NACL block replies?](../../interview/architecture/02-aws-cloud.md)
+4. [What is a Lambda cold start, and how do you reduce it?](../../interview/architecture/02-aws-cloud.md)
+   - [Does putting Lambda in a VPC still add big cold starts?](../../interview/architecture/02-aws-cloud.md)
+5. [What are the pillars of the AWS Well-Architected Framework?](../../interview/architecture/02-aws-cloud.md)
+   - [How would you use this in a design interview?](../../interview/architecture/02-aws-cloud.md)
+
 ## Diagrams
 
 - [AWS_CLS_DIAGRAM](../../knowledge/visual-notes/aws-cls-diagram.png)

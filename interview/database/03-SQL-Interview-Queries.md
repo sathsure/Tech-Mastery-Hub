@@ -639,3 +639,67 @@ New transaction at 10:02 → 500
 ↪ Yes — old versions can't be cleaned up while it's open, so tables/undo logs grow (bloat) and performance drops.
 
 ---
+
+### ❓ CTE vs subquery — what's the difference?
+
+**Level:** 🟡 Intermediate
+
+### 📝 Answer
+
+Both build a temporary result that the main query uses.
+
+- **Subquery** — written **inline** inside `WHERE`, `FROM` or `SELECT`.
+- **CTE** (`WITH name AS (…)`) — written **once at the top** with a name, then used like a table.
+
+```sql
+-- Subquery
+SELECT * FROM (SELECT dept_id, AVG(salary) avg_sal FROM employee GROUP BY dept_id) d
+WHERE d.avg_sal > 50000;
+
+-- CTE
+WITH dept_avg AS (SELECT dept_id, AVG(salary) avg_sal FROM employee GROUP BY dept_id)
+SELECT * FROM dept_avg WHERE avg_sal > 50000;
+```
+
+| | Subquery | CTE |
+|---|---|---|
+| Readability | hard when nested | step-by-step, named |
+| Reuse in one query | repeat it | reference the name many times |
+| Recursion (org charts, trees) | ❌ | ✅ `WITH RECURSIVE` |
+| Performance | usually the same — the optimiser inlines both | same (PostgreSQL ≥ 12 inlines; `MATERIALIZED` forces once) |
+| Correlated per-row logic (`EXISTS`) | natural | less natural |
+
+**Rule of thumb:** short one-off filter → subquery; multi-step logic, reuse or recursion → CTE.
+
+#### ↳ Follow-up: Is a CTE always computed once?
+
+↪ No — most databases inline it like a subquery. PostgreSQL lets you force it with `WITH x AS MATERIALIZED (…)`.
+
+---
+
+### ❓ Normalization vs denormalization — when do you use each?
+
+**Level:** 🟡 Intermediate
+
+### 📝 Answer
+
+- **Normalization** — split data into tables so each fact is stored **once** (1NF → 2NF → 3NF). No duplicates, no update anomalies, more joins.
+- **Denormalization** — **deliberately duplicate** data (copy a column, store a total, merge tables) to make reads faster, accepting extra work to keep copies in sync.
+
+| | Normalized | Denormalized |
+|---|---|---|
+| Duplicate data | none | some, on purpose |
+| Writes | simple and safe | must update every copy |
+| Reads | more joins | fewer joins, faster |
+| Storage | smaller | larger |
+| Typical systems | OLTP: orders, banking | reporting, data warehouses, read models, NoSQL |
+
+**Example:** `orders` stores `customer_id` (normalized). A reporting table also stores `customer_name` and `city` on every order row (denormalized) so dashboards need no joins.
+
+**Rule of thumb:** normalize first (to 3NF); denormalize only measured hot read paths — via materialized views, summary tables or CQRS read models.
+
+#### ↳ Follow-up: Isn't storing the shipping address on the order denormalization?
+
+↪ Not really — it's a **snapshot** of the address at order time, a different fact from the customer's current address.
+
+---

@@ -2,6 +2,10 @@
 
 A comprehensive, step-by-step roadmap for a Full-Stack Developer. Covers modern frontend, backend, DevOps, and performance practices using TypeScript, React, Next.js, NestJS, PostgreSQL, and Docker.
 
+## Start with the big picture
+
+- [🗺 The whole tech ecosystem, end to end](big-picture/README.md) — how frontend, backend, databases, messaging, security, CI/CD, cloud, AI and data connect, on one page
+
 ## Roadmap Areas
 
 - [Foundations](foundations/README.md)

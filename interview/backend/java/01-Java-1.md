@@ -3802,3 +3802,33 @@ Without `volatile`, thread B might **never** see `done = true`, or see it but re
 ↪ Making a newly built object visible to other threads correctly: through a `final` field, a `volatile` field, a lock, or a concurrent collection.
 
 ---
+
+### ❓ HashMap vs ConcurrentHashMap — what's the difference?
+
+**Level:** 🟡 Intermediate
+
+### 📝 Answer
+
+Both store key–value pairs with hashing. **ConcurrentHashMap** is safe for many threads at once; **HashMap** is not.
+
+| | HashMap | ConcurrentHashMap |
+|---|---|---|
+| Thread-safe | ❌ (concurrent writes can lose entries or corrupt it) | ✅ |
+| How it's safe | — | CAS for empty buckets, a lock on **one bucket** for others (Java 8+); reads without locks |
+| `null` key / values | allowed (one null key) | ❌ not allowed |
+| Iterator | fail-fast (`ConcurrentModificationException`) | weakly consistent (no exception) |
+| Atomic helpers | — | `putIfAbsent`, `computeIfAbsent`, `merge` are atomic |
+| Speed (one thread) | slightly faster | almost the same |
+
+```java
+Map<String, Integer> hits = new ConcurrentHashMap<>();
+hits.merge(page, 1, Integer::sum);     // atomic increment, safe from many threads
+```
+
+**Rule of thumb:** local to one method/thread → `HashMap`; shared between threads (caches, counters) → `ConcurrentHashMap`. Avoid `Collections.synchronizedMap` — it locks the whole map.
+
+#### ↳ Follow-up: Why doesn't ConcurrentHashMap allow null?
+
+↪ `get()` returning `null` would be ambiguous — "missing" or "stored null"? — and with other threads changing the map you can't check with `containsKey()` safely.
+
+---

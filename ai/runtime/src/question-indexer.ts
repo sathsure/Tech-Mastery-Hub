@@ -105,7 +105,8 @@ export function summarize(answer: string, maxLength = 320): string {
     const lines = paragraph
       .split("\n")
       .filter(line => !/^\s*(#{1,6}\s|\||!\[|<img|-{3,}\s*$)/.test(line));
-    const text = plainText(lines.join("\n"));
+    // "**Generic answer:** …" (Under the Hood format) is a layout label, not part of the summary.
+    const text = plainText(lines.join("\n")).replace(/^Generic answer:\s*/i, "");
     if (text.length < 15) continue;
     return truncate(text, maxLength);
   }
@@ -163,7 +164,9 @@ export function extractKeywords(question: string, answer: string, topics: string
   for (const term of answer.matchAll(/\*\*([^*\n]{2,40})\*\*/g)) {
     if (bold++ >= 8) break;
     const text = plainText(term[1]);
-    if (text && !/[:?]$/.test(text)) add(text);
+    // Skip layout labels ("Under the hood:") and story steps ("Step 2: Make each node wide").
+    if (!text || /[:?]$/.test(text) || /^step \d+\b/i.test(text)) { bold--; continue; }
+    add(text);
   }
   for (const topic of topics) add(topic);
   return [...words].slice(0, 24);
@@ -453,6 +456,9 @@ function parseNotes(lines: Line[]): Draft[] {
     if (line.heading && line.heading.level <= 3) {
       if (current) drafts.push(current);
       const title = cleanHeading(line.heading.raw);
+      // Drop the previous sibling heading first, so a note's section is only its parents
+      // (otherwise "## Python" would inherit the topic of the "## Java" note above it).
+      for (const key of [...crumbs.keys()]) if (key >= line.heading.level) crumbs.delete(key);
       current = {
         kind: "note",
         title,

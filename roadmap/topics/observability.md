@@ -14,7 +14,17 @@
 
 1. [How do you debug issues in production across 15 microservices?](../../interview/backend/java/06-Spring-Cloud.md)
 
-## 3. Observability Basics
+## 3. Production Issues & Debugging (SQL & Observability)
+
+1. [Queries work fine locally but are slow in production. How would you debug this?](../../interview/backend/java/08-Architecture.md)
+2. [After a release, database CPU usage increased suddenly. What would you check?](../../interview/backend/java/08-Architecture.md)
+
+## 4. Production Incident Handling (Observability)
+
+1. [Production is slow and users are complaining. What are your first 3 actions?](../../interview/backend/java/08-Architecture.md)
+2. [A hotfix is needed quickly. How do you balance speed and safety?](../../interview/backend/java/08-Architecture.md)
+
+## 5. Observability Basics
 
 1. [What is observability, and how is it different from monitoring?](../../interview/devops/03-Observability-SRE.md)
 2. [What are the three pillars: logs, metrics and traces?](../../interview/devops/03-Observability-SRE.md)
@@ -22,13 +32,13 @@
 4. [What is distributed tracing?](../../interview/devops/03-Observability-SRE.md)
 5. [What is OpenTelemetry?](../../interview/devops/03-Observability-SRE.md)
 
-## 4. Metrics & Alerts
+## 6. Metrics & Alerts
 
 1. [What are the golden signals (and RED / USE)?](../../interview/devops/03-Observability-SRE.md)
 2. [Why look at p95/p99 latency instead of the average?](../../interview/devops/03-Observability-SRE.md)
 3. [What makes a good alert?](../../interview/devops/03-Observability-SRE.md)
 
-## 5. SRE Practices
+## 7. SRE Practices
 
 1. [What is SRE (Site Reliability Engineering)?](../../interview/devops/03-Observability-SRE.md)
 2. [What are SLI, SLO, SLA and an error budget?](../../interview/devops/03-Observability-SRE.md)
@@ -38,7 +48,7 @@
 6. [What is toil, and how do SREs reduce it?](../../interview/devops/03-Observability-SRE.md)
 7. [What is chaos engineering?](../../interview/devops/03-Observability-SRE.md)
 
-## 6. Part 10 — Observability, Deployments & HA
+## 8. Part 10 — Observability, Deployments & HA
 
 1. [How do you design logging for production?](../../interview/frontend/09-Web_Architecture.md)
    - [Logs vs Monitoring — explain the difference](../../interview/frontend/09-Web_Architecture.md)

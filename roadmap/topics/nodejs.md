@@ -32,7 +32,20 @@
 18. [What is caching and why is it important?](../../interview/backend/node/01-Node.js.md)
 19. [Does `async/await` create threads in Node.js?](../../interview/backend/node/01-Node.js.md)
 
-## 2. AUTHENTICATION & AUTHORIZATION
+## 2. Node.js Runtime Deep Dive (Intermediate)
+
+1. [`process.nextTick` vs `setImmediate` vs `setTimeout(0)` — what's the order?](../../interview/backend/node/01-Node.js.md)
+   - [Can `nextTick` starve the event loop?](../../interview/backend/node/01-Node.js.md)
+2. [What is the EventEmitter, and how is it used?](../../interview/backend/node/01-Node.js.md)
+   - [Is `emit` async?](../../interview/backend/node/01-Node.js.md)
+3. [How do you shut down a Node.js server gracefully?](../../interview/backend/node/01-Node.js.md)
+   - [Why does it matter?](../../interview/backend/node/01-Node.js.md)
+4. [How do you handle unhandled promise rejections and uncaught exceptions?](../../interview/backend/node/01-Node.js.md)
+   - [Why exit instead of continuing?](../../interview/backend/node/01-Node.js.md)
+5. [`cluster` vs `worker_threads` — when do you use each?](../../interview/backend/node/01-Node.js.md)
+   - [Doesn't the libuv thread pool already use threads?](../../interview/backend/node/01-Node.js.md)
+
+## 3. AUTHENTICATION & AUTHORIZATION
 
 1. [Can you clearly explain the difference between authentication and authorization, and how both are implemented in a real MEAN stack application?](../../interview/backend/node/06-Node-security.md)
    - [When a user is authenticated, does that mean they are authorized?](../../interview/backend/node/06-Node-security.md)

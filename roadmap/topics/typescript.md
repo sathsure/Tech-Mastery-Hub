@@ -41,6 +41,28 @@
    - [How do `enum` and `as const` compare, and when would you prefer one over the other?](../../interview/frontend/04-TypeScript.md)
    - [Can you explain `keyof` and `typeof` in TypeScript and show how they work together?](../../interview/frontend/04-TypeScript.md)
 
+## 7. Part 8 — Modern TypeScript Features › Core Type System (Intermediate)
+
+1. [What are union and intersection types?](../../interview/frontend/04-TypeScript.md)
+   - [What is `string & number`?](../../interview/frontend/04-TypeScript.md)
+2. [What is type narrowing, and what are type guards?](../../interview/frontend/04-TypeScript.md)
+   - [What is an assertion function?](../../interview/frontend/04-TypeScript.md)
+3. [What is a discriminated union, and why is it useful?](../../interview/frontend/04-TypeScript.md)
+   - [Where is this used in real apps?](../../interview/frontend/04-TypeScript.md)
+4. [Enum vs union of string literals — which should you use?](../../interview/frontend/04-TypeScript.md)
+   - [What is a `const enum`?](../../interview/frontend/04-TypeScript.md)
+5. [What are conditional types and `infer`?](../../interview/frontend/04-TypeScript.md)
+   - [How do you stop it from distributing?](../../interview/frontend/04-TypeScript.md)
+6. [What do `keyof`, `typeof` and indexed access types do?](../../interview/frontend/04-TypeScript.md)
+   - [How do you get a union of all value types?](../../interview/frontend/04-TypeScript.md)
+7. [What does the `satisfies` operator do?](../../interview/frontend/04-TypeScript.md)
+   - [`satisfies` vs `as`?](../../interview/frontend/04-TypeScript.md)
+8. [What does `strict` mode in `tsconfig.json` turn on, and why use it?](../../interview/frontend/04-TypeScript.md)
+   - [How do you turn on strict in an old codebase?](../../interview/frontend/04-TypeScript.md)
+9. [How do access modifiers and abstract classes work in TypeScript?](../../interview/frontend/04-TypeScript.md)
+   - [`private` vs `#private`?](../../interview/frontend/04-TypeScript.md)
+   - [Abstract class vs interface?](../../interview/frontend/04-TypeScript.md)
+
 ## Related roles
 
 [AI / LLM Engineer](../roles/ai-llm-engineer.md) · [AI Agent Engineer](../roles/ai-agent-engineer.md) · [AI Solutions Architect](../roles/ai-solutions-architect.md) · [Automation Test Engineer](../roles/automation-test-engineer.md) · [Backend Developer](../roles/backend-developer.md) · [Developer Advocate](../roles/developer-advocate.md) · [Forward Deployed Engineer](../roles/forward-deployed-engineer.md) · [Frontend Developer](../roles/frontend-developer.md) · [Full Stack Developer](../roles/full-stack-developer.md) · [Mobile Developer](../roles/mobile-developer.md) · [Platform Engineer](../roles/platform-engineer.md)

@@ -61,6 +61,13 @@
 3. [Tricky: Why can too many mocks be a problem?](../../interview/testing/01-Testing.md)
 4. [Tricky: Unit test vs integration test — where's the line?](../../interview/testing/01-Testing.md)
 
+## 9. Advanced Testing Techniques (Intermediate)
+
+1. [What is contract testing (Pact), and why use it for microservices?](../../interview/testing/01-Testing.md)
+   - [Does contract testing replace integration tests?](../../interview/testing/01-Testing.md)
+2. [How do you test asynchronous code?](../../interview/testing/01-Testing.md)
+   - [Why is `Thread.sleep` in tests bad?](../../interview/testing/01-Testing.md)
+
 ## Related roles
 
 [Automation Test Engineer](../roles/automation-test-engineer.md) · [Backend Developer](../roles/backend-developer.md) · [Manual QA / Test Engineer](../roles/manual-qa-test-engineer.md)

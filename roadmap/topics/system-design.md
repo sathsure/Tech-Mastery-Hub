@@ -109,7 +109,25 @@
 5. [What is the difference between a monolith and microservices, in simple words?](../../interview/architecture/04-System-Design.md)
    - [Which do most teams start with?](../../interview/architecture/04-System-Design.md)
 
-## 9. Part 1 — Consistency
+## 9. Part 9 — More Classic Designs (Advanced)
+
+1. [What is database sharding, and how do you choose a shard key?](../../interview/architecture/04-System-Design.md)
+   - [Partitioning vs sharding?](../../interview/architecture/04-System-Design.md)
+   - [What is a hot shard, and how do you fix it?](../../interview/architecture/04-System-Design.md)
+2. [Design a video streaming platform like YouTube.](../../interview/architecture/04-System-Design.md)
+   - [How do you show a thumbnail and start playback fast?](../../interview/architecture/04-System-Design.md)
+3. [Design a ride-hailing app like Uber.](../../interview/architecture/04-System-Design.md)
+   - [What is a geohash?](../../interview/architecture/04-System-Design.md)
+4. [Design a typeahead / search autocomplete system.](../../interview/architecture/04-System-Design.md)
+   - [Why not `SELECT … WHERE query LIKE 'jav%' ORDER BY count`?](../../interview/architecture/04-System-Design.md)
+5. [Design a web crawler.](../../interview/architecture/04-System-Design.md)
+   - [Why a Bloom filter and not a hash set?](../../interview/architecture/04-System-Design.md)
+6. [Design a distributed key-value cache (like Redis Cluster or Memcached).](../../interview/architecture/04-System-Design.md)
+   - [Why consistent hashing instead of `hash(key) % N`?](../../interview/architecture/04-System-Design.md)
+7. [Monolithic vs serverless architecture?](../../interview/architecture/04-System-Design.md)
+   - [Why are database connections a problem in serverless?](../../interview/architecture/04-System-Design.md)
+
+## 10. Part 1 — Consistency
 
 1. [What is the CAP theorem?](../../interview/architecture/05-Distributed-Systems.md)
    - [Which would you choose for a bank balance and for a "likes" counter?](../../interview/architecture/05-Distributed-Systems.md)
@@ -118,7 +136,7 @@
    - [Where is eventual consistency not acceptable?](../../interview/architecture/05-Distributed-Systems.md)
 3. [What are ACID and BASE?](../../interview/architecture/05-Distributed-Systems.md)
 
-## 10. Part 2 — Transactions Across Services
+## 11. Part 2 — Transactions Across Services
 
 1. [Why can't you use a normal database transaction across microservices?](../../interview/architecture/05-Distributed-Systems.md)
 2. [What is the Transactional Outbox pattern?](../../interview/architecture/05-Distributed-Systems.md)
@@ -126,12 +144,12 @@
 3. [What are "at most once", "at least once" and "exactly once" delivery?](../../interview/architecture/05-Distributed-Systems.md)
    - [How do you make a consumer idempotent?](../../interview/architecture/05-Distributed-Systems.md)
 
-## 11. Part 3 — Coordination
+## 12. Part 3 — Coordination
 
 1. [What is a quorum?](../../interview/architecture/05-Distributed-Systems.md)
 2. [How do you generate unique IDs across many servers?](../../interview/architecture/05-Distributed-Systems.md)
 
-## 12. Part 4 — Failures
+## 13. Part 4 — Failures
 
 1. [What are retries with exponential backoff and jitter?](../../interview/architecture/05-Distributed-Systems.md)
 2. [What is a timeout and why should every remote call have one?](../../interview/architecture/05-Distributed-Systems.md)
@@ -139,22 +157,52 @@
    - [How does it differ from a circuit breaker?](../../interview/architecture/05-Distributed-Systems.md)
 4. [Tricky: The network is reliable, right?](../../interview/architecture/05-Distributed-Systems.md)
 5. [Tricky: A request timed out — did the operation happen?](../../interview/architecture/05-Distributed-Systems.md)
+6. [Saga vs two-phase commit (2PC)?](../../interview/architecture/05-Distributed-Systems.md)
+7. [Strong consistency vs eventual consistency?](../../interview/architecture/05-Distributed-Systems.md)
 
-## 13. Part 11 — Final System Design Question
+## 14. End-to-End System Thinking (System Design)
+
+1. [A screen loads slowly, but it’s unclear whether the issue is frontend, API, or DB. How would you approach this?](../../interview/backend/java/08-Architecture.md)
+2. [Frontend says backend is slow, backend says frontend is inefficient. How would you resolve this?](../../interview/backend/java/08-Architecture.md)
+
+## 15. Architectural Judgment (System Design)
+
+1. [When would you split a monolithic Spring Boot app?](../../interview/backend/java/08-Architecture.md)
+2. [How do you decide if a problem should be solved in Angular or backend?](../../interview/backend/java/08-Architecture.md)
+3. [What challenges you encountered while upgrading Spring or Java?](../../interview/backend/java/08-Architecture.md)
+4. [What is Idempotency?](../../interview/backend/java/08-Architecture.md)
+
+## 16. Part 11 — Final System Design Question
 
 1. [Final Question: Design a MEAN system for 1 million users](../../interview/frontend/09-Web_Architecture.md)
 
-## 14. Scaling: serving more users with more servers (system design, any language)
+## 17. Part 11 — Final System Design Question › Rendering & Frontend Architecture (Intermediate)
+
+1. [CSR vs SSR vs SSG vs ISR — how do you choose?](../../interview/frontend/09-Web_Architecture.md)
+   - [Does SSR make everything faster?](../../interview/frontend/09-Web_Architecture.md)
+2. [What are micro-frontends, and when are they worth it?](../../interview/frontend/09-Web_Architecture.md)
+   - [How do micro-frontends share data?](../../interview/frontend/09-Web_Architecture.md)
+3. [What is a Progressive Web App (PWA), and what does a Service Worker do?](../../interview/frontend/09-Web_Architecture.md)
+   - [Service Worker vs Web Worker?](../../interview/frontend/09-Web_Architecture.md)
+   - [Why do users sometimes see an old version?](../../interview/frontend/09-Web_Architecture.md)
+
+## 18. Scaling: serving more users with more servers (system design, any language)
 
 1. [Why do large systems run on many servers instead of one big one?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)
 2. [How does a cache like Redis make systems faster?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)
 3. [Why use a message queue like Kafka or RabbitMQ?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)
+4. [How does Kafka store messages and achieve such high throughput?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)
 
-## 15. Resilience: surviving failures (any language; Java examples)
+## 19. Resilience: surviving failures (any language; Java examples)
 
 1. [What is resilience, and is it Java-specific?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)
 2. [How does a circuit breaker work?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)
 3. [What does the CAP theorem mean in practice?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)
+
+## Diagrams
+
+- [A trie stores words by their shared prefixes](../../knowledge/visual-notes/interview/trie.svg)
+- [A Bloom filter sets several bits per item; if any bit is unset, the item was definitely never added](../../knowledge/visual-notes/interview/bloom-filter.svg)
 
 ## Related roles
 

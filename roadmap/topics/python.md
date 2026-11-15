@@ -45,7 +45,20 @@
 4. [How do you test Python code with pytest?](../../interview/backend/python/01-Python.md)
 5. [What is pandas used for?](../../interview/backend/python/01-Python.md)
 
-## 6. Big O with Python Examples
+## 6. Language Internals (Intermediate)
+
+1. [What is the LEGB rule, and how do closures work in Python?](../../interview/backend/python/01-Python.md)
+   - [Why does `count += 1` fail without `nonlocal`?](../../interview/backend/python/01-Python.md)
+2. [Why is a mutable default argument a bug?](../../interview/backend/python/01-Python.md)
+   - [Is it ever useful?](../../interview/backend/python/01-Python.md)
+3. [Iterator vs iterable — what's the difference?](../../interview/backend/python/01-Python.md)
+   - [Why can you loop over a list twice but not a generator?](../../interview/backend/python/01-Python.md)
+4. [How does multiple inheritance and the MRO work in Python?](../../interview/backend/python/01-Python.md)
+   - [What is a mixin?](../../interview/backend/python/01-Python.md)
+5. [`new` vs `init` — what's the difference?](../../interview/backend/python/01-Python.md)
+   - [If `new` returns an object of another class, does `init` run?](../../interview/backend/python/01-Python.md)
+
+## 7. Big O with Python Examples
 
 1. [What is O(1) — constant time?](../../interview/coding/01-DSA-Big-O.md)
 2. [What is O(log n) — logarithmic time?](../../interview/coding/01-DSA-Big-O.md)

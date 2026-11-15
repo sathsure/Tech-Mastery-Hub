@@ -52,6 +52,16 @@
 6. [After a dynamic DOM update, click handlers on some elements stop working. Why does this happen and how would you fix it?](../../interview/frontend/01-HTML.md)
 7. [Our page scores poorly on CLS in Lighthouse. Walk me through how you'd reduce it.](../../interview/frontend/01-HTML.md)
 
+## 8. Mock Interview Scenarios › Forms, Media & Embeds (Beginner)
+
+1. [How do HTML forms and built-in validation work?](../../interview/frontend/01-HTML.md)
+   - [Is browser validation enough?](../../interview/frontend/01-HTML.md)
+   - [GET or POST for a form?](../../interview/frontend/01-HTML.md)
+2. [How do you serve responsive images with `srcset`, `sizes`, `<picture>` and lazy loading?](../../interview/frontend/01-HTML.md)
+   - [`srcset` with `w` vs `x` descriptors?](../../interview/frontend/01-HTML.md)
+3. [What is an `<iframe>`, and how does the `sandbox` attribute keep it safe?](../../interview/frontend/01-HTML.md)
+   - [How do the page and an iframe talk?](../../interview/frontend/01-HTML.md)
+
 ## Diagrams
 
 - [Semantic](../../knowledge/visual-notes/semantic.png)

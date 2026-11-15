@@ -309,3 +309,96 @@ flowchart LR
 ↪ Something loosely coupled and frequently changed or scaled differently — not the most tangled core on day one.
 
 ---
+
+## Microservice Comparisons
+
+### ❓ Synchronous vs asynchronous communication between services?
+
+**Level:** 🟡 Intermediate
+
+### 📝 Answer
+
+- **Synchronous** (REST, gRPC) — the caller **waits** for the answer.
+- **Asynchronous** (Kafka, RabbitMQ) — the caller **sends a message and continues**; the receiver processes it later.
+
+| | Synchronous | Asynchronous |
+|---|---|---|
+| Caller waits | yes | no |
+| Coupling in time | both must be up | receiver can be down; messages wait |
+| Latency to the user | sum of all hops | fast response, work finishes later |
+| Consistency | immediate | eventual |
+| Failure handling | timeouts, retries, circuit breakers | retries, DLQ, idempotent consumers |
+| Debugging | easy request/response | needs tracing, harder |
+| Good for | queries, "I need the answer now" | notifications, workflows, spikes, fan-out |
+
+**Example:** checkout calls pricing **synchronously** (needs the total), then publishes `OrderPlaced` **asynchronously** for email, loyalty and analytics.
+
+**Rule of thumb:** sync for reads that drive the response; async for side effects and long workflows.
+
+---
+
+### ❓ API Gateway vs load balancer?
+
+**Level:** 🟡 Intermediate
+
+### 📝 Answer
+
+- **Load balancer** — spreads traffic across **instances of one service** (L4 TCP or L7 HTTP).
+- **API gateway** — the **single entry point** for clients that routes to **many services** and applies API concerns.
+
+| | Load balancer | API gateway |
+|---|---|---|
+| Main job | distribute load, health checks | route by path/host, cross-cutting API logic |
+| Knows about | instances | services and APIs |
+| Features | algorithms, TLS, health checks | auth (JWT), rate limiting, request/response transformation, API keys, aggregation |
+| Examples | AWS ALB/NLB, Nginx, HAProxy, K8s Service | Spring Cloud Gateway, Kong, AWS API Gateway, Apigee |
+
+Typical path: **client → load balancer → gateway instances → (client-side LB) → service instances**.
+
+**Rule of thumb:** you always need load balancing; add a gateway when external clients consume several services.
+
+---
+
+### ❓ Client-side vs server-side service discovery?
+
+**Level:** 🟡 Intermediate
+
+### 📝 Answer
+
+- **Client-side** — the caller asks the registry for instances and **picks one itself** (Eureka + Spring Cloud LoadBalancer).
+- **Server-side** — the caller sends to **one stable address**; a router/load balancer looks up instances and forwards (Kubernetes Service, AWS ALB).
+
+| | Client-side | Server-side |
+|---|---|---|
+| Who picks the instance | the caller's library | the platform/load balancer |
+| Extra network hop | no | yes (usually negligible) |
+| Client complexity | needs discovery library per language | none — just a hostname |
+| Smart balancing | per-client control | central control |
+| Examples | Eureka, Consul + client LB | Kubernetes Services, AWS ELB, service mesh |
+
+**Rule of thumb:** on Kubernetes use server-side (DNS + Services, or a mesh); client-side mainly for non-Kubernetes Spring Cloud setups.
+
+---
+
+### ❓ REST APIs vs event-driven architecture?
+
+**Level:** 🔴 Advanced
+
+### 📝 Answer
+
+- **REST (request-driven)** — services **ask** each other: "give me / do this", and wait.
+- **Event-driven** — services **announce facts**: "OrderPlaced happened"; whoever cares reacts.
+
+| | REST / request-driven | Event-driven |
+|---|---|---|
+| Interaction | command or query, one receiver | event, any number of subscribers |
+| Coupling | caller knows the callee and its API | producer knows only the event and the broker |
+| Availability | callee must be up | consumers can catch up later |
+| Consistency | immediate | eventual |
+| Adding a consumer | change the caller | just subscribe |
+| Visibility of flow | explicit in code | spread across subscribers (needs tracing) |
+| Data needs | live queries | consumers keep their own copies |
+
+**Rule of thumb:** use REST for queries and commands that need an immediate answer; use events to spread state changes and trigger side effects. Most real systems combine both.
+
+---

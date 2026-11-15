@@ -11,14 +11,19 @@
 1. [What are the main AWS Networking & Content Delivery services (VPC, Route 53, CloudFront, API Gateway)?](../../interview/architecture/02-aws-cloud.md)
 2. [AWS Networking & Content Delivery: which service fits each scenario?](../../interview/architecture/02-aws-cloud.md)
 
-## 2. How the Web Works
+## 2. Docker Networking (Intermediate)
+
+1. [How does Docker networking work — bridge, host and custom networks?](../../interview/architecture/07-Docker-Kubernetes.md)
+   - [Why can't my API connect to `localhost:5432`?](../../interview/architecture/07-Docker-Kubernetes.md)
+
+## 3. How the Web Works
 
 1. [How does DNS work?](../../interview/architecture/08-Networking-HTTP.md)
    - [Why does a DNS change take time to "propagate"?](../../interview/architecture/08-Networking-HTTP.md)
 2. [What is the TCP three-way handshake?](../../interview/architecture/08-Networking-HTTP.md)
 3. [What are the OSI and TCP/IP models?](../../interview/architecture/08-Networking-HTTP.md)
 
-## 3. HTTP
+## 4. HTTP
 
 1. [What are HTTP methods, and which are safe and idempotent?](../../interview/architecture/08-Networking-HTTP.md)
 2. [What do the HTTP status code groups mean?](../../interview/architecture/08-Networking-HTTP.md)
@@ -28,67 +33,80 @@
 4. [What is CORS and why does the browser block my API call?](../../interview/architecture/08-Networking-HTTP.md)
 5. [What are HTTP caching headers?](../../interview/architecture/08-Networking-HTTP.md)
 
-## 4. Real-time & APIs
+## 5. Real-time & APIs
 
 1. [Polling vs long polling vs WebSockets vs Server-Sent Events?](../../interview/architecture/08-Networking-HTTP.md)
 2. [REST vs GraphQL vs gRPC?](../../interview/architecture/08-Networking-HTTP.md)
 3. [What is a forward proxy vs a reverse proxy?](../../interview/architecture/08-Networking-HTTP.md)
 
-## 5. Tricky Questions
+## 6. Tricky Questions
 
 1. [Tricky: Is data in a GET query string secure over HTTPS?](../../interview/architecture/08-Networking-HTTP.md)
 2. [Tricky: What is the difference between a URL and a URI?](../../interview/architecture/08-Networking-HTTP.md)
 3. [Tricky: What is latency made of on a slow page load?](../../interview/architecture/08-Networking-HTTP.md)
 
-## 6. How data travels: packets, layers and DNS (networking, all languages)
+## 7. Core Protocols (Intermediate)
+
+1. [TCP vs UDP — what's the difference, and when do you use each?](../../interview/architecture/08-Networking-HTTP.md)
+   - [Why do video calls use UDP?](../../interview/architecture/08-Networking-HTTP.md)
+   - [If UDP is unreliable, how is HTTP/3 reliable?](../../interview/architecture/08-Networking-HTTP.md)
+2. [How does HTTPS work? Explain the TLS handshake.](../../interview/architecture/08-Networking-HTTP.md)
+   - [Why use both asymmetric and symmetric encryption?](../../interview/architecture/08-Networking-HTTP.md)
+   - [What is mTLS?](../../interview/architecture/08-Networking-HTTP.md)
+3. [HTTP/1.1 vs HTTP/2 vs HTTP/3 — what changed?](../../interview/architecture/08-Networking-HTTP.md)
+   - [What is head-of-line blocking?](../../interview/architecture/08-Networking-HTTP.md)
+4. [What happens when you type a URL in the browser and press Enter?](../../interview/architecture/08-Networking-HTTP.md)
+   - [Which steps can you speed up?](../../interview/architecture/08-Networking-HTTP.md)
+
+## 8. How data travels: packets, layers and DNS (networking, all languages)
 
 1. [How does data travel from one computer to another?](../../interview/under-the-hood/08-How-Data-Travels.md)
 2. [How does DNS find a website's IP address?](../../interview/under-the-hood/08-How-Data-Travels.md)
 
-## 7. TCP, UDP and HTTPS (networking, all languages)
+## 9. TCP, UDP and HTTPS (networking, all languages)
 
 1. [What is the difference between TCP and UDP?](../../interview/under-the-hood/08-How-Data-Travels.md)
 2. [How does HTTPS keep data private (the TLS handshake)?](../../interview/under-the-hood/08-How-Data-Travels.md)
 
-## 8. The physical internet: who connects you to a website (networking, all languages)
+## 10. The physical internet: who connects you to a website (networking, all languages)
 
 1. [How is the internet connected — what links my laptop to a website?](../../interview/under-the-hood/13-How-the-Internet-Is-Connected.md)
 2. [Do data packets travel at the speed of light? Which cables carry them, and why?](../../interview/under-the-hood/13-How-the-Internet-Is-Connected.md)
 3. [How does data travel without wires (Wi-Fi, mobile data, Bluetooth)?](../../interview/under-the-hood/13-How-the-Internet-Is-Connected.md)
 
-## 9. Home network devices and addresses (networking, all languages)
+## 11. Home network devices and addresses (networking, all languages)
 
 1. [What is the difference between a modem, a router and a switch?](../../interview/under-the-hood/13-How-the-Internet-Is-Connected.md)
 2. [What is the difference between an IP address and a MAC address?](../../interview/under-the-hood/13-How-the-Internet-Is-Connected.md)
 
-## 10. Servers on your own computer (frontend and backend)
+## 12. Servers on your own computer (frontend and backend)
 
 1. [Does my computer have its own local server? What is localhost?](../../interview/under-the-hood/17-Local-Servers-and-Finding-Devices.md)
 2. [What is the "server" in Angular's ng serve, and why does a frontend framework need a server?](../../interview/under-the-hood/17-Local-Servers-and-Finding-Devices.md)
 
-## 11. Finding a server or device on the internet (networking, all languages)
+## 13. Finding a server or device on the internet (networking, all languages)
 
 1. [How is a server identified — hostname, domain name, IP address, port, or something else?](../../interview/under-the-hood/17-Local-Servers-and-Finding-Devices.md)
 2. [How does the internet know which phone or computer to send data to?](../../interview/under-the-hood/17-Local-Servers-and-Finding-Devices.md)
 3. [What is a firewall?](../../interview/under-the-hood/17-Local-Servers-and-Finding-Devices.md)
 
-## 12. Making data smaller and scannable: compression and QR codes (all computers)
+## 14. Making data smaller and scannable: compression and QR codes (all computers)
 
 1. [How does ZIP or JPEG compression make files smaller?](../../interview/under-the-hood/18-How-Everyday-Tech-Works.md)
 2. [How does a QR code store data?](../../interview/under-the-hood/18-How-Everyday-Tech-Works.md)
 
-## 13. Keeping secrets: hashing and encryption (security, any language)
+## 15. Keeping secrets: hashing and encryption (security, any language)
 
 1. [How are passwords stored safely, and why can't the website see yours?](../../interview/under-the-hood/18-How-Everyday-Tech-Works.md)
 2. [What is encryption, in plain words — and what are public and private keys?](../../interview/under-the-hood/18-How-Everyday-Tech-Works.md)
 
-## 14. Everyday journeys: email, payments and location (how it works)
+## 16. Everyday journeys: email, payments and location (how it works)
 
 1. [What happens when you click "Send" on an email?](../../interview/under-the-hood/18-How-Everyday-Tech-Works.md)
 2. [How does a UPI payment travel from your phone to the shop's bank?](../../interview/under-the-hood/18-How-Everyday-Tech-Works.md)
 3. [How does GPS find your location?](../../interview/under-the-hood/18-How-Everyday-Tech-Works.md)
 
-## 15. Where code libraries come from (npm, Maven — any project)
+## 17. Where code libraries come from (npm, Maven — any project)
 
 1. [What happens during npm install or a Maven build — where do the libraries come from?](../../interview/under-the-hood/18-How-Everyday-Tech-Works.md)
 
@@ -96,22 +114,22 @@
 
 - [AWS_DNS](../../knowledge/visual-notes/aws-dns.png)
 - [AWS_Network](../../knowledge/visual-notes/aws-network.png)
-- [Packets flow down the layers on the sender, across routers, and up the layers on the receiver](../../knowledge/visual-notes/under-the-hood/tcp-ip-layers.svg)
-- [DNS resolution: the resolver asks the root, then the .com server, then the domain's own name server](../../knowledge/visual-notes/under-the-hood/dns-resolution.svg)
 - [TCP three-way handshake: SYN, SYN-ACK, ACK before any data is sent](../../knowledge/visual-notes/under-the-hood/tcp-handshake.svg)
 - [TLS handshake: hello messages, certificate, key exchange, then encrypted application data](../../knowledge/visual-notes/under-the-hood/tls-handshake.svg)
+- [Packets flow down the layers on the sender, across routers, and up the layers on the receiver](../../knowledge/visual-notes/under-the-hood/tcp-ip-layers.svg)
+- [DNS resolution: the resolver asks the root, then the .com server, then the domain's own name server](../../knowledge/visual-notes/under-the-hood/dns-resolution.svg)
 - [Internet structure: users connect to Tier 3 ISPs, which connect to Tier 2 networks and exchange points, which connect to the global Tier 1 networks](../../knowledge/visual-notes/under-the-hood/internet-tiers.svg)
 - [Optical fibre: light enters the core and keeps reflecting off the cladding as it travels along](../../knowledge/visual-notes/under-the-hood/optical-fibre.svg)
 - [World map of undersea communication cables connecting the continents](../../knowledge/visual-notes/under-the-hood/submarine-cables.png)
-- [The electromagnetic spectrum: radio and microwaves (used by Wi-Fi and phones) have long wavelengths; visible light, X-rays and gamma rays have shorter ones](../../knowledge/visual-notes/under-the-hood/em-spectrum.svg)
-- [A home network: PCs, a TV and a console connect to the router by cable; laptops, phones and a printer by Wi-Fi; the router connects through the modem to the ISP](../../knowledge/visual-notes/under-the-hood/home-network.png)
-- [NAT: the router maps a private IP and port (192.168.100.3:3855) to its public IP and port (145.12.131.7:6282) and back](../../knowledge/visual-notes/under-the-hood/nat-router.jpg)
-- [Huffman tree for "TO BE OR NOT TO BE": frequent symbols like space and O get 2-bit codes, rare ones like N and R get 4-bit codes](../../knowledge/visual-notes/under-the-hood/huffman-tree.svg)
-- [The same photo saved with stronger and stronger JPEG compression: the file gets smaller and the close-ups get blockier](../../knowledge/visual-notes/under-the-hood/jpeg-quality.png)
-- [QR code parts: three big position squares in the corners, smaller alignment squares, timing dots, format and version information, and the data area](../../knowledge/visual-notes/under-the-hood/qr-code-structure.svg)
-- [A hash function turns any input into a fixed-length digest; changing one letter gives a completely different digest](../../knowledge/visual-notes/under-the-hood/hash-function.svg)
-- [Public-key encryption: Bob encrypts "Hello Alice!" with Alice's public key; only Alice's private key can decrypt it](../../knowledge/visual-notes/under-the-hood/public-key-encryption.svg)
-- [The GPS constellation: satellites on several orbits around the Earth, so at least four are visible from almost anywhere](../../knowledge/visual-notes/under-the-hood/gps-constellation.jpg)
+- [The electromagnetic spectrum: radio and microwaves have long wavelengths; visible light, X-rays and gamma rays have shorter ones](../../knowledge/visual-notes/under-the-hood/em-spectrum.svg)
+- [A home network: devices connect to the router by cable or Wi-Fi; the router connects through the modem to the ISP](../../knowledge/visual-notes/under-the-hood/home-network.png)
+- [NAT: the router maps a private IP and port to its public IP and port and back](../../knowledge/visual-notes/under-the-hood/nat-router.jpg)
+- [Huffman tree for "TO BE OR NOT TO BE": frequent symbols get 2-bit codes, rare ones get 4-bit codes](../../knowledge/visual-notes/under-the-hood/huffman-tree.svg)
+- [The same photo saved with stronger and stronger JPEG compression](../../knowledge/visual-notes/under-the-hood/jpeg-quality.png)
+- [QR code parts: position squares, alignment squares, timing dots, format info and data area](../../knowledge/visual-notes/under-the-hood/qr-code-structure.svg)
+- [A hash function turns any input into a fixed-length digest](../../knowledge/visual-notes/under-the-hood/hash-function.svg)
+- [Public-key encryption: Bob encrypts with Alice's public key; only Alice's private key can decrypt it](../../knowledge/visual-notes/under-the-hood/public-key-encryption.svg)
+- [The GPS constellation: satellites on several orbits, so at least four are visible from almost anywhere](../../knowledge/visual-notes/under-the-hood/gps-constellation.jpg)
 
 ## Related roles
 

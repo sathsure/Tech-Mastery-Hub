@@ -65,12 +65,32 @@
 3. [application.properties vs application.yml?](../../interview/backend/java/03-Spring-1.md)
 4. [What Unit Testing technique you used in Java and Spring?](../../interview/backend/java/03-Spring-1.md)
 
-## 4. Database
+## 4. Spring Boot Essentials (Intermediate)
+
+1. [How does Spring Boot auto-configuration work?](../../interview/backend/java/03-Spring-1.md)
+   - [How do you see what was auto-configured?](../../interview/backend/java/03-Spring-1.md)
+   - [How do you turn one off?](../../interview/backend/java/03-Spring-1.md)
+2. [What does `@SpringBootApplication` do?](../../interview/backend/java/03-Spring-1.md)
+   - [Why put the main class in the root package?](../../interview/backend/java/03-Spring-1.md)
+3. [Explain the Spring MVC request flow (DispatcherServlet).](../../interview/backend/java/03-Spring-1.md)
+   - [Filter vs interceptor?](../../interview/backend/java/03-Spring-1.md)
+4. [Constructor injection vs field injection — which is better?](../../interview/backend/java/03-Spring-1.md)
+   - [How does constructor injection reveal circular dependencies?](../../interview/backend/java/03-Spring-1.md)
+5. [`@Component` vs `@Bean` — what's the difference?](../../interview/backend/java/03-Spring-1.md)
+   - [Why must `@Bean` methods be in a `@Configuration` class?](../../interview/backend/java/03-Spring-1.md)
+6. [`@Primary` vs `@Qualifier` — what's the difference?](../../interview/backend/java/03-Spring-1.md)
+   - [What if neither is used and two beans match?](../../interview/backend/java/03-Spring-1.md)
+7. [`@Async` vs `CompletableFuture` — what's the difference?](../../interview/backend/java/03-Spring-1.md)
+   - [Does the security context or transaction carry over to an `@Async` thread?](../../interview/backend/java/03-Spring-1.md)
+8. [Spring MVC vs Spring WebFlux — what's the difference?](../../interview/backend/java/03-Spring-1.md)
+   - [Can you use WebClient in a Spring MVC app?](../../interview/backend/java/03-Spring-1.md)
+
+## 5. Database
 
 1. [What is DataSource?](../../interview/backend/java/03-Spring-2.md)
 2. [How do I allow only certain threads to use certain DB connections?](../../interview/backend/java/03-Spring-2.md)
 
-## 5. Spring Data JPA
+## 6. Spring Data JPA
 
 1. [What is Declarative Transactions, Spring Transactions & Spring Data JPA?](../../interview/backend/java/03-Spring-2.md)
    - [What is Rollback and Commit?](../../interview/backend/java/03-Spring-2.md)
@@ -92,11 +112,35 @@
 8. [First-Level vs Second-Level Cache](../../interview/backend/java/03-Spring-2.md)
 9. [Spring JPA Inheritance](../../interview/backend/java/03-Spring-2.md)
 
-## 6. Spring annotation
+## 7. JPA / Hibernate Comparisons
+
+1. [`persist()` vs `merge()`?](../../interview/backend/java/03-Spring-2.md)
+2. [`save()` vs `saveAndFlush()`?](../../interview/backend/java/03-Spring-2.md)
+3. [JOIN FETCH vs EntityGraph?](../../interview/backend/java/03-Spring-2.md)
+4. [`CascadeType.ALL` vs `orphanRemoval`?](../../interview/backend/java/03-Spring-2.md)
+5. [Optimistic vs pessimistic locking?](../../interview/backend/java/03-Spring-2.md)
+6. [IDENTITY vs SEQUENCE ID generation?](../../interview/backend/java/03-Spring-2.md)
+7. [`getReference()` vs `find()`?](../../interview/backend/java/03-Spring-2.md)
+8. [EntityManager vs Hibernate Session?](../../interview/backend/java/03-Spring-2.md)
+9. [Open Session in View vs explicit transaction boundaries?](../../interview/backend/java/03-Spring-2.md)
+
+## 8. Spring annotation
 
 1. [What are some commonly used Spring annotations and what are they used for?](../../interview/backend/java/04-Spring-annotation.md)
+2. [What are the Spring stereotype annotations (`@Component`, `@Service`, `@Repository`)?](../../interview/backend/java/04-Spring-annotation.md)
+   - [Is there a functional difference between `@Component` and `@Service`?](../../interview/backend/java/04-Spring-annotation.md)
+3. [Which annotations are used for dependency injection in Spring?](../../interview/backend/java/04-Spring-annotation.md)
+   - [Two beans implement the same interface. How does Spring choose?](../../interview/backend/java/04-Spring-annotation.md)
+4. [Which annotations control a Spring bean's lifecycle and scope?](../../interview/backend/java/04-Spring-annotation.md)
+   - [Why might `@PreDestroy` not run on a prototype bean?](../../interview/backend/java/04-Spring-annotation.md)
+5. [Which annotations handle transactions and AOP in Spring?](../../interview/backend/java/04-Spring-annotation.md)
+   - [Why doesn't `@Transactional` work when a method calls another method in the same class?](../../interview/backend/java/04-Spring-annotation.md)
+6. [Which annotations are used to build REST APIs in Spring?](../../interview/backend/java/04-Spring-annotation.md)
+   - [`@PathVariable` vs `@RequestParam`?](../../interview/backend/java/04-Spring-annotation.md)
+7. [What are the core Spring Boot annotations?](../../interview/backend/java/04-Spring-annotation.md)
+   - [How does `@ConditionalOnMissingBean` let you override auto-configuration?](../../interview/backend/java/04-Spring-annotation.md)
 
-## 7. Spring Security
+## 9. Spring Security
 
 1. [What is Spring Security and why do we need it?](../../interview/backend/java/05-Spring-Security.md)
 2. [Can authorization happen without authentication?](../../interview/backend/java/05-Spring-Security.md)
@@ -133,55 +177,250 @@
 11. [SAML vs JWT](../../interview/backend/java/05-Spring-Security.md)
 12. [SAML vs OAuth vs OIDC](../../interview/backend/java/05-Spring-Security.md)
 
-## 8. Transaction Basics
+## 10. Transaction Basics
 
 1. [What is a Spring proxy?](../../interview/backend/java/07-Spring-Transactions.md)
 2. [In a Spring service, what can go wrong when using @Transactional?](../../interview/backend/java/07-Spring-Transactions.md)
 3. [A method calls another transactional method on the same instance. Is the second transaction boundary applied?](../../interview/backend/java/07-Spring-Transactions.md)
 
-## 9. Rollback Rules and Propagation
+## 11. Rollback Rules and Propagation
 
 1. [Which exceptions make @Transactional roll back?](../../interview/backend/java/07-Spring-Transactions.md)
 2. [What are REQUIRED and REQUIRES_NEW propagation?](../../interview/backend/java/07-Spring-Transactions.md)
 3. [What happens when both methods are in the same service and one uses REQUIRES_NEW?](../../interview/backend/java/07-Spring-Transactions.md)
 4. [How does Spring know when to commit or roll back?](../../interview/backend/java/07-Spring-Transactions.md)
 5. [What is the difference between save and commit?](../../interview/backend/java/07-Spring-Transactions.md)
+6. [What are all the `@Transactional` propagation types?](../../interview/backend/java/07-Spring-Transactions.md)
+   - [What happens if an inner REQUIRED method throws and the outer method catches it?](../../interview/backend/java/07-Spring-Transactions.md)
 
-## 10. Spring Boot Configuration & Production Readiness
+## 12. Performance & Scalability (Spring Boot)
+
+1. [Our API becomes slow when traffic increases. What would you check first?](../../interview/backend/java/08-Architecture.md)
+2. [A single API call returns a very large response and affects performance. How would you optimize it?](../../interview/backend/java/08-Architecture.md)
+3. [How would you reduce repeated database calls for the same data?](../../interview/backend/java/08-Architecture.md)
+
+## 13. Spring Boot Configuration & Production Readiness
 
 1. [Our application behaves differently in local and production environments. How would you manage this?](../../interview/backend/java/08-Architecture.md)
 2. [How would you make sure debug logs don’t affect production performance?](../../interview/backend/java/08-Architecture.md)
 3. [The app startup time increased after adding new modules. How would you improve it?](../../interview/backend/java/08-Architecture.md)
 
-## 11. Database Design & Access (Spring Boot + MySQL)
+## 14. Exception Handling & Reliability (Spring Boot)
+
+1. [When an exception happens, users see different error messages. How would you fix this?](../../interview/backend/java/08-Architecture.md)
+2. [How would you handle checked and unchecked exceptions in services?](../../interview/backend/java/08-Architecture.md)
+
+## 15. Concurrent Users & Data Consistency (Spring Boot & SQL)
+
+1. [Two users update the same record at the same time. How would you handle this?](../../interview/backend/java/08-Architecture.md)
+2. [How do you ensure thread safety in a Spring Boot application?](../../interview/backend/java/08-Architecture.md)
+
+## 16. Database Design & Access (Spring Boot + SQL / MySQL)
 
 1. [Our database tables are growing very fast and queries are getting slow. What would you check first?](../../interview/backend/java/08-Architecture.md)
 2. [A single API call is hitting the database multiple times. How would you optimize this?](../../interview/backend/java/08-Architecture.md)
 3. [The same data is being read again and again from MySQL. How would you reduce DB load?](../../interview/backend/java/08-Architecture.md)
 
-## 12. Part 3 — Spring Boot Testing
+## 17. JPA / Hibernate Performance (Spring Boot & SQL)
+
+1. [Our API is slow even though the database is fast. What could be the issue?](../../interview/backend/java/08-Architecture.md)
+2. [How do you decide between `Lazy` and `Eager` fetching?](../../interview/backend/java/08-Architecture.md)
+3. [Large result sets are causing memory issues. How would you handle this?](../../interview/backend/java/08-Architecture.md)
+
+## 18. Transactions & Data Consistency (Spring Boot & SQL)
+
+1. [Multiple DB operations must succeed or fail together. How would you handle this?](../../interview/backend/java/08-Architecture.md)
+2. [When would you use pessimistic locking?](../../interview/backend/java/08-Architecture.md)
+
+## 19. Concurrent Users & Scalability (Spring Boot & SQL)
+
+1. [Under high traffic, DB connections are getting exhausted. How would you fix this?](../../interview/backend/java/08-Architecture.md)
+2. [How do you make sure multiple users don’t affect each other’s data?](../../interview/backend/java/08-Architecture.md)
+
+## 20. Query Design & DTO Usage (Spring Boot & SQL)
+
+1. [Entities are large but APIs need only a few fields. What would you do?](../../interview/backend/java/08-Architecture.md)
+2. [Why should controllers not return JPA entities directly?](../../interview/backend/java/08-Architecture.md)
+
+## 21. Part 3 — Spring Boot Testing
 
 1. [`@SpringBootTest` vs `@WebMvcTest` vs `@DataJpaTest`?](../../interview/testing/01-Testing.md)
    - [`@Mock` vs `@MockBean`/`@MockitoBean`?](../../interview/testing/01-Testing.md)
 2. [What is Testcontainers?](../../interview/testing/01-Testing.md)
 
-## 13. Servers, localhost and ports (all backends)
+## 22. Servers, localhost and ports (all backends)
 
 1. [What exactly is a server — hardware or software?](../../interview/under-the-hood/07-Inside-a-Web-Server.md)
 2. [What is the difference between a web server, an application server and a reverse proxy?](../../interview/under-the-hood/07-Inside-a-Web-Server.md)
 
-## 14. What happens inside Spring Boot when a request arrives (Java / Spring)
+## 23. What happens inside Spring Boot when a request arrives (Java / Spring)
 
 1. [What happens when an HTTP request reaches a Spring Boot app?](../../interview/under-the-hood/07-Inside-a-Web-Server.md)
-2. [How does Spring's dependency injection (inversion of control) create and connect objects?](../../interview/under-the-hood/07-Inside-a-Web-Server.md)
-3. [How does a database connection pool work?](../../interview/under-the-hood/07-Inside-a-Web-Server.md)
+2. [What happens, end to end, when an Angular app calls a REST API?](../../interview/under-the-hood/07-Inside-a-Web-Server.md)
+3. [How does Spring's dependency injection (inversion of control) create and connect objects?](../../interview/under-the-hood/07-Inside-a-Web-Server.md)
+4. [How does a database connection pool work?](../../interview/under-the-hood/07-Inside-a-Web-Server.md)
 
-## 15. Reading config files (microservices: Spring Boot, Cloud Foundry, Docker, Kubernetes)
+## 24. Reading config files (microservices: Spring Boot, Cloud Foundry, Docker, Kubernetes)
 
 1. [How do you read a YAML file?](../../interview/under-the-hood/16-Config-Files-in-Microservices.md)
 2. [What do the common settings in a microservice's application.yml mean?](../../interview/under-the-hood/16-Config-Files-in-Microservices.md)
 3. [What is manifest.yml, and how do you read one?](../../interview/under-the-hood/16-Config-Files-in-Microservices.md)
 4. [Which config file does what in a microservice project?](../../interview/under-the-hood/16-Config-Files-in-Microservices.md)
+
+## 25. Application startup and bean management (Java / Spring Boot)
+
+1. [What happens internally when a Spring Boot application starts?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+2. [How does Spring Boot auto-configuration work internally?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+3. [How does component scanning discover classes?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+4. [How does Spring create and register beans?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+5. [How does the IoC container maintain and manage beans?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+6. [How does dependency injection work internally?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+7. [What happens internally when `@Autowired` is used?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+8. [How does Spring resolve dependencies when multiple implementations exist?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+9. [What is the complete Spring bean lifecycle?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+10. [How do BeanPostProcessors work?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+11. [How does Spring manage singleton and prototype scopes?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+12. [How does lazy initialization work?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+13. [How does Spring resolve circular dependencies?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+14. [How does Spring handle application events?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+15. [How does Spring manage configuration properties?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+
+## 26. Spring AOP and proxies (Java / Spring)
+
+1. [Why was aspect-oriented programming (AOP) introduced?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+2. [How does Spring AOP work internally?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+3. [How does Spring create proxy objects?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+4. [How does a JDK dynamic proxy work internally?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+5. [How does CGLIB create proxy classes?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+6. [How does a method invocation pass through a proxy?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+7. [How does Spring implement cross-cutting concerns?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+8. [How does `@Transactional` use Spring AOP?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+9. [Why does calling a transactional method from another method in the same class sometimes fail?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+10. [How does `@Async` work internally?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+11. [How does `@Cacheable` work internally?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+12. [How does `@Retryable` work internally?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+13. [What happens when multiple Spring AOP advices are applied to the same method?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+
+## 27. Spring MVC and request processing (Java / Spring)
+
+1. [How does Spring MVC process an HTTP request internally?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+2. [What is DispatcherServlet, and why was it introduced?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+3. [How does HandlerMapping identify the appropriate controller?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+4. [How does HandlerAdapter invoke controller methods?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+5. [How does Spring convert JSON into Java objects?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+6. [How does HttpMessageConverter work?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+7. [How does Spring validate incoming request objects?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+8. [How does `@ControllerAdvice` work internally?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+9. [How does Spring handle exceptions across controllers?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+10. [How do servlet filters work?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+11. [How do Spring MVC interceptors work?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+12. [How does Spring handle multipart file uploads?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+
+## 28. Entity management and the persistence context (Java / JPA / Hibernate)
+
+1. [What happens internally when an EntityManager is created?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+2. [What is the persistence context, and why was it introduced?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+3. [How does Hibernate manage entity objects in memory?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+4. [What are the transient, managed, detached and removed entity states?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+5. [How does Hibernate identify whether an entity has changed?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+6. [How does dirty checking work internally?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+7. [What happens when `save()` is called in Spring Data JPA?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+8. [What is the difference between `persist()` and `merge()`?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+9. [How does the first-level cache work?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+10. [How does the second-level cache work?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+11. [What is the query cache?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+12. [How does Hibernate manage entity identity?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+13. [What is the identity map pattern?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+14. [What happens when the same entity is fetched multiple times in one persistence context?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+15. [How does the persistence context synchronize with the database?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+
+## 29. SQL generation and query execution (Java / JPA / Hibernate)
+
+1. [How does Hibernate generate SQL from entity operations?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+2. [What happens internally when `find()` is called?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+3. [How does JPQL get converted into SQL?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+4. [How does Hibernate execute native SQL queries?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+5. [How does Spring Data JPA generate repository implementations?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+6. [How does `findByEmployeeName()` become an SQL query?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+7. [What is the difference between JPQL and the Criteria API internally?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+8. [How does Hibernate batch INSERT and UPDATE statements?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+9. [How does JDBC batching improve performance?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+10. [What is the purpose of Hibernate flush modes?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+11. [When does Hibernate automatically flush?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+12. [How does Hibernate handle database-generated IDs?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+13. [How do the IDENTITY, SEQUENCE and TABLE generation strategies work?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+14. [Why can IDENTITY generation affect INSERT batching?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+15. [How does Hibernate handle optimistic locking using `@Version`?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+
+## 30. Relationships and fetching strategies (Java / JPA / Hibernate)
+
+1. [How does Hibernate manage one-to-one relationships internally?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+2. [How does one-to-many mapping work internally?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+3. [How does many-to-many mapping work internally?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+4. [How does Hibernate manage foreign-key relationships?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+5. [What happens when CascadeType.ALL is used?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+6. [How does orphanRemoval work internally?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+7. [What is lazy loading, and how does Hibernate implement it?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+8. [How does Hibernate create proxy objects for lazy relationships?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+9. [What happens when a lazy relationship is accessed outside a session?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+10. [What is the N+1 query problem?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+11. [Why does N+1 happen even when relationships are correctly mapped?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+12. [How does JOIN FETCH solve the N+1 problem?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+13. [How does EntityGraph work internally?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+14. [What happens when EAGER fetching is used excessively?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+15. [How do batch fetching and subselect fetching work?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+
+## 31. Transactions and concurrency (Java / JPA / Hibernate)
+
+1. [How does JPA transaction management work internally?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+2. [How does the EntityManager participate in Spring transactions?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+3. [How does Hibernate synchronize the persistence context with database transactions?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+4. [How does optimistic locking work internally?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+5. [How does pessimistic locking work internally?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+6. [What happens when two users update the same entity simultaneously?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+7. [How does `@Version` prevent lost updates?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+8. [What is the difference between database locking and application-level locking?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+9. [How do transaction isolation levels affect JPA operations?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+10. [What causes LazyInitializationException?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+11. [What happens when an EntityManager is closed?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+12. [How does Open Session in View work?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+13. [How does Hibernate handle bulk UPDATE and DELETE queries?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+14. [Why can bulk JPQL operations cause stale entities in the persistence context?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+15. [How do you prevent database connection leaks in JPA applications?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+
+## 32. Microservices fundamentals (architecture, any language; Spring Cloud examples)
+
+1. [Why were microservices introduced?](../../interview/under-the-hood/21-Inside-Microservices.md)
+2. [What problems do monolithic architectures create as applications grow?](../../interview/under-the-hood/21-Inside-Microservices.md)
+3. [How do microservices communicate internally?](../../interview/under-the-hood/21-Inside-Microservices.md)
+4. [How does service discovery work?](../../interview/under-the-hood/21-Inside-Microservices.md)
+5. [How does an API gateway route requests?](../../interview/under-the-hood/21-Inside-Microservices.md)
+6. [How does load balancing work across microservices?](../../interview/under-the-hood/21-Inside-Microservices.md)
+7. [How does service registration and deregistration work?](../../interview/under-the-hood/21-Inside-Microservices.md)
+8. [How do services locate one another without hardcoded IP addresses?](../../interview/under-the-hood/21-Inside-Microservices.md)
+9. [How do microservices handle configuration centrally?](../../interview/under-the-hood/21-Inside-Microservices.md)
+10. [How does distributed configuration management work?](../../interview/under-the-hood/21-Inside-Microservices.md)
+11. [How do you identify appropriate service boundaries?](../../interview/under-the-hood/21-Inside-Microservices.md)
+12. [How does the database-per-service architecture work?](../../interview/under-the-hood/21-Inside-Microservices.md)
+13. [Why should microservices avoid sharing the same database schema?](../../interview/under-the-hood/21-Inside-Microservices.md)
+14. [How do you handle shared business data across services?](../../interview/under-the-hood/21-Inside-Microservices.md)
+15. [How does horizontal scaling work in microservices?](../../interview/under-the-hood/21-Inside-Microservices.md)
+
+## 33. Inter-service communication (architecture, any language; Spring examples)
+
+1. [How does synchronous communication work between services?](../../interview/under-the-hood/21-Inside-Microservices.md)
+2. [How does asynchronous communication work?](../../interview/under-the-hood/21-Inside-Microservices.md)
+3. [What happens when Service A calls Service B over HTTP?](../../interview/under-the-hood/21-Inside-Microservices.md)
+4. [What happens internally when using RestTemplate, WebClient or HTTP Interface clients?](../../interview/under-the-hood/21-Inside-Microservices.md)
+5. [How does connection pooling work in service-to-service communication?](../../interview/under-the-hood/21-Inside-Microservices.md)
+6. [What happens when a downstream service becomes slow?](../../interview/under-the-hood/21-Inside-Microservices.md)
+7. [How do network timeouts affect upstream services?](../../interview/under-the-hood/21-Inside-Microservices.md)
+8. [What is connection exhaustion?](../../interview/under-the-hood/21-Inside-Microservices.md)
+9. [How do you prevent cascading failures?](../../interview/under-the-hood/21-Inside-Microservices.md)
+10. [How does service-to-service authentication work?](../../interview/under-the-hood/21-Inside-Microservices.md)
+11. [How do distributed tracing headers propagate between services?](../../interview/under-the-hood/21-Inside-Microservices.md)
+12. [How does asynchronous messaging reduce service coupling?](../../interview/under-the-hood/21-Inside-Microservices.md)
+13. [What happens when a downstream service is unavailable during message processing?](../../interview/under-the-hood/21-Inside-Microservices.md)
 
 ## Diagrams
 

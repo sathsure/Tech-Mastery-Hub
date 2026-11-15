@@ -153,13 +153,13 @@
 - [DNS resolution: the resolver asks the root, then the .com server, then the domain's own name server](../../knowledge/visual-notes/under-the-hood/dns-resolution.svg)
 - [TCP three-way handshake: SYN, SYN-ACK, ACK before any data is sent](../../knowledge/visual-notes/under-the-hood/tcp-handshake.svg)
 - [TLS handshake: hello messages, certificate, key exchange, then encrypted application data](../../knowledge/visual-notes/under-the-hood/tls-handshake.svg)
-- [NAT: the router maps a private IP and port (192.168.100.3:3855) to its public IP and port (145.12.131.7:6282) and back](../../knowledge/visual-notes/under-the-hood/nat-router.jpg)
-- [Huffman tree for "TO BE OR NOT TO BE": frequent symbols like space and O get 2-bit codes, rare ones like N and R get 4-bit codes](../../knowledge/visual-notes/under-the-hood/huffman-tree.svg)
-- [The same photo saved with stronger and stronger JPEG compression: the file gets smaller and the close-ups get blockier](../../knowledge/visual-notes/under-the-hood/jpeg-quality.png)
-- [QR code parts: three big position squares in the corners, smaller alignment squares, timing dots, format and version information, and the data area](../../knowledge/visual-notes/under-the-hood/qr-code-structure.svg)
-- [A hash function turns any input into a fixed-length digest; changing one letter gives a completely different digest](../../knowledge/visual-notes/under-the-hood/hash-function.svg)
-- [Public-key encryption: Bob encrypts "Hello Alice!" with Alice's public key; only Alice's private key can decrypt it](../../knowledge/visual-notes/under-the-hood/public-key-encryption.svg)
-- [The GPS constellation: satellites on several orbits around the Earth, so at least four are visible from almost anywhere](../../knowledge/visual-notes/under-the-hood/gps-constellation.jpg)
+- [NAT: the router maps a private IP and port to its public IP and port and back](../../knowledge/visual-notes/under-the-hood/nat-router.jpg)
+- [Huffman tree for "TO BE OR NOT TO BE": frequent symbols get 2-bit codes, rare ones get 4-bit codes](../../knowledge/visual-notes/under-the-hood/huffman-tree.svg)
+- [The same photo saved with stronger and stronger JPEG compression](../../knowledge/visual-notes/under-the-hood/jpeg-quality.png)
+- [QR code parts: position squares, alignment squares, timing dots, format info and data area](../../knowledge/visual-notes/under-the-hood/qr-code-structure.svg)
+- [A hash function turns any input into a fixed-length digest](../../knowledge/visual-notes/under-the-hood/hash-function.svg)
+- [Public-key encryption: Bob encrypts with Alice's public key; only Alice's private key can decrypt it](../../knowledge/visual-notes/under-the-hood/public-key-encryption.svg)
+- [The GPS constellation: satellites on several orbits, so at least four are visible from almost anywhere](../../knowledge/visual-notes/under-the-hood/gps-constellation.jpg)
 
 ## Related roles
 

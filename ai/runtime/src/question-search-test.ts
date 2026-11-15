@@ -33,7 +33,7 @@ const GOLDEN: Array<{ query: string; path: string; question: RegExp; within?: nu
   { query: "how to reduce CLS", path: "interview/architecture/01-web-vitals.md", question: /cls/i, within: 1 },
   { query: "BehaviorSubject vs ReplaySubject", path: "interview/frontend/06-RxJS.md", question: /BehaviorSubject/, within: 2 },
   { query: "what is jwt and is it secure", path: "interview/backend/node/06-Node-security.md", question: /jwt/i, within: 3 },
-  { query: "sql joins", path: "practice/coding/sql/02-MySQL-coding.md", question: /./, within: 8 },
+  { query: "sql joins", path: "interview/database/03-SQL-Interview-Queries.md", question: /types of SQL joins/i, within: 8 },
 ];
 
 /** Unrelated text must stay a repository gap rather than be forced onto a topic. */

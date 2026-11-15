@@ -88,11 +88,31 @@
    - [Why does Java allow `byte → double` but not `double → byte`?](../../interview/backend/java/01-Java-1.md)
 5. [JVM Internal Question](../../interview/backend/java/01-Java-1.md)
 
-## 8. Major Java Features (9 → 21)
+## 8. Must-Know Core Java (Intermediate)
+
+1. [How does HashMap work internally?](../../interview/backend/java/01-Java-1.md)
+   - [Why must `equals()` and `hashCode()` agree?](../../interview/backend/java/01-Java-1.md)
+   - [Why shouldn't a key be mutable?](../../interview/backend/java/01-Java-1.md)
+   - [Is HashMap thread-safe?](../../interview/backend/java/01-Java-1.md)
+2. [Abstract class vs interface — what's the difference and when do you use each?](../../interview/backend/java/01-Java-1.md)
+   - [Why were `default` methods added in Java 8?](../../interview/backend/java/01-Java-1.md)
+   - [Two interfaces have the same default method. What happens?](../../interview/backend/java/01-Java-1.md)
+3. [How do generics work in Java — wildcards, type erasure and PECS?](../../interview/backend/java/01-Java-1.md)
+   - [Why isn't `List<Integer>` a `List<Number>`?](../../interview/backend/java/01-Java-1.md)
+4. [What garbage collectors does the JVM have, and how do they work?](../../interview/backend/java/01-Java-1.md)
+   - [The app has long GC pauses. What do you check?](../../interview/backend/java/01-Java-1.md)
+   - [Does `System.gc()` force a collection?](../../interview/backend/java/01-Java-1.md)
+5. [What is the Java Memory Model and the "happens-before" rule?](../../interview/backend/java/01-Java-1.md)
+   - [Does `volatile` make `count++` safe?](../../interview/backend/java/01-Java-1.md)
+   - [What is safe publication?](../../interview/backend/java/01-Java-1.md)
+6. [HashMap vs ConcurrentHashMap — what's the difference?](../../interview/backend/java/01-Java-1.md)
+   - [Why doesn't ConcurrentHashMap allow null?](../../interview/backend/java/01-Java-1.md)
+
+## 9. Major Java Features (9 → 21)
 
 1. [What are the major java features introduced after 8?](../../interview/backend/java/01-Java-2.md)
 
-## 9. Concurrency & Multithreading
+## 10. Concurrency & Multithreading
 
 1. [How do you handle concurrency in Java applications?](../../interview/backend/java/01-Java-2.md)
 2. [Deadlocks – How do they occur and how do you prevent them?](../../interview/backend/java/01-Java-2.md)
@@ -100,7 +120,7 @@
 4. [Callable vs Runnable](../../interview/backend/java/01-Java-2.md)
 5. [Fixed Thread Pool vs Cached Thread Pool](../../interview/backend/java/01-Java-2.md)
 
-## 10. JVM Deep Dive
+## 11. JVM Deep Dive
 
 1. [What does Serializable mean?](../../interview/backend/java/01-Java-2.md)
    - [Where is Serializable used in real applications?](../../interview/backend/java/01-Java-2.md)
@@ -108,13 +128,13 @@
 2. [Explain JVM memory structure. Heap vs Stack vs Metaspace](../../interview/backend/java/01-Java-2.md)
 3. [What causes memory leaks in Java?](../../interview/backend/java/01-Java-2.md)
 
-## 11. JVM vs JRE vs JDK
+## 12. JVM vs JRE vs JDK
 
 1. [JVM Internals](../../interview/backend/java/01-Java-2.md)
    - [Why Java is Platform Independent?](../../interview/backend/java/01-Java-2.md)
 2. [How Do You Build a Java Application?](../../interview/backend/java/01-Java-2.md)
 
-## 12. Part 1 — SOLID Principles
+## 13. Part 1 — SOLID Principles
 
 1. [What are the SOLID principles?](../../interview/backend/java/10-Design-Patterns-SOLID.md)
    - [Which one do you use most in Spring?](../../interview/backend/java/10-Design-Patterns-SOLID.md)
@@ -125,7 +145,7 @@
 6. [Explain the Dependency Inversion Principle with an example.](../../interview/backend/java/10-Design-Patterns-SOLID.md)
    - [Dependency Inversion vs Dependency Injection?](../../interview/backend/java/10-Design-Patterns-SOLID.md)
 
-## 13. Part 2 — Creational Patterns
+## 14. Part 2 — Creational Patterns
 
 1. [What are design patterns and what are the three types?](../../interview/backend/java/10-Design-Patterns-SOLID.md)
 2. [What is the Singleton pattern and how do you write a thread-safe one?](../../interview/backend/java/10-Design-Patterns-SOLID.md)
@@ -137,7 +157,7 @@
 4. [What is the Builder pattern?](../../interview/backend/java/10-Design-Patterns-SOLID.md)
 5. [What is the Prototype pattern?](../../interview/backend/java/10-Design-Patterns-SOLID.md)
 
-## 14. Part 3 — Structural Patterns
+## 15. Part 3 — Structural Patterns
 
 1. [What is the Adapter pattern?](../../interview/backend/java/10-Design-Patterns-SOLID.md)
 2. [What is the Decorator pattern?](../../interview/backend/java/10-Design-Patterns-SOLID.md)
@@ -147,7 +167,7 @@
    - [Proxy vs Decorator?](../../interview/backend/java/10-Design-Patterns-SOLID.md)
 4. [What is the Facade pattern?](../../interview/backend/java/10-Design-Patterns-SOLID.md)
 
-## 15. Part 4 — Behavioral Patterns
+## 16. Part 4 — Behavioral Patterns
 
 1. [What is the Strategy pattern?](../../interview/backend/java/10-Design-Patterns-SOLID.md)
    - [Strategy vs Factory?](../../interview/backend/java/10-Design-Patterns-SOLID.md)
@@ -156,14 +176,14 @@
 4. [What is the Chain of Responsibility pattern?](../../interview/backend/java/10-Design-Patterns-SOLID.md)
 5. [What is the Command pattern?](../../interview/backend/java/10-Design-Patterns-SOLID.md)
 
-## 16. Part 5 — Tricky Questions
+## 17. Part 5 — Tricky Questions
 
 1. [Tricky: Which design patterns does Spring use?](../../interview/backend/java/10-Design-Patterns-SOLID.md)
 2. [Tricky: Is Singleton an anti-pattern?](../../interview/backend/java/10-Design-Patterns-SOLID.md)
 3. [Tricky: What is composition over inheritance?](../../interview/backend/java/10-Design-Patterns-SOLID.md)
 4. [Tricky: What are DRY, KISS and YAGNI?](../../interview/backend/java/10-Design-Patterns-SOLID.md)
 
-## 17. Part 1 — Threads Basics
+## 18. Part 1 — Threads Basics
 
 1. [What are the ways to create a thread in Java?](../../interview/backend/java/11-Java-Concurrency.md)
    - [What is the difference between `start()` and `run()`?](../../interview/backend/java/11-Java-Concurrency.md)
@@ -177,13 +197,13 @@
    - [What does "reentrant" mean?](../../interview/backend/java/11-Java-Concurrency.md)
 7. [`wait()` vs `sleep()`?](../../interview/backend/java/11-Java-Concurrency.md)
 
-## 18. Part 2 — Deadlock & Friends
+## 19. Part 2 — Deadlock & Friends
 
 1. [What is a deadlock? Show an example and how to prevent it.](../../interview/backend/java/11-Java-Concurrency.md)
    - [How do you find a deadlock in a running app?](../../interview/backend/java/11-Java-Concurrency.md)
    - [What are livelock and starvation?](../../interview/backend/java/11-Java-Concurrency.md)
 
-## 19. Part 3 — Executors & Thread Pools
+## 20. Part 3 — Executors & Thread Pools
 
 1. [Why use a thread pool instead of creating threads?](../../interview/backend/java/11-Java-Concurrency.md)
 2. [What are the types of thread pools in `Executors`?](../../interview/backend/java/11-Java-Concurrency.md)
@@ -195,50 +215,53 @@
 6. [What are virtual threads (Java 21)?](../../interview/backend/java/11-Java-Concurrency.md)
    - [What is "pinning"?](../../interview/backend/java/11-Java-Concurrency.md)
 
-## 20. Part 4 — Concurrent Collections & Utilities
+## 21. Part 4 — Concurrent Collections & Utilities
 
 1. [Why is `HashMap` not thread-safe, and what should you use instead?](../../interview/backend/java/11-Java-Concurrency.md)
 2. [What are `CountDownLatch`, `CyclicBarrier` and `Semaphore`?](../../interview/backend/java/11-Java-Concurrency.md)
 3. [What is `ThreadLocal` and what is the risk?](../../interview/backend/java/11-Java-Concurrency.md)
 
-## 21. Part 5 — Tricky Questions
+## 22. Part 5 — Tricky Questions
 
 1. [Tricky: Is `i++` thread-safe if `i` is `volatile`?](../../interview/backend/java/11-Java-Concurrency.md)
 2. [Tricky: What is printed?](../../interview/backend/java/11-Java-Concurrency.md)
 3. [Tricky: What happens if you forget `shutdown()` on an `ExecutorService`?](../../interview/backend/java/11-Java-Concurrency.md)
 4. [Tricky: Why is `ConcurrentModificationException` thrown in a single-threaded loop?](../../interview/backend/java/11-Java-Concurrency.md)
 5. [Tricky: Concurrency vs parallelism?](../../interview/backend/java/11-Java-Concurrency.md)
+6. [`synchronized` vs `volatile` — what's the difference?](../../interview/backend/java/11-Java-Concurrency.md)
+   - [Is double-checked locking safe?](../../interview/backend/java/11-Java-Concurrency.md)
 
-## 22. How code becomes something the CPU can run (all languages)
+## 23. How code becomes something the CPU can run (all languages)
 
 1. [What happens between writing code and the computer running it?](../../interview/under-the-hood/01-How-Code-Runs.md)
    - [Is Java compiled or interpreted?](../../interview/under-the-hood/01-How-Code-Runs.md)
 2. [What is the difference between AOT and JIT compilation?](../../interview/under-the-hood/01-How-Code-Runs.md)
 
-## 23. Language runtimes: the JVM and JavaScript engines (Java & JavaScript)
+## 24. Language runtimes: the JVM and JavaScript engines (Java & JavaScript)
 
 1. [How does the JVM run a Java program?](../../interview/under-the-hood/01-How-Code-Runs.md)
 2. [How does a JavaScript engine like V8 run code?](../../interview/under-the-hood/01-How-Code-Runs.md)
 
-## 24. Where data lives: RAM, disk and many servers (the big picture)
+## 25. Where data lives: RAM, disk and many servers (the big picture)
 
 1. [What is the difference between data structures, a database and a data warehouse?](../../interview/under-the-hood/02-Memory-and-Data.md)
 2. [What is the difference between CPU cache, RAM and disk?](../../interview/under-the-hood/02-Memory-and-Data.md)
 
-## 25. Stack and heap: memory inside a running program (all languages)
+## 26. Stack and heap: memory inside a running program (all languages)
 
 1. [What are stack and heap memory?](../../interview/under-the-hood/02-Memory-and-Data.md)
-2. [How does garbage collection work?](../../interview/under-the-hood/02-Memory-and-Data.md)
-3. [What is virtual memory?](../../interview/under-the-hood/02-Memory-and-Data.md)
+2. [How does the JVM manage memory when you create an object?](../../interview/under-the-hood/02-Memory-and-Data.md)
+3. [How does garbage collection work?](../../interview/under-the-hood/02-Memory-and-Data.md)
+4. [What is virtual memory?](../../interview/under-the-hood/02-Memory-and-Data.md)
 
-## 26. Processes and threads (operating system, all languages)
+## 27. Processes and threads (operating system, all languages)
 
 1. [What is the difference between a process and a thread?](../../interview/under-the-hood/03-Processes-and-Threads.md)
 2. [What is context switching?](../../interview/under-the-hood/03-Processes-and-Threads.md)
 3. [What is the difference between concurrency and parallelism?](../../interview/under-the-hood/03-Processes-and-Threads.md)
 4. [What is a race condition, and how do you prevent it?](../../interview/under-the-hood/03-Processes-and-Threads.md)
 
-## 27. Inside common data structures (ideas apply to every language; Java examples)
+## 28. Inside common data structures (ideas apply to every language; Java examples)
 
 1. [How does a HashMap work internally?](../../interview/under-the-hood/04-Inside-Data-Structures.md)
    - [Why can't you get the key back from its hash?](../../interview/under-the-hood/04-Inside-Data-Structures.md)
@@ -246,17 +269,139 @@
 3. [How do stacks, queues and heaps work?](../../interview/under-the-hood/04-Inside-Data-Structures.md)
 4. [How do trees like the B+ tree speed up searching?](../../interview/under-the-hood/04-Inside-Data-Structures.md)
 
-## 28. What happens inside Spring Boot when a request arrives (Java / Spring)
+## 29. What happens inside Spring Boot when a request arrives (Java / Spring)
 
 1. [What happens when an HTTP request reaches a Spring Boot app?](../../interview/under-the-hood/07-Inside-a-Web-Server.md)
-2. [How does Spring's dependency injection (inversion of control) create and connect objects?](../../interview/under-the-hood/07-Inside-a-Web-Server.md)
-3. [How does a database connection pool work?](../../interview/under-the-hood/07-Inside-a-Web-Server.md)
+2. [What happens, end to end, when an Angular app calls a REST API?](../../interview/under-the-hood/07-Inside-a-Web-Server.md)
+3. [How does Spring's dependency injection (inversion of control) create and connect objects?](../../interview/under-the-hood/07-Inside-a-Web-Server.md)
+4. [How does a database connection pool work?](../../interview/under-the-hood/07-Inside-a-Web-Server.md)
 
-## 29. Resilience: surviving failures (any language; Java examples)
+## 30. Resilience: surviving failures (any language; Java examples)
 
 1. [What is resilience, and is it Java-specific?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)
 2. [How does a circuit breaker work?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)
 3. [What does the CAP theorem mean in practice?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)
+
+## 31. Application startup and bean management (Java / Spring Boot)
+
+1. [What happens internally when a Spring Boot application starts?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+2. [How does Spring Boot auto-configuration work internally?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+3. [How does component scanning discover classes?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+4. [How does Spring create and register beans?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+5. [How does the IoC container maintain and manage beans?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+6. [How does dependency injection work internally?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+7. [What happens internally when `@Autowired` is used?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+8. [How does Spring resolve dependencies when multiple implementations exist?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+9. [What is the complete Spring bean lifecycle?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+10. [How do BeanPostProcessors work?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+11. [How does Spring manage singleton and prototype scopes?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+12. [How does lazy initialization work?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+13. [How does Spring resolve circular dependencies?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+14. [How does Spring handle application events?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+15. [How does Spring manage configuration properties?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+
+## 32. Spring AOP and proxies (Java / Spring)
+
+1. [Why was aspect-oriented programming (AOP) introduced?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+2. [How does Spring AOP work internally?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+3. [How does Spring create proxy objects?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+4. [How does a JDK dynamic proxy work internally?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+5. [How does CGLIB create proxy classes?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+6. [How does a method invocation pass through a proxy?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+7. [How does Spring implement cross-cutting concerns?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+8. [How does `@Transactional` use Spring AOP?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+9. [Why does calling a transactional method from another method in the same class sometimes fail?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+10. [How does `@Async` work internally?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+11. [How does `@Cacheable` work internally?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+12. [How does `@Retryable` work internally?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+13. [What happens when multiple Spring AOP advices are applied to the same method?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+
+## 33. Spring MVC and request processing (Java / Spring)
+
+1. [How does Spring MVC process an HTTP request internally?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+2. [What is DispatcherServlet, and why was it introduced?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+3. [How does HandlerMapping identify the appropriate controller?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+4. [How does HandlerAdapter invoke controller methods?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+5. [How does Spring convert JSON into Java objects?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+6. [How does HttpMessageConverter work?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+7. [How does Spring validate incoming request objects?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+8. [How does `@ControllerAdvice` work internally?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+9. [How does Spring handle exceptions across controllers?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+10. [How do servlet filters work?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+11. [How do Spring MVC interceptors work?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+12. [How does Spring handle multipart file uploads?](../../interview/under-the-hood/19-Inside-Spring-Boot.md)
+
+## 34. Entity management and the persistence context (Java / JPA / Hibernate)
+
+1. [What happens internally when an EntityManager is created?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+2. [What is the persistence context, and why was it introduced?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+3. [How does Hibernate manage entity objects in memory?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+4. [What are the transient, managed, detached and removed entity states?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+5. [How does Hibernate identify whether an entity has changed?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+6. [How does dirty checking work internally?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+7. [What happens when `save()` is called in Spring Data JPA?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+8. [What is the difference between `persist()` and `merge()`?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+9. [How does the first-level cache work?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+10. [How does the second-level cache work?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+11. [What is the query cache?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+12. [How does Hibernate manage entity identity?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+13. [What is the identity map pattern?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+14. [What happens when the same entity is fetched multiple times in one persistence context?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+15. [How does the persistence context synchronize with the database?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+
+## 35. SQL generation and query execution (Java / JPA / Hibernate)
+
+1. [How does Hibernate generate SQL from entity operations?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+2. [What happens internally when `find()` is called?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+3. [How does JPQL get converted into SQL?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+4. [How does Hibernate execute native SQL queries?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+5. [How does Spring Data JPA generate repository implementations?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+6. [How does `findByEmployeeName()` become an SQL query?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+7. [What is the difference between JPQL and the Criteria API internally?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+8. [How does Hibernate batch INSERT and UPDATE statements?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+9. [How does JDBC batching improve performance?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+10. [What is the purpose of Hibernate flush modes?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+11. [When does Hibernate automatically flush?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+12. [How does Hibernate handle database-generated IDs?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+13. [How do the IDENTITY, SEQUENCE and TABLE generation strategies work?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+14. [Why can IDENTITY generation affect INSERT batching?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+15. [How does Hibernate handle optimistic locking using `@Version`?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+
+## 36. Relationships and fetching strategies (Java / JPA / Hibernate)
+
+1. [How does Hibernate manage one-to-one relationships internally?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+2. [How does one-to-many mapping work internally?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+3. [How does many-to-many mapping work internally?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+4. [How does Hibernate manage foreign-key relationships?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+5. [What happens when CascadeType.ALL is used?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+6. [How does orphanRemoval work internally?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+7. [What is lazy loading, and how does Hibernate implement it?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+8. [How does Hibernate create proxy objects for lazy relationships?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+9. [What happens when a lazy relationship is accessed outside a session?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+10. [What is the N+1 query problem?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+11. [Why does N+1 happen even when relationships are correctly mapped?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+12. [How does JOIN FETCH solve the N+1 problem?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+13. [How does EntityGraph work internally?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+14. [What happens when EAGER fetching is used excessively?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+15. [How do batch fetching and subselect fetching work?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+
+## 37. Transactions and concurrency (Java / JPA / Hibernate)
+
+1. [How does JPA transaction management work internally?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+2. [How does the EntityManager participate in Spring transactions?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+3. [How does Hibernate synchronize the persistence context with database transactions?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+4. [How does optimistic locking work internally?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+5. [How does pessimistic locking work internally?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+6. [What happens when two users update the same entity simultaneously?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+7. [How does `@Version` prevent lost updates?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+8. [What is the difference between database locking and application-level locking?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+9. [How do transaction isolation levels affect JPA operations?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+10. [What causes LazyInitializationException?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+11. [What happens when an EntityManager is closed?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+12. [How does Open Session in View work?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+13. [How does Hibernate handle bulk UPDATE and DELETE queries?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+14. [Why can bulk JPQL operations cause stale entities in the persistence context?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
+15. [How do you prevent database connection leaks in JPA applications?](../../interview/under-the-hood/20-Inside-JPA-and-Hibernate.md)
 
 ## Practice
 
@@ -323,6 +468,8 @@
 
 - [CompositionVsInheritance](../../knowledge/visual-notes/backend/composition-vs-inheritance.png)
 - [Collections](../../knowledge/visual-notes/backend/java-collections.png)
+- [Hash table: keys are hashed to bucket indexes; colliding keys share a bucket](../../knowledge/visual-notes/under-the-hood/hash-table.svg)
+- [The JVM: class loader, runtime data areas (heap, stacks, method area) and execution engine with the garbage collector](../../knowledge/visual-notes/interview/jvm-architecture.png)
 - [How a compiler works: source code is analysed and translated into machine code](../../knowledge/visual-notes/under-the-hood/compiler.svg)
 - [A data warehouse collects data from many operational systems and serves reports and analysis](../../knowledge/visual-notes/under-the-hood/data-warehouse-overview.jpg)
 - [Memory hierarchy: registers and cache at the top are fastest and smallest; disks at the bottom are slowest and largest](../../knowledge/visual-notes/under-the-hood/memory-hierarchy.svg)
@@ -331,7 +478,6 @@
 - [Virtual memory: each process's addresses map to pages in physical RAM or on disk](../../knowledge/visual-notes/under-the-hood/virtual-memory.svg)
 - [A process with several threads: each thread has its own registers and stack but they share code, data and files](../../knowledge/visual-notes/under-the-hood/multithreaded-process.svg)
 - [Process states: a process moves between ready, running and waiting as the scheduler switches](../../knowledge/visual-notes/under-the-hood/process-states.svg)
-- [Hash table: keys are hashed to bucket indexes; colliding keys share a bucket](../../knowledge/visual-notes/under-the-hood/hash-table.svg)
 - [Linked list: each node holds a value and a pointer to the next node](../../knowledge/visual-notes/under-the-hood/singly-linked-list.svg)
 - [B+ tree: internal nodes guide the search; the leaves hold the values and link to each other](../../knowledge/visual-notes/under-the-hood/b-plus-tree.png)
 

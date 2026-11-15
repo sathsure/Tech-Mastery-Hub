@@ -265,3 +265,42 @@ public void createOrder(Order order) {
 ```
 
 `saveAndFlush()` = `save()` + `flush()`. Only the **commit** at the end of the transaction makes the data durable and visible to others.
+
+---
+
+### ❓ What are all the `@Transactional` propagation types?
+
+**Level:** 🟡 Intermediate
+
+### 📝 Answer
+
+Propagation says **what to do when a transactional method is called and a transaction may already exist**.
+
+| Propagation | Transaction exists | No transaction | Typical use |
+|---|---|---|---|
+| **REQUIRED** (default) | join it | start a new one | normal service methods |
+| **REQUIRES_NEW** | **suspend** it, start a new one | start a new one | audit logs that must save even if the caller rolls back |
+| **NESTED** | savepoint inside it (rollback to the savepoint only) | start a new one | optional sub-steps (JDBC savepoints; not with JPA transaction manager by default) |
+| **SUPPORTS** | join it | run without | read methods that don't care |
+| **NOT_SUPPORTED** | suspend it, run without | run without | long non-DB work |
+| **MANDATORY** | join it | **throw** | methods that must be called inside a transaction |
+| **NEVER** | **throw** | run without | code that must not run in a transaction |
+
+```java
+@Transactional                                       // REQUIRED
+public void placeOrder(Order o) {
+    orders.save(o);
+    audit.log("order placed");                       // REQUIRES_NEW: saved even if placeOrder fails later
+}
+
+@Transactional(propagation = Propagation.REQUIRES_NEW)
+public void log(String msg) { auditRepo.save(new Audit(msg)); }
+```
+
+**Remember:** propagation only applies when the call goes **through the proxy** (another bean), not `this.method()`.
+
+#### ↳ Follow-up: What happens if an inner REQUIRED method throws and the outer method catches it?
+
+↪ The shared transaction is already marked rollback-only, so the outer commit fails with `UnexpectedRollbackException`.
+
+---

@@ -4,25 +4,30 @@
 
 ### ❓ How do the CPU, RAM, ROM, disk, motherboard and OS connect, and what happens when you open an app?
 
-**The parts:**
+**Generic answer:** The motherboard's buses connect the CPU, RAM, disk and devices; the OS manages them; opening an app means the OS loads its code from disk into RAM and gives it CPU time.
+
+**Under the hood:**
+
+Imagine you double-click the Chrome icon. A second later a window appears. Mouse, chipset, SSD, RAM, CPU, GPU and the OS all took part.
+
+**Step 1: Know the parts**
 
 | Part | Job | Analogy |
 |---|---|---|
-| **Motherboard** | the board everything plugs into; its copper paths (**buses**) carry data between parts | the city's roads |
+| **Motherboard** | connects everything through copper paths (**buses**) | the city's roads |
 | **CPU** | runs instructions | the chef |
-| **RAM** | holds running apps and their data; forgets everything when power is off | the kitchen counter |
-| **ROM / firmware chip** (UEFI/BIOS) | small chip with the start-up program; keeps its contents without power | the opening checklist on the wall |
-| **SSD / hard disk** | keeps files and installed apps permanently | the warehouse |
+| **RAM** | holds running apps; forgets when power is off | the kitchen counter |
+| **ROM / firmware** (UEFI/BIOS) | the start-up program; keeps contents without power | the opening checklist |
+| **SSD / hard disk** | keeps files permanently | the warehouse |
 | **GPU** | draws the screen (and runs AI maths) | the decorator |
-| **Chipset** | traffic controller for USB, SATA disks, audio and network | the roundabout |
-| **Power supply** | turns wall power into the voltages each part needs | the electricity board |
-| **OS** | software that manages all of the above for every app | the restaurant manager |
+| **Chipset** | traffic control for USB, SATA, audio, network | the roundabout |
+| **OS** | manages all of it for every app | the restaurant manager |
 
 ![System bus: the CPU, memory, and input/output devices share a control bus, an address bus and a data bus](../../knowledge/visual-notes/under-the-hood/system-bus.svg)
 
 _Image: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Computer_system_bus.svg) · W Nowicki · CC BY-SA 3.0_
 
-The **address bus** says *where* ("memory address 5,000"), the **data bus** carries *what* (the bytes), and the **control bus** says *what to do* (read or write).
+The **address bus** says *where*, the **data bus** carries *what*, the **control bus** says *read or write*.
 
 ```mermaid
 flowchart LR
@@ -33,27 +38,35 @@ flowchart LR
   CPU <--> CH["Chipset"]
   CH <--> USB["USB: keyboard, mouse"]
   CH <--> NET["Wi-Fi / Ethernet"]
-  CH <--> HDD["SATA disk"]
 ```
 
-**Example: you double-click the Chrome icon.**
+**Step 2: Click** — the mouse signals over USB; the chipset **interrupts** the CPU; the OS sees a double-click on Chrome.
 
-1. **Click:** the mouse sends a signal over USB; the chipset tells the CPU (an **interrupt**); the OS sees a double-click on the Chrome icon.
-2. **Find the app:** the OS looks up `chrome.exe` in the file system's index on the SSD.
-3. **Load it:** the OS creates a new **process**, gives it memory, and copies the program's code from the **SSD into RAM** (only the parts needed first; the rest when needed).
-4. **Run it:** the OS scheduler gives Chrome turns on the CPU; the CPU fetches its instructions from RAM into its cache and runs them.
-5. **Draw the window:** Chrome asks the OS for a window; the **GPU** draws it in its own memory and sends it to the screen.
-6. **Settings and network:** Chrome reads your profile from the SSD and asks the network card to fetch your home page.
+**Step 3: Find the app** — the OS looks up `chrome.exe` in the file system on the SSD.
 
-The app never touches the hardware itself — every step goes **through the OS**.
+**Step 4: Load it** — the OS creates a **process**, gives it memory, and copies the needed code from **SSD into RAM**.
+
+**Step 5: Run it** — the scheduler gives Chrome CPU turns; the CPU fetches instructions from RAM into its cache.
+
+**Step 6: Draw** — Chrome asks the OS for a window; the **GPU** draws it.
+
+**Step 7: Settings and network** — Chrome reads your profile from the SSD and asks the network card for your home page.
+
+**Final understanding:** **Click → interrupt → OS finds the file → loads it into RAM → CPU runs it → GPU draws it** — and every step goes **through the OS**.
 
 ---
 
 ### ❓ Why does the CPU always work with RAM and not directly with the disk?
 
-Two reasons: **speed** and **how the CPU addresses data**.
+**Generic answer:** The disk is far too slow and gives data in blocks through a controller, while the CPU can only point at memory addresses; so the OS copies what's needed into RAM first.
 
-**1. The disk is far too slow.** If one CPU step took 1 second, the other parts would take:
+**Under the hood:**
+
+Imagine a chef who must walk to a warehouse across town for every single ingredient. Nothing would get cooked. The CPU faces the same problem with the disk.
+
+**Step 1: The speed gap**
+
+If one CPU step took 1 second:
 
 | Part | Real time | If a CPU step were 1 second |
 |---|---|---|
@@ -63,90 +76,123 @@ Two reasons: **speed** and **how the CPU addresses data**.
 | SSD | ~100 µs | ~4 days |
 | Hard disk | ~10 ms | ~1 year |
 
-**2. The CPU can only point at memory addresses.** Its instructions say "read byte 1,048,576 of memory". A disk is a separate device that hands out whole **blocks** (usually 4 KB) through a controller, when the operating system asks for them.
+**Step 2: The addressing gap**
 
-So the OS **copies** the program and the data it needs **from disk into RAM**, and the CPU works from RAM (and keeps the busiest parts in its cache).
+CPU instructions say "read byte 1,048,576 of memory". A disk is a separate device handing out whole **blocks** (usually 4 KB) when the OS asks.
 
-![Von Neumann architecture: the CPU (control unit and arithmetic/logic unit) exchanges data with the memory unit, with input and output devices on either side](../../knowledge/visual-notes/under-the-hood/cpu-memory-von-neumann.svg)
+**Step 3: Copy first, then work**
+
+The OS **copies** program and data from disk into RAM; the CPU works from RAM and keeps the busiest parts in cache.
+
+![Von Neumann architecture: the CPU exchanges data with the memory unit, with input and output devices on either side](../../knowledge/visual-notes/under-the-hood/cpu-memory-von-neumann.svg)
 
 _Image: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Von_Neumann_Architecture.svg) · Kapooht · CC BY-SA 3.0_
 
 ```mermaid
 flowchart LR
-  D["Disk / SSD<br/>(files, apps — kept when off)"] -->|"OS loads what's needed"| R["RAM<br/>(the work in progress)"]
+  D["Disk / SSD<br/>(kept when off)"] -->|"OS loads what's needed"| R["RAM<br/>(work in progress)"]
   R --> C["CPU cache"] --> P["CPU"]
   R -.->|"Save"| D
 ```
 
-**Analogy:** a chef. The CPU is the chef, the cache is the chopping board, RAM is the kitchen counter, and the disk is the warehouse across town. Nobody cooks in the warehouse.
+**Step 4: Why unsaved work is lost**
 
-**Why unsaved work is lost in a power cut:** RAM forgets everything without power. "Save" copies it to the disk.
+RAM forgets without power. "Save" copies it to disk.
 
-See also: [What is the difference between CPU cache, RAM and disk?](02-Memory-and-Data.md)
+**Final understanding:** **Disk is slow and block-based → copy to RAM → CPU works from RAM and cache → save back to disk.** See also: [CPU cache, RAM and disk](02-Memory-and-Data.md).
 
 ---
 
 ### ❓ What do CPU cores and GHz mean?
 
-- **Clock speed (GHz):** how many steps a core takes per second. 3 GHz = 3 billion steps per second.
-- **Core:** a complete worker inside the CPU. 8 cores can run 8 things at exactly the same time.
-- **Threads (hyper-threading):** one core switching quickly between two tasks to stay busy; it helps, but is not a second core.
+**Generic answer:** GHz is how many steps a core takes per second; a core is a complete worker; more cores run more things at the same time.
+
+**Under the hood:**
+
+Imagine a kitchen preparing a 200-guest party versus one omelette. One very fast cook is great for the omelette; ten slower cooks win the party.
+
+**Step 1: Clock speed (GHz)** — 3 GHz = 3 billion steps per second per core.
+
+**Step 2: Cores** — 8 cores run 8 things at exactly the same time.
+
+**Step 3: Hyper-threading** — one core switches between two tasks to stay busy; helps, but isn't a second core.
+
+**Step 4: Match to the work**
 
 | Task | What helps most |
 |---|---|
-| Video export, compiling code, many browser tabs | **more cores** |
+| Video export, compiling, many tabs | **more cores** |
 | Older games, single-threaded apps | **higher GHz** |
-| AI models, graphics | a **GPU** (thousands of small cores) |
+| AI models, graphics | a **GPU** |
 
-**Analogy:** cores are cooks in a kitchen; GHz is how fast each cook chops. Ten slow cooks beat one fast cook for a big party, but not for one omelette.
+**Final understanding:** **GHz = speed of each worker; cores = number of workers; pick by whether the work can be split.**
 
 ---
 
 ### ❓ CPU vs GPU vs TPU vs NPU vs DPU vs APU vs QPU — what is each one for?
 
-They are all processors, each built for a different kind of work.
+**Generic answer:** All are processors built for different work: CPUs for general step-by-step tasks, GPUs for massive parallel maths, TPUs/NPUs for AI, DPUs for networking and storage, APUs combine CPU and GPU, QPUs for experimental quantum problems.
 
-| Chip | Full name | Good at | Where you find it | Examples |
-|---|---|---|---|---|
-| **CPU** | Central Processing Unit | any task, step by step; a few powerful cores | every computer and phone | Intel Core, AMD Ryzen, Apple M-series |
-| **GPU** | Graphics Processing Unit | the same maths on huge amounts of data at once (thousands of small cores) | gaming PCs, AI servers | NVIDIA GeForce and H100, AMD Radeon |
-| **TPU** | Tensor Processing Unit | only the matrix maths of neural networks, very efficiently | Google's data centres (Google Cloud) | Google TPU |
-| **NPU** | Neural Processing Unit | small AI tasks using very little battery | phones and new "AI PCs" | Apple Neural Engine, Qualcomm Hexagon, Intel/AMD NPUs |
-| **DPU** | Data Processing Unit | networking, storage and security work, so the server's CPU is free for apps | network cards in data centres | NVIDIA BlueField, AWS Nitro |
-| **APU** | Accelerated Processing Unit | a CPU and a GPU on one chip (AMD's name) | budget laptops, PlayStation 5, Xbox | AMD Ryzen with Radeon graphics |
-| **QPU** | Quantum Processing Unit | special problems (molecules, some optimisation) using qubits; experimental | research labs, through the cloud | IBM Quantum, Google Willow |
+**Under the hood:**
 
-**Everyday examples:**
-- Face unlock and photo touch-ups on your phone → **NPU**.
-- Training ChatGPT-like models → thousands of **GPUs** or **TPUs**.
-- A cloud server handling encrypted network traffic → **DPU**.
+Imagine one general doctor treating a whole city — including running every blood test. Specialists exist because some work is better done by many simple workers or by dedicated equipment.
 
-**Phones combine several in one chip** (a **System on a Chip**, SoC): an Apple A-series or Snapdragon chip has CPU, GPU and NPU together.
+**Step 1: General purpose — CPU**
 
-**A quantum computer is not a faster normal computer.** It cannot run Windows or a website; it is only faster for a few special kinds of problems.
+A few powerful cores; any task, step by step.
 
-**Analogy:** a hospital. The CPU is the general doctor; the GPU is a team of a thousand nurses doing the same check on everyone; TPU and NPU are specialist clinics (big and small); the DPU is the reception desk handling all incoming traffic; the APU is a doctor and nurse team sharing one room; the QPU is an experimental research lab.
+**Step 2: Same maths on lots of data — GPU**
 
-See also: [Why do AI models run on GPUs instead of normal CPUs?](14-How-AI-Chatbots-Work.md)
+Thousands of small cores; graphics and AI training.
+
+**Step 3: AI-only chips — TPU and NPU**
+
+TPU: Google's data-centre chip for neural-network matrix maths. NPU: small, battery-friendly AI on phones and AI PCs.
+
+**Step 4: Infrastructure work — DPU**
+
+Handles networking, storage and security so the server CPU is free for apps.
+
+**Step 5: Combined and experimental — APU, QPU**
+
+| Chip | Good at | Examples |
+|---|---|---|
+| **CPU** | any task, step by step | Intel Core, AMD Ryzen, Apple M |
+| **GPU** | parallel maths | NVIDIA H100, AMD Radeon |
+| **TPU** | neural-network maths | Google TPU |
+| **NPU** | low-power AI | Apple Neural Engine |
+| **DPU** | network/storage offload | NVIDIA BlueField, AWS Nitro |
+| **APU** | CPU + GPU on one chip | AMD Ryzen with Radeon, PS5 |
+| **QPU** | special problems using qubits | IBM Quantum, Google Willow |
+
+**Phones combine several** in one **System on a Chip**. **A quantum computer is not a faster normal computer** — it can't run Windows.
+
+**Final understanding:** **Different work shapes → specialised chips: general (CPU), parallel (GPU), AI (TPU/NPU), infrastructure (DPU).** See also: [Why AI runs on GPUs](14-How-AI-Chatbots-Work.md).
 
 ---
 
 ### ❓ Why does a computer get slow, and when does more RAM help?
 
-Open **Task Manager** (Ctrl + Shift + Esc) or **Activity Monitor** (Mac) and see which part is full:
+**Generic answer:** It's slow when one part is full — memory, disk, CPU, or it's overheating. More RAM helps only when memory is full and the OS is swapping to disk.
+
+**Under the hood:**
+
+Imagine your laptop crawls. Buying 16 GB more RAM might fix it — or change nothing. You first need to know which part is the bottleneck.
+
+**Step 1: Look** — open **Task Manager** (Ctrl + Shift + Esc) or **Activity Monitor**.
+
+**Step 2: Find the full part**
 
 | Full part | What's happening | Fix |
 |---|---|---|
-| **Memory** near 100% | RAM is full, so the OS moves parts of apps to the disk (**swapping**) — the disk is thousands of times slower | close tabs and apps; **more RAM helps here** |
-| **Disk** at 100% (hard disk) | the slow disk can't keep up | **switch to an SSD** — the biggest speed-up for old PCs |
-| **CPU** at 100% | too much work, or one app stuck in a loop | end that app; a faster CPU only if it's always busy |
-| Everything low but still slow | the CPU is **too hot** and slows itself down, or a slow network | clean the fans, check Wi-Fi |
+| **Memory** ~100% | OS moves app pages to disk (**swapping**) | close apps; **more RAM helps** |
+| **Disk** 100% (hard disk) | slow disk can't keep up | **switch to an SSD** |
+| **CPU** 100% | too much work or a stuck app | end that app |
+| All low, still slow | CPU **too hot**, or slow network | clean fans, check Wi-Fi |
 
-**Other common causes:** many apps starting with the computer, a background update or antivirus scan, and a nearly full disk.
+**Step 3: Check the usual suspects** — start-up apps, updates, antivirus scans, a nearly full disk.
 
-**More RAM helps only if memory is full.** If you use 6 GB out of 16 GB, adding 16 GB more changes nothing.
-
-See also: [What is virtual memory?](02-Memory-and-Data.md)
+**Final understanding:** **Slow → find the saturated part → fix that part.** More RAM helps only when memory is full. See also: [Virtual memory](02-Memory-and-Data.md).
 
 ---
 
@@ -154,46 +200,68 @@ See also: [What is virtual memory?](02-Memory-and-Data.md)
 
 ### ❓ What happens when you press the power button — what starts first, the CPU or the OS?
 
-**The CPU starts first, but it knows nothing yet.** It always begins by running small built-in software on a chip on the motherboard, called **firmware** (**UEFI**, or **BIOS** on older PCs). The firmware then finds and loads the operating system.
+**Generic answer:** The CPU starts first, runs firmware (UEFI/BIOS) from a chip on the motherboard, which tests the hardware and loads a bootloader, which loads the OS kernel.
+
+**Under the hood:**
+
+Imagine the CPU waking up with empty RAM. The OS is on the SSD — but reading the SSD needs software, and that software isn't loaded yet. Who loads the loader?
+
+**Step 1: Power on** — the CPU starts at a fixed address pointing to the **firmware** chip.
+
+**Step 2: POST** — firmware checks RAM, CPU, graphics, keyboard. Problems → beeps, boot stops.
+
+**Step 3: Find a boot device** — by boot order (SSD, USB, network).
+
+**Step 4: Bootloader** — a small program (Windows Boot Manager, GRUB) is loaded into RAM.
+
+**Step 5: Kernel** — the bootloader loads the **OS kernel** into RAM and hands over control.
+
+**Step 6: OS start-up** — drivers, disks, system services (systemd on Linux).
+
+**Step 7: Login screen**, then your apps.
 
 ![Computer booting sequence: power button, the CPU runs the BIOS from ROM, the power-on self-test, then the bootloader loads the OS kernel into RAM](../../knowledge/visual-notes/under-the-hood/boot-sequence.svg)
 
 _Image: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Flow-diagram-computer-booting-sequences.svg) · WhoAteMyButter · CC BY-SA 4.0_
 
-1. **Power on:** the power supply settles, then the CPU starts at a fixed address that points to the firmware chip.
-2. **POST (power-on self-test):** the firmware checks RAM, CPU, graphics and keyboard. A problem gives beeps or an error and booting stops.
-3. **Find a boot device:** in the boot order (SSD, USB, network).
-4. **Bootloader:** a small program on that disk (Windows Boot Manager, GRUB on Linux) is loaded into RAM.
-5. **Kernel:** the bootloader loads the **OS kernel** into RAM and hands over control.
-6. **OS start-up:** the kernel starts drivers, mounts the disks and starts system services (systemd on Linux).
-7. **Login screen**, then your apps.
+**Sleep vs hibernate:** sleep keeps RAM powered; hibernate saves RAM to disk and powers off.
 
-**Sleep vs hibernate:** sleep keeps RAM powered, so waking skips all of this. Hibernate saves RAM to the disk and powers off; start-up reloads it.
+**Final understanding:** **Empty RAM → built-in firmware → hardware test → bootloader → kernel → services → login** — each stage loads the next, bigger one.
 
 ---
 
 ### ❓ What does an operating system actually do?
 
-It is the **manager between apps and hardware**. Apps never touch the hardware themselves; they ask the OS (a **system call**).
+**Generic answer:** It manages the hardware for every app — sharing the CPU, giving each app private memory, handling files, devices and security — and apps request its help through system calls.
+
+**Under the hood:**
+
+Imagine every app driving the disk, Wi-Fi card and memory directly. Two apps would write to the same disk block, one buggy app could read another's passwords, and every app would need drivers for every printer.
+
+**Step 1: Put a manager in between**
+
+Apps never touch hardware; they ask the **kernel** through **system calls** (open file, send data, start thread).
 
 ```mermaid
 flowchart TB
-  A["Apps: browser, IDE, games"] -->|"system calls: open file, send data, start thread"| K["OS kernel<br/>Windows · Linux · macOS · Android"]
+  A["Apps: browser, IDE, games"] -->|"system calls"| K["OS kernel<br/>Windows · Linux · macOS · Android"]
   K --> C["CPU"]
   K --> M["RAM"]
   K --> S["Disk / SSD"]
   K --> N["Network, keyboard, screen<br/>(through drivers)"]
 ```
 
+**Step 2: Its jobs**
+
 | Job | Example |
 |---|---|
-| Share the CPU | runs your music, browser and IDE by switching between them many times a second |
-| Manage memory | gives each app its own private memory, so one crash doesn't break the others |
-| Files | turns "save `report.pdf`" into blocks on the disk |
-| Devices | drivers talk to the printer, Wi-Fi card and GPU |
-| Security | users, passwords and permissions |
+| Share the CPU | switch between music, browser and IDE many times a second |
+| Manage memory | private memory per app, so one crash doesn't break others |
+| Files | turn "save `report.pdf`" into disk blocks |
+| Devices | drivers for printers, Wi-Fi, GPU |
+| Security | users, passwords, permissions |
 
-See also: [What is the difference between a process and a thread?](03-Processes-and-Threads.md)
+**Final understanding:** **Apps can't safely share hardware alone → the kernel owns the hardware → apps ask via system calls.** See also: [Process vs thread](03-Processes-and-Threads.md).
 
 ---
 
@@ -201,45 +269,71 @@ See also: [What is the difference between a process and a thread?](03-Processes-
 
 ### ❓ What happens inside the disk when you delete a file?
 
-The disk is divided into small **blocks** (also called clusters, usually 4 KB). The **file system** (NTFS on Windows, ext4 on Linux, APFS on Mac) keeps an index: "`report.pdf` → blocks 120 to 135".
+**Generic answer:** Deleting removes the file's entry from the file system's index and marks its blocks free; the data stays until overwritten (SSDs erase it soon after via TRIM).
+
+**Under the hood:**
+
+Imagine deleting a 10 GB video and it vanishes in one second. Writing 10 GB takes minutes — so clearly the data wasn't wiped.
+
+**Step 1: Disks are blocks + an index**
+
+The disk is split into **blocks** (usually 4 KB). The **file system** (NTFS, ext4, APFS) keeps an index: "`report.pdf` → blocks 120 to 135".
 
 ![Disk layout: (A) a track, (B) a sector of the disk, (C) a track sector, (D) a cluster of sectors](../../knowledge/visual-notes/under-the-hood/disk-structure.svg)
 
 _Image: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Disk-structure2.svg) · Heron2 / MistWiz · Public domain_
 
-**Deleting does not wipe the data.**
+**Step 2: Delete** — the file moves to the **Recycle Bin**. Nothing is freed.
 
-1. **Delete** → the file only **moves to the Recycle Bin**. Nothing is freed.
-2. **Empty the bin** (or Shift + Delete) → the file system **removes the name from the index** and **marks its blocks as free**. The bytes are still there. That's why deleting 10 GB takes a second.
-3. **Later**, new files are written into those free blocks and the old data is finally overwritten.
-4. **On an SSD**, the OS also sends a **TRIM** command, and the SSD erases those blocks soon after in the background, so recovery is usually impossible.
+**Step 3: Empty the bin** — the index entry is removed and the blocks marked **free**. The bytes remain.
 
-**Analogy:** a library removes a book's catalogue card. The book stays on the shelf until another book needs the space.
+**Step 4: Overwrite later** — new files eventually reuse those blocks.
 
-**To really erase:** overwrite the free space (`sdelete`, `cipher /w` on Windows, `shred` on Linux), or encrypt the whole disk (BitLocker, FileVault) and destroy the key.
+**Step 5: SSDs are different** — the OS sends **TRIM**; the SSD erases those blocks in the background, so recovery is usually impossible.
+
+**Analogy:** a library removes a book's catalogue card; the book stays on the shelf until its space is needed.
+
+**To really erase:** overwrite free space (`cipher /w`, `shred`), or encrypt the disk and destroy the key.
+
+**Final understanding:** **Delete = forget the location, not the data → blocks reused later → SSD TRIM erases sooner.**
 
 ---
 
 ### ❓ How do admins recover a deleted or corrupted file?
 
-From easiest to hardest:
+**Generic answer:** Stop writing to the disk, check backups and old versions first, then use recovery tools that read old index entries or scan for file signatures; repair corrupted file systems with `chkdsk`/`fsck`.
 
-1. **Stop writing to that disk** at once, so the freed blocks are not overwritten.
-2. **Check the easy places:** the Recycle Bin, **backups**, and **old versions** (Windows File History, macOS Time Machine, OneDrive / Google Drive version history, cloud disk snapshots, Git).
-3. **Deleted file on a hard disk:** copy the whole disk to an image first (`ddrescue`), then work on the copy. Recovery tools either read the old index entries, or scan for **file signatures** — every JPEG starts with bytes `FF D8 FF`, every PDF with `%PDF` (called **file carving**). Tools: PhotoRec / TestDisk, Recuva.
-4. **Corrupted file system** (after a crash or power cut): `chkdsk` (Windows) or `fsck` (Linux) repairs the index. NTFS and ext4 keep a **journal**, so they can finish or undo half-done changes.
-5. **Physically failing disk:** copy what can still be read with `ddrescue`; otherwise a data-recovery lab opens it in a clean room.
+**Under the hood:**
 
-**On servers:** RAID 1 keeps a mirror copy on a second disk, so one disk can die without data loss. But **RAID is not a backup** — deleting a file deletes it on both disks. Follow the **3-2-1 rule**: 3 copies, on 2 kinds of storage, 1 off-site.
+Imagine someone empties the Recycle Bin and loses a month of reports. From the previous answer, the data may still sit in "free" blocks — but every new write might overwrite it.
+
+**Step 1: Stop writing** to that disk at once.
+
+**Step 2: Check easy places** — Recycle Bin, **backups**, **old versions** (File History, Time Machine, OneDrive/Google Drive history, cloud snapshots, Git).
+
+**Step 3: Deleted file on a hard disk** — image the disk first (`ddrescue`), then work on the copy. Tools read old index entries or scan for **file signatures** (JPEG starts `FF D8 FF`, PDF starts `%PDF`) — **file carving** (PhotoRec, Recuva).
+
+**Step 4: Corrupted file system** — `chkdsk` (Windows) or `fsck` (Linux). NTFS and ext4 keep a **journal** to finish or undo half-done changes.
+
+**Step 5: Failing hardware** — copy what's readable with `ddrescue`; otherwise a clean-room lab.
+
+**On servers:** RAID 1 mirrors disks, but **RAID is not a backup** — deletes are mirrored too. Follow **3-2-1**: 3 copies, 2 kinds of storage, 1 off-site.
+
+**Final understanding:** **Data lingers until overwritten → stop writes → try backups → carve from a disk image → repair the index.**
 
 ---
 
 ### ❓ How does a computer know whether a file is a PDF, a photo or a program?
 
-Two clues:
+**Generic answer:** The extension tells the OS which app to open it with; the first bytes inside the file (its signature or "magic number") say what it really is.
 
-1. **The extension** (`.pdf`, `.jpg`, `.exe`) — the OS uses it only to choose **which app opens the file**.
-2. **The first bytes inside the file** (the **signature** or "magic number") — what the file really is.
+**Under the hood:**
+
+Imagine renaming `photo.jpg` to `photo.pdf`. The icon changes — but the PDF reader says the file is broken. So the name isn't the truth.
+
+**Step 1: Extension → which app** — the OS only uses `.pdf`, `.jpg`, `.exe` to choose the program.
+
+**Step 2: First bytes → what it is**
 
 | File type | First bytes | As text |
 |---|---|---|
@@ -247,12 +341,12 @@ Two clues:
 | PNG | `89 50 4E 47` | `‰PNG` |
 | JPEG | `FF D8 FF` | — |
 | ZIP (also `.docx`, `.xlsx`, `.jar`) | `50 4B 03 04` | `PK` |
-| Windows program (`.exe`) | `4D 5A` | `MZ` |
+| Windows `.exe` | `4D 5A` | `MZ` |
 
-**So renaming `photo.jpg` to `photo.pdf` does not convert it** — the PDF reader opens it, sees `FF D8 FF` instead of `%PDF`, and reports a broken file.
+**Step 3: The app checks** — the PDF reader expects `%PDF`, finds `FF D8 FF`, and reports a broken file.
 
-**Fun fact:** a `.docx` or `.jar` file is really a ZIP — rename it to `.zip` and you can open it and look inside.
+**Step 4: On the web** — servers send `Content-Type: application/pdf`, because URLs often have no extension. Upload checks should read the first bytes — an attacker can rename `virus.exe` to `cat.jpg`.
 
-**On the web**, the server says the type in a header (`Content-Type: application/pdf`), because URLs often have no extension. Upload checks should read the first bytes too, not trust the name — an attacker can rename `virus.exe` to `cat.jpg`.
+**Fun fact:** a `.docx` or `.jar` is really a ZIP. **Try it:** `file report.pdf` (Linux/Mac).
 
-**Try it:** `file report.pdf` (Linux / Mac) prints the real type.
+**Final understanding:** **Name chooses the app; content bytes reveal the truth → always validate the bytes, not the name.**

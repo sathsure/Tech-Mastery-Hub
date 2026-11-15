@@ -76,6 +76,15 @@
 13. [Why does `:hover` not work on mobile?](../../interview/frontend/02-CSS.md)
 14. [How would you build a sticky header inside a scroll container?](../../interview/frontend/02-CSS.md)
 
+## 10. Trick Questions & Common Bugs › Animation & CSS Architecture (Intermediate)
+
+1. [CSS transitions vs `@keyframes` animations — when do you use each?](../../interview/frontend/02-CSS.md)
+   - [Can you transition to `height: auto`?](../../interview/frontend/02-CSS.md)
+2. [How do you organise CSS in a large project — BEM, CSS Modules, Tailwind?](../../interview/frontend/02-CSS.md)
+   - [Why does BEM avoid nesting selectors?](../../interview/frontend/02-CSS.md)
+3. [What is the difference between reflow and repaint, and how do you avoid layout thrashing?](../../interview/frontend/02-CSS.md)
+   - [Which JavaScript reads force a reflow?](../../interview/frontend/02-CSS.md)
+
 ## Practice
 
 1. [How would you center a div both vertically and horizontally? Walk me through the different approaches.](../../practice/coding/02-css-coding.md)

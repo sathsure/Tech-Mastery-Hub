@@ -39,6 +39,21 @@
 2. [How do you check which process is using a port?](../../interview/devops/02-Linux-Shell.md)
 3. [How do you connect to a server securely and copy files?](../../interview/devops/02-Linux-Shell.md)
 
+## 6. Files, Processes & Scheduling (Intermediate)
+
+1. [Hard link vs soft (symbolic) link — what's the difference?](../../interview/devops/02-Linux-Shell.md)
+   - [How do deploy scripts use symlinks?](../../interview/devops/02-Linux-Shell.md)
+2. [What is an inode? Why can a disk be "full" when `df -h` shows free space?](../../interview/devops/02-Linux-Shell.md)
+   - [Where is the file name stored if not in the inode?](../../interview/devops/02-Linux-Shell.md)
+3. [How do you schedule jobs with cron?](../../interview/devops/02-Linux-Shell.md)
+   - [Alternatives to cron?](../../interview/devops/02-Linux-Shell.md)
+4. [`kill -15` vs `kill -9` — what's the difference?](../../interview/devops/02-Linux-Shell.md)
+   - [A process ignores `kill -9`. Why?](../../interview/devops/02-Linux-Shell.md)
+
+## Diagrams
+
+- [An inode holds metadata and pointers to the file's data blocks](../../knowledge/visual-notes/interview/inode-structure.svg)
+
 ## Related roles
 
 [AI Infrastructure / LLMOps Engineer](../roles/ai-infrastructure-llmops-engineer.md) · [Cloud Engineer](../roles/cloud-engineer.md) · [Database Administrator](../roles/database-administrator.md) · [DevOps Engineer](../roles/devops-engineer.md) · [Embedded / Firmware Engineer](../roles/embedded-firmware-engineer.md) · [MLOps Engineer](../roles/mlops-engineer.md) · [Network Engineer](../roles/network-engineer.md) · [NOC Engineer](../roles/noc-engineer.md) · [Penetration Tester / Ethical Hacker](../roles/penetration-tester-ethical-hacker.md) · [Production / Application Support](../roles/production-application-support.md) · [Release / Build Engineer](../roles/release-build-engineer.md) · [Site Reliability Engineer](../roles/site-reliability-engineer.md) · [System Administrator](../roles/system-administrator.md)
