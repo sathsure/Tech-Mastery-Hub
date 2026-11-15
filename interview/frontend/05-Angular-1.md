@@ -1507,3 +1507,40 @@ Good for heavy below-the-fold parts: charts, comments, maps, editors.
 ↪ Lazy routes split code per **page**; `@defer` splits code **inside** a page.
 
 ---
+
+### ❓ Constructor vs `ngOnInit` — what goes where?
+
+**Level:** 🟢 Beginner
+
+### 📝 Answer
+
+- **Constructor** — a TypeScript/JavaScript feature. Runs when Angular **creates** the class. Use it only for **dependency injection** and simple field setup.
+- **`ngOnInit`** — an Angular lifecycle hook. Runs **once, after the first `ngOnChanges`**, when `@Input()` values are set. Use it for **initialisation logic**: reading inputs, loading data, subscribing.
+
+| | Constructor | `ngOnInit` |
+|---|---|---|
+| Who calls it | JavaScript (`new`) via Angular's injector | Angular change detection |
+| `@Input()` values available | ❌ not yet | ✅ |
+| Template/DOM ready | ❌ | ❌ (use `ngAfterViewInit` for view children) |
+| Good for | inject services, set defaults | fetch data, read inputs, start subscriptions |
+| Testing | runs on creation — keep it light | can be triggered separately |
+
+```typescript
+export class EmployeeCardComponent implements OnInit {
+  @Input() employeeId!: number;
+  private service = inject(EmployeeService);       // DI (or in the constructor)
+  employee$!: Observable<Employee>;
+
+  ngOnInit() {
+    this.employee$ = this.service.get(this.employeeId);   // input is available here
+  }
+}
+```
+
+**Rule of thumb:** constructor = "what do I need?" (DI); `ngOnInit` = "now set myself up". With signal inputs (`input()`), you can often derive state with `computed()` instead.
+
+#### ↳ Follow-up: Does `ngOnInit` run again when an input changes?
+
+↪ No — it runs once. React to later changes with `ngOnChanges`, setters, or signal inputs with `computed`/`effect`.
+
+---

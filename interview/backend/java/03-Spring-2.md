@@ -1138,3 +1138,221 @@ class Vehicle { }
 
 ❌ Poor performance
 ❌ Rarely used
+
+
+---
+
+## JPA / Hibernate Comparisons
+
+### ❓ `persist()` vs `merge()`?
+
+**Level:** 🟡 Intermediate
+
+### 📝 Answer
+
+| | `persist()` | `merge()` |
+|---|---|---|
+| For | **new** (transient) objects | **detached** (or new) objects |
+| Result | the **same** object becomes managed | a **managed copy** is returned; the argument stays detached |
+| SQL | INSERT at flush | SELECT (if not in context) then UPDATE or INSERT |
+| Detached argument | throws exception | fine |
+| Return value | `void` | the managed entity |
+
+```java
+Employee managed = em.merge(detachedEmp);
+managed.setName("Asha");      // tracked
+detachedEmp.setName("X");     // ignored
+```
+
+**Rule of thumb:** new object → `persist`; object from an earlier request → `merge` and **use the returned object**. See [persist vs merge internals](../../under-the-hood/20-Inside-JPA-and-Hibernate.md).
+
+---
+
+### ❓ `save()` vs `saveAndFlush()`?
+
+**Level:** 🟢 Beginner
+
+### 📝 Answer
+
+- **`save()`** — puts the entity in the persistence context; the SQL usually runs **later** (at flush or commit).
+- **`saveAndFlush()`** — `save()` + immediate `flush()`: the SQL is sent **now** (still inside the transaction — not committed).
+
+| | `save()` | `saveAndFlush()` |
+|---|---|---|
+| SQL sent | later (batched) | immediately |
+| Constraint errors seen | at flush/commit | right away |
+| Performance | better (batching) | worse in loops |
+| Committed? | no | no — only commit does that |
+
+**Use `saveAndFlush()`** when you need the database to act now: catch a unique-constraint error at that line, get DB-generated values, or before a native query/stored procedure that reads the row. Otherwise use `save()`.
+
+---
+
+### ❓ JOIN FETCH vs EntityGraph?
+
+**Level:** 🟡 Intermediate
+
+### 📝 Answer
+
+Both load lazy relations in the same query to avoid N+1.
+
+| | `JOIN FETCH` | `@EntityGraph` |
+|---|---|---|
+| Where | inside the JPQL text | annotation/hint on a repository method |
+| Join type | you choose (inner or left) | left outer join |
+| Reuse | write a new query per fetch plan | same query, different graphs |
+| Works with derived queries (`findByStatus`) | ❌ | ✅ |
+| Filtering on the joined data | ✅ (with care) | ❌ |
+
+```java
+@Query("select e from Employee e join fetch e.department where e.active = true")
+List<Employee> activeWithDept();
+
+@EntityGraph(attributePaths = "department")
+List<Employee> findByActiveTrue();
+```
+
+**Rule of thumb:** custom JPQL anyway → `JOIN FETCH`; derived queries or the same filter with different fetch needs → `@EntityGraph`. Both share the same limits (collection + paging, multiple bags).
+
+---
+
+### ❓ `CascadeType.ALL` vs `orphanRemoval`?
+
+**Level:** 🟡 Intermediate
+
+### 📝 Answer
+
+- **Cascade** — repeat an operation done **on the parent** on its children (`persist`, `merge`, **remove**…).
+- **orphanRemoval** — delete a child when it is **removed from the parent's collection** (or its reference set to null).
+
+| Action | `cascade = ALL` only | `orphanRemoval = true` |
+|---|---|---|
+| `em.remove(order)` | lines deleted ✅ | lines deleted ✅ |
+| `order.getLines().remove(line)` | line row stays (orphan) ❌ | line deleted ✅ |
+| `em.persist(order)` with new lines | lines inserted ✅ | ❌ (needs cascade PERSIST) |
+
+```java
+@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+private List<OrderLine> lines = new ArrayList<>();
+```
+
+**Rule of thumb:** a child that can't exist without its parent (order lines) → both. Shared entities (department, customer) → neither.
+
+---
+
+### ❓ Optimistic vs pessimistic locking?
+
+**Level:** 🟡 Intermediate
+
+### 📝 Answer
+
+| | Optimistic | Pessimistic |
+|---|---|---|
+| Idea | "conflicts are rare — check at the end" | "conflicts are likely — lock first" |
+| How | `@Version` column checked in the UPDATE | `SELECT … FOR UPDATE` row lock |
+| While working | no locks; others can read and write | others wait |
+| On conflict | `OptimisticLockException` → retry or ask user | the second transaction waits, then continues |
+| Risks | retries under heavy contention | waits, timeouts, deadlocks |
+| Best for | edit forms, most web apps | hot rows: last seat, stock counters, balances |
+
+```java
+@Version private long version;                                  // optimistic
+
+@Lock(LockModeType.PESSIMISTIC_WRITE)                           // pessimistic
+Optional<Seat> findById(Long id);
+```
+
+**Rule of thumb:** default to optimistic; switch to pessimistic (or an atomic `UPDATE … SET stock = stock - 1 WHERE stock > 0`) for heavily contended rows.
+
+---
+
+### ❓ IDENTITY vs SEQUENCE ID generation?
+
+**Level:** 🟡 Intermediate
+
+### 📝 Answer
+
+| | `IDENTITY` | `SEQUENCE` |
+|---|---|---|
+| ID comes from | auto-increment column, **after** INSERT | a database sequence, **before** INSERT |
+| INSERT timing | immediately at `persist()` | at flush |
+| JDBC batch inserts | ❌ disabled | ✅ |
+| Extra round trips | none | one `nextval` per `allocationSize` IDs (pooled) |
+| Databases | MySQL, SQL Server, PostgreSQL | PostgreSQL, Oracle, SQL Server, MariaDB (not MySQL) |
+
+```java
+@Id @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "emp_seq")
+@SequenceGenerator(name = "emp_seq", sequenceName = "emp_seq", allocationSize = 50)
+private Long id;
+```
+
+**Rule of thumb:** use SEQUENCE (with `allocationSize` matching the sequence's increment) where available; IDENTITY on MySQL, accepting no insert batching. See [why IDENTITY blocks batching](../../under-the-hood/20-Inside-JPA-and-Hibernate.md).
+
+---
+
+### ❓ `getReference()` vs `find()`?
+
+**Level:** 🟡 Intermediate
+
+### 📝 Answer
+
+| | `find()` | `getReference()` (`getReferenceById()` in Spring Data) |
+|---|---|---|
+| Returns | the real entity (SELECT now, unless cached) | a **lazy proxy** with only the ID (no SQL yet) |
+| Row missing | `null` | `EntityNotFoundException` — **later**, on first access |
+| Use when | you need the data | you only need it as a **foreign-key reference** |
+
+```java
+Order order = new Order();
+order.setCustomer(em.getReference(Customer.class, customerId));   // no SELECT on customer
+em.persist(order);                                                // INSERT uses customer_id directly
+```
+
+**Rule of thumb:** reading → `find()`; linking a relation by ID → `getReference()` to save a query. Don't return references to the web layer (LazyInitializationException).
+
+---
+
+### ❓ EntityManager vs Hibernate Session?
+
+**Level:** 🟡 Intermediate
+
+### 📝 Answer
+
+- **`EntityManager`** — the **JPA standard** interface (portable across Hibernate, EclipseLink…).
+- **`Session`** — **Hibernate's own** interface. In Hibernate 5.2+ `Session` **extends** `EntityManager`; they're the same object underneath.
+
+| | EntityManager | Session |
+|---|---|---|
+| Standard | JPA (Jakarta Persistence) | Hibernate-specific |
+| Portability | ✅ | ❌ |
+| Extra features | — | `@Filter`s, `setJdbcBatchSize`, `byMultipleIds`, natural IDs, StatelessSession… |
+| Factory | `EntityManagerFactory` | `SessionFactory` (extends EMF) |
+
+```java
+Session session = entityManager.unwrap(Session.class);   // reach Hibernate features when needed
+```
+
+**Rule of thumb:** code against `EntityManager`; `unwrap()` to `Session` only for Hibernate-only features.
+
+---
+
+### ❓ Open Session in View vs explicit transaction boundaries?
+
+**Level:** 🔴 Advanced
+
+### 📝 Answer
+
+- **Open Session in View (OSIV)** — the EntityManager stays open for the **whole web request**, so lazy relations load even during JSON serialisation. **On by default** in Spring Boot (with a warning).
+- **Explicit boundaries** — the service's `@Transactional` method loads **everything the response needs** (JOIN FETCH, EntityGraph, DTOs); the session closes when it returns.
+
+| | OSIV (`open-in-view=true`) | Explicit (`open-in-view=false`) |
+|---|---|---|
+| LazyInitializationException | hidden | appears if you forget to fetch (good feedback) |
+| DB connection held | possibly the whole request | only during the transaction |
+| N+1 queries | hidden in the web layer | visible in the service |
+| Lazy queries outside a transaction | yes (auto-commit) | no |
+| Effort | none | design fetch plans/DTOs |
+
+**Rule of thumb:** set `spring.jpa.open-in-view=false` for APIs; return DTOs built inside the transaction.
+
+---

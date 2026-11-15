@@ -64,24 +64,35 @@
 7. [Tricky: What do these print?](../../interview/frontend/03-JavaScript.md)
 8. [Tricky: What does this closure-in-a-loop print, and how do you fix it?](../../interview/frontend/03-JavaScript.md)
 
-## 9. How code becomes something the CPU can run (all languages)
+## 9. Part 8 — Must-Know Basics › Must-Know Internals (Intermediate)
+
+1. [Explain the JavaScript event loop — call stack, microtasks and macrotasks.](../../interview/frontend/03-JavaScript.md)
+   - [Why does `await` let other code run?](../../interview/frontend/03-JavaScript.md)
+   - [Can microtasks block the page?](../../interview/frontend/03-JavaScript.md)
+   - [Where do Web APIs fit?](../../interview/frontend/03-JavaScript.md)
+2. [What causes memory leaks in JavaScript, and how do you find them?](../../interview/frontend/03-JavaScript.md)
+   - [Why does `WeakMap` help?](../../interview/frontend/03-JavaScript.md)
+   - [Do single-page apps leak more?](../../interview/frontend/03-JavaScript.md)
+
+## 10. How code becomes something the CPU can run (all languages)
 
 1. [What happens between writing code and the computer running it?](../../interview/under-the-hood/01-How-Code-Runs.md)
    - [Is Java compiled or interpreted?](../../interview/under-the-hood/01-How-Code-Runs.md)
 2. [What is the difference between AOT and JIT compilation?](../../interview/under-the-hood/01-How-Code-Runs.md)
 
-## 10. Language runtimes: the JVM and JavaScript engines (Java & JavaScript)
+## 11. Language runtimes: the JVM and JavaScript engines (Java & JavaScript)
 
 1. [How does the JVM run a Java program?](../../interview/under-the-hood/01-How-Code-Runs.md)
 2. [How does a JavaScript engine like V8 run code?](../../interview/under-the-hood/01-How-Code-Runs.md)
 
-## 11. Inside the browser: from a URL to pixels on screen (frontend)
+## 12. Inside the browser: from a URL to pixels on screen (frontend)
 
 1. [What happens when you type a URL and press Enter?](../../interview/under-the-hood/06-Inside-the-Browser.md)
 2. [How does a browser turn HTML, CSS and JavaScript into a page?](../../interview/under-the-hood/06-Inside-the-Browser.md)
 3. [How does the JavaScript event loop work?](../../interview/under-the-hood/06-Inside-the-Browser.md)
-4. [How do frameworks like Angular and React update the screen efficiently?](../../interview/under-the-hood/06-Inside-the-Browser.md)
-5. [How do cookies, localStorage, sessionStorage and IndexedDB differ?](../../interview/under-the-hood/06-Inside-the-Browser.md)
+4. [How does Angular change detection work internally?](../../interview/under-the-hood/06-Inside-the-Browser.md)
+5. [How do frameworks like Angular and React update the screen efficiently?](../../interview/under-the-hood/06-Inside-the-Browser.md)
+6. [How do cookies, localStorage, sessionStorage and IndexedDB differ?](../../interview/under-the-hood/06-Inside-the-Browser.md)
 
 ## Practice
 
@@ -109,6 +120,7 @@
 
 ## Diagrams
 
+- [Mark and sweep: the collector marks everything reachable from the roots, then frees the rest](../../knowledge/visual-notes/under-the-hood/mark-and-sweep-gc.gif)
 - [How a compiler works: source code is analysed and translated into machine code](../../knowledge/visual-notes/under-the-hood/compiler.svg)
 - [Browser rendering: HTML and CSS are parsed into trees, combined, laid out and painted](../../knowledge/visual-notes/browser-render.png)
 - [Event loop: the call stack, Web APIs, the microtask queue and the task queue](../../knowledge/visual-notes/event-loop.png)

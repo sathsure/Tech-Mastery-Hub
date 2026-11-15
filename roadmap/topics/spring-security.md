@@ -43,7 +43,16 @@
 11. [SAML vs JWT](../../interview/backend/java/05-Spring-Security.md)
 12. [SAML vs OAuth vs OIDC](../../interview/backend/java/05-Spring-Security.md)
 
-## 2. Authentication Flow
+## 2. OAuth2 & Modern Configuration (Intermediate)
+
+1. [Explain the OAuth2 flows — Authorization Code + PKCE and Client Credentials.](../../interview/backend/java/05-Spring-Security.md)
+   - [OAuth2 vs OIDC?](../../interview/backend/java/05-Spring-Security.md)
+2. [How do you configure Spring Security 6 with `SecurityFilterChain`?](../../interview/backend/java/05-Spring-Security.md)
+   - [Why have two filter chains?](../../interview/backend/java/05-Spring-Security.md)
+3. [How does method-level security with `@PreAuthorize` work?](../../interview/backend/java/05-Spring-Security.md)
+   - [URL security or method security?](../../interview/backend/java/05-Spring-Security.md)
+
+## 3. Authentication Flow
 
 1. [What are access tokens and refresh tokens, and why use both?](../../interview/backend/java/09-JWT-Access-Refresh-Tokens.md)
 2. [What is the complete login-to-dashboard flow with JWT?](../../interview/backend/java/09-JWT-Access-Refresh-Tokens.md)
@@ -51,7 +60,7 @@
 4. [What happens when the refresh token expires?](../../interview/backend/java/09-JWT-Access-Refresh-Tokens.md)
 5. [How do you implement the token refresh API in Spring Boot?](../../interview/backend/java/09-JWT-Access-Refresh-Tokens.md)
 
-## 3. Tricky Interview Questions
+## 4. Tricky Interview Questions
 
 1. [Can an expired access token be used to get a new access token?](../../interview/backend/java/09-JWT-Access-Refresh-Tokens.md)
 2. [Does the refresh API need a valid access token?](../../interview/backend/java/09-JWT-Access-Refresh-Tokens.md)
@@ -74,7 +83,7 @@
 19. [How do you prevent CSRF when tokens are stored in cookies?](../../interview/backend/java/09-JWT-Access-Refresh-Tokens.md)
 20. [What should a senior Spring Boot developer know about JWT authentication?](../../interview/backend/java/09-JWT-Access-Refresh-Tokens.md)
 
-## 4. How a website remembers you (web, any backend)
+## 5. How a website remembers you (web, any backend)
 
 1. [How does a website remember that you are logged in?](../../interview/under-the-hood/15-Staying-Logged-In-Cookies-Sessions-JWT.md)
 2. [Cookies vs sessions vs JWT — which is best, and where is each used?](../../interview/under-the-hood/15-Staying-Logged-In-Cookies-Sessions-JWT.md)

@@ -91,30 +91,50 @@
 4. [How would you globally trim leading and trailing spaces from user input?](../../interview/frontend/05-Angular-1.md)
 5. [Which newer Angular APIs return signals (input, output, model, httpResource)?](../../interview/frontend/05-Angular-1.md)
 
-## 12. Part 2 — The Angular Build System
+## 12. Part 10 — Angular Forms › Must-Know Angular Concepts (Intermediate)
+
+1. [How does change detection work in Angular?](../../interview/frontend/05-Angular-1.md)
+   - [How do you run code without triggering change detection?](../../interview/frontend/05-Angular-1.md)
+   - [Why is calling a method in a template slow?](../../interview/frontend/05-Angular-1.md)
+2. [What is the difference between Default and OnPush change detection?](../../interview/frontend/05-Angular-1.md)
+   - [Data arrives from a service subscription inside an OnPush component. Why doesn't it show?](../../interview/frontend/05-Angular-1.md)
+3. [What are Angular signals — `signal`, `computed` and `effect`?](../../interview/frontend/05-Angular-1.md)
+   - [Signals or RxJS?](../../interview/frontend/05-Angular-1.md)
+4. [How do Angular components communicate with each other?](../../interview/frontend/05-Angular-1.md)
+   - [Why not just use a global variable?](../../interview/frontend/05-Angular-1.md)
+5. [What is an HTTP interceptor, and what is it used for?](../../interview/frontend/05-Angular-1.md)
+   - [In what order do interceptors run?](../../interview/frontend/05-Angular-1.md)
+6. [How does lazy loading work in Angular routing?](../../interview/frontend/05-Angular-1.md)
+   - [`canActivate` vs `canMatch`?](../../interview/frontend/05-Angular-1.md)
+7. [What is `@defer` in Angular templates?](../../interview/frontend/05-Angular-1.md)
+   - [`@defer` vs lazy routes?](../../interview/frontend/05-Angular-1.md)
+8. [Constructor vs `ngOnInit` — what goes where?](../../interview/frontend/05-Angular-1.md)
+   - [Does `ngOnInit` run again when an input changes?](../../interview/frontend/05-Angular-1.md)
+
+## 13. Part 2 — The Angular Build System
 
 1. [Explain Angular's building tools and how they have evolved.](../../interview/frontend/05-Angular-2.md)
 
-## 13. Part 4 — HMR & Dev Server Internals
+## 14. Part 4 — HMR & Dev Server Internals
 
 1. [Can you walk me through how HMR works and how Angular integrates it into the dev server?](../../interview/frontend/05-Angular-2.md)
    - [How do the Compiler and Bundler work together?](../../interview/frontend/05-Angular-2.md)
 
-## 14. Part 5 — Form State Persistence
+## 15. Part 5 — Form State Persistence
 
 1. [How do you preserve form data on refresh but clear it on browser close?](../../interview/frontend/05-Angular-2.md)
    - [How do you preserve form data on refresh based on user role?](../../interview/frontend/05-Angular-2.md)
 
-## 15. Part 6 — Architecture & API Concerns
+## 16. Part 6 — Architecture & API Concerns
 
 1. [How do you hide backend endpoints from the browser's Network tab?](../../interview/frontend/05-Angular-2.md)
 
-## 16. Part 7 — Version Migration & Deprecated Concepts
+## 17. Part 7 — Version Migration & Deprecated Concepts
 
 1. [Can we jump from Angular 5 → Angular 19 directly?](../../interview/frontend/05-Angular-2.md)
 2. [Name some deprecated/removed concepts from Angular 5 → 19.](../../interview/frontend/05-Angular-2.md)
 
-## 17. Part 9 — RxJS in Angular
+## 18. Part 9 — RxJS in Angular
 
 1. [How do RxJS streams interact with zone.js, and when should they run outside the Angular zone?](../../interview/frontend/06-RxJS.md)
 2. [How does Angular's `HttpClient` use RxJS?](../../interview/frontend/06-RxJS.md)
@@ -126,20 +146,21 @@
 8. [Example: How to debounce a search input in Angular?](../../interview/frontend/06-RxJS.md)
 9. [How does RxJS fit into NgRx?](../../interview/frontend/06-RxJS.md)
 
-## 18. Inside the browser: from a URL to pixels on screen (frontend)
+## 19. Inside the browser: from a URL to pixels on screen (frontend)
 
 1. [What happens when you type a URL and press Enter?](../../interview/under-the-hood/06-Inside-the-Browser.md)
 2. [How does a browser turn HTML, CSS and JavaScript into a page?](../../interview/under-the-hood/06-Inside-the-Browser.md)
 3. [How does the JavaScript event loop work?](../../interview/under-the-hood/06-Inside-the-Browser.md)
-4. [How do frameworks like Angular and React update the screen efficiently?](../../interview/under-the-hood/06-Inside-the-Browser.md)
-5. [How do cookies, localStorage, sessionStorage and IndexedDB differ?](../../interview/under-the-hood/06-Inside-the-Browser.md)
+4. [How does Angular change detection work internally?](../../interview/under-the-hood/06-Inside-the-Browser.md)
+5. [How do frameworks like Angular and React update the screen efficiently?](../../interview/under-the-hood/06-Inside-the-Browser.md)
+6. [How do cookies, localStorage, sessionStorage and IndexedDB differ?](../../interview/under-the-hood/06-Inside-the-Browser.md)
 
-## 19. Servers on your own computer (frontend and backend)
+## 20. Servers on your own computer (frontend and backend)
 
 1. [Does my computer have its own local server? What is localhost?](../../interview/under-the-hood/17-Local-Servers-and-Finding-Devices.md)
 2. [What is the "server" in Angular's ng serve, and why does a frontend framework need a server?](../../interview/under-the-hood/17-Local-Servers-and-Finding-Devices.md)
 
-## 20. Finding a server or device on the internet (networking, all languages)
+## 21. Finding a server or device on the internet (networking, all languages)
 
 1. [How is a server identified — hostname, domain name, IP address, port, or something else?](../../interview/under-the-hood/17-Local-Servers-and-Finding-Devices.md)
 2. [How does the internet know which phone or computer to send data to?](../../interview/under-the-hood/17-Local-Servers-and-Finding-Devices.md)
@@ -156,7 +177,7 @@
 - [Angular component lifecycle hooks, from constructor to ngOnDestroy](../../knowledge/visual-notes/angular-lifecycle.png)
 - [Browser rendering: HTML and CSS are parsed into trees, combined, laid out and painted](../../knowledge/visual-notes/browser-render.png)
 - [Event loop: the call stack, Web APIs, the microtask queue and the task queue](../../knowledge/visual-notes/event-loop.png)
-- [NAT: the router maps a private IP and port (192.168.100.3:3855) to its public IP and port (145.12.131.7:6282) and back](../../knowledge/visual-notes/under-the-hood/nat-router.jpg)
+- [NAT: the router maps a private IP and port to its public IP and port and back](../../knowledge/visual-notes/under-the-hood/nat-router.jpg)
 
 ## Related roles
 

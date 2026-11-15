@@ -78,3 +78,13 @@
 
 1. [Final Question: Design a MEAN system for 1 million users](../../interview/frontend/09-Web_Architecture.md)
 
+## 12. Part 11 — Final System Design Question › Rendering & Frontend Architecture (Intermediate)
+
+1. [CSR vs SSR vs SSG vs ISR — how do you choose?](../../interview/frontend/09-Web_Architecture.md)
+   - [Does SSR make everything faster?](../../interview/frontend/09-Web_Architecture.md)
+2. [What are micro-frontends, and when are they worth it?](../../interview/frontend/09-Web_Architecture.md)
+   - [How do micro-frontends share data?](../../interview/frontend/09-Web_Architecture.md)
+3. [What is a Progressive Web App (PWA), and what does a Service Worker do?](../../interview/frontend/09-Web_Architecture.md)
+   - [Service Worker vs Web Worker?](../../interview/frontend/09-Web_Architecture.md)
+   - [Why do users sometimes see an old version?](../../interview/frontend/09-Web_Architecture.md)
+

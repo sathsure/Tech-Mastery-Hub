@@ -38,6 +38,11 @@
 2. [Multiple controllers are returning different response formats. How would you standardize this?](../../interview/backend/java/08-Architecture.md)
 3. [One controller method is doing validation, business logic, and DB calls. How would you fix this?](../../interview/backend/java/08-Architecture.md)
 
+## 5. API Design & Communication (REST API)
+
+1. [Frontend needs frequent API changes, but backend releases are slower. How would you manage this?](../../interview/backend/java/08-Architecture.md)
+2. [Angular team requests more data “just in case.” How would you respond?](../../interview/backend/java/08-Architecture.md)
+
 ## Related roles
 
 [AI / LLM Engineer](../roles/ai-llm-engineer.md) · [AI Agent Engineer](../roles/ai-agent-engineer.md) · [AI Evaluation Engineer](../roles/ai-evaluation-engineer.md) · [AI Infrastructure / LLMOps Engineer](../roles/ai-infrastructure-llmops-engineer.md) · [AI Red Teamer / AI Safety Engineer](../roles/ai-red-teamer-ai-safety-engineer.md) · [AI Solutions Architect](../roles/ai-solutions-architect.md) · [AI Trainer / Data Annotation Specialist](../roles/ai-trainer-data-annotation-specialist.md) · [Application Security / DevSecOps Engineer](../roles/application-security-devsecops-engineer.md) · [Automation Test Engineer](../roles/automation-test-engineer.md) · [Backend Developer](../roles/backend-developer.md) · [Context / Prompt Engineer](../roles/context-prompt-engineer.md) · [Conversational AI Designer](../roles/conversational-ai-designer.md) · [Data Scientist](../roles/data-scientist.md) · [Enterprise Architect](../roles/enterprise-architect.md) · [Forward Deployed Engineer](../roles/forward-deployed-engineer.md) · [Frontend Developer](../roles/frontend-developer.md) · [Full Stack Developer](../roles/full-stack-developer.md) · [GRC / Compliance Analyst](../roles/grc-compliance-analyst.md) · [IAM Engineer](../roles/iam-engineer.md) · [Machine Learning Engineer](../roles/machine-learning-engineer.md) · [Penetration Tester / Ethical Hacker](../roles/penetration-tester-ethical-hacker.md) · [Physical AI / Robotics Engineer](../roles/physical-ai-robotics-engineer.md) · [Responsible AI / AI Governance Lead](../roles/responsible-ai-ai-governance-lead.md) · [Security Analyst](../roles/security-analyst.md) · [Solution Architect](../roles/solution-architect.md) · [Tech Lead](../roles/tech-lead.md)

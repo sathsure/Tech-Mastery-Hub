@@ -36,6 +36,8 @@
    - [How does it differ from a circuit breaker?](../../interview/architecture/05-Distributed-Systems.md)
 4. [Tricky: The network is reliable, right?](../../interview/architecture/05-Distributed-Systems.md)
 5. [Tricky: A request timed out — did the operation happen?](../../interview/architecture/05-Distributed-Systems.md)
+6. [Saga vs two-phase commit (2PC)?](../../interview/architecture/05-Distributed-Systems.md)
+7. [Strong consistency vs eventual consistency?](../../interview/architecture/05-Distributed-Systems.md)
 
 ## 5. How They Work
 
@@ -61,7 +63,22 @@
 5. [How does Kafka avoid losing data when a server fails?](../../interview/architecture/messaging-rabbitmq-kafka.md)
    - [What is a typical replication factor?](../../interview/architecture/messaging-rabbitmq-kafka.md)
 
-## 8. Microservice Design Walkthrough: Payment Dashboard
+## 8. Reliability & Delivery (Intermediate)
+
+1. [What delivery guarantees does Kafka give, and how do you avoid losing or duplicating messages?](../../interview/architecture/messaging-rabbitmq-kafka.md)
+   - [Does exactly-once cover writing to my database?](../../interview/architecture/messaging-rabbitmq-kafka.md)
+2. [What is a dead letter queue, and how do you handle failed messages?](../../interview/architecture/messaging-rabbitmq-kafka.md)
+   - [Why not just retry in a loop inside the consumer?](../../interview/architecture/messaging-rabbitmq-kafka.md)
+3. [What is consumer group rebalancing in Kafka?](../../interview/architecture/messaging-rabbitmq-kafka.md)
+   - [Why do my consumers keep rebalancing in a loop?](../../interview/architecture/messaging-rabbitmq-kafka.md)
+4. [What are RabbitMQ exchange types?](../../interview/architecture/messaging-rabbitmq-kafka.md)
+   - [Kafka has no exchanges — how does it route?](../../interview/architecture/messaging-rabbitmq-kafka.md)
+5. [What is an idempotent consumer, and how do you build one?](../../interview/architecture/messaging-rabbitmq-kafka.md)
+   - [How long do you keep processed ids?](../../interview/architecture/messaging-rabbitmq-kafka.md)
+6. [What ordering guarantees do Kafka and RabbitMQ give?](../../interview/architecture/messaging-rabbitmq-kafka.md)
+   - [An event arrives out of order anyway. What can the consumer do?](../../interview/architecture/messaging-rabbitmq-kafka.md)
+
+## 9. Microservice Design Walkthrough: Payment Dashboard
 
 1. [Design a payment dashboard with microservices: a task has subtasks paid by credit card or UPI, and the task closes when every subtask is paid. How do you structure the services and databases?](../../interview/architecture/microservice-architecture.md)
 2. [What tables does each service own in the payment dashboard design?](../../interview/architecture/microservice-architecture.md)
@@ -70,24 +87,141 @@
 5. [What are the weak points of the payment dashboard design and how would you improve them?](../../interview/architecture/microservice-architecture.md)
    - [Orchestration or choreography here?](../../interview/architecture/microservice-architecture.md)
 
-## 9. Scaling: serving more users with more servers (system design, any language)
+## 10. Microservice Design Walkthrough: Payment Dashboard › Core Microservice Patterns (Intermediate)
+
+1. [What is the Saga pattern? Choreography vs orchestration?](../../interview/architecture/microservice-architecture.md)
+   - [What if a compensation itself fails?](../../interview/architecture/microservice-architecture.md)
+2. [Why should each microservice have its own database?](../../interview/architecture/microservice-architecture.md)
+   - [Is a shared database ever acceptable?](../../interview/architecture/microservice-architecture.md)
+3. [What is CQRS?](../../interview/architecture/microservice-architecture.md)
+   - [Does CQRS require event sourcing?](../../interview/architecture/microservice-architecture.md)
+4. [What is event sourcing?](../../interview/architecture/microservice-architecture.md)
+   - [How do you fix a wrong event?](../../interview/architecture/microservice-architecture.md)
+5. [How does service discovery work?](../../interview/architecture/microservice-architecture.md)
+   - [What happens when an instance dies?](../../interview/architecture/microservice-architecture.md)
+6. [How do you migrate a monolith to microservices? (Strangler fig pattern)](../../interview/architecture/microservice-architecture.md)
+   - [Which part should you extract first?](../../interview/architecture/microservice-architecture.md)
+
+## 11. Microservice Design Walkthrough: Payment Dashboard › Microservice Comparisons
+
+1. [Synchronous vs asynchronous communication between services?](../../interview/architecture/microservice-architecture.md)
+2. [API Gateway vs load balancer?](../../interview/architecture/microservice-architecture.md)
+3. [Client-side vs server-side service discovery?](../../interview/architecture/microservice-architecture.md)
+4. [REST APIs vs event-driven architecture?](../../interview/architecture/microservice-architecture.md)
+
+## 12. Scaling: serving more users with more servers (system design, any language)
 
 1. [Why do large systems run on many servers instead of one big one?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)
 2. [How does a cache like Redis make systems faster?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)
 3. [Why use a message queue like Kafka or RabbitMQ?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)
+4. [How does Kafka store messages and achieve such high throughput?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)
 
-## 10. Resilience: surviving failures (any language; Java examples)
+## 13. Resilience: surviving failures (any language; Java examples)
 
 1. [What is resilience, and is it Java-specific?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)
 2. [How does a circuit breaker work?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)
 3. [What does the CAP theorem mean in practice?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)
 
-## 11. Reading config files (microservices: Spring Boot, Cloud Foundry, Docker, Kubernetes)
+## 14. Reading config files (microservices: Spring Boot, Cloud Foundry, Docker, Kubernetes)
 
 1. [How do you read a YAML file?](../../interview/under-the-hood/16-Config-Files-in-Microservices.md)
 2. [What do the common settings in a microservice's application.yml mean?](../../interview/under-the-hood/16-Config-Files-in-Microservices.md)
 3. [What is manifest.yml, and how do you read one?](../../interview/under-the-hood/16-Config-Files-in-Microservices.md)
 4. [Which config file does what in a microservice project?](../../interview/under-the-hood/16-Config-Files-in-Microservices.md)
+
+## 15. Microservices fundamentals (architecture, any language; Spring Cloud examples)
+
+1. [Why were microservices introduced?](../../interview/under-the-hood/21-Inside-Microservices.md)
+2. [What problems do monolithic architectures create as applications grow?](../../interview/under-the-hood/21-Inside-Microservices.md)
+3. [How do microservices communicate internally?](../../interview/under-the-hood/21-Inside-Microservices.md)
+4. [How does service discovery work?](../../interview/under-the-hood/21-Inside-Microservices.md)
+5. [How does an API gateway route requests?](../../interview/under-the-hood/21-Inside-Microservices.md)
+6. [How does load balancing work across microservices?](../../interview/under-the-hood/21-Inside-Microservices.md)
+7. [How does service registration and deregistration work?](../../interview/under-the-hood/21-Inside-Microservices.md)
+8. [How do services locate one another without hardcoded IP addresses?](../../interview/under-the-hood/21-Inside-Microservices.md)
+9. [How do microservices handle configuration centrally?](../../interview/under-the-hood/21-Inside-Microservices.md)
+10. [How does distributed configuration management work?](../../interview/under-the-hood/21-Inside-Microservices.md)
+11. [How do you identify appropriate service boundaries?](../../interview/under-the-hood/21-Inside-Microservices.md)
+12. [How does the database-per-service architecture work?](../../interview/under-the-hood/21-Inside-Microservices.md)
+13. [Why should microservices avoid sharing the same database schema?](../../interview/under-the-hood/21-Inside-Microservices.md)
+14. [How do you handle shared business data across services?](../../interview/under-the-hood/21-Inside-Microservices.md)
+15. [How does horizontal scaling work in microservices?](../../interview/under-the-hood/21-Inside-Microservices.md)
+
+## 16. Inter-service communication (architecture, any language; Spring examples)
+
+1. [How does synchronous communication work between services?](../../interview/under-the-hood/21-Inside-Microservices.md)
+2. [How does asynchronous communication work?](../../interview/under-the-hood/21-Inside-Microservices.md)
+3. [What happens when Service A calls Service B over HTTP?](../../interview/under-the-hood/21-Inside-Microservices.md)
+4. [What happens internally when using RestTemplate, WebClient or HTTP Interface clients?](../../interview/under-the-hood/21-Inside-Microservices.md)
+5. [How does connection pooling work in service-to-service communication?](../../interview/under-the-hood/21-Inside-Microservices.md)
+6. [What happens when a downstream service becomes slow?](../../interview/under-the-hood/21-Inside-Microservices.md)
+7. [How do network timeouts affect upstream services?](../../interview/under-the-hood/21-Inside-Microservices.md)
+8. [What is connection exhaustion?](../../interview/under-the-hood/21-Inside-Microservices.md)
+9. [How do you prevent cascading failures?](../../interview/under-the-hood/21-Inside-Microservices.md)
+10. [How does service-to-service authentication work?](../../interview/under-the-hood/21-Inside-Microservices.md)
+11. [How do distributed tracing headers propagate between services?](../../interview/under-the-hood/21-Inside-Microservices.md)
+12. [How does asynchronous messaging reduce service coupling?](../../interview/under-the-hood/21-Inside-Microservices.md)
+13. [What happens when a downstream service is unavailable during message processing?](../../interview/under-the-hood/21-Inside-Microservices.md)
+
+## 17. Distributed transactions and data consistency (architecture, any language)
+
+1. [Why are distributed transactions difficult?](../../interview/under-the-hood/21-Inside-Microservices.md)
+2. [Why can't a normal database transaction span independent microservices automatically?](../../interview/under-the-hood/21-Inside-Microservices.md)
+3. [How does the Saga pattern work internally?](../../interview/under-the-hood/21-Inside-Microservices.md)
+4. [What are choreography and orchestration in a saga?](../../interview/under-the-hood/21-Inside-Microservices.md)
+5. [What are compensating transactions?](../../interview/under-the-hood/21-Inside-Microservices.md)
+6. [How does the two-phase commit protocol work?](../../interview/under-the-hood/21-Inside-Microservices.md)
+7. [What is eventual consistency?](../../interview/under-the-hood/21-Inside-Microservices.md)
+8. [What is the dual-write problem?](../../interview/under-the-hood/21-Inside-Microservices.md)
+9. [How does the transactional outbox pattern solve the dual-write problem?](../../interview/under-the-hood/21-Inside-Microservices.md)
+10. [How does change data capture (CDC) work?](../../interview/under-the-hood/21-Inside-Microservices.md)
+11. [How does Debezium capture database changes?](../../interview/under-the-hood/21-Inside-Microservices.md)
+12. [How do you maintain consistency between a database and Kafka?](../../interview/under-the-hood/21-Inside-Microservices.md)
+13. [How do you handle duplicate events?](../../interview/under-the-hood/21-Inside-Microservices.md)
+14. [How does idempotent message processing work?](../../interview/under-the-hood/21-Inside-Microservices.md)
+15. [How do you handle out-of-order events?](../../interview/under-the-hood/21-Inside-Microservices.md)
+16. [How do you design reliable event-driven workflows?](../../interview/under-the-hood/21-Inside-Microservices.md)
+
+## 18. Fault tolerance and resilience (architecture, any language; Resilience4j examples)
+
+1. [Why is fault tolerance necessary in microservices?](../../interview/under-the-hood/21-Inside-Microservices.md)
+2. [How does a circuit breaker work internally?](../../interview/under-the-hood/21-Inside-Microservices.md)
+3. [What are the closed, open and half-open states?](../../interview/under-the-hood/21-Inside-Microservices.md)
+4. [How does retry work internally?](../../interview/under-the-hood/21-Inside-Microservices.md)
+5. [Why can immediate retries make an outage worse?](../../interview/under-the-hood/21-Inside-Microservices.md)
+6. [What is exponential backoff?](../../interview/under-the-hood/21-Inside-Microservices.md)
+7. [What is jitter, and why is it needed?](../../interview/under-the-hood/21-Inside-Microservices.md)
+8. [How does the bulkhead pattern isolate failures?](../../interview/under-the-hood/21-Inside-Microservices.md)
+9. [How do timeouts prevent resource exhaustion?](../../interview/under-the-hood/21-Inside-Microservices.md)
+10. [How does rate limiting work internally?](../../interview/under-the-hood/21-Inside-Microservices.md)
+11. [How does a token bucket algorithm work?](../../interview/under-the-hood/21-Inside-Microservices.md)
+12. [How does a leaky bucket algorithm work?](../../interview/under-the-hood/21-Inside-Microservices.md)
+13. [How do you design graceful degradation?](../../interview/under-the-hood/21-Inside-Microservices.md)
+14. [What is a fallback mechanism?](../../interview/under-the-hood/21-Inside-Microservices.md)
+15. [How do you handle partial system failures?](../../interview/under-the-hood/21-Inside-Microservices.md)
+16. [How do you prevent cascading failures in a resilience design?](../../interview/under-the-hood/21-Inside-Microservices.md)
+
+## 19. Performance, scalability and availability (architecture, any language)
+
+1. [How do microservices scale horizontally?](../../interview/under-the-hood/21-Inside-Microservices.md)
+2. [How does load balancing distribute requests?](../../interview/under-the-hood/21-Inside-Microservices.md)
+3. [How do you handle millions of concurrent requests?](../../interview/under-the-hood/21-Inside-Microservices.md)
+4. [How does distributed caching work?](../../interview/under-the-hood/21-Inside-Microservices.md)
+5. [How do Redis and local caching differ?](../../interview/under-the-hood/21-Inside-Microservices.md)
+6. [How does cache invalidation work across multiple services?](../../interview/under-the-hood/21-Inside-Microservices.md)
+7. [What happens when a service instance becomes unhealthy?](../../interview/under-the-hood/21-Inside-Microservices.md)
+8. [How do health checks work?](../../interview/under-the-hood/21-Inside-Microservices.md)
+9. [What is the difference between liveness and readiness probes?](../../interview/under-the-hood/21-Inside-Microservices.md)
+10. [How do you achieve high availability across multiple instances?](../../interview/under-the-hood/21-Inside-Microservices.md)
+11. [How do you eliminate single points of failure?](../../interview/under-the-hood/21-Inside-Microservices.md)
+12. [How do you handle traffic spikes?](../../interview/under-the-hood/21-Inside-Microservices.md)
+13. [What is backpressure?](../../interview/under-the-hood/21-Inside-Microservices.md)
+14. [How does bulkhead isolation improve resource utilization?](../../interview/under-the-hood/21-Inside-Microservices.md)
+15. [How do you identify bottlenecks in distributed applications?](../../interview/under-the-hood/21-Inside-Microservices.md)
+
+## Diagrams
+
+- [Kafka: producers write to topic partitions on brokers; consumer groups read them](../../knowledge/visual-notes/interview/kafka-overview.svg)
 
 ## Related roles
 

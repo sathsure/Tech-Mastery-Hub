@@ -1315,3 +1315,97 @@ class HttpConfig {
 ↪ In a `@Configuration` class Spring proxies the methods, so calling one `@Bean` method from another returns the **same singleton** instead of creating a new object.
 
 ---
+
+### ❓ `@Primary` vs `@Qualifier` — what's the difference?
+
+**Level:** 🟡 Intermediate
+
+### 📝 Answer
+
+Both solve "two beans of the same type — which one do I inject?"
+
+- **`@Primary`** — set on a **bean**: "use me by default".
+- **`@Qualifier("name")`** — set at the **injection point**: "I want exactly this one". It wins over `@Primary`.
+
+```java
+@Bean @Primary PaymentProvider cardProvider() { ... }
+@Bean PaymentProvider upiProvider() { ... }
+
+OrderService(PaymentProvider p) { ... }                                  // gets cardProvider
+RefundService(@Qualifier("upiProvider") PaymentProvider p) { ... }       // gets upiProvider
+```
+
+| | `@Primary` | `@Qualifier` |
+|---|---|---|
+| Placed on | the bean | the injection point (also on the bean as a label) |
+| Decides | the default | a specific choice |
+| Priority | lower | higher |
+
+**Rule of thumb:** one obvious default → `@Primary`; specific consumers → `@Qualifier`; need all of them → inject `List<PaymentProvider>`.
+
+#### ↳ Follow-up: What if neither is used and two beans match?
+
+↪ Spring tries to match the parameter name to a bean name; if that fails, startup stops with `NoUniqueBeanDefinitionException`.
+
+---
+
+### ❓ `@Async` vs `CompletableFuture` — what's the difference?
+
+**Level:** 🟡 Intermediate
+
+### 📝 Answer
+
+- **`@Async`** — a **Spring annotation**: the proxy runs the method on a Spring-managed `TaskExecutor`. Declarative, needs `@EnableAsync`, works only through the proxy.
+- **`CompletableFuture`** — a **Java class** for async results: you start tasks (`supplyAsync`) and chain/combine them (`thenApply`, `thenCombine`, `allOf`).
+
+They work together: an `@Async` method usually **returns** a `CompletableFuture`.
+
+```java
+@Async
+public CompletableFuture<Price> price(long id) { return CompletableFuture.completedFuture(client.price(id)); }
+
+CompletableFuture.allOf(priceF, stockF).join();      // combine results
+```
+
+| | `@Async` | `CompletableFuture` |
+|---|---|---|
+| What | annotation (AOP) | Java API |
+| Thread pool | Spring `TaskExecutor` (configurable bean) | `ForkJoinPool.commonPool()` unless you pass an executor |
+| Composition | none by itself | rich chaining, combining, error handling |
+| Pitfalls | self-invocation, `void` exceptions lost | blocking `join()` on request threads, common pool misuse |
+
+**Rule of thumb:** "run this service method in the background" → `@Async`; "run several things in parallel and combine results" → `CompletableFuture` (with your own executor).
+
+#### ↳ Follow-up: Does the security context or transaction carry over to an `@Async` thread?
+
+↪ No. The transaction never does; the security context only if you configure `DelegatingSecurityContextAsyncTaskExecutor` or a task decorator.
+
+---
+
+### ❓ Spring MVC vs Spring WebFlux — what's the difference?
+
+**Level:** 🔴 Advanced
+
+### 📝 Answer
+
+- **Spring MVC** — servlet stack (Tomcat). **One thread per request**; the thread blocks while waiting for the database or HTTP calls.
+- **WebFlux** — reactive stack (Netty). A **few event-loop threads** serve many requests; nothing may block; code returns `Mono`/`Flux`.
+
+| | Spring MVC | Spring WebFlux |
+|---|---|---|
+| Model | blocking, imperative | non-blocking, reactive |
+| Server | Tomcat/Jetty (servlet) | Netty (or servlet in async mode) |
+| Return types | objects, `ResponseEntity` | `Mono<T>`, `Flux<T>` |
+| Data access | JDBC, JPA | R2DBC, reactive Mongo/Redis drivers |
+| Debugging | simple stack traces | harder (async chains) |
+| Best for | most CRUD apps, JPA | streaming, many slow I/O calls, gateways |
+
+**Java 21 note:** Spring MVC with **virtual threads** (`spring.threads.virtual.enabled=true`) gives much of WebFlux's scalability with ordinary blocking code.
+
+**Rule of thumb:** default to MVC (+ virtual threads); choose WebFlux for streaming/back-pressure needs or an all-reactive stack. Never mix JPA (blocking) into WebFlux event loops.
+
+#### ↳ Follow-up: Can you use WebClient in a Spring MVC app?
+
+↪ Yes — it's a common choice for calling other services, though `RestClient` is simpler when you just block for the result.
+
+---

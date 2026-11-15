@@ -451,3 +451,38 @@ The iterator detects the change (its "modCount" check) and fails fast.
 - **Parallelism** — doing many tasks at the same instant on multiple cores (3 cooks, 3 dishes).
 
 Concurrency is about structure; parallelism is about execution.
+
+---
+
+### ❓ `synchronized` vs `volatile` — what's the difference?
+
+**Level:** 🟡 Intermediate
+
+### 📝 Answer
+
+- **`volatile`** — every read sees the **latest write** from any thread (visibility). No locking, no atomicity.
+- **`synchronized`** — only **one thread at a time** runs the block (mutual exclusion) **and** changes become visible when the lock is released.
+
+| | `volatile` | `synchronized` |
+|---|---|---|
+| Visibility | ✅ | ✅ |
+| Atomic compound actions (`count++`) | ❌ | ✅ |
+| Blocking | never | threads wait for the lock |
+| Applies to | a field | a method or block |
+| Typical use | stop flags, a published reference | updating shared state with several steps |
+
+```java
+private volatile boolean running = true;       // flag: one writer, many readers
+public void stop() { running = false; }
+
+private int count;
+public synchronized void increment() { count++; }   // read-add-write must be atomic
+```
+
+**Rule of thumb:** a single value written by one thread and read by others → `volatile`. Check-then-act or read-modify-write → `synchronized`, a `Lock`, or an `Atomic*` class.
+
+#### ↳ Follow-up: Is double-checked locking safe?
+
+↪ Only if the instance field is `volatile`; otherwise another thread may see a half-constructed object.
+
+---

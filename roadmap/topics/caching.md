@@ -34,24 +34,32 @@
 3. [Tricky: Redis vs Memcached?](../../interview/architecture/06-Caching-Redis.md)
 4. [Tricky: Can Redis lose data?](../../interview/architecture/06-Caching-Redis.md)
 
-## 5. State, Caching & Data Freshness
+## 5. Caching Patterns (Intermediate)
+
+1. [What are the caching strategies — cache-aside, read-through, write-through, write-behind?](../../interview/architecture/06-Caching-Redis.md)
+   - [Why delete the key on update instead of writing the new value?](../../interview/architecture/06-Caching-Redis.md)
+2. [How do you implement a distributed lock with Redis?](../../interview/architecture/06-Caching-Redis.md)
+   - [Alternatives?](../../interview/architecture/06-Caching-Redis.md)
+
+## 6. State, Caching & Data Freshness
 
 1. [Cached data improves performance but users see outdated data. How would you balance this?](../../interview/backend/java/08-Architecture.md)
 2. [When should data be cached on frontend vs backend?](../../interview/backend/java/08-Architecture.md)
 
-## 6. Part 7 — Scalable APIs & Caching
+## 7. Part 7 — Scalable APIs & Caching
 
 1. [How do you design scalable APIs?](../../interview/frontend/09-Web_Architecture.md)
 2. [How would you explain API idempotency, and can you give an example of where it could go wrong if ignored?](../../interview/frontend/09-Web_Architecture.md)
 3. [How do you implement caching effectively?](../../interview/frontend/09-Web_Architecture.md)
 
-## 7. Scaling: serving more users with more servers (system design, any language)
+## 8. Scaling: serving more users with more servers (system design, any language)
 
 1. [Why do large systems run on many servers instead of one big one?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)
 2. [How does a cache like Redis make systems faster?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)
 3. [Why use a message queue like Kafka or RabbitMQ?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)
+4. [How does Kafka store messages and achieve such high throughput?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)
 
-## 8. Resilience: surviving failures (any language; Java examples)
+## 9. Resilience: surviving failures (any language; Java examples)
 
 1. [What is resilience, and is it Java-specific?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)
 2. [How does a circuit breaker work?](../../interview/under-the-hood/10-Many-Servers-Scaling-and-Resilience.md)

@@ -50,13 +50,26 @@
    - [What is the React Compiler?](../../interview/frontend/06-React.md)
 40. [How do you debug React performance issues?](../../interview/frontend/06-React.md)
 
-## 2. Inside the browser: from a URL to pixels on screen (frontend)
+## 2. Rendering Internals (Intermediate)
+
+1. [What is the virtual DOM, and how does reconciliation work?](../../interview/frontend/06-React.md)
+   - [Is the virtual DOM always faster than direct DOM updates?](../../interview/frontend/06-React.md)
+   - [Render phase vs commit phase?](../../interview/frontend/06-React.md)
+2. [What are React Server Components?](../../interview/frontend/06-React.md)
+   - [Server Components vs SSR?](../../interview/frontend/06-React.md)
+3. [When would you use `useReducer` instead of `useState`?](../../interview/frontend/06-React.md)
+   - [Is `dispatch` stable?](../../interview/frontend/06-React.md)
+4. [What are React portals, and when do you use them?](../../interview/frontend/06-React.md)
+   - [Do events from a portal bubble to its React parent?](../../interview/frontend/06-React.md)
+
+## 3. Inside the browser: from a URL to pixels on screen (frontend)
 
 1. [What happens when you type a URL and press Enter?](../../interview/under-the-hood/06-Inside-the-Browser.md)
 2. [How does a browser turn HTML, CSS and JavaScript into a page?](../../interview/under-the-hood/06-Inside-the-Browser.md)
 3. [How does the JavaScript event loop work?](../../interview/under-the-hood/06-Inside-the-Browser.md)
-4. [How do frameworks like Angular and React update the screen efficiently?](../../interview/under-the-hood/06-Inside-the-Browser.md)
-5. [How do cookies, localStorage, sessionStorage and IndexedDB differ?](../../interview/under-the-hood/06-Inside-the-Browser.md)
+4. [How does Angular change detection work internally?](../../interview/under-the-hood/06-Inside-the-Browser.md)
+5. [How do frameworks like Angular and React update the screen efficiently?](../../interview/under-the-hood/06-Inside-the-Browser.md)
+6. [How do cookies, localStorage, sessionStorage and IndexedDB differ?](../../interview/under-the-hood/06-Inside-the-Browser.md)
 
 ## Diagrams
 

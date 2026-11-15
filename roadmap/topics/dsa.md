@@ -70,7 +70,28 @@
 1. [How do you approach a coding problem you haven't seen before?](../../interview/coding/02-DSA-Patterns.md)
 2. [Tricky: What is the time complexity of `x in my_list` vs `x in my_set`?](../../interview/coding/02-DSA-Patterns.md)
 
-## 8. Inside common data structures (ideas apply to every language; Java examples)
+## 8. More Core Patterns (Intermediate)
+
+1. [How does a hash table handle collisions?](../../interview/coding/02-DSA-Patterns.md)
+   - [Why is resizing still O(1) "on average"?](../../interview/coding/02-DSA-Patterns.md)
+2. [What is a heap / priority queue, and when do you use it?](../../interview/coding/02-DSA-Patterns.md)
+   - [K-th largest of n numbers — sort or heap?](../../interview/coding/02-DSA-Patterns.md)
+3. [What is the greedy approach, and when does it work?](../../interview/coding/02-DSA-Patterns.md)
+   - [How do you know greedy is safe?](../../interview/coding/02-DSA-Patterns.md)
+4. [What is union-find (disjoint set union), and where is it used?](../../interview/coding/02-DSA-Patterns.md)
+   - [Union-find or BFS for connected components?](../../interview/coding/02-DSA-Patterns.md)
+5. [What bit manipulation tricks should you know for interviews?](../../interview/coding/02-DSA-Patterns.md)
+   - [Why is `n & (n - 1)` so useful?](../../interview/coding/02-DSA-Patterns.md)
+
+## 9. More LeetCode Classics (Advanced)
+
+1. [Trapping Rain Water (LeetCode 42)](../../interview/coding/02-DSA-Patterns.md)
+2. [Word Break (LeetCode 139)](../../interview/coding/02-DSA-Patterns.md)
+3. [House Robber (LeetCode 198)](../../interview/coding/02-DSA-Patterns.md)
+4. [Longest Palindromic Substring (LeetCode 5)](../../interview/coding/02-DSA-Patterns.md)
+5. [Rotting Oranges (LeetCode 994)](../../interview/coding/02-DSA-Patterns.md)
+
+## 10. Inside common data structures (ideas apply to every language; Java examples)
 
 1. [How does a HashMap work internally?](../../interview/under-the-hood/04-Inside-Data-Structures.md)
    - [Why can't you get the key back from its hash?](../../interview/under-the-hood/04-Inside-Data-Structures.md)
@@ -109,6 +130,7 @@
 ## Diagrams
 
 - [Hash table: keys are hashed to bucket indexes; colliding keys share a bucket](../../knowledge/visual-notes/under-the-hood/hash-table.svg)
+- [A max-heap: every parent is larger than its children](../../knowledge/visual-notes/interview/max-heap.svg)
 - [Linked list: each node holds a value and a pointer to the next node](../../knowledge/visual-notes/under-the-hood/singly-linked-list.svg)
 - [B+ tree: internal nodes guide the search; the leaves hold the values and link to each other](../../knowledge/visual-notes/under-the-hood/b-plus-tree.png)
 

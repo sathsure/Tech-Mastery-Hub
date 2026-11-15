@@ -67,12 +67,19 @@
 4. [How would you prevent prompt injection attacks?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
 5. [How would you build a secure enterprise AI chatbot?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
 
-## 7. AI & MACHINE LEARNING
+## 7. Model Customisation & Deployment (Advanced)
+
+1. [What are LoRA and quantization?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+   - [Should you fine-tune to teach the model company facts?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+2. [Open-weight models vs API (hosted) models — how do you choose?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+   - [Is "open-weight" the same as "open source"?](../../interview/ai/01-AI-LLM-RAG-Agents.md)
+
+## 8. AI & MACHINE LEARNING
 
 1. [What are the main AWS AI & Machine Learning services (SageMaker, Bedrock, Rekognition, Comprehend)?](../../interview/architecture/02-aws-cloud.md)
 2. [AWS AI & Machine Learning: which service fits each scenario?](../../interview/architecture/02-aws-cloud.md)
 
-## 8. The full journey of one question (AI & LLMs, any language)
+## 9. The full journey of one question (AI & LLMs, any language)
 
 1. [What happens, step by step, when you send a message to an AI chatbot like ChatGPT or Claude?](../../interview/under-the-hood/14-How-AI-Chatbots-Work.md)
 2. [How does an LLM break text into tokens and turn them into numbers?](../../interview/under-the-hood/14-How-AI-Chatbots-Work.md)

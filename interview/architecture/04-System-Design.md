@@ -1073,3 +1073,32 @@ flowchart LR
 ↪ With `% N`, changing N remaps almost every key (a cache wipe). Consistent hashing moves only about 1/N of them.
 
 ---
+
+### ❓ Monolithic vs serverless architecture?
+
+**Level:** 🟡 Intermediate
+
+### 📝 Answer
+
+- **Monolith** — one deployable application on servers or containers you run all the time.
+- **Serverless** — small **functions** (AWS Lambda, Azure Functions) plus managed services; the cloud runs them **on demand** and bills per invocation.
+
+| | Monolith | Serverless |
+|---|---|---|
+| Unit of deployment | the whole app | each function |
+| Servers to manage | yes (VMs/containers) | none |
+| Scaling | scale the whole app | automatic per function, to zero |
+| Cost | pay for running servers, even idle | pay per request/duration; costly at constant high load |
+| Start-up | always warm | **cold starts** (ms to seconds) |
+| Limits | few | max run time (15 min on Lambda), memory, connections |
+| Local testing / debugging | easy | harder |
+| Lock-in | low | high (cloud-specific triggers and services) |
+| Best for | steady traffic, complex domain, small team | spiky or event-driven work: file processing, webhooks, schedules |
+
+**Rule of thumb:** steady core business app → monolith (or modular monolith); bursty, event-triggered tasks around it → serverless functions.
+
+#### ↳ Follow-up: Why are database connections a problem in serverless?
+
+↪ Thousands of short-lived functions can each open a connection and exhaust the database; use a proxy (RDS Proxy) or HTTP-based data APIs.
+
+---

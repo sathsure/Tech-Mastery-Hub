@@ -6,13 +6,31 @@
 - [System Design](../topics/system-design.md)
 - Overview: [Tech Lead & Leadership concepts](../../knowledge/concepts/leadership/README.md)
 
-## 1. The Role
+## 1. Managerial & Design Decisions (Leadership)
+
+1. [The team is divided between quick fixes and long-term refactoring. How would you decide?](../../interview/backend/java/08-Architecture.md)
+2. [How would you explain a REST API performance issue to a non-technical manager?](../../interview/backend/java/08-Architecture.md)
+3. [If a breaking change is required in an API, how would you manage it?](../../interview/backend/java/08-Architecture.md)
+
+## 2. Managerial / Architectural Decisions (Leadership)
+
+1. [When would you avoid using JPA and write native SQL instead?](../../interview/backend/java/08-Architecture.md)
+2. [How would you explain a database performance issue to management?](../../interview/backend/java/08-Architecture.md)
+3. [If database refactoring is risky, how would you plan it?](../../interview/backend/java/08-Architecture.md)
+
+## 3. Team & Ownership Questions (Leadership)
+
+1. [A feature works but is poorly designed. Do you ship or refactor?](../../interview/backend/java/08-Architecture.md)
+2. [A junior developer wrote a slow query. How would you handle it?](../../interview/backend/java/08-Architecture.md)
+3. [How do you make sure frontend and backend teams stay aligned?](../../interview/backend/java/08-Architecture.md)
+
+## 4. The Role
 
 1. [What does a tech lead do?](../../interview/leadership/01-Tech-Lead.md)
    - [How much code should a tech lead write?](../../interview/leadership/01-Tech-Lead.md)
 2. [What is the difference between a tech lead, an engineering manager and an architect?](../../interview/leadership/01-Tech-Lead.md)
 
-## 2. Technical Direction
+## 5. Technical Direction
 
 1. [How do you run a good code review?](../../interview/leadership/01-Tech-Lead.md)
 2. [What is a design document (RFC), and when do you write one?](../../interview/leadership/01-Tech-Lead.md)
@@ -20,20 +38,20 @@
 4. [How do you handle technical debt?](../../interview/leadership/01-Tech-Lead.md)
 5. [How do you set engineering standards for a team?](../../interview/leadership/01-Tech-Lead.md)
 
-## 3. Delivery
+## 6. Delivery
 
 1. [How do you break down a large feature and estimate it?](../../interview/leadership/01-Tech-Lead.md)
 2. [How do you keep a project on track when it starts slipping?](../../interview/leadership/01-Tech-Lead.md)
 3. [How do you work with product managers and stakeholders?](../../interview/leadership/01-Tech-Lead.md)
 
-## 4. People
+## 7. People
 
 1. [How do you mentor junior developers?](../../interview/leadership/01-Tech-Lead.md)
 2. [How do you handle a team member who is underperforming?](../../interview/leadership/01-Tech-Lead.md)
 3. [How do you delegate as a tech lead?](../../interview/leadership/01-Tech-Lead.md)
 4. [What would you do in your first 90 days as a new tech lead?](../../interview/leadership/01-Tech-Lead.md)
 
-## 5. Production Ownership
+## 8. Production Ownership
 
 1. [What is your role during a production incident?](../../interview/leadership/01-Tech-Lead.md)
 

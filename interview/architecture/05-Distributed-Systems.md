@@ -234,3 +234,53 @@ No. The "fallacies of distributed computing" are false assumptions: the network 
 ### 📝 Answer
 
 **You don't know.** The server may have done the work and the reply was lost, or it never got the request. That's why retries need **idempotency keys**: the retry is safe either way.
+
+
+---
+
+### ❓ Saga vs two-phase commit (2PC)?
+
+**Level:** 🔴 Advanced
+
+### 📝 Answer
+
+Both coordinate one business operation across several databases/services.
+
+| | Two-phase commit | Saga |
+|---|---|---|
+| Consistency | strong, atomic (all or nothing at once) | eventual (steps commit one by one) |
+| Undo | real rollback (nothing committed yet) | **compensating** actions after commit |
+| Locks | held across the network until the decision | only during each local transaction |
+| Coordinator failure | participants stay blocked | steps resume/compensate from saved state |
+| Speed / scale | slow, poor under load | fast, scalable |
+| Needs | XA support in every participant | events/commands, idempotency, outbox |
+| Fits | few databases in one data centre (JTA/XA) | microservices, external APIs |
+
+**Example:** order → stock → payment. With 2PC all three would prepare and commit together. With a saga each commits on its own; if payment fails, stock is **released** and the order **cancelled**.
+
+**Rule of thumb:** microservices → saga (+ outbox + idempotent consumers). 2PC only inside one tightly controlled environment.
+
+---
+
+### ❓ Strong consistency vs eventual consistency?
+
+**Level:** 🟡 Intermediate
+
+### 📝 Answer
+
+- **Strong** — after a write is acknowledged, **every** read everywhere returns it.
+- **Eventual** — reads may return **old data for a short time**, but all copies converge if writes stop.
+
+| | Strong | Eventual |
+|---|---|---|
+| Read after write | always the latest | may be stale briefly |
+| Latency | higher (coordination/quorum) | lower |
+| Availability during network splits | may refuse requests (CP) | keeps answering (AP) |
+| Examples | single SQL primary, Spanner, etcd/ZooKeeper | DNS, CDN caches, read replicas, Cassandra (default), event-driven read models |
+| Use for | balances, seat booking, unique usernames | feeds, likes, search indexes, product catalogue |
+
+**Middle grounds:** read-your-own-writes, monotonic reads, quorum reads (`R + W > N`).
+
+**Rule of thumb:** pay for strong consistency only where a stale read causes real harm; elsewhere accept eventual consistency and show clear states ("processing").
+
+---

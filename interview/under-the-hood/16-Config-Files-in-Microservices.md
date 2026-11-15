@@ -4,18 +4,24 @@
 
 ### ❓ How do you read a YAML file?
 
-YAML is a way to write settings that people can read easily. Only a few rules:
+**Generic answer:** YAML is a readable settings format where `key: value` sets a value, indentation (spaces only) means "belongs to", and `-` starts a list item.
+
+**Under the hood:**
+
+Imagine settings for a service: a server with a port, a list of services, a debug flag. JSON works, but it's full of braces and quotes, and you can't add comments. People needed a format that's easy to read and edit by hand.
+
+**Step 1: Learn the few rules**
 
 | Rule | Example | Meaning |
 |---|---|---|
-| `key: value` (a space after the colon) | `port: 8080` | a setting |
-| **Indentation = belongs to** (spaces only, never tabs) | `server:` then `  port: 8080` on the next line | `port` is inside `server` |
-| `-` starts a list item | `- orders-db` | one item of a list |
+| `key: value` (space after the colon) | `port: 8080` | a setting |
+| **Indentation = belongs to** (spaces, never tabs) | `server:` then `  port: 8080` | `port` is inside `server` |
+| `-` starts a list item | `- orders-db` | one list item |
 | `#` | `# comment` | ignored |
-| `\|` at the end of a line | `script: \|` | a multi-line text follows |
-| `---` | | starts another document in the same file |
+| `\|` at line end | `script: \|` | multi-line text follows |
+| `---` | | another document in the same file |
 
-The same data in YAML and in JSON:
+**Step 2: See it next to JSON**
 
 ```yaml
 server:
@@ -30,49 +36,61 @@ debug: false
 { "server": { "port": 8080 }, "services": ["orders-db", "redis-cache"], "debug": false }
 ```
 
-**How to read any YAML file:** follow the indentation like folders. `server` → `port` means the setting `server.port`.
+**Step 3: Read it like folders**
 
-**Common mistakes:** a tab instead of spaces, a missing space after `:`, or wrong indentation — a setting indented one level too far silently belongs to the wrong parent.
+`server` → `port` means `server.port`.
+
+**Step 4: Avoid the traps**
+
+A tab instead of spaces, no space after `:`, or one level too deep — the setting silently belongs to the wrong parent.
+
+**Final understanding:** **Hand-edited settings → YAML → indentation builds the tree → read paths like folders (`server.port`).**
 
 ---
 
 ### ❓ What do the common settings in a microservice's application.yml mean?
 
-A typical Spring Boot microservice, with a note on every line:
+**Generic answer:** `application.yml` holds a Spring Boot service's own settings — port, name, database, profiles, config server, discovery, monitoring and logging — and each can be overridden per environment.
+
+**Under the hood:**
+
+Imagine one `order-service.jar` that must run on your laptop, in test and in production — with different databases, passwords and log levels. Rebuilding the jar per environment would be risky.
+
+**Step 1: Read a typical file**
 
 ```yaml
 server:
-  port: 8081                          # the port this service listens on
+  port: 8081                          # port this service listens on
 
 spring:
   application:
-    name: order-service               # its name in service discovery, logs and config server
+    name: order-service               # name in discovery, logs and config server
   datasource:
-    url: jdbc:postgresql://db:5432/orders   # which database to use
+    url: jdbc:postgresql://db:5432/orders
     username: orders_app
-    password: ${DB_PASSWORD}          # read from an environment variable, never written here
+    password: ${DB_PASSWORD}          # from an environment variable, never written here
   profiles:
-    active: dev                       # also loads application-dev.yml on top of this file
+    active: dev                       # also loads application-dev.yml
   config:
-    import: optional:configserver:http://config:8888   # fetch shared settings from Spring Cloud Config
+    import: optional:configserver:http://config:8888   # shared settings from Spring Cloud Config
 
 eureka:
   client:
     service-url:
-      defaultZone: http://discovery:8761/eureka   # where to register so other services can find it
+      defaultZone: http://discovery:8761/eureka   # register so others can find it
 
 management:
   endpoints:
     web:
       exposure:
-        include: health,info,prometheus   # health checks and metrics for monitoring
+        include: health,info,prometheus   # health checks and metrics
 
 logging:
   level:
-    com.shop.orders: DEBUG            # more detailed logs for our own code
+    com.shop.orders: DEBUG
 ```
 
-**The same thing as `application.properties`:** each indentation level becomes a dot.
+**Step 2: Same thing as properties**
 
 ```properties
 server.port=8081
@@ -80,61 +98,97 @@ spring.application.name=order-service
 spring.datasource.password=${DB_PASSWORD}
 ```
 
-**Who wins when a setting is in several places** (highest first): command-line arguments → environment variables (`SPRING_DATASOURCE_URL` sets `spring.datasource.url`) → `application-{profile}.yml` → `application.yml`. That's how one jar runs with different settings in dev, test and production.
+**Step 3: Layer overrides**
 
-See also: [application.properties vs application.yml?](../backend/java/03-Spring-1.md)
+Highest wins: command-line args → environment variables (`SPRING_DATASOURCE_URL` sets `spring.datasource.url`) → `application-{profile}.yml` → `application.yml`.
+
+**Final understanding:** **One jar, many environments → defaults in `application.yml` → overrides from profiles and env vars → no rebuilds.** See also: [properties vs yml](../backend/java/03-Spring-1.md)
 
 ---
 
 ### ❓ What is manifest.yml, and how do you read one?
 
-`manifest.yml` tells **Cloud Foundry** (also SAP BTP and VMware Tanzu) **how to deploy and run your app** when you type `cf push`.
+**Generic answer:** `manifest.yml` tells Cloud Foundry (also SAP BTP, VMware Tanzu) how to deploy and run your app when you type `cf push`: what to upload, memory, copies, URL, settings and services.
+
+**Under the hood:**
+
+Imagine deploying by typing `cf push` with a dozen flags every time — memory, instances, routes, Java version. One typo and production differs from yesterday.
+
+**Step 1: Write the deployment down once**
 
 ```yaml
 applications:
-- name: order-service                 # app name in Cloud Foundry
+- name: order-service
   path: target/order-service.jar      # what to upload
   memory: 1G                          # RAM per copy
-  instances: 2                        # run 2 copies for load and safety
+  instances: 2                        # 2 copies for load and safety
   buildpacks:
-    - java_buildpack                  # how to build and run it (installs Java)
+    - java_buildpack                  # installs Java and runs the jar
   routes:
-    - route: orders.apps.example.com  # the public URL
-  env:                                # environment variables for the app
+    - route: orders.apps.example.com  # public URL
+  env:
     SPRING_PROFILES_ACTIVE: cloud
-    JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 17.+ } }'   # Java version
+    JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 17.+ } }'
   services:
-    - orders-db                       # bind a database the platform created
+    - orders-db                       # bind a platform database
   health-check-type: http
-  health-check-http-endpoint: /actuator/health   # restart the app if this fails
+  health-check-http-endpoint: /actuator/health
 ```
 
-**Read it as:** "deploy **this file**, with **this much memory**, **this many copies**, at **this URL**, with **these settings and services**."
+**Step 2: `cf push` reads it**
 
-**Don't confuse it with `META-INF/MANIFEST.MF`** inside a jar, which only says which class has `main()`.
+Uploads the jar, the buildpack prepares a container, the platform starts the copies, binds services and maps the route.
+
+**Step 3: Read it as one sentence**
+
+"Deploy **this file**, with **this memory**, **this many copies**, at **this URL**, with **these settings and services**."
+
+**Don't confuse** with `META-INF/MANIFEST.MF` inside a jar, which only names the `main()` class.
+
+**Final understanding:** **Error-prone manual deploy flags → describe deployment in a file → platform reads it on every push.**
 
 ---
 
 ### ❓ Which config file does what in a microservice project?
 
-| File | What it controls | Read it when… |
+**Generic answer:** Each file owns one stage — build (`pom.xml`), app settings (`application.yml`), image (`Dockerfile`), how it runs (`deployment.yaml` / `manifest.yml`), per-environment overrides (ConfigMaps, Secrets) and the pipeline (`Jenkinsfile`, workflows).
+
+**Under the hood:**
+
+Imagine a service fails in production. Is it the build, a setting, the image, the deployment or the pipeline? Knowing which file owns which stage tells you where to look.
+
+**Step 1: Build** — `pom.xml` / `build.gradle`: libraries and build.
+
+**Step 2: App settings** — `application.yml` (+ `-dev`, `-prod`).
+
+**Step 3: Image** — `Dockerfile`; `docker-compose.yml` runs several locally.
+
+**Step 4: How it runs** — Kubernetes `deployment.yaml`, `service.yaml`, Helm `values.yaml`, or Cloud Foundry `manifest.yml`.
+
+**Step 5: Environment overrides** — `configmap.yaml`, `secret.yaml`, env vars.
+
+**Step 6: Pipeline** — `.github/workflows/*.yml`, `Jenkinsfile`.
+
+| File | Controls | Read it when… |
 |---|---|---|
-| `pom.xml` / `build.gradle` | libraries and how to build | a dependency is missing or the build fails |
-| `application.yml` / `.properties` | the app's own settings: port, database, logging | the app behaves differently than expected |
-| `application-dev.yml`, `-prod.yml` | overrides for one environment | it works in dev but not in prod |
-| `Dockerfile` | how to build the container image | the image won't build or start |
-| `docker-compose.yml` | run several containers together locally | you start the whole system on your laptop |
-| Kubernetes `deployment.yaml`, `service.yaml` | how many copies run, ports, memory limits | pods crash or can't be reached |
-| Kubernetes `configmap.yaml` / `secret.yaml` | settings and passwords given to the pods | a setting differs per cluster |
-| `manifest.yml` | deployment on Cloud Foundry | `cf push` fails |
-| `.github/workflows/*.yml`, `Jenkinsfile` | the CI/CD pipeline | a build or deploy step fails |
-| `values.yaml` (Helm) | settings for Kubernetes templates | one chart is deployed to many environments |
+| `pom.xml` | libraries, build | dependency missing, build fails |
+| `application.yml` | app settings | app behaves unexpectedly |
+| `application-prod.yml` | one environment | works in dev, not prod |
+| `Dockerfile` | image | image won't build/start |
+| `docker-compose.yml` | local multi-container | starting the system locally |
+| `deployment.yaml`, `service.yaml` | copies, ports, limits | pods crash or unreachable |
+| `configmap.yaml` / `secret.yaml` | settings per cluster | setting differs per cluster |
+| `manifest.yml` | Cloud Foundry deploy | `cf push` fails |
+| workflows / `Jenkinsfile` | CI/CD | pipeline step fails |
+| `values.yaml` (Helm) | template settings | one chart, many environments |
 
 ```mermaid
 flowchart LR
   A["pom.xml<br/>(build)"] --> B["Dockerfile<br/>(image)"]
   B --> C["deployment.yaml / manifest.yml<br/>(how it runs)"]
-  D["application.yml<br/>(app settings)"] --> E["ConfigMap / Secret / env vars<br/>(override per environment)"]
+  D["application.yml<br/>(app settings)"] --> E["ConfigMap / Secret / env vars<br/>(per environment)"]
   C --> F["Running service"]
   E --> F
 ```
+
+**Final understanding:** **Build → image → run → configure → automate**; one file per stage, so a failure points to its file.
